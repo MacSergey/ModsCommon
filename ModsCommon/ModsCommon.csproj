@@ -85,6 +85,7 @@
     <Compile Include="Utilities\Extensions\XmlExtension.cs" />
     <Compile Include="Utilities\Extensions\ItemsExtension.cs" />
     <Compile Include="Utilities\Extensions\MathExtention.cs" />
+    <Compile Include="Utilities\PropertyValue.cs" />
     <Compile Include="Utilities\Shortcut.cs" />
     <Compile Include="Utilities\TextureHelper.cs" />
   </ItemGroup>
