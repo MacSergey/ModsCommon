@@ -47,7 +47,8 @@ namespace ModsCommon.UI
 
         public FieldPropertyPanel()
         {
-            Field = AddTextField<ValueType, FieldType>(Control);
+            Field = Control.AddUIComponent<FieldType>();
+            Field.SetDefaultStyle();
 
             Field.OnValueChanged += ValueChanged;
             Field.eventMouseHover += FieldHover;

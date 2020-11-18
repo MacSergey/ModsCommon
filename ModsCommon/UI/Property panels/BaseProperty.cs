@@ -98,33 +98,5 @@ namespace ModsCommon.UI
             foreach (var item in Control.components)
                 item.relativePosition = new Vector2(item.relativePosition.x, (Control.size.y - item.size.y) / 2);
         }
-
-        protected FieldType AddTextField<ValueType, FieldType>(UIComponent parent)
-            where FieldType : UITextField<ValueType>
-        {
-            var field = parent.AddUIComponent<FieldType>();
-
-            field.atlas = TextureHelper.CommonAtlas;
-            field.normalBgSprite = TextureHelper.FieldNormal;
-            field.hoveredBgSprite = TextureHelper.FieldHovered;
-            field.focusedBgSprite = TextureHelper.FieldNormal;
-            field.disabledBgSprite = TextureHelper.FieldDisabled;
-            field.selectionSprite = TextureHelper.EmptySprite;
-
-            field.allowFloats = true;
-            field.isInteractive = true;
-            field.enabled = true;
-            field.readOnly = false;
-            field.builtinKeyNavigation = true;
-            field.cursorWidth = 1;
-            field.cursorBlinkTime = 0.45f;
-            field.selectOnFocus = true;
-
-            field.textScale = 0.7f;
-            field.verticalAlignment = UIVerticalAlignment.Middle;
-            field.padding = new RectOffset(0, 0, 6, 0);
-
-            return field;
-        }
     }
 }

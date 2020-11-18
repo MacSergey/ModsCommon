@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace ModsCommon.UI
 {
@@ -87,6 +88,29 @@ namespace ModsCommon.UI
             Normal,
             Low,
             High
+        }
+
+        public void SetDefaultStyle()
+        {
+            atlas = TextureHelper.CommonAtlas;
+            normalBgSprite = TextureHelper.FieldNormal;
+            hoveredBgSprite = TextureHelper.FieldHovered;
+            focusedBgSprite = TextureHelper.FieldNormal;
+            disabledBgSprite = TextureHelper.FieldDisabled;
+            selectionSprite = TextureHelper.EmptySprite;
+
+            allowFloats = true;
+            isInteractive = true;
+            enabled = true;
+            readOnly = false;
+            builtinKeyNavigation = true;
+            cursorWidth = 1;
+            cursorBlinkTime = 0.45f;
+            selectOnFocus = true;
+
+            textScale = 0.7f;
+            verticalAlignment = UIVerticalAlignment.Middle;
+            padding = new RectOffset(0, 0, 6, 0);
         }
     }
     public abstract class ComparableUITextField<ValueType> : UITextField<ValueType>

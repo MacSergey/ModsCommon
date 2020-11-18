@@ -112,7 +112,8 @@ namespace ModsCommon.UI
             lable.text = name;
             lable.textScale = 0.7f;
 
-            var field = AddTextField<byte, ByteUITextField>(Control);
+            var field = Control.AddUIComponent<ByteUITextField>();
+            field.SetDefaultStyle();
             field.MinValue = byte.MinValue;
             field.MaxValue = byte.MaxValue;
             field.CheckMax = true;

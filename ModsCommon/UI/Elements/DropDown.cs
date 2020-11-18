@@ -49,18 +49,24 @@ namespace ModsCommon.UI
             items = new string[0];
         }
         protected override void OnMouseWheel(UIMouseEventParameter p) { }
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+
+            listWidth = (int)width;
+            if (triggerButton is UIComponent button && button != this)
+                button.size = size;
+        }
 
         public void SetDefaultStyle(Vector2? size = null)
         {
             atlas = TextureHelper.CommonAtlas;
-            this.size = size ?? new Vector2(230, 20);
             listBackground = TextureHelper.FieldHovered;
             itemHeight = 20;
             itemHover = TextureHelper.FieldNormal;
             itemHighlight = TextureHelper.FieldFocused;
             normalBgSprite = TextureHelper.FieldNormal;
             hoveredBgSprite = TextureHelper.FieldHovered;
-            listWidth = (int)width;
             listHeight = 700;
             listPosition = PopupListPosition.Below;
             clampListToScreen = true;
@@ -78,7 +84,6 @@ namespace ModsCommon.UI
             var button = AddUIComponent<UIButton>();
             button.atlas = TextureHelper.InGameAtlas;
             button.text = string.Empty;
-            button.size = this.size;
             button.relativePosition = new Vector3(0f, 0f);
             button.textVerticalAlignment = UIVerticalAlignment.Middle;
             button.textHorizontalAlignment = UIHorizontalAlignment.Left;
@@ -93,12 +98,13 @@ namespace ModsCommon.UI
             button.textScale = 0.8f;
 
             triggerButton = button;
+
+            this.size = size ?? new Vector2(230, 20);
         }
 
         public void SetSettingsStyle(Vector2? size = null)
         {
             atlas = TextureHelper.InGameAtlas;
-            this.size = size ?? new Vector2(400, 31);
             listBackground = "OptionsDropboxListbox";
             itemHeight = 24;
             itemHover = "ListItemHover";
@@ -121,6 +127,8 @@ namespace ModsCommon.UI
             horizontalAlignment = UIHorizontalAlignment.Left;
             itemPadding = new RectOffset(14, 14, 4, 0);
             triggerButton = this;
+
+            this.size = size ?? new Vector2(400, 31);
         }
     }
 }
