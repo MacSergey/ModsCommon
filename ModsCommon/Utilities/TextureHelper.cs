@@ -17,13 +17,15 @@ namespace ModsCommon.Utilities
 
         static Dictionary<string, Action<int, int, Rect>> Files { get; } = new Dictionary<string, Action<int, int, Rect>>
         {
-            {nameof(TextFieldPanel), TextFieldPanel},
-            {nameof(TabButton), TabButton},
+            {nameof(CloseButton), CloseButton},
+            {nameof(ColorPicker), ColorPicker},
             {nameof(DefaultTabButtons), DefaultTabButtons},
             {nameof(Empty), Empty},
+            {nameof(HeaderHover), HeaderHover},
             {nameof(OpacitySlider), OpacitySlider},
-            {nameof(ColorPicker), ColorPicker},
             {nameof(Resize), Resize},
+            {nameof(TabButton), TabButton},
+            {nameof(TextFieldPanel), TextFieldPanel},
         };
 
         static TextureHelper()
@@ -62,7 +64,6 @@ namespace ModsCommon.Utilities
         public static Texture2D LoadTextureFromAssembly(this Assembly assembly, string textureFile)
         {
             var search = $".{textureFile}.";
-            //var executingAssembly = Assembly.GetExecutingAssembly();
             var path = assembly.GetManifestResourceNames().FirstOrDefault(n => n.Contains(search));
             var manifestResourceStream = assembly.GetManifestResourceStream(path);
             var data = new byte[manifestResourceStream.Length];
@@ -104,6 +105,8 @@ namespace ModsCommon.Utilities
             => CommonAtlas.AddSprites(texWidth, texHeight, rect, 43, 49, ColorPickerNormal, ColorPickerHover, ColorPickerDisable, ColorPickerColor, ColorPickerBoard);
 
         static void Resize(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, ResizeSprite);
+        static void HeaderHover(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, HeaderHoverSprite);
+        static void CloseButton(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, 32, 32, DeleteNormal, DeleteHover, DeletePressed);
 
 
         public static void AddSprites(this UITextureAtlas atlas, int texWidth, int texHeight, Rect rect, string sprite)
@@ -156,8 +159,6 @@ namespace ModsCommon.Utilities
             atlas.AddSprite(spriteInfo);
         }
 
-
-
         public static string FieldNormal => nameof(FieldNormal);
         public static string FieldHovered => nameof(FieldHovered);
         public static string FieldFocused => nameof(FieldFocused);
@@ -195,5 +196,11 @@ namespace ModsCommon.Utilities
         public static string ColorPickerBoard { get; } = nameof(ColorPickerBoard);
 
         public static string ResizeSprite { get; } = nameof(ResizeSprite);
+
+        public static string HeaderHoverSprite { get; } = nameof(HeaderHoverSprite);
+
+        public static string DeleteNormal { get; } = nameof(DeleteNormal);
+        public static string DeleteHover { get; } = nameof(DeleteHover);
+        public static string DeletePressed { get; } = nameof(DeletePressed);
     }
 }

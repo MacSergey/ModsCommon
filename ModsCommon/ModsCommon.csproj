@@ -60,6 +60,9 @@
     <Compile Include="UI\Elements\Keymapping.cs" />
     <Compile Include="UI\Elements\Segmented.cs" />
     <Compile Include="UI\Elements\TabPanel.cs" />
+    <Compile Include="UI\Headers\HeaderButton.cs" />
+    <Compile Include="UI\Headers\HeaderPanel.cs" />
+    <Compile Include="UI\Headers\HeaderPopup.cs" />
     <Compile Include="UI\Message boxes\BaseMessageBox.cs" />
     <Compile Include="UI\Message boxes\SimpleMessageBox.cs" />
     <Compile Include="UI\Property panels\BaseProperty.cs" />
@@ -98,7 +101,13 @@
     <EmbeddedResource Include="Resources\Empty.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\resize.png" />
+    <EmbeddedResource Include="Resources\Resize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\HeaderHover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CloseButton.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
