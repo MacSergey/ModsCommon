@@ -21,6 +21,9 @@ namespace ModsCommon.Utilities
             {nameof(TabButton), TabButton},
             {nameof(DefaultTabButtons), DefaultTabButtons},
             {nameof(Empty), Empty},
+            {nameof(OpacitySlider), OpacitySlider},
+            {nameof(ColorPicker), ColorPicker},
+            {nameof(Resize), Resize},
         };
 
         static TextureHelper()
@@ -88,10 +91,20 @@ namespace ModsCommon.Utilities
         FieldNormalRight, FieldHoveredRight, FieldFocusedRight, FieldDisabledRight,
         FieldNormalMiddle, FieldHoveredMiddle, FieldFocusedMiddle, FieldDisabledMiddle);
         static void TabButton(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 0), 1, Tab);
+
         static void DefaultTabButtons(int texWidth, int texHeight, Rect rect)
             => CommonAtlas.AddSprites(texWidth, texHeight, rect, 58, 25, new RectOffset(4, 4, 4, 0), 2, TabNormal, TabHover, TabPressed, TabFocused, TabDisabled);
+
         static void Empty(int texWidth, int texHeight, Rect rect)
             => CommonAtlas.AddSprites(texWidth, texHeight, rect, 32, 32, EmptySprite);
+
+        static void OpacitySlider(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, 18, 200, new RectOffset(), 2, OpacitySliderBoard, OpacitySliderColor);
+
+        static void ColorPicker(int texWidth, int texHeight, Rect rect)
+            => CommonAtlas.AddSprites(texWidth, texHeight, rect, 43, 49, ColorPickerNormal, ColorPickerHover, ColorPickerDisable, ColorPickerColor, ColorPickerBoard);
+
+        static void Resize(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, ResizeSprite);
+
 
         public static void AddSprites(this UITextureAtlas atlas, int texWidth, int texHeight, Rect rect, string sprite)
             => atlas.AddSprites(texWidth, texHeight, rect, new RectOffset(), 0, sprite);
@@ -171,5 +184,16 @@ namespace ModsCommon.Utilities
         public static string TabDisabled { get; } = nameof(TabDisabled);
 
         public static string EmptySprite => nameof(EmptySprite);
+
+        public static string OpacitySliderBoard { get; } = nameof(OpacitySliderBoard);
+        public static string OpacitySliderColor { get; } = nameof(OpacitySliderColor);
+
+        public static string ColorPickerNormal { get; } = nameof(ColorPickerNormal);
+        public static string ColorPickerHover { get; } = nameof(ColorPickerHover);
+        public static string ColorPickerDisable { get; } = nameof(ColorPickerDisable);
+        public static string ColorPickerColor { get; } = nameof(ColorPickerColor);
+        public static string ColorPickerBoard { get; } = nameof(ColorPickerBoard);
+
+        public static string ResizeSprite { get; } = nameof(ResizeSprite);
     }
 }
