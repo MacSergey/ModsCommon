@@ -23,6 +23,7 @@ namespace ModsCommon.Utilities
         }
         public string Label { get; }
 
+        public PropertyValue(Action onChanged, T value = default) : this(string.Empty, onChanged, value) { }
         public PropertyValue(string label, Action onChanged, T value = default)
         {
             Label = label;
@@ -37,6 +38,7 @@ namespace ModsCommon.Utilities
     public class PropertyEnumValue<T> : PropertyValue<T>
         where T : Enum
     {
+        public PropertyEnumValue(Action onChanged, T value = default) : base(onChanged, value) { }
         public PropertyEnumValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
 
         public override XAttribute ToXml() => new XAttribute(Label, (int)(object)Value);
@@ -44,6 +46,7 @@ namespace ModsCommon.Utilities
     }
     public class PropertyBoolValue : PropertyValue<bool>
     {
+        public PropertyBoolValue(Action onChanged, bool value = default) : base(onChanged, value) { }
         public PropertyBoolValue(string label, Action onChanged, bool value = default) : base(label, onChanged, value) { }
 
         public override XAttribute ToXml() => new XAttribute(Label, Value ? 1 : 0);
@@ -51,6 +54,7 @@ namespace ModsCommon.Utilities
     }
     public class PropertyColorValue : PropertyValue<Color32>
     {
+        public PropertyColorValue(Action onChanged, Color32 value = default) : base(onChanged, value) { }
         public PropertyColorValue(string label, Action onChanged, Color32 value = default) : base(label, onChanged, value) { }
 
         public override XAttribute ToXml() => new XAttribute(Label, (Value.r << 24) + (Value.g << 16) + (Value.b << 8) + Value.a);
