@@ -35,7 +35,7 @@ namespace ModsCommon.UI
             }
             return text;
         }
-        public static T FindComponent<T>(string name, UIComponent parent = null, FindOptions options = FindOptions.None) where T : UIComponent
+        public static T FindComponent<T>(string name, UIComponent parent = null, FindOptions options = FindOptions.None) where T : MonoBehaviour
         {
             if (UIRoot == null)
             {
