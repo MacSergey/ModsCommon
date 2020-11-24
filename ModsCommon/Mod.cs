@@ -89,6 +89,12 @@ namespace ModsCommon
         {
             base.OnEnabled();
             Patcher = CreatePatcher();
+            Patcher.Patch();
+        }
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+            Patcher.Unpatch();
         }
         protected abstract PatcherType CreatePatcher();
     }
