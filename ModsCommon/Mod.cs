@@ -27,15 +27,13 @@ namespace ModsCommon
         protected abstract string ModName { get; }
         protected abstract string ModDescription { get; }
 
-
+        protected Logger ModLogger { get; private set; }
         public abstract string WorkshopUrl { get; }
         protected abstract Version ModVersion { get; }
         protected abstract List<Version> ModVersions { get; }
         public abstract string Id { get; }
         protected abstract bool ModIsBeta { get; }
-        protected Logger ModLogger { get; private set; }
-
-        protected string ModLocale { get; }
+        protected abstract string ModLocale { get; }
 
         protected CultureInfo Culture
         {
