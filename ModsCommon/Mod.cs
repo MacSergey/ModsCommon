@@ -49,11 +49,11 @@ namespace ModsCommon
 
         public BaseMod()
         {
+            Instance = (ModType)this;
             ModLogger = new Logger(Id);
         }
         public virtual void OnEnabled()
         {
-            Instance = (ModType)this;
             ModLogger.Debug($"Version {ModVersion}");
             ModLogger.Debug($"Enabled");
             LoadingManager.instance.m_introLoaded += LoadedError;
@@ -78,5 +78,18 @@ namespace ModsCommon
         public virtual void LocaleChanged() { }
 
         public virtual void LoadedError() { }
+    }
+    public abstract class BasePatcherMod<ModType, PatcherType> : BaseMod<ModType>
+        where ModType : BaseMod<ModType>
+        where PatcherType : Patcher<ModType>
+    {
+        protected PatcherType Patcher { get; private set; }
+
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+            Patcher = CreatePatcher();
+        }
+        protected abstract PatcherType CreatePatcher();
     }
 }
