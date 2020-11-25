@@ -50,8 +50,6 @@ namespace ModsCommon.UI
             tabButton.textPadding = new RectOffset(5, 5, 2, 2);
             tabButton.textScale = textScale;
             tabButton.verticalAlignment = UIVerticalAlignment.Middle;
-            tabButton.eventClick += TabClick;
-            tabButton.eventIsEnabledChanged += TabButtonIsEnabledChanged;
 
             SetStyle(tabButton);
 
@@ -61,21 +59,22 @@ namespace ModsCommon.UI
         }
 
         private bool ArrangeInProgress { get; set; }
-        protected void ArrangeTabs()
+        public void ArrangeTabs()
         {
-            if (Tabs.Count == 0 || ArrangeInProgress)
+            var tabs = Tabs.Where(t => t.isVisible).ToArray();
+            if (!tabs.Any() || ArrangeInProgress)
                 return;
 
             ArrangeInProgress = true;
 
-            foreach (var tab in Tabs)
+            foreach (var tab in tabs)
             {
                 tab.autoSize = true;
                 tab.autoSize = false;
                 tab.textHorizontalAlignment = UIHorizontalAlignment.Center;
             }
 
-            var tabRows = FillTabRows();
+            var tabRows = FillTabRows(tabs);
             ArrangeTabRows(tabRows);
             PlaceTabRows(tabRows);
 
@@ -83,12 +82,12 @@ namespace ModsCommon.UI
 
             ArrangeInProgress = false;
         }
-        private List<List<TabType>> FillTabRows()
+        private List<List<TabType>> FillTabRows(TabType[] tabs)
         {
-            var totalWidth = Tabs.Sum(t => t.width);
+            var totalWidth = tabs.Sum(t => t.width);
             var rows = (int)(totalWidth / width) + 1;
-            var tabInRow = Tabs.Count / rows;
-            var extraRows = Tabs.Count - (tabInRow * rows);
+            var tabInRow = tabs.Length / rows;
+            var extraRows = tabs.Length - (tabInRow * rows);
 
             var tabRows = new List<List<TabType>>();
             for (var i = 0; i < rows; i += 1)
@@ -99,7 +98,7 @@ namespace ModsCommon.UI
                 var from = i * tabInRow + Math.Min(i, extraRows);
                 var to = from + tabInRow + (i < extraRows ? 1 : 0);
                 for (var j = from; j < to; j += 1)
-                    tabRow.Add(Tabs[j]);
+                    tabRow.Add(tabs[j]);
             }
             return tabRows;
         }
@@ -169,6 +168,7 @@ namespace ModsCommon.UI
             {
                 tabButton.eventClick += TabClick;
                 tabButton.eventIsEnabledChanged += TabButtonIsEnabledChanged;
+                tabButton.eventVisibilityChanged += TabButtonVisibilityChanged;
                 Tabs.Add(tabButton);
             }
         }
@@ -180,6 +180,7 @@ namespace ModsCommon.UI
             {
                 tabButton.eventClick -= TabClick;
                 tabButton.eventIsEnabledChanged -= TabButtonIsEnabledChanged;
+                tabButton.eventVisibilityChanged -= TabButtonVisibilityChanged;
                 Tabs.Remove(tabButton);
             }
         }
@@ -203,6 +204,7 @@ namespace ModsCommon.UI
                 button.disabledColor = button.state == UIButton.ButtonState.Focused ? button.focusedColor : button.color;
             }
         }
+        private void TabButtonVisibilityChanged(UIComponent component, bool value) => ArrangeTabs();
 
         protected virtual void SetStyle(TabType tabButton)
         {
