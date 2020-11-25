@@ -21,6 +21,7 @@ namespace ModsCommon.UI
         public virtual void DeInit() 
         {
             isEnabled = true;
+            isVisible = true;
             EnableControl = true;
         }
         public void Init(float? height = null)
