@@ -19,7 +19,7 @@ namespace ModsCommon.UI
         int _selectIndex = -1;
 
         protected abstract string NotSet { get; }
-        UIButton Selector { get; set; }
+        SelectPropertyButton Selector { get; set; }
         UIButton Button { get; set; }
         protected abstract float Width { get; }
 
@@ -56,14 +56,14 @@ namespace ModsCommon.UI
         }
         private void AddSelector()
         {
-            Selector = Control.AddUIComponent<UIButton>();
+            Selector = Control.AddUIComponent<SelectPropertyButton>();
             Selector.text = NotSet;
             Selector.atlas = TextureHelper.CommonAtlas;
             Selector.normalBgSprite = TextureHelper.FieldNormal;
             Selector.hoveredBgSprite = TextureHelper.FieldHovered;
             Selector.disabledBgSprite = TextureHelper.FieldDisabled;
             Selector.focusedBgSprite = TextureHelper.FieldFocused;
-            Selector.isInteractive = true;
+            Selector.isInteractive = false;
             Selector.enabled = true;
             Selector.autoSize = false;
             Selector.textHorizontalAlignment = UIHorizontalAlignment.Left;
@@ -117,5 +117,9 @@ namespace ModsCommon.UI
 
         protected abstract bool IsEqual(Type first, Type second);
         public new void Focus() => Button.Focus();
+    }
+    public class SelectPropertyButton : UIButton
+    {
+        public override bool containsFocus => false;
     }
 }
