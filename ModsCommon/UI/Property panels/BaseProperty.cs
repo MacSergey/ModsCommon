@@ -96,7 +96,7 @@ namespace ModsCommon.UI
             Control.autoLayout = false;
 
             foreach (var item in Control.components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (Control.size.y - item.size.y) / 2);
+                item.relativePosition = new Vector2(item.relativePosition.x, (Control.height - item.height) / 2);
         }
     }
 }

@@ -105,7 +105,7 @@ namespace ModsCommon.Utilities
             => CommonAtlas.AddSprites(texWidth, texHeight, rect, 43, 49, ColorPickerNormal, ColorPickerHover, ColorPickerDisable, ColorPickerColor, ColorPickerBoard);
 
         static void Resize(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, ResizeSprite);
-        static void HeaderHover(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, HeaderHoverSprite);
+        static void HeaderHover(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, new RectOffset(4,4,4,4), 0, HeaderHoverSprite);
         static void CloseButton(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, 32, 32, DeleteNormal, DeleteHover, DeletePressed);
 
 
