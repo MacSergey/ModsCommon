@@ -11,6 +11,7 @@ namespace ModsCommon.Utilities
     {
         public static NetManager NetManager => Singleton<NetManager>.instance;
         public static PropManager PropManager => Singleton<PropManager>.instance;
+        public static TerrainManager TerrainManager => Singleton<TerrainManager>.instance;
         public static IEnumerable<NetSegment> Segments(this NetNode node)
         {
             for (var i = 0; i < 8; i += 1)
