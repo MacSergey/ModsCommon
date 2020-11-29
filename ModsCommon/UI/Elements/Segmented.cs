@@ -15,6 +15,7 @@ namespace ModsCommon.UI
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         List<ValueType> Objects { get; } = new List<ValueType>();
         List<UIButton> Buttons { get; } = new List<UIButton>();
+        protected virtual int TextPadding => 8;
 
         int _selectedIndex = -1;
         int SelectedIndex
@@ -33,7 +34,7 @@ namespace ModsCommon.UI
                 if (_selectedIndex != -1)
                 {
                     SetSprite(Buttons[_selectedIndex], true);
-                    OnSelectObjectChanged.Invoke(SelectedObject);
+                    OnSelectObjectChanged?.Invoke(SelectedObject);
                 }
             }
         }
@@ -61,7 +62,7 @@ namespace ModsCommon.UI
             button.atlas = TextureHelper.CommonAtlas;
             button.text = label ?? item.ToString();
             button.textScale = 0.8f;
-            button.textPadding = new RectOffset(8, 8, 4, 0);
+            button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
             button.autoSize = true;
             button.autoSize = false;
             button.height = 20;
