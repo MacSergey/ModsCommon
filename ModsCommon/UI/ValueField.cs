@@ -35,7 +35,7 @@ namespace ModsCommon.UI
                     return default; 
                 }
             }
-            set => ValueChanged(value, (v) => text = GetString(v));
+            set => ValueChanged(value);
         }
 
         //public UITextField()
@@ -51,6 +51,7 @@ namespace ModsCommon.UI
 
                 action?.Invoke(value);
                 OnValueChanged?.Invoke(value);
+                text = GetString(value);
 
                 InProcess = false;
             }
