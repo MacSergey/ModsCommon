@@ -17,7 +17,7 @@ namespace ModsCommon.UI
         public ValueType WheelStep { get; set; }
 
         private bool InProcess { get; set; } = false;
-        public virtual ValueType Value
+        public ValueType Value
         {
             get
             {
@@ -43,7 +43,7 @@ namespace ModsCommon.UI
         //    tooltip = Settings.ShowToolTip && CanUseWheel ? NodeMarkup.Localize.FieldPanel_ScrollWheel : string.Empty;
         //}
 
-        private void ValueChanged(ValueType value, Action<ValueType> action = null)
+        protected virtual void ValueChanged(ValueType value, Action<ValueType> action = null)
         {
             if (!InProcess)
             {
@@ -121,21 +121,15 @@ namespace ModsCommon.UI
         public bool CheckMax { get; set; }
         public bool CheckMin { get; set; }
 
-        public override ValueType Value
+        protected override void ValueChanged(ValueType value, Action<ValueType> action = null)
         {
-            get => base.Value;
-            set
-            {
-                var newValue = value;
+            if (CheckMin && value.CompareTo(MinValue) < 0)
+                value = MinValue;
 
-                if (CheckMin && newValue.CompareTo(MinValue) < 0)
-                    newValue = MinValue;
+            if (CheckMax && value.CompareTo(MaxValue) > 0)
+                value = MaxValue;
 
-                if (CheckMax && newValue.CompareTo(MaxValue) > 0)
-                    newValue = MaxValue;
-
-                base.Value = newValue;
-            }
+            base.ValueChanged(value, action);
         }
 
         public ComparableUITextField() => SetDefault();
