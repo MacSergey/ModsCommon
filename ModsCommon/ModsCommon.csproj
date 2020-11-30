@@ -90,7 +90,7 @@
     <Compile Include="UI\Property panels\TextProperty.cs" />
     <Compile Include="UI\UIHelper.cs" />
     <Compile Include="UI\ValueField.cs" />
-    <Compile Include="Utilities\CustomNetInfo.cs" />
+    <Compile Include="Utilities\CommonNetInfo.cs" />
     <Compile Include="Utilities\Extensions\ClassesExtension.cs" />
     <Compile Include="Utilities\Extensions\EnumExtension.cs" />
     <Compile Include="Utilities\Extensions\InputExtension.cs" />

@@ -13,5 +13,11 @@ namespace ModsCommon.Utilities
             foreach (var value in values)
                 hashSet.Add(value);
         }
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> values)
+        {
+            var hashSet = new HashSet<T>();
+            hashSet.AddRange(values);
+            return hashSet;
+        }
     }
 }
