@@ -47,9 +47,12 @@ namespace ModsCommon.Utilities
         public static IEnumerable<uint> GetLanesId(this NetSegment segment)
         {
             for (var laneId = segment.m_lanes; laneId != 0; laneId = GetLane(laneId).m_nextLane)
-            {
                 yield return laneId;
-            }
+        }
+        public static IEnumerable<uint> GetLanesId(this uint laneId)
+        {
+            for (; laneId != 0; laneId = GetLane(laneId).m_nextLane)
+                yield return laneId;
         }
 
         public static bool IsInvert(this NetSegment segment) => (segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.Invert;
