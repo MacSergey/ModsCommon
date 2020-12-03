@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ModsCommon.Utilities
+namespace ModsBridge
 {
     public interface IMarkingNetInfo
     {
