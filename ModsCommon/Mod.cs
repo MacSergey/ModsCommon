@@ -27,6 +27,8 @@ namespace ModsCommon
         protected abstract string ModName { get; }
         protected abstract string ModDescription { get; }
 
+        protected virtual bool LoadSuccess { get; set; }
+
         protected Logger ModLogger { get; private set; }
         public abstract string WorkshopUrl { get; }
         protected abstract Version ModVersion { get; }
@@ -56,6 +58,7 @@ namespace ModsCommon
         {
             ModLogger.Debug($"Version {ModVersion}");
             ModLogger.Debug($"Enabled");
+            LoadSuccess = true;
             LoadingManager.instance.m_introLoaded += LoadedError;
         }
         public virtual void OnDisabled()
@@ -70,7 +73,7 @@ namespace ModsCommon
             LocaleChanged();
             LocaleManager.eventLocaleChanged += LocaleChanged;
 
-            ModLogger.Debug($"OnSettingsUI");
+            ModLogger.Debug($"Load SettingsUI");
             GetSettings(helper);
         }
         protected virtual void GetSettings(UIHelperBase helper) { }
@@ -83,18 +86,34 @@ namespace ModsCommon
         where ModType : BaseMod<ModType>
         where PatcherType : Patcher<ModType>
     {
+        protected override bool LoadSuccess 
+        { 
+            get => base.LoadSuccess && Patcher.Success; 
+            set => base.LoadSuccess = value; 
+        }
         protected PatcherType Patcher { get; private set; }
 
         public override void OnEnabled()
         {
             base.OnEnabled();
-            Patcher = CreatePatcher();
-            Patcher.Patch();
+
+            try
+            {
+                Patcher = CreatePatcher();
+                Patcher.Patch();
+            }
+            catch (Exception error)
+            {
+                LoadSuccess = false;
+                Logger.Error("Patch failed", error);
+            }
         }
         public override void OnDisabled()
         {
             base.OnDisabled();
-            Patcher.Unpatch();
+
+            try { Patcher.Unpatch(); }
+            catch (Exception error) { Logger.Error("Unpatch failed", error); }
         }
         protected abstract PatcherType CreatePatcher();
     }

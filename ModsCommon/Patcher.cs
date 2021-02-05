@@ -30,7 +30,11 @@ namespace ModsCommon
         private void Begin()
         {
             BaseMod<ModType>.Logger.Debug("Start patching");
-            Success = PatchProcess();
+
+            try { Success = PatchProcess(); }
+            catch { Success = false; }
+
+            BaseMod<ModType>.Instance.LoadedError();
             BaseMod<ModType>.Logger.Debug(Success ? "Patch success" : "Patch Filed");
         }
         protected abstract bool PatchProcess();
