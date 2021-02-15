@@ -12,30 +12,36 @@ namespace ModsCommon
     public abstract class Patcher<ModType>
         where ModType : BaseMod<ModType>
     {
+        private BaseMod<ModType> Mod { get; }
         protected object Harmony => new Harmony(BaseMod<ModType>.Instance.Id);
         public bool Success { get; private set; }
 
+        public Patcher(BaseMod<ModType> mod)
+        {
+            Mod = mod;
+        }
+
         public void Patch()
         {
-            BaseMod<ModType>.Logger.Debug("Patch");
+            Mod.ModLogger.Debug("Patch");
             HarmonyHelper.DoOnHarmonyReady(() => Begin());
         }
         public void Unpatch()
         {
-            BaseMod<ModType>.Logger.Debug($"Unpatch all");
+            Mod.ModLogger.Debug($"Unpatch all");
             ((Harmony)Harmony).UnpatchAll();
-            BaseMod<ModType>.Logger.Debug($"Unpatched");
+            Mod.ModLogger.Debug($"Unpatched");
         }
 
         private void Begin()
         {
-            BaseMod<ModType>.Logger.Debug("Start patching");
+            Mod.ModLogger.Debug("Start patching");
 
             try { Success = PatchProcess(); }
             catch { Success = false; }
 
             BaseMod<ModType>.Instance.CheckLoadedError();
-            BaseMod<ModType>.Logger.Debug(Success ? "Patch success" : "Patch Filed");
+            Mod.ModLogger.Debug(Success ? "Patch success" : "Patch Filed");
         }
         protected abstract bool PatchProcess();
 
@@ -53,17 +59,17 @@ namespace ModsCommon
             var methodName = $"{type.Name}.{method}()";
             try
             {
-                BaseMod<ModType>.Logger.Debug($"Patch {methodName}");
+                Mod.ModLogger.Debug($"Patch {methodName}");
 
                 var original = originalGetter?.Invoke(type, method) ?? AccessTools.Method(type, method);
                 patch(original);
 
-                BaseMod<ModType>.Logger.Debug($"Patched {methodName}");
+                Mod.ModLogger.Debug($"Patched {methodName}");
                 return true;
             }
             catch (Exception error)
             {
-                BaseMod<ModType>.Logger.Error($"Failed Patch {methodName}", error);
+                Mod.ModLogger.Error($"Failed Patch {methodName}", error);
                 return false;
             }
         }

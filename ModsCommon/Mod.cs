@@ -29,7 +29,7 @@ namespace ModsCommon
 
         protected virtual bool LoadSuccess { get; set; }
 
-        protected Logger ModLogger { get; private set; }
+        public Logger ModLogger { get; private set; }
         public abstract string WorkshopUrl { get; }
         protected abstract Version ModVersion { get; }
         protected abstract List<Version> ModVersions { get; }
@@ -101,7 +101,6 @@ namespace ModsCommon
         public override void OnEnabled()
         {
             base.OnEnabled();
-            Logger.Debug(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
             
             try
             {
@@ -111,7 +110,7 @@ namespace ModsCommon
             catch (Exception error)
             {
                 LoadSuccess = false;
-                Logger.Error("Patch failed", error);
+                ModLogger.Error("Patch failed", error);
             }
 
             CheckLoadedError();
@@ -121,7 +120,7 @@ namespace ModsCommon
             base.OnDisabled();
 
             try { Patcher.Unpatch(); }
-            catch (Exception error) { Logger.Error("Unpatch failed", error); }
+            catch (Exception error) { ModLogger.Error("Unpatch failed", error); }
         }
         protected abstract PatcherType CreatePatcher();
     }
