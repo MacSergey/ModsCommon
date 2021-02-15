@@ -12,7 +12,7 @@ namespace ModsCommon
     public abstract class Patcher<ModType>
         where ModType : BaseMod<ModType>
     {
-        protected Harmony Harmony { get; } = new Harmony(BaseMod<ModType>.Instance.Id);
+        protected object Harmony => new Harmony(BaseMod<ModType>.Instance.Id);
         public bool Success { get; private set; }
 
         public void Patch()
@@ -23,7 +23,7 @@ namespace ModsCommon
         public void Unpatch()
         {
             BaseMod<ModType>.Logger.Debug($"Unpatch all");
-            Harmony.UnpatchAll();
+            ((Harmony)Harmony).UnpatchAll();
             BaseMod<ModType>.Logger.Debug($"Unpatched");
         }
 
@@ -34,19 +34,19 @@ namespace ModsCommon
             try { Success = PatchProcess(); }
             catch { Success = false; }
 
-            BaseMod<ModType>.Instance.LoadedError();
+            BaseMod<ModType>.Instance.CheckLoadedError();
             BaseMod<ModType>.Logger.Debug(Success ? "Patch success" : "Patch Filed");
         }
         protected abstract bool PatchProcess();
 
         protected bool AddPrefix(MethodInfo prefix, Type type, string method, Func<Type, string, MethodInfo> originalGetter = null)
-            => AddPatch((original) => Harmony.Patch(original, prefix: new HarmonyMethod(prefix)), type, method, originalGetter);
+            => AddPatch((original) => ((Harmony)Harmony).Patch(original, prefix: new HarmonyMethod(prefix)), type, method, originalGetter);
 
         protected bool AddPostfix(MethodInfo postfix, Type type, string method, Func<Type, string, MethodInfo> originalGetter = null)
-            => AddPatch((original) => Harmony.Patch(original, postfix: new HarmonyMethod(postfix)), type, method, originalGetter);
+            => AddPatch((original) => ((Harmony)Harmony).Patch(original, postfix: new HarmonyMethod(postfix)), type, method, originalGetter);
 
         protected bool AddTranspiler(MethodInfo transpiler, Type type, string method, Func<Type, string, MethodInfo> originalGetter = null)
-            => AddPatch((original) => Harmony.Patch(original, transpiler: new HarmonyMethod(transpiler)), type, method, originalGetter);
+            => AddPatch((original) => ((Harmony)Harmony).Patch(original, transpiler: new HarmonyMethod(transpiler)), type, method, originalGetter);
 
         protected bool AddPatch(Action<MethodInfo> patch, Type type, string method, Func<Type, string, MethodInfo> originalGetter)
         {

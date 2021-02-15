@@ -59,12 +59,12 @@ namespace ModsCommon
             ModLogger.Debug($"Version {ModVersion}");
             ModLogger.Debug($"Enabled");
             LoadSuccess = true;
-            LoadingManager.instance.m_introLoaded += LoadedError;
+            LoadingManager.instance.m_introLoaded += CheckLoadedError;
         }
         public virtual void OnDisabled()
         {
             ModLogger.Debug($"Disabled");
-            LoadingManager.instance.m_introLoaded -= LoadedError;
+            LoadingManager.instance.m_introLoaded -= CheckLoadedError;
             LocaleManager.eventLocaleChanged -= LocaleChanged;
         }
         public void OnSettingsUI(UIHelperBase helper)
@@ -80,23 +80,29 @@ namespace ModsCommon
 
         public virtual void LocaleChanged() { }
 
-        public virtual void LoadedError() { }
+        public void CheckLoadedError()
+        {
+            if (!ItemsExtension.OnStartup && !LoadSuccess)
+                OnLoadedError();
+        }
+        public virtual void OnLoadedError() { }
     }
     public abstract class BasePatcherMod<ModType, PatcherType> : BaseMod<ModType>
         where ModType : BaseMod<ModType>
         where PatcherType : Patcher<ModType>
     {
-        protected override bool LoadSuccess 
-        { 
-            get => base.LoadSuccess && Patcher.Success; 
-            set => base.LoadSuccess = value; 
+        protected override bool LoadSuccess
+        {
+            get => base.LoadSuccess && Patcher.Success;
+            set => base.LoadSuccess = value;
         }
         protected PatcherType Patcher { get; private set; }
 
         public override void OnEnabled()
         {
             base.OnEnabled();
-
+            Logger.Debug(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            
             try
             {
                 Patcher = CreatePatcher();
@@ -107,6 +113,8 @@ namespace ModsCommon
                 LoadSuccess = false;
                 Logger.Error("Patch failed", error);
             }
+
+            CheckLoadedError();
         }
         public override void OnDisabled()
         {

@@ -69,6 +69,8 @@ namespace ModsCommon.Utilities
         public static NetSegment GetSegment(this ushort segmentId) => NetManager.m_segments.m_buffer[segmentId];
         public static NetLane GetLane(this uint laneId) => NetManager.m_lanes.m_buffer[laneId];
 
-        public static bool InGame => SceneManager.GetActiveScene().name is string scene && scene != "MainMenu" && scene != "IntroScreen";
+        public static bool InGame => !OnStartup && !InMenu;
+        public static bool InMenu => SceneManager.GetActiveScene().name is string scene && scene == "IntroScreen";
+        public static bool OnStartup => SceneManager.GetActiveScene().name is string scene && scene == "Startup";
     }
 }
