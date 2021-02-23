@@ -30,9 +30,9 @@ namespace ModsCommon.UI
                     else
                         return (ValueType)TypeDescriptor.GetConverter(typeof(ValueType)).ConvertFromString(text);
                 }
-                catch 
-                { 
-                    return default; 
+                catch
+                {
+                    return default;
                 }
             }
             set => ValueChanged(value);
@@ -67,7 +67,7 @@ namespace ModsCommon.UI
             base.OnSubmit();
             ValueChanged(Value);
         }
-        protected override void OnMouseWheel(UIMouseEventParameter p)
+        protected sealed override void OnMouseWheel(UIMouseEventParameter p)
         {
             base.OnMouseWheel(p);
 
@@ -75,11 +75,13 @@ namespace ModsCommon.UI
             {
                 var mode = InputExtension.ShiftIsPressed ? WheelMode.High : InputExtension.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
                 if (p.wheelDelta < 0)
-                    Value = Decrement(Value, WheelStep, mode);
+                    Value = WheelDecrement(Value, WheelStep, mode);
                 else
-                    Value = Increment(Value, WheelStep, mode);
+                    Value = WheelIncrement(Value, WheelStep, mode);
             }
         }
+        protected virtual ValueType WheelDecrement(ValueType value, ValueType wheelStep, WheelMode mode) => Decrement(value, wheelStep, mode);
+        protected virtual ValueType WheelIncrement(ValueType value, ValueType wheelStep, WheelMode mode) => Increment(value, wheelStep, mode);
 
         public override string ToString() => Value.ToString();
         public static implicit operator ValueType(UITextField<ValueType> field) => field.Value;
@@ -121,6 +123,8 @@ namespace ModsCommon.UI
         public ValueType MaxValue { get; set; }
         public bool CheckMax { get; set; }
         public bool CheckMin { get; set; }
+        public bool CyclicalValue { get; set; }
+        public bool Limited => CheckMax && CheckMin;
 
         protected override void ValueChanged(ValueType value, Action<ValueType> action = null)
         {
@@ -132,6 +136,8 @@ namespace ModsCommon.UI
 
             base.ValueChanged(value, action);
         }
+        protected override ValueType WheelDecrement(ValueType value, ValueType wheelStep, WheelMode mode) => Decrement(Limited && CyclicalValue && value.CompareTo(MinValue) == 0 ? MaxValue : value, wheelStep, mode);
+        protected override ValueType WheelIncrement(ValueType value, ValueType wheelStep, WheelMode mode) => Increment(Limited && CyclicalValue && value.CompareTo(MaxValue) == 0 ? MinValue : value, wheelStep, mode);
 
         public ComparableUITextField() => SetDefault();
 
@@ -145,6 +151,11 @@ namespace ModsCommon.UI
     }
     public class FloatUITextField : ComparableUITextField<float>
     {
+        public override string text 
+        { 
+            get => base.text.Replace(',','.'); 
+            set => base.text = value; 
+        }
         protected override bool CanUseWheel => true;
         protected override float Decrement(float value, float step, WheelMode mode)
         {

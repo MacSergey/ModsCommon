@@ -39,4 +39,17 @@ namespace ModsCommon.UI
 
         public class BoolSegmented : UISegmented<bool> { }
     }
+    public class IntListPropertyPanel : ListPropertyPanel<int, IntListPropertyPanel.IntSegmented>
+    {
+        protected override bool AllowNull => false;
+        protected override bool IsEqual(int first, int second) => first == second;
+        public void Init(int count)
+        {
+            base.Init();
+            for (var i = 1; i <= count; i += 1)
+                Selector.AddItem(i, i.ToString());
+        }
+
+        public class IntSegmented : UISegmented<int> { }
+    }
 }

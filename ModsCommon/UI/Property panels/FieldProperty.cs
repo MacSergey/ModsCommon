@@ -100,11 +100,17 @@ namespace ModsCommon.UI
             get => Field.CheckMin;
             set => Field.CheckMin = value;
         }
+        public bool CyclicalValue
+        {
+            get => Field.CyclicalValue;
+            set => Field.CyclicalValue = value;
+        }
 
         public ComparableFieldPropertyPanel() => Field.SetDefault();
         public override void DeInit()
         {
             base.DeInit();
+            CyclicalValue = false;
             Field.SetDefault();
         }
     }
