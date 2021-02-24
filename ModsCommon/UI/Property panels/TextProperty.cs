@@ -14,6 +14,7 @@ namespace ModsCommon.UI
         protected static Color32 ErrorColor { get; } = new Color32(253, 77, 60, 255);
         protected static Color32 WarningColor { get; } = new Color32(253, 150, 62, 255);
 
+        private UIPanel Panel { get; set; }
         private UILabel Label { get; set; }
         protected virtual Color32 Color { get; } = UnityEngine.Color.white;
 
@@ -22,7 +23,7 @@ namespace ModsCommon.UI
             get => Label.text;
             set => Label.text = value;
         }
-        public override bool EnableControl 
+        public override bool EnableControl
         {
             get => Label.isEnabled;
             set => Label.isEnabled = value;
@@ -30,14 +31,19 @@ namespace ModsCommon.UI
 
         public TextProperty()
         {
-            atlas = TextureHelper.InGameAtlas;
-            backgroundSprite = "ButtonWhite";
-            color = Color;
-
             autoLayout = true;
+            autoLayoutPadding = new RectOffset(ItemsPadding, ItemsPadding, 0, 0);
             autoFitChildrenVertically = true;
 
-            Label = AddUIComponent<UILabel>();
+            Panel = AddUIComponent<UIPanel>();
+            Panel.atlas = TextureHelper.InGameAtlas;
+            Panel.backgroundSprite = "ButtonWhite";
+            Panel.color = Color;
+            Panel.autoLayout = true;
+            Panel.autoFitChildrenVertically = true;
+            Panel.eventSizeChanged += PanelSizeChanged;
+
+            Label = Panel.AddUIComponent<UILabel>();
             Label.textScale = 0.7f;
             Label.autoSize = false;
             Label.autoHeight = true;
@@ -45,11 +51,13 @@ namespace ModsCommon.UI
             Label.padding = new RectOffset(5, 5, 5, 5);
         }
 
+        private void PanelSizeChanged(UIComponent component, Vector2 value) => Label.width = Panel.width;
+
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-
-            Label.width = width;
+            if (Panel != null)
+                Panel.width = width - ItemsPadding * 2;
         }
     }
 

@@ -41,7 +41,8 @@ namespace ModsCommon.UI
         }
         private void SetSize()
         {
-            Content.size = new Vector2(DeleteButton.isVisible ? width - DeleteButton.width - 10 : width, height);
+            Content.size = new Vector2((DeleteButton.isVisible ? width - DeleteButton.width - 10 : width) - ItemsPadding, height);
+            Content.relativePosition = new Vector2(ItemsPadding, 0f);
             DeleteButton.relativePosition = new Vector2(width - DeleteButton.width - 5, (height - DeleteButton.height) / 2);
         }
 
@@ -71,8 +72,6 @@ namespace ModsCommon.UI
             autoLayoutDirection = LayoutDirection.Horizontal;
             autoLayoutPadding = new RectOffset(0, Math.Max(5 - 2 * HeaderButton.IconPadding, 0), 0, 0);
         }
-        //public HeaderButton AddButton(string sprite, string text, bool showText = false, MouseEventHandler onClick = null)
-        //    => AddButton<SimpleHeaderButton>(this, sprite, text, showText, onClick);
 
         public ButtonType AddButton<ButtonType>(string sprite, string text, bool showText = false, MouseEventHandler onClick = null) where ButtonType : HeaderButton
             => AddButton<ButtonType>(this, sprite, text, showText, onClick);

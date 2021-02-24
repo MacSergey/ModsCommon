@@ -25,7 +25,7 @@ namespace ModsCommon.UI
             autoLayout = true;
             autoFitChildrenVertically = true;
             autoLayoutDirection = LayoutDirection.Vertical;
-            autoLayoutPadding = new RectOffset(5, 5, 0, 0);
+            autoLayoutPadding = new RectOffset(0, 0, 0, 0);
         }
 
         public virtual void Init()

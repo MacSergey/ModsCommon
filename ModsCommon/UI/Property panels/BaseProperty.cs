@@ -14,11 +14,12 @@ namespace ModsCommon.UI
     public abstract class EditorItem : UIPanel
     {
         protected virtual float DefaultHeight => 30;
+        protected virtual int ItemsPadding => 5;
 
         public virtual bool EnableControl { get; set; } = true;
 
         public virtual void Init() => Init(null);
-        public virtual void DeInit() 
+        public virtual void DeInit()
         {
             isEnabled = true;
             isVisible = true;
@@ -86,8 +87,9 @@ namespace ModsCommon.UI
         {
             base.OnSizeChanged();
 
-            Label.relativePosition = new Vector2(0, (height - Label.height) / 2);
-            Control.size = size;
+            Label.relativePosition = new Vector2(5, (height - Label.height) / 2);
+            Control.size = size - new Vector2(ItemsPadding * 2, 0);
+            Control.relativePosition = new Vector2(ItemsPadding, 0f);
         }
 
         private void ControlSizeChanged(UIComponent component, Vector2 value) => RefreshContent();

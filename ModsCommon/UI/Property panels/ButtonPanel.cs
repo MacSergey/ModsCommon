@@ -43,7 +43,8 @@ namespace ModsCommon.UI
         {
             base.OnSizeChanged();
 
-            Button.size = size;
+            Button.size = size - new Vector2(ItemsPadding * 2, 0f);
+            Button.relativePosition = new Vector3(ItemsPadding, 0f);
         }
     }
     public class ButtonsPanel : EditorItem, IReusable
@@ -51,7 +52,7 @@ namespace ModsCommon.UI
         public event Action<int> OnButtonClick;
         protected List<UIButton> Buttons { get; } = new List<UIButton>();
         public int Count => Buttons.Count;
-        private float Padding => 10f;
+        private float Space => 10f;
         private float Height => 20f;
 
         public override bool EnableControl 
@@ -116,11 +117,11 @@ namespace ModsCommon.UI
         }
         private void SetSize()
         {
-            var buttonWidth = (width - Padding * (Count - 1)) / Count;
+            var buttonWidth = (width - Space * (Count - 1) - ItemsPadding * 2) / Count;
             for (var i = 0; i < Count; i += 1)
             {
                 Buttons[i].size = new Vector2(buttonWidth, Height);
-                Buttons[i].relativePosition = new Vector2((buttonWidth + Padding) * i, (height - Height) / 2);
+                Buttons[i].relativePosition = new Vector2((buttonWidth + Space) * i + ItemsPadding, (height - Height) / 2);
             }
         }
     }
