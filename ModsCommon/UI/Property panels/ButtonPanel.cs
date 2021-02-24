@@ -21,6 +21,7 @@ namespace ModsCommon.UI
             get => Button.isEnabled;
             set => Button.isEnabled = value;
         }
+        public override bool SupportEven => true;
 
         public event Action OnButtonClick;
 
@@ -54,6 +55,7 @@ namespace ModsCommon.UI
         public int Count => Buttons.Count;
         private float Space => 10f;
         private float Height => 20f;
+        public override bool SupportEven => true;
 
         public override bool EnableControl 
         {

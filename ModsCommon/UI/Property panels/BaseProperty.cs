@@ -18,11 +18,29 @@ namespace ModsCommon.UI
 
         public virtual bool EnableControl { get; set; } = true;
 
+        private UIPanel Even { get; }
+        public virtual bool SupportEven => false;
+        public bool IsEven
+        {
+            get => Even.isVisible;
+            set => Even.isVisible = value;
+        }
+
+        public EditorItem()
+        {
+            Even = AddUIComponent<UIPanel>();
+            Even.atlas = TextureHelper.CommonAtlas;
+            Even.backgroundSprite = TextureHelper.EmptySprite;
+            Even.color = new Color32(0, 0, 0, 64);
+            IsEven = false;
+        }
+
         public virtual void Init() => Init(null);
         public virtual void DeInit()
         {
             isEnabled = true;
             isVisible = true;
+            IsEven = false;
             EnableControl = true;
         }
         public void Init(float? height = null)
@@ -43,6 +61,11 @@ namespace ModsCommon.UI
             button.SetDefaultStyle();
             return button;
         }
+        protected override void OnSizeChanged()
+        {
+            if (Even != null)
+                Even.size = size;
+        }
     }
     public abstract class EditorPropertyPanel : EditorItem
     {
@@ -59,6 +82,7 @@ namespace ModsCommon.UI
             get => Control.isEnabled;
             set => Control.isEnabled = value;
         }
+        public override bool SupportEven => true;
 
         public EditorPropertyPanel()
         {

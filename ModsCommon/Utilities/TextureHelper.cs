@@ -97,7 +97,7 @@ namespace ModsCommon.Utilities
             => CommonAtlas.AddSprites(texWidth, texHeight, rect, 58, 25, new RectOffset(4, 4, 4, 0), 2, TabNormal, TabHover, TabPressed, TabFocused, TabDisabled);
 
         static void Empty(int texWidth, int texHeight, Rect rect)
-            => CommonAtlas.AddSprites(texWidth, texHeight, rect, 32, 32, EmptySprite);
+            => CommonAtlas.AddSprites(texWidth, texHeight, rect, 32, 32, new RectOffset(2,2,2,2), 2, EmptySprite);
 
         static void OpacitySlider(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, 18, 200, new RectOffset(), 2, OpacitySliderBoard, OpacitySliderColor);
 
