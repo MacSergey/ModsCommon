@@ -18,16 +18,6 @@ namespace ModsCommon.UI
         public event Action OnHover;
         public event Action OnLeave;
 
-        public bool UseWheel
-        {
-            get => Field.UseWheel;
-            set => Field.UseWheel = value;
-        }
-        public ValueType WheelStep
-        {
-            get => Field.WheelStep;
-            set => Field.WheelStep = value;
-        }
         public float FieldWidth
         {
             get => Field.width;
@@ -63,8 +53,6 @@ namespace ModsCommon.UI
         {
             base.DeInit();
 
-            UseWheel = false;
-            WheelStep = default;
             SubmitOnFocusLost = true;
 
             OnValueChanged = null;
@@ -106,16 +94,36 @@ namespace ModsCommon.UI
             set => Field.CyclicalValue = value;
         }
 
+        public bool UseWheel
+        {
+            get => Field.UseWheel;
+            set => Field.UseWheel = value;
+        }
+        public ValueType WheelStep
+        {
+            get => Field.WheelStep;
+            set => Field.WheelStep = value;
+        }
+        public string WheelTip
+        {
+            get => Field.WheelTip;
+            set => Field.WheelTip = value;
+        }
+
         public ComparableFieldPropertyPanel() => Field.SetDefault();
         public override void DeInit()
         {
             base.DeInit();
+
+            UseWheel = false;
+            WheelStep = default;
+            WheelTip = string.Empty;
             CyclicalValue = false;
             Field.SetDefault();
         }
     }
     public class FloatPropertyPanel : ComparableFieldPropertyPanel<float, FloatUITextField> { }
-    public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField> { }
     public class IntPropertyPanel : ComparableFieldPropertyPanel<int, IntUITextField> { }
+    public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField> { }
 
 }

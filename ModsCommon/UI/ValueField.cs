@@ -12,9 +12,6 @@ namespace ModsCommon.UI
     public abstract class UITextField<ValueType> : UITextField
     {
         public event Action<ValueType> OnValueChanged;
-        protected abstract bool CanUseWheel { get; }
-        public bool UseWheel { get; set; }
-        public ValueType WheelStep { get; set; }
 
         private bool InProcess { get; set; } = false;
         public ValueType Value
@@ -38,11 +35,6 @@ namespace ModsCommon.UI
             set => ValueChanged(value);
         }
 
-        //public UITextField()
-        //{
-        //    tooltip = Settings.ShowToolTip && CanUseWheel ? NodeMarkup.Localize.FieldPanel_ScrollWheel : string.Empty;
-        //}
-
         protected virtual void ValueChanged(ValueType value, Action<ValueType> action = null)
         {
             if (!InProcess)
@@ -59,39 +51,14 @@ namespace ModsCommon.UI
 
         protected virtual string GetString(ValueType value) => value?.ToString() ?? string.Empty;
 
-        protected abstract ValueType Increment(ValueType value, ValueType step, WheelMode mode);
-        protected abstract ValueType Decrement(ValueType value, ValueType step, WheelMode mode);
-
         protected override void OnSubmit()
         {
             base.OnSubmit();
             ValueChanged(Value);
         }
-        protected sealed override void OnMouseWheel(UIMouseEventParameter p)
-        {
-            base.OnMouseWheel(p);
-
-            if (CanUseWheel && UseWheel)
-            {
-                var mode = InputExtension.ShiftIsPressed ? WheelMode.High : InputExtension.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
-                if (p.wheelDelta < 0)
-                    Value = WheelDecrement(Value, WheelStep, mode);
-                else
-                    Value = WheelIncrement(Value, WheelStep, mode);
-            }
-        }
-        protected virtual ValueType WheelDecrement(ValueType value, ValueType wheelStep, WheelMode mode) => Decrement(value, wheelStep, mode);
-        protected virtual ValueType WheelIncrement(ValueType value, ValueType wheelStep, WheelMode mode) => Increment(value, wheelStep, mode);
 
         public override string ToString() => Value.ToString();
         public static implicit operator ValueType(UITextField<ValueType> field) => field.Value;
-
-        protected enum WheelMode
-        {
-            Normal,
-            Low,
-            High
-        }
 
         public void SetDefaultStyle()
         {
@@ -126,6 +93,14 @@ namespace ModsCommon.UI
         public bool CyclicalValue { get; set; }
         public bool Limited => CheckMax && CheckMin;
 
+        public bool UseWheel { get; set; }
+        public ValueType WheelStep { get; set; }
+        public string WheelTip
+        {
+            get => tooltip;
+            set => tooltip = value;
+        }
+
         protected override void ValueChanged(ValueType value, Action<ValueType> action = null)
         {
             if (CheckMin && value.CompareTo(MinValue) < 0)
@@ -136,8 +111,21 @@ namespace ModsCommon.UI
 
             base.ValueChanged(value, action);
         }
-        protected override ValueType WheelDecrement(ValueType value, ValueType wheelStep, WheelMode mode) => Decrement(Limited && CyclicalValue && value.CompareTo(MinValue) == 0 ? MaxValue : value, wheelStep, mode);
-        protected override ValueType WheelIncrement(ValueType value, ValueType wheelStep, WheelMode mode) => Increment(Limited && CyclicalValue && value.CompareTo(MaxValue) == 0 ? MinValue : value, wheelStep, mode);
+        protected sealed override void OnMouseWheel(UIMouseEventParameter p)
+        {
+            base.OnMouseWheel(p);
+
+            if (UseWheel)
+            {
+                var mode = InputExtension.ShiftIsPressed ? WheelMode.High : InputExtension.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
+                if (p.wheelDelta < 0)
+                    Value = Decrement(Limited && CyclicalValue && Value.CompareTo(MinValue) == 0 ? MaxValue : Value, WheelStep, mode);
+                else
+                    Value = Increment(Limited && CyclicalValue && Value.CompareTo(MaxValue) == 0 ? MinValue : Value, WheelStep, mode);
+            }
+        }
+        protected abstract ValueType Increment(ValueType value, ValueType step, WheelMode mode);
+        protected abstract ValueType Decrement(ValueType value, ValueType step, WheelMode mode);
 
         public ComparableUITextField() => SetDefault();
 
@@ -148,6 +136,13 @@ namespace ModsCommon.UI
             CheckMin = false;
             CheckMax = false;
         }
+
+        protected enum WheelMode
+        {
+            Normal,
+            Low,
+            High
+        }
     }
     public class FloatUITextField : ComparableUITextField<float>
     {
@@ -156,7 +151,6 @@ namespace ModsCommon.UI
             get => base.text.Replace(',','.'); 
             set => base.text = value; 
         }
-        protected override bool CanUseWheel => true;
         protected override float Decrement(float value, float step, WheelMode mode)
         {
             step = GetStep(step, mode);
@@ -176,17 +170,8 @@ namespace ModsCommon.UI
 
         protected override string GetString(float value) => value.ToString("0.###");
     }
-    public class StringUITextField : ComparableUITextField<string>
-    {
-        protected override bool CanUseWheel => false;
-
-        protected override string Decrement(string value, string step, WheelMode mode) => throw new NotSupportedException();
-        protected override string Increment(string value, string step, WheelMode mode) => throw new NotSupportedException();
-    }
     public class IntUITextField : ComparableUITextField<int>
     {
-        protected override bool CanUseWheel => true;
-
         protected override int Decrement(int value, int step, WheelMode mode) => value == int.MinValue ? value : value - GetStep(step, mode);
         protected override int Increment(int value, int step, WheelMode mode) => value == int.MaxValue ? value : value - GetStep(step, mode);
         int GetStep(int step, WheelMode mode) => mode switch
@@ -198,8 +183,6 @@ namespace ModsCommon.UI
     }
     public class ByteUITextField : ComparableUITextField<byte>
     {
-        protected override bool CanUseWheel => true;
-
         protected override byte Decrement(byte value, byte step, WheelMode mode)
         {
             step = GetStep(step, mode);
@@ -218,4 +201,5 @@ namespace ModsCommon.UI
             _ => step,
         };
     }
+    public class StringUITextField : UITextField<string> { }
 }

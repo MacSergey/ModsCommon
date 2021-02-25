@@ -31,10 +31,6 @@ namespace ModsCommon.UI
 
         public TextProperty()
         {
-            //autoLayout = true;
-            //autoLayoutPadding = new RectOffset(ItemsPadding, ItemsPadding, ItemsPadding, ItemsPadding);
-            //autoFitChildrenVertically = true;
-
             Panel = AddUIComponent<UIPanel>();
             Panel.relativePosition = new Vector2(ItemsPadding, ItemsPadding);
             Panel.atlas = TextureHelper.InGameAtlas;

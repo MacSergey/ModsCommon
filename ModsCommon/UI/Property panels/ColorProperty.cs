@@ -22,6 +22,16 @@ namespace ModsCommon.UI
         private UIColorField ColorSample { get; set; }
         protected UIColorPicker Popup { get; private set; }
         private UISlider Opacity { get; set; }
+        public string WheelTip
+        {
+            set
+            {
+                R.WheelTip = value;
+                G.WheelTip = value;
+                B.WheelTip = value;
+                A.WheelTip = value;
+            }
+        }
 
         public Color32 Value
         {
@@ -104,6 +114,7 @@ namespace ModsCommon.UI
         {
             base.DeInit();
 
+            WheelTip = string.Empty;
             OnValueChanged = null;
         }
         private ByteUITextField AddField(string name)
