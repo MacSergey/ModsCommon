@@ -31,7 +31,7 @@ namespace ModsCommon.UI
             Even = AddUIComponent<UIPanel>();
             Even.atlas = TextureHelper.CommonAtlas;
             Even.backgroundSprite = TextureHelper.EmptySprite;
-            Even.color = new Color32(0, 0, 0, 64);
+            Even.color = new Color32(0, 0, 0, 48);
             IsEven = false;
         }
 

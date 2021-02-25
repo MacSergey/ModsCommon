@@ -31,11 +31,12 @@ namespace ModsCommon.UI
 
         public TextProperty()
         {
-            autoLayout = true;
-            autoLayoutPadding = new RectOffset(ItemsPadding, ItemsPadding, 0, 0);
-            autoFitChildrenVertically = true;
+            //autoLayout = true;
+            //autoLayoutPadding = new RectOffset(ItemsPadding, ItemsPadding, ItemsPadding, ItemsPadding);
+            //autoFitChildrenVertically = true;
 
             Panel = AddUIComponent<UIPanel>();
+            Panel.relativePosition = new Vector2(ItemsPadding, ItemsPadding);
             Panel.atlas = TextureHelper.InGameAtlas;
             Panel.backgroundSprite = "ButtonWhite";
             Panel.color = Color;
@@ -51,14 +52,22 @@ namespace ModsCommon.UI
             Label.padding = new RectOffset(5, 5, 5, 5);
         }
 
-        private void PanelSizeChanged(UIComponent component, Vector2 value) => Label.width = Panel.width;
+        private void PanelSizeChanged(UIComponent component, Vector2 value)
+        {
+            SetHeight();
+            Label.width = Panel.width;
+        }
 
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
             if (Panel != null)
+            {
                 Panel.width = width - ItemsPadding * 2;
+                SetHeight();
+            }
         }
+        private void SetHeight() => height = Panel.height + 2 * ItemsPadding;
     }
 
     public class ErrorTextProperty : TextProperty
