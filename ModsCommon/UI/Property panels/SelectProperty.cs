@@ -12,44 +12,17 @@ namespace ModsCommon.UI
     public abstract class SelectPropertyPanel<Type, PanelType> : EditorPropertyPanel, IReusable
         where PanelType : SelectPropertyPanel<Type, PanelType>
     {
-        public event Action<Type> OnSelectChanged;
+        public event Action<Type> OnValueChanged;
         public event Action<PanelType> OnSelect;
         public event Action<PanelType> OnHover;
         public event Action<PanelType> OnLeave;
 
-        int _selectIndex = -1;
-
         protected abstract string NotSet { get; }
-        SelectPropertyButton Selector { get; set; }
-        UIButton Button { get; set; }
+        protected SelectPropertyButton Selector { get; set; }
+        protected UIButton Button { get; set; }
         protected abstract float Width { get; }
 
-        int SelectIndex
-        {
-            get => _selectIndex;
-            set
-            {
-                if (value != _selectIndex)
-                {
-                    _selectIndex = value;
-                    OnSelectChanged?.Invoke(SelectedObject);
-                    Selector.text = SelectedObject?.ToString() ?? NotSet;
-                }
-            }
-        }
-        List<Type> ObjectsList { get; set; } = new List<Type>();
-        public IEnumerable<Type> Objects => ObjectsList;
-        public Type SelectedObject
-        {
-            get => SelectIndex == -1 ? default : ObjectsList[SelectIndex];
-            set => SelectIndex = ObjectsList.FindIndex(o => IsEqual(value, o));
-        }
-
-        public bool Selected
-        {
-            get => Selector.state == UIButton.ButtonState.Focused;
-            set => Selector.state = value ? UIButton.ButtonState.Focused : UIButton.ButtonState.Normal;
-        }
+        public abstract Type Value { get; set; }
 
         public SelectPropertyPanel()
         {
@@ -104,31 +77,77 @@ namespace ModsCommon.UI
             OnHover = null;
             OnLeave = null;
         }
+        public bool Selected
+        {
+            get => Selector.state == UIButton.ButtonState.Focused;
+            set => Selector.state = value ? UIButton.ButtonState.Focused : UIButton.ButtonState.Normal;
+        }
+        public new void Focus() => Button.Focus();
 
         private void ButtonIsEnabledChanged(UIComponent component, bool value) => Button.normalFgSprite = value ? "IconDownArrow" : "Empty";
 
+        protected void ValueChanged()
+        {
+            OnValueChanged?.Invoke(Value);
+            Selector.text = Value?.ToString() ?? NotSet;
+        }
         protected virtual void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => OnSelect?.Invoke((PanelType)this);
         protected virtual void ButtonMouseEnter(UIComponent component, UIMouseEventParameter eventParam) => OnHover?.Invoke((PanelType)this);
         protected virtual void ButtonMouseLeave(UIComponent component, UIMouseEventParameter eventParam) => OnLeave?.Invoke((PanelType)this);
+    }
 
-        public void Add(Type item)
+    public abstract class SelectListPropertyPanel<Type, PanelType> : SelectPropertyPanel<Type, PanelType>, IReusable
+        where PanelType : SelectListPropertyPanel<Type, PanelType>
+    {
+        
+
+        int _selectIndex = -1;
+
+        int SelectIndex
         {
-            ObjectsList.Add(item);
+            get => _selectIndex;
+            set
+            {
+                if (value != _selectIndex)
+                {
+                    _selectIndex = value;
+                    ValueChanged();
+                }
+            }
         }
-        public void AddRange(IEnumerable<Type> items)
+        List<Type> ObjectsList { get; set; } = new List<Type>();
+        public IEnumerable<Type> Objects => ObjectsList;
+        public override Type Value
         {
-            ObjectsList.AddRange(items);
+            get => SelectIndex == -1 ? default : ObjectsList[SelectIndex];
+            set => SelectIndex = ObjectsList.FindIndex(o => IsEqual(value, o));
         }
+
+        public void Add(Type item) => ObjectsList.Add(item);
+        public void AddRange(IEnumerable<Type> items) =>  ObjectsList.AddRange(items);
         public void Clear()
         {
             ObjectsList.Clear();
-            SelectedObject = default;
+            Value = default;
         }
 
         protected abstract bool IsEqual(Type first, Type second);
-        public new void Focus() => Button.Focus();
     }
-    public abstract class ResetableSelectPropertyPanel<Type, PanelType> : SelectPropertyPanel<Type, PanelType>
+    public abstract class SelectItemPropertyPanel<Type, PanelType> : SelectPropertyPanel<Type, PanelType>, IReusable
+        where PanelType : SelectItemPropertyPanel<Type, PanelType>
+    {
+        Type _value;
+        public override Type Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                ValueChanged();
+            }
+        }
+    }
+    public abstract class ResetableSelectPropertyPanel<Type, PanelType> : SelectListPropertyPanel<Type, PanelType>
                 where PanelType : ResetableSelectPropertyPanel<Type, PanelType>
     {
         public event Action<PanelType> OnReset;
@@ -159,7 +178,7 @@ namespace ModsCommon.UI
 
         protected virtual void ResetClick(UIComponent component, UIMouseEventParameter eventParam)
         {
-            SelectedObject = default;
+            Value = default;
             OnReset?.Invoke((PanelType)this);
         }
     }
