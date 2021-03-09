@@ -9,12 +9,13 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class SelectPropertyPanel<Type> : EditorPropertyPanel, IReusable
+    public abstract class SelectPropertyPanel<Type, PanelType> : EditorPropertyPanel, IReusable
+        where PanelType : SelectPropertyPanel<Type, PanelType>
     {
         public event Action<Type> OnSelectChanged;
-        public event Action OnSelect;
-        public event Action OnHover;
-        public event Action OnLeave;
+        public event Action<PanelType> OnSelect;
+        public event Action<PanelType> OnHover;
+        public event Action<PanelType> OnLeave;
 
         int _selectIndex = -1;
 
@@ -95,11 +96,20 @@ namespace ModsCommon.UI
             Button.eventIsEnabledChanged += ButtonIsEnabledChanged;
         }
 
+        public override void DeInit()
+        {
+            base.DeInit();
+
+            OnSelect = null;
+            OnHover = null;
+            OnLeave = null;
+        }
+
         private void ButtonIsEnabledChanged(UIComponent component, bool value) => Button.normalFgSprite = value ? "IconDownArrow" : "Empty";
 
-        protected virtual void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => OnSelect?.Invoke();
-        protected virtual void ButtonMouseEnter(UIComponent component, UIMouseEventParameter eventParam) => OnHover?.Invoke();
-        protected virtual void ButtonMouseLeave(UIComponent component, UIMouseEventParameter eventParam) => OnLeave?.Invoke();
+        protected virtual void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => OnSelect?.Invoke((PanelType)this);
+        protected virtual void ButtonMouseEnter(UIComponent component, UIMouseEventParameter eventParam) => OnHover?.Invoke((PanelType)this);
+        protected virtual void ButtonMouseLeave(UIComponent component, UIMouseEventParameter eventParam) => OnLeave?.Invoke((PanelType)this);
 
         public void Add(Type item)
         {
@@ -117,6 +127,41 @@ namespace ModsCommon.UI
 
         protected abstract bool IsEqual(Type first, Type second);
         public new void Focus() => Button.Focus();
+    }
+    public abstract class ResetableSelectPropertyPanel<Type, PanelType> : SelectPropertyPanel<Type, PanelType>
+                where PanelType : ResetableSelectPropertyPanel<Type, PanelType>
+    {
+        public event Action<PanelType> OnReset;
+        protected abstract string ResetToolTip {get;}
+
+        public ResetableSelectPropertyPanel()
+        {
+            AddReset();
+        }
+        private void AddReset()
+        {
+            var button = AddButton(Control);
+
+            button.size = new Vector2(20f, 20f);
+            button.text = "×";
+            button.tooltip = ResetToolTip;
+            button.textScale = 1.3f;
+            button.textPadding = new RectOffset(0, 0, 0, 0);
+            button.eventClick += ResetClick;
+        }
+
+        public override void DeInit()
+        {
+            base.DeInit();
+
+            OnReset = null;
+        }
+
+        protected virtual void ResetClick(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            SelectedObject = default;
+            OnReset?.Invoke((PanelType)this);
+        }
     }
     public class SelectPropertyButton : UIButton
     {
