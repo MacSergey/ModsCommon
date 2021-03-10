@@ -24,52 +24,47 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public static string GetTransformPath(Transform transform)
+        public static bool FindComponent<T>(string name, out T component, UIComponent parent = null, FindOptions options = FindOptions.None) 
+            where T : MonoBehaviour
         {
-            string text = transform.name;
-            Transform parent = transform.parent;
-            while (parent != null)
+            if(FindComponents<T>(name, parent, options).FirstOrDefault() is T found)
             {
-                text = $"{parent.name}/{text}";
-                parent = parent.parent;
+                component = found;
+                return true;
             }
-            return text;
+            else
+            {
+                component = null;
+                return false;
+            }
         }
-        public static T FindComponent<T>(string name, UIComponent parent = null, FindOptions options = FindOptions.None) where T : MonoBehaviour
+        public static IEnumerable<T> FindComponents<T>(string name, UIComponent parent = null, FindOptions options = FindOptions.None) 
+            where T : MonoBehaviour
         {
             if (UIRoot == null)
             {
                 FindUIRoot();
                 if (UIRoot == null)
-                    return default;
+                    yield break;
             }
-            foreach (T t in UnityEngine.Object.FindObjectsOfType<T>())
+            foreach (T component in UnityEngine.Object.FindObjectsOfType<T>())
             {
-                bool flag4 = (options & FindOptions.NameContains) > FindOptions.None ? t.name.Contains(name) : t.name == name;
-                if (flag4)
+                if ((options & FindOptions.NameContains) > FindOptions.None ? component.name.Contains(name) : component.name == name)
                 {
-                    Transform transform = parent != null ? parent.transform : UIRoot.transform;
-                    Transform parent2 = t.transform.parent;
-                    while (parent2 != null && parent2 != transform)
-                        parent2 = parent2.parent;
+                    var transform = ((MonoBehaviour)parent ?? (MonoBehaviour)UIRoot).transform;
+                    var currentParent = component.transform.parent;
+                    while (currentParent != null && currentParent != transform)
+                        currentParent = currentParent.parent;
 
-                    if (parent2 != null)
-                        return t;
+                    if (currentParent != null)
+                        yield return component;
                 }
             }
-            return default;
         }
 
-        public static IEnumerable<T> GetCompenentsWithName<T>(string name) where T : UIComponent
-        {
-            T[] components = GameObject.FindObjectsOfType<T>();
-            foreach (T component in components)
-            {
-                if (component.name == name)
-                    yield return component;
-            }
-        }
-
+        public static IEnumerable<T> GetCompenentsWithName<T>(string name) 
+            where T : UIComponent 
+            => GameObject.FindObjectsOfType<T>().Where(c => c.name == name);
 
         [Flags]
         public enum FindOptions
