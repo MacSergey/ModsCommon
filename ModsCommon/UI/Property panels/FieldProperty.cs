@@ -15,8 +15,6 @@ namespace ModsCommon.UI
         protected FieldType Field { get; set; }
 
         public event Action<ValueType> OnValueChanged;
-        public event Action OnHover;
-        public event Action OnLeave;
 
         public float FieldWidth
         {
@@ -41,13 +39,9 @@ namespace ModsCommon.UI
             Field.SetDefaultStyle();
 
             Field.OnValueChanged += ValueChanged;
-            Field.eventMouseHover += FieldHover;
-            Field.eventMouseLeave += FieldLeave;
         }
 
         private void ValueChanged(ValueType value) => OnValueChanged?.Invoke(value);
-        private void FieldHover(UIComponent component, UIMouseEventParameter eventParam) => OnHover?.Invoke();
-        private void FieldLeave(UIComponent component, UIMouseEventParameter eventParam) => OnLeave?.Invoke();
 
         public override void DeInit()
         {
@@ -56,18 +50,19 @@ namespace ModsCommon.UI
             SubmitOnFocusLost = true;
 
             OnValueChanged = null;
-            OnHover = null;
-            OnLeave = null;
         }
         public void Edit() => Field.Focus();
         public override string ToString() => Value.ToString();
 
         public static implicit operator ValueType(FieldPropertyPanel<ValueType, FieldType> property) => property.Value;
     }
-    public abstract class ComparableFieldPropertyPanel<ValueType, FieldType> : FieldPropertyPanel<ValueType, FieldType>
+    public abstract class ComparableFieldPropertyPanel<ValueType, FieldType> : FieldPropertyPanel<ValueType, FieldType>, IWheelChangeable
         where FieldType : ComparableUITextField<ValueType>
         where ValueType : IComparable<ValueType>
     {
+        public event Action OnStartWheel;
+        public event Action OnStopWheel;
+
         public ValueType MinValue
         {
             get => Field.MinValue;
@@ -110,7 +105,17 @@ namespace ModsCommon.UI
             set => Field.WheelTip = value;
         }
 
-        public ComparableFieldPropertyPanel() => Field.SetDefault();
+        public ComparableFieldPropertyPanel()
+        {
+            Field.SetDefault();
+
+            Field.eventMouseHover += FieldHover;
+            Field.eventMouseLeave += FieldLeave;
+        }
+
+        private void FieldHover(UIComponent component, UIMouseEventParameter eventParam) => OnStartWheel?.Invoke();
+        private void FieldLeave(UIComponent component, UIMouseEventParameter eventParam) => OnStartWheel?.Invoke();
+
         public override void DeInit()
         {
             base.DeInit();
@@ -120,6 +125,9 @@ namespace ModsCommon.UI
             WheelTip = string.Empty;
             CyclicalValue = false;
             Field.SetDefault();
+
+            OnStartWheel = null;
+            OnStopWheel = null;
         }
     }
     public class FloatPropertyPanel : ComparableFieldPropertyPanel<float, FloatUITextField> { }

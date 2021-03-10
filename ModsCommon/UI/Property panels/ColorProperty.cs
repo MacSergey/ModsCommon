@@ -9,9 +9,11 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class ColorPropertyPanel : EditorPropertyPanel, IReusable
+    public class ColorPropertyPanel : EditorPropertyPanel, IReusable, IWheelChangeable
     {
         public event Action<Color32> OnValueChanged;
+        public event Action OnStartWheel;
+        public event Action OnStopWheel;
 
         private bool InProcess { get; set; } = false;
 
@@ -115,7 +117,10 @@ namespace ModsCommon.UI
             base.DeInit();
 
             WheelTip = string.Empty;
+
             OnValueChanged = null;
+            OnStartWheel = null;
+            OnStopWheel = null;
         }
         private ByteUITextField AddField(string name)
         {
@@ -133,6 +138,8 @@ namespace ModsCommon.UI
             field.WheelStep = 10;
             field.width = 30;
             field.OnValueChanged += FieldChanged;
+            field.eventMouseHover += FieldHover;
+            field.eventMouseLeave += FieldLeave;
 
             return field;
         }
@@ -228,6 +235,9 @@ namespace ModsCommon.UI
 
             return opacitySlider;
         }
+
+        private void FieldHover(UIComponent component, UIMouseEventParameter eventParam) => OnStartWheel?.Invoke();
+        private void FieldLeave(UIComponent component, UIMouseEventParameter eventParam) => OnStartWheel?.Invoke();
 
         public override string ToString() => Value.ToString();
         public static implicit operator Color32(ColorPropertyPanel property) => property.Value;
