@@ -10,6 +10,7 @@ namespace ModsCommon.UI
     public class ButtonPanel : EditorItem, IReusable
     {
         protected UIButton Button { get; set; }
+        private float Height => 20f;
 
         public string Text
         {
@@ -28,7 +29,15 @@ namespace ModsCommon.UI
         public ButtonPanel()
         {
             Button = AddButton(this);
+            Button.textScale = 0.8f;
+            Button.textPadding = new RectOffset(0, 0, 3, 0);
+            Button.isEnabled = EnableControl;
             Button.eventClick += ButtonClick;
+        }
+        public override void Init()
+        {
+            base.Init();
+            SetSize();
         }
         public override void DeInit()
         {
@@ -43,9 +52,12 @@ namespace ModsCommon.UI
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-
-            Button.size = size - new Vector2(ItemsPadding * 2, 0f);
-            Button.relativePosition = new Vector3(ItemsPadding, 0f);
+            SetSize();
+        }
+        private void SetSize()
+        {
+            Button.size = new Vector2(width - ItemsPadding * 2, Height);
+            Button.relativePosition = new Vector3(ItemsPadding, (height - Height) / 2);
         }
     }
     public class ButtonsPanel : EditorItem, IReusable
