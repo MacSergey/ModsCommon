@@ -237,7 +237,7 @@ namespace ModsCommon.UI
         }
 
         private void FieldHover(UIComponent component, UIMouseEventParameter eventParam) => OnStartWheel?.Invoke();
-        private void FieldLeave(UIComponent component, UIMouseEventParameter eventParam) => OnStartWheel?.Invoke();
+        private void FieldLeave(UIComponent component, UIMouseEventParameter eventParam) => OnStopWheel?.Invoke();
 
         public override string ToString() => Value.ToString();
         public static implicit operator Color32(ColorPropertyPanel property) => property.Value;
