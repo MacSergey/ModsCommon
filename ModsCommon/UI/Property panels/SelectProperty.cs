@@ -76,6 +76,7 @@ namespace ModsCommon.UI
             OnSelect = null;
             OnHover = null;
             OnLeave = null;
+            OnValueChanged = null;
         }
         public bool Selected
         {
