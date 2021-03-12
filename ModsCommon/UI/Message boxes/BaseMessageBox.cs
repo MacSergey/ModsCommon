@@ -14,11 +14,11 @@ namespace ModsCommon.UI
 {
     public abstract class MessageBoxBase : UIPanel
     {
-        protected static float Width { get; } = 573;
-        protected static float Height { get; } = 200;
-        protected static float ButtonHeight { get; } = 47;
-        protected static float Padding { get; } = 16;
-        private static float MaxContentHeight { get; } = 500;
+        public static float DefaultWidth => 573f;
+        public static float DefaultHeight => 200f;
+        public static float ButtonHeight => 47f;
+        public static int Padding => 16;
+        public static float MaxContentHeight => 500f;
 
         public static T ShowModal<T>()
         where T : MessageBoxBase
@@ -72,7 +72,6 @@ namespace ModsCommon.UI
             }
 
             messageBox.Hide();
-            messageBox.ClearScrollableContent();
             Destroy(messageBox.gameObject);
         }
 
@@ -80,7 +79,7 @@ namespace ModsCommon.UI
 
         private UILabel Caption { get; set; }
         protected UIPanel ButtonPanel { get; private set; }
-        protected UIScrollablePanel ScrollableContent { get; private set; }
+        protected ScrollableContent ScrollableContent { get; private set; }
         private UIDragHandle Handle { get; set; }
 
         public MessageBoxBase()
@@ -88,8 +87,8 @@ namespace ModsCommon.UI
             isVisible = true;
             canFocus = true;
             isInteractive = true;
-            width = Width;
-            height = Height;
+            relativePosition = new Vector3((GetUIView().fixedWidth - width) / 2, (GetUIView().fixedHeight - height) / 2);
+            size = new Vector2(DefaultWidth, DefaultHeight);
             color = new Color32(58, 88, 104, 255);
             backgroundSprite = "MenuPanel";
 
@@ -102,16 +101,25 @@ namespace ModsCommon.UI
             ScrollableContent.eventSizeChanged += ContentSizeChanged;
         }
 
+        private Vector2 SizeBefore { get; set; } = new Vector2();
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
+
+            var view = GetUIView();
+            var delta = (size - SizeBefore) / 2;
+            SizeBefore = size;
+
+            var x = Mathf.Clamp(relativePosition.x - delta.x, 0f, view.fixedWidth - size.x);
+            var y = Mathf.Clamp(relativePosition.y - delta.y, 0f, view.fixedHeight - size.y);
+
+            relativePosition = new Vector2(x, y);
         }
 
         private void AddHandle()
         {
             Handle = AddUIComponent<UIDragHandle>();
-            Handle.size = new Vector2(Width, 42);
+            Handle.size = new Vector2(DefaultWidth, 42);
             Handle.relativePosition = new Vector2(0, 0);
             Handle.eventSizeChanged += (component, size) =>
             {
@@ -136,64 +144,29 @@ namespace ModsCommon.UI
         }
         private void AddPanel()
         {
-            ScrollableContent = AddUIComponent<UIScrollablePanel>();
-            ScrollableContent.width = Width;
+            ScrollableContent = AddUIComponent<ScrollableContent>();
+            ScrollableContent.width = DefaultWidth;
             ScrollableContent.autoLayout = true;
             ScrollableContent.autoLayoutDirection = LayoutDirection.Vertical;
-            ScrollableContent.autoLayoutPadding = new RectOffset((int)Padding, (int)Padding, 0, 0);
+            ScrollableContent.autoLayoutPadding = new RectOffset(Padding, Padding, 0, 0);
             ScrollableContent.clipChildren = true;
             ScrollableContent.builtinKeyNavigation = true;
             ScrollableContent.scrollWheelDirection = UIOrientation.Vertical;
-            ScrollableContent.maximumSize = new Vector2(Width, MaxContentHeight);
+            ScrollableContent.maximumSize = new Vector2(DefaultWidth, MaxContentHeight);
             this.AddScrollbar(ScrollableContent);
-
-            ScrollableContent.eventComponentAdded += (UIComponent container, UIComponent child) => AddChildHandles(child);
-            ScrollableContent.eventComponentRemoved += (UIComponent container, UIComponent child) => RemoveChildHandles(child);
-        }
-        private void ClearScrollableContent()
-        {
-            if (ScrollableContent == null)
-                return;
-
-            foreach (var item in ScrollableContent.components)
-                RemoveChildHandles(item);
-        }
-        private void AddChildHandles(UIComponent child)
-        {
-            child.eventVisibilityChanged += OnChildVisibilityChanged;
-            child.eventSizeChanged += OnChildSizeChanged;
-            child.eventPositionChanged += OnChildPositionChanged;
-        }
-        private void RemoveChildHandles(UIComponent child)
-        {
-            child.eventVisibilityChanged -= OnChildVisibilityChanged;
-            child.eventSizeChanged -= OnChildSizeChanged;
-            child.eventPositionChanged -= OnChildPositionChanged;
-        }
-        private void OnChildVisibilityChanged(UIComponent component, bool value) => FitContentChildren();
-        private void OnChildSizeChanged(UIComponent component, Vector2 value) => FitContentChildren();
-        private void OnChildPositionChanged(UIComponent component, Vector2 value) => FitContentChildren();
-
-        private void FitContentChildren()
-        {
-            ScrollableContent.FitChildrenVertically();
-            ScrollableContent.width = ScrollableContent.verticalScrollbar?.isVisible == true ? Width - ScrollableContent.verticalScrollbar.width - 3 : Width;
         }
         private void ContentSizeChanged(UIComponent component, Vector2 value) => Init();
         private void Init()
         {
-            height = Handle.height + ScrollableContent.height + ButtonPanel.height + Padding;
+            height = Mathf.Floor(Handle.height + ScrollableContent.height + ButtonPanel.height + Padding);
             ScrollableContent.relativePosition = new Vector2(0, Handle.height);
             ButtonPanel.relativePosition = new Vector2(0, Handle.height + ScrollableContent.height + Padding);
-
-            foreach (var item in ScrollableContent.components)
-                item.width = ScrollableContent.width - 2 * Padding;
         }
         protected virtual void FillContent() { }
         private void AddButtonPanel()
         {
             ButtonPanel = AddUIComponent<UIPanel>();
-            ButtonPanel.size = new Vector2(Width, ButtonHeight + 10);
+            ButtonPanel.size = new Vector2(DefaultWidth, ButtonHeight + 10);
         }
         protected UIButton AddButton(int num, int from, Action action)
         {
@@ -256,5 +229,46 @@ namespace ModsCommon.UI
         }
 
         protected virtual void Close() => HideModal(this);
+
+        public void ToScreenCenter()
+        {
+            var view = GetUIView();
+            relativePosition = new Vector3((view.fixedWidth - width) / 2, (view.fixedHeight - height) / 2);
+        }
+    }
+    public class ScrollableContent : UIScrollablePanel
+    {
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+
+            foreach (var item in components)
+                item.width = width - 2 * MessageBoxBase.Padding;
+        }
+
+        protected override void OnComponentAdded(UIComponent child)
+        {
+            base.OnComponentAdded(child);
+
+            child.eventVisibilityChanged += OnChildVisibilityChanged;
+            child.eventSizeChanged += OnChildSizeChanged;
+        }
+
+        protected override void OnComponentRemoved(UIComponent child)
+        {
+            base.OnComponentRemoved(child);
+
+            child.eventVisibilityChanged -= OnChildVisibilityChanged;
+            child.eventSizeChanged -= OnChildSizeChanged;
+        }
+
+        private void OnChildVisibilityChanged(UIComponent component, bool value) => FitContentChildren();
+        private void OnChildSizeChanged(UIComponent component, Vector2 value) => FitContentChildren();
+
+        private void FitContentChildren()
+        {
+            FitChildrenVertically();
+            width = verticalScrollbar?.isVisible == true ? MessageBoxBase.DefaultWidth - verticalScrollbar.width - 3 : MessageBoxBase.DefaultWidth;
+        }
     }
 }
