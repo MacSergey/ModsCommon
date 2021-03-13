@@ -13,7 +13,7 @@ namespace ModsCommon
         where ModType : BaseMod<ModType>
     {
         private BaseMod<ModType> Mod { get; }
-        protected object Harmony => new Harmony(BaseMod<ModType>.Instance.Id);
+        protected object Harmony => new Harmony(BaseMod<ModType>.Id);
         public bool Success { get; private set; }
 
         public Patcher(BaseMod<ModType> mod)
@@ -29,7 +29,8 @@ namespace ModsCommon
         public void Unpatch()
         {
             Mod.ModLogger.Debug($"Unpatch all");
-            ((Harmony)Harmony).UnpatchAll();
+            var harmony = Harmony as Harmony;
+            harmony.UnpatchAll(harmony.Id);
             Mod.ModLogger.Debug($"Unpatched");
         }
 

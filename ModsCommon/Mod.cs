@@ -17,11 +17,14 @@ namespace ModsCommon
         public static ModType Instance { get; protected set; }
         public static Logger Logger => Instance.ModLogger;
         public static Version Version => Instance.ModVersion;
+        public static string VersionString => Instance.ModVersionString;
         public static List<Version> Versions => Instance.ModVersions;
+        public static string Id => !IsBeta ? Instance.ModId : $"{Instance.ModId} BETA";
         public static bool IsBeta => Instance.ModIsBeta;
         public static string ShortName => Instance.ModName;
+        public static string BETA => "[BETA]";
 
-        public string Name => !ModIsBeta ? $"{ModName} {Version.GetString()}" : $"{ModName} {ModVersion.GetString()} [BETA]";
+        public string Name => !ModIsBeta ? $"{ModName} {Version.GetString()}" : $"{ModName} {ModVersion.GetString()} {BETA}";
         public string Description => ModDescription;
 
         protected abstract string ModName { get; }
@@ -32,8 +35,9 @@ namespace ModsCommon
         public Logger ModLogger { get; private set; }
         public abstract string WorkshopUrl { get; }
         protected abstract Version ModVersion { get; }
+        protected string ModVersionString => !ModIsBeta ? ModVersion.ToString() : $"{ModVersion} {BETA}";
         protected abstract List<Version> ModVersions { get; }
-        public abstract string Id { get; }
+        protected abstract string ModId { get; }
         protected abstract bool ModIsBeta { get; }
         protected abstract string ModLocale { get; }
 
@@ -56,7 +60,7 @@ namespace ModsCommon
         }
         public virtual void OnEnabled()
         {
-            ModLogger.Debug($"Version {ModVersion}");
+            ModLogger.Debug($"Version {ModVersionString}");
             ModLogger.Debug($"Enabled");
             LoadSuccess = true;
             LoadingManager.instance.m_introLoaded += CheckLoadedError;
