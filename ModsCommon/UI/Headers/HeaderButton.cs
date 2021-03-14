@@ -84,6 +84,7 @@ namespace ModsCommon.UI
             var root = GetRootContainer();
             Popup = root.AddUIComponent<PopupType>();
             Popup.eventLostFocus += OnPopupLostFocus;
+            Popup.eventKeyDown += OnPopupKeyDown;
             Popup.Focus();
 
             OnOpenPopup();
@@ -92,11 +93,15 @@ namespace ModsCommon.UI
             SetPopupPosition();
             Popup.parent.eventPositionChanged += SetPopupPosition;
         }
+
         protected virtual void OnOpenPopup() { }
         public virtual void ClosePopup()
         {
             if (Popup != null)
             {
+                Popup.eventLostFocus -= OnPopupLostFocus;
+                Popup.eventKeyDown -= OnPopupKeyDown;
+
                 Popup.parent.RemoveUIComponent(Popup);
                 Destroy(Popup.gameObject);
                 Popup = null;
@@ -113,6 +118,15 @@ namespace ModsCommon.UI
             else
                 Popup.Focus();
         }
+        private void OnPopupKeyDown(UIComponent component, UIKeyEventParameter p)
+        {
+            if(p.keycode == KeyCode.Escape)
+            {
+                ClosePopup();
+                p.Use();
+            }
+        }
+
         private void SetPopupPosition(UIComponent component = null, Vector2 value = default)
         {
             if (Popup != null)
