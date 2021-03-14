@@ -30,7 +30,8 @@ namespace ModsCommon.Utilities
             OnChanged = onChanged;
             _value = value;
         }
-        public virtual XAttribute ToXml() => new XAttribute(Label, Value);
+        public void ToXml(XElement element) => element.Add(ToXml());
+        protected virtual XAttribute ToXml() => new XAttribute(Label, Value);
         public virtual void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue);
         public override string ToString() => Value.ToString();
         public static implicit operator T(PropertyValue<T> property) => property.Value;
@@ -41,7 +42,7 @@ namespace ModsCommon.Utilities
         public PropertyEnumValue(Action onChanged, T value = default) : base(onChanged, value) { }
         public PropertyEnumValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
 
-        public override XAttribute ToXml() => new XAttribute(Label, (int)(object)Value);
+        protected override XAttribute ToXml() => new XAttribute(Label, (int)(object)Value);
         public override void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue.ToInt()).ToEnum<T>();
     }
     public class PropertyBoolValue : PropertyValue<bool>
@@ -49,7 +50,7 @@ namespace ModsCommon.Utilities
         public PropertyBoolValue(Action onChanged, bool value = default) : base(onChanged, value) { }
         public PropertyBoolValue(string label, Action onChanged, bool value = default) : base(label, onChanged, value) { }
 
-        public override XAttribute ToXml() => new XAttribute(Label, Value ? 1 : 0);
+        protected override XAttribute ToXml() => new XAttribute(Label, Value ? 1 : 0);
         public override void FromXml(XElement config, bool defaultValue) => Value = config.GetAttrValue(Label, defaultValue ? 1 : 0) == 1;
     }
     public class PropertyColorValue : PropertyValue<Color32>
@@ -57,7 +58,7 @@ namespace ModsCommon.Utilities
         public PropertyColorValue(Action onChanged, Color32 value = default) : base(onChanged, value) { }
         public PropertyColorValue(string label, Action onChanged, Color32 value = default) : base(label, onChanged, value) { }
 
-        public override XAttribute ToXml() => new XAttribute(Label, (Value.r << 24) + (Value.g << 16) + (Value.b << 8) + Value.a);
+        protected override XAttribute ToXml() => new XAttribute(Label, (Value.r << 24) + (Value.g << 16) + (Value.b << 8) + Value.a);
         public override void FromXml(XElement config, Color32 defaultValue)
         {
             var color = config.GetAttrValue(Label, 0);

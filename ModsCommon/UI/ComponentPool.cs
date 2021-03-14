@@ -14,7 +14,24 @@ namespace ModsCommon.UI
     {
         private static Dictionary<Type, Queue<UIComponent>> Pool { get; } = new Dictionary<Type, Queue<UIComponent>>();
 
-        public static Component Get<Component>(UIComponent parent)
+        public static Component GetAfter<Component>(UIComponent parent, string beforeName, string name = null)
+            where Component : UIComponent, IReusable
+        => Get<Component>(parent, beforeName, 1, name);
+        public static Component GetBefore<Component>(UIComponent parent, string afterName, string name = null)
+            where Component : UIComponent, IReusable
+        => Get<Component>(parent, afterName, 0, name);
+
+        private static Component Get<Component>(UIComponent parent, string otherName, int delta, string name = null)
+                where Component : UIComponent, IReusable
+        {
+            if (parent.Find(otherName) is UIComponent before)
+                return Get<Component>(parent, name, before.zOrder + delta);
+            else
+                return Get<Component>(parent, name: name);
+
+        }
+
+        public static Component Get<Component>(UIComponent parent, string name = null, int zOrder = -1)
             where Component : UIComponent, IReusable
         {
             Component component;
@@ -28,6 +45,11 @@ namespace ModsCommon.UI
             else
                 component = parent.AddUIComponent<Component>();
 
+            if (name != null)
+                component.name = name;
+            if (zOrder != -1)
+                component.zOrder = zOrder;
+
             return component;
         }
 
@@ -38,6 +60,7 @@ namespace ModsCommon.UI
             {
                 component.parent?.RemoveUIComponent(component);
                 component.transform.parent = null;
+                component.name = string.Empty;
                 reusable.DeInit();
 
                 var queue = GetQueue(component.GetType());
