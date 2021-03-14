@@ -30,11 +30,20 @@ namespace ModsCommon.UI
     {
         protected override bool AllowNull => false;
         protected override bool IsEqual(bool first, bool second) => first == second;
-        public void Init(string falseLabel, string trueLabel)
+        public void Init(string falseLabel, string trueLabel, bool invert = true)
         {
             base.Init();
-            Selector.AddItem(true, trueLabel);
-            Selector.AddItem(false, falseLabel);
+
+            if (invert)
+            {
+                Selector.AddItem(true, trueLabel);
+                Selector.AddItem(false, falseLabel);
+            }
+            else
+            {
+                Selector.AddItem(false, falseLabel);
+                Selector.AddItem(true, trueLabel);
+            }
         }
 
         public class BoolSegmented : UISegmented<bool> { }
