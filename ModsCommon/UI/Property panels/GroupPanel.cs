@@ -58,5 +58,35 @@ namespace ModsCommon.UI
                 item.width = width - autoLayoutPadding.horizontal;
             }
         }
+        protected override void OnComponentAdded(UIComponent child)
+        {
+            base.OnComponentAdded(child);
+
+            if(child is EditorItem item && item.SupportEven)
+            {
+                item.eventVisibilityChanged += ItemVisibilityChanged;
+                SetEven();
+            }
+        }
+        protected override void OnComponentRemoved(UIComponent child)
+        {
+            if (child is EditorItem item && item.SupportEven)
+            {
+                item.eventVisibilityChanged -= ItemVisibilityChanged;
+                SetEven();
+            }
+        }
+
+        private void ItemVisibilityChanged(UIComponent component, bool value) => SetEven();
+
+        public void SetEven()
+        {
+            var even = true;
+            foreach (var item in components.OfType<EditorItem>().Where(c => c.SupportEven && c.isVisible))
+            {
+                item.IsEven = even;
+                even = !even;
+            }
+        }
     }
 }
