@@ -54,7 +54,7 @@ namespace ModsCommon.UI
             base.OnSizeChanged();
             SetSize();
         }
-        private void SetSize()
+        protected virtual void SetSize()
         {
             Button.size = new Vector2(width - ItemsPadding * 2, Height);
             Button.relativePosition = new Vector3(ItemsPadding, (height - Height) / 2);
