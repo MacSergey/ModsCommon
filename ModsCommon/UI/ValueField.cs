@@ -100,6 +100,7 @@ namespace ModsCommon.UI
             get => tooltip;
             set => tooltip = value;
         }
+        public bool CanWheel { get; set; }
 
         protected override void ValueChanged(ValueType value, Action<ValueType> action = null)
         {
@@ -111,9 +112,19 @@ namespace ModsCommon.UI
 
             base.ValueChanged(value, action);
         }
+        protected override void OnMouseMove(UIMouseEventParameter p)
+        {
+            base.OnMouseMove(p);
+            CanWheel = true;
+        }
+        protected override void OnMouseLeave(UIMouseEventParameter p)
+        {
+            base.OnMouseLeave(p);
+            CanWheel = false;
+        }
         protected sealed override void OnMouseWheel(UIMouseEventParameter p)
         {
-            if (Time.realtimeSinceStartup - m_HoveringStartTime < 1f)
+            if (!CanWheel && Time.realtimeSinceStartup - m_HoveringStartTime < 1f)
                 base.OnMouseWheel(p);
             else if (UseWheel)
             {
