@@ -113,15 +113,17 @@ namespace ModsCommon.UI
         }
         protected sealed override void OnMouseWheel(UIMouseEventParameter p)
         {
-            base.OnMouseWheel(p);
-
-            if (UseWheel)
+            if (Time.realtimeSinceStartup - m_HoveringStartTime < 1f)
+                base.OnMouseWheel(p);
+            else if (UseWheel)
             {
                 var mode = InputExtension.ShiftIsPressed ? WheelMode.High : InputExtension.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
                 if (p.wheelDelta < 0)
                     Value = Decrement(Limited && CyclicalValue && Value.CompareTo(MinValue) == 0 ? MaxValue : Value, WheelStep, mode);
                 else
                     Value = Increment(Limited && CyclicalValue && Value.CompareTo(MaxValue) == 0 ? MinValue : Value, WheelStep, mode);
+
+                p.Use();
             }
         }
         protected abstract ValueType Increment(ValueType value, ValueType step, WheelMode mode);
@@ -146,10 +148,10 @@ namespace ModsCommon.UI
     }
     public class FloatUITextField : ComparableUITextField<float>
     {
-        public override string text 
-        { 
-            get => base.text.Replace(',','.'); 
-            set => base.text = value; 
+        public override string text
+        {
+            get => base.text.Replace(',', '.');
+            set => base.text = value;
         }
         protected override float Decrement(float value, float step, WheelMode mode)
         {

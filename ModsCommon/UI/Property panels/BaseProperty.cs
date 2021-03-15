@@ -11,11 +11,6 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public interface IWheelChangeable
-    {
-        event Action OnStartWheel;
-        event Action OnStopWheel;
-    }
     public abstract class EditorItem : UIPanel
     {
         protected virtual float DefaultHeight => 30;

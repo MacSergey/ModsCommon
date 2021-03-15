@@ -56,13 +56,10 @@ namespace ModsCommon.UI
 
         public static implicit operator ValueType(FieldPropertyPanel<ValueType, FieldType> property) => property.Value;
     }
-    public abstract class ComparableFieldPropertyPanel<ValueType, FieldType> : FieldPropertyPanel<ValueType, FieldType>, IWheelChangeable
+    public abstract class ComparableFieldPropertyPanel<ValueType, FieldType> : FieldPropertyPanel<ValueType, FieldType>
         where FieldType : ComparableUITextField<ValueType>
         where ValueType : IComparable<ValueType>
     {
-        public event Action OnStartWheel;
-        public event Action OnStopWheel;
-
         public ValueType MinValue
         {
             get => Field.MinValue;
@@ -108,13 +105,7 @@ namespace ModsCommon.UI
         public ComparableFieldPropertyPanel()
         {
             Field.SetDefault();
-
-            Field.eventMouseHover += FieldHover;
-            Field.eventMouseLeave += FieldLeave;
         }
-
-        private void FieldHover(UIComponent component, UIMouseEventParameter eventParam) => OnStartWheel?.Invoke();
-        private void FieldLeave(UIComponent component, UIMouseEventParameter eventParam) => OnStopWheel?.Invoke();
 
         public override void DeInit()
         {
@@ -125,9 +116,6 @@ namespace ModsCommon.UI
             WheelTip = string.Empty;
             CyclicalValue = false;
             Field.SetDefault();
-
-            OnStartWheel = null;
-            OnStopWheel = null;
         }
     }
     public class FloatPropertyPanel : ComparableFieldPropertyPanel<float, FloatUITextField> { }

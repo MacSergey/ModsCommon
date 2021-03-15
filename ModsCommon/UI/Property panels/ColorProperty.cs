@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class ColorPropertyPanel : EditorPropertyPanel, IReusable, IWheelChangeable
+    public class ColorPropertyPanel : EditorPropertyPanel, IReusable
     {
         public event Action<Color32> OnValueChanged;
         public event Action OnStartWheel;
