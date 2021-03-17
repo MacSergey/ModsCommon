@@ -45,14 +45,16 @@ namespace ModsCommon.UI
         }
         public void Init(float? height = null)
         {
+            size = new Vector2(GetWidth(), height ?? DefaultHeight);
+        }
+        private float GetWidth()
+        {
             if (parent is UIScrollablePanel scrollablePanel)
-                width = scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal;
+                return scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
             else if (parent is UIPanel panel)
-                width = panel.width - panel.autoLayoutPadding.horizontal;
+                return panel.width - panel.autoLayoutPadding.horizontal;
             else
-                width = parent.width;
-
-            this.height = height ?? DefaultHeight;
+                return parent.width;
         }
 
         protected UIButton AddButton(UIComponent parent)
@@ -70,7 +72,7 @@ namespace ModsCommon.UI
     public abstract class EditorPropertyPanel : EditorItem
     {
         private UILabel Label { get; set; }
-        protected UIPanel Control { get; set; }
+        protected ContentPanel Content { get; set; }
 
         public string Text
         {
@@ -79,8 +81,8 @@ namespace ModsCommon.UI
         }
         public override bool EnableControl
         {
-            get => Control.isEnabled;
-            set => Control.isEnabled = value;
+            get => Content.isEnabled;
+            set => Content.isEnabled = value;
         }
         public override bool SupportEven => true;
 
@@ -89,18 +91,14 @@ namespace ModsCommon.UI
             Label = AddUIComponent<UILabel>();
             Label.textScale = 0.8f;
             Label.disabledTextColor = new Color32(160, 160, 160, 255);
+            Label.name = nameof(Label);
 
-            Control = AddUIComponent<UIPanel>();
-            Control.autoLayoutDirection = LayoutDirection.Horizontal;
-            Control.autoLayoutStart = LayoutStart.TopRight;
-            Control.autoLayoutPadding = new RectOffset(5, 0, 0, 0);
-
-            Control.eventSizeChanged += ControlSizeChanged;
+            Content = AddUIComponent<ContentPanel>();
         }
         public override void Init()
         {
             base.Init();
-            RefreshContent();
+            Content.Refresh();
         }
         public override void DeInit()
         {
@@ -112,18 +110,35 @@ namespace ModsCommon.UI
             base.OnSizeChanged();
 
             Label.relativePosition = new Vector2(5, (height - Label.height) / 2);
-            Control.size = size - new Vector2(ItemsPadding * 2, 0);
-            Control.relativePosition = new Vector2(ItemsPadding, 0f);
+            Content.size = size - new Vector2(ItemsPadding * 2, 0);
+            Content.relativePosition = new Vector2(ItemsPadding, 0f);
         }
 
-        private void ControlSizeChanged(UIComponent component, Vector2 value) => RefreshContent();
-        protected void RefreshContent()
-        {
-            Control.autoLayout = true;
-            Control.autoLayout = false;
 
-            foreach (var item in Control.components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (Control.height - item.height) / 2);
+
+        protected class ContentPanel : UIPanel
+        {
+            public ContentPanel()
+            {
+                autoLayoutDirection = LayoutDirection.Horizontal;
+                autoLayoutStart = LayoutStart.TopRight;
+                autoLayoutPadding = new RectOffset(5, 0, 0, 0);
+                name = nameof(Content);
+            }
+
+            protected override void OnSizeChanged()
+            {
+                base.OnSizeChanged();
+                Refresh();
+            }
+            public void Refresh()
+            {
+                autoLayout = true;
+                autoLayout = false;
+
+                foreach (var item in components)
+                    item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
+            }
         }
     }
 }

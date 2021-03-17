@@ -8,20 +8,16 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class UISegmented<ValueType> : UIPanel
+    public abstract class UISegmented<ValueType> : UIAutoLayoutPanel
     {
+        protected override LayoutDirection LayoutDirection => LayoutDirection.Horizontal;
+        protected override bool IsFitChildrenHorizontally => true;
+        protected override bool IsFitChildrenVertically => true;
+
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
         protected List<UIButton> Buttons { get; } = new List<UIButton>();
         protected virtual int TextPadding => 8;
-
-        public UISegmented()
-        {
-            autoLayout = true;
-            autoLayoutDirection = LayoutDirection.Horizontal;
-            autoFitChildrenHorizontally = true;
-            autoFitChildrenVertically = true;
-        }
 
         public void AddItem(ValueType item, string label = null)
         {

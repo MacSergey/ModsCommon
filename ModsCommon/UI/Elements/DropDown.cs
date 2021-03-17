@@ -8,27 +8,6 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public interface IUISelector<ValueType>
-    {
-        Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
-
-        void AddItem(ValueType item, string label = null);
-        void Clear();
-        void SetDefaultStyle(Vector2? size = null);
-    }
-    public interface IUIOnceSelector<ValueType> : IUISelector<ValueType>
-    {
-        event Action<ValueType> OnSelectObjectChanged;
-
-        ValueType SelectedObject { get; set; }
-    }
-    public interface IUIMultySelector<ValueType> : IUISelector<ValueType>
-    {
-        event Action<List<ValueType>> OnSelectObjectsChanged;
-
-        List<ValueType> SelectedObjects { get; set; }
-    }
-
     public abstract class UIDropDown<ValueType> : UIDropDown, IUIOnceSelector<ValueType>
     {
         public event Action<ValueType> OnSelectObjectChanged;
@@ -140,5 +119,8 @@ namespace ModsCommon.UI
 
             this.size = size ?? new Vector2(400, 31);
         }
+
+        public void StopLayout() { }
+        public void StartLayout() { }
     }
 }

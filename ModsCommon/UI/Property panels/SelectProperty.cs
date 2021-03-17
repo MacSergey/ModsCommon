@@ -30,7 +30,7 @@ namespace ModsCommon.UI
         }
         private void AddSelector()
         {
-            Selector = Control.AddUIComponent<SelectPropertyButton>();
+            Selector = Content.AddUIComponent<SelectPropertyButton>();
             Selector.text = NotSet;
             Selector.atlas = TextureHelper.CommonAtlas;
             Selector.normalBgSprite = TextureHelper.FieldNormal;
@@ -160,7 +160,7 @@ namespace ModsCommon.UI
         }
         private void AddReset()
         {
-            var button = AddButton(Control);
+            var button = AddButton(Content);
 
             button.size = new Vector2(20f, 20f);
             button.text = "×";

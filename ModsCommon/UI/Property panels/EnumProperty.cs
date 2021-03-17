@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ModsCommon.UI
 {
-    public abstract class EnumPropertyPanel<EnumType, UISelector> : ListOncePropertyPanel<EnumType, UISelector>
+    public abstract class EnumOncePropertyPanel<EnumType, UISelector> : ListOncePropertyPanel<EnumType, UISelector>
         where EnumType : Enum
         where UISelector : UIComponent, IUIOnceSelector<EnumType>
     {
@@ -20,8 +20,10 @@ namespace ModsCommon.UI
         }
         protected virtual void FillItems()
         {
+            Selector.StopLayout();
             foreach (var value in EnumExtension.GetEnumValues<EnumType>())
                 Selector.AddItem(value, GetDescription(value));
+            Selector.StartLayout();
         }
         protected abstract string GetDescription(EnumType value);
     }
@@ -44,8 +46,10 @@ namespace ModsCommon.UI
         }
         protected virtual void FillItems()
         {
+            Selector.StopLayout();
             foreach (var value in EnumExtension.GetEnumValues<EnumType>())
                 Selector.AddItem(value, GetDescription(value));
+            Selector.StartLayout();
         }
         protected abstract string GetDescription(EnumType value);
 
@@ -64,6 +68,7 @@ namespace ModsCommon.UI
         {
             base.Init();
 
+            Selector.StopLayout();
             if (invert)
             {
                 Selector.AddItem(true, trueLabel);
@@ -74,6 +79,7 @@ namespace ModsCommon.UI
                 Selector.AddItem(false, falseLabel);
                 Selector.AddItem(true, trueLabel);
             }
+            Selector.StartLayout();
         }
 
         public class BoolSegmented : UIOnceSegmented<bool> { }
@@ -85,8 +91,11 @@ namespace ModsCommon.UI
         public void Init(int count)
         {
             base.Init();
+
+            Selector.StopLayout();
             for (var i = 1; i <= count; i += 1)
                 Selector.AddItem(i, i.ToString());
+            Selector.StartLayout();
         }
 
         public class IntSegmented : UIOnceSegmented<int> { }

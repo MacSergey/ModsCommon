@@ -16,7 +16,7 @@ namespace ModsCommon.UI
 
         public BoolPropertyPanel()
         {
-            CheckBox = Control.AddUIComponent<UICheckBox>();
+            CheckBox = Content.AddUIComponent<UICheckBox>();
             CheckBox.size = new Vector2(16, 16);
             CheckBox.eventCheckChanged += CheckBox_eventCheckChanged;
 

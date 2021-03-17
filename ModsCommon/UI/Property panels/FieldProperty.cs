@@ -35,8 +35,9 @@ namespace ModsCommon.UI
 
         public FieldPropertyPanel()
         {
-            Field = Control.AddUIComponent<FieldType>();
+            Field = Content.AddUIComponent<FieldType>();
             Field.SetDefaultStyle();
+            Field.name = nameof(Field);
 
             Field.OnValueChanged += ValueChanged;
         }

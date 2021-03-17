@@ -124,11 +124,11 @@ namespace ModsCommon.UI
         }
         private ByteUITextField AddField(string name)
         {
-            var lable = Control.AddUIComponent<UILabel>();
+            var lable = Content.AddUIComponent<UILabel>();
             lable.text = name;
             lable.textScale = 0.7f;
 
-            var field = Control.AddUIComponent<ByteUITextField>();
+            var field = Content.AddUIComponent<ByteUITextField>();
             field.SetDefaultStyle();
             field.MinValue = byte.MinValue;
             field.MaxValue = byte.MaxValue;
@@ -149,7 +149,7 @@ namespace ModsCommon.UI
             if (!(UITemplateManager.Get("LineTemplate") is UIComponent template))
                 return;
 
-            var panel = Control.AddUIComponent<UIPanel>();
+            var panel = Content.AddUIComponent<UIPanel>();
             panel.atlas = TextureHelper.CommonAtlas;
             panel.backgroundSprite = TextureHelper.ColorPickerBoard;
 
