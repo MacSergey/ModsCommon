@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace ModsCommon.Utilities
@@ -39,6 +41,31 @@ namespace ModsCommon.Utilities
             {
                 return null;
             }
+        }
+        public static XDocument Load(string file, LoadOptions options = LoadOptions.None)
+        {
+            using FileStream input = new FileStream(file, FileMode.Open);
+            XmlReaderSettings xmlReaderSettings = GetXmlReaderSettings(options);
+            using XmlReader reader = XmlReader.Create(input, xmlReaderSettings);
+            return XDocument.Load(reader, options);
+        }
+        public static XElement Parse(string text, LoadOptions options = LoadOptions.None)
+        {
+            using StringReader input = new StringReader(text);
+            XmlReaderSettings xmlReaderSettings = GetXmlReaderSettings(options);
+            using XmlReader reader = XmlReader.Create(input, xmlReaderSettings);
+            return XElement.Load(reader, options);
+        }
+        static XmlReaderSettings GetXmlReaderSettings(LoadOptions o)
+        {
+            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
+            if ((o & LoadOptions.PreserveWhitespace) == 0)
+            {
+                xmlReaderSettings.IgnoreWhitespace = true;
+            }
+            xmlReaderSettings.ProhibitDtd = false;
+            xmlReaderSettings.XmlResolver = null;
+            return xmlReaderSettings;
         }
     }
 }
