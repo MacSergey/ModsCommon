@@ -11,18 +11,22 @@ namespace ModsCommon.UI
         public void StopLayout();
         public void StartLayout();
     }
-    public abstract class UIAutoLayoutPanel : UIPanel, IAutoLayoutPanel
+    public class UIAutoLayoutPanel : UIPanel, IAutoLayoutPanel
     {
-        protected abstract LayoutDirection LayoutDirection { get; }
-        protected abstract bool IsFitChildrenHorizontally { get; }
-        protected abstract bool IsFitChildrenVertically { get; }
         public UIAutoLayoutPanel()
         {
             autoLayout = true;
-            autoLayoutDirection = LayoutDirection;
-            autoFitChildrenHorizontally = IsFitChildrenHorizontally;
-            autoFitChildrenVertically = IsFitChildrenVertically;
         }
+        public void StopLayout() => autoLayout = false;
+        public void StartLayout() => autoLayout = true;
+    }
+    public class UIAutoLayoutScrollablePanel : UIScrollablePanel, IAutoLayoutPanel
+    {
+        public UIAutoLayoutScrollablePanel()
+        {
+            autoLayout = true;
+        }
+
         public void StopLayout() => autoLayout = false;
         public void StartLayout() => autoLayout = true;
     }

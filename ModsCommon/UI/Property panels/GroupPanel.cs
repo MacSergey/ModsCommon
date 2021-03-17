@@ -11,10 +11,6 @@ namespace ModsCommon.UI
 {
     public class PropertyGroupPanel : UIAutoLayoutPanel, IReusable
     {
-        protected override LayoutDirection LayoutDirection => LayoutDirection.Vertical;
-        protected override bool IsFitChildrenHorizontally => false;
-        protected override bool IsFitChildrenVertically => true;
-
         private static Color32 NormalColor { get; } = new Color32(82, 101, 117, 255);
 
         protected virtual Color32 Color => NormalColor;
@@ -25,7 +21,9 @@ namespace ModsCommon.UI
             backgroundSprite = "ButtonWhite";
             color = Color;
 
+            autoLayoutDirection = LayoutDirection.Vertical;
             autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            autoFitChildrenVertically = true;
         }
 
         public virtual void Init()
