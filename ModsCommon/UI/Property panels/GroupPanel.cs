@@ -43,7 +43,7 @@ namespace ModsCommon.UI
         private void SetSize()
         {
             if (parent is UIScrollablePanel scrollablePanel)
-                width = scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal;
+                width = scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
             else if (parent is UIPanel panel)
                 width = panel.width - panel.autoLayoutPadding.horizontal;
             else
@@ -54,9 +54,7 @@ namespace ModsCommon.UI
             base.OnSizeChanged();
 
             foreach (var item in components)
-            {
                 item.width = width - autoLayoutPadding.horizontal;
-            }
         }
         protected override void OnComponentAdded(UIComponent child)
         {

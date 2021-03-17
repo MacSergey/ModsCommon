@@ -10,7 +10,6 @@ namespace ModsCommon.UI
     public abstract class ListPropertyPanel<Type, UISelector> : EditorPropertyPanel, IReusable
         where UISelector : UIComponent, IUISelector<Type>
     {
-        public event Action<Type> OnSelectObjectChanged;
         public event Action<bool> OnDropDownStateChange;
 
         protected UISelector Selector { get; set; }
@@ -19,23 +18,16 @@ namespace ModsCommon.UI
         protected virtual bool AllowNull => true;
         public string NullText { get; set; } = string.Empty;
 
-        public Type SelectedObject
-        {
-            get => Selector.SelectedObject;
-            set => Selector.SelectedObject = value;
-        }
-
         public ListPropertyPanel()
         {
-            AddDropDown();
+            AddSelector();
             Selector.IsEqualDelegate = IsEqual;
         }
-        private void AddDropDown()
+        protected virtual void AddSelector()
         {
             Selector = Control.AddUIComponent<UISelector>();
 
             Selector.SetDefaultStyle(new Vector2(DropDownWidth, 20));
-            Selector.OnSelectObjectChanged += DropDownValueChanged;
             Selector.eventSizeChanged += SelectorSizeChanged;
             if (Selector is UIDropDown dropDown)
             {
@@ -44,8 +36,6 @@ namespace ModsCommon.UI
             }
         }
         private void SelectorSizeChanged(UIComponent component, Vector2 value) => RefreshContent();
-
-        private void DropDownValueChanged(Type value) => OnSelectObjectChanged?.Invoke(value);
 
         private void DropDownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
@@ -58,7 +48,6 @@ namespace ModsCommon.UI
             OnDropDownStateChange?.Invoke(false);
         }
 
-
         public override void Init()
         {
             base.Init();
@@ -70,10 +59,7 @@ namespace ModsCommon.UI
         public override void DeInit()
         {
             base.DeInit();
-
-            OnSelectObjectChanged = null;
             OnDropDownStateChange = null;
-
             Selector.Clear();
         }
         public void Add(Type item) => Selector.AddItem(item);
@@ -83,5 +69,51 @@ namespace ModsCommon.UI
                 Selector.AddItem(item);
         }
         protected abstract bool IsEqual(Type first, Type second);
+    }
+    public abstract class ListOncePropertyPanel<Type, UISelector> : ListPropertyPanel<Type, UISelector>, IReusable
+        where UISelector : UIComponent, IUIOnceSelector<Type>
+    {
+        public event Action<Type> OnSelectObjectChanged;
+        public Type SelectedObject
+        {
+            get => Selector.SelectedObject;
+            set => Selector.SelectedObject = value;
+        }
+
+        protected override void AddSelector()
+        {
+            base.AddSelector();
+            Selector.OnSelectObjectChanged += SelectorValueChanged;
+        }
+        protected virtual void SelectorValueChanged(Type value) => OnSelectObjectChanged?.Invoke(value);
+
+        public override void DeInit()
+        {
+            OnSelectObjectChanged = null;
+            base.DeInit();
+        }
+    }
+    public abstract class ListMultyPropertyPanel<Type, UISelector> : ListPropertyPanel<Type, UISelector>, IReusable
+        where UISelector : UIComponent, IUIMultySelector<Type>
+    {
+        public event Action<List<Type>> OnSelectObjectsChanged;
+        public List<Type> SelectedObjects
+        {
+            get => Selector.SelectedObjects;
+            set => Selector.SelectedObjects = value;
+        }
+
+        protected override void AddSelector()
+        {
+            base.AddSelector();
+            Selector.OnSelectObjectsChanged += SelectorValueChanged;
+        }
+        protected virtual void SelectorValueChanged(List<Type> value) => OnSelectObjectsChanged?.Invoke(value);
+
+        public override void DeInit()
+        {
+            OnSelectObjectsChanged = null;
+            base.DeInit();
+        }
     }
 }

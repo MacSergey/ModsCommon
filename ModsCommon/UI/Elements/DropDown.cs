@@ -10,16 +10,26 @@ namespace ModsCommon.UI
 {
     public interface IUISelector<ValueType>
     {
-        event Action<ValueType> OnSelectObjectChanged;
-
         Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
-        ValueType SelectedObject { get; set; }
 
         void AddItem(ValueType item, string label = null);
         void Clear();
         void SetDefaultStyle(Vector2? size = null);
     }
-    public abstract class UIDropDown<ValueType> : UIDropDown, IUISelector<ValueType>
+    public interface IUIOnceSelector<ValueType> : IUISelector<ValueType>
+    {
+        event Action<ValueType> OnSelectObjectChanged;
+
+        ValueType SelectedObject { get; set; }
+    }
+    public interface IUIMultySelector<ValueType> : IUISelector<ValueType>
+    {
+        event Action<List<ValueType>> OnSelectObjectsChanged;
+
+        List<ValueType> SelectedObjects { get; set; }
+    }
+
+    public abstract class UIDropDown<ValueType> : UIDropDown, IUIOnceSelector<ValueType>
     {
         public event Action<ValueType> OnSelectObjectChanged;
 

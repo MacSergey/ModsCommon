@@ -186,7 +186,7 @@ namespace ModsCommon.UI
     public class IntUITextField : ComparableUITextField<int>
     {
         protected override int Decrement(int value, int step, WheelMode mode) => value == int.MinValue ? value : value - GetStep(step, mode);
-        protected override int Increment(int value, int step, WheelMode mode) => value == int.MaxValue ? value : value - GetStep(step, mode);
+        protected override int Increment(int value, int step, WheelMode mode) => value == int.MaxValue ? value : value + GetStep(step, mode);
         int GetStep(int step, WheelMode mode) => mode switch
         {
             WheelMode.Low => Math.Max(step / 10, 1),
