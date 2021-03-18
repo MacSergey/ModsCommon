@@ -26,16 +26,17 @@ namespace ModsCommon.UI
             autoFitChildrenVertically = true;
         }
 
-        public virtual void Init()
-        {
-            SetSize();
-        }
+        public virtual void Init() => SetSize();
 
         public virtual void DeInit()
         {
+            StopLayout();
+
             var components = this.components.ToArray();
             foreach (var component in components)
                 ComponentPool.Free(component);
+
+            StartLayout();
         }
 
         private void SetSize()
