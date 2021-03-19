@@ -26,7 +26,17 @@ namespace ModsCommon.UI
             autoFitChildrenVertically = true;
         }
 
-        public virtual void Init() => SetSize();
+        public virtual void Init(float? width = null) 
+        {
+            if (width != null)
+                this.width = width.Value;
+            else if (parent is UIScrollablePanel scrollablePanel)
+                this.width = scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
+            else if (parent is UIPanel panel)
+                this.width = panel.width - panel.autoLayoutPadding.horizontal;
+            else
+                this.width = parent.width;
+        }
 
         public virtual void DeInit()
         {
@@ -39,15 +49,6 @@ namespace ModsCommon.UI
             StartLayout();
         }
 
-        private void SetSize()
-        {
-            if (parent is UIScrollablePanel scrollablePanel)
-                width = scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
-            else if (parent is UIPanel panel)
-                width = panel.width - panel.autoLayoutPadding.horizontal;
-            else
-                width = parent.width;
-        }
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();

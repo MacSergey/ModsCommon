@@ -65,6 +65,8 @@ namespace ModsCommon.UI
         }
         protected override void OnSizeChanged()
         {
+            base.OnSizeChanged();
+
             if (Even != null)
                 Even.size = size;
         }
