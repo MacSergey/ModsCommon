@@ -113,7 +113,13 @@ namespace ModsCommon.UI
             Content.size = size - new Vector2(ItemsPadding * 2, 0);
             Content.relativePosition = new Vector2(ItemsPadding, 0f);
         }
+        protected override void OnVisibilityChanged()
+        {
+            base.OnVisibilityChanged();
 
+            if (isVisible)
+                Content.Refresh();
+        }
 
 
         protected class ContentPanel : UIPanel
