@@ -75,7 +75,7 @@ namespace ModsCommon.UI
             Destroy(messageBox.gameObject);
         }
 
-        public string CaprionText { set => Caption.text = value; }
+        public string CaptionText { set => Caption.text = value; }
 
         private UILabel Caption { get; set; }
         protected UIPanel ButtonPanel { get; private set; }
