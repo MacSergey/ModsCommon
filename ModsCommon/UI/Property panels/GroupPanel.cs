@@ -80,10 +80,15 @@ namespace ModsCommon.UI
         public void SetEven()
         {
             var even = true;
-            foreach (var item in components.OfType<EditorItem>().Where(c => c.SupportEven && c.isVisible))
+            var supportEven = components.OfType<EditorItem>().Where(c => c.SupportEven && c.isVisible).ToArray();
+
+            if (supportEven.Length > 1)
             {
-                item.IsEven = even;
-                even = !even;
+                foreach (var item in supportEven)
+                {
+                    item.IsEven = even;
+                    even = !even;
+                }
             }
         }
     }
