@@ -45,6 +45,7 @@ namespace ModsCommon.UI
             var components = this.components.ToArray();
             foreach (var component in components)
                 ComponentPool.Free(component);
+            isVisible = true;
 
             StartLayout();
         }
