@@ -183,8 +183,9 @@ namespace ModsCommon.UI
 
             if (Popup.component is UIPanel panel)
             {
-                panel.atlas = TextureHelper.CommonAtlas;
-                panel.backgroundSprite = TextureHelper.FieldNormal;
+                panel.atlas = TextureHelper.InGameAtlas;
+                panel.backgroundSprite = "ButtonWhite";
+                panel.color = new Color32(201, 211, 216, 255);
             }
 
             Opacity = AddOpacitySlider(popup.component);
