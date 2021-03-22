@@ -25,6 +25,7 @@ namespace ModsCommon.Utilities
 
         public static int ToInt<T>(this T value) where T : Enum => (int)(object)value;
         public static T ToEnum<T>(this int value) where T : Enum => (T)(object)value;
+        public static ToT ToEnum<ToT, FromT>(this FromT item) where ToT : Enum where FromT : Enum => (ToT)(object)item;
     }
 
     public class NotVisibleAttribute : Attribute { }
