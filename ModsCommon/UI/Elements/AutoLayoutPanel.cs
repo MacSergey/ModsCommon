@@ -20,6 +20,11 @@ namespace ModsCommon.UI
         }
         public void StopLayout() => autoLayout = false;
         public void StartLayout() => autoLayout = true;
+        //protected override void OnSizeChanged()
+        //{
+        //    base.OnSizeChanged();
+        //    MakePixelPerfect();
+        //}
     }
     public class UIAutoLayoutScrollablePanel : UIScrollablePanel, IAutoLayoutPanel
     {
@@ -30,6 +35,11 @@ namespace ModsCommon.UI
 
         public void StopLayout() => autoLayout = false;
         public void StartLayout() => autoLayout = true;
+        //protected override void OnSizeChanged()
+        //{
+        //    base.OnSizeChanged();
+        //    MakePixelPerfect();
+        //}
     }
     public class AdvancedScrollablePanel : UIPanel, IAutoLayoutPanel
     {

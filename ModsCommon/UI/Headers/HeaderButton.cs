@@ -20,6 +20,7 @@ namespace ModsCommon.UI
         protected virtual Color32 IconColor => Color.white;
         protected virtual Color32 HoverIconColor => Color.white;
         protected virtual Color32 PressedIconColor => new Color32(224, 224, 224, 255);
+        protected virtual Color32 DisabledIconColor => new Color32(144, 144, 144, 255);
 
         protected abstract UITextureAtlas IconAtlas { get; }
 
@@ -44,6 +45,7 @@ namespace ModsCommon.UI
             Icon.color = IconColor;
             Icon.hoveredColor = HoverIconColor;
             Icon.pressedColor = PressedIconColor;
+            Icon.disabledColor = DisabledIconColor;
         }
 
         public void SetIconSprite(string sprite)

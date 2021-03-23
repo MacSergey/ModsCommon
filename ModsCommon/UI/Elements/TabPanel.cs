@@ -21,9 +21,6 @@ namespace ModsCommon.UI
             {
                 if (value != _selectedTab)
                 {
-                    if (_selectedTab >= 0 && _selectedTab < Tabs.Count)
-                        Tabs[_selectedTab].state = UIButton.ButtonState.Normal;
-
                     _selectedTab = value;
                     SelectedTabChanged?.Invoke(_selectedTab);
                 }
@@ -39,8 +36,15 @@ namespace ModsCommon.UI
         {
             base.Update();
 
-            if (SelectedTab >= 0 && SelectedTab < Tabs.Count)
-                Tabs[SelectedTab].state = UIButton.ButtonState.Focused;
+            for(var i = 0; i < Tabs.Count; i +=1)
+            {
+                var tab = Tabs[i];
+
+                if (i == SelectedTab)
+                    tab.state = UIButton.ButtonState.Focused;
+                else if (!tab.Hovered)
+                    tab.state = UIButton.ButtonState.Normal;
+            }
         }
         public void AddTab(string name, float textScale = 0.85f) => AddTabImpl(name, textScale);
         protected TabType AddTabImpl(string name, float textScale = 0.85f)
@@ -215,6 +219,9 @@ namespace ModsCommon.UI
             tabButton.hoveredBgSprite = TextureHelper.TabHover;
         }
     }
-    public class Tab : UIButton { }
+    public class Tab : UIButton 
+    {
+        public bool Hovered => m_IsMouseHovering;
+    }
     public class TabStrip : TabStrip<Tab> { }
 }
