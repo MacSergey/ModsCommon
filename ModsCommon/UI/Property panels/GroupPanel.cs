@@ -3,6 +3,7 @@ using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace ModsCommon.UI
             autoFitChildrenVertically = true;
         }
 
-        public virtual void Init(float? width = null) 
+        public virtual void Init(float? width = null)
         {
             if (width != null)
                 this.width = width.Value;
@@ -47,21 +48,22 @@ namespace ModsCommon.UI
                 ComponentPool.Free(component);
             isVisible = true;
 
-            StartLayout();
+            StartLayout(false);
         }
 
         protected override void OnSizeChanged()
         {
-            base.OnSizeChanged();
-
+            StopLayout();
             foreach (var item in components)
                 item.width = width - autoLayoutPadding.horizontal;
-        }
+            StartLayout(false);
+            base.OnSizeChanged();
+}
         protected override void OnComponentAdded(UIComponent child)
         {
             base.OnComponentAdded(child);
 
-            if(child is EditorItem item && item.SupportEven)
+            if (child is EditorItem item && item.SupportEven)
             {
                 item.eventVisibilityChanged += ItemVisibilityChanged;
                 SetEven();
@@ -69,6 +71,8 @@ namespace ModsCommon.UI
         }
         protected override void OnComponentRemoved(UIComponent child)
         {
+            base.OnComponentRemoved(child);
+
             if (child is EditorItem item && item.SupportEven)
             {
                 item.eventVisibilityChanged -= ItemVisibilityChanged;

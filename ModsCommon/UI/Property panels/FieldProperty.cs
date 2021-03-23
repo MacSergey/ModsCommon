@@ -53,7 +53,7 @@ namespace ModsCommon.UI
             OnValueChanged = null;
         }
         public void Edit() => Field.Focus();
-        public override string ToString() => Value.ToString();
+        public override string ToString() => $"{base.ToString()}: {Value}";
 
         public static implicit operator ValueType(FieldPropertyPanel<ValueType, FieldType> property) => property.Value;
     }

@@ -56,6 +56,7 @@ namespace ModsCommon.UI
             base.OnSubmit();
             ValueChanged(Value);
         }
+        public override void PerformLayout() { }
 
         public override string ToString() => Value.ToString();
         public static implicit operator ValueType(UITextField<ValueType> field) => field.Value;

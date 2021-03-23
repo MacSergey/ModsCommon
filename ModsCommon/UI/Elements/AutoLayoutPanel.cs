@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -10,36 +11,37 @@ namespace ModsCommon.UI
     public interface IAutoLayoutPanel
     {
         public void StopLayout();
-        public void StartLayout();
+        public void StartLayout(bool layoutNow = true);
     }
     public class UIAutoLayoutPanel : UIPanel, IAutoLayoutPanel
     {
         public UIAutoLayoutPanel()
         {
-            autoLayout = true;
+            m_AutoLayout = true;
         }
-        public void StopLayout() => autoLayout = false;
-        public void StartLayout() => autoLayout = true;
-        //protected override void OnSizeChanged()
-        //{
-        //    base.OnSizeChanged();
-        //    MakePixelPerfect();
-        //}
+        public void StopLayout() => m_AutoLayout = false;
+        public void StartLayout(bool layoutNow = true)
+        {
+            m_AutoLayout = true;
+            if (layoutNow)
+                Reset();
+        }
+        public override void PerformLayout() { }
     }
     public class UIAutoLayoutScrollablePanel : UIScrollablePanel, IAutoLayoutPanel
     {
         public UIAutoLayoutScrollablePanel()
         {
-            autoLayout = true;
+            m_AutoLayout = true;
         }
-
-        public void StopLayout() => autoLayout = false;
-        public void StartLayout() => autoLayout = true;
-        //protected override void OnSizeChanged()
-        //{
-        //    base.OnSizeChanged();
-        //    MakePixelPerfect();
-        //}
+        public void StopLayout() => m_AutoLayout = false;
+        public void StartLayout(bool layoutNow = true)
+        {
+            m_AutoLayout = true;
+            if (layoutNow)
+                Reset();
+        }
+        public override void PerformLayout() { }
     }
     public class AdvancedScrollablePanel : UIPanel, IAutoLayoutPanel
     {
@@ -84,12 +86,15 @@ namespace ModsCommon.UI
 
         protected override void OnSizeChanged()
         {
+            //var swAll = Stopwatch.StartNew();
             base.OnSizeChanged();
             SetContentSize();
+            //UnityEngine.Debug.Log($"Advanced panel {name} content size changed: {swAll.ElapsedTicks}");
         }
 
         private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width :0, 0);
-        public void StopLayout() => Content.autoLayout = false;
-        public void StartLayout() => Content.autoLayout = true;
+        public void StopLayout() => Content.StopLayout();
+        public void StartLayout(bool layoutNow = true) => Content.StartLayout(layoutNow);
+        public override void PerformLayout() { }
     }
 }

@@ -111,6 +111,7 @@ namespace ModsCommon.UI
             base.OnSizeChanged();
             PlaceChildren();
         }
+        public override void PerformLayout() { }
 
         public void PlaceChildren()
         {

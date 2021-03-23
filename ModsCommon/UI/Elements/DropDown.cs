@@ -121,6 +121,6 @@ namespace ModsCommon.UI
         }
 
         public void StopLayout() { }
-        public void StartLayout() { }
+        public void StartLayout(bool layoutNow = true) { }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -70,6 +71,9 @@ namespace ModsCommon.UI
             if (Even != null)
                 Even.size = size;
         }
+        public override void PerformLayout() { }
+
+        public override string ToString() => name;
     }
     public abstract class EditorPropertyPanel : EditorItem
     {
@@ -123,7 +127,6 @@ namespace ModsCommon.UI
                 Content.Refresh();
         }
 
-
         protected class ContentPanel : UIPanel
         {
             public ContentPanel()
@@ -139,6 +142,7 @@ namespace ModsCommon.UI
                 base.OnSizeChanged();
                 Refresh();
             }
+            public override void PerformLayout() { }
             public void Refresh()
             {
                 autoLayout = true;

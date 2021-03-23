@@ -92,6 +92,7 @@ namespace ModsCommon.UI
             OnSelectObjectChanged = null;
             base.DeInit();
         }
+        public override string ToString() => $"{base.ToString()}: {SelectedObject}";
     }
     public abstract class ListMultyPropertyPanel<Type, UISelector> : ListPropertyPanel<Type, UISelector>, IReusable
         where UISelector : UIComponent, IUIMultySelector<Type>
@@ -115,5 +116,6 @@ namespace ModsCommon.UI
             OnSelectObjectsChanged = null;
             base.DeInit();
         }
+        public override string ToString() => $"{base.ToString()}: {string.Join(",", SelectedObjects.Select(i => i.ToString()).ToArray())}";
     }
 }
