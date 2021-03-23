@@ -3,6 +3,7 @@ using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace ModsCommon.UI
         protected override float DefaultHeight => HeaderButton.Size + 10;
 
         protected HeaderContent Content { get; set; }
-        protected UIButton DeleteButton { get; set; }
+        protected CustomUIButton DeleteButton { get; set; }
 
         public HeaderPanel()
         {
@@ -54,7 +55,7 @@ namespace ModsCommon.UI
 
         private void AddDeleteButton()
         {
-            DeleteButton = AddUIComponent<UIButton>();
+            DeleteButton = AddUIComponent<CustomUIButton>();
             DeleteButton.atlas = TextureHelper.CommonAtlas;
             DeleteButton.normalBgSprite = TextureHelper.DeleteNormal;
             DeleteButton.hoveredBgSprite = TextureHelper.DeleteHover;
@@ -65,7 +66,7 @@ namespace ModsCommon.UI
         private void DeleteClick(UIComponent component, UIMouseEventParameter eventParam) => OnDelete?.Invoke();
 
     }
-    public class HeaderContent : UIPanel
+    public class HeaderContent : CustomUIPanel
     {
         public HeaderContent()
         {
@@ -111,7 +112,6 @@ namespace ModsCommon.UI
             base.OnSizeChanged();
             PlaceChildren();
         }
-        public override void PerformLayout() { }
 
         public void PlaceChildren()
         {

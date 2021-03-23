@@ -3,13 +3,14 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class UITextField<ValueType> : UITextField
+    public abstract class UITextField<ValueType> : CustomUITextField
     {
         public event Action<ValueType> OnValueChanged;
 
@@ -56,7 +57,6 @@ namespace ModsCommon.UI
             base.OnSubmit();
             ValueChanged(Value);
         }
-        public override void PerformLayout() { }
 
         public override string ToString() => Value.ToString();
         public static implicit operator ValueType(UITextField<ValueType> field) => field.Value;

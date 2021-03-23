@@ -9,7 +9,7 @@ namespace ModsCommon.UI
 {
     public class ButtonPanel : EditorItem, IReusable
     {
-        protected UIButton Button { get; set; }
+        protected CustomUIButton Button { get; set; }
         private float Height => 20f;
 
         public string Text
@@ -63,7 +63,7 @@ namespace ModsCommon.UI
     public class ButtonsPanel : EditorItem, IReusable
     {
         public event Action<int> OnButtonClick;
-        protected List<UIButton> Buttons { get; } = new List<UIButton>();
+        protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
         public int Count => Buttons.Count;
         private float Space => 10f;
         private float Height => 20f;
@@ -116,7 +116,7 @@ namespace ModsCommon.UI
 
         private void ButtonClick(UIComponent component, UIMouseEventParameter eventParam)
         {
-            if (component is UIButton button)
+            if (component is CustomUIButton button)
             {
                 var index = Buttons.IndexOf(button);
                 if (index != -1)

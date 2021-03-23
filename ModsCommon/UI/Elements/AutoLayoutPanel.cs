@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,7 +14,7 @@ namespace ModsCommon.UI
         public void StopLayout();
         public void StartLayout(bool layoutNow = true);
     }
-    public class UIAutoLayoutPanel : UIPanel, IAutoLayoutPanel
+    public class UIAutoLayoutPanel : CustomUIPanel, IAutoLayoutPanel
     {
         public UIAutoLayoutPanel()
         {
@@ -26,9 +27,8 @@ namespace ModsCommon.UI
             if (layoutNow)
                 Reset();
         }
-        public override void PerformLayout() { }
     }
-    public class UIAutoLayoutScrollablePanel : UIScrollablePanel, IAutoLayoutPanel
+    public class UIAutoLayoutScrollablePanel : CustomUIScrollablePanel, IAutoLayoutPanel
     {
         public UIAutoLayoutScrollablePanel()
         {
@@ -41,9 +41,8 @@ namespace ModsCommon.UI
             if (layoutNow)
                 Reset();
         }
-        public override void PerformLayout() { }
     }
-    public class AdvancedScrollablePanel : UIPanel, IAutoLayoutPanel
+    public class AdvancedScrollablePanel : CustomUIPanel, IAutoLayoutPanel
     {
         public UIAutoLayoutScrollablePanel Content { get; private set; }
         public AdvancedScrollablePanel()
@@ -86,15 +85,12 @@ namespace ModsCommon.UI
 
         protected override void OnSizeChanged()
         {
-            //var swAll = Stopwatch.StartNew();
             base.OnSizeChanged();
             SetContentSize();
-            //UnityEngine.Debug.Log($"Advanced panel {name} content size changed: {swAll.ElapsedTicks}");
         }
 
         private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width :0, 0);
         public void StopLayout() => Content.StopLayout();
         public void StartLayout(bool layoutNow = true) => Content.StartLayout(layoutNow);
-        public override void PerformLayout() { }
     }
 }

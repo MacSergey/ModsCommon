@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class HeaderButton : UIButton
+    public abstract class HeaderButton : CustomUIButton
     {
         public static int Size => IconSize + 2 * IconPadding;
         public static int IconSize => 25;
         public static int IconPadding => 2;
-        public UIButton Icon { get; }
+        public CustomUIButton Icon { get; }
         protected virtual Color32 HoveredColor => new Color32(32, 32, 32, 255);
         protected virtual Color32 PressedColor => Color.black;
 
@@ -37,7 +37,7 @@ namespace ModsCommon.UI
             textHorizontalAlignment = UIHorizontalAlignment.Left;
             minimumSize = size;
 
-            Icon = AddUIComponent<UIButton>();
+            Icon = AddUIComponent<CustomUIButton>();
             Icon.size = new Vector2(IconSize, IconSize);
             Icon.atlas = IconAtlas;
             Icon.relativePosition = new Vector2(IconPadding, IconPadding);

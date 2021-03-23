@@ -19,7 +19,7 @@ namespace ModsCommon.UI
 
         protected abstract string NotSet { get; }
         protected SelectPropertyButton Selector { get; set; }
-        protected UIButton Button { get; set; }
+        protected CustomUIButton Button { get; set; }
         protected abstract float Width { get; }
 
         public abstract Type Value { get; set; }
@@ -47,7 +47,7 @@ namespace ModsCommon.UI
             Selector.textScale = 0.6f;
             Selector.textPadding = new RectOffset(8, 0, 4, 0);
 
-            Button = Selector.AddUIComponent<UIButton>();
+            Button = Selector.AddUIComponent<CustomUIButton>();
             Button.atlas = TextureHelper.InGameAtlas;
             Button.text = string.Empty;
             Button.size = Selector.size;
@@ -183,7 +183,7 @@ namespace ModsCommon.UI
             OnReset?.Invoke((PanelType)this);
         }
     }
-    public class SelectPropertyButton : UIButton
+    public class SelectPropertyButton : CustomUIButton
     {
         public override bool containsFocus => false;
     }

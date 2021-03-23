@@ -9,7 +9,7 @@ namespace ModsCommon.UI
 {
     public abstract class SimpleMessageBox : MessageBoxBase
     {
-        private UILabel Message { get; set; }
+        private CustomUILabel Message { get; set; }
 
         public string MessageText { set => Message.text = value; }
         public float MessageScale { set => Message.textScale = value; }
@@ -21,7 +21,7 @@ namespace ModsCommon.UI
         }
         private void AddMessage()
         {
-            Message = ScrollableContent.AddUIComponent<UILabel>();
+            Message = ScrollableContent.AddUIComponent<CustomUILabel>();
             Message.textAlignment = UIHorizontalAlignment.Center;
             Message.verticalAlignment = UIVerticalAlignment.Middle;
             Message.textScale = 1.1f;
@@ -37,7 +37,7 @@ namespace ModsCommon.UI
 
     public class OneButtonMessageBox : SimpleMessageBox
     {
-        private UIButton Button { get; set; }
+        private CustomUIButton Button { get; set; }
         public Func<bool> OnButtonClick { get; set; }
         public string ButtonText { set => Button.text = value; }
 
@@ -53,8 +53,8 @@ namespace ModsCommon.UI
     }
     public class TwoButtonMessageBox : SimpleMessageBox
     {
-        private UIButton Button1 { get; set; }
-        private UIButton Button2 { get; set; }
+        private CustomUIButton Button1 { get; set; }
+        private CustomUIButton Button2 { get; set; }
         public Func<bool> OnButton1Click { get; set; }
         public Func<bool> OnButton2Click { get; set; }
         public string Button1Text { set => Button1.text = value; }
@@ -77,9 +77,9 @@ namespace ModsCommon.UI
     }
     public class ThreeButtonMessageBox : SimpleMessageBox
     {
-        private UIButton Button1 { get; set; }
-        private UIButton Button2 { get; set; }
-        private UIButton Button3 { get; set; }
+        private CustomUIButton Button1 { get; set; }
+        private CustomUIButton Button2 { get; set; }
+        private CustomUIButton Button3 { get; set; }
         public Func<bool> OnButton1Click { get; set; }
         public Func<bool> OnButton2Click { get; set; }
         public Func<bool> OnButton3Click { get; set; }

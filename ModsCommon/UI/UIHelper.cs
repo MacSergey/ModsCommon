@@ -75,7 +75,7 @@ namespace ModsCommon.UI
 
         public static void AddScrollbar(this UIComponent parent, UIScrollablePanel scrollablePanel)
         {
-            var scrollbar = parent.AddUIComponent<UIScrollbar>();
+            var scrollbar = parent.AddUIComponent<CustomUIScrollbar>();
             scrollbar.orientation = UIOrientation.Vertical;
             scrollbar.pivot = UIPivotPoint.TopLeft;
             scrollbar.minValue = 0;

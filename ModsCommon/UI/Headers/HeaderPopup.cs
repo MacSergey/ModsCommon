@@ -9,10 +9,10 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class PopupPanel : UIPanel
+    public abstract class PopupPanel : CustomUIPanel
     {
         protected virtual Color32 Background => Color.black;
-        public UIScrollablePanel Content { get; private set; }
+        public CustomUIScrollablePanel Content { get; private set; }
         private float Padding => 2f;
 
         private float _width = 250f;
@@ -45,7 +45,7 @@ namespace ModsCommon.UI
 
         private void AddPanel()
         {
-            Content = AddUIComponent<UIScrollablePanel>();
+            Content = AddUIComponent<CustomUIScrollablePanel>();
             Content.autoLayout = true;
             Content.autoLayoutDirection = LayoutDirection.Vertical;
             Content.autoLayoutPadding = new RectOffset(0, 0, 0, 0);

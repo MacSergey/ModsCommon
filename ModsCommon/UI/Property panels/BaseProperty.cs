@@ -12,14 +12,14 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class EditorItem : UIPanel
+    public abstract class EditorItem : CustomUIPanel
     {
         protected virtual float DefaultHeight => 30;
         protected virtual int ItemsPadding => 5;
 
         public virtual bool EnableControl { get; set; } = true;
 
-        private UIPanel Even { get; }
+        private CustomUIPanel Even { get; }
         public virtual bool SupportEven => false;
         public bool IsEven
         {
@@ -29,7 +29,7 @@ namespace ModsCommon.UI
 
         public EditorItem()
         {
-            Even = AddUIComponent<UIPanel>();
+            Even = AddUIComponent<CustomUIPanel>();
             Even.atlas = TextureHelper.CommonAtlas;
             Even.backgroundSprite = TextureHelper.EmptySprite;
             Even.color = new Color32(0, 0, 0, 48);
@@ -58,9 +58,9 @@ namespace ModsCommon.UI
                 return parent.width;
         }
 
-        protected UIButton AddButton(UIComponent parent)
+        protected CustomUIButton AddButton(UIComponent parent)
         {
-            var button = parent.AddUIComponent<UIButton>();
+            var button = parent.AddUIComponent<CustomUIButton>();
             button.SetDefaultStyle();
             return button;
         }
@@ -71,13 +71,11 @@ namespace ModsCommon.UI
             if (Even != null)
                 Even.size = size;
         }
-        public override void PerformLayout() { }
-
         public override string ToString() => name;
     }
     public abstract class EditorPropertyPanel : EditorItem
     {
-        private UILabel Label { get; set; }
+        private CustomUILabel Label { get; set; }
         protected ContentPanel Content { get; set; }
 
         public string Text
@@ -94,7 +92,7 @@ namespace ModsCommon.UI
 
         public EditorPropertyPanel()
         {
-            Label = AddUIComponent<UILabel>();
+            Label = AddUIComponent<CustomUILabel>();
             Label.textScale = 0.8f;
             Label.disabledTextColor = new Color32(160, 160, 160, 255);
             Label.name = nameof(Label);
@@ -127,7 +125,7 @@ namespace ModsCommon.UI
                 Content.Refresh();
         }
 
-        protected class ContentPanel : UIPanel
+        protected class ContentPanel : CustomUIPanel
         {
             public ContentPanel()
             {
@@ -142,7 +140,6 @@ namespace ModsCommon.UI
                 base.OnSizeChanged();
                 Refresh();
             }
-            public override void PerformLayout() { }
             public void Refresh()
             {
                 autoLayout = true;

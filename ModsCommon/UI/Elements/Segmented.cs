@@ -12,7 +12,7 @@ namespace ModsCommon.UI
     {
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
-        protected List<UIButton> Buttons { get; } = new List<UIButton>();
+        protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
         protected virtual int TextPadding => 8;
 
         public UISegmented()
@@ -26,7 +26,7 @@ namespace ModsCommon.UI
         {
             Objects.Add(item);
 
-            var button = AddUIComponent<UIButton>();
+            var button = AddUIComponent<CustomUIButton>();
 
             button.atlas = TextureHelper.CommonAtlas;
             button.text = label ?? item.ToString();
@@ -44,7 +44,7 @@ namespace ModsCommon.UI
             if (last != null)
                 SetSprite(last, IsSelect(Buttons.Count - 2));
         }
-        protected void SetSprite(UIButton button, bool isSelect)
+        protected void SetSprite(CustomUIButton button, bool isSelect)
         {
             var index = Buttons.IndexOf(button);
             var suffix = Suffix(index);

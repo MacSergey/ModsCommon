@@ -10,7 +10,7 @@ namespace NodeMarkup.UI
 {
     public class WhatsNewMessageBox : MessageBoxBase
     {
-        private UIButton OkButton { get; }
+        private CustomUIButton OkButton { get; }
         public Func<bool> OnButtonClick { get; set; }
         public string OkText { set => OkButton.text = value; }
 
@@ -39,15 +39,15 @@ namespace NodeMarkup.UI
             first.IsMinimize = false;
         }
 
-        public class VersionMessage : UIPanel
+        public class VersionMessage : CustomUIPanel
         {
             public bool IsMinimize
             {
                 get => !Message.isVisible;
                 set => Message.isVisible = !value;
             }
-            UIButton Button { get; set; }
-            UILabel Message { get; set; }
+            CustomUIButton Button { get; set; }
+            CustomUILabel Message { get; set; }
             string Label { get; set; }
             public VersionMessage()
             {
@@ -62,7 +62,7 @@ namespace NodeMarkup.UI
 
             public void AddButton()
             {
-                Button = AddUIComponent<UIButton>();
+                Button = AddUIComponent<CustomUIButton>();
                 Button.height = 20;
                 Button.horizontalAlignment = UIHorizontalAlignment.Left;
                 Button.color = Color.white;
@@ -72,7 +72,7 @@ namespace NodeMarkup.UI
 
             public void AddText()
             {
-                Message = AddUIComponent<UILabel>();
+                Message = AddUIComponent<CustomUILabel>();
                 Message.textAlignment = UIHorizontalAlignment.Left;
                 Message.verticalAlignment = UIVerticalAlignment.Middle;
                 Message.textScale = 0.8f;
@@ -106,7 +106,7 @@ namespace NodeMarkup.UI
     }
     public class BetaWhatsNewMessageBox : WhatsNewMessageBox
     {
-        private UIButton GetStableButton { get; }
+        private CustomUIButton GetStableButton { get; }
         public Func<bool> OnGetStableClick { get; set; }
         public string GetStableText { set => GetStableButton.text = value; }
 
@@ -123,7 +123,7 @@ namespace NodeMarkup.UI
 
         public void Init(Dictionary<Version, string> messages, string betaText, Func<Version, string> toString = null)
         {
-            var betaMessage = ScrollableContent.AddUIComponent<UILabel>();
+            var betaMessage = ScrollableContent.AddUIComponent<CustomUILabel>();
             betaMessage.wordWrap = true;
             betaMessage.autoHeight = true;
             betaMessage.textColor = Color.red;

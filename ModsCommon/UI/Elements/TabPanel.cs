@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class TabStrip<TabType> : UIPanel
+    public abstract class TabStrip<TabType> : CustomUIPanel
         where TabType : Tab
     {
         public Action<int> SelectedTabChanged;
@@ -219,7 +219,7 @@ namespace ModsCommon.UI
             tabButton.hoveredBgSprite = TextureHelper.TabHover;
         }
     }
-    public class Tab : UIButton 
+    public class Tab : CustomUIButton
     {
         public bool Hovered => m_IsMouseHovering;
     }

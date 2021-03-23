@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class MessageBoxBase : UIPanel
+    public abstract class MessageBoxBase : CustomUIPanel
     {
         public static float DefaultWidth => 573f;
         public static float DefaultHeight => 200f;
@@ -77,10 +77,10 @@ namespace ModsCommon.UI
 
         public string CaptionText { set => Caption.text = value; }
 
-        private UILabel Caption { get; set; }
-        protected UIPanel ButtonPanel { get; private set; }
+        private CustomUILabel Caption { get; set; }
+        protected CustomUIPanel ButtonPanel { get; private set; }
         protected ScrollableContent ScrollableContent { get; private set; }
-        private UIDragHandle Handle { get; set; }
+        private CustomUIDragHandle Handle { get; set; }
 
         public MessageBoxBase()
         {
@@ -118,7 +118,7 @@ namespace ModsCommon.UI
 
         private void AddHandle()
         {
-            Handle = AddUIComponent<UIDragHandle>();
+            Handle = AddUIComponent<CustomUIDragHandle>();
             Handle.size = new Vector2(DefaultWidth, 42);
             Handle.relativePosition = new Vector2(0, 0);
             Handle.eventSizeChanged += (component, size) =>
@@ -127,14 +127,14 @@ namespace ModsCommon.UI
                 Caption.CenterToParent();
             };
 
-            Caption = Handle.AddUIComponent<UILabel>();
+            Caption = Handle.AddUIComponent<CustomUILabel>();
             Caption.textAlignment = UIHorizontalAlignment.Center;
             Caption.textScale = 1.3f;
             Caption.anchor = UIAnchorStyle.Top;
 
             Caption.eventTextChanged += (component, text) => Caption.CenterToParent();
 
-            var cancel = Handle.AddUIComponent<UIButton>();
+            var cancel = Handle.AddUIComponent<CustomUIButton>();
             cancel.normalBgSprite = "buttonclose";
             cancel.hoveredBgSprite = "buttonclosehover";
             cancel.pressedBgSprite = "buttonclosepressed";
@@ -165,12 +165,13 @@ namespace ModsCommon.UI
         protected virtual void FillContent() { }
         private void AddButtonPanel()
         {
-            ButtonPanel = AddUIComponent<UIPanel>();
+            ButtonPanel = AddUIComponent<CustomUIPanel>();
             ButtonPanel.size = new Vector2(DefaultWidth, ButtonHeight + 10);
         }
-        protected UIButton AddButton(int num, int from, Action action)
+
+        protected CustomUIButton AddButton(int num, int from, Action action)
         {
-            var button = ButtonPanel.AddUIComponent<UIButton>();
+            var button = ButtonPanel.AddUIComponent<CustomUIButton>();
             button.normalBgSprite = "ButtonMenu";
             button.hoveredTextColor = new Color32(7, 132, 255, 255);
             button.pressedTextColor = new Color32(30, 30, 44, 255);
@@ -185,7 +186,7 @@ namespace ModsCommon.UI
         }
         private static float Space => 25f;
         public static int DefaultButton { get; set; } = 1;
-        protected void ChangeButton(UIButton button, int i, int from, float? positionRatio = null, float? widthRatio = null)
+        protected void ChangeButton(CustomUIButton button, int i, int from, float? positionRatio = null, float? widthRatio = null)
         {
             var width = this.width - (Space * 2 + Space / 2 * (from - 1));
             button.size = new Vector2(width * (widthRatio ?? 1f / from), ButtonHeight);
@@ -193,7 +194,7 @@ namespace ModsCommon.UI
         }
         public void SetButtonsRatio(params int[] ratio)
         {
-            var buttons = ButtonPanel.components.OfType<UIButton>().ToArray();
+            var buttons = ButtonPanel.components.OfType<CustomUIButton>().ToArray();
             if (buttons.Length == 0)
                 return;
 
@@ -221,7 +222,7 @@ namespace ModsCommon.UI
                 }
                 else if (p.keycode == KeyCode.Return)
                 {
-                    if (ButtonPanel.components.OfType<UIButton>().Skip(DefaultButton - 1).FirstOrDefault() is UIButton button)
+                    if (ButtonPanel.components.OfType<CustomUIButton>().Skip(DefaultButton - 1).FirstOrDefault() is CustomUIButton button)
                         button.SimulateClick();
                     p.Use();
                 }
@@ -236,7 +237,7 @@ namespace ModsCommon.UI
             relativePosition = new Vector3((view.fixedWidth - width) / 2, (view.fixedHeight - height) / 2);
         }
     }
-    public class ScrollableContent : UIScrollablePanel
+    public class ScrollableContent : CustomUIScrollablePanel
     {
         protected override void OnSizeChanged()
         {

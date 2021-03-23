@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class UIDropDown<ValueType> : UIDropDown, IUIOnceSelector<ValueType>
+    public abstract class UIDropDown<ValueType> : CustomUIDropDown, IUIOnceSelector<ValueType>
     {
         public event Action<ValueType> OnSelectObjectChanged;
 
@@ -70,7 +70,7 @@ namespace ModsCommon.UI
             horizontalAlignment = UIHorizontalAlignment.Left;
             itemPadding = new RectOffset(14, 0, 5, 0);
 
-            var button = AddUIComponent<UIButton>();
+            var button = AddUIComponent<CustomUIButton>();
             button.atlas = TextureHelper.InGameAtlas;
             button.text = string.Empty;
             button.relativePosition = new Vector3(0f, 0f);

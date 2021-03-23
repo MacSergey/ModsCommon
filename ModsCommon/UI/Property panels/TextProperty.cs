@@ -14,8 +14,8 @@ namespace ModsCommon.UI
         protected static Color32 ErrorColor { get; } = new Color32(253, 77, 60, 255);
         protected static Color32 WarningColor { get; } = new Color32(253, 150, 62, 255);
 
-        private UIPanel Panel { get; set; }
-        private UILabel Label { get; set; }
+        private CustomUIPanel Panel { get; set; }
+        private CustomUILabel Label { get; set; }
         protected virtual Color32 Color { get; } = UnityEngine.Color.white;
 
         public string Text
@@ -31,7 +31,7 @@ namespace ModsCommon.UI
 
         public TextProperty()
         {
-            Panel = AddUIComponent<UIPanel>();
+            Panel = AddUIComponent<CustomUIPanel>();
             Panel.relativePosition = new Vector2(ItemsPadding, ItemsPadding);
             Panel.atlas = TextureHelper.InGameAtlas;
             Panel.backgroundSprite = "ButtonWhite";
@@ -40,7 +40,7 @@ namespace ModsCommon.UI
             Panel.autoFitChildrenVertically = true;
             Panel.eventSizeChanged += PanelSizeChanged;
 
-            Label = Panel.AddUIComponent<UILabel>();
+            Label = Panel.AddUIComponent<CustomUILabel>();
             Label.textScale = 0.7f;
             Label.autoSize = false;
             Label.autoHeight = true;
