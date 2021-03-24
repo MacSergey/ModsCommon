@@ -10,8 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Logger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mod.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Patcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BaseMod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BasePatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\ComponentPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\AutoLayoutPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\CustomElements.cs" />

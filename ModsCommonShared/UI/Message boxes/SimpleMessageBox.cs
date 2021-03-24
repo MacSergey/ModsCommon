@@ -15,13 +15,9 @@ namespace ModsCommon.UI
         public float MessageScale { set => Message.textScale = value; }
         public UIHorizontalAlignment TextAlignment { set => Message.textAlignment = value; }
 
-        protected override void FillContent()
+        public SimpleMessageBox()
         {
-            AddMessage();
-        }
-        private void AddMessage()
-        {
-            Message = ScrollableContent.AddUIComponent<CustomUILabel>();
+            Message = Panel.Content.AddUIComponent<CustomUILabel>();
             Message.textAlignment = UIHorizontalAlignment.Center;
             Message.verticalAlignment = UIVerticalAlignment.Middle;
             Message.textScale = 1.1f;
@@ -37,13 +33,13 @@ namespace ModsCommon.UI
 
     public class OneButtonMessageBox : SimpleMessageBox
     {
-        private CustomUIButton Button { get; set; }
+        protected CustomUIButton Button { get; set; }
         public Func<bool> OnButtonClick { get; set; }
         public string ButtonText { set => Button.text = value; }
 
         public OneButtonMessageBox()
         {
-            Button = AddButton(1, 1, ButtonClick);
+            Button = AddButton(ButtonClick);
         }
         protected virtual void ButtonClick()
         {
@@ -51,23 +47,20 @@ namespace ModsCommon.UI
                 Close();
         }
     }
-    public class TwoButtonMessageBox : SimpleMessageBox
+    public class TwoButtonMessageBox : OneButtonMessageBox
     {
-        private CustomUIButton Button1 { get; set; }
-        private CustomUIButton Button2 { get; set; }
-        public Func<bool> OnButton1Click { get; set; }
+        private new CustomUIButton Button { get; set; }
+        private new Func<bool> OnButtonClick { get; set; }
+
+        protected CustomUIButton Button1 { get => base.Button; set => base.Button = value; }
+        protected CustomUIButton Button2 { get; set; }
+        public Func<bool> OnButton1Click { get => base.OnButtonClick; set => base.OnButtonClick = value; }
         public Func<bool> OnButton2Click { get; set; }
         public string Button1Text { set => Button1.text = value; }
         public string Button2Text { set => Button2.text = value; }
         public TwoButtonMessageBox()
         {
-            Button1 = AddButton(1, 2, Button1Click);
-            Button2 = AddButton(2, 2, Button2Click);
-        }
-        protected virtual void Button1Click()
-        {
-            if (OnButton1Click?.Invoke() != false)
-                Close();
+            Button2 = AddButton(Button2Click);
         }
         protected virtual void Button2Click()
         {
@@ -75,32 +68,14 @@ namespace ModsCommon.UI
                 Close();
         }
     }
-    public class ThreeButtonMessageBox : SimpleMessageBox
+    public class ThreeButtonMessageBox : TwoButtonMessageBox
     {
-        private CustomUIButton Button1 { get; set; }
-        private CustomUIButton Button2 { get; set; }
-        private CustomUIButton Button3 { get; set; }
-        public Func<bool> OnButton1Click { get; set; }
-        public Func<bool> OnButton2Click { get; set; }
+        protected CustomUIButton Button3 { get; set; }
         public Func<bool> OnButton3Click { get; set; }
-        public string Button1Text { set => Button1.text = value; }
-        public string Button2Text { set => Button2.text = value; }
         public string Button3Text { set => Button3.text = value; }
         public ThreeButtonMessageBox()
         {
-            Button1 = AddButton(1, 3, Button1Click);
-            Button2 = AddButton(2, 3, Button2Click);
-            Button3 = AddButton(3, 3, Button3Click);
-        }
-        protected virtual void Button1Click()
-        {
-            if (OnButton1Click?.Invoke() != false)
-                Close();
-        }
-        protected virtual void Button2Click()
-        {
-            if (OnButton2Click?.Invoke() != false)
-                Close();
+            Button3 = AddButton(Button3Click);
         }
         protected virtual void Button3Click()
         {

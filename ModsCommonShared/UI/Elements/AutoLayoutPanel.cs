@@ -42,17 +42,13 @@ namespace ModsCommon.UI
                 Reset();
         }
     }
-    public class AdvancedScrollablePanel : CustomUIPanel, IAutoLayoutPanel
+    public abstract class BaseAdvancedScrollablePanel<TypeContent> : CustomUIPanel, IAutoLayoutPanel
+        where TypeContent : UIAutoLayoutScrollablePanel
     {
-        public UIAutoLayoutScrollablePanel Content { get; private set; }
-        public AdvancedScrollablePanel()
+        public TypeContent Content { get; private set; }
+        public BaseAdvancedScrollablePanel()
         {
-            AddPanel();
-        }
-
-        private void AddPanel()
-        {
-            Content = AddUIComponent<UIAutoLayoutScrollablePanel>();
+            Content = AddUIComponent<TypeContent>();
 
             Content.autoLayoutDirection = LayoutDirection.Vertical;
             Content.scrollWheelDirection = UIOrientation.Vertical;
@@ -65,7 +61,6 @@ namespace ModsCommon.UI
             Content.eventSizeChanged += ContentSizeChanged;
             Content.verticalScrollbar.eventVisibilityChanged += ScrollbarVisibilityChanged;
         }
-
         private void ContentSizeChanged(UIComponent component, Vector2 value)
         {
             foreach (var item in Content.components)
@@ -92,5 +87,52 @@ namespace ModsCommon.UI
         private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width :0, 0);
         public void StopLayout() => Content.StopLayout();
         public void StartLayout(bool layoutNow = true) => Content.StartLayout(layoutNow);
+    }
+
+    public class AdvancedScrollablePanel : BaseAdvancedScrollablePanel<UIAutoLayoutScrollablePanel> { }
+    public class AutoSizeAdvancedScrollablePanel : BaseAdvancedScrollablePanel<AutoSizeAdvancedScrollablePanel.AutoSizeScrollablePanel>
+    {
+        public Vector2 MaxSize
+        {
+            get => maximumSize;
+            set
+            {
+                maximumSize = value;
+                Content.maximumSize = value;
+            }
+        }
+
+        //public AutoSizeAdvancedScrollablePanel()
+        //{
+        //    autoFitChildrenVertically = true;
+        //}
+
+        public class AutoSizeScrollablePanel : UIAutoLayoutScrollablePanel
+        {
+            protected override void OnComponentAdded(UIComponent child)
+            {
+                base.OnComponentAdded(child);
+
+                child.eventVisibilityChanged += OnChildVisibilityChanged;
+                child.eventSizeChanged += OnChildSizeChanged;
+            }
+
+            protected override void OnComponentRemoved(UIComponent child)
+            {
+                base.OnComponentRemoved(child);
+
+                child.eventVisibilityChanged -= OnChildVisibilityChanged;
+                child.eventSizeChanged -= OnChildSizeChanged;
+            }
+
+            private void OnChildVisibilityChanged(UIComponent component, bool value) => FitContentChildren();
+            private void OnChildSizeChanged(UIComponent component, Vector2 value) => FitContentChildren();
+
+            private void FitContentChildren()
+            {
+                FitChildrenVertically();             
+                parent.height = height;
+            }
+        }
     }
 }

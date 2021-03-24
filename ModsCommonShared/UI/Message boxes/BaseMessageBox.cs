@@ -12,13 +12,14 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class MessageBoxBase : CustomUIPanel
+    public abstract class MessageBoxBase : CustomUIPanel, IAutoLayoutPanel
     {
         public static float DefaultWidth => 573f;
         public static float DefaultHeight => 200f;
         public static float ButtonHeight => 47f;
         public static int Padding => 16;
         public static float MaxContentHeight => 500f;
+        private static float ButtonsSpace => 25f;
 
         public static T ShowModal<T>()
         where T : MessageBoxBase
@@ -75,12 +76,16 @@ namespace ModsCommon.UI
             Destroy(messageBox.gameObject);
         }
 
-        public string CaptionText { set => Caption.text = value; }
-
+        private CustomUIDragHandle Header { get; set; }
         private CustomUILabel Caption { get; set; }
-        protected CustomUIPanel ButtonPanel { get; private set; }
-        protected ScrollableContent ScrollableContent { get; private set; }
-        private CustomUIDragHandle Handle { get; set; }
+        protected AutoSizeAdvancedScrollablePanel Panel { get; set; }
+        private CustomUIPanel ButtonPanel { get; set; }
+
+        private List<uint> ButtonsRatio { get; } = new List<uint>();
+        public string CaptionText { set => Caption.text = value; }
+        public int DefaultButton { get; set; } = 1;
+
+        #region CONSTRUCTOR
 
         public MessageBoxBase()
         {
@@ -92,14 +97,55 @@ namespace ModsCommon.UI
             color = new Color32(58, 88, 104, 255);
             backgroundSprite = "MenuPanel";
 
-            AddHandle();
-            AddPanel();
-            FillContent();
+            AddHeader();
+            AddContent();
             AddButtonPanel();
-            Init();
 
-            ScrollableContent.eventSizeChanged += ContentSizeChanged;
+            SetSize();
         }
+        private void AddHeader()
+        {
+            Header = AddUIComponent<CustomUIDragHandle>();
+            Header.size = new Vector2(DefaultWidth, 42);
+            Header.relativePosition = new Vector2(0, 0);
+            Header.eventSizeChanged += (component, size) =>
+            {
+                Caption.size = size;
+                Caption.CenterToParent();
+            };
+
+            Caption = Header.AddUIComponent<CustomUILabel>();
+            Caption.textAlignment = UIHorizontalAlignment.Center;
+            Caption.textScale = 1.3f;
+            Caption.anchor = UIAnchorStyle.Top;
+
+            Caption.eventTextChanged += (component, text) => Caption.CenterToParent();
+
+            var cancel = Header.AddUIComponent<CustomUIButton>();
+            cancel.normalBgSprite = "buttonclose";
+            cancel.hoveredBgSprite = "buttonclosehover";
+            cancel.pressedBgSprite = "buttonclosepressed";
+            cancel.size = new Vector2(32, 32);
+            cancel.relativePosition = new Vector2(527, 4);
+            cancel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => Close();
+        }
+        private void AddContent()
+        {
+            Panel = AddUIComponent<AutoSizeAdvancedScrollablePanel>();
+            Panel.MaxSize = new Vector2(DefaultWidth, MaxContentHeight);
+            Panel.relativePosition = new Vector2(0, Header.height);
+            Panel.Content.autoLayoutPadding = new RectOffset(Padding, Padding, 0, 0);
+            Panel.eventSizeChanged += ContentSizeChanged;
+        }
+        private void AddButtonPanel()
+        {
+            ButtonPanel = AddUIComponent<CustomUIPanel>();
+            ButtonPanel.size = new Vector2(DefaultWidth, ButtonHeight + 10);
+        }
+
+        #endregion
+
+        #region EVENTS
 
         private Vector2 SizeBefore { get; set; } = new Vector2();
         protected override void OnSizeChanged()
@@ -116,60 +162,18 @@ namespace ModsCommon.UI
             relativePosition = new Vector2(x, y);
         }
 
-        private void AddHandle()
+        private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
+        private void SetSize()
         {
-            Handle = AddUIComponent<CustomUIDragHandle>();
-            Handle.size = new Vector2(DefaultWidth, 42);
-            Handle.relativePosition = new Vector2(0, 0);
-            Handle.eventSizeChanged += (component, size) =>
-            {
-                Caption.size = size;
-                Caption.CenterToParent();
-            };
-
-            Caption = Handle.AddUIComponent<CustomUILabel>();
-            Caption.textAlignment = UIHorizontalAlignment.Center;
-            Caption.textScale = 1.3f;
-            Caption.anchor = UIAnchorStyle.Top;
-
-            Caption.eventTextChanged += (component, text) => Caption.CenterToParent();
-
-            var cancel = Handle.AddUIComponent<CustomUIButton>();
-            cancel.normalBgSprite = "buttonclose";
-            cancel.hoveredBgSprite = "buttonclosehover";
-            cancel.pressedBgSprite = "buttonclosepressed";
-            cancel.size = new Vector2(32, 32);
-            cancel.relativePosition = new Vector2(527, 4);
-            cancel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => Close();
-        }
-        private void AddPanel()
-        {
-            ScrollableContent = AddUIComponent<ScrollableContent>();
-            ScrollableContent.width = DefaultWidth;
-            ScrollableContent.autoLayout = true;
-            ScrollableContent.autoLayoutDirection = LayoutDirection.Vertical;
-            ScrollableContent.autoLayoutPadding = new RectOffset(Padding, Padding, 0, 0);
-            ScrollableContent.clipChildren = true;
-            ScrollableContent.builtinKeyNavigation = true;
-            ScrollableContent.scrollWheelDirection = UIOrientation.Vertical;
-            ScrollableContent.maximumSize = new Vector2(DefaultWidth, MaxContentHeight);
-            this.AddScrollbar(ScrollableContent);
-        }
-        private void ContentSizeChanged(UIComponent component, Vector2 value) => Init();
-        private void Init()
-        {
-            height = Mathf.Floor(Handle.height + ScrollableContent.height + ButtonPanel.height + Padding);
-            ScrollableContent.relativePosition = new Vector2(0, Handle.height);
-            ButtonPanel.relativePosition = new Vector2(0, Handle.height + ScrollableContent.height + Padding);
-        }
-        protected virtual void FillContent() { }
-        private void AddButtonPanel()
-        {
-            ButtonPanel = AddUIComponent<CustomUIPanel>();
-            ButtonPanel.size = new Vector2(DefaultWidth, ButtonHeight + 10);
+            height = Mathf.Floor(Header.height + Panel.height + ButtonPanel.height + Padding);
+            ButtonPanel.relativePosition = new Vector2(0, Header.height + Panel.height + Padding);
         }
 
-        protected CustomUIButton AddButton(int num, int from, Action action)
+        #endregion
+
+        #region BUTTONS
+
+        protected CustomUIButton AddButton(Action action, uint ratio = 1)
         {
             var button = ButtonPanel.AddUIComponent<CustomUIButton>();
             button.normalBgSprite = "ButtonMenu";
@@ -180,36 +184,35 @@ namespace ModsCommon.UI
             button.verticalAlignment = UIVerticalAlignment.Middle;
             button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => action?.Invoke();
 
-            ChangeButton(button, num, from);
+            ButtonsRatio.Add(Math.Max(ratio, 1));
+            ChangeButtons();
 
             return button;
         }
-        private static float Space => 25f;
-        public static int DefaultButton { get; set; } = 1;
-        protected void ChangeButton(CustomUIButton button, int i, int from, float? positionRatio = null, float? widthRatio = null)
+        public void SetButtonsRatio(params uint[] ratio)
         {
-            var width = this.width - (Space * 2 + Space / 2 * (from - 1));
-            button.size = new Vector2(width * (widthRatio ?? 1f / from), ButtonHeight);
-            button.relativePosition = new Vector2(Space * (0.5f + i / 2f) + width * (positionRatio ?? 1f / from * (i - 1)), 0);
+            for (var i = 0; i < ButtonsRatio.Count; i += 1)
+                ButtonsRatio[i] = i < ratio.Length ? Math.Max(ratio[i], 1) : 1;
+
+            ChangeButtons();
         }
-        public void SetButtonsRatio(params int[] ratio)
+        public void ChangeButtons()
         {
+            var sum = 0u;
+            var before = ButtonsRatio.Select(i => (sum += i) - i).ToArray();
+
             var buttons = ButtonPanel.components.OfType<CustomUIButton>().ToArray();
-            if (buttons.Length == 0)
-                return;
-
-            var sum = 0;
-            var resultRatio = new int[buttons.Length];
             for (var i = 0; i < buttons.Length; i += 1)
-                sum += resultRatio[i] = (i < ratio.Length ? ratio[i] : 1);
-
-            var before = 0;
-            for (var i = 0; i < buttons.Length; i += 1)
-            {
-                ChangeButton(buttons[i], i + 1, buttons.Length, (float)before / sum, (float)resultRatio[i] / sum);
-                before += resultRatio[i];
-            }
+                ChangeButton(buttons[i], i + 1, buttons.Length, (float)before[i] / sum, (float)ButtonsRatio[i] / sum);
         }
+        private void ChangeButton(CustomUIButton button, int i, int from, float? positionRatio = null, float? widthRatio = null)
+        {
+            var width = this.width - (ButtonsSpace * 2 + ButtonsSpace / 2 * (from - 1));
+            button.size = new Vector2(width * (widthRatio ?? 1f / from), ButtonHeight);
+            button.relativePosition = new Vector2(ButtonsSpace * (0.5f + i / 2f) + width * (positionRatio ?? 1f / from * (i - 1)), 0);
+        }
+
+        #endregion
 
         protected override void OnKeyDown(UIKeyEventParameter p)
         {
@@ -230,46 +233,98 @@ namespace ModsCommon.UI
         }
 
         protected virtual void Close() => HideModal(this);
+        public void StopLayout() => Panel.StopLayout();
+        public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
 
-        public void ToScreenCenter()
-        {
-            var view = GetUIView();
-            relativePosition = new Vector3((view.fixedWidth - width) / 2, (view.fixedHeight - height) / 2);
-        }
+
+
+        //public MessageBoxBase()
+        //{
+        //    isVisible = true;
+        //    canFocus = true;
+        //    isInteractive = true;
+        //    relativePosition = new Vector3((GetUIView().fixedWidth - width) / 2, (GetUIView().fixedHeight - height) / 2);
+        //    size = new Vector2(DefaultWidth, DefaultHeight);
+        //    color = new Color32(58, 88, 104, 255);
+        //    backgroundSprite = "MenuPanel";
+
+        //    AddHandle();
+        //    AddPanel();
+        //    FillContent();
+        //    AddButtonPanel();
+        //    Init();
+
+        //    ScrollableContent.eventSizeChanged += ContentSizeChanged;
+        //}
+
+
+
+
+        //private void AddPanel()
+        //{
+        //    ScrollableContent = AddUIComponent<ScrollableContent>();
+        //    ScrollableContent.width = DefaultWidth;
+        //    ScrollableContent.autoLayout = true;
+        //    ScrollableContent.autoLayoutDirection = LayoutDirection.Vertical;
+        //    ScrollableContent.autoLayoutPadding = new RectOffset(Padding, Padding, 0, 0);
+        //    ScrollableContent.clipChildren = true;
+        //    ScrollableContent.builtinKeyNavigation = true;
+        //    ScrollableContent.scrollWheelDirection = UIOrientation.Vertical;
+        //    ScrollableContent.maximumSize = new Vector2(DefaultWidth, MaxContentHeight);
+        //    this.AddScrollbar(ScrollableContent);
+        //}
+        //private void ContentSizeChanged(UIComponent component, Vector2 value) => Init();
+        //private void Init()
+        //{
+        //    height = Mathf.Floor(Handle.height + ScrollableContent.height + ButtonPanel.height + Padding);
+        //    ScrollableContent.relativePosition = new Vector2(0, Handle.height);
+        //    ButtonPanel.relativePosition = new Vector2(0, Handle.height + ScrollableContent.height + Padding);
+        //}
+        //protected virtual void FillContent() { }
+
+
+
+       
+
+        //public void ToScreenCenter()
+        //{
+        //    var view = GetUIView();
+        //    relativePosition = new Vector3((view.fixedWidth - width) / 2, (view.fixedHeight - height) / 2);
+        //}
     }
-    public class ScrollableContent : CustomUIScrollablePanel
-    {
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
+    //public class ScrollableContent : CustomUIScrollablePanel
+    //{
+    //    protected override void OnSizeChanged()
+    //    {
+    //        base.OnSizeChanged();
 
-            foreach (var item in components)
-                item.width = width - 2 * MessageBoxBase.Padding;
-        }
+    //        foreach (var item in components)
+    //            item.width = width - 2 * MessageBoxBase.Padding;
+    //    }
 
-        protected override void OnComponentAdded(UIComponent child)
-        {
-            base.OnComponentAdded(child);
+    //    protected override void OnComponentAdded(UIComponent child)
+    //    {
+    //        base.OnComponentAdded(child);
 
-            child.eventVisibilityChanged += OnChildVisibilityChanged;
-            child.eventSizeChanged += OnChildSizeChanged;
-        }
+    //        child.eventVisibilityChanged += OnChildVisibilityChanged;
+    //        child.eventSizeChanged += OnChildSizeChanged;
+    //    }
 
-        protected override void OnComponentRemoved(UIComponent child)
-        {
-            base.OnComponentRemoved(child);
+    //    protected override void OnComponentRemoved(UIComponent child)
+    //    {
+    //        base.OnComponentRemoved(child);
 
-            child.eventVisibilityChanged -= OnChildVisibilityChanged;
-            child.eventSizeChanged -= OnChildSizeChanged;
-        }
+    //        child.eventVisibilityChanged -= OnChildVisibilityChanged;
+    //        child.eventSizeChanged -= OnChildSizeChanged;
+    //    }
 
-        private void OnChildVisibilityChanged(UIComponent component, bool value) => FitContentChildren();
-        private void OnChildSizeChanged(UIComponent component, Vector2 value) => FitContentChildren();
+    //    private void OnChildVisibilityChanged(UIComponent component, bool value) => FitContentChildren();
+    //    private void OnChildSizeChanged(UIComponent component, Vector2 value) => FitContentChildren();
 
-        private void FitContentChildren()
-        {
-            FitChildrenVertically();
-            width = verticalScrollbar?.isVisible == true ? MessageBoxBase.DefaultWidth - verticalScrollbar.width - 3 : MessageBoxBase.DefaultWidth;
-        }
-    }
+    //    private void FitContentChildren()
+    //    {
+    //        FitChildrenVertically();
+    //        width = verticalScrollbar?.isVisible == true ? MessageBoxBase.DefaultWidth - verticalScrollbar.width - 3 : MessageBoxBase.DefaultWidth;
+    //    }
+    //}
 }

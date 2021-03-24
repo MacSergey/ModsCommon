@@ -11,10 +11,9 @@ using System.Text;
 
 namespace ModsCommon
 {
-    public abstract class BaseMod<ModType> : IUserMod
-        where ModType : BaseMod<ModType>
+    public abstract class BaseMod : IUserMod
     {
-        public static ModType Instance { get; protected set; }
+        public static BaseMod Instance { get; protected set; }
         public static Logger Logger => Instance.ModLogger;
         public static Version Version => Instance.ModVersion;
         public static string VersionString => Instance.ModVersionString;
@@ -55,7 +54,7 @@ namespace ModsCommon
 
         public BaseMod()
         {
-            Instance = (ModType)this;
+            Instance = this;
             ModLogger = new Logger(Id);
         }
         public virtual void OnEnabled()
@@ -91,16 +90,14 @@ namespace ModsCommon
         }
         public virtual void OnLoadedError() { }
     }
-    public abstract class BasePatcherMod<ModType, PatcherType> : BaseMod<ModType>
-        where ModType : BaseMod<ModType>
-        where PatcherType : Patcher<ModType>
+    public abstract class BasePatcherMod : BaseMod
     {
         protected override bool LoadSuccess
         {
             get => base.LoadSuccess && Patcher.Success;
             set => base.LoadSuccess = value;
         }
-        protected PatcherType Patcher { get; private set; }
+        protected BasePatcher Patcher { get; private set; }
 
         public override void OnEnabled()
         {
@@ -126,6 +123,6 @@ namespace ModsCommon
             try { Patcher.Unpatch(); }
             catch (Exception error) { ModLogger.Error("Unpatch failed", error); }
         }
-        protected abstract PatcherType CreatePatcher();
+        protected abstract BasePatcher CreatePatcher();
     }
 }

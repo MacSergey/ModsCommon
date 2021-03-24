@@ -9,14 +9,13 @@ using System.Text;
 
 namespace ModsCommon
 {
-    public abstract class Patcher<ModType>
-        where ModType : BaseMod<ModType>
+    public abstract class BasePatcher
     {
-        private BaseMod<ModType> Mod { get; }
-        protected object Harmony => new Harmony(BaseMod<ModType>.Id);
+        private BaseMod Mod { get; }
+        protected object Harmony => new Harmony(BaseMod.Id);
         public bool Success { get; private set; }
 
-        public Patcher(BaseMod<ModType> mod)
+        public BasePatcher(BaseMod mod)
         {
             Mod = mod;
         }
@@ -41,7 +40,7 @@ namespace ModsCommon
             try { Success = PatchProcess(); }
             catch { Success = false; }
 
-            BaseMod<ModType>.Instance.CheckLoadedError();
+            BaseMod.Instance.CheckLoadedError();
             Mod.ModLogger.Debug(Success ? "Patch success" : "Patch Filed");
         }
         protected abstract bool PatchProcess();

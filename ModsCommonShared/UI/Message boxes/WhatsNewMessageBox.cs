@@ -16,7 +16,7 @@ namespace NodeMarkup.UI
 
         public WhatsNewMessageBox()
         {
-            OkButton = AddButton(1, 1, OkClick);
+            OkButton = AddButton(OkClick);
         }
         protected virtual void OkClick()
         {
@@ -26,17 +26,21 @@ namespace NodeMarkup.UI
 
         public virtual void Init(Dictionary<Version, string> messages, Func<Version, string> toString = null)
         {
+            StopLayout();
+
             var first = default(VersionMessage);
             foreach (var message in messages)
             {
-                var versionMessage = ScrollableContent.AddUIComponent<VersionMessage>();
-                versionMessage.width = ScrollableContent.width;
+                var versionMessage = Panel.Content.AddUIComponent<VersionMessage>();
+                //versionMessage.width = ScrollableContent.width;
                 versionMessage.Init(toString?.Invoke(message.Key) ?? message.Key.ToString(), message.Value);
 
                 if (first == null)
                     first = versionMessage;
             }
             first.IsMinimize = false;
+
+            StartLayout();
         }
 
         public class VersionMessage : CustomUIPanel
@@ -54,7 +58,7 @@ namespace NodeMarkup.UI
                 autoLayout = true;
                 autoLayoutDirection = LayoutDirection.Vertical;
                 autoFitChildrenVertically = true;
-                autoLayoutPadding = new RectOffset(0, 0, (int)Padding / 2, (int)Padding / 2);
+                autoLayoutPadding = new RectOffset(0, 0, Padding / 2, Padding / 2);
 
                 AddButton();
                 AddText();
@@ -79,8 +83,6 @@ namespace NodeMarkup.UI
                 Message.wordWrap = true;
                 Message.autoHeight = true;
                 Message.relativePosition = new Vector3(17, 7);
-                Message.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.CenterVertical;
-                Message.eventTextChanged += (UIComponent component, string value) => Message.PerformLayout();
                 Message.eventVisibilityChanged += (UIComponent component, bool value) => SetLabel();
             }
 
@@ -112,8 +114,7 @@ namespace NodeMarkup.UI
 
         public BetaWhatsNewMessageBox()
         {
-            GetStableButton = AddButton(1, 1, OnGetStable);
-            SetButtonsRatio(1, 2);
+            GetStableButton = AddButton(OnGetStable, 2);
         }
         private void OnGetStable()
         {
@@ -123,7 +124,7 @@ namespace NodeMarkup.UI
 
         public void Init(Dictionary<Version, string> messages, string betaText, Func<Version, string> toString = null)
         {
-            var betaMessage = ScrollableContent.AddUIComponent<CustomUILabel>();
+            var betaMessage = Panel.Content.AddUIComponent<CustomUILabel>();
             betaMessage.wordWrap = true;
             betaMessage.autoHeight = true;
             betaMessage.textColor = Color.red;
