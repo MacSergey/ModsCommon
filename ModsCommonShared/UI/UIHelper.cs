@@ -3,7 +3,6 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -24,10 +23,10 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public static bool FindComponent<T>(string name, out T component, UIComponent parent = null, FindOptions options = FindOptions.None) 
+        public static bool FindComponent<T>(string name, out T component, UIComponent parent = null, FindOptions options = FindOptions.None)
             where T : MonoBehaviour
         {
-            if(FindComponents<T>(name, parent, options).FirstOrDefault() is T found)
+            if (FindComponents<T>(name, parent, options).FirstOrDefault() is T found)
             {
                 component = found;
                 return true;
@@ -38,7 +37,7 @@ namespace ModsCommon.UI
                 return false;
             }
         }
-        public static IEnumerable<T> FindComponents<T>(string name, UIComponent parent = null, FindOptions options = FindOptions.None) 
+        public static IEnumerable<T> FindComponents<T>(string name, UIComponent parent = null, FindOptions options = FindOptions.None)
             where T : MonoBehaviour
         {
             if (UIRoot == null)
@@ -51,7 +50,7 @@ namespace ModsCommon.UI
             {
                 if ((options & FindOptions.NameContains) > FindOptions.None ? component.name.Contains(name) : component.name == name)
                 {
-                    var transform = ((MonoBehaviour)parent ?? (MonoBehaviour)UIRoot).transform;
+                    var transform = (parent ?? (MonoBehaviour)UIRoot).transform;
                     var currentParent = component.transform.parent;
                     while (currentParent != null && currentParent != transform)
                         currentParent = currentParent.parent;
@@ -62,8 +61,8 @@ namespace ModsCommon.UI
             }
         }
 
-        public static IEnumerable<T> GetCompenentsWithName<T>(string name) 
-            where T : UIComponent 
+        public static IEnumerable<T> GetCompenentsWithName<T>(string name)
+            where T : UIComponent
             => GameObject.FindObjectsOfType<T>().Where(c => c.name == name);
 
         [Flags]

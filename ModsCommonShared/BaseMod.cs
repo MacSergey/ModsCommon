@@ -1,13 +1,10 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
 using ICities;
-using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
 namespace ModsCommon
 {
@@ -102,7 +99,7 @@ namespace ModsCommon
         public override void OnEnabled()
         {
             base.OnEnabled();
-            
+
             try
             {
                 Patcher = CreatePatcher();

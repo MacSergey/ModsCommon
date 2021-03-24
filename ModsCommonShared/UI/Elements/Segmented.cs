@@ -3,7 +3,6 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -93,8 +92,9 @@ namespace ModsCommon.UI
     {
         public event Action<ValueType> OnSelectObjectChanged;
 
-        int _selectedIndex = -1;
-        int SelectedIndex
+        private int _selectedIndex = -1;
+
+        private int SelectedIndex
         {
             get => _selectedIndex;
             set
@@ -134,15 +134,16 @@ namespace ModsCommon.UI
     {
         public event Action<List<ValueType>> OnSelectObjectsChanged;
 
-        HashSet<int> _selectedIndices = new HashSet<int>();
-        HashSet<int> SelectedIndices
+        private HashSet<int> _selectedIndices = new HashSet<int>();
+
+        private HashSet<int> SelectedIndices
         {
             get => new HashSet<int>(_selectedIndices);
             set
             {
-                foreach(var index in _selectedIndices)
+                foreach (var index in _selectedIndices)
                 {
-                    if(!value.Contains(index))
+                    if (!value.Contains(index))
                         SetSprite(Buttons[index], false);
                 }
 
@@ -163,7 +164,7 @@ namespace ModsCommon.UI
             set
             {
                 var selectedIndices = new HashSet<int>();
-                foreach(var item in value)
+                foreach (var item in value)
                 {
                     var index = Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, item) ?? ReferenceEquals(o, item) || o.Equals(item));
                     if (index >= 0)

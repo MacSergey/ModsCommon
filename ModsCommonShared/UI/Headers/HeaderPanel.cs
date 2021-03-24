@@ -1,11 +1,6 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -80,7 +75,7 @@ namespace ModsCommon.UI
             where ButtonType : HeaderButton
         {
             var button = parent.AddUIComponent<ButtonType>();
-            if(showText)
+            if (showText)
                 button.text = text ?? string.Empty;
             else
                 button.tooltip = text;

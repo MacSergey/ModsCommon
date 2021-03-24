@@ -1,10 +1,7 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -100,11 +97,9 @@ namespace ModsCommon.UI
     public abstract class SelectListPropertyPanel<Type, PanelType> : SelectPropertyPanel<Type, PanelType>, IReusable
         where PanelType : SelectListPropertyPanel<Type, PanelType>
     {
-        
+        private int _selectIndex = -1;
 
-        int _selectIndex = -1;
-
-        int SelectIndex
+        private int SelectIndex
         {
             get => _selectIndex;
             set
@@ -116,7 +111,8 @@ namespace ModsCommon.UI
                 }
             }
         }
-        List<Type> ObjectsList { get; set; } = new List<Type>();
+
+        private List<Type> ObjectsList { get; set; } = new List<Type>();
         public IEnumerable<Type> Objects => ObjectsList;
         public override Type Value
         {
@@ -125,7 +121,7 @@ namespace ModsCommon.UI
         }
 
         public void Add(Type item) => ObjectsList.Add(item);
-        public void AddRange(IEnumerable<Type> items) =>  ObjectsList.AddRange(items);
+        public void AddRange(IEnumerable<Type> items) => ObjectsList.AddRange(items);
         public void Clear()
         {
             ObjectsList.Clear();
@@ -137,7 +133,7 @@ namespace ModsCommon.UI
     public abstract class SelectItemPropertyPanel<Type, PanelType> : SelectPropertyPanel<Type, PanelType>, IReusable
         where PanelType : SelectItemPropertyPanel<Type, PanelType>
     {
-        Type _value;
+        private Type _value;
         public override Type Value
         {
             get => _value;
@@ -152,7 +148,7 @@ namespace ModsCommon.UI
                 where PanelType : ResetableSelectPropertyPanel<Type, PanelType>
     {
         public event Action<PanelType> OnReset;
-        protected abstract string ResetToolTip {get;}
+        protected abstract string ResetToolTip { get; }
 
         public ResetableSelectPropertyPanel()
         {

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using UnityEngine;
 
@@ -9,8 +6,9 @@ namespace ModsCommon.Utilities
 {
     public class PropertyValue<T>
     {
-        Action OnChanged { get; }
-        T _value;
+        private Action OnChanged { get; }
+
+        private T _value;
 
         public virtual T Value
         {

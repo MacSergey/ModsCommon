@@ -1,8 +1,6 @@
 ﻿using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -69,7 +67,7 @@ namespace ModsCommon.UI
         private float Height => 20f;
         public override bool SupportEven => true;
 
-        public override bool EnableControl 
+        public override bool EnableControl
         {
             get => base.EnableControl;
             set
@@ -87,7 +85,7 @@ namespace ModsCommon.UI
         }
         public override void DeInit()
         {
-            foreach(var button in Buttons)
+            foreach (var button in Buttons)
             {
                 button.parent.RemoveUIComponent(button);
                 Destroy(button);

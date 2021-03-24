@@ -1,10 +1,4 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -86,7 +80,7 @@ namespace ModsCommon.UI
             SetContentSize();
         }
 
-        private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width :0, 0);
+        private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width : 0, 0);
         public void StopLayout() => Content.StopLayout();
         public void StartLayout(bool layoutNow = true) => Content.StartLayout(layoutNow);
     }

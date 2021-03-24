@@ -2,8 +2,6 @@
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -13,7 +11,7 @@ namespace ModsCommon.UI
         public event Action<ValueType> OnSelectObjectChanged;
 
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
-        List<ValueType> Objects { get; } = new List<ValueType>();
+        private List<ValueType> Objects { get; } = new List<ValueType>();
         public ValueType SelectedObject
         {
             get => selectedIndex >= 0 ? Objects[selectedIndex] : default;

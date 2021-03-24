@@ -1,9 +1,4 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -11,7 +6,7 @@ namespace ModsCommon.UI
     public class CustomUIPanel : UIPanel
     {
 #if NOPERFORMLAYOUT
-        Vector3 positionBefore;
+        private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -23,7 +18,7 @@ namespace ModsCommon.UI
     public class CustomUIScrollablePanel : UIScrollablePanel
     {
 #if NOPERFORMLAYOUT
-        Vector3 positionBefore;
+        private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -35,7 +30,7 @@ namespace ModsCommon.UI
     public class CustomUILabel : UILabel
     {
 #if NOPERFORMLAYOUT
-        Vector3 positionBefore;
+        private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -47,7 +42,7 @@ namespace ModsCommon.UI
     public class CustomUITextField : UITextField
     {
 #if NOPERFORMLAYOUT
-        Vector3 positionBefore;
+        private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -59,7 +54,7 @@ namespace ModsCommon.UI
     public class CustomUIButton : UIButton
     {
 #if NOPERFORMLAYOUT
-        Vector3 positionBefore;
+        private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -71,7 +66,7 @@ namespace ModsCommon.UI
     public class CustomUIDragHandle : UIDragHandle
     {
 #if NOPERFORMLAYOUT
-        Vector3 positionBefore;
+        private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -83,7 +78,7 @@ namespace ModsCommon.UI
     public class CustomUIDropDown : UIDropDown
     {
 #if NOPERFORMLAYOUT
-        Vector3 positionBefore;
+        private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -95,7 +90,7 @@ namespace ModsCommon.UI
     public class CustomUIScrollbar : UIScrollbar
     {
 #if NOPERFORMLAYOUT
-        Vector3 positionBefore;
+        private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {

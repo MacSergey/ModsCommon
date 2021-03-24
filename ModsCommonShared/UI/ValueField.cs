@@ -1,11 +1,7 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -175,7 +171,8 @@ namespace ModsCommon.UI
             step = GetStep(step, mode);
             return (value + step).RoundToNearest(step);
         }
-        float GetStep(float step, WheelMode mode) => mode switch
+
+        private float GetStep(float step, WheelMode mode) => mode switch
         {
             WheelMode.Low => step / 10,
             WheelMode.High => step * 10,
@@ -188,7 +185,7 @@ namespace ModsCommon.UI
     {
         protected override int Decrement(int value, int step, WheelMode mode) => value == int.MinValue ? value : value - GetStep(step, mode);
         protected override int Increment(int value, int step, WheelMode mode) => value == int.MaxValue ? value : value + GetStep(step, mode);
-        int GetStep(int step, WheelMode mode) => mode switch
+        private int GetStep(int step, WheelMode mode) => mode switch
         {
             WheelMode.Low => Math.Max(step / 10, 1),
             WheelMode.High => step * 10,
@@ -208,7 +205,7 @@ namespace ModsCommon.UI
             return byte.MaxValue - value < step ? byte.MaxValue : (byte)(value + step);
         }
 
-        byte GetStep(byte step, WheelMode mode) => mode switch
+        private byte GetStep(byte step, WheelMode mode) => mode switch
         {
             WheelMode.Low => (byte)Math.Max(step / 10, 1),
             WheelMode.High => (byte)Math.Min(step * 10, byte.MaxValue),

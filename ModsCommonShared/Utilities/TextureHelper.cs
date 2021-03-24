@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.Utilities
@@ -15,7 +14,7 @@ namespace ModsCommon.Utilities
 
         public static UITextureAtlas CommonAtlas;
 
-        static Dictionary<string, Action<int, int, Rect>> Files { get; } = new Dictionary<string, Action<int, int, Rect>>
+        private static Dictionary<string, Action<int, int, Rect>> Files { get; } = new Dictionary<string, Action<int, int, Rect>>
         {
             {nameof(CloseButton), CloseButton},
             {nameof(ColorPicker), ColorPicker},
@@ -39,7 +38,7 @@ namespace ModsCommon.Utilities
                 actions[i](textures[i].width, textures[i].height, rects[i]);
         }
 
-        static UITextureAtlas GetAtlas(string name)
+        private static UITextureAtlas GetAtlas(string name)
         {
             UITextureAtlas[] atlases = Resources.FindObjectsOfTypeAll(typeof(UITextureAtlas)) as UITextureAtlas[];
             for (int i = 0; i < atlases.Length; i++)
@@ -85,28 +84,28 @@ namespace ModsCommon.Utilities
             return texture;
         }
 
-        static void TextFieldPanel(int texWidth, int texHeight, Rect rect)
+        private static void TextFieldPanel(int texWidth, int texHeight, Rect rect)
             => CommonAtlas.AddSpritesRows(texWidth, texHeight, rect, 32, 32, new RectOffset(4, 4, 4, 4), 2, 4,
         FieldNormal, FieldHovered, FieldFocused, FieldDisabled,
         FieldNormalLeft, FieldHoveredLeft, FieldFocusedLeft, FieldDisabledLeft,
         FieldNormalRight, FieldHoveredRight, FieldFocusedRight, FieldDisabledRight,
         FieldNormalMiddle, FieldHoveredMiddle, FieldFocusedMiddle, FieldDisabledMiddle);
-        static void TabButton(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 0), 1, Tab);
+        private static void TabButton(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 0), 1, Tab);
 
-        static void DefaultTabButtons(int texWidth, int texHeight, Rect rect)
+        private static void DefaultTabButtons(int texWidth, int texHeight, Rect rect)
             => CommonAtlas.AddSprites(texWidth, texHeight, rect, 58, 25, new RectOffset(4, 4, 4, 0), 2, TabNormal, TabHover, TabPressed, TabFocused, TabDisabled);
 
-        static void Empty(int texWidth, int texHeight, Rect rect)
-            => CommonAtlas.AddSprites(texWidth, texHeight, rect, 28, 28, new RectOffset(2,2,2,2), 2, EmptySprite);
+        private static void Empty(int texWidth, int texHeight, Rect rect)
+            => CommonAtlas.AddSprites(texWidth, texHeight, rect, 28, 28, new RectOffset(2, 2, 2, 2), 2, EmptySprite);
 
-        static void OpacitySlider(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, 18, 200, new RectOffset(), 2, OpacitySliderBoard, OpacitySliderColor);
+        private static void OpacitySlider(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, 18, 200, new RectOffset(), 2, OpacitySliderBoard, OpacitySliderColor);
 
-        static void ColorPicker(int texWidth, int texHeight, Rect rect)
+        private static void ColorPicker(int texWidth, int texHeight, Rect rect)
             => CommonAtlas.AddSprites(texWidth, texHeight, rect, 43, 49, ColorPickerNormal, ColorPickerHover, ColorPickerDisable, ColorPickerColor, ColorPickerBoard);
 
-        static void Resize(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, ResizeSprite);
-        static void HeaderHover(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, new RectOffset(4,4,4,4), 0, HeaderHoverSprite);
-        static void CloseButton(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, 32, 32, DeleteNormal, DeleteHover, DeletePressed);
+        private static void Resize(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, ResizeSprite);
+        private static void HeaderHover(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 4), 0, HeaderHoverSprite);
+        private static void CloseButton(int texWidth, int texHeight, Rect rect) => CommonAtlas.AddSprites(texWidth, texHeight, rect, 32, 32, DeleteNormal, DeleteHover, DeletePressed);
 
 
         public static void AddSprites(this UITextureAtlas atlas, int texWidth, int texHeight, Rect rect, string sprite)

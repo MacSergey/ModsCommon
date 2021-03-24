@@ -2,8 +2,6 @@
 using ModsCommon.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace NodeMarkup.UI
@@ -32,7 +30,6 @@ namespace NodeMarkup.UI
             foreach (var message in messages)
             {
                 var versionMessage = Panel.Content.AddUIComponent<VersionMessage>();
-                //versionMessage.width = ScrollableContent.width;
                 versionMessage.Init(toString?.Invoke(message.Key) ?? message.Key.ToString(), message.Value);
 
                 if (first == null)
@@ -50,9 +47,9 @@ namespace NodeMarkup.UI
                 get => !Message.isVisible;
                 set => Message.isVisible = !value;
             }
-            CustomUIButton Button { get; set; }
-            CustomUILabel Message { get; set; }
-            string Label { get; set; }
+            private CustomUIButton Button { get; set; }
+            private CustomUILabel Message { get; set; }
+            private string Label { get; set; }
             public VersionMessage()
             {
                 autoLayout = true;

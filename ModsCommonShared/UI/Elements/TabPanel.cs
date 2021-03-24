@@ -1,10 +1,8 @@
-﻿using ColossalFramework.Globalization;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -13,7 +11,7 @@ namespace ModsCommon.UI
         where TabType : Tab
     {
         public Action<int> SelectedTabChanged;
-        int _selectedTab;
+        private int _selectedTab;
         public int SelectedTab
         {
             get => _selectedTab;
@@ -36,7 +34,7 @@ namespace ModsCommon.UI
         {
             base.Update();
 
-            for(var i = 0; i < Tabs.Count; i +=1)
+            for (var i = 0; i < Tabs.Count; i += 1)
             {
                 var tab = Tabs[i];
 
@@ -118,7 +116,7 @@ namespace ModsCommon.UI
                     {
                         var toMove = tabRow.Skip(j == 0 ? j + 1 : j).ToArray();
 
-                        if(toMove.Any())
+                        if (toMove.Any())
                         {
                             if (i == tabRows.Count - 1)
                                 tabRows.Add(new List<TabType>());
@@ -150,7 +148,7 @@ namespace ModsCommon.UI
                 var space = (width - rowWidth) / tabRow.Count;
                 var totalRowWidth = 0f;
 
-                for(var j = 0; j < tabRow.Count; j += 1)
+                for (var j = 0; j < tabRow.Count; j += 1)
                 {
                     var tab = tabRow[j];
 

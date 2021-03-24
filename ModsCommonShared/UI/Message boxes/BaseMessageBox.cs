@@ -1,13 +1,8 @@
 ﻿using ColossalFramework;
-using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
-using ModsCommon.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -235,96 +230,5 @@ namespace ModsCommon.UI
         protected virtual void Close() => HideModal(this);
         public void StopLayout() => Panel.StopLayout();
         public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
-
-
-
-        //public MessageBoxBase()
-        //{
-        //    isVisible = true;
-        //    canFocus = true;
-        //    isInteractive = true;
-        //    relativePosition = new Vector3((GetUIView().fixedWidth - width) / 2, (GetUIView().fixedHeight - height) / 2);
-        //    size = new Vector2(DefaultWidth, DefaultHeight);
-        //    color = new Color32(58, 88, 104, 255);
-        //    backgroundSprite = "MenuPanel";
-
-        //    AddHandle();
-        //    AddPanel();
-        //    FillContent();
-        //    AddButtonPanel();
-        //    Init();
-
-        //    ScrollableContent.eventSizeChanged += ContentSizeChanged;
-        //}
-
-
-
-
-        //private void AddPanel()
-        //{
-        //    ScrollableContent = AddUIComponent<ScrollableContent>();
-        //    ScrollableContent.width = DefaultWidth;
-        //    ScrollableContent.autoLayout = true;
-        //    ScrollableContent.autoLayoutDirection = LayoutDirection.Vertical;
-        //    ScrollableContent.autoLayoutPadding = new RectOffset(Padding, Padding, 0, 0);
-        //    ScrollableContent.clipChildren = true;
-        //    ScrollableContent.builtinKeyNavigation = true;
-        //    ScrollableContent.scrollWheelDirection = UIOrientation.Vertical;
-        //    ScrollableContent.maximumSize = new Vector2(DefaultWidth, MaxContentHeight);
-        //    this.AddScrollbar(ScrollableContent);
-        //}
-        //private void ContentSizeChanged(UIComponent component, Vector2 value) => Init();
-        //private void Init()
-        //{
-        //    height = Mathf.Floor(Handle.height + ScrollableContent.height + ButtonPanel.height + Padding);
-        //    ScrollableContent.relativePosition = new Vector2(0, Handle.height);
-        //    ButtonPanel.relativePosition = new Vector2(0, Handle.height + ScrollableContent.height + Padding);
-        //}
-        //protected virtual void FillContent() { }
-
-
-
-       
-
-        //public void ToScreenCenter()
-        //{
-        //    var view = GetUIView();
-        //    relativePosition = new Vector3((view.fixedWidth - width) / 2, (view.fixedHeight - height) / 2);
-        //}
     }
-    //public class ScrollableContent : CustomUIScrollablePanel
-    //{
-    //    protected override void OnSizeChanged()
-    //    {
-    //        base.OnSizeChanged();
-
-    //        foreach (var item in components)
-    //            item.width = width - 2 * MessageBoxBase.Padding;
-    //    }
-
-    //    protected override void OnComponentAdded(UIComponent child)
-    //    {
-    //        base.OnComponentAdded(child);
-
-    //        child.eventVisibilityChanged += OnChildVisibilityChanged;
-    //        child.eventSizeChanged += OnChildSizeChanged;
-    //    }
-
-    //    protected override void OnComponentRemoved(UIComponent child)
-    //    {
-    //        base.OnComponentRemoved(child);
-
-    //        child.eventVisibilityChanged -= OnChildVisibilityChanged;
-    //        child.eventSizeChanged -= OnChildSizeChanged;
-    //    }
-
-    //    private void OnChildVisibilityChanged(UIComponent component, bool value) => FitContentChildren();
-    //    private void OnChildSizeChanged(UIComponent component, Vector2 value) => FitContentChildren();
-
-    //    private void FitContentChildren()
-    //    {
-    //        FitChildrenVertically();
-    //        width = verticalScrollbar?.isVisible == true ? MessageBoxBase.DefaultWidth - verticalScrollbar.width - 3 : MessageBoxBase.DefaultWidth;
-    //    }
-    //}
 }

@@ -1,9 +1,5 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -122,7 +118,7 @@ namespace ModsCommon.UI
         }
         private void OnPopupKeyDown(UIComponent component, UIKeyEventParameter p)
         {
-            if(p.keycode == KeyCode.Escape)
+            if (p.keycode == KeyCode.Escape)
             {
                 ClosePopup();
                 p.Use();

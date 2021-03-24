@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -56,7 +53,8 @@ namespace ModsCommon.Utilities
             using XmlReader reader = XmlReader.Create(input, xmlReaderSettings);
             return XElement.Load(reader, options);
         }
-        static XmlReaderSettings GetXmlReaderSettings(LoadOptions o)
+
+        private static XmlReaderSettings GetXmlReaderSettings(LoadOptions o)
         {
             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
             if ((o & LoadOptions.PreserveWhitespace) == 0)
