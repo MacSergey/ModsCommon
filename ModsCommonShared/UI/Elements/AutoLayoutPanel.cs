@@ -51,6 +51,7 @@ namespace ModsCommon.UI
             Content.builtinKeyNavigation = true;
             Content.clipChildren = true;
             Content.autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            Content.autoReset = false;
 
             this.AddScrollbar(Content);
 
