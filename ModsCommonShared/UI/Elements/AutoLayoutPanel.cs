@@ -20,8 +20,8 @@ namespace ModsCommon.UI
         {
             m_AutoLayout = true;
         }
-        public void StopLayout() => m_AutoLayout = false;
-        public void StartLayout(bool layoutNow = true)
+        public virtual void StopLayout() => m_AutoLayout = false;
+        public virtual void StartLayout(bool layoutNow = true)
         {
             m_AutoLayout = true;
             if (layoutNow)
@@ -34,8 +34,8 @@ namespace ModsCommon.UI
         {
             m_AutoLayout = true;
         }
-        public void StopLayout() => m_AutoLayout = false;
-        public void StartLayout(bool layoutNow = true)
+        public virtual void StopLayout() => m_AutoLayout = false;
+        public virtual void StartLayout(bool layoutNow = true)
         {
             m_AutoLayout = true;
             if (layoutNow)
@@ -48,6 +48,8 @@ namespace ModsCommon.UI
         public TypeContent Content { get; private set; }
         public BaseAdvancedScrollablePanel()
         {
+            clipChildren = true;
+
             Content = AddUIComponent<TypeContent>();
 
             Content.autoLayoutDirection = LayoutDirection.Vertical;
@@ -102,11 +104,6 @@ namespace ModsCommon.UI
             }
         }
 
-        //public AutoSizeAdvancedScrollablePanel()
-        //{
-        //    autoFitChildrenVertically = true;
-        //}
-
         public class AutoSizeScrollablePanel : UIAutoLayoutScrollablePanel
         {
             protected override void OnComponentAdded(UIComponent child)
@@ -130,8 +127,16 @@ namespace ModsCommon.UI
 
             private void FitContentChildren()
             {
-                FitChildrenVertically();             
-                parent.height = height;
+                if (autoLayout)
+                {
+                    FitChildrenVertically();
+                    parent.height = height;
+                }
+            }
+            public override void StartLayout(bool layoutNow = true)
+            {
+                base.StartLayout(layoutNow);
+                FitContentChildren();
             }
         }
     }

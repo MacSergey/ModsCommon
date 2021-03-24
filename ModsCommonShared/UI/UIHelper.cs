@@ -82,7 +82,7 @@ namespace ModsCommon.UI
             scrollbar.value = 0;
             scrollbar.incrementAmount = 50;
             scrollbar.autoHide = true;
-            scrollbar.width = 12;
+            scrollbar.width = 10;
 
             UISlicedSprite trackSprite = scrollbar.AddUIComponent<UISlicedSprite>();
             trackSprite.relativePosition = Vector2.zero;

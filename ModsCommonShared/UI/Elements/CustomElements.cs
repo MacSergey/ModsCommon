@@ -13,7 +13,11 @@ namespace ModsCommon.UI
 #if NOPERFORMLAYOUT
         Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout() => relativePosition = positionBefore;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
 #endif
     }
     public class CustomUIScrollablePanel : UIScrollablePanel
@@ -21,7 +25,11 @@ namespace ModsCommon.UI
 #if NOPERFORMLAYOUT
         Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout() => relativePosition = positionBefore;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
 #endif
     }
     public class CustomUILabel : UILabel
@@ -29,7 +37,11 @@ namespace ModsCommon.UI
 #if NOPERFORMLAYOUT
         Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout() => relativePosition = positionBefore;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
 #endif
     }
     public class CustomUITextField : UITextField
@@ -37,7 +49,11 @@ namespace ModsCommon.UI
 #if NOPERFORMLAYOUT
         Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout() => relativePosition = positionBefore;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
 #endif
     }
     public class CustomUIButton : UIButton
@@ -45,7 +61,11 @@ namespace ModsCommon.UI
 #if NOPERFORMLAYOUT
         Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout() => relativePosition = positionBefore;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
 #endif
     }
     public class CustomUIDragHandle : UIDragHandle
@@ -53,7 +73,11 @@ namespace ModsCommon.UI
 #if NOPERFORMLAYOUT
         Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout() => relativePosition = positionBefore;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
 #endif
     }
     public class CustomUIDropDown : UIDropDown
@@ -61,7 +85,11 @@ namespace ModsCommon.UI
 #if NOPERFORMLAYOUT
         Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout() => relativePosition = positionBefore;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
 #endif
     }
     public class CustomUIScrollbar : UIScrollbar
@@ -69,7 +97,11 @@ namespace ModsCommon.UI
 #if NOPERFORMLAYOUT
         Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout() => relativePosition = positionBefore;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
 #endif
     }
 }
