@@ -142,7 +142,7 @@ namespace ModsCommon.UI
 
         private void AddColorSample()
         {
-            if (!(UITemplateManager.Get("LineTemplate") is UIComponent template))
+            if (UITemplateManager.Get("LineTemplate") is not UIComponent template)
                 return;
 
             var panel = Content.AddUIComponent<CustomUIPanel>();
