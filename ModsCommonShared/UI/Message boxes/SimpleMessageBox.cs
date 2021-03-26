@@ -14,17 +14,19 @@ namespace ModsCommon.UI
 
         public SimpleMessageBox()
         {
+            Panel.StopLayout();
+
             Message = Panel.Content.AddUIComponent<CustomUILabel>();
             Message.textAlignment = UIHorizontalAlignment.Center;
             Message.verticalAlignment = UIVerticalAlignment.Middle;
             Message.textScale = 1.1f;
             Message.wordWrap = true;
             Message.autoHeight = true;
-            Message.minimumSize = new Vector2(DefaultWidth - 2 * Padding, 78);
-            Message.size = new Vector2(DefaultWidth - 2 * Padding, 78);
+            Message.minimumSize = new Vector2(0, 79);
+            Message.size = new Vector2(DefaultWidth - 2 * Padding, 79);
             Message.relativePosition = new Vector3(17, 7);
-            Message.anchor = UIAnchorStyle.CenterHorizontal | UIAnchorStyle.CenterVertical;
-            Message.eventTextChanged += (UIComponent component, string value) => Message.PerformLayout();
+
+            Panel.StartLayout();
         }
     }
 
