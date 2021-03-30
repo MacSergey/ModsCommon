@@ -45,7 +45,7 @@ namespace ModsCommon.UI
                 component = parent.AddUIComponent<Component>();
 
             if (name != null)
-                component.name = name;
+                component.cachedName = name;
             if (zOrder != -1)
                 component.zOrder = zOrder;
 
@@ -59,7 +59,7 @@ namespace ModsCommon.UI
             {
                 component.parent?.RemoveUIComponent(component);
                 component.transform.parent = null;
-                component.name = string.Empty;
+                component.cachedName = string.Empty;
                 reusable.DeInit();
 
                 var queue = GetQueue(component.GetType());
