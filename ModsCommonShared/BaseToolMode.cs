@@ -8,8 +8,6 @@ namespace ModsCommon
         public void Activate(IToolMode prevMode);
         public void Deactivate();
 
-        public void Update();
-
         public void OnToolUpdate();
         public string GetToolInfo();
 
@@ -32,7 +30,7 @@ namespace ModsCommon
         public bool ShowPanel { get; }
     }
 
-    public abstract class BaseToolMode : MonoBehaviour
+    public abstract class BaseToolMode : MonoBehaviour, IToolMode
     {
         protected BaseTool Tool => BaseTool.Instance;
 
