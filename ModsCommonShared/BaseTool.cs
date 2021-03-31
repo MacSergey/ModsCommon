@@ -225,15 +225,11 @@ namespace ModsCommon
         where TypeTool : BaseTool
         where TypeModeType : Enum
     {
-        public static void Create() => Create<TypeTool>();
-
         protected Dictionary<TypeModeType, IToolMode<TypeModeType>> ToolModes { get; set; } = new Dictionary<TypeModeType, IToolMode<TypeModeType>>();
         public new IToolMode<TypeModeType> Mode => base.Mode as IToolMode<TypeModeType>;
         public TypeModeType CurrentMode => Mode != null ? Mode.Type : 0.ToEnum<TypeModeType>();
 
         protected abstract IEnumerable<IToolMode<TypeModeType>> GetModes();
         protected override void InitProcess() => ToolModes = GetModes().ToDictionary(i => i.Type, i => i);
-
-        public override void Enable() => Enable<TypeTool>();
     }
 }
