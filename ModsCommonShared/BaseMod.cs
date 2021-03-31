@@ -5,6 +5,7 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 
 namespace ModsCommon
 {
@@ -12,7 +13,7 @@ namespace ModsCommon
     {
         public static BaseMod Instance { get; protected set; }
         public static Logger Logger => Instance.ModLogger;
-        public static Version Version => Instance.ModVersion;
+        public static Version Version => Assembly.GetExecutingAssembly().GetName().Version;
         public static string VersionString => Instance.ModVersionString;
         public static List<Version> Versions => Instance.ModVersions;
         public static string Id => !IsBeta ? Instance.ModId : $"{Instance.ModId} BETA";
@@ -20,7 +21,7 @@ namespace ModsCommon
         public static string ShortName => Instance.ModName;
         public static string BETA => "[BETA]";
 
-        public string Name => !ModIsBeta ? $"{ModName} {Version.GetString()}" : $"{ModName} {ModVersion.GetString()} {BETA}";
+        public string Name => !ModIsBeta ? $"{ModName} {Version.GetString()}" : $"{ModName} {Version.GetString()} {BETA}";
         public string Description => ModDescription;
 
         protected abstract string ModName { get; }
@@ -30,8 +31,7 @@ namespace ModsCommon
 
         public Logger ModLogger { get; private set; }
         public abstract string WorkshopUrl { get; }
-        protected abstract Version ModVersion { get; }
-        protected string ModVersionString => !ModIsBeta ? ModVersion.ToString() : $"{ModVersion} {BETA}";
+        protected string ModVersionString => !ModIsBeta ? Version.ToString() : $"{Version} {BETA}";
         protected abstract List<Version> ModVersions { get; }
         protected abstract string ModId { get; }
         protected abstract bool ModIsBeta { get; }
