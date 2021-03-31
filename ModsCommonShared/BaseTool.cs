@@ -28,6 +28,18 @@ namespace ModsCommon
 
         protected delegate T SetToolDelegate<T>() where T : ToolBase;
 
+        public static void Create<TypeTool>()
+            where TypeTool : BaseTool
+        {
+            if (ToolsModifierControl.toolController.gameObject.GetComponent<TypeTool>() is not TypeTool)
+            {
+                BaseMod.Logger.Debug($"Create tool");
+                Instance = ToolsModifierControl.toolController.gameObject.AddComponent<TypeTool>();
+                var method = AccessTools.DeclaredMethod(typeof(ToolsModifierControl), nameof(ToolsModifierControl.SetTool), generics: new Type[] { typeof(TypeTool) });
+                SetTool = Delegate.CreateDelegate(typeof(SetToolDelegate<TypeTool>), method);
+            }
+        }
+
         #endregion
 
         #region PROPERTIES
@@ -217,21 +229,9 @@ namespace ModsCommon
 
         #endregion
     }
-    public abstract class BaseTool<TypeTool, TypeModeType> : BaseTool
-        where TypeTool : BaseTool
+    public abstract class BaseTool<TypeModeType> : BaseTool
         where TypeModeType : Enum
     {
-        public static void Create()
-        {
-            if (ToolsModifierControl.toolController.gameObject.GetComponent<TypeTool>() is not TypeTool)
-            {
-                BaseMod.Logger.Debug($"Create tool");
-                Instance = ToolsModifierControl.toolController.gameObject.AddComponent<TypeTool>();
-                var method = AccessTools.DeclaredMethod(typeof(ToolsModifierControl), nameof(ToolsModifierControl.SetTool), generics: new Type[] { typeof(TypeTool) });
-                SetTool = Delegate.CreateDelegate(typeof(SetToolDelegate<TypeTool>), method);
-            }
-        }
-
         protected Dictionary<TypeModeType, IToolMode<TypeModeType>> ToolModes { get; set; } = new Dictionary<TypeModeType, IToolMode<TypeModeType>>();
         public new IToolMode<TypeModeType> Mode => base.Mode as IToolMode<TypeModeType>;
         public TypeModeType CurrentMode => Mode != null ? Mode.Type : 0.ToEnum<TypeModeType>();
