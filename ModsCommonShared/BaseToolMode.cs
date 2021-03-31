@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace ModsCommon
 {
@@ -36,5 +37,10 @@ namespace ModsCommon
         public virtual void OnSecondaryMouseClicked() { }
         public virtual bool OnEscape() => false;
         public virtual void RenderOverlay(RenderManager.CameraInfo cameraInfo) { }
+    }
+    public abstract class BaseToolMode<ModeType> : BaseToolMode
+        where ModeType : Enum
+    {
+        public abstract ModeType Type { get; }
     }
 }
