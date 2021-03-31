@@ -97,6 +97,11 @@ namespace ModsCommon.Utilities
 
             return bezier;
         }
+        public static Vector3 GetRayPosition(this Segment3 ray, float height, out float t)
+        {
+            Segment1.Intersect(ray.a.y, ray.b.y, height, out t);
+            return ray.Position(t);
+        }
 
         public static int NextIndex(this int i, int count, int shift = 1) => (i + shift) % count;
         public static int PrevIndex(this int i, int count, int shift = 1) => shift > i ? i + count - (shift % count) : i - shift;

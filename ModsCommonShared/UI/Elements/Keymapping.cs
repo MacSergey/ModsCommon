@@ -2,7 +2,6 @@
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using ModsCommon.Utilities;
-using ModsCommon.Utils;
 using UnityEngine;
 
 namespace ModsCommon.UI

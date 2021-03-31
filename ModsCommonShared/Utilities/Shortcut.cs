@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace ModsCommon.Utils
+namespace ModsCommon.Utilities
 {
     public class Shortcut
     {

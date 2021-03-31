@@ -38,17 +38,23 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Property panels\TextProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\ValueField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Colors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ClassesExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\EnumExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\InputExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ItemsExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\MathExtention.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\RenderExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\UIExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\VersionExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\XmlExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Intersects.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OverlayData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\PropertyValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Selection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Shortcut.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Trajectory.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CloseButton.png" />
