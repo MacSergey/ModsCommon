@@ -3,10 +3,37 @@ using UnityEngine;
 
 namespace ModsCommon
 {
+    public interface IToolMode
+    {
+        public void Activate(IToolMode prevMode);
+        public void Deactivate();
+
+        public void Update();
+
+        public void OnToolUpdate();
+        public string GetToolInfo();
+
+        public void OnToolGUI(Event e);
+        public void OnMouseDown(Event e);
+        public void OnMouseDrag(Event e);
+        public void OnMouseUp(Event e);
+        public void OnPrimaryMouseClicked(Event e);
+        public void OnSecondaryMouseClicked();
+        public bool OnEscape();
+        public void RenderOverlay(RenderManager.CameraInfo cameraInfo);
+    }
+    public interface IToolMode<ModeType> : IToolMode
+    where ModeType : Enum
+    {
+        ModeType Type { get; }
+    }
+    public interface IToolModePanel : IToolMode
+    {
+        public bool ShowPanel { get; }
+    }
+
     public abstract class BaseToolMode : MonoBehaviour
     {
-        public virtual bool ShowPanel => true;
-
         protected BaseTool Tool => BaseTool.Instance;
 
         public BaseToolMode()
@@ -14,7 +41,7 @@ namespace ModsCommon
             Disable();
         }
 
-        public virtual void Activate(BaseToolMode prevMode)
+        public virtual void Activate(IToolMode prevMode)
         {
             enabled = true;
             Reset(prevMode);
@@ -22,7 +49,7 @@ namespace ModsCommon
         public virtual void Deactivate() => Disable();
         private void Disable() => enabled = false;
 
-        protected virtual void Reset(BaseToolMode prevMode) { }
+        protected virtual void Reset(IToolMode prevMode) { }
 
         public virtual void Update() { }
 
@@ -37,10 +64,5 @@ namespace ModsCommon
         public virtual void OnSecondaryMouseClicked() { }
         public virtual bool OnEscape() => false;
         public virtual void RenderOverlay(RenderManager.CameraInfo cameraInfo) { }
-    }
-    public abstract class BaseToolMode<ModeType> : BaseToolMode
-        where ModeType : Enum
-    {
-        public abstract ModeType Type { get; }
     }
 }

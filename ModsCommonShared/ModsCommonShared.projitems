@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BaseMod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BasePatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BaseSelectMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\ComponentPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\AutoLayoutPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\CustomElements.cs" />

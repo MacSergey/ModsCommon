@@ -28,13 +28,13 @@ namespace ModsCommon
         #region PROPERTIES
 
         protected bool IsInit { get; set; } = false;
-        public BaseToolMode Mode { get; private set; }
-        public BaseToolMode NextMode { get; private set; }
+        public IToolMode Mode { get; private set; }
+        public IToolMode NextMode { get; private set; }
 
         private ToolBase PrevTool { get; set; }
 
         protected abstract bool ShowToolTip { get; }
-        protected abstract BaseToolMode DefaultMode { get; }
+        protected abstract IToolMode DefaultMode { get; }
 
         #endregion
 
@@ -127,12 +127,12 @@ namespace ModsCommon
             if (!Mode.OnEscape())
                 Disable();
         }
-        public void SetMode(BaseToolMode mode)
+        public void SetMode(IToolMode mode)
         {
             if (Mode != mode)
                 NextMode = mode;
         }
-        protected virtual void SetModeNow(BaseToolMode mode)
+        protected virtual void SetModeNow(IToolMode mode)
         {
             Mode?.Deactivate();
             var prevMode = Mode;
@@ -221,18 +221,17 @@ namespace ModsCommon
 
         #endregion
     }
-    public abstract class BaseTool<TypeTool, TypeMode, TypeModeType> : BaseTool
+    public abstract class BaseTool<TypeTool, TypeModeType> : BaseTool
         where TypeTool : BaseTool
-        where TypeMode : BaseToolMode<TypeModeType>
         where TypeModeType : Enum
     {
         public static void Create() => Create<TypeTool>();
 
-        protected Dictionary<TypeModeType, TypeMode> ToolModes { get; set; } = new Dictionary<TypeModeType, TypeMode>();
-        public new TypeMode Mode => base.Mode as TypeMode;
+        protected Dictionary<TypeModeType, IToolMode<TypeModeType>> ToolModes { get; set; } = new Dictionary<TypeModeType, IToolMode<TypeModeType>>();
+        public new IToolMode<TypeModeType> Mode => base.Mode as IToolMode<TypeModeType>;
         public TypeModeType CurrentMode => Mode != null ? Mode.Type : 0.ToEnum<TypeModeType>();
 
-        protected abstract IEnumerable<TypeMode> GetModes();
+        protected abstract IEnumerable<IToolMode<TypeModeType>> GetModes();
         protected override void InitProcess() => ToolModes = GetModes().ToDictionary(i => i.Type, i => i);
 
         public override void Enable() => Enable<TypeTool>();
