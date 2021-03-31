@@ -1,17 +1,8 @@
 ﻿using ColossalFramework.Math;
-using ModsCommon.UI;
 using ModsCommon.Utilities;
-using NodeMarkup.Manager;
-using NodeMarkup.UI;
-using NodeMarkup.Utilities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using static ToolBase;
-using ColossalFramework.UI;
 using ColossalFramework;
-using ModsCommon;
 
 namespace ModsCommon
 {

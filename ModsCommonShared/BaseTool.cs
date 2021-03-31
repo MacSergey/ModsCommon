@@ -1,6 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
+using ICities;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace ModsCommon
 
         protected abstract bool ShowToolTip { get; }
         protected abstract IToolMode DefaultMode { get; }
+        public abstract bool IsActivationPressed { get; }
 
         #endregion
 
@@ -231,5 +233,34 @@ namespace ModsCommon
 
         protected abstract IEnumerable<IToolMode<TypeModeType>> GetModes();
         protected override void InitProcess() => ToolModes = GetModes().ToDictionary(i => i.Type, i => i);
+    }
+    public abstract class BaseThreadingExtension : ThreadingExtensionBase
+    {
+        public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
+        {
+            if (!UIView.HasModalInput() && !UIView.HasInputFocus() && BaseTool.Instance.IsActivationPressed)
+            {
+                BaseMod.Logger.Debug($"On press shortcut");
+                BaseTool.Instance.ToggleTool();
+            }
+        }
+    }
+    public abstract class BaseToolLoadingExtension : LoadingExtensionBase
+    {
+        public override void OnLevelLoaded(LoadMode mode)
+        {
+            switch (mode)
+            {
+                case LoadMode.NewGame:
+                case LoadMode.LoadGame:
+                case LoadMode.NewGameFromScenario:
+                case LoadMode.NewAsset:
+                case LoadMode.LoadAsset:
+                case LoadMode.NewMap:
+                case LoadMode.LoadMap:
+                    BaseTool.Instance.Init();
+                    break;
+            }
+        }
     }
 }
