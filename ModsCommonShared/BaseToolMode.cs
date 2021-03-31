@@ -1,6 +1,4 @@
-﻿using NodeMarkup.Manager;
-using NodeMarkup.UI.Panel;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ModsCommon
 {
@@ -9,7 +7,6 @@ namespace ModsCommon
         public virtual bool ShowPanel => true;
 
         protected BaseTool Tool => BaseTool.Instance;
-        protected NodeMarkupPanel Panel => NodeMarkupPanel.Instance;
 
         public BaseToolMode()
         {
