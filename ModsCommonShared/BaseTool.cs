@@ -28,7 +28,7 @@ namespace ModsCommon
 
         protected delegate T SetToolDelegate<T>() where T : ToolBase;
 
-        public static void Create<TypeTool>()
+        protected static void Create<TypeTool>()
             where TypeTool : BaseTool
         {
             if (ToolsModifierControl.toolController.gameObject.GetComponent<TypeTool>() is not TypeTool)
