@@ -8,9 +8,7 @@ namespace ModsCommon
 {
     public abstract class BaseSelectToolMode : BaseToolMode
     {
-        protected abstract Segment3 Ray { get; }
-        protected abstract bool RayValid { get; }
-        protected abstract Vector3 MouseWorldPosition { get; }
+        protected Segment3 Ray => BaseTool.Ray;
 
         protected NodeSelection HoverNode { get; set; } = null;
         protected bool IsHoverNode => HoverNode != null;
@@ -29,7 +27,7 @@ namespace ModsCommon
             NodeSelection nodeSelection = null;
             SegmentSelection segmentSelection = null;
 
-            if (RayValid)
+            if (BaseTool.MouseRayValid)
             {
                 if (IsHoverNode && HoverNode.Contains(Ray, out _))
                     nodeSelection = HoverNode;
@@ -45,7 +43,7 @@ namespace ModsCommon
 
         private void RayCast(out NodeSelection nodeSelection, out SegmentSelection segmentSelection)
         {
-            var hitPos = MouseWorldPosition;
+            var hitPos = BaseTool.MouseWorldPosition;
             var gridMinX = Max(hitPos.x);
             var gridMinZ = Max(hitPos.z);
             var gridMaxX = Min(hitPos.x);

@@ -1,11 +1,13 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Math;
 using ColossalFramework.UI;
+using HarmonyLib;
 using ICities;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 
@@ -23,6 +25,8 @@ namespace ModsCommon
         public static Vector3 MousePositionScaled { get; private set; }
         public static Vector3 MouseWorldPosition { get; private set; }
         public static Vector3 CameraDirection { get; private set; }
+
+        protected delegate T SetToolDelegate<T>() where T : ToolBase;
 
         #endregion
 
@@ -42,16 +46,8 @@ namespace ModsCommon
 
         #region BASIC
 
-        public static BaseTool Instance { get; set; }
-        protected static void Create<ToolType>()
-            where ToolType : BaseTool
-        {
-            if (ToolsModifierControl.toolController.gameObject.GetComponent<ToolType>() is not ToolType)
-            {
-                BaseMod.Logger.Debug($"Create tool");
-                Instance = ToolsModifierControl.toolController.gameObject.AddComponent<ToolType>();
-            }
-        }
+        public static BaseTool Instance { get; protected set; }
+        public static Delegate SetTool { get; protected set; }
         public BaseTool()
         {
             enabled = false;
@@ -108,12 +104,10 @@ namespace ModsCommon
             else
                 Enable();
         }
-        public abstract void Enable();
-        protected void Enable<ToolType>()
-            where ToolType : BaseTool
+        public void Enable()
         {
             PrevTool = ToolsModifierControl.toolController.CurrentTool;
-            ToolsModifierControl.SetTool<ToolType>();
+            SetTool.DynamicInvoke();
         }
         public void Disable(bool setPrev = true)
         {
@@ -227,6 +221,17 @@ namespace ModsCommon
         where TypeTool : BaseTool
         where TypeModeType : Enum
     {
+        public static void Create()
+        {
+            if (ToolsModifierControl.toolController.gameObject.GetComponent<TypeTool>() is not TypeTool)
+            {
+                BaseMod.Logger.Debug($"Create tool");
+                Instance = ToolsModifierControl.toolController.gameObject.AddComponent<TypeTool>();
+                var method = AccessTools.DeclaredMethod(typeof(ToolsModifierControl), nameof(ToolsModifierControl.SetTool), generics: new Type[] { typeof(TypeTool) });
+                SetTool = Delegate.CreateDelegate(typeof(SetToolDelegate<TypeTool>), method);
+            }
+        }
+
         protected Dictionary<TypeModeType, IToolMode<TypeModeType>> ToolModes { get; set; } = new Dictionary<TypeModeType, IToolMode<TypeModeType>>();
         public new IToolMode<TypeModeType> Mode => base.Mode as IToolMode<TypeModeType>;
         public TypeModeType CurrentMode => Mode != null ? Mode.Type : 0.ToEnum<TypeModeType>();
