@@ -57,7 +57,7 @@ namespace ModsCommon
             var originalName = $"{type.FullName}.{method}()";
             try
             {
-                BaseMod.Logger.Debug($"Add {Name} to {originalName} by {patchName}");
+                BaseMod.Logger.Debug($"Start add {Name} {patchName} to {originalName}");
 
                 if (AccessTools.Method(type, method, parameters) is not MethodInfo original)
                     throw new PatchExeption("Can't find original method");
@@ -66,17 +66,17 @@ namespace ModsCommon
 
                 AddPatch(original, new HarmonyMethod(patch));
 
-                BaseMod.Logger.Debug($"{Name} added to {originalName} by {patchName}");
+                BaseMod.Logger.Debug("Success patched!");
                 return true;
             }
             catch (PatchExeption error)
             {
-                BaseMod.Logger.Error($"Failed add {Name} to {originalName} by {patchName} [{error.Message}]");
+                BaseMod.Logger.Error($"Failed patch: {error.Message}");
                 return false;
             }
             catch (Exception error)
             {
-                BaseMod.Logger.Error($"Failed add {Name} to {originalName} by {patchName}", error);
+                BaseMod.Logger.Error($"Failed patch:", error);
                 return false;
             }
         }
@@ -89,17 +89,17 @@ namespace ModsCommon
     }
     public class PrefixAdder : PatchAdder
     {
-        protected override string Name => "Prefix";
+        protected override string Name => "PREFIX";
         protected override void AddPatch(MethodBase original, HarmonyMethod method) => (BasePatcher.Harmony as Harmony).Patch(original, prefix: method);
     }
     public class PostfixAdder : PatchAdder
     {
-        protected override string Name => "Postfix";
+        protected override string Name => "POSTFIX";
         protected override void AddPatch(MethodBase original, HarmonyMethod method) => (BasePatcher.Harmony as Harmony).Patch(original, postfix: method);
     }
     public class TranspilerAdder : PatchAdder
     {
-        protected override string Name => "Transpiler";
+        protected override string Name => "TRANSPILER";
         protected override void AddPatch(MethodBase original, HarmonyMethod method) => (BasePatcher.Harmony as Harmony).Patch(original, transpiler: method);
     }
 }
