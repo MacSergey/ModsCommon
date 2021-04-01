@@ -41,23 +41,23 @@ namespace ModsCommon
         }
         protected abstract bool PatchProcess();
 
-        protected bool AddPrefix(MethodInfo prefix, Type type, string method, Func<Type, string, MethodInfo> originalGetter = null)
-            => AddPatch((original) => ((Harmony)Harmony).Patch(original, prefix: new HarmonyMethod(prefix)), type, method, originalGetter);
+        protected bool AddPrefix(MethodInfo prefix, Type type, string method, Type[] parameters = null)
+            => AddPatch((original) => ((Harmony)Harmony).Patch(original, prefix: new HarmonyMethod(prefix)), type, method, parameters);
 
-        protected bool AddPostfix(MethodInfo postfix, Type type, string method, Func<Type, string, MethodInfo> originalGetter = null)
-            => AddPatch((original) => ((Harmony)Harmony).Patch(original, postfix: new HarmonyMethod(postfix)), type, method, originalGetter);
+        protected bool AddPostfix(MethodInfo postfix, Type type, string method, Type[] parameters = null)
+            => AddPatch((original) => ((Harmony)Harmony).Patch(original, postfix: new HarmonyMethod(postfix)), type, method, parameters);
 
-        protected bool AddTranspiler(MethodInfo transpiler, Type type, string method, Func<Type, string, MethodInfo> originalGetter = null)
-            => AddPatch((original) => ((Harmony)Harmony).Patch(original, transpiler: new HarmonyMethod(transpiler)), type, method, originalGetter);
+        protected bool AddTranspiler(MethodInfo transpiler, Type type, string method, Type[] parameters = null)
+            => AddPatch((original) => ((Harmony)Harmony).Patch(original, transpiler: new HarmonyMethod(transpiler)), type, method, parameters);
 
-        protected bool AddPatch(Action<MethodInfo> patch, Type type, string method, Func<Type, string, MethodInfo> originalGetter)
+        protected bool AddPatch(Action<MethodInfo> patch, Type type, string method, Type[] parameters = null)
         {
             var methodName = $"{type.Name}.{method}()";
             try
             {
                 Mod.ModLogger.Debug($"Patch {methodName}");
 
-                var original = originalGetter?.Invoke(type, method) ?? AccessTools.Method(type, method);
+                var original = AccessTools.Method(type, method, parameters);
                 patch(original);
 
                 Mod.ModLogger.Debug($"Patched {methodName}");
