@@ -10,9 +10,6 @@ namespace ModsCommon
         private BaseMod Mod { get; }
         public static object Harmony => new Harmony(BaseMod.Id);
         public bool Success { get; private set; }
-        private static PrefixAdder PrefixAdder { get; } = new PrefixAdder();
-        private static PostfixAdder PostfixAdder { get; } = new PostfixAdder();
-        private static TranspilerAdder TranspilerAdder { get; } = new TranspilerAdder();
 
         public BasePatcher(BaseMod mod)
         {
@@ -44,27 +41,29 @@ namespace ModsCommon
         }
         protected abstract bool PatchProcess();
 
-        protected bool AddPrefix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => PrefixAdder.AddPatch(patchType, patchMethod, type, method, parameters);
-        protected bool AddPostfix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => PostfixAdder.AddPatch(patchType, patchMethod, type, method, parameters);
-        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => TranspilerAdder.AddPatch(patchType, patchMethod, type, method, parameters);
-    }
-    public abstract class PatchAdder
-    {
-        protected abstract string Name { get; }
-        public bool AddPatch(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null)
+        protected bool AddPrefix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Prefix, patchType, patchMethod, type, method, parameters);
+        protected bool AddPostfix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Postfix, patchType, patchMethod, type, method, parameters);
+        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Transpiler, patchType, patchMethod, type, method, parameters);
+
+        private bool AddPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, string method, Type[] parameters = null)
         {
-            var patchName = $"{patchType.FullName}.{patchMethod}()";
-            var originalName = $"{type.FullName}.{method}()";
             try
             {
-                BaseMod.Logger.Debug($"Start add {Name} {patchName} to {originalName}");
+                BaseMod.Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType.FullName}.{patchMethod}] to [{type.FullName}.{method}]");
 
                 if (AccessTools.Method(type, method, parameters) is not MethodInfo original)
                     throw new PatchExeption("Can't find original method");
                 if (AccessTools.Method(patchType, patchMethod) is not MethodInfo patch)
                     throw new PatchExeption("Can't find patch method");
 
-                AddPatch(original, new HarmonyMethod(patch));
+                var harmony = Harmony as Harmony;
+                var harmonyMethod = new HarmonyMethod(patch);
+                switch (patcher)
+                {
+                    case PatcherType.Prefix: harmony.Patch(original, prefix: harmonyMethod); break;
+                    case PatcherType.Postfix: harmony.Patch(original, postfix: harmonyMethod); break;
+                    case PatcherType.Transpiler: harmony.Patch(original, transpiler: harmonyMethod); break;
+                }
 
                 BaseMod.Logger.Debug("Success patched!");
                 return true;
@@ -80,26 +79,15 @@ namespace ModsCommon
                 return false;
             }
         }
-        protected abstract void AddPatch(MethodBase original, HarmonyMethod method);
-
+        private enum PatcherType
+        {
+            Prefix,
+            Postfix,
+            Transpiler
+        }
         private class PatchExeption : Exception
         {
             public PatchExeption(string message) : base(message) { }
         }
-    }
-    public class PrefixAdder : PatchAdder
-    {
-        protected override string Name => "PREFIX";
-        protected override void AddPatch(MethodBase original, HarmonyMethod method) => (BasePatcher.Harmony as Harmony).Patch(original, prefix: method);
-    }
-    public class PostfixAdder : PatchAdder
-    {
-        protected override string Name => "POSTFIX";
-        protected override void AddPatch(MethodBase original, HarmonyMethod method) => (BasePatcher.Harmony as Harmony).Patch(original, postfix: method);
-    }
-    public class TranspilerAdder : PatchAdder
-    {
-        protected override string Name => "TRANSPILER";
-        protected override void AddPatch(MethodBase original, HarmonyMethod method) => (BasePatcher.Harmony as Harmony).Patch(original, transpiler: method);
     }
 }
