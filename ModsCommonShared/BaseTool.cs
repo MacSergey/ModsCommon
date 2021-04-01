@@ -219,6 +219,37 @@ namespace ModsCommon
 
         #endregion
 
+        #region GUI
+
+        private bool IsMouseMove { get; set; }
+        protected override void OnToolGUI(Event e)
+        {
+            Mode.OnToolGUI(e);
+
+            switch (e.type)
+            {
+                case EventType.MouseDown when MouseRayValid && e.button == 0:
+                    IsMouseMove = false;
+                    Mode.OnMouseDown(e);
+                    break;
+                case EventType.MouseDrag when MouseRayValid:
+                    IsMouseMove = true;
+                    Mode.OnMouseDrag(e);
+                    break;
+                case EventType.MouseUp when MouseRayValid && e.button == 0:
+                    if (IsMouseMove)
+                        Mode.OnMouseUp(e);
+                    else
+                        Mode.OnPrimaryMouseClicked(e);
+                    break;
+                case EventType.MouseUp when MouseRayValid && e.button == 1:
+                    Mode.OnSecondaryMouseClicked();
+                    break;
+            }
+        }
+
+        #endregion
+
         #region OVERLAY
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
