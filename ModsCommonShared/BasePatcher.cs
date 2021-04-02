@@ -8,7 +8,7 @@ namespace ModsCommon
     public abstract class BasePatcher
     {
         private BaseMod Mod { get; }
-        protected object Harmony => new Harmony(BaseMod.Id);
+        public static object Harmony => new Harmony(BaseMod.Id);
         public bool Success { get; private set; }
 
         public BasePatcher(BaseMod mod)
@@ -41,33 +41,53 @@ namespace ModsCommon
         }
         protected abstract bool PatchProcess();
 
-        protected bool AddPrefix(MethodInfo prefix, Type type, string method, Type[] parameters = null)
-            => AddPatch((original) => ((Harmony)Harmony).Patch(original, prefix: new HarmonyMethod(prefix)), type, method, parameters);
+        protected bool AddPrefix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Prefix, patchType, patchMethod, type, method, parameters);
+        protected bool AddPostfix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Postfix, patchType, patchMethod, type, method, parameters);
+        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Transpiler, patchType, patchMethod, type, method, parameters);
 
-        protected bool AddPostfix(MethodInfo postfix, Type type, string method, Type[] parameters = null)
-            => AddPatch((original) => ((Harmony)Harmony).Patch(original, postfix: new HarmonyMethod(postfix)), type, method, parameters);
-
-        protected bool AddTranspiler(MethodInfo transpiler, Type type, string method, Type[] parameters = null)
-            => AddPatch((original) => ((Harmony)Harmony).Patch(original, transpiler: new HarmonyMethod(transpiler)), type, method, parameters);
-
-        protected bool AddPatch(Action<MethodInfo> patch, Type type, string method, Type[] parameters = null)
+        private bool AddPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, string method, Type[] parameters = null)
         {
-            var methodName = $"{type.Name}.{method}()";
             try
             {
-                Mod.ModLogger.Debug($"Patch {methodName}");
+                BaseMod.Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType.FullName}.{patchMethod}] to [{type.FullName}.{method}]");
 
-                var original = AccessTools.Method(type, method, parameters);
-                patch(original);
+                if (AccessTools.Method(type, method, parameters) is not MethodInfo original)
+                    throw new PatchExeption("Can't find original method");
+                if (AccessTools.Method(patchType, patchMethod) is not MethodInfo patch)
+                    throw new PatchExeption("Can't find patch method");
 
-                Mod.ModLogger.Debug($"Patched {methodName}");
+                var harmony = Harmony as Harmony;
+                var harmonyMethod = new HarmonyMethod(patch);
+                switch (patcher)
+                {
+                    case PatcherType.Prefix: harmony.Patch(original, prefix: harmonyMethod); break;
+                    case PatcherType.Postfix: harmony.Patch(original, postfix: harmonyMethod); break;
+                    case PatcherType.Transpiler: harmony.Patch(original, transpiler: harmonyMethod); break;
+                }
+
+                BaseMod.Logger.Debug("Success patched!");
                 return true;
+            }
+            catch (PatchExeption error)
+            {
+                BaseMod.Logger.Error($"Failed patch: {error.Message}");
+                return false;
             }
             catch (Exception error)
             {
-                Mod.ModLogger.Error($"Failed Patch {methodName}", error);
+                BaseMod.Logger.Error($"Failed patch:", error);
                 return false;
             }
+        }
+        private enum PatcherType
+        {
+            Prefix,
+            Postfix,
+            Transpiler
+        }
+        private class PatchExeption : Exception
+        {
+            public PatchExeption(string message) : base(message) { }
         }
     }
 }
