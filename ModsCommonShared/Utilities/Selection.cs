@@ -10,7 +10,13 @@ namespace ModsCommon.Utilities
 {
     public abstract class Selection : IOverlay
     {
-        protected static float OverlayWidth => 2f;
+#if DEBUG
+        protected static float OverlayWidth => NodeMarkup.Settings.OverlayWidth;
+        protected static float MaxOverlayWidth => NodeMarkup.Settings.MaxOverlayWidth;
+#else
+        protected static float OverlayWidth => 3f;
+        protected static float MaxOverlayWidth => 16f;
+#endif
 
         public ushort Id { get; }
         protected Data[] Datas { get; }
@@ -63,27 +69,62 @@ namespace ModsCommon.Utilities
             var contains = !BorderLines.Any(b => Intersection.CalculateSingle(line, b).IsIntersect);
             return contains;
         }
-
-        protected void Render(OverlayData overlayData, Data data1, Data data2, bool isEndBezier = false)
+        public virtual void Render(OverlayData overlayData)
         {
-            var count = Math.Max(Mathf.CeilToInt(2 * data1.halfWidth / (OverlayWidth * 0.75f)), Mathf.CeilToInt(2 * data2.halfWidth / (OverlayWidth * 0.75f)));
+            //foreach (var border in BorderLines)
+            //    border.Render(new OverlayData(overlayData.CameraInfo) { Color = Colors.Green });
+            Center.RenderCircle(new OverlayData(overlayData.CameraInfo) { Color = Colors.Red });
+        }
+        protected void RenderCorner(OverlayData overlayData, Data data)
+        {
+            var cornerDelta = data.GetCornerDelta(OverlayWidth / 2);
+            var line = new StraightTrajectory(data.leftPos + cornerDelta, data.rightPos - cornerDelta);
+            line.Render(overlayData);
+        }
+        protected void RenderBorder(OverlayData overlayData, Data data1, Data data2, bool isEnd = false)
+        {
+            var cornerDelta1 = data1.GetCornerDelta(OverlayWidth / 2);
+            var cornerDelta2 = data2.GetCornerDelta(OverlayWidth / 2);
 
-            var step1 = data1.GetStep(count);
-            var step2 = data2.GetStep(count);
+            var position1 = data1.leftPos + cornerDelta1;
+            var position2 = data2.rightPos - cornerDelta2;
 
-            var ratio1 = data1.Ratio;
-            var ratio2 = data2.Ratio;
+            var direction1 = data1.GetDir(1 - cornerDelta1.magnitude / data1.CornerLength);
+            var direction2 = data2.GetDir(cornerDelta2.magnitude / data2.CornerLength);
 
-            var cornerDir1 = data1.CornerDir;
-            var cornerDir2 = data2.CornerDir;
+            Bezier3 bezier;
+            if (!isEnd)
+                bezier = GetBezier(position1, direction1, position2, direction2);
+            else
+                bezier = GetEndBezier(position1, direction1, position2, direction2, OverlayWidth / 2);
+
+            bezier.RenderBezier(overlayData);
+        }
+        protected void RenderMiddle(OverlayData overlayData, Data data1, Data data2, bool isEndBezier = false)
+        {
+            var overlayWidth1 = GetWidth(data1.DeltaAngleCos);
+            var overlayWidth2 = GetWidth(data2.DeltaAngleCos);
+
+            var halfWidth1 = data1.halfWidth - (OverlayWidth / 2);
+            var halfWidth2 = data2.halfWidth - (OverlayWidth / 2);
+
+            var overlayWidth = Mathf.Min(Mathf.Max(OverlayWidth, Mathf.Min(overlayWidth1, overlayWidth2)), halfWidth1 * 2, halfWidth2 * 2, MaxOverlayWidth);
+            overlayData.Width = overlayWidth;
+            overlayData.Cut = true;
+
+            var effectiveWidth = overlayWidth - Mathf.Max(overlayWidth * 0.25f, 1f);
+            var count = Math.Max(Mathf.CeilToInt(2 * halfWidth1 / effectiveWidth), Mathf.CeilToInt(2 * halfWidth2 / effectiveWidth));
+
+            var step1 = GetStep(halfWidth1, overlayWidth, count);
+            var step2 = GetStep(halfWidth2, overlayWidth, count);
 
             for (var l = 0; l < count; l += 1)
             {
-                var tPos1 = (OverlayWidth / 2 + l * step1);
-                var tPos2 = (OverlayWidth / 2 + l * step2);
+                var tPos1 = (overlayWidth + OverlayWidth) / 2 + l * step1;
+                var tPos2 = (overlayWidth + OverlayWidth) / 2 + l * step2;
 
-                var pos1 = data1.leftPos + cornerDir1 * tPos1 * ratio1;
-                var pos2 = data2.rightPos - cornerDir2 * tPos2 * ratio2;
+                var pos1 = data1.leftPos + data1.GetCornerDelta(tPos1);
+                var pos2 = data2.rightPos - data2.GetCornerDelta(tPos2);
 
                 var dir1 = data1.GetDir(tPos1 / (2 * data1.halfWidth));
                 var dir2 = data2.GetDir(tPos2 / (2 * data2.halfWidth));
@@ -94,10 +135,19 @@ namespace ModsCommon.Utilities
                 else
                 {
                     var ratio = Mathf.Abs(count - 2 * l) / (float)count;
-                    bezier = GetEndBezier(pos1, dir1, pos2, dir2, OverlayWidth / 2, ratio);
+                    bezier = GetEndBezier(pos1, dir1, pos2, dir2, overlayWidth / 2, ratio);
                 }
                 bezier.RenderBezier(overlayData);
             }
+
+            static float GetWidth(float cos)
+            {
+                if (Mathf.Abs(cos - 1f) < 0.001f)
+                    return float.MaxValue;
+                else
+                    return (OverlayWidth * 0.9f) / Mathf.Sqrt(1 - Mathf.Pow(cos, 2));
+            }
+            static float GetStep(float halfWidth, float overlayWidth, int count) => count > 1 ? (2 * halfWidth - overlayWidth) / (count - 1) : 0f;
         }
         private Bezier3 GetBezier(Vector3 leftPos, Vector3 leftDir, Vector3 rightPos, Vector3 rightDir)
         {
@@ -122,18 +172,6 @@ namespace ModsCommon.Utilities
             };
             return bezier;
         }
-        protected void Render(OverlayData overlayData, Data data)
-        {
-            var cornerDir = data.CornerDir * data.Ratio * (OverlayWidth / 2);
-            var line = new StraightTrajectory(data.leftPos + cornerDir, data.rightPos - cornerDir);
-            line.Render(overlayData);
-        }
-        public virtual void Render(OverlayData overlayData)
-        {
-            foreach (var border in BorderLines)
-                border.Render(new OverlayData(overlayData.CameraInfo) { Color = Colors.Green });
-            Center.RenderCircle(new OverlayData(overlayData.CameraInfo) { Color = Colors.Red });
-        }
 
         protected struct Data
         {
@@ -144,18 +182,19 @@ namespace ModsCommon.Utilities
             public Vector3 leftDir;
             public float halfWidth;
 
-            public float Ratio => (rightPos - leftPos).XZ().magnitude / (2 * halfWidth);
+            public float DeltaAngleCos => (2 * halfWidth) / CornerLength;
             public Vector3 CornerDir => (rightPos - leftPos).normalized;
+            public float CornerLength => (rightPos - leftPos).XZ().magnitude;
             public StraightTrajectory Line => new StraightTrajectory(leftPos, rightPos);
             public Vector3 Position => (rightPos + leftPos) / 2;
             public Vector3 Direction => (leftDir + rightDir).normalized;
 
-            public float GetStep(int count) => (2 * halfWidth - OverlayWidth) / (count - 1);
             public Vector3 GetDir(float t)
             {
                 t = Mathf.Clamp01(t);
                 return (leftDir * t + rightDir * (1 - t)).normalized;
             }
+            public Vector3 GetCornerDelta(float width) => CornerDir * (width / DeltaAngleCos);
         }
     }
     public class NodeSelection : Selection
@@ -203,15 +242,20 @@ namespace ModsCommon.Utilities
         public override void Render(OverlayData overlayData)
         {
             overlayData.Width = OverlayWidth;
+#if DEBUG
+            overlayData.AlphaBlend = NodeMarkup.Settings.AlphaBlendOverlay;
+#else
             overlayData.AlphaBlend = false;
+#endif
 
             for (var i = 0; i < Datas.Length; i += 1)
             {
                 var data1 = Datas[i];
                 var data2 = Datas[(i + 1) % Datas.Length];
 
-                Render(overlayData, data1, data2, Datas.Length == 1);
-                Render(overlayData, data1);
+                RenderCorner(overlayData, data1);
+                RenderBorder(overlayData, data1, data2, Datas.Length == 1);
+                RenderMiddle(overlayData, data1, data2, Datas.Length == 1);
             }
 
             //base.Render(overlayData);
@@ -253,11 +297,17 @@ namespace ModsCommon.Utilities
         public override void Render(OverlayData overlayData)
         {
             overlayData.Width = OverlayWidth;
+#if DEBUG
+            overlayData.AlphaBlend = NodeMarkup.Settings.AlphaBlendOverlay;
+#else
             overlayData.AlphaBlend = false;
+#endif
 
-            Render(overlayData, Datas[0], Datas[1]);
-            Render(overlayData, Datas[0]);
-            Render(overlayData, Datas[1]);
+            RenderCorner(overlayData, Datas[0]);
+            RenderCorner(overlayData, Datas[1]);
+            RenderBorder(overlayData, Datas[0], Datas[1]);
+            RenderBorder(overlayData, Datas[1], Datas[0]);
+            RenderMiddle(overlayData, Datas[0], Datas[1]);
 
             //base.Render(overlayData);
         }
