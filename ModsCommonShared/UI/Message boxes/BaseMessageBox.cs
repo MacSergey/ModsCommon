@@ -27,18 +27,13 @@ namespace ModsCommon.UI
             messageBox.Show(true);
             messageBox.Focus();
 
-            var view = UIView.GetAView();
-
-            if (view.panelsLibraryModalEffect != null)
+            if (UIView.GetAView().panelsLibraryModalEffect is UIComponent modalEffect)
             {
-                view.panelsLibraryModalEffect.FitTo(null);
-                if (!view.panelsLibraryModalEffect.isVisible || view.panelsLibraryModalEffect.opacity != 1f)
+                modalEffect.FitTo(null);
+                if (!modalEffect.isVisible || modalEffect.opacity != 1f)
                 {
-                    view.panelsLibraryModalEffect.Show(false);
-                    ValueAnimator.Animate("ModalEffect67419", delegate (float val)
-                    {
-                        view.panelsLibraryModalEffect.opacity = val;
-                    }, new AnimatedFloat(0f, 1f, 0.7f, EasingType.CubicEaseOut));
+                    modalEffect.Show(false);
+                    ValueAnimator.Animate("ModalEffect67419", val => modalEffect.opacity = val, new AnimatedFloat(0f, 1f, 0.7f, EasingType.CubicEaseOut));
                 }
             }
 
@@ -48,23 +43,12 @@ namespace ModsCommon.UI
         {
             UIView.PopModal();
 
-            var view = UIView.GetAView();
-            if (view.panelsLibraryModalEffect != null)
+            if (UIView.GetAView().panelsLibraryModalEffect is UIComponent modalEffect)
             {
                 if (!UIView.HasModalInput())
-                {
-                    ValueAnimator.Animate("ModalEffect67419", delegate (float val)
-                    {
-                        view.panelsLibraryModalEffect.opacity = val;
-                    }, new AnimatedFloat(1f, 0f, 0.7f, EasingType.CubicEaseOut), delegate ()
-                    {
-                        view.panelsLibraryModalEffect.Hide();
-                    });
-                }
+                    ValueAnimator.Animate("ModalEffect67419", val => modalEffect.opacity = val, new AnimatedFloat(1f, 0f, 0.7f, EasingType.CubicEaseOut), () => modalEffect.Hide());
                 else
-                {
-                    view.panelsLibraryModalEffect.zOrder = UIView.GetModalComponent().zOrder - 1;
-                }
+                    modalEffect.zOrder = UIView.GetModalComponent().zOrder - 1;
             }
 
             messageBox.Hide();
