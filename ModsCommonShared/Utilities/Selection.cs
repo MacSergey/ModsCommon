@@ -111,17 +111,16 @@ namespace ModsCommon.Utilities
             var width2 = data2.halfWidth * 2 - BorderOverlayWidth;
 
             var angle = Vector3.Angle(data1.Direction, data2.Direction);
-            var maxPossibleWidth = angle / 11.25f + 16f;
-            var overlayWidth = Mathf.Max(BorderOverlayWidth, Mathf.Min(overlayWidth1, overlayWidth2));
+            var maxPossibleWidth = Math.Min( angle / 11.25f + 16f, Mathf.Max(BorderOverlayWidth, Mathf.Min(overlayWidth1, overlayWidth2)));
 
-            if (Mathf.Abs(width1 - width2) < 0.001 && maxPossibleWidth >= Mathf.Max(width1, width2) && overlayWidth >= maxPossibleWidth)
+            if (Mathf.Abs(width1 - width2) < 0.001 && maxPossibleWidth >= Mathf.Max(width1, width2))
             {
-                overlayData.Width = Mathf.Min(width1, width2, maxPossibleWidth);
+                overlayData.Width = Mathf.Min(width1, width2);
                 RenderMiddle(overlayData, data1, data2, 0f, 0f);
             }
             else
             {
-                overlayWidth = Mathf.Min(overlayWidth, width1, width2, maxPossibleWidth);
+                var overlayWidth = Mathf.Min(width1, width2, maxPossibleWidth);
                 overlayData.Width = overlayWidth;
 
                 var effectiveWidth = overlayWidth - Mathf.Max(overlayWidth * ((180 - angle) / 720f), 1f);
