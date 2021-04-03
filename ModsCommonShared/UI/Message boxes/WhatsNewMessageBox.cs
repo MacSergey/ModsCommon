@@ -2,12 +2,15 @@
 using ModsCommon.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NodeMarkup.UI
 {
     public class WhatsNewMessageBox : MessageBoxBase
     {
+        protected override int ContentSpacing => 5;
+
         private CustomUIButton OkButton { get; }
         public Func<bool> OnButtonClick { get; set; }
         public string OkText { set => OkButton.text = value; }
@@ -22,7 +25,7 @@ namespace NodeMarkup.UI
                 Close();
         }
 
-        public virtual void Init(Dictionary<Version, string> messages, Func<Version, string> toString = null)
+        public virtual void Init(Dictionary<Version, string> messages, Func<Version, string> toString = null, bool MaximizeFirst = true)
         {
             StopLayout();
 
@@ -35,33 +38,37 @@ namespace NodeMarkup.UI
                 if (first == null)
                     first = versionMessage;
             }
-            first.IsMinimize = false;
+            if (MaximizeFirst)
+                first.IsMinimize = false;
 
             StartLayout();
         }
 
-        public class VersionMessage : CustomUIPanel
+        public class VersionMessage : UIAutoLayoutPanel
         {
             public bool IsMinimize
             {
-                get => !Message.isVisible;
-                set => Message.isVisible = !value;
+                get => !Container.isVisible;
+                set
+                {
+                    Container.isVisible = !value;
+                    Button.text = $"{(value ? "►" : "▼")} {Label}";
+                }
             }
             private CustomUIButton Button { get; set; }
-            private CustomUILabel Message { get; set; }
+            private UIAutoLayoutPanel Container { get; set; }
+            private List<CustomUILabel> Lines { get; } = new List<CustomUILabel>();
             private string Label { get; set; }
             public VersionMessage()
             {
-                autoLayout = true;
                 autoLayoutDirection = LayoutDirection.Vertical;
                 autoFitChildrenVertically = true;
-                autoLayoutPadding = new RectOffset(0, 0, Padding / 2, Padding / 2);
+                autoLayoutPadding = new RectOffset(0, 0, 0, 6);
 
                 AddButton();
-                AddText();
+                AddLinesContainer();
             }
-
-            public void AddButton()
+            private void AddButton()
             {
                 Button = AddUIComponent<CustomUIButton>();
                 Button.height = 20;
@@ -71,35 +78,66 @@ namespace NodeMarkup.UI
                 Button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsMinimize = !IsMinimize;
             }
 
-            public void AddText()
+            private void AddLinesContainer()
             {
-                Message = AddUIComponent<CustomUILabel>();
-                Message.textAlignment = UIHorizontalAlignment.Left;
-                Message.verticalAlignment = UIVerticalAlignment.Middle;
-                Message.textScale = 0.8f;
-                Message.wordWrap = true;
-                Message.autoHeight = true;
-                Message.relativePosition = new Vector3(17, 7);
-                Message.eventVisibilityChanged += (UIComponent component, bool value) => SetLabel();
+                Container = AddUIComponent<UIAutoLayoutPanel>();
+                Container.autoLayoutDirection = LayoutDirection.Vertical;
+                Container.autoFitChildrenVertically = true;
+                Container.autoLayoutPadding = new RectOffset(0, 0, 0, 6);
+                Container.backgroundSprite = "ContentManagerItemBackground";
+                Container.verticalSpacing = 15;
             }
 
             public void Init(string version, string message)
             {
+                Container.StopLayout();
+
                 Label = version;
-                Message.text = message;
+                SetMessage(message);
                 IsMinimize = true;
 
-                SetLabel();
+                Container.StartLayout();
             }
-            private void SetLabel() => Button.text = $"{(IsMinimize ? "►" : "▼")} {Label}";
+            private void SetMessage(string message)
+            {
+                var lines = message.Split('\n');
+                var max = Math.Max(lines.Length, Lines.Count);
+
+                for (var i = 0; i < max; i += 1)
+                {
+                    if (i < lines.Length)
+                    {
+                        if (i >= Lines.Count)
+                            AddLine();
+                        Lines[i].isVisible = true;
+                        Lines[i].text = lines[i];
+                    }
+                    else
+                        Lines[i].isVisible = false;
+                }
+            }
+            private void AddLine()
+            {
+                var line = Container.AddUIComponent<CustomUILabel>();
+                line.textAlignment = UIHorizontalAlignment.Left;
+                line.verticalAlignment = UIVerticalAlignment.Middle;
+                line.textScale = 0.8f;
+                line.wordWrap = true;
+                line.autoHeight = true;
+                line.relativePosition = new Vector3(17, 7);
+                Lines.Add(line);
+            }
 
             protected override void OnSizeChanged()
             {
                 base.OnSizeChanged();
+
                 if (Button != null)
                     Button.width = width;
-                if (Message != null)
-                    Message.width = width;
+                if (Container != null)
+                    Container.width = width;
+                foreach (var line in Lines)
+                    line.width = width;
             }
         }
     }

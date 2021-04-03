@@ -15,6 +15,7 @@ namespace ModsCommon.UI
         public static int Padding => 16;
         public static float MaxContentHeight => 500f;
         private static float ButtonsSpace => 25f;
+        protected virtual int ContentSpacing => 0;
 
         public static T ShowModal<T>()
         where T : MessageBoxBase
@@ -113,7 +114,8 @@ namespace ModsCommon.UI
             Panel = AddUIComponent<AutoSizeAdvancedScrollablePanel>();
             Panel.MaxSize = new Vector2(DefaultWidth, MaxContentHeight);
             Panel.relativePosition = new Vector2(0, Header.height);
-            Panel.Content.autoLayoutPadding = new RectOffset(Padding, Padding, 0, 0);
+            Panel.Content.autoLayoutPadding = new RectOffset(Padding, Padding, ContentSpacing, 0);
+            Panel.Content.autoReset = true;
             Panel.eventSizeChanged += ContentSizeChanged;
         }
         private void AddButtonPanel()
