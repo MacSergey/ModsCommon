@@ -1,11 +1,13 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
+using ColossalFramework.UI;
 using ICities;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using UnityEngine.SceneManagement;
 
 namespace ModsCommon
 {
@@ -27,7 +29,7 @@ namespace ModsCommon
         protected abstract string ModName { get; }
         protected abstract string ModDescription { get; }
 
-        protected virtual bool LoadSuccess { get; set; }
+        protected virtual bool LoadError { get; set; }
 
         public Logger ModLogger { get; private set; }
         public abstract string WorkshopUrl { get; }
@@ -58,9 +60,10 @@ namespace ModsCommon
         {
             ModLogger.Debug($"Version {ModVersionString}");
             ModLogger.Debug($"Enabled");
-            LoadSuccess = true;
+            LoadError = false;
             LoadingManager.instance.m_introLoaded += CheckLoadedError;
         }
+
         public virtual void OnDisabled()
         {
             ModLogger.Debug($"Disabled");
@@ -82,17 +85,17 @@ namespace ModsCommon
 
         public void CheckLoadedError()
         {
-            if (!ItemsExtension.OnStartup && !LoadSuccess)
+            if (UIView.GetAView() != null && LoadError)
                 OnLoadedError();
         }
         public virtual void OnLoadedError() { }
     }
     public abstract class BasePatcherMod : BaseMod
     {
-        protected override bool LoadSuccess
+        protected override bool LoadError
         {
-            get => base.LoadSuccess && Patcher.Success;
-            set => base.LoadSuccess = value;
+            get => base.LoadError || !Patcher.Success;
+            set => base.LoadError = value;
         }
         protected BasePatcher Patcher { get; private set; }
 
@@ -107,7 +110,7 @@ namespace ModsCommon
             }
             catch (Exception error)
             {
-                LoadSuccess = false;
+                LoadError = true;
                 ModLogger.Error("Patch failed", error);
             }
 
