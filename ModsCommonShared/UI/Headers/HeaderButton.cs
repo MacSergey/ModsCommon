@@ -22,9 +22,9 @@ namespace ModsCommon.UI
 
         public HeaderButton()
         {
-            hoveredBgSprite = pressedBgSprite = focusedBgSprite = TextureHelper.HeaderHoverSprite;
+            hoveredBgSprite = pressedBgSprite = focusedBgSprite = CommonTextures.HeaderHoverSprite;
             size = new Vector2(Size, Size);
-            atlas = TextureHelper.CommonAtlas;
+            atlas = CommonTextures.Atlas;
             hoveredColor = HoveredColor;
             pressedColor = focusedColor = PressedColor;
             clipChildren = true;

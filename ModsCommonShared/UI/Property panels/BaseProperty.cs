@@ -22,8 +22,8 @@ namespace ModsCommon.UI
         public EditorItem()
         {
             Even = AddUIComponent<CustomUIPanel>();
-            Even.atlas = TextureHelper.CommonAtlas;
-            Even.backgroundSprite = TextureHelper.EmptySprite;
+            Even.atlas = CommonTextures.Atlas;
+            Even.backgroundSprite = CommonTextures.EmptySprite;
             Even.color = new Color32(0, 0, 0, 48);
             IsEven = false;
         }

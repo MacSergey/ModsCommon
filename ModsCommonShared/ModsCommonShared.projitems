@@ -6,7 +6,7 @@
     <SharedGUID>24615a21-afa6-42c0-8b7a-4fb3329b056f</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>ModsCommonShared</Import_RootNamespace>
+    <Import_RootNamespace>ModsCommon</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BaseToolMode.cs" />
@@ -56,7 +56,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\PropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Selection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Shortcut.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Textures\CommonTextures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Textures\TextureHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Trajectory.cs" />
   </ItemGroup>
   <ItemGroup>

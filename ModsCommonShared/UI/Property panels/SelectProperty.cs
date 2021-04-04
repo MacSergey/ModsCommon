@@ -29,11 +29,11 @@ namespace ModsCommon.UI
         {
             Selector = Content.AddUIComponent<SelectPropertyButton>();
             Selector.text = NotSet;
-            Selector.atlas = TextureHelper.CommonAtlas;
-            Selector.normalBgSprite = TextureHelper.FieldNormal;
-            Selector.hoveredBgSprite = TextureHelper.FieldHovered;
-            Selector.disabledBgSprite = TextureHelper.FieldDisabled;
-            Selector.focusedBgSprite = TextureHelper.FieldFocused;
+            Selector.atlas = CommonTextures.Atlas;
+            Selector.normalBgSprite = CommonTextures.FieldNormal;
+            Selector.hoveredBgSprite = CommonTextures.FieldHovered;
+            Selector.disabledBgSprite = CommonTextures.FieldDisabled;
+            Selector.focusedBgSprite = CommonTextures.FieldFocused;
             Selector.isInteractive = false;
             Selector.enabled = true;
             Selector.autoSize = false;

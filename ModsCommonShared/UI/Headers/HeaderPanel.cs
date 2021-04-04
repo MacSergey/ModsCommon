@@ -51,10 +51,10 @@ namespace ModsCommon.UI
         private void AddDeleteButton()
         {
             DeleteButton = AddUIComponent<CustomUIButton>();
-            DeleteButton.atlas = TextureHelper.CommonAtlas;
-            DeleteButton.normalBgSprite = TextureHelper.DeleteNormal;
-            DeleteButton.hoveredBgSprite = TextureHelper.DeleteHover;
-            DeleteButton.pressedBgSprite = TextureHelper.DeletePressed;
+            DeleteButton.atlas = CommonTextures.Atlas;
+            DeleteButton.normalBgSprite = CommonTextures.DeleteNormal;
+            DeleteButton.hoveredBgSprite = CommonTextures.DeleteHover;
+            DeleteButton.pressedBgSprite = CommonTextures.DeletePressed;
             DeleteButton.size = new Vector2(20, 20);
             DeleteButton.eventClick += DeleteClick;
         }

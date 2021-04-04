@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.Utilities;
 using System;
 using UnityEngine;
+using ModsCommon.Utilities;
 
 namespace ModsCommon.UI
 {
@@ -146,8 +146,8 @@ namespace ModsCommon.UI
                 return;
 
             var panel = Content.AddUIComponent<CustomUIPanel>();
-            panel.atlas = TextureHelper.CommonAtlas;
-            panel.backgroundSprite = TextureHelper.ColorPickerBoard;
+            panel.atlas = CommonTextures.Atlas;
+            panel.backgroundSprite = CommonTextures.ColorPickerBoard;
 
             ColorSample = Instantiate(template.Find<UIColorField>("LineColor").gameObject).GetComponent<UIColorField>();
             panel.AttachUIComponent(ColorSample.gameObject);
@@ -155,13 +155,13 @@ namespace ModsCommon.UI
             ColorSample.relativePosition = new Vector2(0, 0);
             ColorSample.anchor = UIAnchorStyle.None;
 
-            ColorSample.atlas = TextureHelper.CommonAtlas;
-            ColorSample.normalBgSprite = TextureHelper.ColorPickerNormal;
-            ColorSample.normalFgSprite = TextureHelper.ColorPickerColor;
-            ColorSample.hoveredBgSprite = TextureHelper.ColorPickerHover;
-            ColorSample.hoveredFgSprite = TextureHelper.ColorPickerColor;
-            ColorSample.disabledBgSprite = TextureHelper.ColorPickerDisable;
-            ColorSample.disabledFgSprite = TextureHelper.ColorPickerColor;
+            ColorSample.atlas = CommonTextures.Atlas;
+            ColorSample.normalBgSprite = CommonTextures.ColorPickerNormal;
+            ColorSample.normalFgSprite = CommonTextures.ColorPickerColor;
+            ColorSample.hoveredBgSprite = CommonTextures.ColorPickerHover;
+            ColorSample.hoveredFgSprite = CommonTextures.ColorPickerColor;
+            ColorSample.disabledBgSprite = CommonTextures.ColorPickerDisable;
+            ColorSample.disabledFgSprite = CommonTextures.ColorPickerColor;
 
             ColorSample.eventSelectedColorChanged += SelectedColorChanged;
             ColorSample.eventColorPickerOpen += ColorPickerOpen;
@@ -208,16 +208,16 @@ namespace ModsCommon.UI
             opacitySlider.eventValueChanged += OpacityChanged;
 
             var opacityBoard = opacitySlider.AddUIComponent<UISlicedSprite>();
-            opacityBoard.atlas = TextureHelper.CommonAtlas;
-            opacityBoard.spriteName = TextureHelper.OpacitySliderBoard;
+            opacityBoard.atlas = CommonTextures.Atlas;
+            opacityBoard.spriteName = CommonTextures.OpacitySliderBoard;
             opacityBoard.relativePosition = Vector2.zero;
             opacityBoard.size = opacitySlider.size;
             opacityBoard.fillDirection = UIFillDirection.Vertical;
 
             var opacityColor = opacitySlider.AddUIComponent<UISlicedSprite>();
             opacityColor.name = "color";
-            opacityColor.atlas = TextureHelper.CommonAtlas;
-            opacityColor.spriteName = TextureHelper.OpacitySliderColor;
+            opacityColor.atlas = CommonTextures.Atlas;
+            opacityColor.spriteName = CommonTextures.OpacitySliderColor;
             opacityColor.relativePosition = Vector2.zero;
             opacityColor.size = opacitySlider.size;
             opacityColor.fillDirection = UIFillDirection.Vertical;

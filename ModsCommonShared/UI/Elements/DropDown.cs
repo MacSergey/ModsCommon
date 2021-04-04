@@ -47,13 +47,13 @@ namespace ModsCommon.UI
 
         public void SetDefaultStyle(Vector2? size = null)
         {
-            atlas = TextureHelper.CommonAtlas;
-            listBackground = TextureHelper.FieldHovered;
+            atlas = CommonTextures.Atlas;
+            listBackground = CommonTextures.FieldHovered;
             itemHeight = 20;
-            itemHover = TextureHelper.FieldNormal;
-            itemHighlight = TextureHelper.FieldFocused;
-            normalBgSprite = TextureHelper.FieldNormal;
-            hoveredBgSprite = TextureHelper.FieldHovered;
+            itemHover = CommonTextures.FieldNormal;
+            itemHighlight = CommonTextures.FieldFocused;
+            normalBgSprite = CommonTextures.FieldNormal;
+            hoveredBgSprite = CommonTextures.FieldHovered;
             listHeight = 700;
             listPosition = PopupListPosition.Below;
             clampListToScreen = true;

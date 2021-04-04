@@ -59,12 +59,12 @@ namespace ModsCommon.UI
 
         public void SetDefaultStyle()
         {
-            atlas = TextureHelper.CommonAtlas;
-            normalBgSprite = TextureHelper.FieldNormal;
-            hoveredBgSprite = TextureHelper.FieldHovered;
-            focusedBgSprite = TextureHelper.FieldNormal;
-            disabledBgSprite = TextureHelper.FieldDisabled;
-            selectionSprite = TextureHelper.EmptySprite;
+            atlas = CommonTextures.Atlas;
+            normalBgSprite = CommonTextures.FieldNormal;
+            hoveredBgSprite = CommonTextures.FieldHovered;
+            focusedBgSprite = CommonTextures.FieldNormal;
+            disabledBgSprite = CommonTextures.FieldDisabled;
+            selectionSprite = CommonTextures.EmptySprite;
 
             allowFloats = true;
             isInteractive = true;

@@ -27,7 +27,7 @@ namespace ModsCommon.UI
 
             var button = AddUIComponent<CustomUIButton>();
 
-            button.atlas = TextureHelper.CommonAtlas;
+            button.atlas = CommonTextures.Atlas;
             button.text = label ?? item.ToString();
             button.textScale = 0.8f;
             button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
@@ -50,14 +50,14 @@ namespace ModsCommon.UI
 
             if (isSelect)
             {
-                button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{TextureHelper.FieldFocused}{suffix}";
+                button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldFocused}{suffix}";
                 button.disabledColor = new Color32(192, 192, 192, 255);
             }
             else
             {
-                button.normalBgSprite = $"{TextureHelper.FieldNormal}{suffix}";
-                button.hoveredBgSprite = button.pressedBgSprite = $"{TextureHelper.FieldHovered}{suffix}";
-                button.disabledBgSprite = $"{TextureHelper.FieldDisabled}{suffix}";
+                button.normalBgSprite = $"{CommonTextures.FieldNormal}{suffix}";
+                button.hoveredBgSprite = button.pressedBgSprite = $"{CommonTextures.FieldHovered}{suffix}";
+                button.disabledBgSprite = $"{CommonTextures.FieldDisabled}{suffix}";
                 button.disabledColor = Color.white;
             }
         }

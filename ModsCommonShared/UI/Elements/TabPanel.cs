@@ -210,11 +210,11 @@ namespace ModsCommon.UI
 
         protected virtual void SetStyle(TabType tabButton)
         {
-            tabButton.atlas = TextureHelper.CommonAtlas;
+            tabButton.atlas = CommonTextures.Atlas;
 
-            tabButton.normalBgSprite = TextureHelper.TabNormal;
-            tabButton.focusedBgSprite = TextureHelper.TabFocused;
-            tabButton.hoveredBgSprite = TextureHelper.TabHover;
+            tabButton.normalBgSprite = CommonTextures.TabNormal;
+            tabButton.focusedBgSprite = CommonTextures.TabFocused;
+            tabButton.hoveredBgSprite = CommonTextures.TabHover;
         }
     }
     public class Tab : CustomUIButton
