@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace ModsCommon
 
         protected delegate T SetToolDelegate<T>() where T : ToolBase;
 
-        protected static void Create<TypeTool>()
+        public static void Create<TypeTool>()
             where TypeTool : BaseTool
         {
             if (ToolsModifierControl.toolController.gameObject.GetComponent<TypeTool>() is not TypeTool)
