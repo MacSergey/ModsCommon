@@ -10,7 +10,7 @@ namespace ModsCommon.Utilities
 {
     public static class TextureHelper
     {
-        public delegate SpriteParams[] SpriteParamsGetter(int texWidth, int texHeight, Rect rect);
+        public delegate UITextureAtlas.SpriteInfo[] SpriteParamsGetter(int texWidth, int texHeight, Rect rect);
         public static UITextureAtlas InGameAtlas { get; } = GetAtlas("Ingame");
 
         private static UITextureAtlas GetAtlas(string name)
@@ -31,7 +31,13 @@ namespace ModsCommon.Utilities
             var paramsGetters = files.Values.ToArray();
 
             for (var i = 0; i < paramsGetters.Length; i += 1)
-                paramsGetters[i](textures[i].width, textures[i].height, rects[i]);
+            {
+                foreach (var sptiteInfo in paramsGetters[i](textures[i].width, textures[i].height, rects[i]))
+                {
+                    sptiteInfo.texture = atlas.material.mainTexture as Texture2D;
+                    atlas.AddSprite(sptiteInfo);
+                }
+            }
 
             return atlas;
         }
@@ -71,16 +77,16 @@ namespace ModsCommon.Utilities
             return texture;
         }
 
-        public static IEnumerable<SpriteParams> GetSpritesParams(int texWidth, int texHeight, Rect rect, string name)
-            => GetSpritesParams(texWidth, texHeight, rect, new RectOffset(), 0, name);
+        public static IEnumerable<UITextureAtlas.SpriteInfo> GetSpritesInfo(int texWidth, int texHeight, Rect rect, string name)
+            => GetSpritesInfo(texWidth, texHeight, rect, new RectOffset(), 0, name);
 
-        public static IEnumerable<SpriteParams> GetSpritesParams(int texWidth, int texHeight, Rect rect, RectOffset border, int space, string name)
-            => GetSpritesParams(texWidth, texHeight, rect, texWidth - 2 * space, texHeight - 2 * space, border, space, name);
+        public static IEnumerable<UITextureAtlas.SpriteInfo> GetSpritesInfo(int texWidth, int texHeight, Rect rect, RectOffset border, int space, string name)
+            => GetSpritesInfo(texWidth, texHeight, rect, texWidth - 2 * space, texHeight - 2 * space, border, space, name);
 
-        public static IEnumerable<SpriteParams> GetSpritesParams(int texWidth, int texHeight, Rect rect, int spriteWidth, int spriteHeight, params string[] names)
-            => GetSpritesParams(texWidth, texHeight, rect, spriteWidth, spriteHeight, new RectOffset(), 0, names);
+        public static IEnumerable<UITextureAtlas.SpriteInfo> GetSpritesInfo(int texWidth, int texHeight, Rect rect, int spriteWidth, int spriteHeight, params string[] names)
+            => GetSpritesInfo(texWidth, texHeight, rect, spriteWidth, spriteHeight, new RectOffset(), 0, names);
 
-        public static IEnumerable<SpriteParams> GetSpritesRowsParams(int texWidth, int texHeight, Rect rect, int spriteWidth, int spriteHeight, RectOffset border, int space, int inRow, params string[] names)
+        public static IEnumerable<UITextureAtlas.SpriteInfo> GetSpritesRowsInfo(int texWidth, int texHeight, Rect rect, int spriteWidth, int spriteHeight, RectOffset border, int space, int inRow, params string[] names)
         {
             var rows = names.Length / inRow + (names.Length % inRow == 0 ? 0 : 1);
 
@@ -91,11 +97,11 @@ namespace ModsCommon.Utilities
             {
                 var rowRect = new Rect(rect.x, rect.y + (spaceHeight + rowHeight) * (rows - i - 1), rect.width, rowHeight + 2 * spaceHeight);
                 var rowNames = names.Skip(inRow * i).Take(inRow).ToArray();
-                foreach (var sprite in GetSpritesParams(texWidth, spriteHeight + 2 * space, rowRect, spriteWidth, spriteHeight, border, space, rowNames))
+                foreach (var sprite in GetSpritesInfo(texWidth, spriteHeight + 2 * space, rowRect, spriteWidth, spriteHeight, border, space, rowNames))
                     yield return sprite;
             }
         }
-        public static IEnumerable<SpriteParams> GetSpritesParams(int texWidth, int texHeight, Rect rect, int spriteWidth, int spriteHeight, RectOffset border, int space, params string[] names)
+        public static IEnumerable<UITextureAtlas.SpriteInfo> GetSpritesInfo(int texWidth, int texHeight, Rect rect, int spriteWidth, int spriteHeight, RectOffset border, int space, params string[] names)
         {
             var width = spriteWidth / (float)texWidth * rect.width;
             var height = spriteHeight / (float)texHeight * rect.height;
@@ -106,7 +112,7 @@ namespace ModsCommon.Utilities
             {
                 var x = rect.x + i * width + (i + 1) * spaceWidth;
                 var y = rect.y + spaceHeight;
-                yield return new SpriteParams()
+                yield return new UITextureAtlas.SpriteInfo()
                 {
                     name = names[i],
                     region = new Rect(x, y, width, height),
@@ -114,22 +120,5 @@ namespace ModsCommon.Utilities
                 };
             }
         }
-        public static void AddSprite(this UITextureAtlas atlas, string name, Rect region, RectOffset border)
-        {
-            UITextureAtlas.SpriteInfo spriteInfo = new UITextureAtlas.SpriteInfo
-            {
-                name = name,
-                texture = atlas.material.mainTexture as Texture2D,
-                region = region,
-                border = border ?? new RectOffset()
-            };
-            atlas.AddSprite(spriteInfo);
-        }
-    }
-    public struct SpriteParams
-    {
-        public string name;
-        public Rect region;
-        public RectOffset border;
     }
 }

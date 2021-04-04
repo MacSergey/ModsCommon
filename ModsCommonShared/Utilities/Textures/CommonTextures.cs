@@ -74,24 +74,24 @@ namespace ModsCommon.Utilities
             Atlas = TextureHelper.CreateAtlas(nameof(ModsCommon), Files);
         }
 
-        private static SpriteParams[] TextFieldPanel(int texWidth, int texHeight, Rect rect)
-           => TextureHelper.GetSpritesRowsParams(texWidth, texHeight, rect, 32, 32, new RectOffset(4, 4, 4, 4), 2, 4,
+        private static UITextureAtlas.SpriteInfo[] TextFieldPanel(int texWidth, int texHeight, Rect rect)
+           => TextureHelper.GetSpritesRowsInfo(texWidth, texHeight, rect, 32, 32, new RectOffset(4, 4, 4, 4), 2, 4,
        FieldNormal, FieldHovered, FieldFocused, FieldDisabled,
        FieldNormalLeft, FieldHoveredLeft, FieldFocusedLeft, FieldDisabledLeft,
        FieldNormalRight, FieldHoveredRight, FieldFocusedRight, FieldDisabledRight,
        FieldNormalMiddle, FieldHoveredMiddle, FieldFocusedMiddle, FieldDisabledMiddle).ToArray();
-        private static SpriteParams[] TabButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesParams(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 0), 1, Tab).ToArray();
+        private static UITextureAtlas.SpriteInfo[] TabButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 0), 1, Tab).ToArray();
 
-        private static SpriteParams[] DefaultTabButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesParams(texWidth, texHeight, rect, 58, 25, new RectOffset(4, 4, 4, 0), 2, TabNormal, TabHover, TabPressed, TabFocused, TabDisabled).ToArray();
+        private static UITextureAtlas.SpriteInfo[] DefaultTabButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 58, 25, new RectOffset(4, 4, 4, 0), 2, TabNormal, TabHover, TabPressed, TabFocused, TabDisabled).ToArray();
 
-        private static SpriteParams[] Empty(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesParams(texWidth, texHeight, rect, 28, 28, new RectOffset(2, 2, 2, 2), 2, EmptySprite).ToArray();
+        private static UITextureAtlas.SpriteInfo[] Empty(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 28, 28, new RectOffset(2, 2, 2, 2), 2, EmptySprite).ToArray();
 
-        private static SpriteParams[] OpacitySlider(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesParams(texWidth, texHeight, rect, 18, 200, new RectOffset(), 2, OpacitySliderBoard, OpacitySliderColor).ToArray();
+        private static UITextureAtlas.SpriteInfo[] OpacitySlider(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 18, 200, new RectOffset(), 2, OpacitySliderBoard, OpacitySliderColor).ToArray();
 
-        private static SpriteParams[] ColorPicker(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesParams(texWidth, texHeight, rect, 43, 49, ColorPickerNormal, ColorPickerHover, ColorPickerDisable, ColorPickerColor, ColorPickerBoard).ToArray();
+        private static UITextureAtlas.SpriteInfo[] ColorPicker(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 43, 49, ColorPickerNormal, ColorPickerHover, ColorPickerDisable, ColorPickerColor, ColorPickerBoard).ToArray();
 
-        private static SpriteParams[] Resize(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesParams(texWidth, texHeight, rect, ResizeSprite).ToArray();
-        private static SpriteParams[] HeaderHover(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesParams(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 4), 0, HeaderHoverSprite).ToArray();
-        private static SpriteParams[] CloseButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesParams(texWidth, texHeight, rect, 32, 32, DeleteNormal, DeleteHover, DeletePressed).ToArray();
+        private static UITextureAtlas.SpriteInfo[] Resize(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, ResizeSprite).ToArray();
+        private static UITextureAtlas.SpriteInfo[] HeaderHover(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 4), 0, HeaderHoverSprite).ToArray();
+        private static UITextureAtlas.SpriteInfo[] CloseButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 32, 32, DeleteNormal, DeleteHover, DeletePressed).ToArray();
     }
 }
