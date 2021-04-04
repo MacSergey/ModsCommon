@@ -10,7 +10,7 @@ namespace ModsCommon.Utilities
 {
     public abstract class Selection : IOverlay
     {
-#if DEBUG
+#if DEBUGMARKING
         protected static float BorderOverlayWidth => NodeMarkup.Settings.BorderOverlayWidth;
 #else
         protected static float BorderOverlayWidth => 3f;
@@ -70,7 +70,7 @@ namespace ModsCommon.Utilities
         }
         public virtual void Render(OverlayData overlayData)
         {
-#if DEBUG
+#if DEBUGMARKING
             if (NodeMarkup.Settings.RenderOverlayBorders)
             {
                 foreach (var border in BorderLines)
@@ -274,7 +274,7 @@ namespace ModsCommon.Utilities
         public override void Render(OverlayData overlayData)
         {
             overlayData.Width = BorderOverlayWidth;
-#if DEBUG
+#if DEBUGMARKING
             overlayData.AlphaBlend = NodeMarkup.Settings.AlphaBlendOverlay;
 #else
             overlayData.AlphaBlend = false;
@@ -334,7 +334,7 @@ namespace ModsCommon.Utilities
         public override void Render(OverlayData overlayData)
         {
             overlayData.Width = BorderOverlayWidth;
-#if DEBUG
+#if DEBUGMARKING
             overlayData.AlphaBlend = NodeMarkup.Settings.AlphaBlendOverlay;
 #else
             overlayData.AlphaBlend = false;
