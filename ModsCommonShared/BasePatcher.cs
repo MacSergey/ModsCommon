@@ -46,9 +46,9 @@ namespace ModsCommon
 
         protected bool AddPrefix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Prefix, patchType, patchMethod, type, method, parameters);
         protected bool AddPostfix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Postfix, patchType, patchMethod, type, method, parameters);
-        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Transpiler, patchType, patchMethod, type, method, parameters);
+        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null, Type[] transpilerGenerics = null) => AddPatch(PatcherType.Transpiler, patchType, patchMethod, type, method, parameters, transpilerGenerics);
 
-        private bool AddPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, string method, Type[] parameters = null)
+        private bool AddPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, string method, Type[] parameters = null, Type[] patchGenerics = null)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace ModsCommon
 
                 if (AccessTools.Method(type, method, parameters) is not MethodInfo original)
                     throw new PatchExeption("Can't find original method");
-                if (AccessTools.Method(patchType, patchMethod) is not MethodInfo patch)
+                if (AccessTools.Method(patchType, patchMethod, generics: patchGenerics) is not MethodInfo patch)
                     throw new PatchExeption("Can't find patch method");
 
                 var harmony = Harmony as Harmony;
@@ -86,23 +86,23 @@ namespace ModsCommon
         protected bool Patch_ToolController_Awake<TypeTool>()
             where TypeTool : BaseTool
         {
-            return AddPrefix(typeof(TypeTool), nameof(BaseTool.Create), typeof(ToolController), "Awake");
+            return AddTranspiler(typeof(BasePatcher), nameof(BasePatcher.ToolControllerAwakeTranspiler), typeof(ToolController), "Awake", transpilerGenerics: new Type[] { typeof(TypeTool) });
+        }
+
+        protected static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler<TypeTool>(IEnumerable<CodeInstruction> instructions)
+            where TypeTool : BaseTool
+        {
+            var createMethod = AccessTools.Method(typeof(BaseTool), nameof(BaseTool.Create), generics: new Type[] { typeof(TypeTool) });
+            yield return new CodeInstruction(OpCodes.Call, createMethod);
+
+            foreach (var instruction in instructions)
+                yield return instruction;
         }
 
         protected bool Patch_GameKeyShortcuts_Escape<TypeTool>()
             where TypeTool : BaseTool
         {
-            if (AccessTools.Method(typeof(GameKeyShortcuts), "Escape") is not MethodInfo original)
-                throw new PatchExeption("Can't find original method");
-            if (AccessTools.Method(typeof(BasePatcher), nameof(GameKeyShortcutsEscapeTranspiler), generics: new Type[] { typeof(TypeTool)}) is not MethodInfo patch)
-                throw new PatchExeption("Can't find patch method");
-
-            var harmony = Harmony as Harmony;
-            var harmonyMethod = new HarmonyMethod(patch);
-            harmony.Patch(original, transpiler: harmonyMethod);
-
-            return true;
-            //return AddTranspiler(typeof(BasePatcher), nameof(GameKeyShortcutsEscapeTranspiler), typeof(GameKeyShortcuts), "Escape");
+            return AddTranspiler(typeof(BasePatcher), nameof(BasePatcher.GameKeyShortcutsEscapeTranspiler), typeof(GameKeyShortcuts), "Escape", transpilerGenerics: new Type[] { typeof(TypeTool)});
         }
         protected static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler<TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
             where TypeTool : BaseTool
