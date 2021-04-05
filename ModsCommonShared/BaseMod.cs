@@ -21,15 +21,15 @@ namespace ModsCommon
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
         public string VersionString => !IsBeta ? Version.ToString() : $"{Version} {BETA}";
 
-        public string Name => !IsBeta ? $"{NameRow} {Version.GetString()}" : $"{NameRow} {Version.GetString()} {BETA}";
-        protected abstract string NameRow { get; }
+        public string Name => !IsBeta ? $"{NameRaw} {Version.GetString()}" : $"{NameRaw} {Version.GetString()} {BETA}";
+        public abstract string NameRaw { get; }
         public abstract string Description { get; }
 
         public Logger Logger { get; private set; }
         public abstract string WorkshopUrl { get; }
         public abstract List<Version> Versions { get; }
-        protected abstract string IdRow { get; }
-        public string Id => !IsBeta ? IdRow : $"{IdRow} BETA";
+        protected abstract string IdRaw { get; }
+        public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
         public abstract bool IsBeta { get; }
         protected abstract string Locale { get; }
 
