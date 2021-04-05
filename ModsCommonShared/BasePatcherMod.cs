@@ -8,39 +8,63 @@ using System.Reflection.Emit;
 
 namespace ModsCommon
 {
-    public abstract class BasePatcher
+    public abstract class BasePatcherMod<TypeMod> : BaseMod<TypeMod>
+        where TypeMod : BaseMod<TypeMod>
     {
-        private BaseMod Mod { get; }
-        public static object Harmony => new Harmony(BaseMod.Id);
-        public bool Success { get; private set; }
-
-        public BasePatcher(BaseMod mod)
+        protected override bool LoadSuccess
         {
-            Mod = mod;
+            get => base.LoadSuccess && PatchSuccess;
+            set => base.LoadSuccess = value;
+        }
+        public bool PatchSuccess { get; private set; }
+        public object Harmony => new Harmony(Id);
+
+        public override void OnEnabled()
+        {
+            base.OnEnabled();
+
+            try
+            {
+                Patch();
+            }
+            catch (Exception error)
+            {
+                LoadSuccess = false;
+                Logger.Error("Patch failed", error);
+            }
+
+            CheckLoadedError();
+        }
+        public override void OnDisabled()
+        {
+            base.OnDisabled();
+
+            try { Unpatch(); }
+            catch (Exception error) { Logger.Error("Unpatch failed", error); }
         }
 
-        public void Patch()
+        private void Patch()
         {
-            Mod.ModLogger.Debug("Patch");
+            Logger.Debug("Patch");
             HarmonyHelper.DoOnHarmonyReady(() => Begin());
         }
-        public void Unpatch()
+        private void Unpatch()
         {
-            Mod.ModLogger.Debug($"Unpatch all");
+            Logger.Debug($"Unpatch all");
             var harmony = Harmony as Harmony;
             harmony.UnpatchAll(harmony.Id);
-            Mod.ModLogger.Debug($"Unpatched");
+            Logger.Debug($"Unpatched");
         }
 
         private void Begin()
         {
-            Mod.ModLogger.Debug("Start patching");
+            Logger.Debug("Start patching");
 
-            try { Success = PatchProcess(); }
-            catch { Success = false; }
+            try { PatchSuccess = PatchProcess(); }
+            catch { PatchSuccess = false; }
 
-            BaseMod.Instance.CheckLoadedError();
-            Mod.ModLogger.Debug(Success ? "Patch success" : "Patch Filed");
+            CheckLoadedError();
+            Logger.Debug(PatchSuccess ? "Patch success" : "Patch Filed");
         }
         protected abstract bool PatchProcess();
 
@@ -52,7 +76,7 @@ namespace ModsCommon
         {
             try
             {
-                BaseMod.Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType.FullName}.{patchMethod}] to [{type.FullName}.{method}]");
+                Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchMethod}] to [{type?.FullName}.{method}]");
 
                 if (AccessTools.Method(type, method, parameters) is not MethodInfo original)
                     throw new PatchExeption("Can't find original method");
@@ -68,31 +92,31 @@ namespace ModsCommon
                     case PatcherType.Transpiler: harmony.Patch(original, transpiler: harmonyMethod); break;
                 }
 
-                BaseMod.Logger.Debug("Success patched!");
+                Logger.Debug($"[{patchType?.FullName}.{patchMethod}] success patched!");
                 return true;
             }
             catch (PatchExeption error)
             {
-                BaseMod.Logger.Error($"Failed patch: {error.Message}");
+                Logger.Error($"Failed patch: {error.Message}");
                 return false;
             }
             catch (Exception error)
             {
-                BaseMod.Logger.Error($"Failed patch:", error);
+                Logger.Error($"Failed patch:", error);
                 return false;
             }
         }
 
         protected bool Patch_ToolController_Awake<TypeTool>()
-            where TypeTool : BaseTool
+            where TypeTool : BaseTool<TypeMod, TypeTool>
         {
-            return AddTranspiler(typeof(BasePatcher), nameof(BasePatcher.ToolControllerAwakeTranspiler), typeof(ToolController), "Awake", transpilerGenerics: new Type[] { typeof(TypeTool) });
+            return AddTranspiler(typeof(TypeMod), nameof(BasePatcherMod<TypeMod>.ToolControllerAwakeTranspiler), typeof(ToolController), "Awake", transpilerGenerics: new Type[] { typeof(TypeTool) });
         }
 
         protected static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler<TypeTool>(IEnumerable<CodeInstruction> instructions)
-            where TypeTool : BaseTool
+            where TypeTool : BaseTool<TypeMod, TypeTool>
         {
-            var createMethod = AccessTools.Method(typeof(BaseTool), nameof(BaseTool.Create), generics: new Type[] { typeof(TypeTool) });
+            var createMethod = AccessTools.Method(typeof(TypeTool), nameof(BaseTool<TypeMod, TypeTool>.Create));
             yield return new CodeInstruction(OpCodes.Call, createMethod);
 
             foreach (var instruction in instructions)
@@ -100,12 +124,12 @@ namespace ModsCommon
         }
 
         protected bool Patch_GameKeyShortcuts_Escape<TypeTool>()
-            where TypeTool : BaseTool
+            where TypeTool : BaseTool<TypeMod, TypeTool>
         {
-            return AddTranspiler(typeof(BasePatcher), nameof(BasePatcher.GameKeyShortcutsEscapeTranspiler), typeof(GameKeyShortcuts), "Escape", transpilerGenerics: new Type[] { typeof(TypeTool)});
+            return AddTranspiler(typeof(TypeMod), nameof(BasePatcherMod<TypeMod>.GameKeyShortcutsEscapeTranspiler), typeof(GameKeyShortcuts), "Escape", transpilerGenerics: new Type[] { typeof(TypeTool) });
         }
         protected static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler<TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
-            where TypeTool : BaseTool
+            where TypeTool : BaseTool<TypeMod, TypeTool>
         {
             var instructionList = instructions.ToList();
 
@@ -124,12 +148,12 @@ namespace ModsCommon
 
                     var newInstructions = new List<CodeInstruction>()
                     {
-                        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(TypeTool), $"get_{nameof(BaseTool.Instance)}")),
-                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(TypeTool), $"get_{nameof(BaseTool.enabled)}")),
+                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SingletonTool<TypeTool>), $"get_{nameof(SingletonTool<TypeTool>.Instance)}")),
+                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(TypeTool), $"get_{nameof(BaseTool<TypeTool>.enabled)}")),
                         new CodeInstruction(OpCodes.Brfalse, newElseLabel),
 
-                        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(TypeTool), $"get_{nameof(BaseTool.Instance)}")),
-                        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(TypeTool), nameof(BaseTool.Escape))),
+                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SingletonTool<TypeTool>), $"get_{nameof(SingletonTool<TypeTool>.Instance)}")),
+                        new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(TypeTool), nameof(BaseTool<TypeMod, TypeTool>.Escape))),
                         new CodeInstruction(OpCodes.Br, returnLabel),
                     };
 

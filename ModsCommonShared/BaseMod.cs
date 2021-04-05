@@ -9,39 +9,33 @@ using System.Reflection;
 
 namespace ModsCommon
 {
-    public abstract class BaseMod : IUserMod
+    public abstract class BaseMod<TypeMod> : IUserMod
+        where TypeMod : BaseMod<TypeMod>
     {
-        public static BaseMod Instance { get; protected set; }
-        public static Logger Logger => Instance.ModLogger;
-        public static Version Version => Assembly.GetExecutingAssembly().GetName().Version;
-        public static string VersionString => Instance.ModVersionString;
-        public static List<Version> Versions => Instance.ModVersions;
-        public static string Id => !IsBeta ? Instance.ModId : $"{Instance.ModId} BETA";
-        public static bool IsBeta => Instance.ModIsBeta;
-        public static string ShortName => Instance.ModName;
         public static string BETA => "[BETA]";
-
-        public string Name => !ModIsBeta ? $"{ModName} {Version.GetString()}" : $"{ModName} {Version.GetString()} {BETA}";
-        public string Description => ModDescription;
-
-        protected abstract string ModName { get; }
-        protected abstract string ModDescription { get; }
 
         protected virtual bool LoadSuccess { get; set; }
 
-        public Logger ModLogger { get; private set; }
+        public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
+        public string VersionString => !IsBeta ? Version.ToString() : $"{Version} {BETA}";
+
+        public string Name => !IsBeta ? $"{NameRow} {Version.GetString()}" : $"{NameRow} {Version.GetString()} {BETA}";
+        protected abstract string NameRow { get; }
+        public abstract string Description { get; }
+
+        public Logger Logger { get; private set; }
         public abstract string WorkshopUrl { get; }
-        protected string ModVersionString => !ModIsBeta ? Version.ToString() : $"{Version} {BETA}";
-        protected abstract List<Version> ModVersions { get; }
-        protected abstract string ModId { get; }
-        protected abstract bool ModIsBeta { get; }
-        protected abstract string ModLocale { get; }
+        public abstract List<Version> Versions { get; }
+        protected abstract string IdRow { get; }
+        public string Id => !IsBeta ? IdRow : $"{IdRow} BETA";
+        public abstract bool IsBeta { get; }
+        protected abstract string Locale { get; }
 
         protected CultureInfo Culture
         {
             get
             {
-                var locale = string.IsNullOrEmpty(ModLocale) ? SingletonLite<LocaleManager>.instance.language : ModLocale;
+                var locale = string.IsNullOrEmpty(Locale) ? SingletonLite<LocaleManager>.instance.language : Locale;
                 if (locale == "zh")
                     locale = "zh-cn";
 
@@ -51,19 +45,19 @@ namespace ModsCommon
 
         public BaseMod()
         {
-            Instance = this;
-            ModLogger = new Logger(Id);
+            Logger = new Logger(Id);
+            SingletonMod<TypeMod>.Instance = (TypeMod)this;
         }
         public virtual void OnEnabled()
         {
-            ModLogger.Debug($"Version {ModVersionString}");
-            ModLogger.Debug($"Enabled");
+            Logger.Debug($"Version {VersionString}");
+            Logger.Debug($"Enabled");
             LoadSuccess = true;
             LoadingManager.instance.m_introLoaded += CheckLoadedError;
         }
         public virtual void OnDisabled()
         {
-            ModLogger.Debug($"Disabled");
+            Logger.Debug($"Disabled");
             LoadingManager.instance.m_introLoaded -= CheckLoadedError;
             LocaleManager.eventLocaleChanged -= LocaleChanged;
         }
@@ -73,7 +67,7 @@ namespace ModsCommon
             LocaleChanged();
             LocaleManager.eventLocaleChanged += LocaleChanged;
 
-            ModLogger.Debug($"Load SettingsUI");
+            Logger.Debug($"Load SettingsUI");
             GetSettings(helper);
         }
         protected virtual void GetSettings(UIHelperBase helper) { }
@@ -86,40 +80,5 @@ namespace ModsCommon
                 OnLoadedError();
         }
         public virtual void OnLoadedError() { }
-    }
-    public abstract class BasePatcherMod : BaseMod
-    {
-        protected override bool LoadSuccess
-        {
-            get => base.LoadSuccess && Patcher.Success;
-            set => base.LoadSuccess = value;
-        }
-        protected BasePatcher Patcher { get; private set; }
-
-        public override void OnEnabled()
-        {
-            base.OnEnabled();
-
-            try
-            {
-                Patcher = CreatePatcher();
-                Patcher.Patch();
-            }
-            catch (Exception error)
-            {
-                LoadSuccess = false;
-                ModLogger.Error("Patch failed", error);
-            }
-
-            CheckLoadedError();
-        }
-        public override void OnDisabled()
-        {
-            base.OnDisabled();
-
-            try { Patcher.Unpatch(); }
-            catch (Exception error) { ModLogger.Error("Unpatch failed", error); }
-        }
-        protected abstract BasePatcher CreatePatcher();
     }
 }
