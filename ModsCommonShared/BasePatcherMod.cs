@@ -1,4 +1,5 @@
 ﻿using CitiesHarmony.API;
+using ColossalFramework.UI;
 using HarmonyLib;
 using MonoMod.Utils;
 using System;
@@ -203,6 +204,10 @@ namespace ModsCommon
             }
 
             return instructionList;
+        }
+        protected bool Patch_LoadAssetPanel_OnLoad(Action<LoadAssetPanel, UIListBox> postfix)
+        {
+            return AddPostfix(postfix.Method, typeof(LoadAssetPanel), nameof(LoadAssetPanel.OnLoad));
         }
 
         private enum PatcherType
