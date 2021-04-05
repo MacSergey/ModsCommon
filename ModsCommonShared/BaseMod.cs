@@ -16,7 +16,7 @@ namespace ModsCommon
     {
         public static string BETA => "[BETA]";
 
-        protected virtual bool LoadSuccess { get; set; }
+        protected virtual bool LoadError { get; set; }
 
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
         public string VersionString => !IsBeta ? Version.ToString() : $"{Version} {BETA}";
@@ -54,7 +54,7 @@ namespace ModsCommon
         {
             Logger.Debug($"Version {VersionString}");
             Logger.Debug($"Enabled");
-            LoadSuccess = true;
+            LoadError = false;
             LoadingManager.instance.m_introLoaded += CheckLoadedError;
         }
 

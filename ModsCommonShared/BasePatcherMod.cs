@@ -11,10 +11,10 @@ namespace ModsCommon
     public abstract class BasePatcherMod<TypeMod> : BaseMod<TypeMod>
         where TypeMod : BaseMod<TypeMod>
     {
-        protected override bool LoadSuccess
+        protected override bool LoadError
         {
-            get => base.LoadSuccess && PatchSuccess;
-            set => base.LoadSuccess = value;
+            get => base.LoadError || !PatchSuccess;
+            set => base.LoadError = value;
         }
         public bool PatchSuccess { get; private set; }
         public object Harmony => new Harmony(Id);
@@ -29,7 +29,7 @@ namespace ModsCommon
             }
             catch (Exception error)
             {
-                LoadSuccess = false;
+                LoadError = true;
                 Logger.Error("Patch failed", error);
             }
 
