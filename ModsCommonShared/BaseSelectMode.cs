@@ -6,9 +6,11 @@ using ColossalFramework;
 
 namespace ModsCommon
 {
-    public abstract class BaseSelectToolMode : BaseToolMode
+    public abstract class BaseSelectToolMode<TypeMod, TypeTool> : BaseToolMode<TypeMod, TypeTool>
+        where TypeMod : BaseMod<TypeMod>
+        where TypeTool : BaseTool<TypeMod, TypeTool>
     {
-        protected Segment3 Ray => BaseTool.Ray;
+        protected Segment3 Ray => SingletonTool<TypeTool>.Instance.Ray;
 
         protected NodeSelection HoverNode { get; set; } = null;
         protected bool IsHoverNode => HoverNode != null;
@@ -27,7 +29,7 @@ namespace ModsCommon
             NodeSelection nodeSelection = null;
             SegmentSelection segmentSelection = null;
 
-            if (BaseTool.MouseRayValid)
+            if (SingletonTool<TypeTool>.Instance.MouseRayValid)
             {
                 if (IsHoverNode && HoverNode.Contains(Ray, out _))
                     nodeSelection = HoverNode;
@@ -43,7 +45,7 @@ namespace ModsCommon
 
         private void RayCast(out NodeSelection nodeSelection, out SegmentSelection segmentSelection)
         {
-            var hitPos = BaseTool.MouseWorldPosition;
+            var hitPos = SingletonTool<TypeTool>.Instance.MouseWorldPosition;
             var gridMinX = Max(hitPos.x);
             var gridMinZ = Max(hitPos.z);
             var gridMaxX = Min(hitPos.x);

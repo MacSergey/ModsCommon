@@ -30,9 +30,11 @@ namespace ModsCommon
         public bool ShowPanel { get; }
     }
 
-    public abstract class BaseToolMode : MonoBehaviour, IToolMode
+    public abstract class BaseToolMode<TypeMod, TypeTool> : MonoBehaviour, IToolMode
+        where TypeMod : BaseMod<TypeMod>
+        where TypeTool : BaseTool<TypeMod, TypeTool>
     {
-        protected BaseTool Tool => BaseTool.Instance;
+        protected TypeTool Tool => SingletonTool<TypeTool>.Instance;
 
         public BaseToolMode()
         {
