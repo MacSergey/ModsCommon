@@ -14,15 +14,16 @@ namespace ModsCommon
     {
         protected override bool LoadError
         {
-            get => base.LoadError || !PatchSuccess;
+            get => base.LoadError || PatchError;
             set => base.LoadError = value;
         }
-        public bool PatchSuccess { get; private set; }
+        public bool PatchError { get; private set; }
         public object Harmony => new Harmony(Id);
 
         public override void OnEnabled()
         {
             base.OnEnabled();
+            PatchError = false;
 
             try
             {
@@ -47,7 +48,7 @@ namespace ModsCommon
         private void Patch()
         {
             Logger.Debug("Patch");
-            HarmonyHelper.DoOnHarmonyReady(() => Begin());
+            HarmonyHelper.DoOnHarmonyReady(() => StartPatch());
         }
         private void Unpatch()
         {
@@ -57,15 +58,15 @@ namespace ModsCommon
             Logger.Debug($"Unpatched");
         }
 
-        private void Begin()
+        private void StartPatch()
         {
             Logger.Debug("Start patching");
 
-            try { PatchSuccess = PatchProcess(); }
-            catch { PatchSuccess = false; }
+            try { PatchError = !PatchProcess(); }
+            catch { PatchError = true; }
 
             CheckLoadedError();
-            Logger.Debug(PatchSuccess ? "Patch success" : "Patch Filed");
+            Logger.Debug(PatchError ? "Patch Filed" : "Patch success");
         }
         protected abstract bool PatchProcess();
 
