@@ -13,6 +13,7 @@ namespace ModsCommon
         where T : BaseMod<T>
     {
         public static string Name => Instance.Name;
+        public static string NameRaw => Instance.NameRaw;
         public static Logger Logger => Instance.Logger;
         public static Version Version => Instance.Version;
         public static List<Version> Versions => Instance.Versions;
