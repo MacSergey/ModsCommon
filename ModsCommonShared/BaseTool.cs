@@ -276,6 +276,8 @@ namespace ModsCommon
 
         protected abstract IEnumerable<IToolMode<TypeModeType>> GetModes();
         protected override void InitProcess() => ToolModes = GetModes().ToDictionary(i => i.Type, i => i);
+
+        public void SetMode(TypeModeType mode) => SetMode(ToolModes[mode]);
     }
     public abstract class BaseThreadingExtension<TypeMod, TypeTool> : ThreadingExtensionBase
         where TypeMod : BaseMod<TypeMod>
