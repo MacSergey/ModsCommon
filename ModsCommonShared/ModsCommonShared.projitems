@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\CustomElements.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\DropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Keymapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\NetToolButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\TabPanel.cs" />
@@ -42,6 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Property panels\TextProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\UIHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\ValueField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\AssetDataExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Colors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ClassesExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\EnumExtension.cs" />

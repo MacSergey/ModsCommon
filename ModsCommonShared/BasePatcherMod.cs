@@ -1,6 +1,8 @@
 ﻿using CitiesHarmony.API;
 using ColossalFramework.UI;
 using HarmonyLib;
+using ModsCommon.UI;
+using ModsCommon.Utilities;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,8 @@ namespace ModsCommon
     public abstract class BasePatcherMod<TypeMod> : BaseMod<TypeMod>
         where TypeMod : BaseMod<TypeMod>
     {
+        #region PROPERTIES
+
         protected override bool LoadError
         {
             get => base.LoadError || PatchError;
@@ -20,6 +24,10 @@ namespace ModsCommon
         }
         public bool PatchError { get; private set; }
         public object Harmony => new Harmony(Id);
+
+        #endregion
+
+        #region BASIC
 
         public override void OnEnabled()
         {
@@ -147,12 +155,13 @@ namespace ModsCommon
             }
         }
 
-        protected delegate IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions);
-        protected bool Patch_ToolController_Awake(Transpiler transpiler)
-        {
-            return AddTranspiler(transpiler.Method, typeof(ToolController), "Awake");
-        }
-        protected bool Patch_ToolController_Awake<TypeTool>()
+        #endregion
+
+        #region COMMON PATCHES
+
+        #region ADD TOOL
+
+        protected bool AddTool<TypeTool>()
             where TypeTool : BaseTool<TypeMod, TypeTool>
         {
             var patch = AccessTools.Method(typeof(BasePatcherMod<TypeMod>), nameof(ToolControllerAwakeTranspiler), generics: new Type[] { typeof(TypeTool) });
@@ -169,9 +178,15 @@ namespace ModsCommon
                 yield return instruction;
         }
 
-        protected bool Patch_GameKeyShortcuts_Escape(Transpiler transpiler)
+        #endregion
+
+        #region TOOL ONESCAPE
+
+        protected bool ToolOnEscape<TypeTool>()
+            where TypeTool : BaseTool<TypeMod, TypeTool>
         {
-            return AddTranspiler(transpiler.Method, typeof(GameKeyShortcuts), "Escape");
+            var patch = AccessTools.Method(typeof(BasePatcherMod<TypeMod>), nameof(GameKeyShortcutsEscapeTranspiler), generics: new Type[] { typeof(TypeTool) });
+            return AddTranspiler(patch, typeof(GameKeyShortcuts), "Escape");
         }
         protected static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler<TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
             where TypeTool : BaseTool<TypeMod, TypeTool>
@@ -212,10 +227,39 @@ namespace ModsCommon
 
             return instructionList;
         }
-        protected bool Patch_LoadAssetPanel_OnLoad(Action<LoadAssetPanel, UIListBox> postfix)
+
+        #endregion
+
+        #region ADD NETTOOL BUTTON
+
+        private static string RoadsOptionPanel => nameof(RoadsOptionPanel);
+        protected bool AddNetToolButton<TypeButton>()
         {
-            return AddPostfix(postfix.Method, typeof(LoadAssetPanel), nameof(LoadAssetPanel.OnLoad));
+            var patch = AccessTools.Method(typeof(BasePatcherMod<TypeMod>), nameof(GeneratedScrollPanelCreateOptionPanelPostfix), generics: new Type[] { typeof(TypeButton) });
+            return AddPostfix(patch, typeof(GeneratedScrollPanel), "CreateOptionPanel");
         }
+        public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeButton>(string templateName, ref OptionPanelBase __result)
+            where TypeButton : UIButton
+        {
+            if (__result == null || templateName != RoadsOptionPanel || __result.component.Find<TypeButton>(nameof(TypeButton)) != null)
+                return;
+
+            SingletonMod<TypeMod>.Logger.Debug($"Create button");
+            __result.component.AddUIComponent<TypeButton>();
+            SingletonMod<TypeMod>.Logger.Debug($"Button created");
+        }
+
+        #endregion
+
+        protected bool AssetDataExtensionFix<TypeExtension>()
+            where TypeExtension : BaseAssetDataExtension<TypeExtension>
+        {
+            return AddPostfix(typeof(TypeExtension), nameof(BaseAssetDataExtension<TypeExtension>.LoadAssetPanelOnLoadPostfix), typeof(LoadAssetPanel), nameof(LoadAssetPanel.OnLoad));
+        }
+
+        #endregion
+
+        #region ADDITIONAL
 
         private enum PatcherType
         {
@@ -227,15 +271,7 @@ namespace ModsCommon
         {
             public PatchExeption(string message) : base(message) { }
         }
-    }
-    public abstract class Mod
-    {
-        private static void Prefix<Type>(Type value)
-        {
-            ...
 
-        }
+        #endregion
     }
-    public class Mod1 : BaseMode<Tool1> { }
-    public class Mod2 : BaseMode<Tool2> { }
 }

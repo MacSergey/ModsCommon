@@ -17,9 +17,10 @@ namespace ModsCommon.Utilities
             Action = action;
         }
 
-        public virtual bool IsPressed(Event e)
+        public bool IsKeyUp => InputKey.IsKeyUp();
+        public virtual bool Press(Event e)
         {
-            if (InputKey.IsPressed(e))
+            if (IsKeyUp)
             {
                 Press();
                 return true;

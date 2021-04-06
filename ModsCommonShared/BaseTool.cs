@@ -14,7 +14,10 @@ using UnityEngine;
 
 namespace ModsCommon
 {
-    public abstract class BaseTool<TypeTool> : ToolBase where TypeTool : BaseTool<TypeTool> { }
+    public abstract class BaseTool<TypeTool> : ToolBase where TypeTool : BaseTool<TypeTool> 
+    {
+        public abstract Shortcut Activation { get; }
+    }
     public abstract class BaseTool<TypeMod, TypeTool> : BaseTool<TypeTool>
         where TypeMod : BaseMod<TypeMod>
         where TypeTool : BaseTool<TypeMod, TypeTool>
@@ -44,7 +47,6 @@ namespace ModsCommon
 
         protected abstract bool ShowToolTip { get; }
         protected abstract IToolMode DefaultMode { get; }
-        public abstract bool IsActivationPressed { get; }
 
         public Segment3 Ray { get; set; }
         public Ray MouseRay { get; private set; }
@@ -284,7 +286,7 @@ namespace ModsCommon
             if (SingletonItem<TypeTool>.Instance is not TypeTool toolInstance)
                 return;
 
-            if (!UIView.HasModalInput() && !UIView.HasInputFocus() && toolInstance.IsActivationPressed)
+            if (!UIView.HasModalInput() && !UIView.HasInputFocus() && toolInstance.Activation.IsKeyUp)
             {
                 SingletonMod<TypeMod>.Logger.Debug($"On press shortcut");
                 toolInstance.Toggle();
