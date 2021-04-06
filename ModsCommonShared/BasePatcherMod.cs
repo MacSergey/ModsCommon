@@ -146,11 +146,17 @@ namespace ModsCommon
                 case PatcherType.Transpiler: harmony.Patch(original, transpiler: harmonyMethod); break;
             }
         }
-        
+
         protected delegate IEnumerable<CodeInstruction> Transpiler(ILGenerator generator, IEnumerable<CodeInstruction> instructions);
         protected bool Patch_ToolController_Awake(Transpiler transpiler)
         {
-            return AddTranspiler(transpiler.Method, typeof(ToolController), "Awake");         
+            return AddTranspiler(transpiler.Method, typeof(ToolController), "Awake");
+        }
+        protected bool Patch_ToolController_Awake<TypeTool>()
+            where TypeTool : BaseTool<TypeMod, TypeTool>
+        {
+            var patch = AccessTools.Method(typeof(BasePatcherMod<TypeMod>), nameof(ToolControllerAwakeTranspiler), generics: new Type[] { typeof(TypeTool) });
+            return AddTranspiler(patch, typeof(ToolController), "Awake");
         }
 
         protected static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler<TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
@@ -222,4 +228,14 @@ namespace ModsCommon
             public PatchExeption(string message) : base(message) { }
         }
     }
+    public abstract class Mod
+    {
+        private static void Prefix<Type>(Type value)
+        {
+            ...
+
+        }
+    }
+    public class Mod1 : BaseMode<Tool1> { }
+    public class Mod2 : BaseMode<Tool2> { }
 }
