@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
+    [Obsolete]
     public class BoolPropertyPanel : EditorPropertyPanel
     {
         private UICheckBox CheckBox { get; set; }

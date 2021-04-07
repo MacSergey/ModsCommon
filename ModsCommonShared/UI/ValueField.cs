@@ -29,17 +29,17 @@ namespace ModsCommon.UI
                     return default;
                 }
             }
-            set => ValueChanged(value);
+            set => ValueChanged(value, false);
         }
-
-        protected virtual void ValueChanged(ValueType value, Action<ValueType> action = null)
+        protected virtual void ValueChanged(ValueType value, bool callEvent = true, Action<ValueType> action = null)
         {
             if (!InProcess)
             {
                 InProcess = true;
 
                 action?.Invoke(value);
-                OnValueChanged?.Invoke(value);
+                if (callEvent)
+                    OnValueChanged?.Invoke(value);
                 text = GetString(value);
 
                 InProcess = false;
@@ -99,7 +99,7 @@ namespace ModsCommon.UI
         }
         public bool CanWheel { get; set; }
 
-        protected override void ValueChanged(ValueType value, Action<ValueType> action = null)
+        protected override void ValueChanged(ValueType value, bool callEvent = true, Action<ValueType> action = null)
         {
             if (CheckMin && value.CompareTo(MinValue) < 0)
                 value = MinValue;
@@ -107,7 +107,7 @@ namespace ModsCommon.UI
             if (CheckMax && value.CompareTo(MaxValue) > 0)
                 value = MaxValue;
 
-            base.ValueChanged(value, action);
+            base.ValueChanged(value, callEvent, action);
         }
         protected override void OnMouseMove(UIMouseEventParameter p)
         {
@@ -127,9 +127,9 @@ namespace ModsCommon.UI
             {
                 var mode = InputExtension.ShiftIsPressed ? WheelMode.High : InputExtension.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
                 if (p.wheelDelta < 0)
-                    Value = Decrement(Limited && CyclicalValue && Value.CompareTo(MinValue) == 0 ? MaxValue : Value, WheelStep, mode);
+                    ValueChanged(Decrement(Limited && CyclicalValue && Value.CompareTo(MinValue) == 0 ? MaxValue : Value, WheelStep, mode));
                 else
-                    Value = Increment(Limited && CyclicalValue && Value.CompareTo(MaxValue) == 0 ? MinValue : Value, WheelStep, mode);
+                    ValueChanged(Increment(Limited && CyclicalValue && Value.CompareTo(MaxValue) == 0 ? MinValue : Value, WheelStep, mode));
 
                 p.Use();
             }

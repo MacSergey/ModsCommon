@@ -92,72 +92,43 @@ namespace ModsCommon.UI
     {
         public event Action<ValueType> OnSelectObjectChanged;
 
-        private int _selectedIndex = -1;
-
-        private int SelectedIndex
-        {
-            get => _selectedIndex;
-            set
-            {
-                if (_selectedIndex == value)
-                    return;
-
-                if (_selectedIndex != -1)
-                    SetSprite(Buttons[_selectedIndex], false);
-
-                _selectedIndex = value;
-
-                if (_selectedIndex != -1)
-                {
-                    SetSprite(Buttons[_selectedIndex], true);
-                    OnSelectObjectChanged?.Invoke(SelectedObject);
-                }
-            }
-        }
-
+        private int SelectedIndex { get; set; } = -1;
         public ValueType SelectedObject
         {
             get => SelectedIndex >= 0 ? Objects[SelectedIndex] : default;
-            set => SelectedIndex = Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || o.Equals(value));
+            set => SetSelected(Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || o.Equals(value)), false);
         }
+        private void SetSelected(int index, bool callEvent = true)
+        {
+            if (SelectedIndex == index)
+                return;
 
+            if (SelectedIndex != -1)
+                SetSprite(Buttons[SelectedIndex], false);
+
+            SelectedIndex = index;
+
+            if (SelectedIndex != -1)
+            {
+                SetSprite(Buttons[SelectedIndex], true);
+                if (callEvent)
+                    OnSelectObjectChanged?.Invoke(SelectedObject);
+            }
+        }
         public override void Clear()
         {
-            _selectedIndex = -1;
+            SelectedIndex = -1;
             base.Clear();
         }
-        protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => SelectedIndex = Buttons.FindIndex(b => b == component);
-        protected override bool IsSelect(int index) => _selectedIndex == index;
+        protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => SetSelected(Buttons.FindIndex(b => b == component));
+        protected override bool IsSelect(int index) => SelectedIndex == index;
     }
 
     public abstract class UIMultySegmented<ValueType> : UISegmented<ValueType>, IUIMultySelector<ValueType>
     {
         public event Action<List<ValueType>> OnSelectObjectsChanged;
 
-        private HashSet<int> _selectedIndices = new HashSet<int>();
-
-        private HashSet<int> SelectedIndices
-        {
-            get => new HashSet<int>(_selectedIndices);
-            set
-            {
-                foreach (var index in _selectedIndices)
-                {
-                    if (!value.Contains(index))
-                        SetSprite(Buttons[index], false);
-                }
-
-                foreach (var index in value)
-                {
-                    if (!_selectedIndices.Contains(index))
-                        SetSprite(Buttons[index], true);
-                }
-
-                _selectedIndices = new HashSet<int>(value);
-
-                OnSelectObjectsChanged?.Invoke(SelectedObjects);
-            }
-        }
+        private HashSet<int> SelectedIndices { get; set; } = new HashSet<int>();
         public List<ValueType> SelectedObjects
         {
             get => SelectedIndices.Select(i => Objects[i]).ToList();
@@ -171,17 +142,37 @@ namespace ModsCommon.UI
                         selectedIndices.Add(index);
                 }
 
-                SelectedIndices = selectedIndices;
+                SetSelected(selectedIndices, false);
             }
         }
+        private void SetSelected(HashSet<int> indices, bool callEvent = true)
+        {
+            foreach (var index in SelectedIndices)
+            {
+                if (!indices.Contains(index))
+                    SetSprite(Buttons[index], false);
+            }
+
+            foreach (var index in indices)
+            {
+                if (!SelectedIndices.Contains(index))
+                    SetSprite(Buttons[index], true);
+            }
+
+            SelectedIndices = new HashSet<int>(indices);
+
+            if (callEvent)
+                OnSelectObjectsChanged?.Invoke(SelectedObjects);
+        }
+
         public override void Clear()
         {
-            _selectedIndices.Clear();
+            SelectedIndices.Clear();
             base.Clear();
         }
         protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam)
         {
-            var indices = SelectedIndices;
+            var indices = new HashSet<int>(SelectedIndices);
             var index = Buttons.FindIndex(b => b == component);
 
             if (indices.Contains(index))
@@ -189,8 +180,8 @@ namespace ModsCommon.UI
             else
                 indices.Add(index);
 
-            SelectedIndices = indices;
+            SetSelected(indices);
         }
-        protected override bool IsSelect(int index) => _selectedIndices.Contains(index);
+        protected override bool IsSelect(int index) => SelectedIndices.Contains(index);
     }
 }

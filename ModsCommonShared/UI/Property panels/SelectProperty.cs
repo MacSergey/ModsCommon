@@ -97,29 +97,23 @@ namespace ModsCommon.UI
     public abstract class SelectListPropertyPanel<Type, PanelType> : SelectPropertyPanel<Type, PanelType>, IReusable
         where PanelType : SelectListPropertyPanel<Type, PanelType>
     {
-        private int _selectIndex = -1;
-
-        private int SelectIndex
-        {
-            get => _selectIndex;
-            set
-            {
-                if (value != _selectIndex)
-                {
-                    _selectIndex = value;
-                    ValueChanged();
-                }
-            }
-        }
+        private int SelectIndex { get; set; } = -1;
 
         private List<Type> ObjectsList { get; set; } = new List<Type>();
         public IEnumerable<Type> Objects => ObjectsList;
         public override Type Value
         {
             get => SelectIndex == -1 ? default : ObjectsList[SelectIndex];
-            set => SelectIndex = ObjectsList.FindIndex(o => IsEqual(value, o));
+            set => SetSelected(ObjectsList.FindIndex(o => IsEqual(value, o)));
         }
-
+        private void SetSelected(int index)
+        {
+            if (index != SelectIndex)
+            {
+                SelectIndex = index;
+                ValueChanged();
+            }
+        }
         public void Add(Type item) => ObjectsList.Add(item);
         public void AddRange(IEnumerable<Type> items) => ObjectsList.AddRange(items);
         public void Clear()

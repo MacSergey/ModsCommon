@@ -34,7 +34,7 @@ namespace ModsCommon.UI
         public Color32 Value
         {
             get => new Color32(R, G, B, A);
-            set => ValueChanged(value, (c) =>
+            set => ValueChanged(value, false, (c) =>
             {
                 SetFields(c);
                 SetSample(c);
@@ -51,20 +51,21 @@ namespace ModsCommon.UI
 
             AddColorSample();
         }
-        private void ValueChanged(Color32 color, Action<Color32> action)
+        private void ValueChanged(Color32 color, bool callEvent = true, Action<Color32> action = null)
         {
             if (!InProcess)
             {
                 InProcess = true;
 
                 action(color);
-                OnValueChanged?.Invoke(Value);
+                if (callEvent)
+                    OnValueChanged?.Invoke(Value);
 
                 InProcess = false;
             }
         }
 
-        private void FieldChanged(byte value) => ValueChanged(Value, (c) =>
+        private void FieldChanged(byte value) => ValueChanged(Value, action: (c) =>
         {
             SetSample(c);
             SetOpacity(c);
@@ -74,7 +75,7 @@ namespace ModsCommon.UI
             var color = (Color32)value;
             color.a = A;
 
-            ValueChanged(color, (c) =>
+            ValueChanged(color, action: (c) =>
             {
                 SetFields(c);
                 SetOpacity(color);
