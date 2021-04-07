@@ -18,6 +18,9 @@ namespace ModsCommon
         protected SegmentSelection HoverSegment { get; set; } = null;
         protected bool IsHoverSegment => HoverSegment != null;
 
+        protected virtual bool SelectNodes { get; } = true;
+        protected virtual bool SelectSegments { get; } = true;
+
         protected override void Reset(IToolMode prevMode)
         {
             HoverNode = null;
@@ -45,6 +48,9 @@ namespace ModsCommon
 
         private void RayCast(out NodeSelection nodeSelection, out SegmentSelection segmentSelection)
         {
+            nodeSelection = null;
+            segmentSelection = null;
+
             var hitPos = SingletonTool<TypeTool>.Instance.MouseWorldPosition;
             var gridMinX = Max(hitPos.x);
             var gridMinZ = Max(hitPos.z);
@@ -55,11 +61,8 @@ namespace ModsCommon
 
             var priority = 1f;
 
-            nodeSelection = null;
-            segmentSelection = null;
-
-            var onlyNodes = InputExtension.OnlyCtrlIsPressed;
-            var onlySegments = InputExtension.OnlyShiftIsPressed;
+            var selectNodes = SelectNodes;
+            var selectSegments = SelectSegments;
 
             for (int i = gridMinZ; i <= gridMaxZ; i++)
             {
@@ -75,19 +78,19 @@ namespace ModsCommon
                             var segment = segmentId.GetSegment();
                             float t;
 
-                            if (!onlySegments && RayCastNode(checkedNodes, segment.m_startNode, out NodeSelection startSelection, out t) && t < priority)
+                            if (selectNodes && RayCastNode(checkedNodes, segment.m_startNode, out NodeSelection startSelection, out t) && t < priority)
                             {
                                 nodeSelection = startSelection;
                                 segmentSelection = null;
                                 priority = t;
                             }
-                            else if (!onlySegments && RayCastNode(checkedNodes, segment.m_endNode, out NodeSelection endSelection, out t) && t < priority)
+                            else if (selectNodes && RayCastNode(checkedNodes, segment.m_endNode, out NodeSelection endSelection, out t) && t < priority)
                             {
                                 nodeSelection = endSelection;
                                 segmentSelection = null;
                                 priority = t;
                             }
-                            else if (!onlyNodes && RayCastSegments(segmentId, out SegmentSelection selection, out t) && t < priority)
+                            else if (selectSegments && RayCastSegments(segmentId, out SegmentSelection selection, out t) && t < priority)
                             {
                                 segmentSelection = selection;
                                 nodeSelection = null;

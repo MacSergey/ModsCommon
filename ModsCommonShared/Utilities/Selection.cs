@@ -71,15 +71,24 @@ namespace ModsCommon.Utilities
         public virtual void Render(OverlayData overlayData)
         {
 #if DEBUGMARKING
+            RenderBorders(new OverlayData(overlayData.CameraInfo) { Color = Colors.Green });
+            RenderCenter(new OverlayData(overlayData.CameraInfo) { Color = Colors.Red });
             if (NodeMarkup.Settings.RenderOverlayBorders)
             {
                 foreach (var border in BorderLines)
                     border.Render(new OverlayData(overlayData.CameraInfo) { Color = Colors.Green });
             }
             if (NodeMarkup.Settings.RenderOverlayCentre)
-                Center.RenderCircle(new OverlayData(overlayData.CameraInfo) { Color = Colors.Red });
+                
 #endif
         }
+        public void RenderBorders(OverlayData overlayData)
+        {
+            foreach (var border in BorderLines)
+                border.Render(overlayData);
+        }
+        public void RenderCenter(OverlayData overlayData) => Center.RenderCircle(overlayData);
+
         protected void RenderCorner(OverlayData overlayData, Data data)
         {
             var cornerDelta = data.GetCornerDelta(BorderOverlayWidth / 2);
