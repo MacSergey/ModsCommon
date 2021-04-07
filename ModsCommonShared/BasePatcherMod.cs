@@ -71,11 +71,18 @@ namespace ModsCommon
         {
             Logger.Debug("Start patching");
 
-            try { PatchError = !PatchProcess(); }
-            catch { PatchError = true; }
+            try 
+            { 
+                PatchError = !PatchProcess();
+                Logger.Debug(PatchError ? "Patch Filed" : "Patch success");
+            }
+            catch (Exception error)
+            { 
+                PatchError = true;
+                Logger.Error("Patch Filed", error);
+            }
 
             CheckLoadedError();
-            Logger.Debug(PatchError ? "Patch Filed" : "Patch success");
         }
         protected abstract bool PatchProcess();
 
