@@ -11,16 +11,20 @@ namespace ModsCommon.UI
         where UISelector : UIComponent, IUIOnceSelector<EnumType>
     {
         protected override bool AllowNull => false;
-        public override void Init()
+        public override void Init() => Init(null);
+        public void Init(Func<EnumType, bool> selector)
         {
             base.Init();
-            FillItems();
+            FillItems(selector);
         }
-        protected virtual void FillItems()
+        protected virtual void FillItems(Func<EnumType, bool> selector)
         {
             Selector.StopLayout();
             foreach (var value in EnumExtension.GetEnumValues<EnumType>())
-                Selector.AddItem(value, GetDescription(value));
+            {
+                if (selector?.Invoke(value) != false)
+                    Selector.AddItem(value, GetDescription(value));
+            }
             Selector.StartLayout();
         }
         protected abstract string GetDescription(EnumType value);
@@ -37,16 +41,20 @@ namespace ModsCommon.UI
             get => Selector.SelectedObjects.GetEnum();
             set => Selector.SelectedObjects = value.GetEnumValues().ToList();
         }
-        public override void Init()
+        public override void Init() => Init(null);
+        public void Init(Func<EnumType, bool> selector)
         {
             base.Init();
-            FillItems();
+            FillItems(selector);
         }
-        protected virtual void FillItems()
+        protected virtual void FillItems(Func<EnumType, bool> selector)
         {
             Selector.StopLayout();
             foreach (var value in EnumExtension.GetEnumValues<EnumType>())
-                Selector.AddItem(value, GetDescription(value));
+            {
+                if (selector?.Invoke(value) != false)
+                    Selector.AddItem(value, GetDescription(value));
+            }
             Selector.StartLayout();
         }
         protected abstract string GetDescription(EnumType value);
