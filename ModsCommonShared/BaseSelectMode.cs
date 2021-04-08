@@ -20,6 +20,7 @@ namespace ModsCommon
 
         protected virtual bool SelectNodes { get; } = true;
         protected virtual bool SelectSegments { get; } = true;
+        protected virtual bool SelectMiddleNodes { get; } = false;
 
         protected override void Reset(IToolMode prevMode)
         {
@@ -63,6 +64,7 @@ namespace ModsCommon
 
             var selectNodes = SelectNodes;
             var selectSegments = SelectSegments;
+            var selectMiddleNodes = SelectMiddleNodes;
 
             for (int i = gridMinZ; i <= gridMaxZ; i++)
             {
@@ -78,13 +80,13 @@ namespace ModsCommon
                             var segment = segmentId.GetSegment();
                             float t;
 
-                            if (selectNodes && RayCastNode(checkedNodes, segment.m_startNode, out NodeSelection startSelection, out t) && t < priority)
+                            if (selectNodes && RayCastNode(checkedNodes, segment.m_startNode, selectMiddleNodes, out NodeSelection startSelection, out t) && t < priority)
                             {
                                 nodeSelection = startSelection;
                                 segmentSelection = null;
                                 priority = t;
                             }
-                            else if (selectNodes && RayCastNode(checkedNodes, segment.m_endNode, out NodeSelection endSelection, out t) && t < priority)
+                            else if (selectNodes && RayCastNode(checkedNodes, segment.m_endNode, selectMiddleNodes, out NodeSelection endSelection, out t) && t < priority)
                             {
                                 nodeSelection = endSelection;
                                 segmentSelection = null;
@@ -106,13 +108,13 @@ namespace ModsCommon
             static int Max(float value) => Mathf.Max((int)((value - 16f) / 64f + 135f) - 1, 0);
             static int Min(float value) => Mathf.Min((int)((value + 16f) / 64f + 135f) + 1, 269);
         }
-        bool RayCastNode(HashSet<ushort> checkedNodes, ushort nodeId, out NodeSelection selection, out float t)
+        bool RayCastNode(HashSet<ushort> checkedNodes, ushort nodeId, bool includeMiddle, out NodeSelection selection, out float t)
         {
             if (!checkedNodes.Contains(nodeId))
             {
                 checkedNodes.Add(nodeId);
                 selection = new NodeSelection(nodeId);
-                return selection.Contains(Ray, out t);
+                return selection.Contains(Ray, includeMiddle, out t);
             }
             else
             {

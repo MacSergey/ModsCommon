@@ -263,15 +263,22 @@ namespace ModsCommon.Utilities
 
                 data.leftDir = (-data.leftDir).normalized;
                 data.rightDir = (-data.rightDir).normalized;
+                
+                if((node.m_flags & NetNode.Flags.Middle) != 0)
+                {
+                    data.leftPos -= 2 * data.leftDir;
+                    data.rightPos -= 2 * data.rightDir;
+                }
 
                 yield return data;
             }
         }
-        public override bool Contains(Segment3 ray, out float t)
+        public override bool Contains(Segment3 ray, out float t) => Contains(ray, false, out t);
+        public bool Contains(Segment3 ray, bool includeMiddle, out float t)
         {
             var node = Id.GetNode();
 
-            if ((node.m_flags & NetNode.Flags.Middle) == 0)
+            if ((node.m_flags & NetNode.Flags.Middle) == 0 || includeMiddle)
                 return base.Contains(ray, out t);
             else
             {
