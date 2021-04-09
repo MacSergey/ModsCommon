@@ -99,18 +99,18 @@ namespace ModsCommon
         protected override void OnEnable()
         {
             SingletonMod<TypeMod>.Logger.Debug($"Enable tool");
-            Reset();
+            Reset(DefaultMode);
             base.OnEnable();
         }
         protected override void OnDisable()
         {
             SingletonMod<TypeMod>.Logger.Debug($"Disable tool");
-            Reset();
+            Reset(null);
         }
-        protected void Reset()
+        protected void Reset(IToolMode mode)
         {
             NextMode = null;
-            SetModeNow(DefaultMode);
+            SetModeNow(mode);
             cursorInfoLabel.isVisible = false;
             cursorInfoLabel.text = string.Empty;
         }

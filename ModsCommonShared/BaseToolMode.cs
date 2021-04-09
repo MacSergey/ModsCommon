@@ -44,10 +44,19 @@ namespace ModsCommon
         public virtual void Activate(IToolMode prevMode)
         {
             enabled = true;
+#if DEBUG
+            SingletonMod<TypeMod>.Logger.Debug($"Enable {GetType().Name}");
+#endif
             Reset(prevMode);
         }
         public virtual void Deactivate() => Disable();
-        private void Disable() => enabled = false;
+        private void Disable()
+        {
+            enabled = false;
+#if DEBUG
+            SingletonMod<TypeMod>.Logger.Debug($"Disable {GetType().Name}");
+#endif
+        }
 
         protected virtual void Reset(IToolMode prevMode) { }
 
