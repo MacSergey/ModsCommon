@@ -18,7 +18,7 @@ namespace ModsCommon.Utilities
                     yield return GetSegment(segment);
             }
         }
-        public static IEnumerable<ushort> SegmentsId(this NetNode node)
+        public static IEnumerable<ushort> SegmentIds(this NetNode node)
         {
             for (var i = 0; i < 8; i += 1)
             {
@@ -27,7 +27,7 @@ namespace ModsCommon.Utilities
                     yield return segment;
             }
         }
-        public static IEnumerable<ushort> NodesID(this NetSegment segment)
+        public static IEnumerable<ushort> NodeIds(this NetSegment segment)
         {
             yield return segment.m_startNode;
             yield return segment.m_endNode;
@@ -52,7 +52,7 @@ namespace ModsCommon.Utilities
                 yield return laneId;
         }
 
-        public static bool IsInvert(this NetSegment segment) => (segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.Invert;
+        public static bool IsInvert(this NetSegment segment) => (segment.m_flags & NetSegment.Flags.Invert) != 0;
 
         public static VehicleInfo.VehicleType DriveType { get; } =
                     VehicleInfo.VehicleType.Car |
@@ -63,8 +63,17 @@ namespace ModsCommon.Utilities
         public static bool IsDriveLane(this NetInfo.Lane info) => (info.m_vehicleType & DriveType) != VehicleInfo.VehicleType.None;
 
         public static NetNode GetNode(this ushort nodeId) => NetManager.m_nodes.m_buffer[nodeId];
+        public static ref NetNode GetNodeRef(this ushort nodeId) => ref NetManager.m_nodes.m_buffer[nodeId];
         public static NetSegment GetSegment(this ushort segmentId) => NetManager.m_segments.m_buffer[segmentId];
+        public static ref NetSegment GetSegmentRef(this ushort segmentId) => ref NetManager.m_segments.m_buffer[segmentId];
         public static NetLane GetLane(this uint laneId) => NetManager.m_lanes.m_buffer[laneId];
+        public static ref NetLane GetLaneRef(this uint laneId) => ref NetManager.m_lanes.m_buffer[laneId];
+        public static ushort GetNode(this NetSegment segment, bool isStartNode) => isStartNode ? segment.m_startNode : segment.m_endNode;
+
+        public static bool IsStartNode(this NetSegment segment, ushort nodeId) => segment.m_startNode == nodeId;
+        public static bool IsValid(this NetNode node) => node.Info != null && node.m_flags.CheckFlags(required: NetNode.Flags.Created, forbidden: NetNode.Flags.Deleted);
+        public static bool IsValid(this NetSegment segment) => segment.Info != null && segment.m_flags.CheckFlags(required: NetSegment.Flags.Created, forbidden: NetSegment.Flags.Deleted);
+
 
         public static bool ExistNode(this ushort nodeId) => (nodeId.GetNode().m_flags & NetNode.Flags.Created) != 0;
         public static bool ExistSegment(this ushort segmentId) => (segmentId.GetSegment().m_flags & NetSegment.Flags.Created) != 0;

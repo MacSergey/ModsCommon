@@ -248,7 +248,7 @@ namespace ModsCommon.Utilities
         {
             var node = Id.GetNode();
 
-            foreach (var segmentId in node.SegmentsId())
+            foreach (var segmentId in node.SegmentIds())
             {
                 var segment = segmentId.GetSegment();
                 var isStart = segment.m_startNode == Id;
