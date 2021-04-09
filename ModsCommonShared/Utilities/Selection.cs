@@ -13,13 +13,13 @@ namespace ModsCommon.Utilities
 #if DEBUGMARKING
         protected static float BorderOverlayWidth => NodeMarkup.Settings.BorderOverlayWidth;
 #else
-        protected static float BorderOverlayWidth => 3f;
+        public static float BorderOverlayWidth => 3f;
         protected static float MaxOverlayWidth => 16f;
 #endif
 
         public ushort Id { get; }
         protected Data[] Datas { get; }
-        protected Vector3 Center { get; set; }
+        public Vector3 Center { get; private set; }
         protected abstract Vector3 Position { get; }
         protected abstract float HalfWidth { get; }
         protected IEnumerable<ITrajectory> BorderLines
@@ -64,10 +64,11 @@ namespace ModsCommon.Utilities
         }
         public virtual bool Contains(Segment3 ray, out float t)
         {
-            var line = new StraightTrajectory(ray.GetRayPosition(Center.y, out t), Center);
+            var line = new StraightTrajectory(GetHitPosition(ray, out t), Center);
             var contains = !BorderLines.Any(b => Intersection.CalculateSingle(line, b).IsIntersect);
             return contains;
         }
+        public virtual Vector3 GetHitPosition(Segment3 ray, out float t) => ray.GetRayPosition(Center.y, out t);
         public virtual void Render(OverlayData overlayData)
         {
 #if DEBUGMARKING
@@ -345,6 +346,22 @@ namespace ModsCommon.Utilities
             segment.CalculateCorner(Id, true, false, false, out endData.rightPos, out endData.rightDir, out _);
 
             yield return endData;
+        }
+        public override Vector3 GetHitPosition(Segment3 ray, out float t)
+        {
+            var segment = Id.GetSegment();
+
+            var hitPos = ray.GetRayPosition(Center.y, out t);
+            for (var i = 0; i < 3; i += 1)
+            {
+                var position = segment.GetClosestPosition(hitPos);
+                if (Mathf.Abs(hitPos.y - position.y) < 1f)
+                    break;
+                else
+                    hitPos = ray.GetRayPosition(position.y, out t);
+            }
+
+            return hitPos;
         }
 
         public override void Render(OverlayData overlayData)
