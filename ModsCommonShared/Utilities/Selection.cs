@@ -14,7 +14,6 @@ namespace ModsCommon.Utilities
         protected static float BorderOverlayWidth => NodeMarkup.Settings.BorderOverlayWidth;
 #else
         public static float BorderOverlayWidth => 3f;
-        protected static float MaxOverlayWidth => 16f;
 #endif
 
         public ushort Id { get; }
@@ -80,15 +79,10 @@ namespace ModsCommon.Utilities
         public virtual void Render(OverlayData overlayData)
         {
 #if DEBUGMARKING
-            RenderBorders(new OverlayData(overlayData.CameraInfo) { Color = Colors.Green });
-            RenderCenter(new OverlayData(overlayData.CameraInfo) { Color = Colors.Red });
             if (NodeMarkup.Settings.RenderOverlayBorders)
-            {
-                foreach (var border in BorderLines)
-                    border.Render(new OverlayData(overlayData.CameraInfo) { Color = Colors.Green });
-            }
+                RenderBorders(new OverlayData(overlayData.CameraInfo) { Color = Colors.Green });
             if (NodeMarkup.Settings.RenderOverlayCentre)
-                
+                RenderCenter(new OverlayData(overlayData.CameraInfo) { Color = Colors.Red });
 #endif
         }
         public void RenderBorders(OverlayData overlayData)
@@ -244,7 +238,7 @@ namespace ModsCommon.Utilities
                 halfWidth = 0f;
             }
 
-            public float DeltaAngleCos => (2 * halfWidth) / CornerLength;
+            public float DeltaAngleCos => Mathf.Clamp01((2 * halfWidth) / CornerLength);
             public Vector3 CornerDir => (rightPos - leftPos).normalized;
             public float CornerLength => (rightPos - leftPos).XZ().magnitude;
             public StraightTrajectory Line => new StraightTrajectory(leftPos, rightPos);
