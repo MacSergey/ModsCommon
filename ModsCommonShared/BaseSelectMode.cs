@@ -20,7 +20,6 @@ namespace ModsCommon
 
         protected virtual bool SelectNodes { get; } = true;
         protected virtual bool SelectSegments { get; } = true;
-        protected virtual bool SelectMiddleNodes { get; } = false;
 
         protected override void Reset(IToolMode prevMode)
         {
@@ -37,8 +36,8 @@ namespace ModsCommon
             {
                 if (IsHoverNode && HoverNode.Contains(Ray, out _))
                     nodeSelection = HoverNode;
-                else if (IsHoverSegment && HoverSegment.Contains(Ray, out _))
-                    segmentSelection = HoverSegment;
+                else if (IsHoverSegment && RayCast(HoverSegment.Id, new HashSet<ushort>(), 1f, out _, ref nodeSelection, ref segmentSelection))
+                    ;
                 else
                     RayCast(out nodeSelection, out segmentSelection);
             }
@@ -62,10 +61,6 @@ namespace ModsCommon
 
             var priority = 1f;
 
-            var selectNodes = SelectNodes;
-            var selectSegments = SelectSegments;
-            var selectMiddleNodes = SelectMiddleNodes;
-
             for (int i = gridMinZ; i <= gridMaxZ; i++)
             {
                 for (int j = gridMinX; j <= gridMaxX; j++)
@@ -75,31 +70,7 @@ namespace ModsCommon
 
                     while (segmentId != 0u && count < 36864)
                     {
-                        if (CheckSegment(segmentId))
-                        {
-                            var segment = segmentId.GetSegment();
-                            float t;
-
-                            if (selectNodes && RayCastNode(checkedNodes, segment.m_startNode, selectMiddleNodes, out NodeSelection startSelection, out t) && t < priority)
-                            {
-                                nodeSelection = startSelection;
-                                segmentSelection = null;
-                                priority = t;
-                            }
-                            else if (selectNodes && RayCastNode(checkedNodes, segment.m_endNode, selectMiddleNodes, out NodeSelection endSelection, out t) && t < priority)
-                            {
-                                nodeSelection = endSelection;
-                                segmentSelection = null;
-                                priority = t;
-                            }
-                            else if (selectSegments && RayCastSegments(segmentId, out SegmentSelection selection, out t) && t < priority)
-                            {
-                                segmentSelection = selection;
-                                nodeSelection = null;
-                                priority = t;
-                            }
-                        }
-
+                        RayCast(segmentId, checkedNodes, priority, out priority, ref nodeSelection, ref segmentSelection);
                         segmentId = segmentBuffer[segmentId].m_nextGridSegment;
                     }
                 }
@@ -108,13 +79,62 @@ namespace ModsCommon
             static int Max(float value) => Mathf.Max((int)((value - 16f) / 64f + 135f) - 1, 0);
             static int Min(float value) => Mathf.Min((int)((value + 16f) / 64f + 135f) + 1, 269);
         }
-        bool RayCastNode(HashSet<ushort> checkedNodes, ushort nodeId, bool includeMiddle, out NodeSelection selection, out float t)
+        private bool RayCast(ushort segmentId, HashSet<ushort> checkedNodes, float priority, out float resultPriority, ref NodeSelection nodeSelection, ref SegmentSelection segmentSelection)
+        {
+            resultPriority = priority;
+            if (CheckSegment(segmentId))
+            {
+                var segment = segmentId.GetSegment();
+
+                if (SelectNodes && RayCastNode(checkedNodes, segment.m_startNode, out NodeSelection startSelection, out priority) && priority < resultPriority)
+                {
+                    nodeSelection = startSelection;
+                    segmentSelection = null;
+                    resultPriority = priority;
+                    return true;
+                }
+                else if (SelectNodes && RayCastNode(checkedNodes, segment.m_endNode, out NodeSelection endSelection, out priority) && priority < resultPriority)
+                {
+                    nodeSelection = endSelection;
+                    segmentSelection = null;
+                    resultPriority = priority;
+                    return true;
+                }
+                else if (SelectSegments && RayCastSegments(segmentId, out SegmentSelection selection, out priority) && priority < resultPriority)
+                {
+                    segmentSelection = selection;
+                    nodeSelection = null;
+                    resultPriority = priority;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        bool RayCastNode(HashSet<ushort> checkedNodes, ushort nodeId, out NodeSelection selection, out float t)
         {
             if (!checkedNodes.Contains(nodeId))
             {
                 checkedNodes.Add(nodeId);
-                selection = new NodeSelection(nodeId);
-                return selection.Contains(Ray, includeMiddle, out t);
+                if (IsValidNode(nodeId))
+                {
+                    selection = new NodeSelection(nodeId);
+                    return selection.Contains(Ray, out t);
+                }
+            }
+
+            selection = null;
+            t = 0f;
+            return false;
+
+        }
+        bool RayCastSegments(ushort segmentId, out SegmentSelection selection, out float t)
+        {
+            if (IsValidSegment(segmentId))
+            {
+                selection = new SegmentSelection(segmentId);
+                return selection.Contains(Ray, out t);
             }
             else
             {
@@ -123,12 +143,8 @@ namespace ModsCommon
                 return false;
             }
         }
-        bool RayCastSegments(ushort segmentId, out SegmentSelection selection, out float t)
-        {
-            selection = new SegmentSelection(segmentId);
-            return selection.Contains(Ray, out t);
-        }
-
+        protected virtual bool IsValidNode(ushort nodeId) => nodeId.GetNode().m_flags.CheckFlags(0, NetNode.Flags.Middle);
+        protected virtual bool IsValidSegment(ushort nodeId) => true;
 
         private bool CheckSegment(ushort segmentId)
         {

@@ -27,6 +27,11 @@ namespace ModsCommon.Utilities
                     yield return segment;
             }
         }
+        public static IEnumerable<NetNode> Nodes(this NetSegment segment)
+        {
+            yield return segment.m_startNode.GetNode();
+            yield return segment.m_endNode.GetNode();
+        }
         public static IEnumerable<ushort> NodeIds(this NetSegment segment)
         {
             yield return segment.m_startNode;

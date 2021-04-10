@@ -18,7 +18,15 @@ namespace ModsCommon.Utilities
 #endif
 
         public ushort Id { get; }
-        protected Data[] Datas { get; }
+        protected Data[] DataArray { get; }
+        public IEnumerable<Data> Datas
+        {
+            get
+            {
+                foreach (var data in DataArray)
+                    yield return data;
+            }
+        }
         public Vector3 Center { get; private set; }
         protected abstract Vector3 Position { get; }
         protected abstract float HalfWidth { get; }
@@ -26,40 +34,40 @@ namespace ModsCommon.Utilities
         {
             get
             {
-                for (var i = 0; i < Datas.Length; i += 1)
+                for (var i = 0; i < DataArray.Length; i += 1)
                 {
-                    yield return new StraightTrajectory(Datas[i].leftPos, Datas[i].rightPos);
+                    yield return new StraightTrajectory(DataArray[i].leftPos, DataArray[i].rightPos);
 
-                    var j = (i + 1) % Datas.Length;
-                    if (Datas.Length != 1)
-                        yield return new BezierTrajectory(GetBezier(Datas[i].leftPos, Datas[i].leftDir, Datas[j].rightPos, Datas[j].rightDir));
+                    var j = (i + 1) % DataArray.Length;
+                    if (DataArray.Length != 1)
+                        yield return new BezierTrajectory(GetBezier(DataArray[i].leftPos, DataArray[i].leftDir, DataArray[j].rightPos, DataArray[j].rightDir));
                     else
-                        yield return new BezierTrajectory(GetEndBezier(Datas[i].leftPos, Datas[i].leftDir, Datas[j].rightPos, Datas[j].rightDir));
+                        yield return new BezierTrajectory(GetEndBezier(DataArray[i].leftPos, DataArray[i].leftDir, DataArray[j].rightPos, DataArray[j].rightDir));
                 }
             }
         }
         public Selection(ushort id)
         {
             Id = id;
-            Datas = Calculate().OrderBy(s => s.angle).ToArray();
+            DataArray = Calculate().OrderBy(s => s.angle).ToArray();
             CalculateCenter();
         }
         protected abstract IEnumerable<Data> Calculate();
         private void CalculateCenter()
         {
-            if (Datas.Length == 1)
-                Center = Datas[0].Position + Datas[0].Direction;
+            if (DataArray.Length == 1)
+                Center = DataArray[0].Position + DataArray[0].Direction;
             else
             {
                 Vector3 center = new();
-                for (var i = 0; i < Datas.Length; i += 1)
+                for (var i = 0; i < DataArray.Length; i += 1)
                 {
-                    var j = (i + 1) % Datas.Length;
+                    var j = (i + 1) % DataArray.Length;
 
-                    var bezier = GetBezier(Datas[i].Position, Datas[i].Direction, Datas[j].Position, Datas[j].Direction);
+                    var bezier = GetBezier(DataArray[i].Position, DataArray[i].Direction, DataArray[j].Position, DataArray[j].Direction);
                     center += bezier.Position(0.5f);
                 }
-                Center = center / Datas.Length;
+                Center = center / DataArray.Length;
             }
         }
         public virtual bool Contains(Segment3 ray, out float t)
@@ -121,7 +129,7 @@ namespace ModsCommon.Utilities
             var width2 = data2.halfWidth * 2 - BorderOverlayWidth;
 
             var angle = Vector3.Angle(data1.Direction, data2.Direction);
-            var maxPossibleWidth = Math.Min( angle / 11.25f + 16f, Mathf.Max(BorderOverlayWidth, Mathf.Min(overlayWidth1, overlayWidth2)));
+            var maxPossibleWidth = Math.Min(angle / 11.25f + 16f, Mathf.Max(BorderOverlayWidth, Mathf.Min(overlayWidth1, overlayWidth2)));
 
             if (Mathf.Abs(width1 - width2) < 0.001 && maxPossibleWidth >= Mathf.Max(width1, width2))
             {
@@ -215,14 +223,26 @@ namespace ModsCommon.Utilities
             return bezier;
         }
 
-        protected struct Data
+        public struct Data
         {
+            public ushort Id { get; }
             public float angle;
             public Vector3 rightPos;
             public Vector3 leftPos;
             public Vector3 rightDir;
             public Vector3 leftDir;
             public float halfWidth;
+
+            public Data(ushort id)
+            {
+                Id = id;
+                angle = 0f;
+                rightPos = Vector3.zero;
+                leftPos = Vector3.zero;
+                rightDir = Vector3.zero;
+                leftDir = Vector3.zero;
+                halfWidth = 0f;
+            }
 
             public float DeltaAngleCos => (2 * halfWidth) / CornerLength;
             public Vector3 CornerDir => (rightPos - leftPos).normalized;
@@ -252,8 +272,8 @@ namespace ModsCommon.Utilities
             foreach (var segmentId in node.SegmentIds())
             {
                 var segment = segmentId.GetSegment();
-                var isStart = segment.m_startNode == Id;
-                var data = new Data()
+                var isStart = segment.IsStartNode(Id);
+                var data = new Data(segmentId)
                 {
                     halfWidth = segment.Info.m_halfWidth.RoundToNearest(0.1f),
                     angle = (isStart ? segment.m_startDirection : segment.m_endDirection).AbsoluteAngle(),
@@ -264,27 +284,14 @@ namespace ModsCommon.Utilities
 
                 data.leftDir = (-data.leftDir).normalized;
                 data.rightDir = (-data.rightDir).normalized;
-                
-                if((node.m_flags & NetNode.Flags.Middle) != 0)
+
+                if (node.m_flags.CheckFlags(NetNode.Flags.Middle))
                 {
-                    data.leftPos -= 2 * data.leftDir;
-                    data.rightPos -= 2 * data.rightDir;
+                    data.leftPos -= 3 * data.leftDir;
+                    data.rightPos -= 3 * data.rightDir;
                 }
 
                 yield return data;
-            }
-        }
-        public override bool Contains(Segment3 ray, out float t) => Contains(ray, false, out t);
-        public bool Contains(Segment3 ray, bool includeMiddle, out float t)
-        {
-            var node = Id.GetNode();
-
-            if ((node.m_flags & NetNode.Flags.Middle) == 0 || includeMiddle)
-                return base.Contains(ray, out t);
-            else
-            {
-                t = 0;
-                return false;
             }
         }
 
@@ -297,14 +304,14 @@ namespace ModsCommon.Utilities
             overlayData.AlphaBlend = false;
 #endif
 
-            for (var i = 0; i < Datas.Length; i += 1)
+            for (var i = 0; i < DataArray.Length; i += 1)
             {
-                var data1 = Datas[i];
-                var data2 = Datas[(i + 1) % Datas.Length];
+                var data1 = DataArray[i];
+                var data2 = DataArray[(i + 1) % DataArray.Length];
 
                 RenderCorner(overlayData, data1);
-                if (Datas.Length == 1)
-                    RenderEnd(overlayData, Datas[0]);
+                if (DataArray.Length == 1)
+                    RenderEnd(overlayData, DataArray[0]);
                 else
                 {
                     RenderBorder(overlayData, data1, data2);
@@ -319,13 +326,14 @@ namespace ModsCommon.Utilities
     {
         protected override Vector3 Position => Id.GetSegment().m_middlePosition;
         protected override float HalfWidth => Id.GetSegment().Info.m_halfWidth;
+        public float Length => new BezierTrajectory(DataArray[0].Position, DataArray[0].Direction, DataArray[1].Position, DataArray[1].Direction).Length;
         public SegmentSelection(ushort id) : base(id) { }
 
         protected override IEnumerable<Data> Calculate()
         {
             var segment = Id.GetSegment();
 
-            var startData = new Data()
+            var startData = new Data(segment.m_startNode)
             {
                 halfWidth = segment.Info.m_halfWidth.RoundToNearest(0.1f),
                 angle = segment.m_startDirection.AbsoluteAngle(),
@@ -336,7 +344,7 @@ namespace ModsCommon.Utilities
 
             yield return startData;
 
-            var endData = new Data()
+            var endData = new Data(segment.m_endNode)
             {
                 halfWidth = segment.Info.m_halfWidth.RoundToNearest(0.1f),
                 angle = segment.m_endDirection.AbsoluteAngle(),
@@ -347,18 +355,18 @@ namespace ModsCommon.Utilities
 
             yield return endData;
         }
-        public override Vector3 GetHitPosition(Segment3 ray, out float t)
+        public override Vector3 GetHitPosition(Segment3 ray, out float t) => GetHitPosition(ray, out t, out _);
+        public Vector3 GetHitPosition(Segment3 ray, out float t, out Vector3 position)
         {
             var segment = Id.GetSegment();
 
-            var hitPos = ray.GetRayPosition(Center.y, out t);
-            for (var i = 0; i < 3; i += 1)
+            var hitPos = base.GetHitPosition(ray, out t);
+            position = segment.GetClosestPosition(hitPos);
+
+            for (var i = 0; i < 3 && Mathf.Abs(hitPos.y - position.y) > 1f; i += 1)
             {
-                var position = segment.GetClosestPosition(hitPos);
-                if (Mathf.Abs(hitPos.y - position.y) < 1f)
-                    break;
-                else
-                    hitPos = ray.GetRayPosition(position.y, out t);
+                hitPos = ray.GetRayPosition(position.y, out t);
+                position = segment.GetClosestPosition(hitPos);
             }
 
             return hitPos;
@@ -373,11 +381,11 @@ namespace ModsCommon.Utilities
             overlayData.AlphaBlend = false;
 #endif
 
-            RenderCorner(overlayData, Datas[0]);
-            RenderCorner(overlayData, Datas[1]);
-            RenderBorder(overlayData, Datas[0], Datas[1]);
-            RenderBorder(overlayData, Datas[1], Datas[0]);
-            RenderMiddle(overlayData, Datas[0], Datas[1]);
+            RenderCorner(overlayData, DataArray[0]);
+            RenderCorner(overlayData, DataArray[1]);
+            RenderBorder(overlayData, DataArray[0], DataArray[1]);
+            RenderBorder(overlayData, DataArray[1], DataArray[0]);
+            RenderMiddle(overlayData, DataArray[0], DataArray[1]);
 
             base.Render(overlayData);
         }
