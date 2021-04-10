@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace ModsCommon
 {
-    public abstract class BaseTool<TypeTool> : ToolBase where TypeTool : BaseTool<TypeTool> 
+    public abstract class BaseTool<TypeTool> : ToolBase where TypeTool : BaseTool<TypeTool>
     {
         public abstract Shortcut Activation { get; }
     }
@@ -229,6 +229,9 @@ namespace ModsCommon
         private bool IsMouseMove { get; set; }
         protected override void OnToolGUI(Event e)
         {
+            if (Mode == null)
+                return;
+
             Mode.OnToolGUI(e);
 
             switch (e.type)
