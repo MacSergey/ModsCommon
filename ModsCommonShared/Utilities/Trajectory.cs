@@ -33,9 +33,9 @@ namespace ModsCommon.Utilities
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Bezier;
         public Bezier3 Trajectory { get; }
-        //float? _length = null;
-        //public float Length => _length ??= Trajectory.Length();
-        public float Length { get; }
+        float? _length = null;
+        public float Length => _length ??= Trajectory.Length();
+        //public float Length { get; }
         public float Magnitude { get; }
         public float DeltaAngle { get; }
         public Vector3 Direction { get; }
@@ -47,7 +47,7 @@ namespace ModsCommon.Utilities
         {
             Trajectory = trajectory;
 
-            Length = Trajectory.Length();
+            //Length = Trajectory.Length();
             Magnitude = (Trajectory.d - Trajectory.a).magnitude;
             DeltaAngle = Trajectory.DeltaAngle();
             Direction = (Trajectory.d - Trajectory.a).normalized;
