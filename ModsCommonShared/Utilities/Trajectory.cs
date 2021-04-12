@@ -69,7 +69,8 @@ namespace ModsCommon.Utilities
         }
         public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
 
-        public ITrajectory Cut(float t0, float t1) => new BezierTrajectory(Trajectory.Cut(t0, t1));
+        public BezierTrajectory Cut(float t0, float t1) => new BezierTrajectory(Trajectory.Cut(t0, t1));
+        ITrajectory ITrajectory.Cut(float t0, float t1) => Cut(t0, t1);
         public void Divide(out ITrajectory trajectory1, out ITrajectory trajectory2)
         {
             Trajectory.Divide(out Bezier3 bezier1, out Bezier3 bezier2);
@@ -79,10 +80,13 @@ namespace ModsCommon.Utilities
         public Vector3 Tangent(float t) => Trajectory.Tangent(t);
         public Vector3 Position(float t) => Trajectory.Position(t);
         public float Travel(float start, float distance) => Trajectory.Travel(start, distance);
-        public ITrajectory Invert() => new BezierTrajectory(Trajectory.Invert());
-        public ITrajectory Copy() => new BezierTrajectory(Trajectory);
+        public BezierTrajectory Invert() => new BezierTrajectory(Trajectory.Invert());
+        ITrajectory ITrajectory.Invert() => Invert();
+        public BezierTrajectory Copy() => new BezierTrajectory(Trajectory);
+        ITrajectory ITrajectory.Copy() => Copy();
 
         public void Render(OverlayData data) => Trajectory.RenderBezier(data);
+
 
         public static implicit operator Bezier3(BezierTrajectory trajectory) => trajectory.Trajectory;
         public static explicit operator BezierTrajectory(Bezier3 bezier) => new BezierTrajectory(bezier);
@@ -111,7 +115,8 @@ namespace ModsCommon.Utilities
         public StraightTrajectory(Vector3 start, Vector3 end, bool isSection = true) : this(new Line3(start, end), isSection) { }
         public StraightTrajectory(ITrajectory trajectory, bool isSection = true) : this(new Line3(trajectory.StartPosition, trajectory.EndPosition), isSection) { }
 
-        public ITrajectory Cut(float t0, float t1) => new StraightTrajectory(Position(t0), Position(t1));
+        public StraightTrajectory Cut(float t0, float t1) => new StraightTrajectory(Position(t0), Position(t1));
+        ITrajectory ITrajectory.Cut(float t0, float t1) => Cut(t0, t1);
         public StraightTrajectory Cut(float t0, float t1, bool isSection) => new StraightTrajectory(Position(t0), Position(t1), isSection);
 
         public void Divide(out ITrajectory trajectory1, out ITrajectory trajectory2)
@@ -123,8 +128,10 @@ namespace ModsCommon.Utilities
         public Vector3 Tangent(float t) => Direction;
         public Vector3 Position(float t) => Trajectory.a + (Trajectory.b - Trajectory.a) * t;
         public float Travel(float start, float distance) => start + (distance / Length);
-        public ITrajectory Invert() => new StraightTrajectory(Trajectory.b, Trajectory.a, IsSection);
-        public ITrajectory Copy() => new StraightTrajectory(Trajectory, IsSection);
+        public StraightTrajectory Invert() => new StraightTrajectory(Trajectory.b, Trajectory.a, IsSection);
+        ITrajectory ITrajectory.Invert() => Invert();
+        public StraightTrajectory Copy() => new StraightTrajectory(Trajectory, IsSection);
+        ITrajectory ITrajectory.Copy() => Copy();
 
         public void Render(OverlayData data) => Trajectory.GetBezier().RenderBezier(data);
 
