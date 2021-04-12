@@ -350,21 +350,7 @@ namespace ModsCommon.Utilities
             yield return endData;
         }
         public override Vector3 GetHitPosition(Segment3 ray, out float t) => GetHitPosition(ray, out t, out _);
-        public Vector3 GetHitPosition(Segment3 ray, out float t, out Vector3 position)
-        {
-            var segment = Id.GetSegment();
-
-            var hitPos = base.GetHitPosition(ray, out t);
-            position = segment.GetClosestPosition(hitPos);
-
-            for (var i = 0; i < 3 && Mathf.Abs(hitPos.y - position.y) > 1f; i += 1)
-            {
-                hitPos = ray.GetRayPosition(position.y, out t);
-                position = segment.GetClosestPosition(hitPos);
-            }
-
-            return hitPos;
-        }
+        public Vector3 GetHitPosition(Segment3 ray, out float t, out Vector3 position) => Id.GetSegment().GetHitPosition(ray, out t, out position);
 
         public override void Render(OverlayData overlayData)
         {

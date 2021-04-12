@@ -186,6 +186,7 @@ namespace ModsCommon
 
             Mode.OnToolUpdate();
             Info();
+            ExtraInfo();
 
             base.OnToolUpdate();
         }
@@ -220,6 +221,29 @@ namespace ModsCommon
             cursorInfoLabel.relativePosition = relativePosition;
 
             static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);
+        }
+        private void ExtraInfo()
+        {
+            if (!UIView.HasModalInput() && Mode.GetExtraInfo(out var text, out var color, out float size, out var position, out var direction))
+                ShowExtraInfo(text, color, size, position, direction);
+            else
+                extraInfoLabel.isVisible = false;
+        }
+        public void ShowExtraInfo(string text, Color color, float size, Vector3 worldPos, Vector3 direction)
+        {
+            extraInfoLabel.isVisible = true;
+            extraInfoLabel.text = text ?? string.Empty;
+            extraInfoLabel.textColor = color;
+            extraInfoLabel.textScale = size;
+
+            var uIView = extraInfoLabel.GetUIView();
+            var startScreenPosition = Camera.main.WorldToScreenPoint(worldPos);
+            var endScreenPosition = Camera.main.WorldToScreenPoint(worldPos + direction);
+            var screenDir = ((Vector2)(endScreenPosition - startScreenPosition)).normalized;
+            screenDir.y *= -1;
+            var relativePosition = uIView.ScreenPointToGUI(startScreenPosition / uIView.inputScale) - extraInfoLabel.size * 0.5f + screenDir * (extraInfoLabel.size.magnitude * 0.5f);
+
+            extraInfoLabel.relativePosition = relativePosition;
         }
 
         #endregion

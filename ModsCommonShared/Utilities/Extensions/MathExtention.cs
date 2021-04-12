@@ -88,6 +88,64 @@ namespace ModsCommon.Utilities
                 return length;
             }
         }
+        public static Vector3 ClosestPosition(this Bezier3 bezier, Vector3 point)
+        {
+            bezier.ClosestPositionAndDirection(point, out var position, out _, out _);
+            return position;
+        }
+        public static Vector3 ClosestDirection( this Bezier3 bezier, Vector3 point)
+        {
+            bezier.ClosestPositionAndDirection(point, out _, out var direction, out _);
+            return direction;
+        }
+        public static void ClosestPositionAndDirection(this Bezier3 bezier, Vector3 point, out Vector3 position, out Vector3 direction, out float t)
+        {
+            var distance = 1E+11f;
+            t = 0f;
+            var prevPosition = bezier.a;
+            for (var i = 1; i <= 16; i += 1)
+            {
+                var currentPosition = bezier.Position(i / 16f);
+                var currentDistance = Segment3.DistanceSqr(prevPosition, currentPosition, point, out var u);
+                if (currentDistance < distance)
+                {
+                    distance = currentDistance;
+                    t = (i - 1f + u) / 16f;
+                }
+                prevPosition = currentPosition;
+            }
+
+            float delta = 0.03125f;
+            for (var i = 0; i < 4; i += 1)
+            {
+                var minPosition = bezier.Position(Mathf.Max(0f, t - delta));
+                var currentPosition = bezier.Position(t);
+                var maxPosition = bezier.Position(Mathf.Min(1f, t + delta));
+
+                var minDistance = Segment3.DistanceSqr(minPosition, currentPosition, point, out var minU);
+                var maxDistance = Segment3.DistanceSqr(currentPosition, maxPosition, point, out var maxU);
+
+                t = minDistance >= maxDistance ? Mathf.Min(1f, t + delta * maxU) : Mathf.Max(0f, t - delta * (1f - minU));
+                delta *= 0.5f;
+            }
+
+            position = bezier.Position(t);
+            direction = VectorUtils.NormalizeXZ(bezier.Tangent(t));
+        }
+        public static Vector3 GetHitPosition(this NetSegment segment, Segment3 ray, out float t, out Vector3 position)
+        {
+            var hitPos = ray.GetRayPosition(segment.m_middlePosition.y, out t);
+            position = segment.GetClosestPosition(hitPos);
+
+            for (var i = 0; i < 3 && Mathf.Abs(hitPos.y - position.y) > 1f; i += 1)
+            {
+                hitPos = ray.GetRayPosition(position.y, out t);
+                position = segment.GetClosestPosition(hitPos);
+            }
+
+            return hitPos;
+        }
+
         public static Vector2 XZ(this Vector3 vector) => VectorUtils.XZ(vector);
         public static float AbsoluteAngle(this Vector3 vector) => Mathf.Atan2(vector.z, vector.x);
         public static float DeltaAngle(this Bezier3 bezier) => 180 - Vector3.Angle(bezier.b - bezier.a, bezier.c - bezier.d);

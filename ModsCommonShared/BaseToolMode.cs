@@ -10,6 +10,7 @@ namespace ModsCommon
 
         public void OnToolUpdate();
         public string GetToolInfo();
+        public bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction);
 
         public void OnToolGUI(Event e);
         public void OnMouseDown(Event e);
@@ -64,6 +65,15 @@ namespace ModsCommon
 
         public virtual void OnToolUpdate() { }
         public virtual string GetToolInfo() => null;
+        public virtual bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
+        {
+            text = default;
+            color = default;
+            size = default;
+            position = default;
+            direction = default;
+            return false;
+        }
 
         public virtual void OnToolGUI(Event e) { }
         public virtual void OnMouseDown(Event e) { }
