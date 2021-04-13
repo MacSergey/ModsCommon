@@ -132,14 +132,28 @@ namespace ModsCommon.Utilities
             position = bezier.Position(t);
             direction = VectorUtils.NormalizeXZ(bezier.Tangent(t));
         }
-        public static Vector3 GetHitPosition(this NetSegment segment, Segment3 ray, out float t, out Vector3 position)
+        public static Vector3 GetHitPosition(this Bezier3 bezier, Segment3 ray, out float rayT, out float bezierT, out Vector3 position)
         {
-            var hitPos = ray.GetRayPosition(segment.m_middlePosition.y, out t);
+            var hitPos = ray.GetRayPosition(bezier.Position(0.5f).y, out rayT);
+            bezier.ClosestPositionAndDirection(hitPos, out position, out _, out bezierT);
+
+            for (var i = 0; i < 3 && Mathf.Abs(hitPos.y - position.y) > 1f; i += 1)
+            {
+                hitPos = ray.GetRayPosition(position.y, out rayT);
+                bezier.ClosestPositionAndDirection(hitPos, out position, out _, out bezierT);
+            }
+
+            return hitPos;
+        }
+
+        public static Vector3 GetHitPosition(this NetSegment segment, Segment3 ray, out float rayT, out Vector3 position)
+        {
+            var hitPos = ray.GetRayPosition(segment.m_middlePosition.y, out rayT);
             position = segment.GetClosestPosition(hitPos);
 
             for (var i = 0; i < 3 && Mathf.Abs(hitPos.y - position.y) > 1f; i += 1)
             {
-                hitPos = ray.GetRayPosition(position.y, out t);
+                hitPos = ray.GetRayPosition(position.y, out rayT);
                 position = segment.GetClosestPosition(hitPos);
             }
 
