@@ -141,7 +141,7 @@ namespace ModsCommon.Utilities
                 {
                     if (IntersectSectionAndRay(line, pos[i], pos[i + 1], out _, out _))
                     {
-                        var cut = bezier.Cut(points[i], points[i + 1]) as BezierTrajectory;
+                        var cut = bezier.Cut(points[i], points[i + 1]);
                         Intersect(results, line, cut, invert, idx * parts + i, of * parts);
                     }
                 }
@@ -184,8 +184,8 @@ namespace ModsCommon.Utilities
             parts = Math.Min((int)Math.Ceiling(length / MinLength), 10);
 
             points = new float[parts + 1];
-            points[0] = 0;
-            points[parts] = 1;
+            points[0] = 0f;
+            points[parts] = 1f;
 
             positons = new Vector3[parts + 1];
             positons[0] = bezier.a;
@@ -197,7 +197,7 @@ namespace ModsCommon.Utilities
                 positons[i] = bezier.Position(points[i]);
             }
         }
-        public static bool CorrectT(float t) => 0 <= t && t <= 1;
+        public static bool CorrectT(float t) => 0f <= t && t <= 1f;
 
         public override string ToString() => $"{IsIntersect}:{FirstT};{SecondT}";
 
