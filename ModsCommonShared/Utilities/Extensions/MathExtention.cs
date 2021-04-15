@@ -17,6 +17,7 @@ namespace ModsCommon.Utilities
             return new Vector2(newX, newY);
         }
         public static Vector3 MakeFlat(this Vector3 v) => new Vector3(v.x, 0f, v.z);
+        public static Vector3 MakeFlatNormalized(this Vector3 v) => new Vector3(v.x, 0f, v.z).normalized;
         public static Vector3 Turn90(this Vector3 v, bool isClockWise) => isClockWise ? new Vector3(v.z, v.y, -v.x) : new Vector3(-v.z, v.y, v.x);
         public static Vector3 TurnDeg(this Vector3 vector, float turnAngle, bool isClockWise) => vector.TurnRad(turnAngle * Mathf.Deg2Rad, isClockWise);
         public static Vector3 TurnRad(this Vector3 vector, float turnAngle, bool isClockWise)
