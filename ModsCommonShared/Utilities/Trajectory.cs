@@ -47,7 +47,6 @@ namespace ModsCommon.Utilities
         {
             Trajectory = trajectory;
 
-            //Length = Trajectory.Length();
             Magnitude = (Trajectory.d - Trajectory.a).magnitude;
             DeltaAngle = Trajectory.DeltaAngle();
             Direction = (Trajectory.d - Trajectory.a).normalized;
@@ -60,11 +59,9 @@ namespace ModsCommon.Utilities
             var bezier = new Bezier3()
             {
                 a = startPos,
-                b = startDir.normalized,
-                c = endDir.normalized,
                 d = endPos,
             };
-            NetSegment.CalculateMiddlePoints(bezier.a, bezier.b, bezier.d, bezier.c, true, true, out bezier.b, out bezier.c);
+            NetSegment.CalculateMiddlePoints(bezier.a, startDir.normalized, bezier.d, endDir.normalized, true, true, out bezier.b, out bezier.c);
             return bezier;
         }
         public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
@@ -86,6 +83,7 @@ namespace ModsCommon.Utilities
         ITrajectory ITrajectory.Copy() => Copy();
 
         public void Render(OverlayData data) => Trajectory.RenderBezier(data);
+        public override string ToString() => $"Bezier: {StartPosition} - {EndPosition}";
 
 
         public static implicit operator Bezier3(BezierTrajectory trajectory) => trajectory.Trajectory;
@@ -134,6 +132,7 @@ namespace ModsCommon.Utilities
         ITrajectory ITrajectory.Copy() => Copy();
 
         public void Render(OverlayData data) => Trajectory.GetBezier().RenderBezier(data);
+        public override string ToString() => $"Straight: {StartPosition} - {EndPosition}";
 
         public static implicit operator Line3(StraightTrajectory trajectory) => trajectory.Trajectory;
         public static explicit operator StraightTrajectory(Line3 line) => new StraightTrajectory(line);
