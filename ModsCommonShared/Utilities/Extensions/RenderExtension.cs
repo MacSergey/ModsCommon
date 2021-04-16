@@ -18,8 +18,17 @@ namespace ModsCommon.Utilities
             var cutValue = (data.Width ?? DefaultWidth) / 2;
             RenderManager.OverlayEffect.DrawBezier(data.CameraInfo, data.Color ?? Colors.White, bezier, data.Width ?? DefaultWidth, data.CutStart == true ? cutValue : 0f, data.CutEnd == true ? cutValue : 0f, -1f, 1280f, false, data.AlphaBlend ?? DefaultBlend);
         }
-        public static void RenderCircle(this Vector3 position, OverlayData data) =>
-            RenderManager.OverlayEffect.DrawCircle(data.CameraInfo, data.Color ?? Colors.White, position, data.Width ?? DefaultWidth, -1f, 1280f, false, data.AlphaBlend ?? DefaultBlend);
+        public static void RenderCircle(this Vector3 position, OverlayData data) => RenderManager.OverlayEffect.DrawCircle(data.CameraInfo, data.Color ?? Colors.White, position, data.Width ?? DefaultWidth, -1f, 1280f, false, data.AlphaBlend ?? DefaultBlend);
+        public static void RenderCircle(this Vector3 position, OverlayData data, float from, float to)
+        {
+            data.Width = from;
+            do
+            {
+                position.RenderCircle(data);
+                data.Width = Mathf.Max(data.Width.Value - 0.43f, to);
+            }
+            while (data.Width > to);
+        }
         public static void RenderQuad(this Quad3 quad, OverlayData data) => RenderManager.OverlayEffect.DrawQuad(data.CameraInfo, data.Color ?? Colors.White, quad, -1f, 1280f, false, data.AlphaBlend ?? DefaultBlend);
 
         public static void RenderAngle(this Vector3 position, OverlayData data, Vector3 startDir, Vector3 endDir, float innerRadius, float outterRadius)

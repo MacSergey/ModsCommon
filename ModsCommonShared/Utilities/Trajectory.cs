@@ -54,6 +54,11 @@ namespace ModsCommon.Utilities
             EndDirection = (Trajectory.c - Trajectory.d).normalized;
         }
         public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir) : this(GetBezier(startPos, startDir, endPos, endDir)) { }
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos) : this(GetBezier(startPos, startDir, endPos)) { }
+
+        public BezierTrajectory(BezierTrajectory trajectory) : this(trajectory.Trajectory) { }
+        public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
+
         private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir)
         {
             var bezier = new Bezier3()
@@ -64,7 +69,21 @@ namespace ModsCommon.Utilities
             NetSegment.CalculateMiddlePoints(bezier.a, startDir.normalized, bezier.d, endDir.normalized, true, true, out bezier.b, out bezier.c);
             return bezier;
         }
-        public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
+        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos)
+        {
+            var startAngle = startDir.AbsoluteAngle();
+            var strangeAngle = (endPos - startPos).AbsoluteAngle();
+            var endAngle = strangeAngle + Mathf.PI + (strangeAngle - startAngle);
+
+            var bezier = new Bezier3()
+            {
+                a = startPos,
+                d = endPos,
+            };
+
+            NetSegment.CalculateMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), true, true, out bezier.b, out bezier.c);
+            return bezier;
+        }
 
         public BezierTrajectory Cut(float t0, float t1) => new BezierTrajectory(Trajectory.Cut(t0, t1));
         ITrajectory ITrajectory.Cut(float t0, float t1) => Cut(t0, t1);

@@ -35,8 +35,10 @@ namespace ModsCommon.Utilities
         public static Color32 GetOverlayColor(int index, byte alpha = Alpha, byte hue = 255)
         {
             var color = OverlayColors[index % OverlayColors.Length];
-            return new Color32(SetHue(color.r, hue), SetHue(color.g, hue), SetHue(color.b, hue), alpha);
+            color.a = alpha;
+            return color.SetHue(hue);
         }
+        public static Color32 SetHue(this Color32 color, byte hue) => new Color32(SetHue(color.r, hue), SetHue(color.g, hue), SetHue(color.b, hue), color.a);
         private static byte SetHue(byte value, byte hue) => (byte)(byte.MaxValue - ((byte.MaxValue - value) / 255f * hue));
 
         public static Color32 GetStyleIconColor(this Color32 color)
