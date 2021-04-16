@@ -86,5 +86,23 @@ namespace ModsCommon.Utilities
         public static bool InGame => !OnStartup && !InMenu;
         public static bool InMenu => SceneManager.GetActiveScene().name is string scene && scene == "IntroScreen";
         public static bool OnStartup => SceneManager.GetActiveScene().name is string scene && scene == "Startup";
+
+        public static IEnumerable<ushort> GetUpdateNodes(this NetManager netManager) => GetItems(netManager.m_updatedNodes);
+        public static IEnumerable<ushort> GetUpdateSegments(this NetManager netManager) => GetItems(netManager.m_updatedSegments);
+        private static IEnumerable<ushort> GetItems(ulong[] updated)
+        {
+            for (int j = 0; j < updated.Length; j++)
+            {
+                var num = updated[j];
+                if (num != 0)
+                {
+                    for (int k = 0; k < 64; k++)
+                    {
+                        if ((num & (ulong)(1L << k)) != 0)
+                            yield return (ushort)((j << 6) | k);
+                    }
+                }
+            }
+        }
     }
 }
