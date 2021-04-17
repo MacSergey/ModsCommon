@@ -12,6 +12,9 @@ namespace ModsCommon
     {
         protected Segment3 Ray => SingletonTool<TypeTool>.Instance.Ray;
 
+        protected virtual Color32 NodeColor => Colors.Orange;
+        protected virtual Color32 SegmentColor => Colors.Purple;
+
         protected NodeSelection HoverNode { get; set; } = null;
         protected bool IsHoverNode => HoverNode != null;
 
@@ -168,9 +171,9 @@ namespace ModsCommon
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             if (IsHoverNode)
-                HoverNode.Render(new OverlayData(cameraInfo) { Color = Colors.Orange });
+                HoverNode.Render(new OverlayData(cameraInfo) { Color = NodeColor });
             else if (IsHoverSegment)
-                HoverSegment.Render(new OverlayData(cameraInfo) { Color = Colors.Purple });
+                HoverSegment.Render(new OverlayData(cameraInfo) { Color = SegmentColor });
         }
     }
 }
