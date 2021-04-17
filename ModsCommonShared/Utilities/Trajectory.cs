@@ -72,7 +72,8 @@ namespace ModsCommon.Utilities
         private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos)
         {
             var startAngle = startDir.AbsoluteAngle();
-            var strangeAngle = (endPos - startPos).AbsoluteAngle();
+            var dir = endPos - startPos;
+            var strangeAngle = dir.AbsoluteAngle();
             var endAngle = strangeAngle + Mathf.PI + (strangeAngle - startAngle);
 
             var bezier = new Bezier3()
@@ -81,7 +82,11 @@ namespace ModsCommon.Utilities
                 d = endPos,
             };
 
-            NetSegment.CalculateMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), true, true, out bezier.b, out bezier.c);
+            if (Vector3.Dot(startDir, dir) < 0)
+                NetSegment.CalculateMiddlePoints(bezier.a, dir, bezier.d, -dir, true, true, out bezier.b, out bezier.c);
+            else
+                NetSegment.CalculateMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), true, true, out bezier.b, out bezier.c);
+
             return bezier;
         }
 
