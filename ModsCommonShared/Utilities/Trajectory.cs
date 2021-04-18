@@ -35,7 +35,6 @@ namespace ModsCommon.Utilities
         public Bezier3 Trajectory { get; }
         float? _length = null;
         public float Length => _length ??= Trajectory.Length();
-        //public float Length { get; }
         public float Magnitude { get; }
         public float DeltaAngle { get; }
         public Vector3 Direction { get; }
@@ -112,6 +111,27 @@ namespace ModsCommon.Utilities
 
         public static implicit operator Bezier3(BezierTrajectory trajectory) => trajectory.Trajectory;
         public static explicit operator BezierTrajectory(Bezier3 bezier) => new BezierTrajectory(bezier);
+
+        public override bool Equals(object obj) => Equals(obj as BezierTrajectory);
+        public bool Equals(BezierTrajectory other)
+        {
+            if (other is null)
+                return false;
+            else if (ReferenceEquals(this, other))
+                return true;
+            else
+                return Equal(Trajectory, other.Trajectory);
+        }
+        private static bool Equal(Bezier3 first, Bezier3 second) => first.a == second.a && first.b == second.b && first.c == second.c && first.d == second.d;
+
+        public static bool operator ==(BezierTrajectory first, BezierTrajectory second)
+        {
+            if (first is null)
+                return second is null;
+            else
+                return first.Equals(second);
+        }
+        public static bool operator !=(BezierTrajectory first, BezierTrajectory second) => !(first == second);
     }
     public class StraightTrajectory : ITrajectory
     {
@@ -160,6 +180,27 @@ namespace ModsCommon.Utilities
 
         public static implicit operator Line3(StraightTrajectory trajectory) => trajectory.Trajectory;
         public static explicit operator StraightTrajectory(Line3 line) => new StraightTrajectory(line);
+
+        public override bool Equals(object obj) => Equals(obj as StraightTrajectory);
+        public bool Equals(StraightTrajectory other)
+        {
+            if (other is null)
+                return false;
+            else if (ReferenceEquals(this, other))
+                return true;
+            else
+                return Equal(Trajectory, other.Trajectory);
+        }
+        private static bool Equal(Line3 first, Line3 second) => first.a == second.a && first.b == second.b;
+
+        public static bool operator ==(StraightTrajectory first, StraightTrajectory second)
+        {
+            if (first is null)
+                return second is null;
+            else
+                return first.Equals(second);
+        }
+        public static bool operator !=(StraightTrajectory first, StraightTrajectory second) => !(first == second);
     }
     public class TrajectoryBound : IOverlay
     {
