@@ -32,15 +32,15 @@ namespace ModsCommon.Utilities
         {
             var start = bezier.b - bezier.a;
             var end = bezier.c - bezier.d;
-            if (start.magnitude < Vector3.kEpsilon || end.magnitude < Vector3.kEpsilon)
+            if (start.sqrMagnitude < Vector3.kEpsilon || end.sqrMagnitude < Vector3.kEpsilon)
                 return 0;
 
             var angle = Vector3.Angle(start, end);
             if (depth < maxDepth && 180 - angle > minAngleDelta)
             {
                 bezier.Divide(out Bezier3 first, out Bezier3 second);
-                var firstLength = first.Length(depth: depth + 1, maxDepth: maxDepth);
-                var secondLength = second.Length(depth: depth + 1, maxDepth: maxDepth);
+                var firstLength = first.Length(minAngleDelta, depth + 1, maxDepth);
+                var secondLength = second.Length(minAngleDelta, depth + 1, maxDepth);
                 return firstLength + secondLength;
             }
             else
@@ -49,21 +49,22 @@ namespace ModsCommon.Utilities
                 return length;
             }
         }
+
         public static float Length(this Bezier3 bezier, out List<BezierPoint> bezierPoints, float minAngleDelta = 10, int depth = 0)
         {
             bezierPoints = new List<BezierPoint>();
 
             var start = bezier.b - bezier.a;
             var end = bezier.c - bezier.d;
-            if (start.magnitude < Vector3.kEpsilon || end.magnitude < Vector3.kEpsilon)
+            if (start.sqrMagnitude < Vector3.kEpsilon || end.sqrMagnitude < Vector3.kEpsilon)
                 return 0;
 
             var angle = Vector3.Angle(start, end);
             if (depth < 5 && 180 - angle > minAngleDelta)
             {
                 bezier.Divide(out Bezier3 first, out Bezier3 second);
-                var firstLength = first.Length(out List<BezierPoint> firstPoints, depth: depth + 1);
-                var secondLength = second.Length(out List<BezierPoint> secondPoints, depth: depth + 1);
+                var firstLength = first.Length(out List<BezierPoint> firstPoints, minAngleDelta, depth + 1);
+                var secondLength = second.Length(out List<BezierPoint> secondPoints, minAngleDelta, depth + 1);
                 var length = firstLength + secondLength;
                 if (length == 0)
                     return 0;
@@ -89,6 +90,40 @@ namespace ModsCommon.Utilities
                 return length;
             }
         }
+        public static float Travel(this Bezier3 bezier, float distance)
+        {
+            if (distance > bezier.LengthAbove())
+                return 1f;
+            else
+            {
+                bezier.Travel(distance, 0, out _, out var t);
+                return t;
+            }
+        }
+        private static void Travel(this Bezier3 bezier, float distance, int depth, out float length, out float t, int idx = 0, int of = 1)
+        {
+            if (depth < 5)
+            {
+                bezier.Divide(out Bezier3 first, out Bezier3 second);
+                first.Travel(distance, depth + 1, out length, out t, idx * 2, of * 2);
+                if (t == -1f)
+                {
+                    second.Travel(distance - length, depth + 1, out var secondLength, out t, idx * 2 + 1, of * 2);
+                    length += secondLength;
+                }
+            }
+            else
+            {
+                length = bezier.LengthBelow();
+                if (distance < length)
+                    t = 1f / of * (idx + distance / length);
+                else
+                    t = -1;
+            }
+        }
+        private static float LengthAbove(this Bezier3 bezier) => (bezier.b - bezier.a).magnitude + (bezier.c - bezier.b).magnitude + (bezier.d - bezier.c).magnitude;
+        private static float LengthBelow(this Bezier3 bezier) => (bezier.d - bezier.a).magnitude;
+
         public static Vector3 ClosestPosition(this Bezier3 bezier, Vector3 point)
         {
             bezier.ClosestPositionAndDirection(point, out var position, out _, out _);

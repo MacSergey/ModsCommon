@@ -25,7 +25,9 @@ namespace ModsCommon.Utilities
         void Divide(out ITrajectory trajectory1, out ITrajectory trajectory2);
         Vector3 Tangent(float t);
         Vector3 Position(float t);
+        float Travel(float distance);
         float Travel(float start, float distance);
+        float Distance(float from = 0f, float to = 1f);
         ITrajectory Invert();
         ITrajectory Copy();
     }
@@ -99,7 +101,9 @@ namespace ModsCommon.Utilities
         }
         public Vector3 Tangent(float t) => Trajectory.Tangent(t);
         public Vector3 Position(float t) => Trajectory.Position(t);
-        public float Travel(float start, float distance) => Trajectory.Travel(start, distance);
+        public float Travel(float distance) => Trajectory.Travel(distance);
+        public float Travel(float start, float distance) => Trajectory.Cut(0f, start).Travel(distance);
+        public float Distance(float from = 0f, float to = 1f) => Trajectory.Cut(from, to).Length();
         public BezierTrajectory Invert() => new BezierTrajectory(Trajectory.Invert());
         ITrajectory ITrajectory.Invert() => Invert();
         public BezierTrajectory Copy() => new BezierTrajectory(Trajectory);
@@ -169,7 +173,9 @@ namespace ModsCommon.Utilities
         }
         public Vector3 Tangent(float t) => Direction;
         public Vector3 Position(float t) => Trajectory.a + (Trajectory.b - Trajectory.a) * t;
-        public float Travel(float start, float distance) => start + (distance / Length);
+        public float Travel(float distance) => distance / Length;
+        public float Travel(float start, float distance) => start + Travel(distance);
+        public float Distance(float from = 0f, float to = 1f) => Length * (to -  from);
         public StraightTrajectory Invert() => new StraightTrajectory(Trajectory.b, Trajectory.a, IsSection);
         ITrajectory ITrajectory.Invert() => Invert();
         public StraightTrajectory Copy() => new StraightTrajectory(Trajectory, IsSection);
