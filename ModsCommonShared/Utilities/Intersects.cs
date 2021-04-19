@@ -33,6 +33,23 @@ namespace ModsCommon.Utilities
         }
 
         public static Intersection CalculateSingle(ITrajectory trajectory1, ITrajectory trajectory2) => Calculate(trajectory1, trajectory2).FirstOrDefault() ?? NotIntersect;
+        public static bool CalculateSingle(ITrajectory trajectory1, ITrajectory trajectory2, out float firstT, out float secondT)
+        {
+            if(Calculate(trajectory1, trajectory2).FirstOrDefault() is Intersection intersection)
+            {
+                firstT = intersection.FirstT;
+                secondT = intersection.SecondT;
+                return true;
+            }
+            else
+            {
+                firstT = 0f;
+                secondT = 0f;
+                return false;
+            }
+        }
+        public static bool Intersect(ITrajectory trajectory1, ITrajectory trajectory2) => Calculate(trajectory1, trajectory2).Any();
+
         public static List<Intersection> Calculate(ITrajectory trajectory1, ITrajectory trajectory2)
         {
             if (trajectory1 != null && trajectory2 != null)

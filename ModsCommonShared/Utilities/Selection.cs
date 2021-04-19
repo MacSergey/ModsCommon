@@ -72,7 +72,7 @@ namespace ModsCommon.Utilities
         public virtual bool Contains(Segment3 ray, out float t)
         {
             var line = new StraightTrajectory(GetHitPosition(ray, out t), Center);
-            var contains = !BorderLines.Any(b => Intersection.CalculateSingle(line, b).IsIntersect);
+            var contains = !BorderLines.Any(b => Intersection.Intersect(line, b));
             return contains;
         }
         public virtual Vector3 GetHitPosition(Segment3 ray, out float t) => ray.GetRayPosition(Center.y, out t);
