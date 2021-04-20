@@ -51,6 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\InputExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ItemsExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\MathExtention.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\NetExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\RenderExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\UIExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\VersionExtension.cs" />
