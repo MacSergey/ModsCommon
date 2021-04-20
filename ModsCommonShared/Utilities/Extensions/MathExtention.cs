@@ -129,7 +129,7 @@ namespace ModsCommon.Utilities
             bezier.ClosestPositionAndDirection(point, out var position, out _, out _);
             return position;
         }
-        public static Vector3 ClosestDirection( this Bezier3 bezier, Vector3 point)
+        public static Vector3 ClosestDirection(this Bezier3 bezier, Vector3 point)
         {
             bezier.ClosestPositionAndDirection(point, out _, out var direction, out _);
             return direction;

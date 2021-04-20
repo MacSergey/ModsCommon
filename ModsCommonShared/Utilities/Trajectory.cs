@@ -35,7 +35,8 @@ namespace ModsCommon.Utilities
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Bezier;
         public Bezier3 Trajectory { get; }
-        float? _length = null;
+
+        private float? _length = null;
         public float Length => _length ??= Trajectory.Length();
         public float Magnitude { get; }
         public float DeltaAngle { get; }

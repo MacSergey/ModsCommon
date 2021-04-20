@@ -35,7 +35,7 @@ namespace ModsCommon.Utilities
         public static Intersection CalculateSingle(ITrajectory trajectory1, ITrajectory trajectory2) => Calculate(trajectory1, trajectory2).FirstOrDefault() ?? NotIntersect;
         public static bool CalculateSingle(ITrajectory trajectory1, ITrajectory trajectory2, out float firstT, out float secondT)
         {
-            if(Calculate(trajectory1, trajectory2).FirstOrDefault() is Intersection intersection)
+            if (Calculate(trajectory1, trajectory2).FirstOrDefault() is Intersection intersection)
             {
                 firstT = intersection.FirstT;
                 secondT = intersection.SecondT;

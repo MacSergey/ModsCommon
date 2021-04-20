@@ -1,9 +1,7 @@
 ﻿using CitiesHarmony.API;
 using ColossalFramework.UI;
 using HarmonyLib;
-using ModsCommon.UI;
 using ModsCommon.Utilities;
-using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,13 +69,13 @@ namespace ModsCommon
         {
             Logger.Debug("Start patching");
 
-            try 
-            { 
+            try
+            {
                 PatchError = !PatchProcess();
                 Logger.Debug(PatchError ? "Patch Filed" : "Patch success");
             }
             catch (Exception error)
-            { 
+            {
                 PatchError = true;
                 Logger.Error("Patch Filed", error);
             }

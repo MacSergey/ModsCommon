@@ -1,7 +1,7 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
 using UnityEngine;
-using ModsCommon.Utilities;
 
 namespace ModsCommon.UI
 {

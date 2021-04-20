@@ -1,7 +1,6 @@
 ﻿using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ModsCommon
 {
@@ -22,8 +21,8 @@ namespace ModsCommon
         public static string Id => Instance.Id;
         public static bool IsBeta => Instance.IsBeta;
     }
-    public abstract class SingletonTool<T> : SingletonItem<T> 
-        where T : BaseTool<T> 
+    public abstract class SingletonTool<T> : SingletonItem<T>
+        where T : BaseTool<T>
     {
         public static Shortcut Activation => Instance.Activation;
     }

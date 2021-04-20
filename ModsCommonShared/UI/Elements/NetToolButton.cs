@@ -1,7 +1,4 @@
 ﻿using ColossalFramework.UI;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -13,7 +10,7 @@ namespace ModsCommon.UI
         private static int ButtonSize => 31;
         protected abstract Vector2 ButtonPosition { get; }
         protected abstract UITextureAtlas Atlas { get; }
-        protected virtual string NormalBgSprite { get;}
+        protected virtual string NormalBgSprite { get; }
         protected virtual string HoveredBgSprite { get; }
         protected virtual string PressedBgSprite { get; }
         protected virtual string FocusedBgSprite { get; }

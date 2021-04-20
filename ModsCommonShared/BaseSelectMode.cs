@@ -1,8 +1,8 @@
-﻿using ColossalFramework.Math;
+﻿using ColossalFramework;
+using ColossalFramework.Math;
 using ModsCommon.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-using ColossalFramework;
 
 namespace ModsCommon
 {
@@ -115,7 +115,7 @@ namespace ModsCommon
             return false;
         }
 
-        bool RayCastNode(HashSet<ushort> checkedNodes, ushort nodeId, out NodeSelection selection, out float t)
+        private bool RayCastNode(HashSet<ushort> checkedNodes, ushort nodeId, out NodeSelection selection, out float t)
         {
             if (!checkedNodes.Contains(nodeId))
             {
@@ -132,7 +132,8 @@ namespace ModsCommon
             return false;
 
         }
-        bool RayCastSegments(ushort segmentId, out SegmentSelection selection, out float t)
+
+        private bool RayCastSegments(ushort segmentId, out SegmentSelection selection, out float t)
         {
             if (IsValidSegment(segmentId))
             {

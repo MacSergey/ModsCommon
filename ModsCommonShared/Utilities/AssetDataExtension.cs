@@ -1,10 +1,7 @@
 ﻿using ColossalFramework.UI;
 using HarmonyLib;
 using ICities;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace ModsCommon.Utilities
 {
