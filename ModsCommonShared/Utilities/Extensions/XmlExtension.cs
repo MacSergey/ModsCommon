@@ -66,4 +66,17 @@ namespace ModsCommon.Utilities
             return xmlReaderSettings;
         }
     }
+
+    public interface IXml
+    {
+        string XmlSection { get; }
+    }
+    public interface IToXml : IXml
+    {
+        XElement ToXml();
+    }
+    public interface IFromXml : IXml
+    {
+        void FromXml(XElement config);
+    }
 }
