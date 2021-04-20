@@ -63,6 +63,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Textures\CommonTextures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Textures\TextureHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Trajectory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Transpiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CloseButton.png" />
