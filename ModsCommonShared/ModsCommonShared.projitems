@@ -26,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Elements\TabPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Headers\HeaderButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Headers\HeaderMoveablePanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Headers\HeaderPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Headers\HeaderPopup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Message boxes\BaseMessageBox.cs" />

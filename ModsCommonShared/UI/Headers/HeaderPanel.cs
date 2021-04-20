@@ -5,65 +5,26 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class HeaderPanel : EditorItem, IReusable
+    public abstract class BaseHeaderPanel<TypeContent> : EditorItem, IReusable
+        where TypeContent : BaseHeaderContent
     {
-        public event Action OnDelete;
         protected override float DefaultHeight => HeaderButton.Size + 10;
 
-        protected HeaderContent Content { get; set; }
-        protected CustomUIButton DeleteButton { get; set; }
+        protected TypeContent Content { get; set; }
 
-        public HeaderPanel()
+        public BaseHeaderPanel()
         {
-            AddDeleteButton();
             AddContent();
         }
-
-        public virtual void Init(float? height = null, bool isDeletable = true)
-        {
-            base.Init(height);
-            DeleteButton.isVisible = isDeletable;
-            SetSize();
-        }
-        public override void DeInit()
-        {
-            base.DeInit();
-            OnDelete = null;
-        }
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
-            SetSize();
-        }
-        private void SetSize()
-        {
-            Content.size = new Vector2((DeleteButton.isVisible ? width - DeleteButton.width - 10 : width) - ItemsPadding, height);
-            Content.relativePosition = new Vector2(ItemsPadding, 0f);
-            DeleteButton.relativePosition = new Vector2(width - DeleteButton.width - 5, (height - DeleteButton.height) / 2);
-        }
-
         private void AddContent()
         {
-            Content = AddUIComponent<HeaderContent>();
+            Content = AddUIComponent<TypeContent>();
             Content.relativePosition = new Vector2(0, 0);
         }
-
-        private void AddDeleteButton()
-        {
-            DeleteButton = AddUIComponent<CustomUIButton>();
-            DeleteButton.atlas = CommonTextures.Atlas;
-            DeleteButton.normalBgSprite = CommonTextures.DeleteNormal;
-            DeleteButton.hoveredBgSprite = CommonTextures.DeleteHover;
-            DeleteButton.pressedBgSprite = CommonTextures.DeletePressed;
-            DeleteButton.size = new Vector2(20, 20);
-            DeleteButton.eventClick += DeleteClick;
-        }
-        private void DeleteClick(UIComponent component, UIMouseEventParameter eventParam) => OnDelete?.Invoke();
-
     }
-    public class HeaderContent : CustomUIPanel
+    public class BaseHeaderContent : CustomUIPanel
     {
-        public HeaderContent()
+        public BaseHeaderContent()
         {
             autoLayoutDirection = LayoutDirection.Horizontal;
             autoLayoutPadding = new RectOffset(0, Math.Max(5 - 2 * HeaderButton.IconPadding, 0), 0, 0);
