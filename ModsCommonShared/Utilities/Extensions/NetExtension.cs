@@ -57,6 +57,25 @@ namespace ModsCommon.Utilities
             for (; laneId != 0; laneId = GetLane(laneId).m_nextLane)
                 yield return laneId;
         }
+        public static IEnumerable<uint> GetLaneIds(this NetSegment segment, bool? startNode = null, NetInfo.LaneType laneType = NetInfo.LaneType.All, VehicleInfo.VehicleType vehicleType = VehicleInfo.VehicleType.All)
+        {
+            var lanesInfo = segment.Info.m_lanes;
+            var index = -1;
+            for (var laneId = segment.m_lanes; laneId != 0 && index < lanesInfo.Length; laneId = GetLane(laneId).m_nextLane)
+            {
+                index += 1;
+
+                if (!lanesInfo[index].m_laneType.IsFlagSet(laneType))
+                    continue;
+                if (!lanesInfo[index].m_vehicleType.IsFlagSet(vehicleType))
+                    continue;
+                if (startNode != null && startNode.Value ^ (lanesInfo[index].m_finalDirection == NetInfo.Direction.Forward) ^ !segment.IsInvert())
+                    continue;
+
+                yield return laneId;
+            }
+        }
+
 
         public static bool IsInvert(this NetSegment segment) => (segment.m_flags & NetSegment.Flags.Invert) != 0;
 
