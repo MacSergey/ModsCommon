@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace ModsCommon
 {
     public abstract class SingletonItem<T>
-
     {
         public static T Instance { get; set; }
     }
@@ -26,4 +25,15 @@ namespace ModsCommon
     {
         public static Shortcut Activation => Instance.Activation;
     }
+    public static class SingletonManager<T>
+        where T : IManager, new()
+    {
+        public static T Instance { get; set; }
+
+        static SingletonManager()
+        {
+            Instance = new T();
+        }
+    }
+    public interface IManager { }
 }
