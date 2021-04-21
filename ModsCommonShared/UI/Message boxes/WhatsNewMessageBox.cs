@@ -1,10 +1,9 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NodeMarkup.UI
+namespace ModsCommon.UI
 {
     public class WhatsNewMessageBox : MessageBoxBase
     {

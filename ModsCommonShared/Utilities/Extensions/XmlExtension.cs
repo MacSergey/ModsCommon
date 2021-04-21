@@ -39,6 +39,8 @@ namespace ModsCommon.Utilities
                 return null;
             }
         }
+        public static void AddAttr(this XElement element, string name, object value) => element.Add(new XAttribute(name, value));
+
         public static XDocument Load(string file, LoadOptions options = LoadOptions.None)
         {
             using FileStream input = new FileStream(file, FileMode.Open);
