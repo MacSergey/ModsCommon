@@ -60,11 +60,10 @@ namespace ModsCommon.Utilities
         public static IEnumerable<uint> GetLaneIds(this NetSegment segment, bool? startNode = null, NetInfo.LaneType laneType = NetInfo.LaneType.All, VehicleInfo.VehicleType vehicleType = VehicleInfo.VehicleType.All)
         {
             var lanesInfo = segment.Info.m_lanes;
-            var index = -1;
-            for (var laneId = segment.m_lanes; laneId != 0 && index + 1 < lanesInfo.Length; laneId = GetLane(laneId).m_nextLane)
+            var index = 0;
+            var laneId = segment.m_lanes;
+            for (; laneId != 0 && index < lanesInfo.Length; Next(ref index, ref laneId))
             {
-                index += 1;
-
                 if (!lanesInfo[index].m_laneType.IsFlagSet(laneType))
                     continue;
                 if (!lanesInfo[index].m_vehicleType.IsFlagSet(vehicleType))
@@ -73,6 +72,11 @@ namespace ModsCommon.Utilities
                     continue;
 
                 yield return laneId;
+            }
+            static void Next(ref int index, ref uint laneId)
+            {
+                index += 1;
+                laneId = GetLane(laneId).m_nextLane;
             }
         }
 
