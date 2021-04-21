@@ -61,7 +61,7 @@ namespace ModsCommon.Utilities
         {
             var lanesInfo = segment.Info.m_lanes;
             var index = -1;
-            for (var laneId = segment.m_lanes; laneId != 0 && index < lanesInfo.Length; laneId = GetLane(laneId).m_nextLane)
+            for (var laneId = segment.m_lanes; laneId != 0 && index + 1 < lanesInfo.Length; laneId = GetLane(laneId).m_nextLane)
             {
                 index += 1;
 
