@@ -14,6 +14,10 @@ namespace ModsCommon.Utilities
         protected abstract string Id { get; }
         protected abstract XElement GetSaveData();
         protected abstract void SetLoadData(XElement config);
+
+        protected virtual void OnLoadSucces() { }
+        protected virtual void OnSaveSucces() { }
+
         protected virtual void OnLoadFailed() { }
         protected virtual void OnSaveFailed(string config) { }
 
@@ -42,6 +46,8 @@ namespace ModsCommon.Utilities
 
                     sw.Stop();
                     SingletonMod<TypeMod>.Logger.Debug($"Map data was loaded in {sw.ElapsedMilliseconds}ms; Size = {data.Length} bytes");
+
+                    OnLoadSucces();
                 }
                 catch (Exception error)
                 {
@@ -69,6 +75,8 @@ namespace ModsCommon.Utilities
 
                 sw.Stop();
                 SingletonMod<TypeMod>.Logger.Debug($"Map data saved in {sw.ElapsedMilliseconds}ms; Size = {compress.Length} bytes");
+
+                OnSaveSucces();
             }
             catch (Exception error)
             {
