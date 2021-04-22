@@ -49,6 +49,18 @@ namespace ModsCommon.Utilities
             Id = id;
             DataArray = Calculate().OrderBy(s => s.angle).ToArray();
             CalculateCenter();
+            if (DataArray.Length > 1)
+            {
+                for (var i = 0; i < DataArray.Length; i += 1)
+                {
+                    var delta = 3 - (DataArray[i].Position - Center).magnitude;
+                    if (delta > 0f)
+                    {
+                        DataArray[i].leftPos -= delta * DataArray[i].leftDir;
+                        DataArray[i].rightPos -= delta * DataArray[i].rightDir;
+                    }
+                }
+            }
         }
         protected abstract IEnumerable<Data> Calculate();
         private void CalculateCenter()
@@ -261,7 +273,6 @@ namespace ModsCommon.Utilities
         protected override IEnumerable<Data> Calculate()
         {
             var node = Id.GetNode();
-            var segmentCount = node.CountSegments();
 
             foreach (var segmentId in node.SegmentIds())
             {
@@ -279,16 +290,10 @@ namespace ModsCommon.Utilities
                 data.leftDir = (-data.leftDir).normalized;
                 data.rightDir = (-data.rightDir).normalized;
 
-                var delta = 0f;
                 if (node.m_flags.CheckFlags(NetNode.Flags.Middle))
-                    delta = 3f;
-                else if (segmentCount > 1)
-                    delta = 3f - (data.Position - node.m_position).magnitude;
-
-                if (delta > 0f)
                 {
-                    data.leftPos -= delta * data.leftDir;
-                    data.rightPos -= delta * data.rightDir;
+                    data.leftPos -= 3 * data.leftDir;
+                    data.rightPos -= 3 * data.rightDir;
                 }
 
                 yield return data;
