@@ -62,6 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\PropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Selection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\SerializableDataExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Shortcut.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Textures\CommonTextures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Textures\TextureHelper.cs" />
