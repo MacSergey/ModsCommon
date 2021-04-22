@@ -14,6 +14,7 @@ namespace ModsCommon
     public abstract class BaseSettings<TypeMod>
         where TypeMod : BaseMod<TypeMod>
     {
+        private UIPanel MainPanel { get; set; }
         protected TabStrip TabStrip { get; set; }
         protected List<CustomUIPanel> TabPanels { get; set; }
         protected virtual string GeneralTabName => "General";
@@ -22,35 +23,35 @@ namespace ModsCommon
         public void OnSettingsUI(UIHelperBase helper)
         {
             var scrollable = (helper as UIHelper).self as UIScrollablePanel;
-            var mainPanel = scrollable.parent as UIPanel;
+            MainPanel = scrollable.parent as UIPanel;
 
-            foreach (var components in mainPanel.components)
+            foreach (var components in MainPanel.components)
                 components.isVisible = false;
 
-            mainPanel.autoLayout = true;
-            mainPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            mainPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
-            CreateTabStrip(mainPanel);
+            MainPanel.autoLayout = true;
+            MainPanel.autoLayoutDirection = LayoutDirection.Vertical;
+            MainPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
+            CreateTabStrip();
 
-            GeneralTab = CreateTab(mainPanel, GeneralTabName);
+            GeneralTab = CreateTab(GeneralTabName);
             GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
 
-            OnSettingsUI(mainPanel);
+            OnSettingsUI();
 
             TabStrip.SelectedTab = 0;
             TabStrip.isVisible = TabPanels.Count > 1;
         }
-        protected virtual void OnSettingsUI(UIPanel mainPanel) { }
+        protected virtual void OnSettingsUI() { }
 
-        protected void CreateTabStrip(UIPanel mainPanel)
+        protected void CreateTabStrip()
         {
             TabPanels = new List<CustomUIPanel>();
 
-            TabStrip = mainPanel.AddUIComponent<TabStrip>();
+            TabStrip = MainPanel.AddUIComponent<TabStrip>();
             TabStrip.SelectedTabChanged += OnSelectedTabChanged;
             TabStrip.SelectedTab = -1;
-            TabStrip.width = mainPanel.width - mainPanel.autoLayoutPadding.horizontal;
-            TabStrip.eventSizeChanged += (UIComponent component, Vector2 value) => TabStripSizeChanged(mainPanel);
+            TabStrip.width = MainPanel.width - MainPanel.autoLayoutPadding.horizontal;
+            TabStrip.eventSizeChanged += (_, _) => TabStripSizeChanged();
         }
         private void OnSelectedTabChanged(int index)
         {
@@ -62,23 +63,23 @@ namespace ModsCommon
                 TabPanels[index].isVisible = true;
             }
         }
-        private void TabStripSizeChanged(UIPanel mainPanel)
+        private void TabStripSizeChanged()
         {
             foreach (var tab in TabPanels)
-                SetTabSize(tab, mainPanel);
+                SetTabSize(tab);
         }
-        private void SetTabSize(UIPanel panel, UIPanel mainPanel)
+        private void SetTabSize(UIPanel panel)
         {
-            panel.size = new Vector2(mainPanel.width, mainPanel.height - mainPanel.autoLayoutPadding.vertical - TabStrip.height);
+            panel.size = new Vector2(MainPanel.width, MainPanel.height - (TabStrip.isVisible ? MainPanel.autoLayoutPadding.vertical + TabStrip.height : 0f));
         }
 
-        protected UIHelper CreateTab(UIPanel mainPanel, string name)
+        protected UIHelper CreateTab(string name)
         {
             TabStrip.AddTab(name, 1.25f);
 
-            var tabPanel = mainPanel.AddUIComponent<AdvancedScrollablePanel>();
+            var tabPanel = MainPanel.AddUIComponent<AdvancedScrollablePanel>();
             tabPanel.Content.autoLayoutPadding = new RectOffset(8, 8, 0, 0);
-            SetTabSize(tabPanel, mainPanel);
+            SetTabSize(tabPanel);
             tabPanel.isVisible = false;
             TabPanels.Add(tabPanel);
 

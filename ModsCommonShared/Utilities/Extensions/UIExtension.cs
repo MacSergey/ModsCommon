@@ -6,7 +6,7 @@ namespace ModsCommon.Utilities
 {
     public static class UIExtension
     {
-        public static UIHelperBase AddGroup(this UIHelperBase helper)
+        public static UIHelper AddGroup(this UIHelperBase helper)
         {
             var newGroup = helper.AddGroup("aaa") as UIHelper;
             var panel = newGroup.self as UIPanel;
