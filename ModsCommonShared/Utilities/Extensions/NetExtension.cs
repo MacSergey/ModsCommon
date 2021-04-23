@@ -1,7 +1,9 @@
 ﻿using ColossalFramework;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace ModsCommon.Utilities
@@ -9,6 +11,17 @@ namespace ModsCommon.Utilities
     public static class NetExtension
     {
         private static NetManager NetManager => Singleton<NetManager>.instance;
+
+        public static void UpdateOnceSegment(this NetManager instance, ushort segmentId)
+        {
+            instance.m_updatedSegments[segmentId >> 6] |= (ulong)(1L << segmentId);
+            instance.m_segmentsUpdated = true;
+        }
+        public static void UpdateOnceNode(this NetManager instance, ushort nodeId)
+        {
+            instance.m_updatedNodes[nodeId >> 6] |= (ulong)(1L << nodeId);
+            instance.m_nodesUpdated = true;
+        }
 
         public static IEnumerable<NetSegment> Segments(this NetNode node)
         {

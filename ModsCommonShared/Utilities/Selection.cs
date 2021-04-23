@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static ColossalFramework.Math.VectorUtils;
 
 namespace ModsCommon.Utilities
 {
@@ -38,9 +39,9 @@ namespace ModsCommon.Utilities
 
                     var j = (i + 1) % DataArray.Length;
                     if (DataArray.Length != 1)
-                        yield return new BezierTrajectory(GetBezier(DataArray[i].leftPos, DataArray[i].leftDir, DataArray[j].rightPos, DataArray[j].rightDir));
+                        yield return new BezierTrajectory(GetBezier(DataArray[i].leftPos, DataArray[i].LeftDir, DataArray[j].rightPos, DataArray[j].RightDir));
                     else
-                        yield return new BezierTrajectory(GetEndBezier(DataArray[i].leftPos, DataArray[i].leftDir, DataArray[j].rightPos, DataArray[j].rightDir));
+                        yield return new BezierTrajectory(GetEndBezier(DataArray[i].leftPos, DataArray[i].LeftDir, DataArray[j].rightPos, DataArray[j].RightDir));
                 }
             }
         }
@@ -56,8 +57,8 @@ namespace ModsCommon.Utilities
                     var delta = 3 - (DataArray[i].Position - Center).magnitude;
                     if (delta > 0f)
                     {
-                        DataArray[i].leftPos -= delta * DataArray[i].leftDir;
-                        DataArray[i].rightPos -= delta * DataArray[i].rightDir;
+                        DataArray[i].leftPos -= delta * DataArray[i].LeftDir;
+                        DataArray[i].rightPos -= delta * DataArray[i].RightDir;
                     }
                 }
             }
@@ -195,10 +196,10 @@ namespace ModsCommon.Utilities
                 var startPos = data.leftPos + delta;
                 var endPos = data.rightPos - delta;
 
-                var startDir = data.GetDir(tDir);
-                var endDir = data.GetDir(1 - tDir);
+                var startDir = data.GetDir(tDir) * data.GetDirLength(tDir);
+                var endDir = data.GetDir(1 - tDir) * data.GetDirLength(1 - tDir);
 
-                var bezier = GetEndBezier(startPos, startDir, endPos, endDir, halfOverlayWidth, (tPos - halfOverlayWidth) / effectiveWidth);
+                var bezier = GetEndBezier(startPos, startDir, endPos, endDir, halfOverlayWidth);
                 bezier.RenderBezier(overlayData);
             }
         }
@@ -214,10 +215,10 @@ namespace ModsCommon.Utilities
             NetSegment.CalculateMiddlePoints(bezier.a, leftDir, bezier.d, rightDir, true, true, out bezier.b, out bezier.c);
             return bezier;
         }
-        private Bezier3 GetEndBezier(Vector3 leftPos, Vector3 leftDir, Vector3 rightPos, Vector3 rightDir, float halfWidth = 0f, float ratio = 0f)
+        private Bezier3 GetEndBezier(Vector3 leftPos, Vector3 leftDir, Vector3 rightPos, Vector3 rightDir, float halfWidth = 0f)
         {
             var length = Mathf.Min((leftPos - rightPos).XZ().magnitude / 2 + halfWidth, 8f);
-            length = (length - halfWidth) /** (1 - ratio)*/ / 0.75f;
+            length = (length - halfWidth) / 0.75f;
             var bezier = new Bezier3()
             {
                 a = leftPos,
@@ -232,20 +233,51 @@ namespace ModsCommon.Utilities
         {
             public ushort Id { get; }
             public float angle;
-            public Vector3 rightPos;
+
             public Vector3 leftPos;
-            public Vector3 rightDir;
-            public Vector3 leftDir;
+            public Vector3 rightPos;
+
+            private Vector3 _leftDir;
+            private Vector3 _rightDir;
+
+            private float _leftDirLenght;
+            private float _rightDirLenght;
+
             public float halfWidth;
+
+            public Vector3 LeftDir
+            {
+                get => _leftDir;
+                set
+                {
+                    _leftDir = value.normalized;
+                    _leftDirLenght = LengthXZ(value);
+                }
+            }
+            public Vector3 RightDir
+            {
+                get => _rightDir;
+                set
+                {
+                    _rightDir = value.normalized;
+                    _rightDirLenght = LengthXZ(value);
+                }
+            }
 
             public Data(ushort id)
             {
                 Id = id;
                 angle = 0f;
-                rightPos = Vector3.zero;
+
                 leftPos = Vector3.zero;
-                rightDir = Vector3.zero;
-                leftDir = Vector3.zero;
+                rightPos = Vector3.zero;
+
+                _leftDir = Vector3.zero;
+                _rightDir = Vector3.zero;
+
+                _leftDirLenght = 1f;
+                _rightDirLenght = 1f;
+
                 halfWidth = 0f;
             }
 
@@ -254,12 +286,17 @@ namespace ModsCommon.Utilities
             public float CornerLength => (rightPos - leftPos).XZ().magnitude;
             public StraightTrajectory Line => new StraightTrajectory(leftPos, rightPos);
             public Vector3 Position => (rightPos + leftPos) / 2;
-            public Vector3 Direction => (leftDir + rightDir).normalized;
+            public Vector3 Direction => (_leftDir + _rightDir).normalized;
 
             public Vector3 GetDir(float t)
             {
                 t = Mathf.Clamp01(t);
-                return (leftDir * t + rightDir * (1 - t)).normalized;
+                return (_leftDir * t + _rightDir * (1 - t)).normalized;
+            }
+            public float GetDirLength(float t)
+            {
+                t = Mathf.Clamp01(t);
+                return _leftDirLenght * t + _rightDirLenght * (1 - t);
             }
             public Vector3 GetCornerDelta(float width) => CornerDir * (width / DeltaAngleCos);
         }
@@ -284,16 +321,16 @@ namespace ModsCommon.Utilities
                     angle = (isStart ? segment.m_startDirection : segment.m_endDirection).AbsoluteAngle(),
                 };
 
-                segment.CalculateCorner(segmentId, true, isStart, true, out data.leftPos, out data.leftDir, out _);
-                segment.CalculateCorner(segmentId, true, isStart, false, out data.rightPos, out data.rightDir, out _);
+                segment.CalculateCorner(segmentId, true, isStart, true, out data.leftPos, out var leftDir, out _);
+                segment.CalculateCorner(segmentId, true, isStart, false, out data.rightPos, out var rightDir, out _);
 
-                data.leftDir = (-data.leftDir).normalized;
-                data.rightDir = (-data.rightDir).normalized;
+                data.LeftDir = -leftDir;
+                data.RightDir = -rightDir;
 
                 if (node.m_flags.CheckFlags(NetNode.Flags.Middle))
                 {
-                    data.leftPos -= 3 * data.leftDir;
-                    data.rightPos -= 3 * data.rightDir;
+                    data.leftPos -= 3 * data.LeftDir;
+                    data.rightPos -= 3 * data.RightDir;
                 }
 
                 yield return data;
@@ -344,8 +381,10 @@ namespace ModsCommon.Utilities
                 angle = segment.m_startDirection.AbsoluteAngle(),
             };
 
-            segment.CalculateCorner(Id, true, true, true, out startData.leftPos, out startData.leftDir, out _);
-            segment.CalculateCorner(Id, true, true, false, out startData.rightPos, out startData.rightDir, out _);
+            segment.CalculateCorner(Id, true, true, true, out startData.leftPos, out var startLeftDir, out _);
+            segment.CalculateCorner(Id, true, true, false, out startData.rightPos, out var startRightDir, out _);
+            startData.LeftDir = startLeftDir;
+            startData.RightDir = startRightDir;
 
             yield return startData;
 
@@ -355,8 +394,10 @@ namespace ModsCommon.Utilities
                 angle = segment.m_endDirection.AbsoluteAngle(),
             };
 
-            segment.CalculateCorner(Id, true, false, true, out endData.leftPos, out endData.leftDir, out _);
-            segment.CalculateCorner(Id, true, false, false, out endData.rightPos, out endData.rightDir, out _);
+            segment.CalculateCorner(Id, true, false, true, out endData.leftPos, out var endLeftDir, out _);
+            segment.CalculateCorner(Id, true, false, false, out endData.rightPos, out var endRightDir, out _);
+            endData.LeftDir = endLeftDir;
+            endData.RightDir = endRightDir;
 
             yield return endData;
         }
