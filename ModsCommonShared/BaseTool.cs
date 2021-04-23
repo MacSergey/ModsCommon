@@ -109,6 +109,8 @@ namespace ModsCommon
             SetModeNow(mode);
             cursorInfoLabel.isVisible = false;
             cursorInfoLabel.text = string.Empty;
+            extraInfoLabel.isVisible = false;
+            extraInfoLabel.text = string.Empty;
         }
         public void Toggle()
         {
