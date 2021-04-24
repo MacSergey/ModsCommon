@@ -55,20 +55,20 @@ namespace ModsCommon.Utilities
             StartDirection = (Trajectory.b - Trajectory.a).normalized;
             EndDirection = (Trajectory.c - Trajectory.d).normalized;
         }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir) : this(GetBezier(startPos, startDir, endPos, endDir)) { }
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true) : this(GetBezier(startPos, startDir, endPos, endDir, normalize)) { }
         public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos) : this(GetBezier(startPos, startDir, endPos)) { }
 
         public BezierTrajectory(BezierTrajectory trajectory) : this(trajectory.Trajectory) { }
         public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
 
-        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir)
+        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize)
         {
             var bezier = new Bezier3()
             {
                 a = startPos,
                 d = endPos,
             };
-            NetSegment.CalculateMiddlePoints(bezier.a, startDir.normalized, bezier.d, endDir.normalized, true, true, out bezier.b, out bezier.c);
+            NetSegment.CalculateMiddlePoints(bezier.a, normalize ? startDir.normalized : startDir, bezier.d, normalize ? endDir.normalized : endDir, true, true, out bezier.b, out bezier.c);
             return bezier;
         }
         private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos)
