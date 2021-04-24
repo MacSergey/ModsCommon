@@ -148,9 +148,9 @@ namespace ModsCommon
             }
         }
         protected virtual bool IsValidNode(ushort nodeId) => nodeId.GetNode().m_flags.CheckFlags(0, NetNode.Flags.Middle);
-        protected virtual bool IsValidSegment(ushort nodeId) => true;
+        protected virtual bool IsValidSegment(ushort segmentId) => true;
 
-        private bool CheckSegment(ushort segmentId)
+        protected virtual bool CheckSegment(ushort segmentId)
         {
             var segment = segmentId.GetSegment();
             if ((segment.m_flags & NetSegment.Flags.Created) == 0)
