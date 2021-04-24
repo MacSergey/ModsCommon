@@ -147,7 +147,7 @@ namespace ModsCommon
                 return false;
             }
         }
-        protected virtual bool IsValidNode(ushort nodeId) => nodeId.GetNode().m_flags.CheckFlags(0, NetNode.Flags.Middle);
+        protected virtual bool IsValidNode(ushort nodeId) => true;
         protected virtual bool IsValidSegment(ushort segmentId) => true;
 
         protected virtual bool CheckSegment(ushort segmentId)
