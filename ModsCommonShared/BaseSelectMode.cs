@@ -87,7 +87,7 @@ namespace ModsCommon
             resultPriority = priority;
             if (CheckSegment(segmentId))
             {
-                var segment = segmentId.GetSegment();
+                ref var segment = ref segmentId.GetSegment();
 
                 if (SelectNodes && RayCastNode(checkedNodes, segment.m_startNode, out NodeSelection startSelection, out priority) && priority < resultPriority)
                 {
@@ -152,7 +152,7 @@ namespace ModsCommon
 
         protected virtual bool CheckSegment(ushort segmentId)
         {
-            var segment = segmentId.GetSegment();
+            ref var segment = ref segmentId.GetSegment();
             if ((segment.m_flags & NetSegment.Flags.Created) == 0)
                 return false;
 
