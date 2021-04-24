@@ -153,19 +153,16 @@ namespace ModsCommon
         private bool CheckSegment(ushort segmentId)
         {
             var segment = segmentId.GetSegment();
-            var connect = segment.Info.GetConnectionClass();
-
             if ((segment.m_flags & NetSegment.Flags.Created) == 0)
                 return false;
 
-            if ((connect.m_layer & ItemClass.Layer.Default) == 0)
+            var itemClass = segment.Info.GetConnectionClass();
+            if ((itemClass.m_layer & ItemClass.Layer.Default) == 0)
                 return false;
 
-            if (connect.m_service != ItemClass.Service.Road && (connect.m_service != ItemClass.Service.PublicTransport || connect.m_subService != ItemClass.SubService.PublicTransportPlane))
-                return false;
-
-            return true;
+            return CheckItemClass(itemClass);
         }
+        protected virtual bool CheckItemClass(ItemClass itemClass) => true;
 
         public override void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public override void OnSecondaryMouseClicked() => Tool.Disable();
