@@ -17,7 +17,7 @@ namespace ModsCommon.Utilities
             if (index != -1 && versions.Skip(index + 1).FirstOrDefault(v => isMinor || v.IsMinor()) is Version minor)
                 return minor;
             else
-                return versions.Last();
+                return versions.LastOrDefault() ?? new Version(0, 0);
         }
         public static bool IsMinor(this Version version) => version.Build <= 0 && version.Revision <= 0;
         public static string GetString(this Version version)

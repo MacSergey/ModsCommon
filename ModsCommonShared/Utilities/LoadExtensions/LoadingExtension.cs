@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ModsCommon.Utilities
 {
-    public class BaseLoadingExtension<TypeMod> : LoadingExtensionBase
+    public abstract class BaseLoadingExtension<TypeMod> : LoadingExtensionBase
         where TypeMod : BaseMod<TypeMod>
     {
         public override void OnLevelLoaded(LoadMode mode)
