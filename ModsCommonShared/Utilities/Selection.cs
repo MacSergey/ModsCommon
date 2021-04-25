@@ -67,7 +67,7 @@ namespace ModsCommon.Utilities
         private void CalculateCenter()
         {
             if (DataArray.Length == 1)
-                Center = DataArray[0].Position + DataArray[0].Direction;
+                Center = DataArray[0].Position + Mathf.Min(1f, DataArray[0].halfWidth / 2) * DataArray[0].Direction;
             else
             {
                 Vector3 center = new();
@@ -106,7 +106,7 @@ namespace ModsCommon.Utilities
 
         protected void RenderCorner(OverlayData overlayData, Data data)
         {
-            var cornerDelta = data.GetCornerDelta(BorderOverlayWidth / 2);
+            var cornerDelta = data.GetCornerDelta(Mathf.Min(BorderOverlayWidth / 2, data.halfWidth));
             var line = new StraightTrajectory(data.leftPos + cornerDelta, data.rightPos - cornerDelta);
             line.Render(overlayData);
         }
@@ -184,9 +184,9 @@ namespace ModsCommon.Utilities
         protected void RenderEnd(OverlayData overlayData, Data data)
         {
             var count = Mathf.CeilToInt(data.halfWidth / BorderOverlayWidth);
-            var halfOverlayWidth = BorderOverlayWidth / 2f;
-            var effectiveWidth = data.halfWidth - BorderOverlayWidth;
-            var step = effectiveWidth / (count - 1);
+            var halfOverlayWidth = Mathf.Min(BorderOverlayWidth / 2f, data.halfWidth);
+            var effectiveWidth = Mathf.Max(data.halfWidth - BorderOverlayWidth, 0f);
+            var step = count > 1 ? effectiveWidth / (count - 1) : 0f;
             for (var i = 0; i < count; i += 1)
             {
                 var tPos = halfOverlayWidth + step * i;
@@ -217,7 +217,7 @@ namespace ModsCommon.Utilities
         }
         private Bezier3 GetEndBezier(Vector3 leftPos, Vector3 leftDir, Vector3 rightPos, Vector3 rightDir, float halfWidth = 0f)
         {
-            var length = Mathf.Min((leftPos - rightPos).XZ().magnitude / 2 + halfWidth, 8f);
+            var length = Mathf.Min(LengthXZ(leftPos - rightPos) / 2 + halfWidth, 8f);
             length = (length - halfWidth) / 0.75f;
             var bezier = new Bezier3()
             {
@@ -339,7 +339,6 @@ namespace ModsCommon.Utilities
 
         public override void Render(OverlayData overlayData)
         {
-            overlayData.Width = BorderOverlayWidth;
 #if DEBUGMARKING
             overlayData.AlphaBlend = NodeMarkup.Settings.AlphaBlendOverlay;
 #else
@@ -350,6 +349,7 @@ namespace ModsCommon.Utilities
             {
                 var data1 = DataArray[i];
                 var data2 = DataArray[(i + 1) % DataArray.Length];
+                overlayData.Width = Mathf.Min(BorderOverlayWidth, data1.halfWidth * 2, data2.halfWidth * 2);
 
                 RenderCorner(overlayData, data1);
                 if (DataArray.Length == 1)
@@ -406,7 +406,7 @@ namespace ModsCommon.Utilities
 
         public override void Render(OverlayData overlayData)
         {
-            overlayData.Width = BorderOverlayWidth;
+            overlayData.Width = Mathf.Min(BorderOverlayWidth, DataArray[0].halfWidth * 2, DataArray[1].halfWidth * 2);
 #if DEBUGMARKING
             overlayData.AlphaBlend = NodeMarkup.Settings.AlphaBlendOverlay;
 #else
