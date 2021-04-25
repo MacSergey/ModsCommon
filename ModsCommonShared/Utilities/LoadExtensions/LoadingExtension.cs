@@ -21,12 +21,13 @@ namespace ModsCommon.Utilities
                 case LoadMode.NewMap:
                 case LoadMode.LoadMap:
                     OnLoad();
-
-                    SingletonMod<TypeMod>.Instance.ShowWhatsNew();
-                    SingletonMod<TypeMod>.Instance.ShowBetaWarning();
                     break;
             }
         }
-        protected virtual void OnLoad() { }
+        protected virtual void OnLoad() 
+        {
+            SingletonMod<TypeMod>.Instance.ShowWhatsNew();
+            SingletonMod<TypeMod>.Instance.ShowBetaWarning();
+        }
     }
 }
