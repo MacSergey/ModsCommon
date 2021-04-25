@@ -1,6 +1,7 @@
 ﻿using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ModsCommon
 {
@@ -19,6 +20,8 @@ namespace ModsCommon
         public static string VersionString => Instance.VersionString;
         public static string Id => Instance.Id;
         public static bool IsBeta => Instance.IsBeta;
+        public static CultureInfo Culture => Instance.Culture;
+        public static string GetLocalizeString(string str, CultureInfo culture = null) => Instance.GetLocalizeString(str, culture);
     }
     public abstract class SingletonTool<T> : SingletonItem<T>
         where T : BaseTool<T>

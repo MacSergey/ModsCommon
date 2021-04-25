@@ -1,9 +1,11 @@
 ﻿using ColossalFramework;
+using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using ICities;
 using ModsCommon.UI;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,6 +16,10 @@ namespace ModsCommon
     public abstract class BaseSettings<TypeMod>
         where TypeMod : BaseMod<TypeMod>
     {
+        public static string SettingsFile { get; } = $"{typeof(TypeMod).Namespace}{nameof(SettingsFile)}";
+        public static SavedString Locale { get; } = new SavedString(nameof(Locale), SettingsFile, string.Empty, true);
+
+
         private UIPanel MainPanel { get; set; }
         protected TabStrip TabStrip { get; set; }
         protected List<CustomUIPanel> TabPanels { get; set; }
@@ -201,6 +207,32 @@ namespace ModsCommon
             }
 
             return languages.OrderBy(l => l).ToArray();
+        }
+        protected void AddLanguageList(UIHelper group)
+        {
+            var dropDown = (group.self as UIComponent).AddUIComponent<LanguageDropDown>();
+            dropDown.AddItem(string.Empty, SingletonMod<TypeMod>.GetLocalizeString("Mod_LocaleGame"));
+
+            foreach (var locale in GetSupportLanguages())
+            {
+                var localizeString = $"Mod_Locale_{locale}";
+                var localeText = SingletonMod<TypeMod>.GetLocalizeString(localizeString);
+                if (SingletonMod<TypeMod>.Culture.Name.ToLower() != locale)
+                    localeText += $" ({SingletonMod<TypeMod>.GetLocalizeString(localizeString, new CultureInfo(locale))})";
+
+                dropDown.AddItem(locale, localeText);
+            }
+
+            dropDown.SelectedObject = Locale.value;
+            dropDown.eventSelectedIndexChanged += IndexChanged;
+
+            void IndexChanged(UIComponent component, int value)
+            {
+                var locale = dropDown.SelectedObject;
+                Locale.value = locale;
+                SingletonMod<TypeMod>.Instance.LocaleChanged();
+                LocaleManager.ForceReload();
+            }
         }
 
         #endregion

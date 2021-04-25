@@ -30,18 +30,11 @@ namespace ModsCommon
         protected abstract string IdRaw { get; }
         public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
         public abstract bool IsBeta { get; }
-        protected abstract string Locale { get; }
 
-        protected CultureInfo Culture
+        public virtual CultureInfo Culture
         {
-            get
-            {
-                var locale = string.IsNullOrEmpty(Locale) ? SingletonLite<LocaleManager>.instance.language : Locale;
-                if (locale == "zh")
-                    locale = "zh-cn";
-
-                return new CultureInfo(locale);
-            }
+            get => null;
+            protected set { }
         }
 
         public BaseMod()
@@ -74,13 +67,23 @@ namespace ModsCommon
         }
         protected virtual void GetSettings(UIHelperBase helper) { }
 
-        public virtual void LocaleChanged() { }
+        public void LocaleChanged() 
+        {
+            var locale = BaseSettings<TypeMod>.Locale.value;
+            locale = string.IsNullOrEmpty(locale) ? SingletonLite<LocaleManager>.instance.language : locale;
+            if (locale == "zh")
+                locale = "zh-cn";
+
+            Culture = new CultureInfo(locale);
+            Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
+        }
 
         public void CheckLoadedError()
         {
             if (UIView.GetAView() != null && LoadError)
                 OnLoadedError();
         }
+        public virtual string GetLocalizeString(string str, CultureInfo culture = null) => str;
         public virtual void OnLoadedError() { }
     }
 }
