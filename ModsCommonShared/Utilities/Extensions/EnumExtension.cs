@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace ModsCommon.Utilities
@@ -19,6 +20,14 @@ namespace ModsCommon.Utilities
         }
         public static IEnumerable<T> GetEnumValues<T>(this T value) where T : Enum => GetEnumValues<T>().Where(v => (value.ToInt() & v.ToInt()) != 0);
         public static T GetEnum<T>(this List<T> values) where T : Enum => values.Aggregate(0, (r, v) => r | v.ToInt()).ToEnum<T>();
+        public static string Description<T, TypeMod>(this T value)
+            where T : Enum
+            where TypeMod : BaseMod<TypeMod>
+        {
+            var description = value.GetAttr<DescriptionAttribute, T>()?.Description ?? value.ToString();
+            return SingletonMod<TypeMod>.GetLocalizeString(description);
+        }
+
         public static bool IsVisible<T>(this T value) where T : Enum => value.GetAttr<NotVisibleAttribute, T>() == null;
         public static bool IsItem<T>(this T value) where T : Enum => value.GetAttr<NotItemAttribute, T>() == null;
 
