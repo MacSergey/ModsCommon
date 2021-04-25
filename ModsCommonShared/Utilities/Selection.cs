@@ -1,17 +1,29 @@
-﻿using ColossalFramework.Math;
+﻿using ColossalFramework;
+using ColossalFramework.Math;
 using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
+using static ModsCommon.SettingsHelper;
 
 namespace ModsCommon.Utilities
 {
     public abstract class Selection : IOverlay
     {
-#if DEBUGMARKING
-        protected static float BorderOverlayWidth => NodeMarkup.Settings.BorderOverlayWidth;
+#if DEBUG
+        public static SavedBool AlphaBlendOverlay { get; } = new SavedBool(nameof(AlphaBlendOverlay), string.Empty, false);
+        public static SavedFloat OverlayWidth { get; } = new SavedFloat(nameof(OverlayWidth), string.Empty, 3f);
+        public static SavedBool RenderOverlayCentre { get; } = new SavedBool(nameof(RenderOverlayCentre), string.Empty, false);
+        public static SavedBool RenderOverlayBorders { get; } = new SavedBool(nameof(RenderOverlayBorders), string.Empty, false);
+
+        public static void AddAlphaBlendOverlay(UIHelper group) => AddCheckBox(group, "Alpha blend overlay", AlphaBlendOverlay);
+        public static void AddRenderOverlayCentre(UIHelper group) => AddCheckBox(group, "Render overlay center", RenderOverlayCentre);
+        public static void AddRenderOverlayBorders(UIHelper group) => AddCheckBox(group, "Render overlay borders", RenderOverlayBorders);
+        public static void AddBorderOverlayWidth(UIHelper group) => AddFloatField(group, "Overlay width", OverlayWidth, 3f, 1f);
+
+        public static float BorderOverlayWidth => OverlayWidth;
 #else
         public static float BorderOverlayWidth => 3f;
 #endif
@@ -90,10 +102,10 @@ namespace ModsCommon.Utilities
         public virtual Vector3 GetHitPosition(Segment3 ray, out float t) => ray.GetRayPosition(Center.y, out t);
         public virtual void Render(OverlayData overlayData)
         {
-#if DEBUGMARKING
-            if (NodeMarkup.Settings.RenderOverlayBorders)
+#if DEBUG
+            if (RenderOverlayBorders)
                 RenderBorders(new OverlayData(overlayData.CameraInfo) { Color = Colors.Green });
-            if (NodeMarkup.Settings.RenderOverlayCentre)
+            if (RenderOverlayCentre)
                 RenderCenter(new OverlayData(overlayData.CameraInfo) { Color = Colors.Red });
 #endif
         }
@@ -339,8 +351,8 @@ namespace ModsCommon.Utilities
 
         public override void Render(OverlayData overlayData)
         {
-#if DEBUGMARKING
-            overlayData.AlphaBlend = NodeMarkup.Settings.AlphaBlendOverlay;
+#if DEBUG
+            overlayData.AlphaBlend = AlphaBlendOverlay;
 #else
             overlayData.AlphaBlend = false;
 #endif
@@ -407,8 +419,8 @@ namespace ModsCommon.Utilities
         public override void Render(OverlayData overlayData)
         {
             overlayData.Width = Mathf.Min(BorderOverlayWidth, DataArray[0].halfWidth * 2, DataArray[1].halfWidth * 2);
-#if DEBUGMARKING
-            overlayData.AlphaBlend = NodeMarkup.Settings.AlphaBlendOverlay;
+#if DEBUG
+            overlayData.AlphaBlend = AlphaBlendOverlay;
 #else
             overlayData.AlphaBlend = false;
 #endif

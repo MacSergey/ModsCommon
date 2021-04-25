@@ -99,105 +99,6 @@ namespace ModsCommon
 
         #region UTILITY
 
-        protected void AddFloatField(UIHelper group, string label, SavedFloat saved, float? defaultValue, float? min = null, float? max = null, Action onSubmit = null)
-        {
-            UITextField field = null;
-            field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
-
-            static void OnChanged(string distance) { }
-            void OnSubmitted(string text)
-            {
-                if (float.TryParse(text, out float value))
-                {
-                    if ((min.HasValue && value < min.Value) || (max.HasValue && value > max.Value))
-                        value = defaultValue ?? 0;
-
-                    saved.value = value;
-                    field.text = value.ToString();
-                }
-                else
-                    field.text = saved.ToString();
-
-                onSubmit?.Invoke();
-            }
-        }
-
-        protected void AddCheckBox(UIHelper group, string label, SavedBool saved, Action onChanged = null)
-        {
-            group.AddCheckbox(label, saved, OnValueChanged);
-
-            void OnValueChanged(bool value)
-            {
-                saved.value = value;
-                onChanged?.Invoke();
-            }
-        }
-
-        protected void AddCheckboxPanel(UIHelper group, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
-        {
-            var inProcess = false;
-            var checkBoxes = new UICheckBox[labels.Length];
-            var optionsPanel = default(CustomUIPanel);
-
-            var mainCheckBox = group.AddCheckbox(mainLabel, mainSaved, OnMainChanged) as UICheckBox;
-
-            optionsPanel = (group.self as UIComponent).AddUIComponent<CustomUIPanel>();
-            optionsPanel.autoLayout = true;
-            optionsPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            optionsPanel.autoFitChildrenHorizontally = true;
-            optionsPanel.autoFitChildrenVertically = true;
-            optionsPanel.autoLayoutPadding = new RectOffset(25, 0, 0, 5);
-            var panelHelper = new UIHelper(optionsPanel);
-
-            for (var i = 0; i < checkBoxes.Length; i += 1)
-            {
-                var index = i;
-                checkBoxes[i] = panelHelper.AddCheckbox(labels[i], optionsSaved == i, (value) => Set(index, value)) as UICheckBox;
-            }
-
-            SetVisible();
-
-            void OnMainChanged(bool value)
-            {
-                mainSaved.value = value;
-                onChanged?.Invoke();
-                SetVisible();
-            }
-            void SetVisible() => optionsPanel.isVisible = mainSaved;
-            void Set(int index, bool value)
-            {
-                if (!inProcess)
-                {
-                    inProcess = true;
-                    optionsSaved.value = index;
-                    onChanged?.Invoke();
-                    for (var i = 0; i < checkBoxes.Length; i += 1)
-                        checkBoxes[i].isChecked = optionsSaved == i;
-                    inProcess = false;
-                }
-            }
-        }
-        protected UIButton AddButton(UIHelper group, string text, OnButtonClicked click, float width = 400)
-        {
-            var button = group.AddButton(text, click) as UIButton;
-            button.autoSize = false;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
-            button.width = width;
-
-            return button;
-        }
-        protected void AddLabel(UIHelper helper, string text, float size = 1.125f, Color? color = null, int padding = 0)
-        {
-            var component = helper.self as UIComponent;
-
-            var label = component.AddUIComponent<CustomUILabel>();
-            label.text = text;
-            label.textScale = size;
-            label.textColor = color ?? Color.white;
-            label.padding = new RectOffset(padding, 0, 0, 0);
-        }
-        protected KeymappingsPanel AddKeyMappingPanel(UIHelper helper) => (helper.self as UIPanel).gameObject.AddComponent<KeymappingsPanel>();
-
         protected string[] GetSupportLanguages()
         {
             var languages = new HashSet<string> { "en" };
@@ -242,6 +143,108 @@ namespace ModsCommon
 
         #endregion
     }
+    public static class SettingsHelper
+    {
+        public static void AddFloatField(UIHelper group, string label, SavedFloat saved, float? defaultValue, float? min = null, float? max = null, Action onSubmit = null)
+        {
+            UITextField field = null;
+            field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+
+            static void OnChanged(string distance) { }
+            void OnSubmitted(string text)
+            {
+                if (float.TryParse(text, out float value))
+                {
+                    if ((min.HasValue && value < min.Value) || (max.HasValue && value > max.Value))
+                        value = defaultValue ?? 0;
+
+                    saved.value = value;
+                    field.text = value.ToString();
+                }
+                else
+                    field.text = saved.ToString();
+
+                onSubmit?.Invoke();
+            }
+        }
+
+        public static void AddCheckBox(UIHelper group, string label, SavedBool saved, Action onChanged = null)
+        {
+            group.AddCheckbox(label, saved, OnValueChanged);
+
+            void OnValueChanged(bool value)
+            {
+                saved.value = value;
+                onChanged?.Invoke();
+            }
+        }
+
+        public static void AddCheckboxPanel(UIHelper group, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
+        {
+            var inProcess = false;
+            var checkBoxes = new UICheckBox[labels.Length];
+            var optionsPanel = default(CustomUIPanel);
+
+            var mainCheckBox = group.AddCheckbox(mainLabel, mainSaved, OnMainChanged) as UICheckBox;
+
+            optionsPanel = (group.self as UIComponent).AddUIComponent<CustomUIPanel>();
+            optionsPanel.autoLayout = true;
+            optionsPanel.autoLayoutDirection = LayoutDirection.Vertical;
+            optionsPanel.autoFitChildrenHorizontally = true;
+            optionsPanel.autoFitChildrenVertically = true;
+            optionsPanel.autoLayoutPadding = new RectOffset(25, 0, 0, 5);
+            var panelHelper = new UIHelper(optionsPanel);
+
+            for (var i = 0; i < checkBoxes.Length; i += 1)
+            {
+                var index = i;
+                checkBoxes[i] = panelHelper.AddCheckbox(labels[i], optionsSaved == i, (value) => Set(index, value)) as UICheckBox;
+            }
+
+            SetVisible();
+
+            void OnMainChanged(bool value)
+            {
+                mainSaved.value = value;
+                onChanged?.Invoke();
+                SetVisible();
+            }
+            void SetVisible() => optionsPanel.isVisible = mainSaved;
+            void Set(int index, bool value)
+            {
+                if (!inProcess)
+                {
+                    inProcess = true;
+                    optionsSaved.value = index;
+                    onChanged?.Invoke();
+                    for (var i = 0; i < checkBoxes.Length; i += 1)
+                        checkBoxes[i].isChecked = optionsSaved == i;
+                    inProcess = false;
+                }
+            }
+        }
+        public static UIButton AddButton(UIHelper group, string text, OnButtonClicked click, float width = 400)
+        {
+            var button = group.AddButton(text, click) as UIButton;
+            button.autoSize = false;
+            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+            button.width = width;
+
+            return button;
+        }
+        public static void AddLabel(UIHelper helper, string text, float size = 1.125f, Color? color = null, int padding = 0)
+        {
+            var component = helper.self as UIComponent;
+
+            var label = component.AddUIComponent<CustomUILabel>();
+            label.text = text;
+            label.textScale = size;
+            label.textColor = color ?? Color.white;
+            label.padding = new RectOffset(padding, 0, 0, 0);
+        }
+        public static KeymappingsPanel AddKeyMappingPanel(UIHelper helper) => (helper.self as UIPanel).gameObject.AddComponent<KeymappingsPanel>();
+    }
+
     public class LanguageDropDown : UIDropDown<string>
     {
         public LanguageDropDown()
