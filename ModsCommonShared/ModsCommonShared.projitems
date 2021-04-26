@@ -59,6 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Intersects.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Loader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LoadExtensions\LoadingExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ObjectMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\OverlayData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\PropertyValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Selection.cs" />
