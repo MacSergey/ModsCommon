@@ -17,6 +17,8 @@ namespace ModsCommon.Utilities
         public bool IsSimple { get; }
         public bool IsEmpty => !Map.Any();
         protected Dictionary<TypeObjectId, TypeObjectId> Map { get; } = new Dictionary<TypeObjectId, TypeObjectId>();
+        public IEnumerable<TypeObjectId> Keys => Map.Keys;
+        public IEnumerable<TypeObjectId> Values => Map.Values;
 
         public TypeObjectId this[TypeObjectId key]
         {
@@ -53,7 +55,7 @@ namespace ModsCommon.Utilities
         {
             if (Map.TryGetValue(new TypeObjectId() { Segment = segmentIdKey }, out TypeObjectId value))
             {
-                segmentIdValue = value.Node;
+                segmentIdValue = value.Segment;
                 return true;
             }
             else
