@@ -72,6 +72,22 @@ namespace ModsCommon.Utilities
         public void Remove(TypeObjectId key) => Map.Remove(key);
 
         public delegate bool TryGetDelegate<T>(T key, out T value);
+
+        public void FromDictionary(Dictionary<InstanceID, InstanceID> sourceMap)
+        {
+            foreach (var source in sourceMap)
+            {
+                switch (source.Key.Type)
+                {
+                    case InstanceType.NetNode when source.Value.Type == InstanceType.NetNode:
+                        AddNode(source.Key.NetNode, source.Value.NetNode);
+                        break;
+                    case InstanceType.NetSegment when source.Value.Type == InstanceType.NetSegment:
+                        AddSegment(source.Key.NetSegment, source.Value.NetSegment);
+                        break;
+                }
+            }
+        }
     }
     public class ObjectsMap : BaseObjectsMap<ObjectId>
     {
