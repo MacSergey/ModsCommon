@@ -56,9 +56,10 @@ namespace ModsCommon.Utilities
         public abstract void Save(BuildingInfo prefab, Dictionary<string, byte[]> userData);
     }
 
-    public abstract class BaseIntersectionAssetDataExtension<TypeMod, TypeExtension> : BaseAssetDataExtension<TypeExtension, AssetData>
+    public abstract class BaseIntersectionAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap> : BaseAssetDataExtension<TypeExtension, AssetData>
         where TypeMod : BaseMod<TypeMod>
-        where TypeExtension : BaseIntersectionAssetDataExtension<TypeMod, TypeExtension>
+        where TypeExtension : BaseIntersectionAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap>
+        where TypeObjectMap : IObjectsMap
     {
         protected abstract string DataId { get; }
         protected abstract string MapId { get; }
@@ -109,12 +110,25 @@ namespace ModsCommon.Utilities
         public void OnPlaceAsset(BuildingInfo buildingInfo, FastList<ushort> segments, FastList<ushort> nodes)
         {
             if (AssetDatas.TryGetValue(buildingInfo, out var assetData))
-                PlaceAsset(assetData, segments, nodes);
+            {
+                var map = CreateMap(true);
+
+                var segmentsCount = Math.Min(assetData.Segments.Length, segments.m_buffer.Length);
+                for (var i = 0; i < segmentsCount; i += 1)
+                    map.AddSegment(assetData.Segments[i], segments[i]);
+
+                var nodesCount = Math.Min(assetData.Nodes.Length, nodes.m_buffer.Length);
+                for (var i = 0; i < nodesCount; i += 1)
+                    map.AddNode(assetData.Nodes[i], nodes[i]);
+
+                PlaceAsset(assetData.Config, map);
+            }
         }
 
-        protected abstract void PlaceAsset(AssetData data, FastList<ushort> segments, FastList<ushort> nodes);
+        protected abstract void PlaceAsset(XElement config, TypeObjectMap map);
 
         protected abstract XElement GetConfig();
+        protected abstract TypeObjectMap CreateMap(bool isSimple);
 
         private byte[] GetMap()
         {

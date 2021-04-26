@@ -6,7 +6,12 @@ using System.Text;
 
 namespace ModsCommon.Utilities
 {
-    public abstract class BaseObjectsMap<TypeObjectId> : IEnumerable<KeyValuePair<TypeObjectId, TypeObjectId>>
+    public interface IObjectsMap
+    {
+        void AddSegment(ushort source, ushort target);
+        void AddNode(ushort source, ushort target);
+    }
+    public abstract class BaseObjectsMap<TypeObjectId> : IEnumerable<KeyValuePair<TypeObjectId, TypeObjectId>>, IObjectsMap
         where TypeObjectId : ObjectId, new()
     {
         public bool IsSimple { get; }
@@ -68,9 +73,9 @@ namespace ModsCommon.Utilities
 
         public delegate bool TryGetDelegate<T>(T key, out T value);
     }
-    public class ObjectMap : BaseObjectsMap<ObjectId>
+    public class ObjectsMap : BaseObjectsMap<ObjectId>
     {
-        public ObjectMap(bool isSimple = false) : base(isSimple) { }
+        public ObjectsMap(bool isSimple = false) : base(isSimple) { }
     }
 
     public class ObjectId
