@@ -123,9 +123,9 @@ namespace ModsCommon.Utilities
         public override string ToString()
         {
             if (Type == NodeType)
-                return $"{Type}: {Node}";
+                return $"{nameof(Node)}: {Node}";
             else if (Type == SegmentType)
-                return $"{Type}: {Segment}";
+                return $"{nameof(Segment)}: {Segment}";
             else
                 return $"{Type}: {Id}";
         }
