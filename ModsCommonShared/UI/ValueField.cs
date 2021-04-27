@@ -6,23 +6,28 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class UITextField<ValueType> : CustomUITextField
+    public interface IValueChanger<TypeValue>
     {
-        public event Action<ValueType> OnValueChanged;
+        event Action<TypeValue> OnValueChanged;
+        TypeValue Value { get; set; }
+    }
+    public abstract class UITextField<TypeValue> : CustomUITextField, IValueChanger<TypeValue>
+    {
+        public event Action<TypeValue> OnValueChanged;
 
         private bool InProcess { get; set; } = false;
-        public ValueType Value
+        public TypeValue Value
         {
             get
             {
                 try
                 {
-                    if (typeof(ValueType) == typeof(string))
-                        return (ValueType)(object)text;
+                    if (typeof(TypeValue) == typeof(string))
+                        return (TypeValue)(object)text;
                     else if (string.IsNullOrEmpty(text))
                         return default;
                     else
-                        return (ValueType)TypeDescriptor.GetConverter(typeof(ValueType)).ConvertFromString(text);
+                        return (TypeValue)TypeDescriptor.GetConverter(typeof(TypeValue)).ConvertFromString(text);
                 }
                 catch
                 {
@@ -31,7 +36,7 @@ namespace ModsCommon.UI
             }
             set => ValueChanged(value, false);
         }
-        protected virtual void ValueChanged(ValueType value, bool callEvent = true, Action<ValueType> action = null)
+        protected virtual void ValueChanged(TypeValue value, bool callEvent = true, Action<TypeValue> action = null)
         {
             if (!InProcess)
             {
@@ -46,7 +51,7 @@ namespace ModsCommon.UI
             }
         }
 
-        protected virtual string GetString(ValueType value) => value?.ToString() ?? string.Empty;
+        protected virtual string GetString(TypeValue value) => value?.ToString() ?? string.Empty;
 
         protected override void OnSubmit()
         {
@@ -55,7 +60,7 @@ namespace ModsCommon.UI
         }
 
         public override string ToString() => Value.ToString();
-        public static implicit operator ValueType(UITextField<ValueType> field) => field.Value;
+        public static implicit operator TypeValue(UITextField<TypeValue> field) => field.Value;
 
         public void SetDefaultStyle()
         {

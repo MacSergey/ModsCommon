@@ -112,8 +112,9 @@ namespace ModsCommon.UI
         protected virtual void AddAdditionallyButtons(UIComponent parent) { }
         protected virtual TypeAdditionallyButton GetAdditionally() => null;
 
-        protected TypeButton AddButton(string sprite, string text, Shortcut shortcut, MouseEventHandler onClick = null)
-            => AddButton<TypeButton>(sprite, GetText(text, shortcut), onClick: onClick ?? ((_,_) => shortcut.Press()));
+        protected TypeButton AddButton(string sprite, string text, Shortcut shortcut) => AddButton<TypeButton>(sprite, GetText(text, shortcut), onClick: (_, _) => shortcut.Press());
+        protected TypeButton AddButton(string sprite, string text, MouseEventHandler onClick) => AddButton<TypeButton>(sprite, text, onClick: onClick);
+
         protected TypeButton AddPopupButton(UIComponent parent, string sprite, string text, Shortcut shortcut)
         {
             return AddButton<TypeButton>(parent, sprite, GetText(text, shortcut), true, action);
@@ -124,6 +125,17 @@ namespace ModsCommon.UI
                 shortcut.Press();
             }
         }
+        protected TypeButton AddPopupButton(UIComponent parent, string sprite, string text, MouseEventHandler onClick)
+        {
+            return AddButton<TypeButton>(parent, sprite, text, true, action);
+
+            void action(UIComponent component, UIMouseEventParameter eventParam)
+            {
+                Additionally.ClosePopup();
+                onClick(component, eventParam);
+            }
+        }
+
         protected string GetText(string text, Shortcut shortcut) => $"{text} ({shortcut})";
     }
     public class AdditionallyPopup : PopupPanel
