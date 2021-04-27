@@ -24,6 +24,11 @@ namespace ModsCommon
         public static SavedBool ShowOnlyMajor { get; } = new SavedBool(nameof(ShowOnlyMajor), SettingsFile, false, true);
         public static SavedBool BetaWarning { get; } = new SavedBool(nameof(BetaWarning), SettingsFile, true, true);
 
+        static BaseSettings()
+        {
+            if (GameSettings.FindSettingsFileByName(SettingsFile) == null)
+                GameSettings.AddSettingsFile(new SettingsFile[] { new SettingsFile() { fileName = SettingsFile } });
+        }
 
         private UIPanel MainPanel { get; set; }
         protected TabStrip TabStrip { get; set; }
