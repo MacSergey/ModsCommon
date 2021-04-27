@@ -1,5 +1,7 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -76,5 +78,68 @@ namespace ModsCommon.UI
             foreach (var item in components)
                 item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
         }
+    }
+
+    public abstract class BasePanelHeaderContent<TypeButton, TypeAdditionallyButton> : BaseHeaderContent
+        where TypeButton : HeaderButton
+        where TypeAdditionallyButton : BaseAdditionallyHeaderButton
+    {
+        private TypeAdditionallyButton Additionally { get; }
+
+        public BasePanelHeaderContent()
+        {
+            AddButtons();
+            if (GetAdditionally() is TypeAdditionallyButton additional)
+            {
+                Additionally = additional;
+                Additionally.OpenPopupEvent += OnAdditionallyPopup;
+            }
+        }
+        private void OnAdditionallyPopup(AdditionallyPopup popup)
+        {
+            AddAdditionallyButtons(popup.Content);
+            var buttons = popup.Content.components.OfType<TypeButton>().ToArray();
+            foreach (var button in buttons)
+            {
+                button.autoSize = true;
+                button.autoSize = false;
+            }
+
+            popup.Width = buttons.Max(b => b.width);
+        }
+
+        protected virtual void AddButtons() { }
+        protected virtual void AddAdditionallyButtons(UIComponent parent) { }
+        protected virtual TypeAdditionallyButton GetAdditionally() => null;
+
+        protected TypeButton AddButton(string sprite, string text, Shortcut shortcut, MouseEventHandler onClick = null)
+            => AddButton<TypeButton>(sprite, GetText(text, shortcut), onClick: onClick ?? ((_,_) => shortcut.Press()));
+        protected TypeButton AddPopupButton(UIComponent parent, string sprite, string text, Shortcut shortcut)
+        {
+            return AddButton<TypeButton>(parent, sprite, GetText(text, shortcut), true, action);
+
+            void action(UIComponent component, UIMouseEventParameter eventParam)
+            {
+                Additionally.ClosePopup();
+                shortcut.Press();
+            }
+        }
+        protected string GetText(string text, Shortcut shortcut) => $"{text} ({shortcut})";
+    }
+    public class AdditionallyPopup : PopupPanel
+    {
+        protected override Color32 Background => new Color32(64, 64, 64, 255);
+    }
+    public abstract class BasePanelHeaderButton : HeaderButton
+    {
+        protected override Color32 HoveredColor => new Color32(112, 112, 112, 255);
+        protected override Color32 PressedColor => new Color32(144, 144, 144, 255);
+        protected override Color32 PressedIconColor => Color.white;
+    }
+    public abstract class BaseAdditionallyHeaderButton : HeaderPopupButton<AdditionallyPopup>
+    {
+        protected override Color32 HoveredColor => new Color32(112, 112, 112, 255);
+        protected override Color32 PressedColor => new Color32(144, 144, 144, 255);
+        protected override Color32 PressedIconColor => Color.white;
     }
 }

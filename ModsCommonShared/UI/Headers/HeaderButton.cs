@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
+using System;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -61,6 +62,7 @@ namespace ModsCommon.UI
     public abstract class HeaderPopupButton<PopupType> : HeaderButton
         where PopupType : PopupPanel
     {
+        public event Action<PopupType> OpenPopupEvent;
         public PopupType Popup { get; private set; }
 
         protected override void OnClick(UIMouseEventParameter p)
@@ -92,7 +94,7 @@ namespace ModsCommon.UI
             Popup.parent.eventPositionChanged += SetPopupPosition;
         }
 
-        protected virtual void OnOpenPopup() { }
+        protected virtual void OnOpenPopup() => OpenPopupEvent?.Invoke(Popup);
         public virtual void ClosePopup()
         {
             if (Popup != null)
