@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public interface IValueChanger<TypeValue>
+    public interface IValueChanger<TypeValue> : IReusable
     {
         event Action<TypeValue> OnValueChanged;
         TypeValue Value { get; set; }
     }
-    public abstract class UITextField<TypeValue> : CustomUITextField, IValueChanger<TypeValue>
+    public abstract class UITextField<TypeValue> : CustomUITextField, IValueChanger<TypeValue>, IReusable
     {
         public event Action<TypeValue> OnValueChanged;
 
@@ -51,6 +51,10 @@ namespace ModsCommon.UI
             }
         }
 
+        public void DeInit()
+        {
+            OnValueChanged = null;
+        }
         protected virtual string GetString(TypeValue value) => value?.ToString() ?? string.Empty;
 
         protected override void OnSubmit()
