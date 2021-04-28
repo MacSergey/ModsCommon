@@ -60,7 +60,6 @@ namespace ModsCommon.UI
         {
             base.DeInit();
             OnDropDownStateChange = null;
-            Selector.DeInit();
             Selector.Clear();
         }
         public void Add(Type item) => Selector.AddItem(item);

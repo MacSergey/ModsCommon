@@ -120,7 +120,7 @@ namespace ModsCommon.UI
         protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam);
         protected abstract bool IsSelect(int index);
 
-        void IReusable.DeInit()
+        public virtual void DeInit()
         {
             Clear();
 
@@ -180,7 +180,11 @@ namespace ModsCommon.UI
                     OnSelectObjectChanged?.Invoke(SelectedObject);
             }
         }
-
+        public override void DeInit()
+        {
+            base.DeInit();
+            OnSelectObjectChanged = null;
+        }
         public override void Clear()
         {
             SelectedIndex = -1;
@@ -243,6 +247,11 @@ namespace ModsCommon.UI
                 OnSelectObjectsChanged?.Invoke(SelectedObjects);
         }
 
+        public override void DeInit()
+        {
+            base.DeInit();
+            OnSelectObjectsChanged = null;
+        }
         public override void Clear()
         {
             SelectedIndices.Clear();
