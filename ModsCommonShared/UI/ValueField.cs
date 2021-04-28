@@ -10,57 +10,89 @@ namespace ModsCommon.UI
     {
         event Action<TypeValue> OnValueChanged;
         TypeValue Value { get; set; }
+        string Format { set; }
     }
     public abstract class UITextField<TypeValue> : CustomUITextField, IValueChanger<TypeValue>, IReusable
     {
+        static string DefaultFormat => "{0}";
+
         public event Action<TypeValue> OnValueChanged;
 
+        private TypeValue _value;
+        private string _format;
         private bool InProcess { get; set; } = false;
         public TypeValue Value
         {
-            get
-            {
-                try
-                {
-                    if (typeof(TypeValue) == typeof(string))
-                        return (TypeValue)(object)text;
-                    else if (string.IsNullOrEmpty(text))
-                        return default;
-                    else
-                        return (TypeValue)TypeDescriptor.GetConverter(typeof(TypeValue)).ConvertFromString(text);
-                }
-                catch
-                {
-                    return default;
-                }
-            }
+            get => _value;
             set => ValueChanged(value, false);
         }
-        protected virtual void ValueChanged(TypeValue value, bool callEvent = true, Action<TypeValue> action = null)
+        public string Format
+        {
+            private get => !string.IsNullOrEmpty(_format) ? _format : DefaultFormat;
+            set
+            {
+                _format = value;
+                SetText();
+            }
+        }
+
+        protected virtual void ValueChanged(TypeValue value, bool callEvent = true)
         {
             if (!InProcess)
             {
                 InProcess = true;
 
-                action?.Invoke(value);
                 if (callEvent)
                     OnValueChanged?.Invoke(value);
-                text = GetString(value);
+
+                _value = value;
+                SetText();
 
                 InProcess = false;
             }
         }
+        protected void SetText() => text = FormatString(Value);
 
-        public void DeInit()
+        public virtual void DeInit()
         {
             OnValueChanged = null;
+            _format = null;
         }
+        protected string FormatString(TypeValue value) => string.Format(Format, GetString(value));
         protected virtual string GetString(TypeValue value) => value?.ToString() ?? string.Empty;
 
+        protected override void OnGotFocus(UIFocusEventParameter p)
+        {
+            text = GetString(Value);
+            base.OnGotFocus(p);
+        }
+        protected override void OnCancel()
+        {
+            base.OnCancel();
+            SetText();
+        }
         protected override void OnSubmit()
         {
+            var force = hasFocus;
             base.OnSubmit();
-            ValueChanged(Value);
+
+            if (!force && text == GetString(Value))
+            {
+                SetText();
+                return;
+            }
+
+            var newValue = default(TypeValue);
+            try
+            {
+                if (typeof(TypeValue) == typeof(string))
+                    newValue = (TypeValue)(object)text;
+                else if (!string.IsNullOrEmpty(text))
+                    newValue = (TypeValue)TypeDescriptor.GetConverter(typeof(TypeValue)).ConvertFromString(text);
+            }
+            catch { }
+
+            ValueChanged(newValue);
         }
 
         public override string ToString() => Value.ToString();
@@ -108,7 +140,7 @@ namespace ModsCommon.UI
         }
         public bool CanWheel { get; set; }
 
-        protected override void ValueChanged(ValueType value, bool callEvent = true, Action<ValueType> action = null)
+        protected override void ValueChanged(ValueType value, bool callEvent = true)
         {
             if (CheckMin && value.CompareTo(MinValue) < 0)
                 value = MinValue;
@@ -116,7 +148,7 @@ namespace ModsCommon.UI
             if (CheckMax && value.CompareTo(MaxValue) > 0)
                 value = MaxValue;
 
-            base.ValueChanged(value, callEvent, action);
+            base.ValueChanged(value, callEvent);
         }
         protected override void OnMouseMove(UIMouseEventParameter p)
         {
@@ -165,6 +197,18 @@ namespace ModsCommon.UI
     }
     public class FloatUITextField : ComparableUITextField<float>
     {
+        static string DefaultNumberFormat => "0.###";
+        private string _numberFormat;
+        public string NumberFormat
+        {
+            private get => !string.IsNullOrEmpty(_numberFormat) ? _numberFormat : DefaultNumberFormat;
+            set
+            {
+                _numberFormat = value;
+                SetText();
+            }
+        }
+
         public override string text
         {
             get => base.text.Replace(',', '.');
@@ -188,7 +232,12 @@ namespace ModsCommon.UI
             _ => step,
         };
 
-        protected override string GetString(float value) => value.ToString("0.###");
+        public override void DeInit()
+        {
+            base.DeInit();
+            _numberFormat = null;
+        }
+        protected override string GetString(float value) => value.ToString(NumberFormat);
     }
     public class IntUITextField : ComparableUITextField<int>
     {
