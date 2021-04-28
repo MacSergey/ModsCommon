@@ -27,6 +27,12 @@ namespace ModsCommon.UI
             }
             Selector.StartLayout();
         }
+        public virtual void Clear()
+        {
+            Selector.StopLayout();
+            Selector.Clear();
+            Selector.StartLayout();
+        }
         protected abstract string GetDescription(EnumType value);
     }
     public abstract class EnumMultyPropertyPanel<EnumType, UISelector> : ListMultyPropertyPanel<EnumType, UISelector>
@@ -55,6 +61,12 @@ namespace ModsCommon.UI
                 if (selector?.Invoke(value) != false)
                     Selector.AddItem(value, GetDescription(value));
             }
+            Selector.StartLayout();
+        }
+        public virtual void Clear()
+        {
+            Selector.StopLayout();
+            Selector.Clear();
             Selector.StartLayout();
         }
         protected abstract string GetDescription(EnumType value);

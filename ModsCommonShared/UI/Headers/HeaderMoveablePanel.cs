@@ -31,6 +31,11 @@ namespace ModsCommon.UI
         {
             CreateCaption();
         }
+        public override void Init()
+        {
+            base.Init();
+            CaptionSizeChanged();
+        }
         public override void Start()
         {
             base.Start();

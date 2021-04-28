@@ -57,21 +57,16 @@ namespace ModsCommon.UI
         {
             if (component is IReusable reusable)
             {
+                component.parent?.RemoveUIComponent(component);
+                component.transform.parent = null;
+                component.cachedName = string.Empty;
+                reusable.DeInit();
+
                 var queue = GetQueue(component.GetType());
-                if (queue.Count < 10)
-                {
-                    component.parent?.RemoveUIComponent(component);
-                    component.transform.parent = null;
-                    component.cachedName = string.Empty;
-                    reusable.DeInit();
-
-                    queue.Enqueue(component);
-
-                    return;
-                }
+                queue.Enqueue(component);
             }
-
-            Delete(component);
+            else
+                Delete(component);
         }
 
         private static Queue<UIComponent> GetQueue<Component>() where Component : UIComponent => GetQueue(typeof(Component));
