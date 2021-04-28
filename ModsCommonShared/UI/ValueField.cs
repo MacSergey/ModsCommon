@@ -33,7 +33,7 @@ namespace ModsCommon.UI
             set
             {
                 _format = value;
-                SetText();
+                RefreshText();
             }
         }
 
@@ -47,12 +47,12 @@ namespace ModsCommon.UI
                     OnValueChanged?.Invoke(value);
 
                 _value = value;
-                SetText();
+                RefreshText();
 
                 InProcess = false;
             }
         }
-        protected void SetText() => text = FormatString(Value);
+        protected void RefreshText() => text = hasFocus ? GetString(Value) : FormatString(Value);
 
         public virtual void DeInit()
         {
@@ -66,13 +66,13 @@ namespace ModsCommon.UI
 
         protected override void OnGotFocus(UIFocusEventParameter p)
         {
-            text = GetString(Value);
+            RefreshText();
             base.OnGotFocus(p);
         }
         protected override void OnCancel()
         {
             base.OnCancel();
-            SetText();
+            RefreshText();
         }
         protected override void OnSubmit()
         {
@@ -81,7 +81,7 @@ namespace ModsCommon.UI
 
             if (!force && text == GetString(Value))
             {
-                SetText();
+                RefreshText();
                 return;
             }
 
@@ -217,7 +217,7 @@ namespace ModsCommon.UI
             set
             {
                 _numberFormat = value;
-                SetText();
+                RefreshText();
             }
         }
 
