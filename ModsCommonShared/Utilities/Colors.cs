@@ -24,10 +24,10 @@ namespace ModsCommon.Utilities
 
             new Color32(245, 130, 32, Alpha),
             new Color32(142, 71, 155, Alpha),
-            new Color32(255, 198, 26, Alpha),
-
             new Color32(180, 212, 69, Alpha),
+
             new Color32(0, 193, 243, Alpha),
+            new Color32(255, 198, 26, Alpha),
             new Color32(230, 106, 192, Alpha),
 
             new Color32(53, 201, 159, Alpha),
