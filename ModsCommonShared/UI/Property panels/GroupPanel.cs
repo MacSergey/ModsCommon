@@ -9,6 +9,7 @@ namespace ModsCommon.UI
     {
         private static Color32 NormalColor { get; } = new Color32(82, 101, 117, 255);
 
+        bool IReusable.InCache { get; set; }
         protected virtual Color32 Color => NormalColor;
 
         public PropertyGroupPanel()

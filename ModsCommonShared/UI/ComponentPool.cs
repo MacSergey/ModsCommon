@@ -8,6 +8,7 @@ namespace ModsCommon.UI
     public interface IReusable
     {
         void DeInit();
+        bool InCache { get; set; }
     }
     public static class ComponentPool
     {
@@ -44,6 +45,8 @@ namespace ModsCommon.UI
             else
                 component = parent.AddUIComponent<Component>();
 
+            component.InCache = false;
+
             if (name != null)
                 component.cachedName = name;
             if (zOrder != -1)
@@ -57,13 +60,17 @@ namespace ModsCommon.UI
         {
             if (component is IReusable reusable)
             {
-                component.parent?.RemoveUIComponent(component);
-                component.transform.parent = null;
-                component.cachedName = string.Empty;
-                reusable.DeInit();
+                if (!reusable.InCache)
+                {
+                    component.parent?.RemoveUIComponent(component);
+                    component.transform.parent = null;
+                    component.cachedName = string.Empty;
+                    reusable.DeInit();
 
-                var queue = GetQueue(component.GetType());
-                queue.Enqueue(component);
+                    var queue = GetQueue(component.GetType());
+                    queue.Enqueue(component);
+                    reusable.InCache = true;
+                }
             }
             else
                 Delete(component);

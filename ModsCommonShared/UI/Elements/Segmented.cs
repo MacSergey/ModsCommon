@@ -7,12 +7,40 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class UISegmented<ValueType> : UIAutoLayoutPanel
+    public abstract class UISegmented<ValueType> : UIAutoLayoutPanel, IReusable
     {
+        bool IReusable.InCache { get; set; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
-        protected virtual int TextPadding => 8;
+        protected virtual int TextPadding => AutoButtonSize ? (int)Mathf.Clamp((_buttonWidth - 20f) / 2f, 0, 8) : 8;
+
+        private bool _autoButtonSize = true;
+        private float _buttonWidth = 50f;
+        public bool AutoButtonSize
+        {
+            get => _autoButtonSize;
+            set
+            {
+                if (value != _autoButtonSize)
+                {
+                    _autoButtonSize = value;
+                    SetButtonsWidth();
+                }
+            }
+        }
+        public float ButtonWidth
+        {
+            get => _buttonWidth;
+            set
+            {
+                if (value != _buttonWidth)
+                {
+                    _buttonWidth = value;
+                    SetButtonsWidth();
+                }
+            }
+        }
 
         public UISegmented()
         {
@@ -30,9 +58,9 @@ namespace ModsCommon.UI
             button.atlas = CommonTextures.Atlas;
             button.text = label ?? item.ToString();
             button.textScale = 0.8f;
+            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
             button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
-            button.autoSize = true;
-            button.autoSize = false;
+            SetButtonWidth(button);
             button.height = 20;
             button.eventClick += ButtonClick;
 
@@ -42,6 +70,25 @@ namespace ModsCommon.UI
             SetSprite(button, false);
             if (last != null)
                 SetSprite(last, IsSelect(Buttons.Count - 2));
+        }
+        private void SetButtonsWidth()
+        {
+            StopLayout();
+
+            foreach (var button in Buttons)
+                SetButtonWidth(button);
+
+            StartLayout();
+        }
+        private void SetButtonWidth(CustomUIButton button)
+        {
+            if (AutoButtonSize)
+            {
+                button.autoSize = true;
+                button.autoSize = false;
+            }
+            else
+                button.width = ButtonWidth;
         }
         protected void SetSprite(CustomUIButton button, bool isSelect)
         {
@@ -72,15 +119,19 @@ namespace ModsCommon.UI
         protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam);
         protected abstract bool IsSelect(int index);
 
+        void IReusable.DeInit()
+        {
+            Clear();
+
+            _autoButtonSize = true;
+            _buttonWidth = 50f;
+        }
         public virtual void Clear()
         {
             Objects.Clear();
 
             foreach (var button in Buttons)
-            {
-                RemoveUIComponent(button);
-                Destroy(button);
-            }
+                ComponentPool.Free(button);
 
             Buttons.Clear();
         }
@@ -88,9 +139,14 @@ namespace ModsCommon.UI
         public void SetDefaultStyle(Vector2? size = null) { }
     }
 
-    public abstract class UIOnceSegmented<ValueType> : UISegmented<ValueType>, IUIOnceSelector<ValueType>
+    public abstract class UIOnceSegmented<ValueType> : UISegmented<ValueType>, IUIOnceSelector<ValueType>, IValueChanger<ValueType>
     {
         public event Action<ValueType> OnSelectObjectChanged;
+        event Action<ValueType> IValueChanger<ValueType>.OnValueChanged
+        {
+            add => OnSelectObjectChanged += value;
+            remove => OnSelectObjectChanged -= value;
+        }
 
         private int SelectedIndex { get; set; } = -1;
         public ValueType SelectedObject
@@ -98,6 +154,14 @@ namespace ModsCommon.UI
             get => SelectedIndex >= 0 ? Objects[SelectedIndex] : default;
             set => SetSelected(Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || o.Equals(value)), false);
         }
+        ValueType IValueChanger<ValueType>.Value
+        {
+            get => SelectedObject;
+            set => SelectedObject = value;
+        }
+        string IValueChanger<ValueType>.Format { set { } }
+
+
         private void SetSelected(int index, bool callEvent = true)
         {
             if (SelectedIndex == index)
@@ -115,6 +179,7 @@ namespace ModsCommon.UI
                     OnSelectObjectChanged?.Invoke(SelectedObject);
             }
         }
+
         public override void Clear()
         {
             SelectedIndex = -1;
@@ -124,9 +189,14 @@ namespace ModsCommon.UI
         protected override bool IsSelect(int index) => SelectedIndex == index;
     }
 
-    public abstract class UIMultySegmented<ValueType> : UISegmented<ValueType>, IUIMultySelector<ValueType>
+    public abstract class UIMultySegmented<ValueType> : UISegmented<ValueType>, IUIMultySelector<ValueType>, IValueChanger<List<ValueType>>
     {
         public event Action<List<ValueType>> OnSelectObjectsChanged;
+        event Action<List<ValueType>> IValueChanger<List<ValueType>>.OnValueChanged
+        {
+            add => OnSelectObjectsChanged += value;
+            remove => OnSelectObjectsChanged -= value;
+        }
 
         private HashSet<int> SelectedIndices { get; set; } = new HashSet<int>();
         public List<ValueType> SelectedObjects
@@ -145,6 +215,13 @@ namespace ModsCommon.UI
                 SetSelected(selectedIndices, false);
             }
         }
+        List<ValueType> IValueChanger<List<ValueType>>.Value
+        {
+            get => SelectedObjects;
+            set => SelectedObjects = value;
+        }
+        string IValueChanger<List<ValueType>>.Format { set { } }
+
         private void SetSelected(HashSet<int> indices, bool callEvent = true)
         {
             foreach (var index in SelectedIndices)

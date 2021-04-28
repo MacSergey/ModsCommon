@@ -20,6 +20,7 @@ namespace ModsCommon.UI
 
         private TypeValue _value;
         private string _format;
+        bool IReusable.InCache { get; set; }
         private bool InProcess { get; set; } = false;
         public TypeValue Value
         {
@@ -56,7 +57,9 @@ namespace ModsCommon.UI
         public virtual void DeInit()
         {
             OnValueChanged = null;
+            _value = default;
             _format = null;
+            m_Text = string.Empty;
         }
         protected string FormatString(TypeValue value) => string.Format(Format, GetString(value));
         protected virtual string GetString(TypeValue value) => value?.ToString() ?? string.Empty;
@@ -149,6 +152,15 @@ namespace ModsCommon.UI
                 value = MaxValue;
 
             base.ValueChanged(value, callEvent);
+        }
+        public override void DeInit()
+        {
+            base.DeInit();
+            MinValue = default;
+            MaxValue = default;
+            CheckMin = false;
+            CheckMax = false;
+            CyclicalValue = false;
         }
         protected override void OnMouseMove(UIMouseEventParameter p)
         {

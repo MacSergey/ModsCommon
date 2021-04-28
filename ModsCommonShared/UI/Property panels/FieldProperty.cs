@@ -5,6 +5,7 @@ namespace ModsCommon.UI
     public abstract class FieldPropertyPanel<ValueType, FieldType> : EditorPropertyPanel, IReusable
         where FieldType : UITextField<ValueType>
     {
+        bool IReusable.InCache { get; set; }
         protected FieldType Field { get; set; }
 
         public event Action<ValueType> OnValueChanged;

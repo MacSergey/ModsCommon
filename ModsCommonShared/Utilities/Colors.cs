@@ -30,6 +30,7 @@ namespace ModsCommon.Utilities
             new Color32(0, 193, 243, Alpha),
             new Color32(230, 106, 192, Alpha),
 
+            new Color32(53, 201, 159, Alpha),
         };
 
         public static Color32 GetOverlayColor(int index, byte alpha = Alpha, byte hue = 255)

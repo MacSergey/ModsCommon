@@ -10,6 +10,7 @@ namespace ModsCommon.UI
     {
         public event Action<ValueType> OnSelectObjectChanged;
 
+        bool IReusable.InCache { get; set; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         private List<ValueType> Objects { get; } = new List<ValueType>();
         public ValueType SelectedObject
@@ -120,5 +121,7 @@ namespace ModsCommon.UI
 
         public void StopLayout() { }
         public void StartLayout(bool layoutNow = true) { }
+
+        void IReusable.DeInit() { }
     }
 }

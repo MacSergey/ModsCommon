@@ -9,6 +9,7 @@ namespace ModsCommon.UI
     public abstract class BaseHeaderPanel<TypeContent> : EditorItem, IReusable
         where TypeContent : BaseHeaderContent
     {
+        bool IReusable.InCache { get; set; }
         protected override float DefaultHeight => HeaderButton.Size + 10;
 
         protected TypeContent Content { get; set; }

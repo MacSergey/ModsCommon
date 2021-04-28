@@ -11,7 +11,8 @@ namespace ModsCommon.UI
     {
         public event Action<bool> OnDropDownStateChange;
 
-        protected UISelector Selector { get; set; }
+        bool IReusable.InCache { get; set; }
+        public UISelector Selector { get; protected set; }
 
         protected virtual float DropDownWidth => 230;
         protected virtual bool AllowNull => true;
@@ -59,6 +60,7 @@ namespace ModsCommon.UI
         {
             base.DeInit();
             OnDropDownStateChange = null;
+            Selector.DeInit();
             Selector.Clear();
         }
         public void Add(Type item) => Selector.AddItem(item);
@@ -73,6 +75,7 @@ namespace ModsCommon.UI
         where UISelector : UIComponent, IUIOnceSelector<Type>
     {
         public event Action<Type> OnSelectObjectChanged;
+
         public Type SelectedObject
         {
             get => Selector.SelectedObject;
@@ -97,6 +100,7 @@ namespace ModsCommon.UI
         where UISelector : UIComponent, IUIMultySelector<Type>
     {
         public event Action<List<Type>> OnSelectObjectsChanged;
+
         public List<Type> SelectedObjects
         {
             get => Selector.SelectedObjects;

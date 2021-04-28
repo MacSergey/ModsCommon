@@ -7,6 +7,7 @@ namespace ModsCommon.UI
 {
     public class ButtonPanel : EditorItem, IReusable
     {
+        bool IReusable.InCache { get; set; }
         protected CustomUIButton Button { get; set; }
         private float Height => 20f;
 
@@ -61,6 +62,8 @@ namespace ModsCommon.UI
     public class ButtonsPanel : EditorItem, IReusable
     {
         public event Action<int> OnButtonClick;
+
+        bool IReusable.InCache { get; set; }
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
         public int Count => Buttons.Count;
         private float Space => 10f;

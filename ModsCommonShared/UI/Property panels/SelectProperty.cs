@@ -14,6 +14,7 @@ namespace ModsCommon.UI
         public event Action<PanelType> OnHover;
         public event Action<PanelType> OnLeave;
 
+        bool IReusable.InCache { get; set; }
         protected abstract string NotSet { get; }
         protected SelectPropertyButton Selector { get; set; }
         protected CustomUIButton Button { get; set; }

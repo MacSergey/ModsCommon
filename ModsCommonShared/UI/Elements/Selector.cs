@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public interface IUISelector<ValueType> : IAutoLayoutPanel
+    public interface IUISelector<ValueType> : IAutoLayoutPanel, IReusable
     {
         Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
 

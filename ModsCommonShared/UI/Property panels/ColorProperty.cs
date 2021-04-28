@@ -11,6 +11,7 @@ namespace ModsCommon.UI
         public event Action OnStartWheel;
         public event Action OnStopWheel;
 
+        bool IReusable.InCache { get; set; }
         private bool InProcess { get; set; } = false;
 
         private ByteUITextField R { get; set; }

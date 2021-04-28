@@ -9,6 +9,7 @@ namespace ModsCommon.UI
         protected static Color32 ErrorColor { get; } = new Color32(253, 77, 60, 255);
         protected static Color32 WarningColor { get; } = new Color32(253, 150, 62, 255);
 
+        bool IReusable.InCache { get; set; }
         private CustomUIPanel Panel { get; set; }
         private CustomUILabel Label { get; set; }
         protected virtual Color32 Color { get; } = UnityEngine.Color.white;
