@@ -13,7 +13,7 @@ namespace ModsCommon.UI
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
-        protected virtual int TextPadding => AutoButtonSize ? (int)Mathf.Clamp((_buttonWidth - 20f) / 2f, 0, 8) : 8;
+        protected virtual int TextPadding => AutoButtonSize ? 8 : (int)Mathf.Clamp((_buttonWidth - 20f) / 2f, 0, 8);
 
         private bool _autoButtonSize = true;
         private float _buttonWidth = 50f;
@@ -59,7 +59,6 @@ namespace ModsCommon.UI
             button.text = label ?? item.ToString();
             button.textScale = 0.8f;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
-            button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
             SetButtonWidth(button);
             button.height = 20;
             button.eventClick += ButtonClick;
@@ -82,6 +81,8 @@ namespace ModsCommon.UI
         }
         private void SetButtonWidth(CustomUIButton button)
         {
+            button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
+
             if (AutoButtonSize)
             {
                 button.autoSize = true;
