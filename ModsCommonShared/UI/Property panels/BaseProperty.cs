@@ -31,8 +31,6 @@ namespace ModsCommon.UI
         public virtual void Init() => Init(null);
         public virtual void DeInit()
         {
-            isEnabled = true;
-            isVisible = true;
             IsEven = false;
             EnableControl = true;
         }

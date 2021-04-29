@@ -65,6 +65,8 @@ namespace ModsCommon.UI
                     component.parent?.RemoveUIComponent(component);
                     component.transform.parent = null;
                     component.cachedName = string.Empty;
+                    component.isVisible = true;
+                    component.isEnabled = true;
                     reusable.DeInit();
 
                     var queue = GetQueue(component.GetType());
