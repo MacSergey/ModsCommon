@@ -6,7 +6,7 @@ namespace ModsCommon.UI
 {
     public abstract class SimpleMessageBox : MessageBoxBase
     {
-        private CustomUILabel Message { get; set; }
+        protected CustomUILabel Message { get; set; }
 
         public string MessageText { set => Message.text = value; }
         public float MessageScale { set => Message.textScale = value; }
@@ -16,17 +16,24 @@ namespace ModsCommon.UI
         {
             Panel.StopLayout();
 
-            Message = Panel.Content.AddUIComponent<CustomUILabel>();
-            Message.textAlignment = UIHorizontalAlignment.Center;
-            Message.verticalAlignment = UIVerticalAlignment.Middle;
-            Message.textScale = 1.1f;
-            Message.wordWrap = true;
-            Message.autoHeight = true;
+            Message = AddLabel();
             Message.minimumSize = new Vector2(0, 79);
-            Message.size = new Vector2(DefaultWidth - 2 * Padding, 79);
-            Message.relativePosition = new Vector3(17, 7);
 
             Panel.StartLayout();
+        }
+
+        protected CustomUILabel AddLabel()
+        {
+            var label = Panel.Content.AddUIComponent<CustomUILabel>();
+
+            label.textAlignment = UIHorizontalAlignment.Center;
+            label.verticalAlignment = UIVerticalAlignment.Middle;
+            label.textScale = 1.1f;
+            label.wordWrap = true;
+            label.autoHeight = true;
+            label.width = DefaultWidth - 2 * Padding;
+
+            return label;
         }
     }
 
