@@ -57,12 +57,7 @@ namespace ModsCommon.Utilities
             Options = options;
         }
 
-        public bool IsMatch(PluginInfo plugin) => Options switch
-        {
-            Option.Local => plugin.modPath.StartsWith(DataLocation.modsPath),
-            Option.Workshop => plugin.modPath.StartsWith(DataLocation.addonsPath),
-            _ => false
-        };
+        public bool IsMatch(PluginInfo plugin) => Options == Option.Workshop ^ plugin.modPath.StartsWith(DataLocation.modsPath);
         
 
         public enum Option
@@ -210,5 +205,30 @@ namespace ModsCommon.Utilities
         public AllSearcher(params IPluginSearcher[] searchers) : base(searchers) { }
 
         public override bool IsMatch(PluginInfo plugin) => Searchers.All(s => s.IsMatch(plugin));
+    }
+
+    public class PlaginStateWatcher
+    {
+        public event Action<PluginInfo, bool> StateChanged;
+
+        public PluginInfo Plugin { get; }
+        public bool IsEnabled { get; private set; }
+
+        public PlaginStateWatcher(PluginInfo plugin)
+        {
+            Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
+            IsEnabled = Plugin.isEnabled;
+
+            PluginManager.instance.eventPluginsStateChanged += PluginsStateChanged;
+        }
+
+        private void PluginsStateChanged()
+        {
+            if (Plugin.isEnabled != IsEnabled)
+            {
+                IsEnabled = Plugin.isEnabled;
+                StateChanged?.Invoke(Plugin, IsEnabled);
+            }
+        }
     }
 }
