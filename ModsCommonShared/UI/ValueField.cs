@@ -56,6 +56,7 @@ namespace ModsCommon.UI
 
         public virtual void DeInit()
         {
+            Unfocus();
             OnValueChanged = null;
             _value = default;
             _format = null;
