@@ -22,11 +22,11 @@ namespace ModsCommon.Utilities
 
             return null;
         }
-        public static IPluginSearcher GetSearcher(string name, params ulong[] ids)
+        public static IPluginSearcher GetSearcher(string name, BaseSearcher.Option option, params ulong[] ids)
         {
             var idSearcher = ids.Length <= 1 ? (IPluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
             var workshopSearcher = new AllSearcher(idSearcher, PathSearcher.Workshop);
-            var localSearcher = new AllSearcher(new UserModNameSearcher(name), PathSearcher.Local);
+            var localSearcher = new AllSearcher(new UserModNameSearcher(name, option), PathSearcher.Local);
 
             return new AnySearcher(workshopSearcher, localSearcher);
         }
