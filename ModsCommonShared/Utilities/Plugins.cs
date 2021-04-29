@@ -1,4 +1,5 @@
 using ColossalFramework;
+using ColossalFramework.IO;
 using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
 using ICities;
@@ -11,104 +12,203 @@ namespace ModsCommon.Utilities
 {
     public static class PluginUtilities
     {
+        public static PluginInfo GetPlugin(IPluginSearcher searcher)
+        {
+            foreach (var plugin in PluginManager.instance.GetPluginsInfo())
+            {
+                if (searcher.IsMatch(plugin))
+                    return plugin;
+            }
+
+            return null;
+        }
+        public static IPluginSearcher GetSearcher(string name, params ulong[] ids)
+        {
+            var idSearcher = ids.Length <= 1 ? (IPluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
+            var workshopSearcher = new AllSearcher(idSearcher, PathSearcher.Workshop);
+            var localSearcher = new AllSearcher(new UserModNameSearcher(name), PathSearcher.Local);
+
+            return new AnySearcher(workshopSearcher, localSearcher);
+        }
+    }
+
+    public interface IPluginSearcher
+    {
+        public bool IsMatch(PluginInfo plugin);
+    }
+    public class IdSearcher : IPluginSearcher
+    {
+        public ulong Id { get; }
+        public IdSearcher(ulong id)
+        {
+            Id = id;
+        }
+
+        public bool IsMatch(PluginInfo plugin) => plugin.publishedFileID.AsUInt64 == Id;
+    }
+    public class PathSearcher : IPluginSearcher
+    {
+        public static PathSearcher Local { get; } = new PathSearcher(Option.Local);
+        public static PathSearcher Workshop { get; } = new PathSearcher(Option.Workshop);
+
+        public Option Options {get;}
+        private PathSearcher(Option options)
+        {
+            Options = options;
+        }
+
+        public bool IsMatch(PluginInfo plugin) => Options switch
+        {
+            Option.Local => plugin.modPath.StartsWith(DataLocation.modsPath),
+            Option.Workshop => plugin.modPath.StartsWith(DataLocation.addonsPath),
+            _ => false
+        };
+        
+
+        public enum Option
+        {
+            Local = 1,
+            Workshop = 2,
+        }
+    }
+    public abstract class BaseSearcher : IPluginSearcher
+    {
+        public string ToSearch { get; }
+        public Option Options { get; }
+
+        public BaseSearcher(string toSearch, Option options)
+        {
+            Options = options;
+            ToSearch = ApplyOptions(toSearch);
+        }
+        private string ApplyOptions(string name)
+        {
+            if (Options.IsSet(Option.CaseInsensetive))
+                name = name.ToLower();
+
+            if (Options.IsSet(Option.IgnoreWhiteSpace))
+                name.Replace(" ", "");
+
+            return name;
+        }
+        public virtual bool IsMatch(PluginInfo plugin)
+        {
+            var toMatch = ApplyOptions(GetMatch(plugin));
+
+            if (toMatch == ToSearch)
+                return true;
+
+            if (Options.IsSet(Option.Contains) && toMatch.Contains(ToSearch))
+                return true;
+
+            if (Options.IsSet(Option.StartsWidth) && toMatch.StartsWith(ToSearch))
+                return true;
+
+            return false;
+        }
+        protected abstract string GetMatch(PluginInfo plugin);
+
+
         [Flags]
-        public enum SearchOption
+        public enum Option
         {
             None = 0,
             Contains = 1 << 0,
             StartsWidth = 1 << 1,
             CaseInsensetive = 1 << 3,
             IgnoreWhiteSpace = 1 << 4,
-            UserModName = 1 << 5,
-            UserModType = 1 << 6,
-            RootNameSpace = 1 << 7,
-            PluginName = 1 << 8,
-            AssemblyName = 1 << 9,
 
             AllModes = Contains | StartsWidth,
             AllOptions = CaseInsensetive | IgnoreWhiteSpace,
-            AllTargets = UserModName | UserModType | RootNameSpace | PluginName | AssemblyName,
 
-            DefaultSearch = Contains | AllOptions | UserModName,
+            DefaultSearch = Contains | AllOptions,
         }
-
-        public static PluginInfo GetPlugin(string searchName, ulong searchId, SearchOption searchOptions = SearchOption.DefaultSearch) => GetPlugin(searchName, new[] { searchId }, searchOptions);
-
-        public static PluginInfo GetPlugin(string searchName, ulong[] searchIds = null, SearchOption searchOptions = SearchOption.DefaultSearch)
+    }
+    public abstract class BaseUserModSearcher : BaseSearcher
+    {
+        public BaseUserModSearcher(string toSearch, Option options) : base(toSearch, options) { }
+        public override bool IsMatch(PluginInfo plugin)
         {
-            foreach (var plugin in PluginManager.instance.GetPluginsInfo())
-            {
-                if (plugin == null)
-                    continue;
-
-                if (Matches(plugin, searchIds))
-                    return plugin;
-
-                if (plugin.userModInstance is not IUserMod userModInstance)
-                    continue;
-
-                if (searchOptions.IsFlagSet(SearchOption.UserModName) && IsEqual(userModInstance.Name, searchName, searchOptions))
-                    return plugin;
-
-                var userModType = userModInstance.GetType();
-                if (searchOptions.IsFlagSet(SearchOption.UserModType) && IsEqual(userModType.Name, searchName, searchOptions))
-                    return plugin;
-
-                var rootNameSpace = userModType.Namespace.Split('.').FirstOrDefault();
-                if (searchOptions.IsFlagSet(SearchOption.RootNameSpace) && IsEqual(rootNameSpace, searchName, searchOptions))
-                    return plugin;
-
-                if (searchOptions.IsFlagSet(SearchOption.PluginName) && IsEqual(plugin.name, searchName, searchOptions))
-                    return plugin;
-
-                var assemblyName = plugin.userModInstance?.GetType().Assembly.GetName().Name;
-                if (searchOptions.IsFlagSet(SearchOption.AssemblyName) && IsEqual(assemblyName, searchName, searchOptions))
-                    return plugin;
-            }
-
-            return null;
-        }
-
-        private static bool IsEqual(string name1, string name2, SearchOption searchOptions = SearchOption.DefaultSearch)
-        {
-            if (string.IsNullOrEmpty(name1))
+            if (plugin.userModInstance is not IUserMod)
                 return false;
 
-            if (searchOptions.IsFlagSet(SearchOption.CaseInsensetive))
-            {
-                name1 = name1.ToLower();
-                name2 = name2.ToLower();
-            }
+            return base.IsMatch(plugin);
+        }
+        protected sealed override string GetMatch(PluginInfo plugin) => GetMatch(plugin.userModInstance as IUserMod);
+        protected abstract string GetMatch(IUserMod mod);
 
-            if (searchOptions.IsFlagSet(SearchOption.IgnoreWhiteSpace))
-            {
-                name1 = name1.Replace(" ", "");
-                name2 = name2.Replace(" ", "");
-            }
+    }
+    public class UserModNameSearcher : BaseUserModSearcher
+    {
+        public UserModNameSearcher(string toSearch, Option options = Option.DefaultSearch) : base(toSearch, options) { }
 
-            if (name1 == name2)
-                return true;
+        protected override string GetMatch(IUserMod mod) => mod.Name;
+    }
+    public class UserModTypeSearcher : BaseUserModSearcher
+    {
+        public UserModTypeSearcher(string toSearch, Option options = Option.DefaultSearch) : base(toSearch, options) { }
 
-            if (searchOptions.IsFlagSet(SearchOption.Contains) && name1.Contains(name2))
-                return true;
+        protected override string GetMatch(IUserMod mod) => mod.GetType().Name;
+    }
+    public class UserModNamespaceSearcher : BaseUserModSearcher
+    {
+        public UserModNamespaceSearcher(string toSearch, Option options = Option.DefaultSearch) : base(toSearch, options) { }
 
-            if (searchOptions.IsFlagSet(SearchOption.StartsWidth) && name1.StartsWith(name2))
-                return true;
+        protected override string GetMatch(IUserMod mod) => mod.GetType().Namespace.Split('.').FirstOrDefault();
+    }
+    public class UserModAssemblySearcher : BaseUserModSearcher
+    {
+        public UserModAssemblySearcher(string toSearch, Option options = Option.DefaultSearch) : base(toSearch, options) { }
 
-            return false;
+        protected override string GetMatch(IUserMod mod) => mod.GetType().Assembly.GetName().Name;
+    }
+    public class VersionSearcher : IPluginSearcher
+    {
+        public delegate bool VersionPredicat(Version toMatch, Version toSearch);
+        public Version Version { get; }
+        public VersionPredicat Predicat { get; }
+
+        public VersionSearcher(Version version, VersionPredicat predicat)
+        {
+            Version = version;
+            Predicat = predicat;
         }
 
-        private static bool Matches(PluginInfo plugin, ulong[] searchIds)
+        public bool IsMatch(PluginInfo plugin)
         {
-            if (searchIds == null)
+            if (plugin.userModInstance is not IUserMod userModInstance)
                 return false;
 
-            foreach (var id in searchIds)
-            {
-                if (id != 0 && id == plugin.publishedFileID.AsUInt64)
-                    return true;
-            }
-            return false;
+            var userModVersion = userModInstance.GetType().Assembly.GetName().Version;
+            return Predicat(userModVersion, Version);
         }
+    }
+    public class PluginNameSearcher : BaseSearcher
+    {
+        public PluginNameSearcher(string toSearch, Option options) : base(toSearch, options) { }
+        protected override string GetMatch(PluginInfo plugin) => plugin.name;
+    }
+
+    public abstract class BaseCombineSearcher : IPluginSearcher
+    {
+        protected IPluginSearcher[] Searchers { get; }
+
+        public BaseCombineSearcher(params IPluginSearcher[] searchers)
+        {
+            Searchers = searchers;
+        }
+        public abstract bool IsMatch(PluginInfo plugin);
+    }
+    public class AnySearcher : BaseCombineSearcher
+    {
+        public AnySearcher(params IPluginSearcher[] searchers) : base(searchers) { }
+
+        public override bool IsMatch(PluginInfo plugin) => Searchers.Any(s => s.IsMatch(plugin));
+    }
+    public class AllSearcher : BaseCombineSearcher
+    {
+        public AllSearcher(params IPluginSearcher[] searchers) : base(searchers) { }
+
+        public override bool IsMatch(PluginInfo plugin) => Searchers.All(s => s.IsMatch(plugin));
     }
 }
