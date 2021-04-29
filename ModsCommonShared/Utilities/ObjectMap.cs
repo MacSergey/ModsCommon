@@ -117,10 +117,20 @@ namespace ModsCommon.Utilities
         }
         public long Type => Id & TypeMask;
 
-        public static bool operator ==(ObjectId x, ObjectId y) => x.Id == y.Id;
-        public static bool operator !=(ObjectId x, ObjectId y) => x.Id != y.Id;
+        public override bool Equals(object obj) => Equals(obj as ObjectId);
+        public bool Equals(ObjectId other)
+        {
+            if (other is null)
+                return false;
+            else if (ReferenceEquals(this, other))
+                return true;
+            else
+                return Id == other.Id;
+        }
+        public static bool operator ==(ObjectId x, ObjectId y) => x is null ? y is null : x.Equals(y);
+        public static bool operator !=(ObjectId x, ObjectId y) => !(x == y);
 
-        public override bool Equals(object obj) => obj is ObjectId objectId && objectId == this;
+
         public override int GetHashCode() => Id.GetHashCode();
         public override string ToString()
         {
