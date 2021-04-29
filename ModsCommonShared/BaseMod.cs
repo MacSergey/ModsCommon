@@ -18,6 +18,7 @@ namespace ModsCommon
         public static string BETA => "[BETA]";
 
         protected virtual bool LoadError { get; set; }
+        private bool ErrorShown { get; set; }
 
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
         public string VersionString => !IsBeta ? Version.ToString() : $"{Version} {BETA}";
@@ -50,6 +51,7 @@ namespace ModsCommon
             Logger.Debug($"Version {VersionString}");
             Logger.Debug($"Enabled");
             LoadError = false;
+            ErrorShown = false;
             LoadingManager.instance.m_introLoaded += CheckLoadedError;
         }
 
@@ -83,8 +85,11 @@ namespace ModsCommon
 
         public void CheckLoadedError()
         {
-            if (UIView.GetAView() != null && LoadError)
+            if (UIView.GetAView() != null && LoadError && !ErrorShown)
+            {
+                ErrorShown = true;
                 OnLoadedError();
+            }
         }
         public virtual string GetLocalizeString(string str, CultureInfo culture = null) => str;
         public virtual void OnLoadedError() { }
@@ -173,9 +178,14 @@ namespace ModsCommon
             }
         }
 
-        public static bool GetStable()
+        private bool GetStable()
         {
-            SingletonMod<TypeMod>.Instance.BetaWorkshopUrl.OpenUrl();
+            BetaWorkshopUrl.OpenUrl();
+            return true;
+        }
+        protected bool OpenWorkshop()
+        {
+            (!IsBeta ? WorkshopUrl : BetaWorkshopUrl).OpenUrl();
             return true;
         }
     }
