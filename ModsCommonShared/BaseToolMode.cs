@@ -62,8 +62,6 @@ namespace ModsCommon
 
         protected virtual void Reset(IToolMode prevMode) { }
 
-        public virtual void Update() { }
-
         public virtual void OnToolUpdate() { }
         public virtual string GetToolInfo() => null;
         public virtual bool GetExtraInfo(out string text, out Color color, out float size, out Vector3 position, out Vector3 direction)
