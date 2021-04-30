@@ -14,7 +14,8 @@ namespace ModsCommon.Utilities
     {
         public static PluginInfo GetPlugin(IPluginSearcher searcher)
         {
-            foreach (var plugin in PluginManager.instance.GetPluginsInfo())
+            var plugins = PluginManager.instance.GetPluginsInfo().ToArray();
+            foreach (var plugin in plugins)
             {
                 if (searcher.IsMatch(plugin))
                     return plugin;
@@ -22,11 +23,11 @@ namespace ModsCommon.Utilities
 
             return null;
         }
-        public static IPluginSearcher GetSearcher(string name, BaseSearcher.Option option, params ulong[] ids)
+        public static IPluginSearcher GetSearcher(string name, params ulong[] ids)
         {
             var idSearcher = ids.Length <= 1 ? (IPluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
             var workshopSearcher = new AllSearcher(idSearcher, PathSearcher.Workshop);
-            var localSearcher = new AllSearcher(new UserModNameSearcher(name, option), PathSearcher.Local);
+            var localSearcher = new AllSearcher(new UserModNameSearcher(name), PathSearcher.Local);
 
             return new AnySearcher(workshopSearcher, localSearcher);
         }
@@ -51,14 +52,14 @@ namespace ModsCommon.Utilities
         public static PathSearcher Local { get; } = new PathSearcher(Option.Local);
         public static PathSearcher Workshop { get; } = new PathSearcher(Option.Workshop);
 
-        public Option Options {get;}
+        public Option Options { get; }
         private PathSearcher(Option options)
         {
             Options = options;
         }
 
         public bool IsMatch(PluginInfo plugin) => Options == Option.Workshop ^ plugin.modPath.StartsWith(DataLocation.modsPath);
-        
+
 
         public enum Option
         {
@@ -205,6 +206,17 @@ namespace ModsCommon.Utilities
         public AllSearcher(params IPluginSearcher[] searchers) : base(searchers) { }
 
         public override bool IsMatch(PluginInfo plugin) => Searchers.All(s => s.IsMatch(plugin));
+    }
+    public class NotSearcher : IPluginSearcher
+    {
+        protected IPluginSearcher Searcher { get; }
+
+        public NotSearcher(IPluginSearcher searcher)
+        {
+            Searcher = searcher;
+        }
+
+        public bool IsMatch(PluginInfo plugin) => !Searcher.IsMatch(plugin);
     }
 
     public class PlaginStateWatcher

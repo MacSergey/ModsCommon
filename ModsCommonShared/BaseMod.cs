@@ -46,21 +46,35 @@ namespace ModsCommon
             Logger = new Logger(Id);
             SingletonMod<TypeMod>.Instance = (TypeMod)this;
         }
-        public virtual void OnEnabled()
+        public void OnEnabled()
         {
             Logger.Debug($"Version {VersionString}");
             Logger.Debug($"Enabled");
             LoadError = false;
             ErrorShown = false;
-            LoadingManager.instance.m_introLoaded += CheckLoadedError;
-        }
 
-        public virtual void OnDisabled()
+            if (UIView.GetAView() != null)
+                EnableImpl();
+            else
+                LoadingManager.instance.m_introLoaded += EnableImpl;
+        }
+        public void OnDisabled()
         {
             Logger.Debug($"Disabled");
-            LoadingManager.instance.m_introLoaded -= CheckLoadedError;
+            LoadingManager.instance.m_introLoaded -= EnableImpl;
             LocaleManager.eventLocaleChanged -= LocaleChanged;
+
+            Disable();
         }
+        private void EnableImpl()
+        {
+            LoadingManager.instance.m_introLoaded -= EnableImpl;
+            Enable();
+            CheckLoadedError();
+        }
+        protected abstract void Enable();
+        protected abstract void Disable();
+
         public void OnSettingsUI(UIHelperBase helper)
         {
             LocaleManager.eventLocaleChanged -= LocaleChanged;
@@ -83,9 +97,9 @@ namespace ModsCommon
             Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
         }
 
-        public void CheckLoadedError()
+        protected void CheckLoadedError()
         {
-            if (UIView.GetAView() != null && LoadError && !ErrorShown)
+            if (LoadError && !ErrorShown)
             {
                 ErrorShown = true;
                 OnLoadedError();

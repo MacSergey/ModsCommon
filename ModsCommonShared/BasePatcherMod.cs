@@ -27,9 +27,8 @@ namespace ModsCommon
 
         #region BASIC
 
-        public override void OnEnabled()
+        protected override void Enable()
         {
-            base.OnEnabled();
             PatchError = false;
 
             try
@@ -41,13 +40,9 @@ namespace ModsCommon
                 LoadError = true;
                 Logger.Error("Patch failed", error);
             }
-
-            CheckLoadedError();
         }
-        public override void OnDisabled()
+        protected override void Disable()
         {
-            base.OnDisabled();
-
             try { Unpatch(); }
             catch (Exception error) { Logger.Error("Unpatch failed", error); }
         }
