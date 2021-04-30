@@ -18,27 +18,42 @@ namespace ModsCommon.Utilities
 
         public static Color32[] OverlayColors { get; } = new Color32[]
         {
-            new Color32(218, 33, 40, Alpha),
-            new Color32(72, 184, 94, Alpha),
-            new Color32(0, 120, 191, Alpha),
+            new Color32(218, 33, 40, Alpha), //Red
+            new Color32(72, 184, 94, Alpha), //Green
+            new Color32(0, 120, 191, Alpha), //Blue
 
-            new Color32(245, 130, 32, Alpha),
-            new Color32(142, 71, 155, Alpha),
-            new Color32(180, 212, 69, Alpha),
+            new Color32(245, 130, 32, Alpha), //Orange
+            new Color32(142, 71, 155, Alpha), //Purple
+            new Color32(180, 212, 69, Alpha), //Lime
 
-            new Color32(0, 193, 243, Alpha),
-            new Color32(255, 198, 26, Alpha),
-            new Color32(230, 106, 192, Alpha),
+            new Color32(0, 193, 243, Alpha), //SkyBlue
+            new Color32(255, 198, 26, Alpha), //Yellow
+            new Color32(230, 106, 192, Alpha), //Pink
 
-            new Color32(53, 201, 159, Alpha),
+            new Color32(53, 201, 159, Alpha), //Turquoise
         };
+        public enum Overlay
+        {
+            Red,
+            Green,
+            Blue,
+            Orange,
+            Purple,
+            Lime,
+            SkyBlue,
+            Yellow,
+            Pink,
+            Turquoise,
+        }
 
         public static Color32 GetOverlayColor(int index, byte alpha = Alpha, byte hue = 255)
         {
             var color = OverlayColors[index % OverlayColors.Length];
             color.a = alpha;
-            return color.SetHue(hue);
+            return hue == 255 ? color : color.SetHue(hue);
         }
+        public static Color32 GetOverlayColor(Overlay index, byte alpha = Alpha, byte hue = 255) => GetOverlayColor((int)index, alpha, hue);
+
         public static Color32 SetHue(this Color32 color, byte hue) => new Color32(SetHue(color.r, hue), SetHue(color.g, hue), SetHue(color.b, hue), color.a);
         private static byte SetHue(byte value, byte hue) => (byte)(byte.MaxValue - ((byte.MaxValue - value) / 255f * hue));
 
