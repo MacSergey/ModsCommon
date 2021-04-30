@@ -8,8 +8,6 @@ namespace ModsCommon.UI
     public class ColorPropertyPanel : EditorPropertyPanel, IReusable
     {
         public event Action<Color32> OnValueChanged;
-        public event Action OnStartWheel;
-        public event Action OnStopWheel;
 
         bool IReusable.InCache { get; set; }
         private bool InProcess { get; set; } = false;
@@ -35,12 +33,7 @@ namespace ModsCommon.UI
         public Color32 Value
         {
             get => new Color32(R, G, B, A);
-            set => ValueChanged(value, false, (c) =>
-            {
-                SetFields(c);
-                SetSample(c);
-                SetOpacity(c);
-            });
+            set => ValueChanged(value, false, OnChangedValue);
         }
 
         public ColorPropertyPanel()
@@ -52,7 +45,7 @@ namespace ModsCommon.UI
 
             AddColorSample();
         }
-        private void ValueChanged(Color32 color, bool callEvent = true, Action<Color32> action = null)
+        protected void ValueChanged(Color32 color, bool callEvent = true, Action<Color32> action = null)
         {
             if (!InProcess)
             {
@@ -66,23 +59,43 @@ namespace ModsCommon.UI
             }
         }
 
-        private void FieldChanged(byte value) => ValueChanged(Value, action: (c) =>
-        {
-            SetSample(c);
-            SetOpacity(c);
-        });
+        private void FieldChanged(byte value) => ValueChanged(Value, action: OnChangedField);
         private void SelectedColorChanged(UIComponent component, Color value)
         {
             var color = (Color32)value;
             color.a = A;
 
-            ValueChanged(color, action: (c) =>
-            {
-                SetFields(c);
-                SetOpacity(color);
-            });
+            ValueChanged(color, action: OnChangedSelected);
         }
-        private void OpacityChanged(UIComponent component, float value) => A.Value = (byte)value;
+        private void OpacityChanged(UIComponent component, float value) 
+        {
+            var color = Value;
+            color.a = (byte)value;
+
+            ValueChanged(color, action: OnChangedOpacity);
+        }
+
+        protected void OnChangedValue(Color32 color)
+        {
+            SetFields(color);
+            SetSample(color);
+            SetOpacity(color);
+        }
+        private void OnChangedField(Color32 color)
+        {
+            SetSample(color);
+            SetOpacity(color);
+        }
+        private void OnChangedSelected(Color32 color)
+        {
+            SetFields(color);
+            SetOpacity(color);
+        }
+        private void OnChangedOpacity(Color32 color)
+        {
+            SetFields(color);
+            SetSample(color);
+        }
 
         private void SetFields(Color32 color)
         {
@@ -117,8 +130,6 @@ namespace ModsCommon.UI
             WheelTip = string.Empty;
 
             OnValueChanged = null;
-            OnStartWheel = null;
-            OnStopWheel = null;
         }
         private ByteUITextField AddField(string name)
         {
@@ -136,8 +147,6 @@ namespace ModsCommon.UI
             field.WheelStep = 10;
             field.width = 30;
             field.OnValueChanged += FieldChanged;
-            field.eventMouseHover += FieldHover;
-            field.eventMouseLeave += FieldLeave;
 
             return field;
         }
@@ -187,7 +196,7 @@ namespace ModsCommon.UI
             }
 
             Opacity = AddOpacitySlider(popup.component);
-            Opacity.value = A;
+            SetOpacity(Value);
         }
         private void ColorPickerClose(UIColorField dropdown, UIColorPicker popup, ref bool overridden)
         {
@@ -234,9 +243,6 @@ namespace ModsCommon.UI
 
             return opacitySlider;
         }
-
-        private void FieldHover(UIComponent component, UIMouseEventParameter eventParam) => OnStartWheel?.Invoke();
-        private void FieldLeave(UIComponent component, UIMouseEventParameter eventParam) => OnStopWheel?.Invoke();
 
         public override string ToString() => $"{base.ToString()}: {Value}";
         public static implicit operator Color32(ColorPropertyPanel property) => property.Value;

@@ -43,10 +43,10 @@ namespace ModsCommon.UI
             {
                 InProcess = true;
 
-                if (callEvent)
-                    OnValueChanged?.Invoke(value);
-
                 _value = value;
+                if (callEvent)
+                    OnValueChanged?.Invoke(_value);
+
                 RefreshText();
 
                 InProcess = false;
