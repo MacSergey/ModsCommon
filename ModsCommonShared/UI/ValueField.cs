@@ -56,8 +56,8 @@ namespace ModsCommon.UI
 
         public virtual void DeInit()
         {
-            Unfocus();
             OnValueChanged = null;
+            Unfocus();
             _value = default;
             _format = null;
             m_Text = string.Empty;
