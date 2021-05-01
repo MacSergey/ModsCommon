@@ -111,6 +111,8 @@ namespace ModsCommon.Utilities
         {
             if (AssetDatas.TryGetValue(buildingInfo, out var assetData))
             {
+                SingletonMod<TypeMod>.Logger.Debug($"Place asset {buildingInfo.name}");
+
                 var map = CreateMap(true);
 
                 var segmentsCount = Math.Min(assetData.Segments.Length, segments.m_buffer.Length);
