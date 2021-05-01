@@ -43,7 +43,7 @@ namespace ModsCommon.UI
 
             var enable = SingletonTool<TypeTool>.Instance?.enabled == true;
 
-            if (enable && state == (ButtonState.Normal | ButtonState.Hovered))
+            if (enable && (state == ButtonState.Normal || state == ButtonState.Hovered))
                 state = ButtonState.Focused;
             else if (!enable && state == ButtonState.Focused)
                 state = ButtonState.Normal;
