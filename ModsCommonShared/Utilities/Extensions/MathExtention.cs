@@ -28,7 +28,7 @@ namespace ModsCommon.Utilities
             return new Vector3(newX, vector.y, newZ);
         }
 
-        public static float Length(this Bezier3 bezier, float minAngleDelta = 10, int depth = 0, int maxDepth = 5)
+        public static float Length(this Bezier3 bezier, float minAngleDelta = 10, int depth = 5)
         {
             var start = bezier.b - bezier.a;
             var end = bezier.c - bezier.d;
@@ -36,11 +36,11 @@ namespace ModsCommon.Utilities
                 return 0;
 
             var angle = Vector3.Angle(start, end);
-            if (depth < maxDepth && 180 - angle > minAngleDelta)
+            if (depth > 0 && 180 - angle > minAngleDelta)
             {
                 bezier.Divide(out Bezier3 first, out Bezier3 second);
-                var firstLength = first.Length(minAngleDelta, depth + 1, maxDepth);
-                var secondLength = second.Length(minAngleDelta, depth + 1, maxDepth);
+                var firstLength = first.Length(minAngleDelta, depth - 1);
+                var secondLength = second.Length(minAngleDelta, depth - 1);
                 return firstLength + secondLength;
             }
             else
@@ -90,25 +90,25 @@ namespace ModsCommon.Utilities
                 return length;
             }
         }
-        public static float Travel(this Bezier3 bezier, float distance)
+        public static float Travel(this Bezier3 bezier, float distance, int depth = 5)
         {
             if (distance > bezier.LengthAbove())
                 return 1f;
             else
             {
-                bezier.Travel(distance, 0, out _, out var t);
+                bezier.Travel(distance, depth, out _, out var t);
                 return t;
             }
         }
         private static void Travel(this Bezier3 bezier, float distance, int depth, out float length, out float t, int idx = 0, int of = 1)
         {
-            if (depth < 5)
+            if (depth > 0)
             {
                 bezier.Divide(out Bezier3 first, out Bezier3 second);
-                first.Travel(distance, depth + 1, out length, out t, idx * 2, of * 2);
+                first.Travel(distance, depth - 1, out length, out t, idx * 2, of * 2);
                 if (t == -1f)
                 {
-                    second.Travel(distance - length, depth + 1, out var secondLength, out t, idx * 2 + 1, of * 2);
+                    second.Travel(distance - length, depth - 1, out var secondLength, out t, idx * 2 + 1, of * 2);
                     length += secondLength;
                 }
             }
