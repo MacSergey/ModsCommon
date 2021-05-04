@@ -31,7 +31,7 @@ namespace ModsCommon
     public static class SingletonManager<T>
         where T : IManager, new()
     {
-        public static T Instance { get; set; }
+        public static T Instance { get; private set; }
 
         static SingletonManager()
         {
