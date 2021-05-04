@@ -185,6 +185,7 @@ namespace ModsCommon.Utilities
             var matchCount = 0;
             var inserted = false;
             var enumerator = instructions.GetEnumerator();
+            var prevPrevInstruction = (CodeInstruction)null;
             var prevInstruction = (CodeInstruction)null;
             while (enumerator.MoveNext())
             {
@@ -206,11 +207,15 @@ namespace ModsCommon.Utilities
                     inserted = true;
                 }
 
-                if (prevInstruction != null)
-                    yield return prevInstruction;
+                if (prevPrevInstruction != null)
+                    yield return prevPrevInstruction;
 
+                prevPrevInstruction = prevInstruction;
                 prevInstruction = instruction;
             }
+
+            if (prevPrevInstruction != null)
+                yield return prevPrevInstruction;
 
             if (prevInstruction != null)
                 yield return prevInstruction;
