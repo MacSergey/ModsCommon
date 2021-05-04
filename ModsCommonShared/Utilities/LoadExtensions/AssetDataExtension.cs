@@ -115,11 +115,11 @@ namespace ModsCommon.Utilities
 
                 var map = CreateMap(true);
 
-                var segmentsCount = Math.Min(assetData.Segments.Length, segments.m_buffer.Length);
+                var segmentsCount = Math.Min(assetData.Segments.Length, segments.m_size);
                 for (var i = 0; i < segmentsCount; i += 1)
                     map.AddSegment(assetData.Segments[i], segments[i]);
 
-                var nodesCount = Math.Min(assetData.Nodes.Length, nodes.m_buffer.Length);
+                var nodesCount = Math.Min(assetData.Nodes.Length, nodes.m_size);
                 for (var i = 0; i < nodesCount; i += 1)
                     map.AddNode(assetData.Nodes[i], nodes[i]);
 
