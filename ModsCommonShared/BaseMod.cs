@@ -45,10 +45,10 @@ namespace ModsCommon
         {
             Logger = new Logger(Id);
             SingletonMod<TypeMod>.Instance = (TypeMod)this;
+            Logger.Debug($"Create mod instance Version {VersionString}");
         }
         public void OnEnabled()
         {
-            Logger.Debug($"Version {VersionString}");
             Logger.Debug($"Enabled");
             LoadError = false;
             ErrorShown = false;
