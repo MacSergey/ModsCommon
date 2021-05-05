@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static ColossalFramework.Math.VectorUtils;
 
 namespace ModsCommon.Utilities
 {
@@ -92,7 +93,7 @@ namespace ModsCommon.Utilities
                 IntersectSections(first.a, first.d, second.a, second.d, out float firstT, out float secondT);
                 firstT = 1f / fOf * (fIdx + firstT);
                 secondT = 1f / sOf * (sIdx + secondT);
-                var angle = Vector2.Angle(first.d.XZ() - first.a.XZ(), second.d.XZ() - second.a.XZ()) * Mathf.Deg2Rad;
+                var angle = Vector2.Angle(XZ(first.d) - XZ(first.a), XZ(second.d) - XZ(second.a)) * Mathf.Deg2Rad;
                 results.Add(new Intersection(firstT, secondT, angle));
                 return true;
             }
@@ -121,7 +122,7 @@ namespace ModsCommon.Utilities
             return false;
         }
         private static bool IntersectSections(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out float p, out float q)
-            => Line2.Intersect(a.XZ(), b.XZ(), c.XZ(), d.XZ(), out p, out q) && CorrectT(p) && CorrectT(q);
+            => Line2.Intersect(XZ(a), XZ(b), XZ(c), XZ(d), out p, out q) && CorrectT(p) && CorrectT(q);
         private static IEnumerable<int> WillTryParts(int i, int count, float p)
         {
             yield return i;
@@ -173,7 +174,7 @@ namespace ModsCommon.Utilities
             }
         }
         private static bool IntersectSectionAndRay(StraightTrajectory line, Vector3 start, Vector3 end, out float p, out float q) =>
-            Line2.Intersect(line.StartPosition.XZ(), line.EndPosition.XZ(), start.XZ(), end.XZ(), out p, out q) && (!line.IsSection || CorrectT(p)) && CorrectT(q);
+            Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && (!line.IsSection || CorrectT(p)) && CorrectT(q);
 
         #endregion
 
@@ -183,9 +184,9 @@ namespace ModsCommon.Utilities
             var intersects = new List<Intersection>();
             var trajectory1 = straight1.Trajectory;
             var trajectory2 = straight2.Trajectory;
-            if (Line2.Intersect(trajectory1.a.XZ(), trajectory1.b.XZ(), trajectory2.a.XZ(), trajectory2.b.XZ(), out float p, out float q) && (!straight1.IsSection || CorrectT(p)) && (!straight2.IsSection || CorrectT(q)))
+            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && (!straight1.IsSection || CorrectT(p)) && (!straight2.IsSection || CorrectT(q)))
             {
-                var angle = Vector2.Angle(trajectory1.b.XZ() - trajectory1.a.XZ(), trajectory2.b.XZ() - trajectory2.a.XZ()) * Mathf.Deg2Rad;
+                var angle = Vector2.Angle(XZ(trajectory1.b) - XZ(trajectory1.a), XZ(trajectory2.b) - XZ(trajectory2.a)) * Mathf.Deg2Rad;
                 var intersect = new Intersection(p, q, angle);
                 intersects.Add(intersect);
             }

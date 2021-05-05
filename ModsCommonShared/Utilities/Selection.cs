@@ -295,7 +295,7 @@ namespace ModsCommon.Utilities
 
             public float DeltaAngleCos => Mathf.Clamp01((2 * halfWidth) / CornerLength);
             public Vector3 CornerDir => (rightPos - leftPos).normalized;
-            public float CornerLength => (rightPos - leftPos).XZ().magnitude;
+            public float CornerLength => LengthXZ(rightPos - leftPos);
             public StraightTrajectory Line => new StraightTrajectory(leftPos, rightPos);
             public Vector3 Position => (rightPos + leftPos) / 2;
             public Vector3 Direction => (_leftDir + _rightDir).normalized;

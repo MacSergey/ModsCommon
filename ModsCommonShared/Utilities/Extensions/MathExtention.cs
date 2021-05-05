@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static ColossalFramework.Math.VectorUtils;
 
 namespace ModsCommon.Utilities
 {
@@ -50,49 +51,10 @@ namespace ModsCommon.Utilities
             }
         }
 
-        public static float Length(this Bezier3 bezier, out List<BezierPoint> bezierPoints, float minAngleDelta = 10, int depth = 0)
-        {
-            bezierPoints = new List<BezierPoint>();
-
-            var start = bezier.b - bezier.a;
-            var end = bezier.c - bezier.d;
-            if (start.sqrMagnitude < Vector3.kEpsilon || end.sqrMagnitude < Vector3.kEpsilon)
-                return 0;
-
-            var angle = Vector3.Angle(start, end);
-            if (depth < 5 && 180 - angle > minAngleDelta)
-            {
-                bezier.Divide(out Bezier3 first, out Bezier3 second);
-                var firstLength = first.Length(out List<BezierPoint> firstPoints, minAngleDelta, depth + 1);
-                var secondLength = second.Length(out List<BezierPoint> secondPoints, minAngleDelta, depth + 1);
-                var length = firstLength + secondLength;
-                if (length == 0)
-                    return 0;
-
-                var firstPart = firstLength / length;
-                var secondPart = secondLength / length;
-
-                foreach (var point in firstPoints)
-                {
-                    bezierPoints.Add(new BezierPoint(point.T * firstPart, point.Length));
-                }
-                foreach (var point in secondPoints.Skip(1))
-                {
-                    bezierPoints.Add(new BezierPoint(point.T * secondPart + firstPart, point.Length + firstLength));
-                }
-                return length;
-            }
-            else
-            {
-                var length = (bezier.d - bezier.a).magnitude;
-                bezierPoints.Add(new BezierPoint(0, 0));
-                bezierPoints.Add(new BezierPoint(1, length));
-                return length;
-            }
-        }
         public static float Travel(this Bezier3 bezier, float distance, int depth = 5)
         {
-            if (distance > bezier.LengthAbove())
+            var length = (bezier.b - bezier.a).magnitude + (bezier.c - bezier.b).magnitude + (bezier.d - bezier.c).magnitude;
+            if (distance > length)
                 return 1f;
             else
             {
@@ -114,16 +76,13 @@ namespace ModsCommon.Utilities
             }
             else
             {
-                length = bezier.LengthBelow();
+                length = (bezier.d - bezier.a).magnitude;
                 if (distance < length)
                     t = 1f / of * (idx + distance / length);
                 else
                     t = -1;
             }
         }
-        private static float LengthAbove(this Bezier3 bezier) => (bezier.b - bezier.a).magnitude + (bezier.c - bezier.b).magnitude + (bezier.d - bezier.c).magnitude;
-        private static float LengthBelow(this Bezier3 bezier) => (bezier.d - bezier.a).magnitude;
-
         public static Vector3 ClosestPosition(this Bezier3 bezier, Vector3 point)
         {
             bezier.ClosestPositionAndDirection(point, out var position, out _, out _);
@@ -166,7 +125,7 @@ namespace ModsCommon.Utilities
             }
 
             position = bezier.Position(t);
-            direction = VectorUtils.NormalizeXZ(bezier.Tangent(t));
+            direction = NormalizeXZ(bezier.Tangent(t));
         }
         public static Vector3 GetHitPosition(this Bezier3 bezier, Segment3 ray, out float rayT, out float bezierT, out Vector3 position)
         {
@@ -196,7 +155,6 @@ namespace ModsCommon.Utilities
             return hitPos;
         }
 
-        public static Vector2 XZ(this Vector3 vector) => VectorUtils.XZ(vector);
         public static float AbsoluteAngle(this Vector3 vector) => Mathf.Atan2(vector.z, vector.x);
         public static float DeltaAngle(this Bezier3 bezier) => 180 - Vector3.Angle(bezier.b - bezier.a, bezier.c - bezier.d);
         public static Vector3 Direction(this float absoluteAngle) => Vector3.right.TurnRad(absoluteAngle, false).normalized;
@@ -222,6 +180,12 @@ namespace ModsCommon.Utilities
 
         public static int NextIndex(this int i, int count, int shift = 1) => (i + shift) % count;
         public static int PrevIndex(this int i, int count, int shift = 1) => shift > i ? i + count - (shift % count) : i - shift;
+    }
+    public static class VectorUtilsExtensions
+    {
+        public static float CrossXZ(Vector3 a, Vector3 b) => a.z * b.x - a.x * b.z;
+        public static float NormalizeCrossXZ(Vector3 a, Vector3 b) => CrossXZ(NormalizeXZ(a), NormalizeXZ(b));
+        public static float NormalizeDotXZ(Vector3 a, Vector3 b) => DotXZ(NormalizeXZ(a), NormalizeXZ(b));
     }
     public struct BezierPoint
     {
