@@ -80,17 +80,23 @@ namespace ModsCommon.UI
 
         public void SetEven()
         {
-            var even = true;
-            var supportEven = components.OfType<EditorItem>().Where(c => c.SupportEven && c.isVisible).ToArray();
+            if (!autoLayout)
+                return;
 
-            if (supportEven.Length > 1)
+            var supportEven = components.OfType<EditorItem>().Where(c => c.SupportEven && c.isVisible).ToArray();
+            var even = supportEven.Length > 1;
+
+            foreach (var item in supportEven)
             {
-                foreach (var item in supportEven)
-                {
-                    item.IsEven = even;
-                    even = !even;
-                }
+                item.IsEven = even;
+                even = !even;
             }
+        }
+
+        public override void StartLayout(bool layoutNow = true)
+        {
+            base.StartLayout(layoutNow);
+            SetEven();
         }
     }
 }
