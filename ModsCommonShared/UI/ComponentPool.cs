@@ -36,8 +36,8 @@ namespace ModsCommon.UI
         {
             Component component;
 
-            var queue = GetQueue<Component>();
-            if (queue.Any())
+            var queue = GetQueue(typeof(Component));
+            if (queue.Count != 0)
             {
                 component = queue.Dequeue() as Component;
                 parent.AttachUIComponent(component.gameObject);
@@ -78,7 +78,6 @@ namespace ModsCommon.UI
                 Delete(component);
         }
 
-        private static Queue<UIComponent> GetQueue<Component>() where Component : UIComponent => GetQueue(typeof(Component));
         private static Queue<UIComponent> GetQueue(Type type)
         {
             if (!Pool.TryGetValue(type, out Queue<UIComponent> queue))

@@ -29,14 +29,15 @@ namespace ModsCommon
         public static Shortcut Activation => Instance.Activation;
     }
     public static class SingletonManager<T>
-        where T : IManager, new()
+        where T : class, IManager, new()
     {
-        public static T Instance { get; private set; }
-
-        static SingletonManager()
+        private static T _instance;
+        public static T Instance
         {
-            Instance = new T();
+            get => _instance ??= new T();
+            set => _instance = value;
         }
+        public static void Destroy() => Instance = null;
     }
     public interface IManager { }
 }
