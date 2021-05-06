@@ -83,16 +83,22 @@ namespace ModsCommon.UI
         public EditorPropertyPanel()
         {
             Label = AddUIComponent<CustomUILabel>();
-            Label.textScale = 0.8f;
+            Label.textScale = 0.75f;
+            Label.autoSize = false;
+            Label.autoHeight = true;
+            Label.wordWrap = true;
+            Label.padding = new RectOffset(0, 0, 2, 0);
             Label.disabledTextColor = new Color32(160, 160, 160, 255);
             Label.name = nameof(Label);
+            Label.eventTextChanged += (_, _) => SetLabel();
 
             Content = AddUIComponent<ContentPanel>();
         }
+
         public override void Init()
         {
             base.Init();
-            Content.Refresh();
+            Refresh();
         }
         public override void DeInit()
         {
@@ -102,17 +108,30 @@ namespace ModsCommon.UI
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
+            Refresh(false);
+        }
+        protected void Refresh(bool refreshContent = true)
+        {
+            if (refreshContent)
+                Content.Refresh();
 
+            Content.height = height;
+            Content.relativePosition = new Vector2(width - Content.width - ItemsPadding, 0f);
+
+            SetLabel();
+        }
+        private void SetLabel()
+        {
+            Label.width = width - Content.width - ItemsPadding * 2;
+            Label.MakePixelPerfect(false);
             Label.relativePosition = new Vector2(5, (height - Label.height) / 2);
-            Content.size = size - new Vector2(ItemsPadding * 2, 0);
-            Content.relativePosition = new Vector2(ItemsPadding, 0f);
         }
         protected override void OnVisibilityChanged()
         {
             base.OnVisibilityChanged();
 
             if (isVisible)
-                Content.Refresh();
+                Refresh();
         }
 
         protected class ContentPanel : CustomUIPanel
@@ -120,7 +139,7 @@ namespace ModsCommon.UI
             public ContentPanel()
             {
                 autoLayoutDirection = LayoutDirection.Horizontal;
-                autoLayoutStart = LayoutStart.TopRight;
+                autoFitChildrenHorizontally = true;
                 autoLayoutPadding = new RectOffset(5, 0, 0, 0);
                 name = nameof(Content);
             }

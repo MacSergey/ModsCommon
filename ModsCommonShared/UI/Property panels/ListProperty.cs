@@ -35,7 +35,7 @@ namespace ModsCommon.UI
                 dropDown.eventDropdownClose += DropDownClose;
             }
         }
-        private void SelectorSizeChanged(UIComponent component, Vector2 value) => Content.Refresh();
+        private void SelectorSizeChanged(UIComponent component, Vector2 value) => Refresh();
 
         private void DropDownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
