@@ -52,7 +52,8 @@ namespace ModsCommon.UI
             StopLayout();
             foreach (var item in components)
                 item.width = width - autoLayoutPadding.horizontal;
-            StartLayout(false);
+            StartLayout();
+
             base.OnSizeChanged();
         }
         protected override void OnComponentAdded(UIComponent child)

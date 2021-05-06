@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -102,8 +103,10 @@ namespace ModsCommon.UI
                 Popup.eventLostFocus -= OnPopupLostFocus;
                 Popup.eventKeyDown -= OnPopupKeyDown;
 
-                Popup.parent.RemoveUIComponent(Popup);
-                Destroy(Popup.gameObject);
+                foreach(var items in Popup.components.ToArray())
+                    ComponentPool.Free(items);
+
+                ComponentPool.Free(Popup);
                 Popup = null;
             }
         }
