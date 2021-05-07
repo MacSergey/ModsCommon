@@ -175,6 +175,9 @@ namespace ModsCommon.UI
         }
         protected sealed override void OnMouseWheel(UIMouseEventParameter p)
         {
+            m_TooltipShowing = true;
+            tooltipBox.Hide();
+
             if (!CanWheel && Time.realtimeSinceStartup - m_HoveringStartTime < 1f)
                 base.OnMouseWheel(p);
             else if (UseWheel)
