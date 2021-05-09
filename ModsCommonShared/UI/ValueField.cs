@@ -191,6 +191,14 @@ namespace ModsCommon.UI
                 p.Use();
             }
         }
+        protected override void OnTooltipEnter(UIMouseEventParameter p)
+        {
+            base.OnTooltipEnter(p);
+
+            if(!isEnabled)
+                m_TooltipShowing = true;
+        }
+
         protected abstract ValueType Increment(ValueType value, ValueType step, WheelMode mode);
         protected abstract ValueType Decrement(ValueType value, ValueType step, WheelMode mode);
 
