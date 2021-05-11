@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ModsCommon.Utilities
 {
@@ -16,6 +17,22 @@ namespace ModsCommon.Utilities
             var hashSet = new HashSet<T>();
             hashSet.AddRange(values);
             return hashSet;
+        }
+        public static float AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector, float defaultValue) => source.Select(selector).AverageOrDefault(defaultValue);
+        public static float AverageOrDefault(this IEnumerable<float> source, float defaultValue)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var sum = 0.0;
+            var count = 0L;
+            foreach (var item in source)
+            {
+                sum += item;
+                count = checked(count + 1);
+            }
+
+            return count > 0 ? (float)(sum / count) : defaultValue;
         }
     }
 }
