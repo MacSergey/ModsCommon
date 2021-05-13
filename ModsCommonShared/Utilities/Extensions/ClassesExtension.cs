@@ -1,6 +1,8 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ModsCommon.Utilities
 {
@@ -19,20 +21,33 @@ namespace ModsCommon.Utilities
             return hashSet;
         }
         public static float AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector, float defaultValue) => source.Select(selector).AverageOrDefault(defaultValue);
-        public static float AverageOrDefault(this IEnumerable<float> source, float defaultValue)
+        public static Vector3 AverageOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, Vector3> selector, Vector3 defaultValue) => source.Select(selector).AverageOrDefault(defaultValue);
+
+        public static float AverageOrDefault(this IEnumerable<float> source, float defaultValue) => source.AverageOrDefault(0f, PlusFloat, DivFloat, defaultValue);
+        public static Vector3 AverageOrDefault(this IEnumerable<Vector3> source, Vector3 defaultValue) => source.AverageOrDefault(Vector3.zero, VectorPlus, VectorDiv, defaultValue);
+
+        private delegate TSource Plus<TSource>(TSource x, TSource y);
+        private delegate TSource Div<TSource>(TSource x, float count);
+        private static TSource AverageOrDefault<TSource>(this IEnumerable<TSource> source, TSource startValue, Plus<TSource> plus, Div<TSource> div, TSource defaultValue)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var sum = 0.0;
+            var sum = startValue;
             var count = 0L;
             foreach (var item in source)
             {
-                sum += item;
+                sum = plus(sum, item);
                 count = checked(count + 1);
             }
 
-            return count > 0 ? (float)(sum / count) : defaultValue;
+            return count > 0 ? div(sum, count) : defaultValue;
         }
+
+        private static float PlusFloat(float x, float y) => x + y;
+        private static float DivFloat(float x, float count) => x / count;
+
+        private static Plus<Vector3> VectorPlus = (Plus<Vector3>)Delegate.CreateDelegate(typeof(Plus<Vector3>), AccessTools.Method(typeof(Vector3), "op_Addition"));
+        private static Div<Vector3> VectorDiv = (Div<Vector3>)Delegate.CreateDelegate(typeof(Div<Vector3>), AccessTools.Method(typeof(Vector3), "op_Division"));
     }
 }
