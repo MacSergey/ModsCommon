@@ -62,19 +62,19 @@ namespace ModsCommon.UI
             child.eventSizeChanged -= ChildSizeChanged;
         }
 
-        private void ChildVisibilityChanged(UIComponent component, bool value) => PlaceChildren();
-        private void ChildSizeChanged(UIComponent component, Vector2 value) => PlaceChildren();
+        private void ChildVisibilityChanged(UIComponent component, bool value) => Refresh();
+        private void ChildSizeChanged(UIComponent component, Vector2 value) => Refresh();
 
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            PlaceChildren();
+            Refresh();
         }
-
-        public void PlaceChildren()
+        public virtual void Refresh()
         {
             autoLayout = true;
             autoLayout = false;
+            FitChildrenHorizontally();
 
             foreach (var item in components)
                 item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);

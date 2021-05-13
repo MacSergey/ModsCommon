@@ -71,14 +71,12 @@ namespace ModsCommon.UI
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-
-            Content.autoLayout = true;
-            Content.autoLayout = false;
-            Content.FitChildrenHorizontally();
+            Refresh();
+        }
+        public virtual void Refresh()
+        {
             Content.height = height;
-
-            foreach (var item in Content.components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (Content.height - item.height) / 2);
+            Content.Refresh();
 
             Caption.width = width - Content.width - 20;
             Content.relativePosition = new Vector2(Caption.width - 5 + 20, (height - Content.height) / 2);
