@@ -5,11 +5,17 @@ VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsBridge", "ModsBridge\ModsBridge.csproj", "{9CC1B2FA-1A1B-4B74-92D8-D20B185C892A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ModsCommonShared", "ModsCommonShared\ModsCommonShared.shproj", "{24615A21-AFA6-42C0-8B7A-4FB3329B056F}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ModShared", "ModShared\ModShared.shproj", "{24615A21-AFA6-42C0-8B7A-4FB3329B056F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ToolShared", "ToolShared\ToolShared.shproj", "{EA585899-16C8-4FF0-AE8D-078F15A7A126}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "UIShared", "UIShared\UIShared.shproj", "{BE979510-7832-4714-95A3-305065D9DED6}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		ModsCommonShared\ModsCommonShared.projitems*{24615a21-afa6-42c0-8b7a-4fb3329b056f}*SharedItemsImports = 13
+		ModShared\ModsCommonShared.projitems*{24615a21-afa6-42c0-8b7a-4fb3329b056f}*SharedItemsImports = 13
+		UIShared\ModsUIShared.projitems*{be979510-7832-4714-95a3-305065d9ded6}*SharedItemsImports = 13
+		ToolShared\ModsToolShared.projitems*{ea585899-16c8-4ff0-ae8d-078f15a7a126}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

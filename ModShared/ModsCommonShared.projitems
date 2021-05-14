@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>24615a21-afa6-42c0-8b7a-4fb3329b056f</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ModsCommon</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Logger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BaseMod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BasePatcherMod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Singleton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\LoadExtensions\AssetDataExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Colors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ClassesExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\EnumExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\InputExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ItemsExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\MathExtention.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\NetExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\RenderExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\UIExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\VersionExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\XmlExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Intersects.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Loader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\LoadExtensions\LoadingExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ObjectMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Plugins.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\PropertyValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\LoadExtensions\SerializableDataExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Shortcut.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Textures\CommonTextures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Textures\TextureHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Trajectory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Transpiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Utilites.cs" />
+  </ItemGroup>
+</Project>
