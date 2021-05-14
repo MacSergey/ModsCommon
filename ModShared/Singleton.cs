@@ -23,11 +23,6 @@ namespace ModsCommon
         public static CultureInfo Culture => Instance.Culture;
         public static string GetLocalizeString(string str, CultureInfo culture = null) => Instance.GetLocalizeString(str, culture);
     }
-    public abstract class SingletonTool<T> : SingletonItem<T>
-        where T : BaseTool<T>
-    {
-        public static Shortcut Activation => Instance.Activation;
-    }
     public static class SingletonManager<T>
         where T : class, IManager, new()
     {

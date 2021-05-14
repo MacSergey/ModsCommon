@@ -9,33 +9,13 @@
     <Import_RootNamespace>ModsUIShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ComponentPool.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\AutoLayoutPanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\CustomElements.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\DropDown.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\Keymapping.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\NetToolButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\Segmented.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\Selector.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Elements\TabPanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Headers\HeaderButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Headers\HeaderMoveablePanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Headers\HeaderPanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Headers\HeaderPopup.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Message boxes\BaseMessageBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Message boxes\SimpleMessageBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Message boxes\WhatsNewMessageBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\BaseProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\BoolProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\ButtonPanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\ColorProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\EnumProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\FieldProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\GroupPanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\ListProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\SelectProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Property panels\TextProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UIHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutoLayoutPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomElements.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TabPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueField.cs" />
   </ItemGroup>
   <ItemGroup>

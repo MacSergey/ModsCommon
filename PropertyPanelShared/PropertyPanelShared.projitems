@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>abe0f508-441b-4871-a17f-3f345f5dc42b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>PropertyPanelShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BaseProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoolProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ButtonPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ColorProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnumProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FieldProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GroupPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ListProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SelectProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextProperty.cs" />
+  </ItemGroup>
+</Project>

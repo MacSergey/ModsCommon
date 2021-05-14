@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0bf47c3f-c968-4759-8d99-d088b0d58fba</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>HeaderShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderMoveablePanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderPopup.cs" />
+  </ItemGroup>
+</Project>
