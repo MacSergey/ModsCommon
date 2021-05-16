@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssetDataExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BasePatcherMod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Loader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoadingExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SerializableDataExtension.cs" />
   </ItemGroup>

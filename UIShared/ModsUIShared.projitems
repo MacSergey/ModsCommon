@@ -10,12 +10,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AutoLayoutPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommonTextures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ComponentPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomElements.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TabPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextureHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UIExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UIHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueField.cs" />
   </ItemGroup>
   <ItemGroup>
