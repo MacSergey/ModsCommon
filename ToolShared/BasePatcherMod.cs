@@ -95,7 +95,7 @@ namespace ModsCommon
         public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeButton>(string templateName, ref OptionPanelBase __result)
             where TypeButton : UIButton
         {
-            if (__result == null || templateName != RoadsOptionPanel || __result.component.Find<TypeButton>(nameof(TypeButton)) != null)
+            if (__result == null || templateName != RoadsOptionPanel || __result.component.Find<TypeButton>(typeof(TypeButton).Name) != null)
                 return;
 
             SingletonMod<TypeMod>.Logger.Debug($"Create button");
