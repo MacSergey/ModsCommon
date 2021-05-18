@@ -1,6 +1,6 @@
 files:
-  - source: /LocalizeShared/Localize.resx
-    translation: /LocalizeShared/Localize.%two_letters_code%.resx
+  - source: /LocalizeShared/CommonLocalize.resx
+    translation: /LocalizeShared/CommonLocalize.%two_letters_code%.resx
     update_option: update_as_unapproved
     languages_mapping:
       two_letters_code:
