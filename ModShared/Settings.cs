@@ -122,14 +122,14 @@ namespace ModsCommon
         protected void AddLanguageList(UIHelper group)
         {
             var dropDown = (group.self as UIComponent).AddUIComponent<LanguageDropDown>();
-            dropDown.AddItem(string.Empty, SingletonMod<TypeMod>.GetLocalizeString("Mod_LocaleGame"));
+            dropDown.AddItem(string.Empty, CommonLocalize.ResourceManager.GetString("Mod_LocaleGame", CommonLocalize.Culture));
 
             foreach (var locale in GetSupportLanguages())
             {
                 var localizeString = $"Mod_Locale_{locale}";
-                var localeText = SingletonMod<TypeMod>.GetLocalizeString(localizeString);
+                var localeText = CommonLocalize.ResourceManager.GetString(localizeString, CommonLocalize.Culture);
                 if (SingletonMod<TypeMod>.Culture.Name.ToLower() != locale)
-                    localeText += $" ({SingletonMod<TypeMod>.GetLocalizeString(localizeString, new CultureInfo(locale))})";
+                    localeText += $" ({CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(locale))})";
 
                 dropDown.AddItem(locale, localeText);
             }

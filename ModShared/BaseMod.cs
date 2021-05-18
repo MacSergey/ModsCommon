@@ -93,8 +93,10 @@ namespace ModsCommon
             if (locale == "zh")
                 locale = "zh-cn";
 
-            Culture = new CultureInfo(locale);
-            Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
+            var culture = new CultureInfo(locale);
+            CommonLocalize.Culture = culture;
+            Culture = culture;
+            Logger.Debug($"Current cultute - {culture?.Name ?? "null"}");
         }
 
         protected void CheckLoadedError()
@@ -122,20 +124,20 @@ namespace ModsCommon
             if (!IsBeta)
             {
                 var messageBox = MessageBoxBase.ShowModal<WhatsNewMessageBox>();
-                messageBox.CaptionText = string.Format(ModLocalize<TypeMod>.WhatsNewCaption, NameRaw);
+                messageBox.CaptionText = string.Format(CommonLocalize.Mod_WhatsNewCaption, NameRaw);
                 messageBox.OnButtonClick = Confirm;
-                messageBox.OkText = ModLocalize<TypeMod>.Ok;
+                messageBox.OkText = CommonLocalize.MessageBox_OK;
                 messageBox.Init(messages, GetVersionString);
             }
             else
             {
                 var messageBox = MessageBoxBase.ShowModal<BetaWhatsNewMessageBox>();
-                messageBox.CaptionText = string.Format(ModLocalize<TypeMod>.WhatsNewCaption, NameRaw);
+                messageBox.CaptionText = string.Format(CommonLocalize.Mod_WhatsNewCaption, NameRaw);
                 messageBox.OnButtonClick = Confirm;
                 messageBox.OnGetStableClick = GetStable;
-                messageBox.OkText = ModLocalize<TypeMod>.Ok;
-                messageBox.GetStableText = ModLocalize<TypeMod>.BetaWarningGetStable;
-                messageBox.Init(messages, string.Format(ModLocalize<TypeMod>.BetaWarningMessage, NameRaw), GetVersionString);
+                messageBox.OkText = CommonLocalize.MessageBox_OK;
+                messageBox.GetStableText = CommonLocalize.Mod_BetaWarningGetStable;
+                messageBox.Init(messages, string.Format(CommonLocalize.Mod_BetaWarningMessage, NameRaw), GetVersionString);
             }
 
             static bool Confirm()
@@ -149,7 +151,7 @@ namespace ModsCommon
         {
             var messages = new Dictionary<Version, string>(Versions.Count);
 #if BETA
-            messages[Version] = ModLocalize<TypeMod>.WhatsNewMessageBeta;
+            messages[Version] = CommonLocalize.Mod_WhatsNewMessageBeta;
 #endif
             foreach (var version in Versions)
             {
@@ -168,7 +170,7 @@ namespace ModsCommon
 
             return messages;
         }
-        public string GetVersionString(Version version) => string.Format(ModLocalize<TypeMod>.WhatsNewVersion, version == Version ? VersionString : version.ToString());
+        public string GetVersionString(Version version) => string.Format(CommonLocalize.Mod_WhatsNewVersion, version == Version ? VersionString : version.ToString());
 
         public void ShowBetaWarning()
         {
@@ -177,10 +179,10 @@ namespace ModsCommon
             else if (BaseSettings<TypeMod>.BetaWarning.value)
             {
                 var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
-                messageBox.CaptionText = ModLocalize<TypeMod>.BetaWarningCaption;
-                messageBox.MessageText = string.Format(ModLocalize<TypeMod>.BetaWarningMessage, NameRaw);
-                messageBox.Button1Text = ModLocalize<TypeMod>.BetaWarningAgree;
-                messageBox.Button2Text = ModLocalize<TypeMod>.BetaWarningGetStable;
+                messageBox.CaptionText = CommonLocalize.Mod_BetaWarningCaption;
+                messageBox.MessageText = string.Format(CommonLocalize.Mod_BetaWarningMessage, NameRaw);
+                messageBox.Button1Text = CommonLocalize.Mod_BetaWarningAgree;
+                messageBox.Button2Text = CommonLocalize.Mod_BetaWarningGetStable;
                 messageBox.OnButton1Click = AgreeClick;
                 messageBox.OnButton2Click = GetStable;
 
@@ -202,24 +204,5 @@ namespace ModsCommon
             (!IsBeta ? WorkshopUrl : BetaWorkshopUrl).OpenUrl();
             return true;
         }
-    }
-
-    public static class ModLocalize<TypeMod>
-        where TypeMod : BaseMod<TypeMod>
-    {
-        public static string Yes => SingletonMod<TypeMod>.GetLocalizeString("MessageBox_Yes");
-        public static string No => SingletonMod<TypeMod>.GetLocalizeString("MessageBox_No");
-        public static string Ok => SingletonMod<TypeMod>.GetLocalizeString("MessageBox_OK");
-        public static string Cancel => SingletonMod<TypeMod>.GetLocalizeString("MessageBox_Cancel");
-
-        public static string WhatsNewCaption => SingletonMod<TypeMod>.GetLocalizeString("Mod_WhatsNewCaption");
-        public static string WhatsNewVersion => SingletonMod<TypeMod>.GetLocalizeString("Mod_WhatsNewVersion");
-
-        public static string WhatsNewMessageBeta => SingletonMod<TypeMod>.GetLocalizeString("Mod_WhatsNewMessageBeta");
-        public static string BetaWarningAgree => SingletonMod<TypeMod>.GetLocalizeString("Mod_BetaWarningAgree");
-        public static string BetaWarningGetStable => SingletonMod<TypeMod>.GetLocalizeString("Mod_BetaWarningGetStable");
-
-        public static string BetaWarningCaption => SingletonMod<TypeMod>.GetLocalizeString("Mod_BetaWarningCaption");
-        public static string BetaWarningMessage => SingletonMod<TypeMod>.GetLocalizeString("Mod_BetaWarningMessage");
     }
 }

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f135cd5d-4cab-4347-bf44-1c6d0794a19d</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>LocalizeShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.en-GB.resx">
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.zh-CN.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.pt.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.pl.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.nl.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.ja.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.it.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.es.resx">
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.de.resx">
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.cs.resx">
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.fi.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.ru.resx">
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.resx">
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>ModsCommon</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CommonLocalize.Designer.cs">
+      <DependentUpon>CommonLocalize.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+</Project>

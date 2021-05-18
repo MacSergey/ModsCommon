@@ -89,4 +89,19 @@ namespace ModsCommon.UI
                 Close();
         }
     }
+    public class OkMessageBox : OneButtonMessageBox
+    {
+        public OkMessageBox()
+        {
+            ButtonText = CommonLocalize.MessageBox_OK;
+        }
+    }
+    public class YesNoMessageBox : TwoButtonMessageBox
+    {
+        public YesNoMessageBox()
+        {
+            Button1Text = CommonLocalize.MessageBox_Yes;
+            Button2Text = CommonLocalize.MessageBox_No;
+        }
+    }
 }
