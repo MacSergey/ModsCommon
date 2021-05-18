@@ -39,7 +39,7 @@ namespace ModsCommon {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NodeMarkup.Properties.CommonLocalize", typeof(CommonLocalize).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NodeController.Properties.CommonLocalize", typeof(CommonLocalize).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,16 @@ namespace ModsCommon {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll the wheel to change
+        ///Shift X10, Ctrl X0.1.
+        /// </summary>
+        public static string FieldPanel_ScrollWheel {
+            get {
+                return ResourceManager.GetString("FieldPanel_ScrollWheel", resourceCulture);
             }
         }
         
@@ -124,7 +134,7 @@ namespace ModsCommon {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на You are using the BETA version of {0}. It is for testing new features and may contain errors that could break or delete your markings. If you subscribed to it by mistake, then switch to the stable version..
+        ///   Ищет локализованную строку, похожую на You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version..
         /// </summary>
         public static string Mod_BetaWarningMessage {
             get {
@@ -302,6 +312,15 @@ namespace ModsCommon {
         public static string Mod_WhatsNewMessageBeta {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessageBeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Look for actual beta change log on Discord.
+        /// </summary>
+        public static string Mod_WhatsNewMessageBeta1 {
+            get {
+                return ResourceManager.GetString("Mod_WhatsNewMessageBeta1", resourceCulture);
             }
         }
         

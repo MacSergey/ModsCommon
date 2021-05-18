@@ -91,9 +91,8 @@ namespace ModsCommon.UI
             get => Field.WheelStep;
             set => Field.WheelStep = value;
         }
-        public string WheelTip
+        public bool WheelTip
         {
-            get => Field.WheelTip;
             set => Field.WheelTip = value;
         }
 
@@ -108,7 +107,7 @@ namespace ModsCommon.UI
 
             UseWheel = false;
             WheelStep = default;
-            WheelTip = string.Empty;
+            WheelTip = false;
             CyclicalValue = false;
             Field.SetDefault();
         }

@@ -112,11 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>使用滚轮改变参数
+Shift x10，Ctrl x0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
@@ -139,7 +143,7 @@
     <value>获取稳定版本</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>你在使用 {0} BETA版。此版本为测试新功能用，且可能含有会使标记破损或消失的BUG。如果是不小心订阅到了此版本，请订阅回稳定版。</value>
+    <value>你在使用 {0} BETA版。此版本为测试新功能用，且可能含有BUG。如果是不小心订阅到了此版本，请订阅回稳定版。</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod加载出错。
@@ -196,6 +200,9 @@
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 版本的新功能</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>版本{0}</value>

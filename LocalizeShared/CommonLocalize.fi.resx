@@ -112,11 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Vieritä hiiren rullalla vaihtaaksesi
+Shift X10, Ctrl X0,1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Peruuta</value>
   </data>
@@ -139,7 +143,7 @@
     <value>Hanki vakaa versio</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Käytät beta-versiota {0}:sta. Se on tarkoitettu uusien ominaisuuksien testaamiseen ja siinä voi olla virheitä, jotka rikkovat tai poistavat merkintöjäsi. Jos tilasit sen vahingossa, vaihda vakaaseen versioon.</value>
+    <value>Käytät beta-versiota {0}:sta. Se on tarkoitettu uusien ominaisuuksien testaamiseen ja siinä voi olla virheitä. Jos tilasit sen vahingossa, vaihda vakaaseen versioon.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Modi latautui virheellisesti.
@@ -196,6 +200,9 @@ Käynnistä peli uudelleen.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Uutta modissa {0}</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Versio {0}</value>

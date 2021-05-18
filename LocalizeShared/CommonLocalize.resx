@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Scroll the wheel to change
+Shift X10, Ctrl X0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -139,7 +143,7 @@
     <value>Get stable version</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors that could break or delete your markings. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod loaded with errors.
@@ -198,6 +202,9 @@ Restart the game.</value>
     <value>What's new in {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta1" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
