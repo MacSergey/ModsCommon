@@ -39,7 +39,7 @@ namespace ModsCommon {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NodeController.Properties.CommonLocalize", typeof(CommonLocalize).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NodeMarkup.Properties.CommonLocalize", typeof(CommonLocalize).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -321,15 +321,6 @@ namespace ModsCommon {
         public static string Mod_WhatsNewMessageBeta {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessageBeta", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Look for actual beta change log on Discord.
-        /// </summary>
-        public static string Mod_WhatsNewMessageBeta1 {
-            get {
-                return ResourceManager.GetString("Mod_WhatsNewMessageBeta1", resourceCulture);
             }
         }
         

@@ -207,9 +207,6 @@ Restart the game.</value>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
-  <data name="Mod_WhatsNewMessageBeta1" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
-  </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
   </data>
