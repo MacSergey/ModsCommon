@@ -137,10 +137,9 @@ namespace ModsCommon.UI
 
         public bool UseWheel { get; set; }
         public ValueType WheelStep { get; set; }
-        public string WheelTip
+        public bool WheelTip
         {
-            get => tooltip;
-            set => tooltip = value;
+            set => tooltip = value ? CommonLocalize.FieldPanel_ScrollWheel : string.Empty;
         }
         public bool CanWheel { get; set; }
 
@@ -157,11 +156,7 @@ namespace ModsCommon.UI
         public override void DeInit()
         {
             base.DeInit();
-            MinValue = default;
-            MaxValue = default;
-            CheckMin = false;
-            CheckMax = false;
-            CyclicalValue = false;
+            SetDefault();
         }
         protected override void OnMouseMove(UIMouseEventParameter p)
         {
@@ -210,6 +205,8 @@ namespace ModsCommon.UI
             MaxValue = default;
             CheckMin = false;
             CheckMax = false;
+            CyclicalValue = false;
+            WheelTip = false;
         }
 
         protected enum WheelMode

@@ -143,7 +143,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Получить стабильную</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Вы используете BETA версию {0}. Она предназначена для тестирования новых функций и может содержать ошибки которые приведут к поломке или удалению вашей разметки. Если вы подписались по ошибки, то перейдите на стабильную версию.</value>
+    <value>Вы используете BETA версию {0}. Она предназначена для тестирования новых функций и может содержать ошибки. Если вы подписались по ошибки, то перейдите на стабильную версию.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Это BETA версия, стабильная работа и отсутствие ошибок не гарантировано!</value>
@@ -203,6 +203,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Что нового в {0}</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Версия {0}</value>

@@ -143,7 +143,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Overstappen naar stabiele versie</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten die je huidige markeringen kunnen verwijderen of veranderen. Als je per ongeluk geabonneerd bent op de bèta, kan je naar de stabiele versie overstappen.</value>
+    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd op de bèta, kan je naar de stabiele versie overstappen.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Dit is een bèta-versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
@@ -203,6 +203,9 @@ Herstart het spel.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Wat is er nieuw in {0}</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Versie {0}</value>

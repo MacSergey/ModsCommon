@@ -143,7 +143,7 @@ Shift x10, Strg x0.1</value>
     <value>Die stabile Version holen</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Du verwendest die BETA Version von {0}. Diese ist zum Testen neuer Funktionen gedacht und kann Fehler beinhalten, die deine erstellten Markierungen verändern oder löschen könnten. Wenn du diese Version ungewollt abonniert haben solltest, wechsele zur stabilen Version.</value>
+    <value>Du verwendest die BETA Version von {0}. Diese ist zum Testen neuer Funktionen gedacht und kann Fehler beinhalten. Wenn du diese Version ungewollt abonniert haben solltest, wechsele zur stabilen Version.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Dies ist eine BETA Version. Stabilität und Fehlerfreiheit sind nicht garantiert!</value>
@@ -203,6 +203,9 @@ Starte das Spiel neu.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Was ist neu in {0}</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Aktuelle Informationen zu Änderungen an der Beta Version sind auf Discord zu finden</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>

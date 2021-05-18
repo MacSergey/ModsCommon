@@ -143,7 +143,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Get stable version</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors that could break or delete your markings. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
@@ -205,6 +205,9 @@ Restart the game.</value>
     <value>What's new in {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta1" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">

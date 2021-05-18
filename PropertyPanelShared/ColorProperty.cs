@@ -19,7 +19,7 @@ namespace ModsCommon.UI
         private UIColorField ColorSample { get; set; }
         protected UIColorPicker Popup { get; private set; }
         private UISlider Opacity { get; set; }
-        public string WheelTip
+        public bool WheelTip
         {
             set
             {
@@ -127,7 +127,7 @@ namespace ModsCommon.UI
         {
             base.DeInit();
 
-            WheelTip = string.Empty;
+            WheelTip = false;
 
             OnValueChanged = null;
         }

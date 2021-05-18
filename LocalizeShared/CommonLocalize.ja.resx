@@ -119,8 +119,7 @@
   </resheader>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
     <value>ホイールのスクロールで増減
-+Shift ｘ 10倍
-+Ctrl ｘ 0.1倍</value>
++Shift ｘ 10倍 / +Ctrl ｘ 0.1倍</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>キャンセル</value>
@@ -145,7 +144,7 @@
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>現在、 {0} のβ版を使用しています。
-新機能をテストするMODで、エラーやマーキングの破損・消える可能性があります。
+新機能をテストするMODで、エラーが発生する可能性があります。
 間違ってサブスクライブした場合は、安定版に切り替えてください。</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
@@ -206,6 +205,9 @@
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} の更新内容</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
