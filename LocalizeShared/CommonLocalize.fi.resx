@@ -112,11 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Vieritä hiiren rullalla vaihtaaksesi
+Shift X10, Ctrl X0,1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Peruuta</value>
   </data>
@@ -140,6 +144,9 @@
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Käytät beta-versiota {0}:sta. Se on tarkoitettu uusien ominaisuuksien testaamiseen ja siinä voi olla virheitä, jotka rikkovat tai poistavat merkintöjäsi. Jos tilasit sen vahingossa, vaihda vakaaseen versioon.</value>
+  </data>
+  <data name="Mod_DescriptionBeta" xml:space="preserve">
+    <value>Tämä on BETA-versio. Virheitä voi esiintyä, eikä vakautta ole taattu!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Modi latautui virheellisesti.
@@ -199,5 +206,41 @@ Käynnistä peli uudelleen.</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Versio {0}</value>
+  </data>
+  <data name="Panel_Additional" xml:space="preserve">
+    <value>Lisää</value>
+  </data>
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>Peruuta</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>Muutosloki</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>Yleiset</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Kieli</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Ilmoitukset</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>Pikanäppäimet</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Ilmoita vain merkittävistä päivityksistä</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Näytä työkaluvihjeet</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Näytä, mikä on uutta</value>
+  </data>
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>Tuki</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>Vianmääritys</value>
   </data>
 </root>

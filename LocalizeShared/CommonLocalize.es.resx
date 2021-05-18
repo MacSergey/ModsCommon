@@ -112,11 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Desplazar la rueda para cambiar
+Mayús x10, Ctrl x0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Anular</value>
   </data>
@@ -140,6 +144,9 @@
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Está utilizando la versión BETA de {0}. Es para probar nuevas funciones y puede contener errores que romperán o eliminarán sus marcas. Si se suscribió por error, cambie a la versión estable.</value>
+  </data>
+  <data name="Mod_DescriptionBeta" xml:space="preserve">
+    <value>¡Esta es una versión BETA, pueden ocurrir errores y no se garantiza la estabilidad!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod cargado con errores.
@@ -199,5 +206,41 @@ Reinicia el juego.</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Versión {0}</value>
+  </data>
+  <data name="Panel_Additional" xml:space="preserve">
+    <value>Más</value>
+  </data>
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>Anular</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>Registro de cambios</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Notificaciones</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>Atajos</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Notificación solo sobre actualizaciones importantes</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Mostrar las herramientas</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Mostrar las novedades</value>
+  </data>
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>Apoyo</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>Resolución de problemas</value>
   </data>
 </root>

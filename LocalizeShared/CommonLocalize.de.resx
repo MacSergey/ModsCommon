@@ -112,11 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Mausrad scrollen zum ändern
+Shift x10, Strg x0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
@@ -140,6 +144,9 @@
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Du verwendest die BETA Version von {0}. Diese ist zum Testen neuer Funktionen gedacht und kann Fehler beinhalten, die deine erstellten Markierungen verändern oder löschen könnten. Wenn du diese Version ungewollt abonniert haben solltest, wechsele zur stabilen Version.</value>
+  </data>
+  <data name="Mod_DescriptionBeta" xml:space="preserve">
+    <value>Dies ist eine BETA Version. Stabilität und Fehlerfreiheit sind nicht garantiert!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod fehlerhaft geladen.
@@ -199,5 +206,41 @@ Starte das Spiel neu.</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
+  </data>
+  <data name="Panel_Additional" xml:space="preserve">
+    <value>Weiteres</value>
+  </data>
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>Änderungsprotokoll</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Benachrichtigungen</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>Tastenkürzel</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Benachrichtigungen nur bei Haupt-Versions-Updates</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Zeige Tooltips</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>"Was gibt es neues" zeigen</value>
+  </data>
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>Support/Hilfe</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>Hilfe</value>
   </data>
 </root>

@@ -61,6 +61,16 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll the wheel to change
+        ///Shift X10, Ctrl X0.1.
+        /// </summary>
+        public static string FieldPanel_ScrollWheel {
+            get {
+                return ResourceManager.GetString("FieldPanel_ScrollWheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
         public static string MessageBox_Cancel {
@@ -129,6 +139,15 @@ namespace ModsCommon {
         public static string Mod_BetaWarningMessage {
             get {
                 return ResourceManager.GetString("Mod_BetaWarningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This is a BETA version, errors may occur and stability is not guaranteed!.
+        /// </summary>
+        public static string Mod_DescriptionBeta {
+            get {
+                return ResourceManager.GetString("Mod_DescriptionBeta", resourceCulture);
             }
         }
         
@@ -311,6 +330,114 @@ namespace ModsCommon {
         public static string Mod_WhatsNewVersion {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Additional.
+        /// </summary>
+        public static string Panel_Additional {
+            get {
+                return ResourceManager.GetString("Panel_Additional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        public static string Settings_Cancel {
+            get {
+                return ResourceManager.GetString("Settings_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change log.
+        /// </summary>
+        public static string Settings_ChangeLog {
+            get {
+                return ResourceManager.GetString("Settings_ChangeLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на General.
+        /// </summary>
+        public static string Settings_GeneralTab {
+            get {
+                return ResourceManager.GetString("Settings_GeneralTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Language.
+        /// </summary>
+        public static string Settings_Language {
+            get {
+                return ResourceManager.GetString("Settings_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Notifications.
+        /// </summary>
+        public static string Settings_Notifications {
+            get {
+                return ResourceManager.GetString("Settings_Notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shortcuts.
+        /// </summary>
+        public static string Settings_Shortcuts {
+            get {
+                return ResourceManager.GetString("Settings_Shortcuts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Notification only about major updates.
+        /// </summary>
+        public static string Settings_ShowOnlyMajor {
+            get {
+                return ResourceManager.GetString("Settings_ShowOnlyMajor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show tooltips.
+        /// </summary>
+        public static string Settings_ShowTooltips {
+            get {
+                return ResourceManager.GetString("Settings_ShowTooltips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show what&apos;s new.
+        /// </summary>
+        public static string Settings_ShowWhatsNew {
+            get {
+                return ResourceManager.GetString("Settings_ShowWhatsNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Support.
+        /// </summary>
+        public static string Settings_SupportTab {
+            get {
+                return ResourceManager.GetString("Settings_SupportTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Troubleshooting.
+        /// </summary>
+        public static string Settings_Troubleshooting {
+            get {
+                return ResourceManager.GetString("Settings_Troubleshooting", resourceCulture);
             }
         }
     }

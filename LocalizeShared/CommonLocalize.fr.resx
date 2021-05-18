@@ -112,11 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Utilisez la molette pour changer
+Maj X10, Ctrl X0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
@@ -140,9 +144,6 @@
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Vous utilisez la version d'{0}. C'est une version de test avec de nouvelles fonctionnalités et cela peut contenir des erreurs qui vont casser ou supprimer vos marquages. Si vous vous êtes abonné par erreur, veuillez vous abonner à la version stable.</value>
-  </data>
-  <data name="Mod_Description" xml:space="preserve">
-    <value>Faire marquages aux intersections seulement</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Ceci est une version BETA, des erreurs peuvent se produire et la stabilité n'est pas garantie!</value>
@@ -205,5 +206,41 @@ Rechargez le jeu.</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
+  </data>
+  <data name="Panel_Additional" xml:space="preserve">
+    <value>Autres</value>
+  </data>
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>Notes de mise à jour</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Paramètres de notification</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>Raccourcis</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Uniquement notifier les mise à jour majeures</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Afficher les infobulles</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Afficher les nouveautés</value>
+  </data>
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>Dépannage</value>
   </data>
 </root>

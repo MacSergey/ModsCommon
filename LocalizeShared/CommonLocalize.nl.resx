@@ -112,11 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Scroll het wiel om te veranderen
+Shift X10, Ctrl X0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Annuleren</value>
   </data>
@@ -140,6 +144,9 @@
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten die je huidige markeringen kunnen verwijderen of veranderen. Als je per ongeluk geabonneerd bent op de bèta, kan je naar de stabiele versie overstappen.</value>
+  </data>
+  <data name="Mod_DescriptionBeta" xml:space="preserve">
+    <value>Dit is een bèta-versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod is geladen met errors.
@@ -199,5 +206,41 @@ Herstart het spel.</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Versie {0}</value>
+  </data>
+  <data name="Panel_Additional" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>Annuleer</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>Wijzigingenlogboek</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>Algemeen</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Taal</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Meldingen</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>Snelkoppelingen</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Alleen meldingen over grote updates</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Tooltips weergeven</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Toon wat nieuw is</value>
+  </data>
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>Probleemoplossing</value>
   </data>
 </root>

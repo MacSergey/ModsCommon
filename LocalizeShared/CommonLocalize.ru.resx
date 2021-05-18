@@ -112,11 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Крутите колесико для изменения
+Shift X10, Ctrl X0.1</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
@@ -140,6 +144,9 @@
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Вы используете BETA версию {0}. Она предназначена для тестирования новых функций и может содержать ошибки которые приведут к поломке или удалению вашей разметки. Если вы подписались по ошибки, то перейдите на стабильную версию.</value>
+  </data>
+  <data name="Mod_DescriptionBeta" xml:space="preserve">
+    <value>Это BETA версия, стабильная работа и отсутствие ошибок не гарантировано!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Мод загрузился с ошибками.
@@ -199,5 +206,41 @@
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Версия {0}</value>
+  </data>
+  <data name="Panel_Additional" xml:space="preserve">
+    <value>Дополнительно</value>
+  </data>
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>Список изменений</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>Основные</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Уведомления</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>Горячие клавиши</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Уведомления только о важных обновлениях</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Показывать подсказки</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Показывать что нового</value>
+  </data>
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>Поддержка</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>Устранение неполадок</value>
   </data>
 </root>

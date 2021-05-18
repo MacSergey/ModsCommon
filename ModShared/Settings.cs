@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
+using static ModsCommon.SettingsHelper;
 
 namespace ModsCommon
 {
@@ -102,8 +103,13 @@ namespace ModsCommon
             return new UIHelper(tabPanel.Content);
         }
 
-        #region UTILITY
+        #region LANGUAGE
 
+        protected void AddLanguage(UIHelperBase helper)
+        {
+            var group = helper.AddGroup(CommonLocalize.Settings_Language) as UIHelper;
+            AddLanguageList(group);
+        }
         protected string[] GetSupportLanguages()
         {
             var languages = new HashSet<string> { "en" };
@@ -144,6 +150,18 @@ namespace ModsCommon
                 SingletonMod<TypeMod>.Instance.LocaleChanged();
                 LocaleManager.ForceReload();
             }
+        }
+
+        #endregion
+
+        #region NOTIFICATIONS
+
+        protected void AddNotifications(UIHelperBase helper)
+        {
+            var group = helper.AddGroup(CommonLocalize.Settings_Notifications) as UIHelper;
+
+            AddCheckBox(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
+            AddCheckBox(group, CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
         }
 
         #endregion
