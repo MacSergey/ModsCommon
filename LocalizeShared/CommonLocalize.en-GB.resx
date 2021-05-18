@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -112,14 +112,138 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>Scroll the wheel to change
+Shift X10, Ctrl X0.1</value>
+  </data>
+  <data name="MessageBox_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MessageBox_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="MessageBox_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="MessageBox_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Mod_BetaWarningAgree" xml:space="preserve">
+    <value>I agree</value>
+  </data>
+  <data name="Mod_BetaWarningCaption" xml:space="preserve">
+    <value>BETA version warning</value>
+  </data>
+  <data name="Mod_BetaWarningGetStable" xml:space="preserve">
+    <value>Get stable version</value>
+  </data>
+  <data name="Mod_BetaWarningMessage" xml:space="preserve">
+    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+  </data>
+  <data name="Mod_DescriptionBeta" xml:space="preserve">
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod loaded with errors.
 It is not recommended to use the mod in this state, it can lead to unpredictable behaviour.
 Restart the game.</value>
+  </data>
+  <data name="Mod_LocaleGame" xml:space="preserve">
+    <value>Game Language</value>
+  </data>
+  <data name="Mod_Locale_cs" xml:space="preserve">
+    <value>Czech</value>
+  </data>
+  <data name="Mod_Locale_de" xml:space="preserve">
+    <value>German</value>
+  </data>
+  <data name="Mod_Locale_en" xml:space="preserve">
+    <value>English US</value>
+  </data>
+  <data name="Mod_Locale_en-gb" xml:space="preserve">
+    <value>English UK</value>
+  </data>
+  <data name="Mod_Locale_es" xml:space="preserve">
+    <value>Spanish</value>
+  </data>
+  <data name="Mod_Locale_fi" xml:space="preserve">
+    <value>Finnish</value>
+  </data>
+  <data name="Mod_Locale_fr" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="Mod_Locale_it" xml:space="preserve">
+    <value>Italian</value>
+  </data>
+  <data name="Mod_Locale_ja" xml:space="preserve">
+    <value>Japanese</value>
+  </data>
+  <data name="Mod_Locale_nl" xml:space="preserve">
+    <value>Dutch</value>
+  </data>
+  <data name="Mod_Locale_pl" xml:space="preserve">
+    <value>Polish</value>
+  </data>
+  <data name="Mod_Locale_pt" xml:space="preserve">
+    <value>Portuguese</value>
+  </data>
+  <data name="Mod_Locale_ru" xml:space="preserve">
+    <value>Russian</value>
+  </data>
+  <data name="Mod_Locale_zh-cn" xml:space="preserve">
+    <value>Chinese Simplified</value>
+  </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Mod_WhatsNewCaption" xml:space="preserve">
+    <value>What's new in {0}</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
+  </data>
+  <data name="Mod_WhatsNewVersion" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="Panel_Additional" xml:space="preserve">
+    <value>Additional</value>
+  </data>
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>Change log</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>Notification only about major updates</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>Show tooltips</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>Show what's new</value>
+  </data>
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>Troubleshooting</value>
   </data>
 </root>
