@@ -110,22 +110,8 @@ namespace ModsCommon
             var group = helper.AddGroup(CommonLocalize.Settings_Language) as UIHelper;
             AddLanguageList(group);
         }
-        protected string[] GetSupportLanguages()
-        {
-            var languages = new HashSet<string> { "en" };
 
-            var resourceAssembly = $"{Assembly.GetExecutingAssembly().GetName().Name}.resources";
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                var assemblyName = assembly.GetName();
-                if (assemblyName.Name == resourceAssembly)
-                    languages.Add(assemblyName.CultureInfo.Name.ToLower());
-            }
-
-            return languages.OrderBy(l => l).ToArray();
-        }
-        protected void AddLanguageList(UIHelper group)
+        private void AddLanguageList(UIHelper group)
         {
             var dropDown = (group.self as UIComponent).AddUIComponent<LanguageDropDown>();
             dropDown.AddItem(string.Empty, CommonLocalize.ResourceManager.GetString("Mod_LocaleGame", CommonLocalize.Culture));
@@ -150,6 +136,21 @@ namespace ModsCommon
                 SingletonMod<TypeMod>.Instance.LocaleChanged();
                 LocaleManager.ForceReload();
             }
+        }
+        private string[] GetSupportLanguages()
+        {
+            var languages = new HashSet<string> { "en" };
+
+            var resourceAssembly = $"{Assembly.GetExecutingAssembly().GetName().Name}.resources";
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var assemblyName = assembly.GetName();
+                if (assemblyName.Name == resourceAssembly)
+                    languages.Add(assemblyName.CultureInfo.Name.ToLower());
+            }
+
+            return languages.OrderBy(l => l).ToArray();
         }
 
         #endregion
