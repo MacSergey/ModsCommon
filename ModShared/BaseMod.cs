@@ -206,5 +206,7 @@ namespace ModsCommon
 
         public void GetStable() => WorkshopUrl.OpenUrl();
         public void OpenWorkshop() => (!IsBeta ? WorkshopUrl : BetaWorkshopUrl).OpenUrl();
+
+        protected class ErrorLoadedMessageBox : ErrorLoadedMessageBox<TypeMod> { }
     }
 }
