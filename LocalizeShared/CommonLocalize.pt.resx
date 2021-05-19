@@ -204,7 +204,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
     <value>O que há de novo em {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
+    <value>Consulta o registo de alterações beta no Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Versão {0}</value>

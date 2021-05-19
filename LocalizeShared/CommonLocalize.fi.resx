@@ -149,8 +149,8 @@ Shift X10, Ctrl X0,1</value>
     <value>Tämä on BETA-versio. Virheitä voi esiintyä, eikä vakautta ole taattu!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Modi latautui virheellisesti.
-Ei ole suositeltavaa käyttää modia tässä tilassa, koska se voi johtaa ennalta-arvaamattomaan käyttäytymiseen.
+    <value>Lisäosa latautui virheellisesti.
+Ei ole suositeltavaa käyttää lisäosaa tässä tilassa, koska se voi johtaa ennalta-arvaamattomaan käyttäytymiseen.
 Käynnistä peli uudelleen.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
@@ -202,7 +202,7 @@ Käynnistä peli uudelleen.</value>
     <value>Tuki</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Uutta modissa {0}</value>
+    <value>Uutta {0} -lisäosassa</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>

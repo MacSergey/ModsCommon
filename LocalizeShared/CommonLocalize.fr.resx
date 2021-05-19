@@ -128,7 +128,7 @@ Maj X10, Ctrl X0.1</value>
     <value>Non</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>Valider</value>
+    <value>Ok</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Oui</value>
@@ -140,7 +140,7 @@ Maj X10, Ctrl X0.1</value>
     <value>Alerte de version BETA</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Obtenez la version stable</value>
+    <value>Obtenir la version stable</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>Vous utilisez la version bêta de {0}. C'est une version de test avec de nouvelles fonctionnalités et elle peut contenir des erreurs qui vont briser ou supprimer vos configurations. Si vous vous êtes abonné par erreur, veuillez vous abonner à la version stable.</value>
