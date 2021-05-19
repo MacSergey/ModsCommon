@@ -196,7 +196,7 @@ namespace ModsCommon
 
         private bool GetStable()
         {
-            BetaWorkshopUrl.OpenUrl();
+            WorkshopUrl.OpenUrl();
             return true;
         }
         protected bool OpenWorkshop()
