@@ -34,7 +34,6 @@ namespace ModsCommon
         private UIPanel MainPanel { get; set; }
         protected TabStrip TabStrip { get; set; }
         protected List<CustomUIPanel> TabPanels { get; set; }
-        protected virtual string GeneralTabName => "General";
         protected UIHelper GeneralTab { get; private set; }
 
         public void OnSettingsUI(UIHelperBase helper)
@@ -50,7 +49,7 @@ namespace ModsCommon
             MainPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
             CreateTabStrip();
 
-            GeneralTab = CreateTab(GeneralTabName);
+            GeneralTab = CreateTab(CommonLocalize.Settings_GeneralTab);
             GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
 
             OnSettingsUI();
