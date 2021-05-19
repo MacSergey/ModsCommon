@@ -22,7 +22,7 @@ namespace ModsCommon {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CommonLocalize {
+    internal class CommonLocalize {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace ModsCommon {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ModsCommon.CommonLocalize", typeof(CommonLocalize).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NodeController.Properties.CommonLocalize", typeof(CommonLocalize).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace ModsCommon {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -64,7 +64,7 @@ namespace ModsCommon {
         ///   Ищет локализованную строку, похожую на Scroll the wheel to change
         ///Shift X10, Ctrl X0.1.
         /// </summary>
-        public static string FieldPanel_ScrollWheel {
+        internal static string FieldPanel_ScrollWheel {
             get {
                 return ResourceManager.GetString("FieldPanel_ScrollWheel", resourceCulture);
             }
@@ -73,7 +73,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
-        public static string MessageBox_Cancel {
+        internal static string MessageBox_Cancel {
             get {
                 return ResourceManager.GetString("MessageBox_Cancel", resourceCulture);
             }
@@ -82,7 +82,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на No.
         /// </summary>
-        public static string MessageBox_No {
+        internal static string MessageBox_No {
             get {
                 return ResourceManager.GetString("MessageBox_No", resourceCulture);
             }
@@ -91,7 +91,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на OK.
         /// </summary>
-        public static string MessageBox_OK {
+        internal static string MessageBox_OK {
             get {
                 return ResourceManager.GetString("MessageBox_OK", resourceCulture);
             }
@@ -100,7 +100,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Yes.
         /// </summary>
-        public static string MessageBox_Yes {
+        internal static string MessageBox_Yes {
             get {
                 return ResourceManager.GetString("MessageBox_Yes", resourceCulture);
             }
@@ -109,7 +109,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на I agree.
         /// </summary>
-        public static string Mod_BetaWarningAgree {
+        internal static string Mod_BetaWarningAgree {
             get {
                 return ResourceManager.GetString("Mod_BetaWarningAgree", resourceCulture);
             }
@@ -118,7 +118,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на BETA version warning.
         /// </summary>
-        public static string Mod_BetaWarningCaption {
+        internal static string Mod_BetaWarningCaption {
             get {
                 return ResourceManager.GetString("Mod_BetaWarningCaption", resourceCulture);
             }
@@ -127,7 +127,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Get stable version.
         /// </summary>
-        public static string Mod_BetaWarningGetStable {
+        internal static string Mod_BetaWarningGetStable {
             get {
                 return ResourceManager.GetString("Mod_BetaWarningGetStable", resourceCulture);
             }
@@ -136,7 +136,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version..
         /// </summary>
-        public static string Mod_BetaWarningMessage {
+        internal static string Mod_BetaWarningMessage {
             get {
                 return ResourceManager.GetString("Mod_BetaWarningMessage", resourceCulture);
             }
@@ -145,7 +145,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на This is a BETA version, errors may occur and stability is not guaranteed!.
         /// </summary>
-        public static string Mod_DescriptionBeta {
+        internal static string Mod_DescriptionBeta {
             get {
                 return ResourceManager.GetString("Mod_DescriptionBeta", resourceCulture);
             }
@@ -156,7 +156,7 @@ namespace ModsCommon {
         ///It is not recommended to use the mod in this state as it can lead to unpredictable behavior.
         ///Restart the game..
         /// </summary>
-        public static string Mod_LoadedWithErrors {
+        internal static string Mod_LoadedWithErrors {
             get {
                 return ResourceManager.GetString("Mod_LoadedWithErrors", resourceCulture);
             }
@@ -165,7 +165,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Czech.
         /// </summary>
-        public static string Mod_Locale_cs {
+        internal static string Mod_Locale_cs {
             get {
                 return ResourceManager.GetString("Mod_Locale_cs", resourceCulture);
             }
@@ -174,7 +174,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на German.
         /// </summary>
-        public static string Mod_Locale_de {
+        internal static string Mod_Locale_de {
             get {
                 return ResourceManager.GetString("Mod_Locale_de", resourceCulture);
             }
@@ -183,7 +183,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на English US.
         /// </summary>
-        public static string Mod_Locale_en {
+        internal static string Mod_Locale_en {
             get {
                 return ResourceManager.GetString("Mod_Locale_en", resourceCulture);
             }
@@ -192,7 +192,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на English UK.
         /// </summary>
-        public static string Mod_Locale_en_gb {
+        internal static string Mod_Locale_en_gb {
             get {
                 return ResourceManager.GetString("Mod_Locale_en-gb", resourceCulture);
             }
@@ -201,7 +201,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Spanish.
         /// </summary>
-        public static string Mod_Locale_es {
+        internal static string Mod_Locale_es {
             get {
                 return ResourceManager.GetString("Mod_Locale_es", resourceCulture);
             }
@@ -210,7 +210,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Finnish.
         /// </summary>
-        public static string Mod_Locale_fi {
+        internal static string Mod_Locale_fi {
             get {
                 return ResourceManager.GetString("Mod_Locale_fi", resourceCulture);
             }
@@ -219,7 +219,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на French.
         /// </summary>
-        public static string Mod_Locale_fr {
+        internal static string Mod_Locale_fr {
             get {
                 return ResourceManager.GetString("Mod_Locale_fr", resourceCulture);
             }
@@ -228,7 +228,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Italian.
         /// </summary>
-        public static string Mod_Locale_it {
+        internal static string Mod_Locale_it {
             get {
                 return ResourceManager.GetString("Mod_Locale_it", resourceCulture);
             }
@@ -237,7 +237,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Japanese.
         /// </summary>
-        public static string Mod_Locale_ja {
+        internal static string Mod_Locale_ja {
             get {
                 return ResourceManager.GetString("Mod_Locale_ja", resourceCulture);
             }
@@ -246,7 +246,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Dutch.
         /// </summary>
-        public static string Mod_Locale_nl {
+        internal static string Mod_Locale_nl {
             get {
                 return ResourceManager.GetString("Mod_Locale_nl", resourceCulture);
             }
@@ -255,7 +255,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Polish.
         /// </summary>
-        public static string Mod_Locale_pl {
+        internal static string Mod_Locale_pl {
             get {
                 return ResourceManager.GetString("Mod_Locale_pl", resourceCulture);
             }
@@ -264,7 +264,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Portuguese.
         /// </summary>
-        public static string Mod_Locale_pt {
+        internal static string Mod_Locale_pt {
             get {
                 return ResourceManager.GetString("Mod_Locale_pt", resourceCulture);
             }
@@ -273,7 +273,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Russian.
         /// </summary>
-        public static string Mod_Locale_ru {
+        internal static string Mod_Locale_ru {
             get {
                 return ResourceManager.GetString("Mod_Locale_ru", resourceCulture);
             }
@@ -282,7 +282,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Chinese Simplified.
         /// </summary>
-        public static string Mod_Locale_zh_cn {
+        internal static string Mod_Locale_zh_cn {
             get {
                 return ResourceManager.GetString("Mod_Locale_zh-cn", resourceCulture);
             }
@@ -291,7 +291,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Game Language.
         /// </summary>
-        public static string Mod_LocaleGame {
+        internal static string Mod_LocaleGame {
             get {
                 return ResourceManager.GetString("Mod_LocaleGame", resourceCulture);
             }
@@ -300,7 +300,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Support.
         /// </summary>
-        public static string Mod_Support {
+        internal static string Mod_Support {
             get {
                 return ResourceManager.GetString("Mod_Support", resourceCulture);
             }
@@ -309,7 +309,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на What&apos;s new in {0}.
         /// </summary>
-        public static string Mod_WhatsNewCaption {
+        internal static string Mod_WhatsNewCaption {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewCaption", resourceCulture);
             }
@@ -318,7 +318,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Look for actual beta change log on Discord.
         /// </summary>
-        public static string Mod_WhatsNewMessageBeta {
+        internal static string Mod_WhatsNewMessageBeta {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewMessageBeta", resourceCulture);
             }
@@ -327,7 +327,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Version {0}.
         /// </summary>
-        public static string Mod_WhatsNewVersion {
+        internal static string Mod_WhatsNewVersion {
             get {
                 return ResourceManager.GetString("Mod_WhatsNewVersion", resourceCulture);
             }
@@ -336,7 +336,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Additional.
         /// </summary>
-        public static string Panel_Additional {
+        internal static string Panel_Additional {
             get {
                 return ResourceManager.GetString("Panel_Additional", resourceCulture);
             }
@@ -345,7 +345,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
-        public static string Settings_Cancel {
+        internal static string Settings_Cancel {
             get {
                 return ResourceManager.GetString("Settings_Cancel", resourceCulture);
             }
@@ -354,7 +354,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Change log.
         /// </summary>
-        public static string Settings_ChangeLog {
+        internal static string Settings_ChangeLog {
             get {
                 return ResourceManager.GetString("Settings_ChangeLog", resourceCulture);
             }
@@ -363,7 +363,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на General.
         /// </summary>
-        public static string Settings_GeneralTab {
+        internal static string Settings_GeneralTab {
             get {
                 return ResourceManager.GetString("Settings_GeneralTab", resourceCulture);
             }
@@ -372,7 +372,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Language.
         /// </summary>
-        public static string Settings_Language {
+        internal static string Settings_Language {
             get {
                 return ResourceManager.GetString("Settings_Language", resourceCulture);
             }
@@ -381,7 +381,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Notifications.
         /// </summary>
-        public static string Settings_Notifications {
+        internal static string Settings_Notifications {
             get {
                 return ResourceManager.GetString("Settings_Notifications", resourceCulture);
             }
@@ -390,7 +390,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Shortcuts.
         /// </summary>
-        public static string Settings_Shortcuts {
+        internal static string Settings_Shortcuts {
             get {
                 return ResourceManager.GetString("Settings_Shortcuts", resourceCulture);
             }
@@ -399,7 +399,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Notification only about major updates.
         /// </summary>
-        public static string Settings_ShowOnlyMajor {
+        internal static string Settings_ShowOnlyMajor {
             get {
                 return ResourceManager.GetString("Settings_ShowOnlyMajor", resourceCulture);
             }
@@ -408,7 +408,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Show tooltips.
         /// </summary>
-        public static string Settings_ShowTooltips {
+        internal static string Settings_ShowTooltips {
             get {
                 return ResourceManager.GetString("Settings_ShowTooltips", resourceCulture);
             }
@@ -417,7 +417,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Show what&apos;s new.
         /// </summary>
-        public static string Settings_ShowWhatsNew {
+        internal static string Settings_ShowWhatsNew {
             get {
                 return ResourceManager.GetString("Settings_ShowWhatsNew", resourceCulture);
             }
@@ -426,7 +426,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Support.
         /// </summary>
-        public static string Settings_SupportTab {
+        internal static string Settings_SupportTab {
             get {
                 return ResourceManager.GetString("Settings_SupportTab", resourceCulture);
             }
@@ -435,7 +435,7 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Troubleshooting.
         /// </summary>
-        public static string Settings_Troubleshooting {
+        internal static string Settings_Troubleshooting {
             get {
                 return ResourceManager.GetString("Settings_Troubleshooting", resourceCulture);
             }
