@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Mausrad scrollen zum ändern
-Shift x10, Strg x0.1</value>
+    <value>Mausrad scrollen zum Ändern
+Shift x10, Strg x0,1</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
@@ -128,7 +128,7 @@ Shift x10, Strg x0.1</value>
     <value>Nein</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>Ok</value>
+    <value>OK</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
     <value>Ja</value>
@@ -235,7 +235,7 @@ Starte das Spiel neu.</value>
     <value>Benachrichtigungen nur bei Haupt-Versions-Updates</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Zeige Tooltips</value>
+    <value>Quickinfo anzeigen</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>"Was gibt es neues" zeigen</value>
