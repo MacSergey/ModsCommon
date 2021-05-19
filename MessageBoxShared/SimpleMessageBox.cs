@@ -55,12 +55,9 @@ namespace ModsCommon.UI
     }
     public class TwoButtonMessageBox : OneButtonMessageBox
     {
-        private new CustomUIButton Button { get; set; }
-        private new Func<bool> OnButtonClick { get; set; }
-
-        protected CustomUIButton Button1 { get => base.Button; set => base.Button = value; }
+        protected CustomUIButton Button1 { get => Button; set => Button = value; }
         protected CustomUIButton Button2 { get; set; }
-        public Func<bool> OnButton1Click { get => base.OnButtonClick; set => base.OnButtonClick = value; }
+        public Func<bool> OnButton1Click { get => OnButtonClick; set => OnButtonClick = value; }
         public Func<bool> OnButton2Click { get; set; }
         public string Button1Text { set => Button1.text = value; }
         public string Button2Text { set => Button2.text = value; }
@@ -107,15 +104,10 @@ namespace ModsCommon.UI
     public abstract class ErrorLoadedMessageBox<TypeMod> : TwoButtonMessageBox
         where TypeMod : BaseMod<TypeMod>
     {
-        private new Func<bool> OnButton1Click { get; set; }
-        private new Func<bool> OnButton2Click { get; set; }
-        private new string Button1Text { get; set; }
-        private new string Button2Text { get; set; }
-
         public Func<bool> OnSupportClick
         {
             get => OnButton2Click;
-            set => base.OnButton2Click = value;
+            set => OnButton2Click = value;
         }
 
         public ErrorLoadedMessageBox()
