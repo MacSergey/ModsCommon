@@ -70,7 +70,7 @@ namespace ModsCommon
         {
             LoadingManager.instance.m_introLoaded -= EnableImpl;
             Enable();
-            CheckLoadedError();
+            CheckLoadedError(LoadError && !ErrorShown);
         }
         protected abstract void Enable();
         protected abstract void Disable();
@@ -99,16 +99,16 @@ namespace ModsCommon
             Logger.Debug($"Current cultute - {culture?.Name ?? "null"}");
         }
 
-        protected void CheckLoadedError()
+        protected void CheckLoadedError(bool condition)
         {
-            if (LoadError && !ErrorShown)
+            if (condition)
             {
                 ErrorShown = true;
                 OnLoadedError();
             }
         }
         public virtual string GetLocalizeString(string str, CultureInfo culture = null) => str;
-        public virtual void OnLoadedError() { }
+        protected virtual void OnLoadedError() { }
 
         public void ShowWhatsNew()
         {
@@ -206,7 +206,5 @@ namespace ModsCommon
 
         public void GetStable() => WorkshopUrl.OpenUrl();
         public void OpenWorkshop() => (!IsBeta ? WorkshopUrl : BetaWorkshopUrl).OpenUrl();
-
-        protected class ErrorLoadedMessageBox : ErrorLoadedMessageBox<TypeMod> { }
     }
 }

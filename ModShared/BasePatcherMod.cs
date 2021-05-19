@@ -33,31 +33,28 @@ namespace ModsCommon
 
             try
             {
-                Patch();
+                Logger.Debug("Patch");
+                HarmonyHelper.DoOnHarmonyReady(() => StartPatch());
             }
             catch (Exception error)
             {
-                LoadError = true;
+                PatchError = true;
                 Logger.Error("Patch failed", error);
             }
         }
         protected override void Disable()
         {
-            try { Unpatch(); }
-            catch (Exception error) { Logger.Error("Unpatch failed", error); }
-        }
-
-        private void Patch()
-        {
-            Logger.Debug("Patch");
-            HarmonyHelper.DoOnHarmonyReady(() => StartPatch());
-        }
-        private void Unpatch()
-        {
-            Logger.Debug($"Unpatch all");
-            var harmony = Harmony as Harmony;
-            harmony.UnpatchAll(harmony.Id);
-            Logger.Debug($"Unpatched");
+            try
+            {
+                Logger.Debug($"Unpatch all");
+                var harmony = Harmony as Harmony;
+                harmony.UnpatchAll(harmony.Id);
+                Logger.Debug($"Unpatched");
+            }
+            catch (Exception error)
+            {
+                Logger.Error("Unpatch failed", error);
+            }
         }
 
         private void StartPatch()
@@ -75,7 +72,7 @@ namespace ModsCommon
                 Logger.Error("Patch Filed", error);
             }
 
-            CheckLoadedError();
+            CheckLoadedError(PatchError);
         }
         protected abstract bool PatchProcess();
 
