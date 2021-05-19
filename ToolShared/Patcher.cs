@@ -1,7 +1,6 @@
 ﻿using CitiesHarmony.API;
 using ColossalFramework.UI;
 using HarmonyLib;
-using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +9,10 @@ using System.Reflection.Emit;
 
 namespace ModsCommon
 {
-    public abstract partial class BasePatcherMod<TypeMod> : BaseMod<TypeMod>
-        where TypeMod : BaseMod<TypeMod>
+    public static partial class Patcher
     {
-        #region ADD TOOL
-
-        protected bool AddTool<TypeTool>()
-            where TypeTool : BaseTool<TypeMod, TypeTool>
-        {
-            var patch = AccessTools.Method(typeof(BasePatcherMod<TypeMod>), nameof(ToolControllerAwakeTranspiler), generics: new Type[] { typeof(TypeTool) });
-            return AddTranspiler(patch, typeof(ToolController), "Awake");
-        }
-
-        protected static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler<TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler<TypeMod, TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
+            where TypeMod : BaseMod<TypeMod>
             where TypeTool : BaseTool<TypeMod, TypeTool>
         {
             var createMethod = AccessTools.Method(typeof(TypeTool), nameof(BaseTool<TypeMod, TypeTool>.Create));
@@ -32,17 +22,8 @@ namespace ModsCommon
                 yield return instruction;
         }
 
-        #endregion
-
-        #region TOOL ONESCAPE
-
-        protected bool ToolOnEscape<TypeTool>()
-            where TypeTool : BaseTool<TypeMod, TypeTool>
-        {
-            var patch = AccessTools.Method(typeof(BasePatcherMod<TypeMod>), nameof(GameKeyShortcutsEscapeTranspiler), generics: new Type[] { typeof(TypeTool) });
-            return AddTranspiler(patch, typeof(GameKeyShortcuts), "Escape");
-        }
-        protected static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler<TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler<TypeMod, TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
+            where TypeMod : BaseMod<TypeMod>
             where TypeTool : BaseTool<TypeMod, TypeTool>
         {
             var instructionList = instructions.ToList();
@@ -82,27 +63,16 @@ namespace ModsCommon
             return instructionList;
         }
 
-        #endregion
-
-        #region ADD NETTOOL BUTTON
-
-        private static string RoadsOptionPanel => nameof(RoadsOptionPanel);
-        protected bool AddNetToolButton<TypeButton>()
-        {
-            var patch = AccessTools.Method(typeof(BasePatcherMod<TypeMod>), nameof(GeneratedScrollPanelCreateOptionPanelPostfix), generics: new Type[] { typeof(TypeButton) });
-            return AddPostfix(patch, typeof(GeneratedScrollPanel), "CreateOptionPanel");
-        }
-        public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeButton>(string templateName, ref OptionPanelBase __result)
+        public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeMod, TypeButton>(string templateName, ref OptionPanelBase __result)
+            where TypeMod : BaseMod<TypeMod>
             where TypeButton : UIButton
         {
-            if (__result == null || templateName != RoadsOptionPanel || __result.component.Find<TypeButton>(typeof(TypeButton).Name) != null)
+            if (__result == null || templateName != "RoadsOptionPanel" || __result.component.Find<TypeButton>(typeof(TypeButton).Name) != null)
                 return;
 
             SingletonMod<TypeMod>.Logger.Debug($"Create button");
             __result.component.AddUIComponent<TypeButton>();
             SingletonMod<TypeMod>.Logger.Debug($"Button created");
         }
-
-        #endregion
     }
 }

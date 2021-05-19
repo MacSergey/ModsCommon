@@ -9,7 +9,7 @@
     <Import_RootNamespace>ModsToolShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)BasePatcherMod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Patcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BaseSelectMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BaseTool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BaseToolMode.cs" />

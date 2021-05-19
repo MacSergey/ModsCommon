@@ -11,24 +11,16 @@ using System.Xml.Linq;
 
 namespace ModsCommon.Utilities
 {
-    public abstract class BaseAssetDataExtension<TypeExtension> : AssetDataExtensionBase
-        where TypeExtension : BaseAssetDataExtension<TypeExtension>
+    public interface IBaseAssetDataExtension 
     {
-        public static void LoadAssetPanelOnLoadPostfix(LoadAssetPanel __instance, UIListBox ___m_SaveList)
-        {
-            if (AccessTools.Method(typeof(LoadSavePanelBase<CustomAssetMetaData>), "GetListingMetaData") is not MethodInfo method)
-                return;
-
-            var listingMetaData = (CustomAssetMetaData)method.Invoke(__instance, new object[] { ___m_SaveList.selectedIndex });
-            if (listingMetaData.userDataRef != null)
-            {
-                var userAssetData = (listingMetaData.userDataRef.Instantiate() as AssetDataWrapper.UserAssetData) ?? new AssetDataWrapper.UserAssetData();
-                SingletonItem<TypeExtension>.Instance.OnAssetLoaded(listingMetaData.name, ToolsModifierControl.toolController.m_editPrefabInfo, userAssetData.Data);
-            }
-        }
+        void OnAssetLoaded(string name, object asset, Dictionary<string, byte[]> userData);
+    }
+    public interface IBaseIntersectionAssetDataExtension 
+    {
+        void OnPlaceAsset(BuildingInfo buildingInfo, FastList<ushort> segments, FastList<ushort> nodes);
     }
 
-    public abstract class BaseAssetDataExtension<TypeExtension, TypeAssetData> : BaseAssetDataExtension<TypeExtension>
+    public abstract class BaseAssetDataExtension<TypeExtension, TypeAssetData> : AssetDataExtensionBase, IBaseAssetDataExtension
         where TypeExtension : BaseAssetDataExtension<TypeExtension, TypeAssetData>
     {
         protected Dictionary<BuildingInfo, TypeAssetData> AssetDatas { get; } = new Dictionary<BuildingInfo, TypeAssetData>();
@@ -56,7 +48,7 @@ namespace ModsCommon.Utilities
         public abstract void Save(BuildingInfo prefab, Dictionary<string, byte[]> userData);
     }
 
-    public abstract class BaseIntersectionAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap> : BaseAssetDataExtension<TypeExtension, AssetData>
+    public abstract class BaseIntersectionAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap> : BaseAssetDataExtension<TypeExtension, AssetData>, IBaseIntersectionAssetDataExtension
         where TypeMod : BaseMod<TypeMod>
         where TypeExtension : BaseIntersectionAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap>
         where TypeObjectMap : IObjectsMap
@@ -176,50 +168,7 @@ namespace ModsCommon.Utilities
         }
         private ushort GetUShort(byte b1, byte b2) => (ushort)((b1 << 8) + b2);
 
-        public static IEnumerable<CodeInstruction> BuildingDecorationLoadPathsTranspiler(IEnumerable<CodeInstruction> instructions)
-        {
-            var segmentBufferField = AccessTools.DeclaredField(typeof(NetManager), nameof(NetManager.m_tempSegmentBuffer));
-            var nodeBufferField = AccessTools.DeclaredField(typeof(NetManager), nameof(NetManager.m_tempNodeBuffer));
-            var clearMethod = AccessTools.DeclaredMethod(nodeBufferField.FieldType, nameof(FastList<ushort>.Clear));
-
-            var matchCount = 0;
-            var inserted = false;
-            var enumerator = instructions.GetEnumerator();
-            var prevPrevInstruction = (CodeInstruction)null;
-            var prevInstruction = (CodeInstruction)null;
-            while (enumerator.MoveNext())
-            {
-                var instruction = enumerator.Current;
-
-                if (prevInstruction != null && prevInstruction.opcode == OpCodes.Ldfld && prevInstruction.operand == nodeBufferField && instruction.opcode == OpCodes.Callvirt && instruction.operand == clearMethod)
-                    matchCount += 1;
-
-                if (!inserted && matchCount == 2)
-                {
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(SingletonItem<TypeExtension>), nameof(SingletonItem<TypeExtension>.Instance)));
-                    yield return new CodeInstruction(OpCodes.Box, typeof(TypeExtension));
-                    yield return new CodeInstruction(OpCodes.Ldarg_0);
-                    yield return new CodeInstruction(OpCodes.Ldloc_0);
-                    yield return new CodeInstruction(OpCodes.Ldfld, segmentBufferField);
-                    yield return new CodeInstruction(OpCodes.Ldloc_0);
-                    yield return new CodeInstruction(OpCodes.Ldfld, nodeBufferField);
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(TypeExtension), nameof(OnPlaceAsset)));
-                    inserted = true;
-                }
-
-                if (prevPrevInstruction != null)
-                    yield return prevPrevInstruction;
-
-                prevPrevInstruction = prevInstruction;
-                prevInstruction = instruction;
-            }
-
-            if (prevPrevInstruction != null)
-                yield return prevPrevInstruction;
-
-            if (prevInstruction != null)
-                yield return prevInstruction;
-        }
+        
     }
     public struct AssetData
     {

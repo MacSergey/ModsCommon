@@ -10,7 +10,7 @@ using System.Reflection.Emit;
 
 namespace ModsCommon
 {
-    public abstract partial class BasePatcherMod<TypeMod> : BaseMod<TypeMod>
+    public abstract class BasePatcherMod<TypeMod> : BaseMod<TypeMod>
         where TypeMod : BaseMod<TypeMod>
     {
         #region PROPERTIES
