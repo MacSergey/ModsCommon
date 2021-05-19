@@ -34,7 +34,7 @@ namespace ModsCommon
         private UIPanel MainPanel { get; set; }
         protected TabStrip TabStrip { get; set; }
         protected List<CustomUIPanel> TabPanels { get; set; }
-        protected UIHelper GeneralTab { get; private set; }
+        protected UIAdvancedHelper GeneralTab { get; private set; }
 
         public void OnSettingsUI(UIHelperBase helper)
         {
@@ -89,7 +89,7 @@ namespace ModsCommon
             panel.size = new Vector2(MainPanel.width, MainPanel.height - (TabStrip.isVisible ? MainPanel.autoLayoutPadding.vertical + TabStrip.height : 0f));
         }
 
-        protected UIHelper CreateTab(string name)
+        protected UIAdvancedHelper CreateTab(string name)
         {
             TabStrip.AddTab(name, 1.25f);
 
@@ -99,14 +99,14 @@ namespace ModsCommon
             tabPanel.isVisible = false;
             TabPanels.Add(tabPanel);
 
-            return new UIHelper(tabPanel.Content);
+            return new UIAdvancedHelper(tabPanel.Content);
         }
 
         #region LANGUAGE
 
-        protected void AddLanguage(UIHelperBase helper)
+        protected void AddLanguage(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup(CommonLocalize.Settings_Language) as UIHelper;
+            var group = helper.AddGroup(CommonLocalize.Settings_Language);
             AddLanguageList(group);
         }
 
@@ -156,15 +156,33 @@ namespace ModsCommon
 
         #region NOTIFICATIONS
 
-        protected void AddNotifications(UIHelperBase helper)
+        protected void AddNotifications(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup(CommonLocalize.Settings_Notifications) as UIHelper;
+            var group = helper.AddGroup(CommonLocalize.Settings_Notifications);
 
             AddCheckBox(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
             AddCheckBox(group, CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
         }
 
         #endregion
+    }
+    public class UIAdvancedHelper : UIHelper
+    {
+        public UIAutoLayoutScrollablePanel Content => self as UIAutoLayoutScrollablePanel;
+        public UIAdvancedHelper(UIAutoLayoutScrollablePanel panel) : base(panel) { }
+
+        public new UIHelper AddGroup(string name = null)
+        {
+            var panel = Content.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsGroupTemplate")) as UIPanel;
+            var label = panel.Find<UILabel>("Label");
+
+            if (!string.IsNullOrEmpty(name))
+                label.text = name;
+            else
+                label.isVisible = false;
+
+            return new UIHelper(panel.Find("Content"));
+        }
     }
     public static class SettingsHelper
     {
