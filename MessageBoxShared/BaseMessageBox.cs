@@ -72,7 +72,7 @@ namespace ModsCommon.UI
             isVisible = true;
             canFocus = true;
             isInteractive = true;
-            relativePosition = new Vector3((GetUIView().fixedWidth - width) / 2, (GetUIView().fixedHeight - height) / 2);
+            relativePosition = (GetUIView().GetScreenResolution() - new Vector2(width, height)) / 2f;
             size = new Vector2(DefaultWidth, DefaultHeight);
             color = new Color32(58, 88, 104, 255);
             backgroundSprite = "MenuPanel";
@@ -133,14 +133,23 @@ namespace ModsCommon.UI
         {
             base.OnSizeChanged();
 
-            var view = GetUIView();
+            var resolution = GetUIView().GetScreenResolution();
             var delta = (size - SizeBefore) / 2;
             SizeBefore = size;
 
-            var x = Mathf.Clamp(relativePosition.x - delta.x, 0f, view.fixedWidth - size.x);
-            var y = Mathf.Clamp(relativePosition.y - delta.y, 0f, view.fixedHeight - size.y);
+            var x = Mathf.Clamp(relativePosition.x - delta.x, 0f, resolution.x - size.x);
+            var y = Mathf.Clamp(relativePosition.y - delta.y, 0f, resolution.y - size.y);
 
             relativePosition = new Vector2(x, y);
+        }
+        protected override void OnResolutionChanged(Vector2 previousResolution, Vector2 currentResolution)
+        {
+            base.OnResolutionChanged(previousResolution, currentResolution);
+
+            PerformLayout();
+            var deltaX = currentResolution.x - previousResolution.x;
+            var deltaY = currentResolution.y - previousResolution.y;
+            relativePosition += new Vector3(deltaX / 2f, deltaY / 2f);
         }
 
         private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
