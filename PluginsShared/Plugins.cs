@@ -2,6 +2,8 @@ using ColossalFramework;
 using ColossalFramework.IO;
 using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
+using ColossalFramework.UI;
+using HarmonyLib;
 using ICities;
 using System;
 using System.Linq;
@@ -30,6 +32,25 @@ namespace ModsCommon.Utilities
             var localSearcher = new AllSearcher(new UserModNameSearcher(name), PathSearcher.Local);
 
             return new AnySearcher(workshopSearcher, localSearcher);
+        }
+
+        public static void SetState(this PluginInfo plugin, bool enable)
+        {
+            if (plugin.isEnabled == enable)
+                return;
+
+            plugin.isEnabled = enable;
+
+            if (UIView.library.Get<ContentManagerPanel>("ContentManagerPanel") is ContentManagerPanel managerPanel)
+            {
+                var categoriesContainer = AccessTools.Field(typeof(ContentManagerPanel), "m_CategoriesContainer").GetValue(managerPanel) as UITabContainer;
+                var modCategory = categoriesContainer.Find("Mods");
+                if (categoriesContainer.components[categoriesContainer.selectedIndex] == modCategory)
+                {
+                    var categoryContentPanel = modCategory.Find("Content").GetComponent<CategoryContentPanel>();
+                    AccessTools.Method(typeof(CategoryContentPanel), "RefreshEntries").Invoke(categoryContentPanel, new object[0]);
+                }
+            }
         }
     }
 
