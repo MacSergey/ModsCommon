@@ -17,10 +17,10 @@ namespace ModsCommon
 
         protected override bool LoadError
         {
-            get => base.LoadError || PatchError;
+            get => base.LoadError || PatchResult == Result.Failed;
             set => base.LoadError = value;
         }
-        public bool PatchError { get; private set; }
+        private Result PatchResult { get; set; }
         public object Harmony => new Harmony(Id);
 
         #endregion
@@ -29,32 +29,25 @@ namespace ModsCommon
 
         protected override void Enable()
         {
-            PatchError = false;
-
-            try
-            {
-                Logger.Debug("Patch");
-                HarmonyHelper.DoOnHarmonyReady(() => StartPatch());
-            }
-            catch (Exception error)
-            {
-                PatchError = true;
-                Logger.Error("Patch failed", error);
-            }
+            PatchResult = Result.None;
+            Patch();
         }
         protected override void Disable()
         {
-            try
-            {
-                Logger.Debug($"Unpatch all");
-                var harmony = Harmony as Harmony;
-                harmony.UnpatchAll(harmony.Id);
-                Logger.Debug($"Unpatched");
-            }
-            catch (Exception error)
-            {
-                Logger.Error("Unpatch failed", error);
-            }
+            if (PatchResult == Result.Success)
+                Unpatch();
+        }
+        private void Patch()
+        {
+            Logger.Debug("Patch");
+            HarmonyHelper.DoOnHarmonyReady(() => StartPatch());
+        }
+        private void Unpatch()
+        {
+            Logger.Debug($"Unpatch all");
+            var harmony = Harmony as Harmony;
+            harmony.UnpatchAll(harmony.Id);
+            Logger.Debug($"Unpatched");
         }
 
         private void StartPatch()
@@ -63,16 +56,16 @@ namespace ModsCommon
 
             try
             {
-                PatchError = !PatchProcess();
-                Logger.Debug(PatchError ? "Patch Filed" : "Patch success");
+                PatchResult = PatchProcess() ? Result.Success : Result.Failed;
+                Logger.Debug($"Patch {PatchResult}");
             }
             catch (Exception error)
             {
-                PatchError = true;
-                Logger.Error("Patch Filed", error);
+                PatchResult = Result.Failed;
+                Logger.Error($"Patch {PatchResult}", error);
             }
 
-            CheckLoadedError(PatchError);
+            CheckLoadedError(PatchResult == Result.Failed);
         }
         protected abstract bool PatchProcess();
 
@@ -161,6 +154,12 @@ namespace ModsCommon
             Prefix,
             Postfix,
             Transpiler
+        }
+        private enum Result
+        {
+            None,
+            Success,
+            Failed
         }
         private class PatchExeption : Exception
         {

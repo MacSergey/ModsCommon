@@ -64,13 +64,27 @@ namespace ModsCommon
             LoadingManager.instance.m_introLoaded -= EnableImpl;
             LocaleManager.eventLocaleChanged -= LocaleChanged;
 
-            Disable();
+            try
+            {
+                Disable();
+            }
+            catch (Exception error)
+            {
+                Logger.Error("Disable failed", error);
+            }
         }
         private void EnableImpl()
         {
             LoadingManager.instance.m_introLoaded -= EnableImpl;
-            Enable();
-            CheckLoadedError(LoadError && !ErrorShown);
+            try
+            {
+                Enable();
+                CheckLoadedError(LoadError && !ErrorShown);
+            }
+            catch (Exception error)
+            {
+                Logger.Error("Enable failed", error);
+            }
         }
         protected abstract void Enable();
         protected abstract void Disable();
