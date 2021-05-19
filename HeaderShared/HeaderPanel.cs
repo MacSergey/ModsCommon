@@ -24,6 +24,55 @@ namespace ModsCommon.UI
             Content.relativePosition = new Vector2(0, 0);
         }
     }
+    public abstract class BaseDeletableHeaderPanel<TypeContent> : BaseHeaderPanel<TypeContent>
+        where TypeContent : BaseHeaderContent
+    {
+        public event Action OnDelete;
+
+        protected CustomUIButton DeleteButton { get; set; }
+
+        public BaseDeletableHeaderPanel() : base()
+        {
+            AddDeleteButton();
+        }
+
+        public virtual void Init(float? height = null, bool isDeletable = true)
+        {
+            base.Init(height);
+            DeleteButton.isVisible = isDeletable;
+            SetSize();
+        }
+        public override void DeInit()
+        {
+            base.DeInit();
+            OnDelete = null;
+        }
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+            SetSize();
+        }
+        private void SetSize()
+        {
+            Content.size = new Vector2((DeleteButton.isVisible ? width - DeleteButton.width - 10 : width) - ItemsPadding, height);
+            Content.relativePosition = new Vector2(ItemsPadding, 0f);
+            DeleteButton.relativePosition = new Vector2(width - DeleteButton.width - 5, (height - DeleteButton.height) / 2);
+        }
+
+        private void AddDeleteButton()
+        {
+            DeleteButton = AddUIComponent<CustomUIButton>();
+            DeleteButton.zOrder = 0;
+            DeleteButton.atlas = CommonTextures.Atlas;
+            DeleteButton.normalBgSprite = CommonTextures.DeleteNormal;
+            DeleteButton.hoveredBgSprite = CommonTextures.DeleteHover;
+            DeleteButton.pressedBgSprite = CommonTextures.DeletePressed;
+            DeleteButton.size = new Vector2(20, 20);
+            DeleteButton.eventClick += DeleteClick;
+        }
+        private void DeleteClick(UIComponent component, UIMouseEventParameter eventParam) => OnDelete?.Invoke();
+    }
+
     public class BaseHeaderContent : CustomUIPanel
     {
         public BaseHeaderContent()
