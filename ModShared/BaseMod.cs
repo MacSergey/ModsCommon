@@ -145,6 +145,11 @@ namespace ModsCommon
                 BaseSettings<TypeMod>.WhatsNewVersion.value = SingletonMod<TypeMod>.Version.ToString();
                 return true;
             }
+            static bool GetStable()
+            {
+                SingletonMod<TypeMod>.Instance.GetStable();
+                return Confirm();
+            }
         }
 
         public Dictionary<Version, string> GetWhatsNewMessages(Version whatNewVersion)
@@ -191,18 +196,15 @@ namespace ModsCommon
                     BaseSettings<TypeMod>.BetaWarning.value = false;
                     return true;
                 }
+                static bool GetStable()
+                {
+                    SingletonMod<TypeMod>.Instance.GetStable();
+                    return true;
+                }
             }
         }
 
-        private bool GetStable()
-        {
-            WorkshopUrl.OpenUrl();
-            return true;
-        }
-        protected bool OpenWorkshop()
-        {
-            (!IsBeta ? WorkshopUrl : BetaWorkshopUrl).OpenUrl();
-            return true;
-        }
+        public void GetStable() => WorkshopUrl.OpenUrl();
+        public void OpenWorkshop() => (!IsBeta ? WorkshopUrl : BetaWorkshopUrl).OpenUrl();
     }
 }
