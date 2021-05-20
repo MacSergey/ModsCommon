@@ -28,8 +28,11 @@ namespace ModsCommon
         public abstract string Description { get; }
 
         public Logger Logger { get; private set; }
-        public abstract string WorkshopUrl { get; }
-        public abstract string BetaWorkshopUrl { get; }
+        protected abstract string StableWorkshopUrl { get; }
+        protected abstract string BetaWorkshopUrl { get; }
+        protected virtual string ModSupportUrl => string.Empty;
+        public string WorkshopUrl => !IsBeta ? StableWorkshopUrl : BetaWorkshopUrl;
+        public string SupportUrl => !string.IsNullOrEmpty(ModSupportUrl) ? ModSupportUrl : WorkshopUrl;
         public abstract List<Version> Versions { get; }
         protected abstract string IdRaw { get; }
         public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
@@ -87,7 +90,7 @@ namespace ModsCommon
             }
             finally
             {
-                CheckLoadedError(LoadError && !ErrorShown);
+                CheckLoadError(LoadError && !ErrorShown);
             }
         }
         protected abstract void Enable();
@@ -117,16 +120,16 @@ namespace ModsCommon
             Logger.Debug($"Current cultute - {culture?.Name ?? "null"}");
         }
 
-        protected void CheckLoadedError(bool condition)
+        protected void CheckLoadError(bool condition)
         {
             if (condition)
             {
-                ErrorShown = true;
-                OnLoadedError();
+                OnLoadError(out var shown);
+                ErrorShown = shown;
             }
         }
         public virtual string GetLocalizeString(string str, CultureInfo culture = null) => str;
-        protected virtual void OnLoadedError() { }
+        protected virtual void OnLoadError(out bool shown) => shown = ErrorShown;
 
         public void ShowWhatsNew()
         {
@@ -141,7 +144,7 @@ namespace ModsCommon
 
             if (!IsBeta)
             {
-                var messageBox = MessageBoxBase.ShowModal<WhatsNewMessageBox>();
+                var messageBox = MessageBox.Show<WhatsNewMessageBox>();
                 messageBox.CaptionText = string.Format(CommonLocalize.Mod_WhatsNewCaption, NameRaw);
                 messageBox.OnButtonClick = Confirm;
                 messageBox.OkText = CommonLocalize.MessageBox_OK;
@@ -149,7 +152,7 @@ namespace ModsCommon
             }
             else
             {
-                var messageBox = MessageBoxBase.ShowModal<BetaWhatsNewMessageBox>();
+                var messageBox = MessageBox.Show<BetaWhatsNewMessageBox>();
                 messageBox.CaptionText = string.Format(CommonLocalize.Mod_WhatsNewCaption, NameRaw);
                 messageBox.OnButtonClick = Confirm;
                 messageBox.OnGetStableClick = GetStable;
@@ -201,7 +204,7 @@ namespace ModsCommon
                 BaseSettings<TypeMod>.BetaWarning.value = true;
             else if (BaseSettings<TypeMod>.BetaWarning.value)
             {
-                var messageBox = MessageBoxBase.ShowModal<TwoButtonMessageBox>();
+                var messageBox = MessageBox.Show<TwoButtonMessageBox>();
                 messageBox.CaptionText = CommonLocalize.Mod_BetaWarningCaption;
                 messageBox.MessageText = string.Format(CommonLocalize.Mod_BetaWarningMessage, NameRaw);
                 messageBox.Button1Text = CommonLocalize.Mod_BetaWarningAgree;
@@ -222,7 +225,20 @@ namespace ModsCommon
             }
         }
 
-        public void GetStable() => WorkshopUrl.OpenUrl();
-        public void OpenWorkshop() => (!IsBeta ? WorkshopUrl : BetaWorkshopUrl).OpenUrl();
+        public bool GetStable()
+        {
+            StableWorkshopUrl.OpenUrl();
+            return true;
+        }
+        public bool OpenWorkshop()
+        {
+            WorkshopUrl.OpenUrl();
+            return true;
+        }
+        public bool OpenSupport()
+        {
+            SupportUrl.OpenUrl();
+            return true;
+        }
     }
 }

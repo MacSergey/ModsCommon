@@ -7,18 +7,9 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class MessageBoxBase : CustomUIPanel, IAutoLayoutPanel
+    public static class MessageBox
     {
-        public static float DefaultWidth => 573f;
-        public static float DefaultHeight => 200f;
-        public static float ButtonHeight => 47f;
-        public static int Padding => 16;
-        public static float MaxContentHeight => 500f;
-        private static float ButtonsSpace => 25f;
-        protected virtual int ContentSpacing => 0;
-
-        public static T ShowModal<T>()
-        where T : MessageBoxBase
+        public static T Show<T>() where T : MessageBoxBase
         {
             var uiObject = new GameObject();
             uiObject.transform.parent = UIView.GetAView().transform;
@@ -40,7 +31,7 @@ namespace ModsCommon.UI
 
             return messageBox;
         }
-        public static void HideModal(MessageBoxBase messageBox)
+        public static void Hide(MessageBoxBase messageBox)
         {
             UIView.PopModal();
 
@@ -53,8 +44,20 @@ namespace ModsCommon.UI
             }
 
             messageBox.Hide();
-            Destroy(messageBox.gameObject);
+            UnityEngine.Object.Destroy(messageBox.gameObject);
         }
+    }
+    public abstract class MessageBoxBase : CustomUIPanel, IAutoLayoutPanel
+    {
+        public static float DefaultWidth => 573f;
+        public static float DefaultHeight => 200f;
+        public static float ButtonHeight => 47f;
+        public static int Padding => 16;
+        public static float MaxContentHeight => 500f;
+        private static float ButtonsSpace => 25f;
+        protected virtual int ContentSpacing => 0;
+
+        
 
         private CustomUIDragHandle Header { get; set; }
         private CustomUILabel Caption { get; set; }
@@ -222,7 +225,7 @@ namespace ModsCommon.UI
             }
         }
 
-        protected virtual void Close() => HideModal(this);
+        protected virtual void Close() => MessageBox.Hide(this);
         public void StopLayout() => Panel.StopLayout();
         public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
     }

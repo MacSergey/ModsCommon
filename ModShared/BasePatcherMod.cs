@@ -1,6 +1,7 @@
 ﻿using CitiesHarmony.API;
 using ColossalFramework.UI;
 using HarmonyLib;
+using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace ModsCommon
 
         protected override bool LoadError
         {
-            get => base.LoadError || PatchResult == Result.Failed;
+            get => base.LoadError || PatchResult.IsSet(Result.Failed);
             set => base.LoadError = value;
         }
         protected Result PatchResult { get; private set; }
@@ -45,6 +46,9 @@ namespace ModsCommon
         {
             Logger.Debug("Patch");
             HarmonyHelper.DoOnHarmonyReady(() => StartPatch());
+
+            if (HarmonyPlugin == null)
+                PatchResult = Result.NoHarmony;
         }
         private void Unpatch()
         {
@@ -69,8 +73,26 @@ namespace ModsCommon
                 Logger.Error($"Patch {PatchResult}", error);
             }
 
-            CheckLoadedError(PatchResult == Result.Failed);
+            CheckLoadError(PatchResult == Result.Failed);
         }
+        protected override void OnLoadError(out bool shown)
+        {
+            base.OnLoadError(out shown);
+
+            if (shown)
+                return;
+            else if (PatchResult == Result.NoHarmony)
+                shown = true;
+            else if (PatchResult == Result.Failed)
+            {
+                var message = MessageBox.Show<ErrorPatchMessageBox>();
+                message.Init<TypeMod>();
+
+                shown = true;
+            }
+        }
+
+
         protected abstract bool PatchProcess();
 
         protected bool AddPrefix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Prefix, patchType, patchMethod, type, method, parameters);
@@ -164,6 +186,7 @@ namespace ModsCommon
             None = 0,
             Success = 1,
             Failed = 2,
+            NoHarmony = 4 | Failed,
         }
         private class PatchExeption : Exception
         {

@@ -101,21 +101,23 @@ namespace ModsCommon.UI
             Button2Text = CommonLocalize.MessageBox_No;
         }
     }
-    public abstract class ErrorLoadedMessageBox<TypeMod> : TwoButtonMessageBox
-        where TypeMod : BaseMod<TypeMod>
+    public abstract class ErrorMessageBox : TwoButtonMessageBox
     {
-        public Func<bool> OnSupportClick
-        {
-            get => OnButton2Click;
-            set => OnButton2Click = value;
-        }
-
-        public ErrorLoadedMessageBox()
+        public virtual void Init<TypeMod>() where TypeMod : BaseMod<TypeMod>
         {
             CaptionText = SingletonMod<TypeMod>.Instance.NameRaw;
-            MessageText = CommonLocalize.Mod_LoadedWithErrors;
             Button1Text = CommonLocalize.MessageBox_OK;
+        }
+    }
+    public class ErrorPatchMessageBox : ErrorMessageBox
+    {
+        public override void Init<TypeMod>()
+        {
+            base.Init<TypeMod>();
+
+            MessageText = CommonLocalize.Mod_LoadedWithErrors;
             Button2Text = CommonLocalize.Mod_Support;
+            OnButton2Click = SingletonMod<TypeMod>.Instance.OpenSupport;
         }
     }
 }
