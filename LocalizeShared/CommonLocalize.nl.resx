@@ -117,6 +117,45 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Dependency_Conflict" xml:space="preserve">
+    <value>Detected сonflicting mods.</value>
+  </data>
+  <data name="Dependency_Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="Dependency_DisableMod" xml:space="preserve">
+    <value>Disable {0}</value>
+  </data>
+  <data name="Dependency_Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="Dependency_EnableMod" xml:space="preserve">
+    <value>Enable {0}</value>
+  </data>
+  <data name="Dependency_Get" xml:space="preserve">
+    <value>Get</value>
+  </data>
+  <data name="Dependency_Missing" xml:space="preserve">
+    <value>Detected missing dependencies.</value>
+  </data>
+  <data name="Dependency_MissingAndConflict" xml:space="preserve">
+    <value>Detected missing dependencies and сonflicting mods.</value>
+  </data>
+  <data name="Dependency_NeedFix" xml:space="preserve">
+    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+  </data>
+  <data name="Dependency_NoIssues" xml:space="preserve">
+    <value>All issues are fixed, {0} can be enabled.</value>
+  </data>
+  <data name="Dependency_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Dependency_Subscribe" xml:space="preserve">
+    <value>Subscribe</value>
+  </data>
+  <data name="Dependency_Unsubscribe" xml:space="preserve">
+    <value>Unsubscribe</value>
+  </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
     <value>Scroll om te veranderen
 Shift X10, Ctrl X0.1</value>
@@ -137,16 +176,16 @@ Shift X10, Ctrl X0.1</value>
     <value>Ik ga akkoord</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Bèta versie waarschuwing</value>
+    <value>BETA versie waarschuwing</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
     <value>Overstappen naar stabiele versie</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd op de bèta, kan je naar de stabiele versie overstappen.</value>
+    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd bent op de bèta, kun je naar de stabiele versie overstappen.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Dit is een bèta-versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
+    <value>Dit is een BETA versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod is geladen met errors.

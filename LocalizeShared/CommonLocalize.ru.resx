@@ -117,6 +117,45 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Dependency_Conflict" xml:space="preserve">
+    <value>Обнаружены конфликтующие моды.</value>
+  </data>
+  <data name="Dependency_Disable" xml:space="preserve">
+    <value>Отключить</value>
+  </data>
+  <data name="Dependency_DisableMod" xml:space="preserve">
+    <value>Отключить {0}</value>
+  </data>
+  <data name="Dependency_Enable" xml:space="preserve">
+    <value>Включить</value>
+  </data>
+  <data name="Dependency_EnableMod" xml:space="preserve">
+    <value>Включить {0}</value>
+  </data>
+  <data name="Dependency_Get" xml:space="preserve">
+    <value>Получить</value>
+  </data>
+  <data name="Dependency_Missing" xml:space="preserve">
+    <value>Обнаружены недостающие зависимости.</value>
+  </data>
+  <data name="Dependency_MissingAndConflict" xml:space="preserve">
+    <value>Обнаружены недостающие зависимости и конфликтующие моды.</value>
+  </data>
+  <data name="Dependency_NeedFix" xml:space="preserve">
+    <value>Для продолжения использования {0} необходимо исправить эти проблемы, иначе мод будет отключен.</value>
+  </data>
+  <data name="Dependency_NoIssues" xml:space="preserve">
+    <value>Все проблемы исправлены, {0} может быть включен.</value>
+  </data>
+  <data name="Dependency_Remove" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Dependency_Subscribe" xml:space="preserve">
+    <value>Подписаться</value>
+  </data>
+  <data name="Dependency_Unsubscribe" xml:space="preserve">
+    <value>Отписаться</value>
+  </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
     <value>Крутите колесико для изменения
 Shift X10, Ctrl X0.1</value>

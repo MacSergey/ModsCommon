@@ -157,131 +157,132 @@
     <value>Unsubscribe</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Faça scroll para mudar
+    <value>Scroll the wheel to change
 Shift X10, Ctrl X0.1</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Cancel</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Não</value>
+    <value>No</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Sim</value>
+    <value>Yes</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Concordo</value>
+    <value>I agree</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Aviso de versão BETA</value>
+    <value>BETA version warning</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Obter versão estável</value>
+    <value>Get stable version</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Está a usar a versão BETA da {0}. Serve para testar novas funcionalidades e pode conter erros que façam você perder todas as marcações. Se subscreveu por engano troque para a versão estável.</value>
+    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Isto é uma versão BETA, podem ocorrer erros e não é garantida a estabilidade!</value>
+    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>O mod carregou com erros.
-Não é recomendado usar o mod neste estado pois pode levar a comportamento imprevisível.</value>
+    <value>Mod loaded with errors.
+It is not recommended to use the mod in this state as it can lead to unpredictable behavior.
+Restart the game.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Língua do jogo</value>
+    <value>Game Language</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Checo</value>
+    <value>Czech</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Alemão</value>
+    <value>German</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Inglês EUA</value>
+    <value>English US</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Inglês RU</value>
+    <value>English UK</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Espanhol</value>
+    <value>Spanish</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finlandês</value>
+    <value>Finnish</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Francês</value>
+    <value>French</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italiano</value>
+    <value>Italian</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japonês</value>
+    <value>Japanese</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Holandês</value>
+    <value>Dutch</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Polaco</value>
+    <value>Polish</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Português</value>
+    <value>Portuguese</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russo</value>
+    <value>Russian</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinês Simplificado</value>
+    <value>Chinese Simplified</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Apoio</value>
+    <value>Support</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>O que há de novo em {0}</value>
+    <value>What's new in {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Consulta o registo de alterações beta no Discord</value>
+    <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Versão {0}</value>
+    <value>Version {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Adicional</value>
+    <value>Additional</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Cancel</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Registo de alterações</value>
+    <value>Change log</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Geral</value>
+    <value>General</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Linguagem</value>
+    <value>Language</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Notificações</value>
+    <value>Notifications</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Atalhos</value>
+    <value>Shortcuts</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Notificar apenas sobre actualizações principais</value>
+    <value>Notification only about major updates</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Mostrar dicas</value>
+    <value>Show tooltips</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Mostrar as novidades</value>
+    <value>Show what's new</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Apoio</value>
+    <value>Support</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Resolução de problemas</value>
+    <value>Troubleshooting</value>
   </data>
 </root>
