@@ -79,11 +79,15 @@ namespace ModsCommon
             try
             {
                 Enable();
-                CheckLoadedError(LoadError && !ErrorShown);
             }
             catch (Exception error)
             {
+                LoadError = true;
                 Logger.Error("Enable failed", error);
+            }
+            finally
+            {
+                CheckLoadedError(LoadError && !ErrorShown);
             }
         }
         protected abstract void Enable();

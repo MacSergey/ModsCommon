@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
 {
@@ -20,8 +21,11 @@ namespace ModsCommon
             get => base.LoadError || PatchResult == Result.Failed;
             set => base.LoadError = value;
         }
-        private Result PatchResult { get; set; }
+        protected Result PatchResult { get; private set; }
         public object Harmony => new Harmony(Id);
+
+        private static IPluginSearcher HarmonySearcher { get; } = PluginUtilities.GetSearcher("Harmony 2", 2040656402ul, 2399204842ul);
+        public static PluginInfo HarmonyPlugin => PluginUtilities.GetPlugin(HarmonySearcher);
 
         #endregion
 
@@ -155,11 +159,11 @@ namespace ModsCommon
             Postfix,
             Transpiler
         }
-        private enum Result
+        protected enum Result
         {
-            None,
-            Success,
-            Failed
+            None = 0,
+            Success = 1,
+            Failed = 2,
         }
         private class PatchExeption : Exception
         {
