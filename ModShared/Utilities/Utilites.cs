@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace ModsCommon.Utilities
 {
-    public static class Utilites
+    public static class Utility
     {
         public static void OpenUrl(this string url)
         {

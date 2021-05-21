@@ -54,11 +54,10 @@ namespace ModsCommon.UI
         public static float ButtonHeight => 47f;
         public static int Padding => 16;
         public static float MaxContentHeight => 500f;
-        private static float ButtonsSpace => 25f;
+        protected static float ButtonsSpace => 25f;
         protected virtual int ContentSpacing => 0;
 
         
-
         private CustomUIDragHandle Header { get; set; }
         private CustomUILabel Caption { get; set; }
         protected AutoSizeAdvancedScrollablePanel Panel { get; set; }
@@ -169,12 +168,7 @@ namespace ModsCommon.UI
         protected CustomUIButton AddButton(Action action, uint ratio = 1)
         {
             var button = ButtonPanel.AddUIComponent<CustomUIButton>();
-            button.normalBgSprite = "ButtonMenu";
-            button.hoveredTextColor = new Color32(7, 132, 255, 255);
-            button.pressedTextColor = new Color32(30, 30, 44, 255);
-            button.disabledTextColor = new Color32(7, 7, 7, 255);
-            button.horizontalAlignment = UIHorizontalAlignment.Center;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
+            button.SetMenuStyle();
             button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => action?.Invoke();
 
             ButtonsRatio.Add(Math.Max(ratio, 1));

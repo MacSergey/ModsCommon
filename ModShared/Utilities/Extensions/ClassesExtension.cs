@@ -1,7 +1,7 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace ModsCommon.Utilities
@@ -47,7 +47,7 @@ namespace ModsCommon.Utilities
         private static float PlusFloat(float x, float y) => x + y;
         private static float DivFloat(float x, float count) => x / count;
 
-        private static Plus<Vector3> VectorPlus = (Plus<Vector3>)Delegate.CreateDelegate(typeof(Plus<Vector3>), AccessTools.Method(typeof(Vector3), "op_Addition"));
-        private static Div<Vector3> VectorDiv = (Div<Vector3>)Delegate.CreateDelegate(typeof(Div<Vector3>), AccessTools.Method(typeof(Vector3), "op_Division"));
+        private static Plus<Vector3> VectorPlus = (Plus<Vector3>)Delegate.CreateDelegate(typeof(Plus<Vector3>), typeof(Vector3).GetMethod("op_Addition", BindingFlags.Public | BindingFlags.Static));
+        private static Div<Vector3> VectorDiv = (Div<Vector3>)Delegate.CreateDelegate(typeof(Div<Vector3>), typeof(Vector3).GetMethod("op_Division", BindingFlags.Public | BindingFlags.Static));
     }
 }

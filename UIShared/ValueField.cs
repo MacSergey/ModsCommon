@@ -177,7 +177,7 @@ namespace ModsCommon.UI
                 base.OnMouseWheel(p);
             else if (UseWheel)
             {
-                var mode = Utilites.ShiftIsPressed ? WheelMode.High : Utilites.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
+                var mode = Utility.ShiftIsPressed ? WheelMode.High : Utility.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
                 if (p.wheelDelta < 0)
                     ValueChanged(Decrement(Limited && CyclicalValue && Value.CompareTo(MinValue) == 0 ? MaxValue : Value, WheelStep, mode));
                 else

@@ -62,7 +62,7 @@ namespace ModsCommon.UI
             {
                 p.Use();
                 UIView.PopModal();
-                EditBinding.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utilites.CtrlIsPressed, Utilites.ShiftIsPressed, Utilites.AltIsPressed);
+                EditBinding.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utility.CtrlIsPressed, Utility.ShiftIsPressed, Utility.AltIsPressed);
                 var button = p.source as UIButton;
                 button.text = EditBinding.ToLocalizedString("KEYNAME");
                 button.buttonsMask = UIMouseButton.Left;

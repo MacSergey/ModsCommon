@@ -61,6 +61,60 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable.
+        /// </summary>
+        public static string Dependency_Disable {
+            get {
+                return ResourceManager.GetString("Dependency_Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable.
+        /// </summary>
+        public static string Dependency_Enable {
+            get {
+                return ResourceManager.GetString("Dependency_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Get.
+        /// </summary>
+        public static string Dependency_Get {
+            get {
+                return ResourceManager.GetString("Dependency_Get", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove.
+        /// </summary>
+        public static string Dependency_Remove {
+            get {
+                return ResourceManager.GetString("Dependency_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Subscribe.
+        /// </summary>
+        public static string Dependency_Subscribe {
+            get {
+                return ResourceManager.GetString("Dependency_Subscribe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unsubscribe.
+        /// </summary>
+        public static string Dependency_Unsubscribe {
+            get {
+                return ResourceManager.GetString("Dependency_Unsubscribe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Scroll the wheel to change
         ///Shift X10, Ctrl X0.1.
         /// </summary>

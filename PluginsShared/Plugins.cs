@@ -3,9 +3,9 @@ using ColossalFramework.IO;
 using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
-using HarmonyLib;
 using ICities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using static ColossalFramework.Plugins.PluginManager;
@@ -14,17 +14,17 @@ namespace ModsCommon.Utilities
 {
     public static class PluginUtilities
     {
-        public static PluginInfo GetPlugin(IPluginSearcher searcher)
+        public static PluginInfo GetPlugin(IPluginSearcher searcher) => GetPlugins(searcher).FirstOrDefault();
+        public static IEnumerable<PluginInfo> GetPlugins(IPluginSearcher searcher)
         {
             var plugins = PluginManager.instance.GetPluginsInfo().ToArray();
             foreach (var plugin in plugins)
             {
                 if (searcher.IsMatch(plugin))
-                    return plugin;
+                    yield return plugin;
             }
-
-            return null;
         }
+
         public static IPluginSearcher GetSearcher(string name, params ulong[] ids)
         {
             var idSearcher = ids.Length <= 1 ? (IPluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
@@ -43,12 +43,14 @@ namespace ModsCommon.Utilities
 
             if (UIView.library.Get<ContentManagerPanel>("ContentManagerPanel") is ContentManagerPanel managerPanel)
             {
-                var categoriesContainer = AccessTools.Field(typeof(ContentManagerPanel), "m_CategoriesContainer").GetValue(managerPanel) as UITabContainer;
+                var categoriesContainerField = typeof(ContentManagerPanel).GetField("m_CategoriesContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+                var categoriesContainer = categoriesContainerField.GetValue(managerPanel) as UITabContainer;
                 var modCategory = categoriesContainer.Find("Mods");
                 if (categoriesContainer.components[categoriesContainer.selectedIndex] == modCategory)
                 {
                     var categoryContentPanel = modCategory.Find("Content").GetComponent<CategoryContentPanel>();
-                    AccessTools.Method(typeof(CategoryContentPanel), "RefreshEntries").Invoke(categoryContentPanel, new object[0]);
+                    var refreshEntriesMethod = typeof(CategoryContentPanel).GetMethod("RefreshEntries", BindingFlags.Instance | BindingFlags.NonPublic);
+                    refreshEntriesMethod.Invoke(categoryContentPanel, new object[0]);
                 }
             }
         }
@@ -179,6 +181,16 @@ namespace ModsCommon.Utilities
 
         protected override string GetMatch(IUserMod mod) => mod.GetType().Assembly.GetName().Name;
     }
+    public class UserModInstanceSearcher : IPluginSearcher
+    {
+        public IUserMod Instance { get; }
+        public UserModInstanceSearcher(IUserMod instance)
+        {
+            Instance = instance;
+        }
+
+        public bool IsMatch(PluginInfo plugin) => plugin.userModInstance == Instance;
+    }
     public class VersionSearcher : IPluginSearcher
     {
         public delegate bool VersionPredicat(Version toMatch, Version toSearch);
@@ -240,14 +252,14 @@ namespace ModsCommon.Utilities
         public bool IsMatch(PluginInfo plugin) => !Searcher.IsMatch(plugin);
     }
 
-    public class PlaginStateWatcher
+    public class PluginStateWatcher
     {
         public event Action<PluginInfo, bool> StateChanged;
 
         public PluginInfo Plugin { get; }
         public bool IsEnabled { get; private set; }
 
-        public PlaginStateWatcher(PluginInfo plugin)
+        public PluginStateWatcher(PluginInfo plugin)
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
             IsEnabled = Plugin.isEnabled;
