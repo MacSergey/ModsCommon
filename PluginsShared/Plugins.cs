@@ -3,9 +3,9 @@ using ColossalFramework.IO;
 using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
-using HarmonyLib;
 using ICities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using static ColossalFramework.Plugins.PluginManager;
@@ -14,24 +14,29 @@ namespace ModsCommon.Utilities
 {
     public static class PluginUtilities
     {
-        public static PluginInfo GetPlugin(IPluginSearcher searcher)
+        public static PluginInfo GetPlugin(PluginSearcher searcher) => GetPlugins(searcher).FirstOrDefault();
+        public static IEnumerable<PluginInfo> GetPlugins(PluginSearcher searcher)
         {
             var plugins = PluginManager.instance.GetPluginsInfo().ToArray();
             foreach (var plugin in plugins)
             {
                 if (searcher.IsMatch(plugin))
-                    return plugin;
+                    yield return plugin;
             }
-
-            return null;
         }
-        public static IPluginSearcher GetSearcher(string name, params ulong[] ids)
-        {
-            var idSearcher = ids.Length <= 1 ? (IPluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
-            var workshopSearcher = new AllSearcher(idSearcher, PathSearcher.Workshop);
-            var localSearcher = new AllSearcher(new UserModNameSearcher(name), PathSearcher.Local);
 
-            return new AnySearcher(workshopSearcher, localSearcher);
+        public static PluginSearcher GetSearcher(string name, params ulong[] ids)
+        {
+            var localSearcher = new UserModNameSearcher(name) & PathSearcher.Local;
+
+            if (ids.Length == 0)
+                return localSearcher;
+            else
+            {
+                var idSearcher = ids.Length <= 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
+                var workshopSearcher = idSearcher & PathSearcher.Workshop;
+                return workshopSearcher | localSearcher;
+            }
         }
 
         public static void SetState(this PluginInfo plugin, bool enable)
@@ -43,22 +48,29 @@ namespace ModsCommon.Utilities
 
             if (UIView.library.Get<ContentManagerPanel>("ContentManagerPanel") is ContentManagerPanel managerPanel)
             {
-                var categoriesContainer = AccessTools.Field(typeof(ContentManagerPanel), "m_CategoriesContainer").GetValue(managerPanel) as UITabContainer;
+                var categoriesContainerField = typeof(ContentManagerPanel).GetField("m_CategoriesContainer", BindingFlags.Instance | BindingFlags.NonPublic);
+                var categoriesContainer = categoriesContainerField.GetValue(managerPanel) as UITabContainer;
                 var modCategory = categoriesContainer.Find("Mods");
                 if (categoriesContainer.components[categoriesContainer.selectedIndex] == modCategory)
                 {
                     var categoryContentPanel = modCategory.Find("Content").GetComponent<CategoryContentPanel>();
-                    AccessTools.Method(typeof(CategoryContentPanel), "RefreshEntries").Invoke(categoryContentPanel, new object[0]);
+                    var refreshEntriesMethod = typeof(CategoryContentPanel).GetMethod("RefreshEntries", BindingFlags.Instance | BindingFlags.NonPublic);
+                    refreshEntriesMethod.Invoke(categoryContentPanel, new object[0]);
                 }
             }
         }
     }
 
-    public interface IPluginSearcher
+    public abstract class PluginSearcher
     {
-        public bool IsMatch(PluginInfo plugin);
+        public abstract bool IsMatch(PluginInfo plugin);
+
+        public static NotSearcher operator !(PluginSearcher searcher) => new NotSearcher(searcher);
+        public static AllSearcher operator &(PluginSearcher first, PluginSearcher second) => new AllSearcher(first, second);
+        public static AnySearcher operator |(PluginSearcher first, PluginSearcher second) => new AnySearcher(first, second);
     }
-    public class IdSearcher : IPluginSearcher
+
+    public class IdSearcher : PluginSearcher
     {
         public ulong Id { get; }
         public IdSearcher(ulong id)
@@ -66,9 +78,9 @@ namespace ModsCommon.Utilities
             Id = id;
         }
 
-        public bool IsMatch(PluginInfo plugin) => plugin.publishedFileID.AsUInt64 == Id;
+        public override bool IsMatch(PluginInfo plugin) => plugin.publishedFileID.AsUInt64 == Id;
     }
-    public class PathSearcher : IPluginSearcher
+    public class PathSearcher : PluginSearcher
     {
         public static PathSearcher Local { get; } = new PathSearcher(Option.Local);
         public static PathSearcher Workshop { get; } = new PathSearcher(Option.Workshop);
@@ -79,8 +91,9 @@ namespace ModsCommon.Utilities
             Options = options;
         }
 
-        public bool IsMatch(PluginInfo plugin) => Options == Option.Workshop ^ plugin.modPath.StartsWith(DataLocation.modsPath);
+        public override bool IsMatch(PluginInfo plugin) => Options == Option.Workshop ^ plugin.modPath.StartsWith(DataLocation.modsPath);
 
+        public static PathSearcher operator !(PathSearcher searcher) => searcher.Options == Option.Local ? Workshop : Local;
 
         public enum Option
         {
@@ -88,12 +101,12 @@ namespace ModsCommon.Utilities
             Workshop = 2,
         }
     }
-    public abstract class BaseSearcher : IPluginSearcher
+    public abstract class BaseMatchSearcher : PluginSearcher
     {
         public string ToSearch { get; }
         public Option Options { get; }
 
-        public BaseSearcher(string toSearch, Option options)
+        public BaseMatchSearcher(string toSearch, Option options)
         {
             Options = options;
             ToSearch = ApplyOptions(toSearch);
@@ -108,7 +121,7 @@ namespace ModsCommon.Utilities
 
             return name;
         }
-        public virtual bool IsMatch(PluginInfo plugin)
+        public override bool IsMatch(PluginInfo plugin)
         {
             var toMatch = ApplyOptions(GetMatch(plugin));
 
@@ -141,7 +154,7 @@ namespace ModsCommon.Utilities
             DefaultSearch = Contains | AllOptions,
         }
     }
-    public abstract class BaseUserModSearcher : BaseSearcher
+    public abstract class BaseUserModSearcher : BaseMatchSearcher
     {
         public BaseUserModSearcher(string toSearch, Option options) : base(toSearch, options) { }
         public override bool IsMatch(PluginInfo plugin)
@@ -179,7 +192,17 @@ namespace ModsCommon.Utilities
 
         protected override string GetMatch(IUserMod mod) => mod.GetType().Assembly.GetName().Name;
     }
-    public class VersionSearcher : IPluginSearcher
+    public class UserModInstanceSearcher : PluginSearcher
+    {
+        public IUserMod Instance { get; }
+        public UserModInstanceSearcher(IUserMod instance)
+        {
+            Instance = instance;
+        }
+
+        public override bool IsMatch(PluginInfo plugin) => plugin.userModInstance == Instance;
+    }
+    public class VersionSearcher : PluginSearcher
     {
         public delegate bool VersionPredicat(Version toMatch, Version toSearch);
         public Version Version { get; }
@@ -191,7 +214,7 @@ namespace ModsCommon.Utilities
             Predicat = predicat;
         }
 
-        public bool IsMatch(PluginInfo plugin)
+        public override bool IsMatch(PluginInfo plugin)
         {
             if (plugin.userModInstance is not IUserMod userModInstance)
                 return false;
@@ -200,67 +223,103 @@ namespace ModsCommon.Utilities
             return Predicat(userModVersion, Version);
         }
     }
-    public class PluginNameSearcher : BaseSearcher
+    public class PluginNameSearcher : BaseMatchSearcher
     {
         public PluginNameSearcher(string toSearch, Option options) : base(toSearch, options) { }
         protected override string GetMatch(PluginInfo plugin) => plugin.name;
     }
 
-    public abstract class BaseCombineSearcher : IPluginSearcher
+    public abstract class BaseCombineSearcher : PluginSearcher
     {
-        protected IPluginSearcher[] Searchers { get; }
+        protected PluginSearcher[] Searchers { get; }
 
-        public BaseCombineSearcher(params IPluginSearcher[] searchers)
+        public BaseCombineSearcher(params PluginSearcher[] searchers)
         {
             Searchers = searchers;
         }
-        public abstract bool IsMatch(PluginInfo plugin);
+
+        protected static PluginSearcher[] Concat(PluginSearcher[] first, PluginSearcher[] second)
+        {
+            var searchers = new PluginSearcher[first.Length + second.Length];
+            first.CopyTo(searchers, 0);
+            second.CopyTo(searchers, first.Length);
+            return searchers;
+        }
     }
     public class AnySearcher : BaseCombineSearcher
     {
-        public AnySearcher(params IPluginSearcher[] searchers) : base(searchers) { }
+        public AnySearcher(params PluginSearcher[] searchers) : base(searchers) { }
 
         public override bool IsMatch(PluginInfo plugin) => Searchers.Any(s => s.IsMatch(plugin));
+
+        public static AnySearcher operator &(AnySearcher first, PluginSearcher second) => new AnySearcher(Concat(first.Searchers, new PluginSearcher[] { second }));
+        public static AnySearcher operator &(PluginSearcher first, AnySearcher second) => new AnySearcher(Concat(new PluginSearcher[] { first }, second.Searchers));
+        public static AnySearcher operator &(AnySearcher first, AnySearcher second) => new AnySearcher(Concat(first.Searchers, second.Searchers));
     }
     public class AllSearcher : BaseCombineSearcher
     {
-        public AllSearcher(params IPluginSearcher[] searchers) : base(searchers) { }
+        public AllSearcher(params PluginSearcher[] searchers) : base(searchers) { }
 
         public override bool IsMatch(PluginInfo plugin) => Searchers.All(s => s.IsMatch(plugin));
-    }
-    public class NotSearcher : IPluginSearcher
-    {
-        protected IPluginSearcher Searcher { get; }
 
-        public NotSearcher(IPluginSearcher searcher)
+        public static AllSearcher operator &(AllSearcher first, PluginSearcher second) => new AllSearcher(Concat(first.Searchers, new PluginSearcher[] { second }));
+        public static AllSearcher operator &(PluginSearcher first, AllSearcher second) => new AllSearcher(Concat(new PluginSearcher[] { first }, second.Searchers));
+        public static AllSearcher operator &(AllSearcher first, AllSearcher second) => new AllSearcher(Concat(first.Searchers, second.Searchers));
+    }
+    public class NotSearcher : PluginSearcher
+    {
+        protected PluginSearcher Searcher { get; }
+
+        public NotSearcher(PluginSearcher searcher)
         {
             Searcher = searcher;
         }
 
-        public bool IsMatch(PluginInfo plugin) => !Searcher.IsMatch(plugin);
+        public override bool IsMatch(PluginInfo plugin) => !Searcher.IsMatch(plugin);
+
+        public static PluginSearcher operator !(NotSearcher notSearcher) => notSearcher.Searcher;
     }
 
-    public class PlaginStateWatcher
+    public class PluginStateWatcher
     {
         public event Action<PluginInfo, bool> StateChanged;
 
-        public PluginInfo Plugin { get; }
-        public bool IsEnabled { get; private set; }
+        private bool _enable = false;
+        public bool Enable
+        {
+            get => _enable;
+            set
+            {
+                if(value != _enable)
+                {
+                    _enable = value;
 
-        public PlaginStateWatcher(PluginInfo plugin)
+                    if (Enable)
+                    {
+                        IsPluginEnabled = Plugin.isEnabled;
+                        PluginManager.instance.eventPluginsStateChanged += PluginsStateChanged;
+                    }
+                    else
+                        PluginManager.instance.eventPluginsStateChanged -= PluginsStateChanged;
+                }
+            }
+        }
+
+        public PluginInfo Plugin { get; }
+        public bool IsPluginEnabled { get; private set; }
+
+        public PluginStateWatcher(PluginInfo plugin, bool enable = true)
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
-            IsEnabled = Plugin.isEnabled;
-
-            PluginManager.instance.eventPluginsStateChanged += PluginsStateChanged;
+            Enable = enable;
         }
 
         private void PluginsStateChanged()
         {
-            if (Plugin.isEnabled != IsEnabled)
+            if (Plugin.isEnabled != IsPluginEnabled)
             {
-                IsEnabled = Plugin.isEnabled;
-                StateChanged?.Invoke(Plugin, IsEnabled);
+                IsPluginEnabled = Plugin.isEnabled;
+                StateChanged?.Invoke(Plugin, IsPluginEnabled);
             }
         }
     }

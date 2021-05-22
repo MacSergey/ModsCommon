@@ -33,6 +33,9 @@ namespace ModsCommon.UI
         }
         public static void Hide(MessageBoxBase messageBox)
         {
+            if (messageBox == null || UIView.GetModalComponent() != messageBox)
+                return;
+
             UIView.PopModal();
 
             if (UIView.GetAView().panelsLibraryModalEffect is UIComponent modalEffect)
@@ -49,15 +52,17 @@ namespace ModsCommon.UI
     }
     public abstract class MessageBoxBase : CustomUIPanel, IAutoLayoutPanel
     {
+        public event Action OnCloseClick;
+        public event Action OnClose;
+
         public static float DefaultWidth => 573f;
         public static float DefaultHeight => 200f;
         public static float ButtonHeight => 47f;
         public static int Padding => 16;
         public static float MaxContentHeight => 500f;
-        private static float ButtonsSpace => 25f;
+        protected static float ButtonsSpace => 25f;
         protected virtual int ContentSpacing => 0;
 
-        
 
         private CustomUIDragHandle Header { get; set; }
         private CustomUILabel Caption { get; set; }
@@ -110,7 +115,7 @@ namespace ModsCommon.UI
             cancel.pressedBgSprite = "buttonclosepressed";
             cancel.size = new Vector2(32, 32);
             cancel.relativePosition = new Vector2(527, 4);
-            cancel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => Close();
+            cancel.eventClick += CloseClick;
         }
         private void AddContent()
         {
@@ -169,12 +174,7 @@ namespace ModsCommon.UI
         protected CustomUIButton AddButton(Action action, uint ratio = 1)
         {
             var button = ButtonPanel.AddUIComponent<CustomUIButton>();
-            button.normalBgSprite = "ButtonMenu";
-            button.hoveredTextColor = new Color32(7, 132, 255, 255);
-            button.pressedTextColor = new Color32(30, 30, 44, 255);
-            button.disabledTextColor = new Color32(7, 7, 7, 255);
-            button.horizontalAlignment = UIHorizontalAlignment.Center;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
+            button.SetMenuStyle();
             button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => action?.Invoke();
 
             ButtonsRatio.Add(Math.Max(ratio, 1));
@@ -218,14 +218,26 @@ namespace ModsCommon.UI
                 }
                 else if (p.keycode == KeyCode.Return)
                 {
+                    p.Use();
                     if (ButtonPanel.components.OfType<CustomUIButton>().Skip(DefaultButton - 1).FirstOrDefault() is CustomUIButton button)
                         button.SimulateClick();
-                    p.Use();
                 }
             }
         }
 
-        protected virtual void Close() => MessageBox.Hide(this);
+        protected virtual void Close()
+        {
+            OnClose?.Invoke();
+            MessageBox.Hide(this);
+        }
+        private void CloseClick(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            OnCloseClick?.Invoke();
+            Close();
+        }
+
+
+
         public void StopLayout() => Panel.StopLayout();
         public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
     }

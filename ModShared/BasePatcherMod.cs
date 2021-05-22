@@ -25,8 +25,19 @@ namespace ModsCommon
         protected Result PatchResult { get; private set; }
         public object Harmony => new Harmony(Id);
 
-        private static IPluginSearcher HarmonySearcher { get; } = PluginUtilities.GetSearcher("Harmony 2", 2040656402ul, 2399204842ul);
-        public static PluginInfo HarmonyPlugin => PluginUtilities.GetPlugin(HarmonySearcher);
+        protected override List<BaseDependencyInfo> DependencyInfos
+        {
+            get
+            {
+                var infos = base.DependencyInfos;
+
+                var searcher = PluginUtilities.GetSearcher("Harmony 2", 2040656402ul, 2399204842ul);
+                var info = new NeedDependencyInfo(DependencyState.Subscribe, searcher, "Harmony", 2040656402ul);
+                infos.Add(info);
+
+                return infos;
+            }
+        }
 
         #endregion
 
@@ -45,22 +56,6 @@ namespace ModsCommon
         private void Patch()
         {
             Logger.Debug("Patch");
-            HarmonyHelper.DoOnHarmonyReady(() => StartPatch());
-
-            if (HarmonyPlugin == null)
-                PatchResult = Result.NoHarmony;
-        }
-        private void Unpatch()
-        {
-            Logger.Debug($"Unpatch all");
-            var harmony = Harmony as Harmony;
-            harmony.UnpatchAll(harmony.Id);
-            Logger.Debug($"Unpatched");
-        }
-
-        private void StartPatch()
-        {
-            Logger.Debug("Start patching");
 
             try
             {
@@ -72,8 +67,13 @@ namespace ModsCommon
                 PatchResult = Result.Failed;
                 Logger.Error($"Patch {PatchResult}", error);
             }
-
-            CheckLoadError(PatchResult == Result.Failed);
+        }
+        private void Unpatch()
+        {
+            Logger.Debug($"Unpatch all");
+            var harmony = Harmony as Harmony;
+            harmony.UnpatchAll(harmony.Id);
+            Logger.Debug($"Unpatched");
         }
         protected override void OnLoadError(out bool shown)
         {
@@ -81,8 +81,6 @@ namespace ModsCommon
 
             if (shown)
                 return;
-            else if (PatchResult == Result.NoHarmony)
-                shown = true;
             else if (PatchResult == Result.Failed)
             {
                 var message = MessageBox.Show<ErrorPatchMessageBox>();
@@ -91,7 +89,6 @@ namespace ModsCommon
                 shown = true;
             }
         }
-
 
         protected abstract bool PatchProcess();
 
@@ -186,7 +183,6 @@ namespace ModsCommon
             None = 0,
             Success = 1,
             Failed = 2,
-            NoHarmony = 4 | Failed,
         }
         private class PatchExeption : Exception
         {

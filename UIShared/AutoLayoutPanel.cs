@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using System.Linq;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -99,11 +100,17 @@ namespace ModsCommon.UI
             }
         }
 
+        public AutoSizeAdvancedScrollablePanel()
+        {
+            Content.verticalScrollbar.autoHide = false;
+        }
+
         public class AutoSizeScrollablePanel : UIAutoLayoutScrollablePanel
         {
             protected override void OnComponentAdded(UIComponent child)
             {
                 base.OnComponentAdded(child);
+                FitContentChildren();
 
                 child.eventVisibilityChanged += OnChildVisibilityChanged;
                 child.eventSizeChanged += OnChildSizeChanged;
@@ -112,6 +119,7 @@ namespace ModsCommon.UI
             protected override void OnComponentRemoved(UIComponent child)
             {
                 base.OnComponentRemoved(child);
+                FitContentChildren();
 
                 child.eventVisibilityChanged -= OnChildVisibilityChanged;
                 child.eventSizeChanged -= OnChildSizeChanged;
@@ -122,10 +130,29 @@ namespace ModsCommon.UI
 
             private void FitContentChildren()
             {
-                if (autoLayout)
+                if (autoLayout && parent != null)
                 {
-                    FitChildrenVertically();
-                    parent.height = height;
+                    var height = 0f;
+                    foreach (var component in components)
+                    {
+                        if (component.isVisibleSelf)
+                            height = Mathf.Max(height, component.relativePosition.y + component.height);
+                    }
+                    if (components.Any())
+                        height += autoLayoutPadding.bottom;
+
+                    if (height < this.height)
+                    {
+                        this.height = height;
+                        parent.height = height;
+                    }
+                    else
+                    {
+                        parent.height = height;
+                        this.height = height;
+                    }
+
+                    verticalScrollbar.isVisible = Mathf.CeilToInt(verticalScrollbar.scrollSize) < Mathf.CeilToInt(verticalScrollbar.maxValue - verticalScrollbar.minValue);
                 }
             }
             public override void StartLayout(bool layoutNow = true)

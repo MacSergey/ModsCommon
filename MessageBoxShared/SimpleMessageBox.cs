@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
 using UnityEngine;
 
@@ -119,12 +120,21 @@ namespace ModsCommon.UI
             OnButton2Click = SingletonMod<TypeMod>.Instance.OpenSupport;
         }
     }
-    public class ErrorPatchMessageBox : ErrorSupportMessageBox
+    public class ErrorNoHarmonyMessageBox : ErrorMessageBox
     {
         public override void Init<TypeMod>()
         {
             base.Init<TypeMod>();
-            MessageText = CommonLocalize.Mod_LoadedWithErrors;
+
+            MessageText = "No Harmony";
+            Button2Text = "Get Harmony";
+            OnButton2Click = GetHarmony;
+        }
+
+        private static bool GetHarmony()
+        {
+            Utility.OpenUrl("https://steamcommunity.com/workshop/filedetails/?id=2040656402");
+            return true;
         }
     }
 }

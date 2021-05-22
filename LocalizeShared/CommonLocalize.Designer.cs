@@ -61,6 +61,123 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Detected сonflicting mods..
+        /// </summary>
+        public static string Dependency_Conflict {
+            get {
+                return ResourceManager.GetString("Dependency_Conflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable.
+        /// </summary>
+        public static string Dependency_Disable {
+            get {
+                return ResourceManager.GetString("Dependency_Disable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable {0}.
+        /// </summary>
+        public static string Dependency_DisableMod {
+            get {
+                return ResourceManager.GetString("Dependency_DisableMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable.
+        /// </summary>
+        public static string Dependency_Enable {
+            get {
+                return ResourceManager.GetString("Dependency_Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable {0}.
+        /// </summary>
+        public static string Dependency_EnableMod {
+            get {
+                return ResourceManager.GetString("Dependency_EnableMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Get.
+        /// </summary>
+        public static string Dependency_Get {
+            get {
+                return ResourceManager.GetString("Dependency_Get", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Detected missing dependencies..
+        /// </summary>
+        public static string Dependency_Missing {
+            get {
+                return ResourceManager.GetString("Dependency_Missing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Detected missing dependencies and сonflicting mods..
+        /// </summary>
+        public static string Dependency_MissingAndConflict {
+            get {
+                return ResourceManager.GetString("Dependency_MissingAndConflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на To continue using {0} need to fix these issues, otherwise the mod will be disabled..
+        /// </summary>
+        public static string Dependency_NeedFix {
+            get {
+                return ResourceManager.GetString("Dependency_NeedFix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на All issues are fixed, {0} can be enabled..
+        /// </summary>
+        public static string Dependency_NoIssues {
+            get {
+                return ResourceManager.GetString("Dependency_NoIssues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove.
+        /// </summary>
+        public static string Dependency_Remove {
+            get {
+                return ResourceManager.GetString("Dependency_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Subscribe.
+        /// </summary>
+        public static string Dependency_Subscribe {
+            get {
+                return ResourceManager.GetString("Dependency_Subscribe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unsubscribe.
+        /// </summary>
+        public static string Dependency_Unsubscribe {
+            get {
+                return ResourceManager.GetString("Dependency_Unsubscribe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Scroll the wheel to change
         ///Shift X10, Ctrl X0.1.
         /// </summary>
