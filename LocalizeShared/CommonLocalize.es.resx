@@ -121,22 +121,22 @@
     <value>Detected сonflicting mods.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>Desactivar</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Disable {0}</value>
+    <value>Desactivar {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>Activar</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Enable {0}</value>
+    <value>Activar {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Get</value>
+    <value>Obtener</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Detected missing dependencies.</value>
+    <value>Se han detectado dependencias faltantes.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
     <value>Detected missing dependencies and сonflicting mods.</value>
@@ -148,10 +148,10 @@
     <value>All issues are fixed, {0} can be enabled.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>Eliminar</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Subscribe</value>
+    <value>Subscribir</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
     <value>Unsubscribe</value>

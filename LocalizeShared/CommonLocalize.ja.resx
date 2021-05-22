@@ -118,43 +118,43 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Detected сonflicting mods.</value>
+    <value>動作に競合するMODを検出しました。</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>無効</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Disable {0}</value>
+    <value>{0} を無効化</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>有効</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Enable {0}</value>
+    <value>{0} を有効化</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Get</value>
+    <value>取得</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Detected missing dependencies.</value>
+    <value>依存関係にある、必要なMODが不足しています。</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detected missing dependencies and сonflicting mods.</value>
+    <value>現在、不足・競合しているMODを検出して、無効化されています。</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+    <value>{0} を有効化するには、問題を解決・修正してください。解決できない場合は、MODが無効になります。</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>All issues are fixed, {0} can be enabled.</value>
+    <value>全ての問題が修正されました、 {0} を有効化できます。</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>削除</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Subscribe</value>
+    <value>サブスクライブ</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Unsubscribe</value>
+    <value>購読の解除</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
     <value>ホイールのスクロールで増減

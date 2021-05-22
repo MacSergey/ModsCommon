@@ -157,29 +157,28 @@
     <value>Unsubscribe</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll the wheel to change
-Shift X10, Ctrl X0.1</value>
+    <value>Değiştirmek için tekerleği kaydırın Shift X10, Ctrl X0.1</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>İptal</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>No</value>
+    <value>Hayır</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>OK</value>
+    <value>TAMAM</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Evet</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>I agree</value>
+    <value>Kabul ediyorum</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA version warning</value>
+    <value>BETA sürüm uyarısı</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Get stable version</value>
+    <value>Stabil sürümü indirin</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
@@ -238,7 +237,7 @@ Restart the game.</value>
     <value>Chinese Simplified</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Support</value>
+    <value>Destek</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>What's new in {0}</value>
