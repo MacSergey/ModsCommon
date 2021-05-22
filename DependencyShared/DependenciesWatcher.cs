@@ -133,6 +133,7 @@ namespace ModsCommon.Utilities
         public void RemoveMessage(PluginMessage message)
         {
             MessageBox.Content.RemoveUIComponent(message);
+            Destroy(message.gameObject);
             Destroy(message);
         }
         private void UpdateMessageBox()
@@ -164,14 +165,14 @@ namespace ModsCommon.Utilities
         }
         private bool EnablePlugin()
         {
-            Hide();
             Plugin.SetState(true);
+            Hide();
             return true;
         }
         private bool DisablePlugin()
         {
-            Hide();
             Plugin.SetState(false);
+            Hide();
             SetState(false);
             return true;
         }

@@ -48,6 +48,7 @@ namespace ModsCommon.UI
 
             messageBox.Hide();
             UnityEngine.Object.Destroy(messageBox.gameObject);
+            UnityEngine.Object.Destroy(messageBox);
         }
     }
     public abstract class MessageBoxBase : CustomUIPanel, IAutoLayoutPanel

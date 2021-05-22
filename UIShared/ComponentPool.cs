@@ -103,6 +103,7 @@ namespace ModsCommon.UI
             if (component != null)
             {
                 component.parent?.RemoveUIComponent(component);
+                UnityEngine.Object.Destroy(component.gameObject);
                 UnityEngine.Object.Destroy(component);
             }
         }
