@@ -188,7 +188,6 @@ namespace ModsCommon
         {
             public PatchExeption(string message) : base(message) { }
         }
-
         #endregion
     }
 }

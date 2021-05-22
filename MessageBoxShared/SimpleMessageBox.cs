@@ -120,21 +120,15 @@ namespace ModsCommon.UI
             OnButton2Click = SingletonMod<TypeMod>.Instance.OpenSupport;
         }
     }
-    public class ErrorNoHarmonyMessageBox : ErrorMessageBox
+    public class ErrorPatchMessageBox : ErrorMessageBox
     {
         public override void Init<TypeMod>()
         {
             base.Init<TypeMod>();
 
-            MessageText = "No Harmony";
-            Button2Text = "Get Harmony";
-            OnButton2Click = GetHarmony;
-        }
-
-        private static bool GetHarmony()
-        {
-            Utility.OpenUrl("https://steamcommunity.com/workshop/filedetails/?id=2040656402");
-            return true;
+            MessageText = CommonLocalize.Mod_LoadedWithErrors;
+            Button2Text = CommonLocalize.Mod_Support;
+            OnButton2Click = SingletonMod<TypeMod>.Instance.OpenSupport;
         }
     }
 }
