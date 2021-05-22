@@ -72,7 +72,7 @@ namespace ModsCommon
             Logger.Debug($"Create mod instance Version {VersionString}");
 
             ThisSearcher = new UserModInstanceSearcher(this);
-            DependencyWatcher = DependenciesWatcher.Create(ThisSearcher, NameRaw, DependencyInfos);
+            DependencyWatcher = DependenciesWatcher.Create(ThisSearcher, !IsBeta ? NameRaw : $"{NameRaw} {BETA}", DependencyInfos);
         }
         public void OnEnabled()
         {
