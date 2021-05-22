@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
+using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
 {
@@ -27,16 +29,35 @@ namespace ModsCommon
         public abstract string NameRaw { get; }
         public abstract string Description { get; }
 
+        public PluginSearcher ThisSearcher { get; }
+        public PluginInfo Plugin => PluginUtilities.GetPlugin(ThisSearcher);
+        private DependenciesWatcher DependencyWatcher { get; set; }
         public Logger Logger { get; private set; }
-        protected abstract string StableWorkshopUrl { get; }
-        protected abstract string BetaWorkshopUrl { get; }
+        protected abstract ulong StableWorkshopId { get; }
+        protected abstract ulong BetaWorkshopId { get; }
+        public ulong WorkshopId => !IsBeta ? StableWorkshopId : BetaWorkshopId;
+
         protected virtual string ModSupportUrl => string.Empty;
-        public string WorkshopUrl => !IsBeta ? StableWorkshopUrl : BetaWorkshopUrl;
-        public string SupportUrl => !string.IsNullOrEmpty(ModSupportUrl) ? ModSupportUrl : WorkshopUrl;
+        public string SupportUrl => !string.IsNullOrEmpty(ModSupportUrl) ? ModSupportUrl : WorkshopId.GetWorkshopUrl();
         public abstract List<Version> Versions { get; }
         protected abstract string IdRaw { get; }
         public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
         public abstract bool IsBeta { get; }
+
+        protected virtual List<BaseDependencyInfo> DependencyInfos
+        {
+            get
+            {
+                var infos = new List<BaseDependencyInfo>();
+
+                var otherSearcher = PluginUtilities.GetSearcher(NameRaw, !IsBeta ? BetaWorkshopId : StableWorkshopId);
+                var searcher = otherSearcher & !ThisSearcher;
+                var info = new ConflictDependencyInfo(DependencyState.Disable, searcher);
+                infos.Add(info);
+
+                return infos;
+            }
+        }
 
         public virtual CultureInfo Culture
         {
@@ -49,6 +70,9 @@ namespace ModsCommon
             Logger = new Logger(Id);
             SingletonMod<TypeMod>.Instance = (TypeMod)this;
             Logger.Debug($"Create mod instance Version {VersionString}");
+
+            ThisSearcher = new UserModInstanceSearcher(this);
+            DependencyWatcher = DependenciesWatcher.Create(ThisSearcher, NameRaw, DependencyInfos);
         }
         public void OnEnabled()
         {
@@ -66,6 +90,7 @@ namespace ModsCommon
             Logger.Debug($"Disabled");
             LoadingManager.instance.m_introLoaded -= EnableImpl;
             LocaleManager.eventLocaleChanged -= LocaleChanged;
+            DependencyWatcher.SetState(false);
 
             try
             {
@@ -79,9 +104,12 @@ namespace ModsCommon
         private void EnableImpl()
         {
             LoadingManager.instance.m_introLoaded -= EnableImpl;
+            DependencyWatcher.SetState(true);
+
             try
             {
-                Enable();
+                if (DependencyWatcher.IsValid)
+                    Enable();
             }
             catch (Exception error)
             {
@@ -227,12 +255,12 @@ namespace ModsCommon
 
         public bool GetStable()
         {
-            StableWorkshopUrl.OpenUrl();
+            StableWorkshopId.OpenWorkshop();
             return true;
         }
         public bool OpenWorkshop()
         {
-            WorkshopUrl.OpenUrl();
+            WorkshopId.OpenWorkshop();
             return true;
         }
         public bool OpenSupport()

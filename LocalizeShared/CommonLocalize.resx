@@ -120,11 +120,24 @@
   <data name="Dependency_Disable" xml:space="preserve">
     <value>Disable</value>
   </data>
+  <data name="Dependency_DisableMod" xml:space="preserve">
+    <value>Disable {0}</value>
+  </data>
   <data name="Dependency_Enable" xml:space="preserve">
     <value>Enable</value>
   </data>
+  <data name="Dependency_EnableMod" xml:space="preserve">
+    <value>Enable {0}</value>
+  </data>
   <data name="Dependency_Get" xml:space="preserve">
     <value>Get</value>
+  </data>
+  <data name="Dependency_HasIssues" xml:space="preserve">
+    <value>Detected missing dependencies and/or сonflicting mods.
+To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+  </data>
+  <data name="Dependency_NoIssues" xml:space="preserve">
+    <value>All issues are fixed, {0} can be enabled.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
     <value>Remove</value>

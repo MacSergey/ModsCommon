@@ -70,6 +70,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable {0}.
+        /// </summary>
+        public static string Dependency_DisableMod {
+            get {
+                return ResourceManager.GetString("Dependency_DisableMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enable.
         /// </summary>
         public static string Dependency_Enable {
@@ -79,11 +88,39 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Enable {0}.
+        /// </summary>
+        public static string Dependency_EnableMod {
+            get {
+                return ResourceManager.GetString("Dependency_EnableMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Get.
         /// </summary>
         public static string Dependency_Get {
             get {
                 return ResourceManager.GetString("Dependency_Get", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Detected missing dependencies and/or сonflicting mods.
+        ///To continue using {0} need to fix these issues, otherwise the mod will be disabled..
+        /// </summary>
+        public static string Dependency_HasIssues {
+            get {
+                return ResourceManager.GetString("Dependency_HasIssues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на All issues are fixed, {0} can be enabled..
+        /// </summary>
+        public static string Dependency_NoIssues {
+            get {
+                return ResourceManager.GetString("Dependency_NoIssues", resourceCulture);
             }
         }
         

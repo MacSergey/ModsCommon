@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using System.Linq;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -99,6 +100,11 @@ namespace ModsCommon.UI
             }
         }
 
+        public AutoSizeAdvancedScrollablePanel()
+        {
+            Content.verticalScrollbar.autoHide = false;
+        }
+
         public class AutoSizeScrollablePanel : UIAutoLayoutScrollablePanel
         {
             protected override void OnComponentAdded(UIComponent child)
@@ -132,6 +138,8 @@ namespace ModsCommon.UI
                         if (component.isVisibleSelf)
                             height = Mathf.Max(height, component.relativePosition.y + component.height);
                     }
+                    if (components.Any())
+                        height += autoLayoutPadding.bottom;
 
                     if (height < this.height)
                     {
@@ -143,6 +151,8 @@ namespace ModsCommon.UI
                         parent.height = height;
                         this.height = height;
                     }
+
+                    verticalScrollbar.isVisible = Mathf.CeilToInt(verticalScrollbar.scrollSize) < Mathf.CeilToInt(verticalScrollbar.maxValue - verticalScrollbar.minValue);
                 }
             }
             public override void StartLayout(bool layoutNow = true)

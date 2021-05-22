@@ -93,4 +93,14 @@ namespace ModsCommon.UI
                 relativePosition = positionBefore;
         }
     }
+    public class CustomUIProgressBar : UIProgressBar
+    {
+        private Vector3 positionBefore;
+        public override void ResetLayout() => positionBefore = relativePosition;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
+    }
 }

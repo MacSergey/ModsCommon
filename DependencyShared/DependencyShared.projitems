@@ -9,6 +9,8 @@
     <Import_RootNamespace>DependencyShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Dependency.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependenciesMessageBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependenciesWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyInfo.cs" />
   </ItemGroup>
 </Project>

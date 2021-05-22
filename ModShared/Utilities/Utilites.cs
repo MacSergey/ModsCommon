@@ -17,6 +17,8 @@ namespace ModsCommon.Utilities
             else
                 Process.Start(url);
         }
+        public static void OpenWorkshop(this ulong id) => id.GetWorkshopUrl().OpenUrl();
+        public static string GetWorkshopUrl(this ulong id) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={id}";
 
         public static bool InGame => !OnStartup && !InMenu;
         public static bool InMenu => SceneManager.GetActiveScene().name is string scene && scene == "IntroScreen";
