@@ -132,7 +132,6 @@ namespace ModsCommon
             {
                 var locale = dropDown.SelectedObject;
                 Locale.value = locale;
-                SingletonMod<TypeMod>.Instance.LocaleChanged();
                 LocaleManager.ForceReload();
             }
         }

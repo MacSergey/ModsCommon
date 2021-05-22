@@ -78,6 +78,9 @@ namespace ModsCommon
 
             ThisSearcher = new UserModInstanceSearcher(this);
             DependencyWatcher = DependenciesWatcher.Create(ThisSearcher, DependencyInfos, NameRaw, Name);
+
+            ChangeLocale();
+            LocaleManager.eventUIComponentLocaleChanged += ChangeLocale;
         }
         public void OnEnabled()
         {
@@ -94,7 +97,6 @@ namespace ModsCommon
         {
             Logger.Debug($"Disabled");
             LoadingManager.instance.m_introLoaded -= EnableImpl;
-            LocaleManager.eventLocaleChanged -= LocaleChanged;
             DependencyWatcher.SetState(false);
 
             try
@@ -131,16 +133,12 @@ namespace ModsCommon
 
         public void OnSettingsUI(UIHelperBase helper)
         {
-            LocaleManager.eventLocaleChanged -= LocaleChanged;
-            LocaleChanged();
-            LocaleManager.eventLocaleChanged += LocaleChanged;
-
             Logger.Debug($"Load SettingsUI");
             GetSettings(helper);
         }
         protected virtual void GetSettings(UIHelperBase helper) { }
 
-        public void LocaleChanged()
+        public void ChangeLocale()
         {
             var locale = BaseSettings<TypeMod>.Locale.value;
             locale = string.IsNullOrEmpty(locale) ? SingletonLite<LocaleManager>.instance.language : locale;
