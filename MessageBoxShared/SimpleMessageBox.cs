@@ -109,15 +109,22 @@ namespace ModsCommon.UI
             Button1Text = CommonLocalize.MessageBox_OK;
         }
     }
-    public class ErrorPatchMessageBox : ErrorMessageBox
+    public class ErrorSupportMessageBox : ErrorMessageBox
     {
         public override void Init<TypeMod>()
         {
             base.Init<TypeMod>();
 
-            MessageText = CommonLocalize.Mod_LoadedWithErrors;
             Button2Text = CommonLocalize.Mod_Support;
             OnButton2Click = SingletonMod<TypeMod>.Instance.OpenSupport;
+        }
+    }
+    public class ErrorPatchMessageBox : ErrorSupportMessageBox
+    {
+        public override void Init<TypeMod>()
+        {
+            base.Init<TypeMod>();
+            MessageText = CommonLocalize.Mod_LoadedWithErrors;
         }
     }
 }
