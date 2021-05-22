@@ -57,7 +57,6 @@ namespace ModsCommon
 #else
                 var info = new ConflictDependencyInfo(DependencyState.Unsubscribe, searcher);
 #endif
-
                 infos.Add(info);
 
                 return infos;
@@ -88,15 +87,11 @@ namespace ModsCommon
             LoadError = false;
             ErrorShown = false;
 
-            if (UIView.GetAView() != null)
-                EnableImpl();
-            else
-                LoadingManager.instance.m_introLoaded += EnableImpl;
+            IntroUtility.OnLoaded(EnableImpl);
         }
         public void OnDisabled()
         {
             Logger.Debug($"Disabled");
-            LoadingManager.instance.m_introLoaded -= EnableImpl;
             DependencyWatcher.SetState(false);
 
             try
@@ -110,7 +105,6 @@ namespace ModsCommon
         }
         private void EnableImpl()
         {
-            LoadingManager.instance.m_introLoaded -= EnableImpl;
             DependencyWatcher.SetState(true);
 
             try
@@ -141,7 +135,15 @@ namespace ModsCommon
         public void ChangeLocale()
         {
             var locale = BaseSettings<TypeMod>.Locale.value;
-            locale = string.IsNullOrEmpty(locale) ? SingletonLite<LocaleManager>.instance.language : locale;
+
+            if (string.IsNullOrEmpty(locale))
+            {
+                if (LocaleManager.exists)
+                    locale = LocaleManager.instance.language;
+                else
+                    locale = new SavedString(Settings.localeID, Settings.gameSettingsFile, DefaultSettings.localeID).value;
+            }
+
             if (locale == "zh")
                 locale = "zh-cn";
 

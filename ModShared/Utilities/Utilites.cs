@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.PlatformServices;
+using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,5 +31,26 @@ namespace ModsCommon.Utilities
         public static bool OnlyAltIsPressed => AltIsPressed && !ShiftIsPressed && !CtrlIsPressed;
         public static bool OnlyShiftIsPressed => ShiftIsPressed && !AltIsPressed && !CtrlIsPressed;
         public static bool OnlyCtrlIsPressed => CtrlIsPressed && !AltIsPressed && !ShiftIsPressed;
+    }
+    public static class IntroUtility
+    {
+        private static List<Action> Actions { get; } = new List<Action>();
+        static IntroUtility()
+        {
+            LoadingManager.instance.m_introLoaded += IntroLoaded;
+        }
+
+        private static void IntroLoaded()
+        {
+            foreach (var action in Actions)
+                action();
+        }
+        public static void OnLoaded(Action action)
+        {
+            if (UIView.GetAView() != null)
+                action();
+            else
+                Actions.Add(action);
+        }
     }
 }
