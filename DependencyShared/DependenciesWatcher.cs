@@ -20,6 +20,7 @@ namespace ModsCommon.Utilities
         private PluginSearcher PluginSearcher { get; set; }
         private PluginInfo Plugin => PluginUtilities.GetPlugin(PluginSearcher);
         private string ModName { get; set; }
+        private string ModFullName { get; set; }
         private List<BaseDependencyInfo> Infos { get; set; }
 
         private List<BaseDependencyWatcher> Dependencies { get; } = new List<BaseDependencyWatcher>();
@@ -41,6 +42,8 @@ namespace ModsCommon.Utilities
                 }
             }
         }
+        private bool IsMissing { get; set; }
+        private bool IsConflict { get; set; }
 
         public DependenciesWatcher()
         {
@@ -86,16 +89,31 @@ namespace ModsCommon.Utilities
             foreach (var dependency in Dependencies)
                 dependency.Update();
         }
-        public void UpdateValid() => IsValid = Dependencies.All(d => d.IsValid);
+        public void UpdateValid()
+        {
+            IsMissing = false;
+            IsConflict = false;
+            foreach (var dependency in Dependencies)
+            {
+                if (dependency.IsValid)
+                    continue;
+                else if (dependency is NeedDependencyWatcher)
+                    IsMissing = true;
+                else if (dependency is ConflictDependencyWatcher)
+                    IsConflict = true;
+            }
+
+            IsValid = !IsMissing && !IsConflict;
+        }
 
         private void Show()
         {
             if (MessageBox == null)
             {
                 MessageBox = UI.MessageBox.Show<DependenciesMessageBox>();
-                MessageBox.CaptionText = ModName;
+                MessageBox.CaptionText = ModFullName;
                 MessageBox.OnButtonClick = () => IsValid ? EnablePlugin() : DisablePlugin();
-                MessageBox.OnClose += () => enabled = IsValid;
+                MessageBox.OnCloseClick += () => enabled = false;
                 UpdateMessageBox();
             }
         }
@@ -126,7 +144,15 @@ namespace ModsCommon.Utilities
             }
             else
             {
-                MessageBox.MessageText = string.Format(CommonLocalize.Dependency_HasIssues, ModName);
+                var text = string.Empty;
+                if (IsMissing && IsConflict)
+                    text = CommonLocalize.Dependency_MissingAndConflict;
+                else if (IsMissing)
+                    text = CommonLocalize.Dependency_Missing;
+                else if (IsConflict)
+                    text = CommonLocalize.Dependency_Conflict;
+
+                MessageBox.MessageText = $"{text}\n{string.Format(CommonLocalize.Dependency_NeedFix, ModName)}";
                 MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_DisableMod, ModName);
             }
         }
@@ -150,7 +176,7 @@ namespace ModsCommon.Utilities
             return true;
         }
 
-        public static DependenciesWatcher Create(PluginSearcher searcher, string modName, List<BaseDependencyInfo> infos)
+        public static DependenciesWatcher Create(PluginSearcher searcher, List<BaseDependencyInfo> infos, string modName, string fullName = null)
         {
             var gameObject = new GameObject();
             DontDestroyOnLoad(gameObject);
@@ -158,6 +184,7 @@ namespace ModsCommon.Utilities
 
             watcher.PluginSearcher = searcher;
             watcher.ModName = modName;
+            watcher.ModFullName = fullName ?? modName;
             watcher.Infos = infos;
 
             return watcher;

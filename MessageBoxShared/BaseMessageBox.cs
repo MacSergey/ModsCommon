@@ -52,6 +52,7 @@ namespace ModsCommon.UI
     }
     public abstract class MessageBoxBase : CustomUIPanel, IAutoLayoutPanel
     {
+        public event Action OnCloseClick;
         public event Action OnClose;
 
         public static float DefaultWidth => 573f;
@@ -62,7 +63,7 @@ namespace ModsCommon.UI
         protected static float ButtonsSpace => 25f;
         protected virtual int ContentSpacing => 0;
 
-        
+
         private CustomUIDragHandle Header { get; set; }
         private CustomUILabel Caption { get; set; }
         protected AutoSizeAdvancedScrollablePanel Panel { get; set; }
@@ -114,7 +115,7 @@ namespace ModsCommon.UI
             cancel.pressedBgSprite = "buttonclosepressed";
             cancel.size = new Vector2(32, 32);
             cancel.relativePosition = new Vector2(527, 4);
-            cancel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => Close();
+            cancel.eventClick += CloseClick;
         }
         private void AddContent()
         {
@@ -229,6 +230,14 @@ namespace ModsCommon.UI
             OnClose?.Invoke();
             MessageBox.Hide(this);
         }
+        private void CloseClick(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            OnCloseClick?.Invoke();
+            Close();
+        }
+
+
+
         public void StopLayout() => Panel.StopLayout();
         public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
     }

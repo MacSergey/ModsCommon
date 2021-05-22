@@ -52,7 +52,12 @@ namespace ModsCommon
 
                 var otherSearcher = PluginUtilities.GetSearcher(NameRaw, !IsBeta ? BetaWorkshopId : StableWorkshopId);
                 var searcher = otherSearcher & !ThisSearcher;
+#if DEBUG
                 var info = new ConflictDependencyInfo(DependencyState.Disable, searcher);
+#else
+                var info = new ConflictDependencyInfo(DependencyState.Unsubscribe, searcher);
+#endif
+
                 infos.Add(info);
 
                 return infos;
@@ -72,7 +77,7 @@ namespace ModsCommon
             Logger.Debug($"Create mod instance Version {VersionString}");
 
             ThisSearcher = new UserModInstanceSearcher(this);
-            DependencyWatcher = DependenciesWatcher.Create(ThisSearcher, !IsBeta ? NameRaw : $"{NameRaw} {BETA}", DependencyInfos);
+            DependencyWatcher = DependenciesWatcher.Create(ThisSearcher, DependencyInfos, NameRaw, Name);
         }
         public void OnEnabled()
         {

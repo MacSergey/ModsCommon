@@ -70,10 +70,17 @@ namespace ModsCommon.Utilities
             if (OnButtonClick?.Invoke() != false)
                 Close();
         }
+        public override void OnDestroy()
+        {
+            Panel.Content.eventComponentAdded -= ContentComponentChanged;
+            Panel.Content.eventComponentRemoved -= ContentComponentChanged;
+            base.OnDestroy();
+        }
         private void ContentComponentChanged(UIComponent container, UIComponent child)
         {
             Space.isVisible = Panel.Content.components.Any(c => c is PluginMessage);
         }
+
     }
     public class PluginMessage : CustomUIPanel
     {

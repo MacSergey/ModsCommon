@@ -61,6 +61,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Detected сonflicting mods..
+        /// </summary>
+        public static string Dependency_Conflict {
+            get {
+                return ResourceManager.GetString("Dependency_Conflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Disable.
         /// </summary>
         public static string Dependency_Disable {
@@ -106,12 +115,29 @@ namespace ModsCommon {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Detected missing dependencies and/or сonflicting mods.
-        ///To continue using {0} need to fix these issues, otherwise the mod will be disabled..
+        ///   Ищет локализованную строку, похожую на Detected missing dependencies..
         /// </summary>
-        public static string Dependency_HasIssues {
+        public static string Dependency_Missing {
             get {
-                return ResourceManager.GetString("Dependency_HasIssues", resourceCulture);
+                return ResourceManager.GetString("Dependency_Missing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Detected missing dependencies and сonflicting mods..
+        /// </summary>
+        public static string Dependency_MissingAndConflict {
+            get {
+                return ResourceManager.GetString("Dependency_MissingAndConflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на To continue using {0} need to fix these issues, otherwise the mod will be disabled..
+        /// </summary>
+        public static string Dependency_NeedFix {
+            get {
+                return ResourceManager.GetString("Dependency_NeedFix", resourceCulture);
             }
         }
         

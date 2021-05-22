@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Dependency_Conflict" xml:space="preserve">
+    <value>Detected сonflicting mods.</value>
+  </data>
   <data name="Dependency_Disable" xml:space="preserve">
     <value>Disable</value>
   </data>
@@ -132,9 +135,14 @@
   <data name="Dependency_Get" xml:space="preserve">
     <value>Get</value>
   </data>
-  <data name="Dependency_HasIssues" xml:space="preserve">
-    <value>Detected missing dependencies and/or сonflicting mods.
-To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+  <data name="Dependency_Missing" xml:space="preserve">
+    <value>Detected missing dependencies.</value>
+  </data>
+  <data name="Dependency_MissingAndConflict" xml:space="preserve">
+    <value>Detected missing dependencies and сonflicting mods.</value>
+  </data>
+  <data name="Dependency_NeedFix" xml:space="preserve">
+    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
     <value>All issues are fixed, {0} can be enabled.</value>
