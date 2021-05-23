@@ -142,7 +142,7 @@
     <value>Puuttuvia riippuvuuksia ja ristiriitaisia lisäosia havaittu.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Nämä ongelmat ovat korjattava, jotta voit jatkaa {0}:n käyttöä. Muuten lisäosa poistetaan käytöstä.</value>
+    <value>Nämä ongelmat on korjattava, jotta voit jatkaa {0}:n käyttöä. Muuten lisäosa poistetaan käytöstä.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
     <value>Kaikki ongelmat korjatt. {0} voidaan ottaa käyttöön.</value>
