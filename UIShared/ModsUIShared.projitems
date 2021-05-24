@@ -9,10 +9,8 @@
     <Import_RootNamespace>ModsUIShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AutoLayoutPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommonTextures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComponentPool.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CustomElements.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
