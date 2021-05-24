@@ -42,8 +42,6 @@ namespace ModsCommon.Utilities
                 }
             }
         }
-        private bool IsMissing { get; set; }
-        private bool IsConflict { get; set; }
 
         public DependenciesWatcher()
         {
