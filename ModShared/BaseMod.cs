@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using UnityEngine.SceneManagement;
 
 namespace ModsCommon
 {
@@ -17,6 +16,7 @@ namespace ModsCommon
     {
         public static string BETA => "[BETA]";
 
+        public bool IsEnable { get; private set; }
         protected virtual bool LoadError { get; set; }
         private bool ErrorShown { get; set; }
 
@@ -78,12 +78,12 @@ namespace ModsCommon
 
             ChangeLocale();
             LocaleManager.eventUIComponentLocaleChanged += ChangeLocale;
-            SceneManager.activeSceneChanged += SceneChanged;
         }
 
         public void OnEnabled()
         {
             Logger.Debug($"Enabled");
+            IsEnable = true;
             LoadError = false;
             ErrorShown = false;
 
@@ -92,10 +92,12 @@ namespace ModsCommon
         public void OnDisabled()
         {
             Logger.Debug($"Disabled");
+            IsEnable = false;
 
             try
             {
                 DependencyWatcher.SetState(false);
+                ChangeLocale();
                 Disable();
             }
             catch (Exception error)
@@ -109,7 +111,10 @@ namespace ModsCommon
             {
                 DependencyWatcher.SetState(true);
                 if (DependencyWatcher.IsValid)
+                {
+                    ChangeLocale();
                     Enable();
+                }
             }
             catch (Exception error)
             {
@@ -131,13 +136,12 @@ namespace ModsCommon
         }
         protected virtual void GetSettings(UIHelperBase helper) { }
 
-        private void SceneChanged(Scene _, Scene currentScene)
-        {
-            DependencyWatcher.SetState(Utility.InMenu);
-        }
         public void ChangeLocale()
         {
-            var locale = BaseSettings<TypeMod>.Locale.value;
+            var locale = string.Empty;
+
+            if (IsEnable)
+                locale = BaseSettings<TypeMod>.Locale.value;
 
             if (string.IsNullOrEmpty(locale))
             {

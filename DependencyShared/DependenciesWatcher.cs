@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon.Utilities
@@ -16,9 +17,11 @@ namespace ModsCommon.Utilities
         private PluginInfo _plugin;
         private List<BaseDependencyWatcher> _dependencies;
 
-        private ICustomMod Instance { get; set; }
-        private PluginSearcher PluginSearcher => new UserModInstanceSearcher(Instance);
-        private PluginInfo Plugin => _plugin ??= PluginUtilities.GetPlugin(PluginSearcher);
+        public ICustomMod ModInstance { get; private set; }
+        public ILogger logger => ModInstance.Logger;
+
+        private PluginSearcher PluginSearcher => new UserModInstanceSearcher(ModInstance);
+        private PluginInfo Plugin => _plugin ??= PluginSearcher.GetPlugin();
         private List<BaseDependencyInfo> Infos { get; set; }
 
         private List<BaseDependencyWatcher> Dependencies => _dependencies ??= Infos.SelectMany(i => i.GetWatcher(this)).ToList();
@@ -33,10 +36,9 @@ namespace ModsCommon.Utilities
                 if (value != _isValid)
                 {
                     _isValid = value;
-                    UpdateMessageBox();
+                    ModInstance.Logger.Debug(IsValid ? "Dependencies valid" : "Dependencies not valid");
 
-                    if (!IsValid)
-                        Plugin.SetState(false);
+                    UpdateMessageBox();
                 }
             }
         }
@@ -46,7 +48,10 @@ namespace ModsCommon.Utilities
         public DependenciesWatcher()
         {
             enabled = false;
+            LoadingManager.instance.m_levelPreLoaded += LevelPreLoaded;
+            LoadingManager.instance.m_levelUnloaded += LevelUnloaded;
         }
+
         public void SetState(bool state)
         {
             if (state)
@@ -56,26 +61,47 @@ namespace ModsCommon.Utilities
         }
         private void OnEnable()
         {
-            PluginManager.instance.eventPluginsChanged += UpdateDependencies;
-            SetDependenciesState();
+            ModInstance.Logger.Debug("Dependencies watcher enabled");
+
+            PluginManager.instance.eventPluginsChanged += UpdateWatchers;
+            SetWatchersState();
             UpdateValid();
         }
         private void OnDisable()
         {
+            ModInstance.Logger.Debug("Dependencies watcher disabled");
+
             _isValid = true;
-            PluginManager.instance.eventPluginsChanged -= UpdateDependencies;
-            SetDependenciesState();
+            PluginManager.instance.eventPluginsChanged -= UpdateWatchers;
+            SetWatchersState();
         }
-        private void SetDependenciesState()
+        private void LevelPreLoaded()
         {
-            foreach (var dependency in Dependencies)
-                dependency.Enable = enabled;
+            if (Plugin.isEnabled)
+            {
+                ModInstance.Logger.Debug("Start load level");
+                SetState(false);
+            }
+        }
+        private void LevelUnloaded()
+        {
+            if (Plugin.isEnabled)
+            {
+                ModInstance.Logger.Debug("Level unloaded");
+                SetState(Utility.InMenu);
+            }
         }
 
-        private void UpdateDependencies()
+        private void SetWatchersState()
         {
-            foreach (var dependency in Dependencies)
-                dependency.Update();
+            foreach (var watcher in Dependencies)
+                watcher.Enable = enabled;
+        }
+
+        private void UpdateWatchers()
+        {
+            foreach (var watcher in Dependencies)
+                watcher.Update();
         }
         public void UpdateValid()
         {
@@ -99,10 +125,12 @@ namespace ModsCommon.Utilities
             if (MessageBox == null)
             {
                 MessageBox = UI.MessageBox.Show<DependenciesMessageBox>();
-                MessageBox.CaptionText = Instance.Name;
+                MessageBox.CaptionText = ModInstance.Name;
                 MessageBox.OnButtonClick = () => IsValid ? EnablePlugin() : DisablePlugin();
                 MessageBox.OnCloseClick += () => enabled = false;
-                UpdateMessageBox();
+
+                Plugin.SetState(false);
+                UpdateValid();
             }
         }
         private void Hide()
@@ -128,8 +156,8 @@ namespace ModsCommon.Utilities
         {
             if (IsValid)
             {
-                MessageBox.MessageText = string.Format(CommonLocalize.Dependency_NoIssues, Instance.NameRaw);
-                MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_EnableMod, Instance.NameRaw);
+                MessageBox.MessageText = string.Format(CommonLocalize.Dependency_NoIssues, ModInstance.NameRaw);
+                MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_EnableMod, ModInstance.NameRaw);
             }
             else
             {
@@ -141,8 +169,8 @@ namespace ModsCommon.Utilities
                 else if (IsConflict)
                     text = CommonLocalize.Dependency_Conflict;
 
-                MessageBox.MessageText = $"{text}\n{string.Format(CommonLocalize.Dependency_NeedFix, Instance.NameRaw)}";
-                MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_DisableMod, Instance.NameRaw);
+                MessageBox.MessageText = $"{text}\n{string.Format(CommonLocalize.Dependency_NeedFix, ModInstance.NameRaw)}";
+                MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_DisableMod, ModInstance.NameRaw);
             }
         }
 
@@ -171,7 +199,7 @@ namespace ModsCommon.Utilities
             DontDestroyOnLoad(gameObject);
             var watcher = gameObject.AddComponent<DependenciesWatcher>();
 
-            watcher.Instance = instance;
+            watcher.ModInstance = instance;
             watcher.Infos = infos;
 
             return watcher;
@@ -193,8 +221,8 @@ namespace ModsCommon.Utilities
         }
 
         public abstract void Update();
-        protected PluginMessage AddMessage() => MainWatcher.AddMessage();
-        protected void RemoveMessage(PluginMessage message) => MainWatcher.RemoveMessage(message);
+        protected virtual PluginMessage AddMessage() => MainWatcher.AddMessage();
+        protected virtual void RemoveMessage(PluginMessage message) => MainWatcher.RemoveMessage(message);
     }
 
     public abstract class NeedDependencyWatcher : BaseDependencyWatcher
@@ -233,7 +261,7 @@ namespace ModsCommon.Utilities
 
         public override void Update()
         {
-            if (PluginUtilities.GetPlugin(Info.Searcher) is not PluginInfo plugin)
+            if (Info.Searcher.GetPlugin() is not PluginInfo plugin)
                 RemoveWatcher();
             else if (Watcher == null || Watcher.Plugin != plugin)
                 AddWatcher(plugin);
@@ -271,9 +299,8 @@ namespace ModsCommon.Utilities
             }
 
             if (Message == null && NeedAddMessage)
-                Message = AddMessageImpl();
+                Message = AddMessage();
         }
-        protected abstract PluginMessage AddMessageImpl();
     }
     public class SubscribeDependencyWatcher : NeedDependencyWatcher
     {
@@ -284,9 +311,11 @@ namespace ModsCommon.Utilities
 
         public SubscribeDependencyWatcher(DependenciesWatcher watcher, NeedDependencyInfo info) : base(watcher, info) { }
 
-        protected override PluginMessage AddMessageImpl()
+        protected override PluginMessage AddMessage()
         {
-            var message = AddMessage();
+            MainWatcher.logger.Debug($"Detected missing dependency: {Info.Name}");
+
+            var message = base.AddMessage();
             message.Text = Info.Name;
             message.ButtonText = WorkshopAvailable ? CommonLocalize.Dependency_Subscribe : CommonLocalize.Dependency_Get;
             message.OnButtonClick = Subscribe;
@@ -294,12 +323,19 @@ namespace ModsCommon.Utilities
 
             return message;
         }
+        protected override void RemoveMessage(PluginMessage message)
+        {
+            MainWatcher.logger.Debug($"Dependency found: {Watcher.Name}");
+            base.RemoveMessage(message);
+        }
+
         private void Subscribe()
         {
             if (Info.Id != 0ul)
             {
                 if (WorkshopAvailable)
                 {
+                    MainWatcher.logger.Debug($"Subscribe missing dependency: {Watcher.Name}");
                     Message.InProgress = true;
                     PlatformService.workshop.Subscribe(new PublishedFileId(Info.Id));
                 }
@@ -307,12 +343,7 @@ namespace ModsCommon.Utilities
                     Info.Id.OpenWorkshop();
             }
         }
-        private float GetProgress()
-        {
-            var progress = PlatformService.workshop.GetSubscribedItemProgress(new PublishedFileId(Info.Id));
-            Debug.Log($"Progress: {progress}");
-            return progress;
-        }
+        private float GetProgress() => PlatformService.workshop.GetSubscribedItemProgress(new PublishedFileId(Info.Id));
     }
     public class EnableDependencyWatcher : NeedDependencyWatcher
     {
@@ -323,14 +354,21 @@ namespace ModsCommon.Utilities
 
         public EnableDependencyWatcher(DependenciesWatcher watcher, NeedDependencyInfo info) : base(watcher, info) { }
 
-        protected override PluginMessage AddMessageImpl()
+        protected override PluginMessage AddMessage()
         {
-            var message = AddMessage();
-            message.Text = (Watcher.Plugin.userModInstance as IUserMod).Name;
+            MainWatcher.logger.Debug($"Detected not enable dependency: {Info.Name}");
+
+            var message = base.AddMessage();
+            message.Text = Watcher.Name;
             message.ButtonText = CommonLocalize.Dependency_Enable;
             message.OnButtonClick = () => Watcher.Plugin.SetState(true);
 
             return message;
+        }
+        protected override void RemoveMessage(PluginMessage message)
+        {
+            MainWatcher.logger.Debug($"Dependency enabled: {Watcher.Name}");
+            base.RemoveMessage(message);
         }
     }
 
@@ -368,7 +406,7 @@ namespace ModsCommon.Utilities
 
         public override void Update()
         {
-            var plugins = PluginUtilities.GetPlugins(Info.Searcher).ToHashSet();
+            var plugins = Info.Searcher.GetPlugins().ToHashSet();
 
             foreach (var plugin in plugins)
             {
@@ -399,31 +437,33 @@ namespace ModsCommon.Utilities
                 return;
 
             foreach (var plugin in Messages.Keys.ToArray())
-                RemoveMessage(plugin);
+                RemoveMessageImpl(plugin);
 
             foreach (var plugin in Watchers.Keys)
-                AddMessage(plugin);
+                AddMessageImpl(plugin);
         }
         protected void UpdateMessage(PluginInfo plugin)
         {
-            RemoveMessage(plugin);
-            AddMessage(plugin);
+            RemoveMessageImpl(plugin);
+            AddMessageImpl(plugin);
         }
-        private void RemoveMessage(PluginInfo plugin)
+        private void RemoveMessageImpl(PluginInfo plugin)
         {
             if (Messages.TryGetValue(plugin, out var message) && NeedRemoveMessage(plugin))
             {
-                RemoveMessage(message);
+                RemoveMessage(plugin, message);
                 Messages.Remove(plugin);
             }
         }
-        private void AddMessage(PluginInfo plugin)
+        private void AddMessageImpl(PluginInfo plugin)
         {
             if (!Messages.ContainsKey(plugin) && NeedAddMessage(plugin))
-                Messages[plugin] = AddMessageImpl(plugin);
+                Messages[plugin] = AddMessage(plugin);
         }
 
-        protected abstract PluginMessage AddMessageImpl(PluginInfo plugin);
+        protected abstract PluginMessage AddMessage(PluginInfo plugin);
+        protected abstract void RemoveMessage(PluginInfo plugin, PluginMessage message);
+
         protected abstract bool NeedAddMessage(PluginInfo plugin);
         protected abstract bool NeedRemoveMessage(PluginInfo plugin);
 
@@ -435,14 +475,21 @@ namespace ModsCommon.Utilities
 
         public UnsubscribeDependencyWatcher(DependenciesWatcher watcher, ConflictDependencyInfo info) : base(watcher, info) { }
 
-        protected override PluginMessage AddMessageImpl(PluginInfo plugin)
+        protected override PluginMessage AddMessage(PluginInfo plugin)
         {
-            var message = AddMessage();
-            message.Text = (plugin.userModInstance as IUserMod).Name;
+            MainWatcher.logger.Debug($"Detected conflict mod: {plugin.GetName()}");
+
+            var message = base.AddMessage();
+            message.Text = plugin.GetName();
             message.ButtonText = WorkshopAvailable ? CommonLocalize.Dependency_Unsubscribe : CommonLocalize.Dependency_Remove;
             message.OnButtonClick = () => Unsubscribe(plugin);
 
             return message;
+        }
+        protected override void RemoveMessage(PluginInfo plugin, PluginMessage message)
+        {
+            MainWatcher.logger.Debug($"Conflict mod no more exist: {plugin.GetName()}");
+            base.RemoveMessage(message);
         }
 
         protected override bool NeedAddMessage(PluginInfo plugin) => Watchers.ContainsKey(plugin);
@@ -451,9 +498,15 @@ namespace ModsCommon.Utilities
         private void Unsubscribe(PluginInfo plugin)
         {
             if (plugin.publishedFileID == PublishedFileId.invalid)
+            {
+                MainWatcher.logger.Debug($"Unsubscribe conflict mod: {plugin.GetName()}");
                 Directory.Delete(plugin.modPath, true);
+            }
             else if (WorkshopAvailable)
+            {
+                MainWatcher.logger.Debug($"Remove conflict mod: {plugin.GetName()}");
                 PlatformService.workshop.Unsubscribe(plugin.publishedFileID);
+            }
         }
     }
     public class DisableDependencyWatcher : ConflictDependencyWatcher
@@ -462,15 +515,23 @@ namespace ModsCommon.Utilities
 
         public DisableDependencyWatcher(DependenciesWatcher watcher, ConflictDependencyInfo info) : base(watcher, info) { }
 
-        protected override PluginMessage AddMessageImpl(PluginInfo plugin)
+        protected override PluginMessage AddMessage(PluginInfo plugin)
         {
-            var message = AddMessage();
-            message.Text = (plugin.userModInstance as IUserMod).Name;
+            MainWatcher.logger.Debug($"Detected not disabled conflict mod: {plugin.GetName()}");
+
+            var message = base.AddMessage();
+            message.Text = plugin.GetName();
             message.ButtonText = CommonLocalize.Dependency_Disable;
             message.OnButtonClick = () => plugin.SetState(false);
 
             return message;
         }
+        protected override void RemoveMessage(PluginInfo plugin, PluginMessage message)
+        {
+            MainWatcher.logger.Debug($"Conflict mod disabled: {plugin.GetName()}");
+            base.RemoveMessage(message);
+        }
+
         protected override bool NeedAddMessage(PluginInfo plugin) => Watchers.TryGetValue(plugin, out var watcher) && watcher.IsPluginEnabled;
         protected override bool NeedRemoveMessage(PluginInfo plugin) => !Watchers.TryGetValue(plugin, out var watcher) || !watcher.IsPluginEnabled;
         protected override void WatcherStateChanged(PluginInfo plugin, bool state) => UpdateMessage(plugin);

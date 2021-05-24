@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
-using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
 {
@@ -52,6 +50,8 @@ namespace ModsCommon
         {
             if (PatchResult == Result.Success)
                 Unpatch();
+
+            PatchResult = Result.None;
         }
         private void Patch()
         {
@@ -109,7 +109,7 @@ namespace ModsCommon
 
                 AddPatch(patcher, patch, original);
 
-                Logger.Debug($"[{type?.FullName}.{method}] success patched!");
+                Logger.Debug("Success patched!");
             }
 
             return AddPatchProcess(action);
@@ -132,7 +132,7 @@ namespace ModsCommon
 
                 AddPatch(patcher, patch, original);
 
-                Logger.Debug($"[{type?.FullName}.{method}] success patched!");
+                Logger.Debug("Success patched!");
             }
 
             return AddPatchProcess(action);

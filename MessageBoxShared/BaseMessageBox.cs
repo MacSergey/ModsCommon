@@ -25,6 +25,7 @@ namespace ModsCommon.UI
                 if (!modalEffect.isVisible || modalEffect.opacity != 1f)
                 {
                     modalEffect.Show(false);
+                    ValueAnimator.Cancel("ModalEffect67419");
                     ValueAnimator.Animate("ModalEffect67419", val => modalEffect.opacity = val, new AnimatedFloat(0f, 1f, 0.7f, EasingType.CubicEaseOut));
                 }
             }
@@ -41,7 +42,10 @@ namespace ModsCommon.UI
             if (UIView.GetAView().panelsLibraryModalEffect is UIComponent modalEffect)
             {
                 if (!UIView.HasModalInput())
+                {
+                    ValueAnimator.Cancel("ModalEffect67419");
                     ValueAnimator.Animate("ModalEffect67419", val => modalEffect.opacity = val, new AnimatedFloat(1f, 0f, 0.7f, EasingType.CubicEaseOut), () => modalEffect.Hide());
+                }
                 else
                     modalEffect.zOrder = UIView.GetModalComponent().zOrder - 1;
             }

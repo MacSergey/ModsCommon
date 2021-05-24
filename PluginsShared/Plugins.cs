@@ -14,8 +14,9 @@ namespace ModsCommon.Utilities
 {
     public static class PluginUtilities
     {
-        public static PluginInfo GetPlugin(PluginSearcher searcher) => GetPlugins(searcher).FirstOrDefault();
-        public static IEnumerable<PluginInfo> GetPlugins(PluginSearcher searcher)
+        public static string GetName(this PluginInfo plugin) => (plugin.userModInstance as IUserMod)?.Name ?? string.Empty;
+        public static PluginInfo GetPlugin(this PluginSearcher searcher) => searcher.GetPlugins().FirstOrDefault();
+        public static IEnumerable<PluginInfo> GetPlugins(this PluginSearcher searcher)
         {
             var plugins = PluginManager.instance.GetPluginsInfo().ToArray();
             foreach (var plugin in plugins)
@@ -307,6 +308,7 @@ namespace ModsCommon.Utilities
 
         public PluginInfo Plugin { get; }
         public bool IsPluginEnabled { get; private set; }
+        public string Name => Plugin.GetName();
 
         public PluginStateWatcher(PluginInfo plugin, bool enable = true)
         {

@@ -34,23 +34,27 @@ namespace ModsCommon.Utilities
     }
     public static class IntroUtility
     {
-        private static List<Action> Actions { get; } = new List<Action>();
-        static IntroUtility()
-        {
-            LoadingManager.instance.m_introLoaded += IntroLoaded;
-        }
+        private static List<Action> IntroActions { get; } = new List<Action>();
 
-        private static void IntroLoaded()
-        {
-            foreach (var action in Actions)
-                action();
-        }
         public static void OnLoaded(Action action)
         {
             if (UIView.GetAView() != null)
                 action();
             else
-                Actions.Add(action);
+            {
+                LoadingManager.instance.m_introLoaded -= IntroLoaded;
+                LoadingManager.instance.m_introLoaded += IntroLoaded;
+
+                IntroActions.Add(action);
+            }
+        }
+
+        private static void IntroLoaded()
+        {
+            LoadingManager.instance.m_introLoaded -= IntroLoaded;
+
+            foreach (var action in IntroActions)
+                action();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace ModsCommon.Utilities
         }
         public sealed override void OnLevelUnloading()
         {
-            SingletonMod<TypeMod>.Instance.Logger.Debug($"On level unloaded");
+            SingletonMod<TypeMod>.Instance.Logger.Debug($"On level unloading");
             ComponentPool.Clear();
             OnUnload();
         }
