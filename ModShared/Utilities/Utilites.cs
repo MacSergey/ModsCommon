@@ -22,7 +22,7 @@ namespace ModsCommon.Utilities
         public static string GetWorkshopUrl(this ulong id) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={id}";
 
         public static bool InGame => !OnStartup && !InMenu;
-        public static bool InMenu => SceneManager.GetActiveScene().name is string scene && scene == "IntroScreen";
+        public static bool InMenu => SceneManager.GetActiveScene().name is string scene && scene == "MainMenu";
         public static bool OnStartup => SceneManager.GetActiveScene().name is string scene && scene == "Startup";
 
         public static bool AltIsPressed => Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);

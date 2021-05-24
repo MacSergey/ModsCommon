@@ -20,7 +20,7 @@ namespace ModsCommon
     {
         public static string SettingsFile { get; } = $"{typeof(TypeMod).Namespace}{nameof(SettingsFile)}";
         public static SavedString Locale { get; } = new SavedString(nameof(Locale), SettingsFile, string.Empty, true);
-        public static SavedString WhatsNewVersion { get; } = new SavedString(nameof(WhatsNewVersion), SettingsFile, SingletonMod<TypeMod>.Version.PrevMinor(SingletonMod<TypeMod>.Versions).ToString(), true);
+        public static SavedString WhatsNewVersion { get; } = new SavedString(nameof(WhatsNewVersion), SettingsFile, SingletonMod<TypeMod>.Version.PrevMinor(SingletonMod<TypeMod>.Instance.Versions).ToString(), true);
         public static SavedBool ShowWhatsNew { get; } = new SavedBool(nameof(ShowWhatsNew), SettingsFile, true, true);
         public static SavedBool ShowOnlyMajor { get; } = new SavedBool(nameof(ShowOnlyMajor), SettingsFile, false, true);
         public static SavedBool BetaWarning { get; } = new SavedBool(nameof(BetaWarning), SettingsFile, true, true);
@@ -119,7 +119,7 @@ namespace ModsCommon
             {
                 var localizeString = $"Mod_Locale_{locale}";
                 var localeText = CommonLocalize.ResourceManager.GetString(localizeString, CommonLocalize.Culture);
-                if (SingletonMod<TypeMod>.Culture.Name.ToLower() != locale)
+                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale)
                     localeText += $" ({CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(locale))})";
 
                 dropDown.AddItem(locale, localeText);

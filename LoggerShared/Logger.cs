@@ -2,7 +2,17 @@
 
 namespace ModsCommon
 {
-    public class Logger
+    public interface ILogger
+    {
+        public void Debug(string message);
+
+        public void Warning(string message, Exception error = null);
+        public void Warning(Exception error);
+
+        public void Error(string message, Exception error = null);
+        public void Error(Exception error);
+    }
+    public class Logger : ILogger
     {
         private string Name { get; }
         public Logger(string name) => Name = name;

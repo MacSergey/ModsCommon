@@ -36,7 +36,7 @@ namespace ModsCommon.Utilities
     public class BaseShortcut<TypeMod> : Shortcut
         where TypeMod : BaseMod<TypeMod>
     {
-        public override string Label => SingletonMod<TypeMod>.GetLocalizeString(LabelKey);
+        public override string Label => SingletonMod<TypeMod>.Instance.GetLocalizeString(LabelKey);
         public BaseShortcut(string name, string labelKey, InputKey key, Action action = null) : base(BaseSettings<TypeMod>.SettingsFile, name, labelKey, key, action) { }
     }
 }

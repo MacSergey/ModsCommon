@@ -25,7 +25,7 @@ namespace ModsCommon.Utilities
             where TypeMod : BaseMod<TypeMod>
         {
             var description = value.GetAttr<DescriptionAttribute, T>()?.Description ?? value.ToString();
-            return SingletonMod<TypeMod>.GetLocalizeString(description);
+            return SingletonMod<TypeMod>.Instance.GetLocalizeString(description);
         }
 
         public static bool IsVisible<T>(this T value) where T : Enum => value.GetAttr<NotVisibleAttribute, T>() == null;

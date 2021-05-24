@@ -9,10 +9,8 @@
     <Import_RootNamespace>ModsCommon</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BaseMod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BasePatcherMod.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Singleton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ClassesExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\EnumExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\VersionExtension.cs" />

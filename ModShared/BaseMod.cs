@@ -10,11 +10,12 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
 {
-    public abstract class BaseMod<TypeMod> : IUserMod
+    public abstract class BaseMod<TypeMod> : ICustomMod
         where TypeMod : BaseMod<TypeMod>
     {
         public static string BETA => "[BETA]";
@@ -32,7 +33,7 @@ namespace ModsCommon
         public PluginSearcher ThisSearcher { get; }
         public PluginInfo Plugin => PluginUtilities.GetPlugin(ThisSearcher);
         private DependenciesWatcher DependencyWatcher { get; set; }
-        public Logger Logger { get; private set; }
+        public ILogger Logger { get; private set; }
         protected abstract ulong StableWorkshopId { get; }
         protected abstract ulong BetaWorkshopId { get; }
         public ulong WorkshopId => !IsBeta ? StableWorkshopId : BetaWorkshopId;
@@ -80,7 +81,9 @@ namespace ModsCommon
 
             ChangeLocale();
             LocaleManager.eventUIComponentLocaleChanged += ChangeLocale;
+            SceneManager.activeSceneChanged += SceneChanged;
         }
+
         public void OnEnabled()
         {
             Logger.Debug($"Enabled");
@@ -92,10 +95,10 @@ namespace ModsCommon
         public void OnDisabled()
         {
             Logger.Debug($"Disabled");
-            DependencyWatcher.SetState(false);
 
             try
             {
+                DependencyWatcher.SetState(false);
                 Disable();
             }
             catch (Exception error)
@@ -105,10 +108,9 @@ namespace ModsCommon
         }
         private void EnableImpl()
         {
-            DependencyWatcher.SetState(true);
-
             try
             {
+                DependencyWatcher.SetState(true);
                 if (DependencyWatcher.IsValid)
                     Enable();
             }
@@ -132,6 +134,10 @@ namespace ModsCommon
         }
         protected virtual void GetSettings(UIHelperBase helper) { }
 
+        private void SceneChanged(Scene _, Scene currentScene)
+        {
+            DependencyWatcher.SetState(Utility.InMenu);
+        }
         public void ChangeLocale()
         {
             var locale = BaseSettings<TypeMod>.Locale.value;
