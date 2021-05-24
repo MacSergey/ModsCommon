@@ -32,9 +32,8 @@ namespace ModsCommon
         public bool ShowPanel { get; }
     }
 
-    public abstract class BaseToolMode<TypeMod, TypeTool> : MonoBehaviour, IToolMode
-        where TypeMod : BaseMod<TypeMod>
-        where TypeTool : BaseTool<TypeMod, TypeTool>
+    public abstract class BaseToolMode<TypeTool> : MonoBehaviour, IToolMode
+        where TypeTool : ITool
     {
         protected TypeTool Tool => SingletonTool<TypeTool>.Instance;
 
@@ -47,7 +46,7 @@ namespace ModsCommon
         {
             enabled = true;
 #if DEBUG
-            SingletonMod<TypeMod>.Logger.Debug($"Enable {GetType().Name}");
+            Tool.ModInstance.Logger.Debug($"Enable {GetType().Name}");
 #endif
             Reset(prevMode);
         }
@@ -56,7 +55,7 @@ namespace ModsCommon
         {
             enabled = false;
 #if DEBUG
-            SingletonMod<TypeMod>.Logger.Debug($"Disable {GetType().Name}");
+            Tool.ModInstance.Logger.Debug($"Disable {GetType().Name}");
 #endif
         }
 

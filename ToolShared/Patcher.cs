@@ -12,7 +12,7 @@ namespace ModsCommon
     public static partial class Patcher
     {
         public static IEnumerable<CodeInstruction> ToolControllerAwakeTranspiler<TypeMod, TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
-            where TypeMod : BaseMod<TypeMod>
+            where TypeMod : ICustomMod
             where TypeTool : BaseTool<TypeMod, TypeTool>
         {
             var createMethod = AccessTools.Method(typeof(TypeTool), nameof(BaseTool<TypeMod, TypeTool>.Create));
@@ -23,7 +23,7 @@ namespace ModsCommon
         }
 
         public static IEnumerable<CodeInstruction> GameKeyShortcutsEscapeTranspiler<TypeMod, TypeTool>(ILGenerator generator, IEnumerable<CodeInstruction> instructions)
-            where TypeMod : BaseMod<TypeMod>
+            where TypeMod : ICustomMod
             where TypeTool : BaseTool<TypeMod, TypeTool>
         {
             var instructionList = instructions.ToList();
@@ -64,7 +64,7 @@ namespace ModsCommon
         }
 
         public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeMod, TypeButton>(string templateName, ref OptionPanelBase __result)
-            where TypeMod : BaseMod<TypeMod>
+            where TypeMod : ICustomMod
             where TypeButton : UIButton
         {
             if (__result == null || templateName != "RoadsOptionPanel" || __result.component.Find<TypeButton>(typeof(TypeButton).Name) != null)

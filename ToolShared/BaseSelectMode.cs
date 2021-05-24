@@ -6,9 +6,8 @@ using UnityEngine;
 
 namespace ModsCommon
 {
-    public abstract class BaseSelectToolMode<TypeMod, TypeTool> : BaseToolMode<TypeMod, TypeTool>
-        where TypeMod : BaseMod<TypeMod>
-        where TypeTool : BaseTool<TypeMod, TypeTool>
+    public abstract class BaseSelectToolMode<TypeTool> : BaseToolMode<TypeTool>
+        where TypeTool : ITool
     {
         protected Segment3 Ray => SingletonTool<TypeTool>.Instance.Ray;
 

@@ -1,8 +1,6 @@
 ﻿using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
-using ColossalFramework.UI;
 using ICities;
-using ModsCommon.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,14 +11,17 @@ using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon.Utilities
 {
-    public abstract class DependenciesWatcher : MonoBehaviour
+    public class DependenciesWatcher : MonoBehaviour
     {
-        private bool Inited { get; set; }
+        private PluginInfo _plugin;
+        private List<BaseDependencyWatcher> _dependencies;
+
         private ICustomMod Instance { get; set; }
-        private PluginInfo Plugin { get; set; }
+        private PluginSearcher PluginSearcher => new UserModInstanceSearcher(Instance);
+        private PluginInfo Plugin => _plugin ??= PluginUtilities.GetPlugin(PluginSearcher);
         private List<BaseDependencyInfo> Infos { get; set; }
 
-        private List<BaseDependencyWatcher> Dependencies { get; } = new List<BaseDependencyWatcher>();
+        private List<BaseDependencyWatcher> Dependencies => _dependencies ??= Infos.SelectMany(i => i.GetWatcher(this)).ToList();
         private DependenciesMessageBox MessageBox { get; set; }
 
         private bool _isValid = true;
@@ -55,16 +56,6 @@ namespace ModsCommon.Utilities
         }
         private void OnEnable()
         {
-            if (!Inited)
-            {
-                foreach (var info in Infos)
-                {
-                    var dependency = info.GetWatcher(this);
-                    Dependencies.AddRange(dependency);
-                }
-                Inited = true;
-            }
-
             PluginManager.instance.eventPluginsChanged += UpdateDependencies;
             SetDependenciesState();
             UpdateValid();
@@ -180,8 +171,7 @@ namespace ModsCommon.Utilities
             DontDestroyOnLoad(gameObject);
             var watcher = gameObject.AddComponent<DependenciesWatcher>();
 
-            var pluginSearcher = new UserModInstanceSearcher(instance);
-            watcher.Plugin = PluginUtilities.GetPlugin(pluginSearcher);
+            watcher.Instance = instance;
             watcher.Infos = infos;
 
             return watcher;

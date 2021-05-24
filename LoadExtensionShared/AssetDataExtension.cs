@@ -49,8 +49,8 @@ namespace ModsCommon.Utilities
     }
 
     public abstract class BaseIntersectionAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap> : BaseAssetDataExtension<TypeExtension, AssetData>, IBaseIntersectionAssetDataExtension
-        where TypeMod : BaseMod<TypeMod>
-        where TypeExtension : BaseIntersectionAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap>
+        where TypeMod : ICustomMod
+        where TypeExtension : BaseAssetDataExtension<TypeExtension, AssetData>
         where TypeObjectMap : IObjectsMap
     {
         protected abstract string DataId { get; }

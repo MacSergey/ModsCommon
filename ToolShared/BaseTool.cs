@@ -12,16 +12,34 @@ namespace ModsCommon
 {
     public interface ITool
     {
+        public bool enabled { get; }
+
+        public ICustomMod ModInstance { get; }
         public Shortcut Activation { get; }
+
+        public Segment3 Ray { get; }
+        public Ray MouseRay { get; }
+        public float MouseRayLength { get; }
+        public bool MouseRayValid { get; }
+        public Vector3 MousePosition { get; }
+        public Vector3 MousePositionScaled { get; }
+        public Vector3 MouseWorldPosition { get; }
+        public Vector3 CameraDirection { get; }
+
+        public void Init();
+        public void Toggle();
+        public void Enable();
+        public void Disable(bool setPrev = true);
     }
     public abstract class SingletonTool<T> : SingletonItem<T>
     where T : ITool
     {
         public static Shortcut Activation => Instance.Activation;
+        public static ILogger Logger => Instance.ModInstance.Logger;
     }
     public abstract class BaseTool<TypeMod, TypeTool> : ToolBase, ITool
-        where TypeMod : BaseMod<TypeMod>
-        where TypeTool : BaseTool<TypeMod, TypeTool>
+        where TypeMod : ICustomMod
+        where TypeTool : ToolBase, ITool
     {
         #region STATIC
 
@@ -29,7 +47,7 @@ namespace ModsCommon
         {
             if (ToolsModifierControl.toolController.gameObject.GetComponent<TypeTool>() == null)
             {
-                SingletonMod<TypeMod>.Logger.Debug($"Create tool");
+                SingletonMod<TypeMod>.Instance.Logger.Debug($"Create tool");
                 SingletonTool<TypeTool>.Instance = ToolsModifierControl.toolController.gameObject.AddComponent<TypeTool>();
             }
         }
@@ -38,7 +56,7 @@ namespace ModsCommon
 
         #region PROPERTIES
 
-        public TypeMod Mod => SingletonMod<TypeMod>.Instance;
+        public ICustomMod ModInstance => SingletonMod<TypeMod>.Instance;
 
         protected bool IsInit { get; set; } = false;
         public IToolMode Mode { get; private set; }
@@ -50,7 +68,7 @@ namespace ModsCommon
         protected abstract bool ShowToolTip { get; }
         protected abstract IToolMode DefaultMode { get; }
 
-        public Segment3 Ray { get; set; }
+        public Segment3 Ray { get; private set; }
         public Ray MouseRay { get; private set; }
         public float MouseRayLength { get; private set; }
         public bool MouseRayValid { get; private set; }
@@ -72,41 +90,30 @@ namespace ModsCommon
             if (IsInit)
                 return;
 
-            SingletonMod<TypeMod>.Logger.Debug($"Init tool");
+            ModInstance.Logger.Debug($"Init tool");
 
             InitProcess();
 
             IsInit = true;
 
-            SingletonMod<TypeMod>.Logger.Debug($"Tool inited");
+            ModInstance.Logger.Debug($"Tool inited");
         }
         protected virtual void InitProcess() { }
 
-        public Mode CreateToolMode<Mode>()
-            where Mode : BaseToolMode<TypeMod, TypeTool>
+        public Mode CreateToolMode<Mode>() where Mode : BaseToolMode<TypeTool>
         {
             return gameObject.AddComponent<Mode>();
         }
 
-        public static void Remove()
-        {
-            SingletonMod<TypeMod>.Logger.Debug($"Remove tool");
-            if (SingletonItem<TypeTool>.Instance is TypeTool toolInstance)
-            {
-                Destroy(toolInstance);
-                SingletonItem<TypeTool>.Instance = null;
-                SingletonMod<TypeMod>.Logger.Debug($"Tool removed");
-            }
-        }
         protected override void OnEnable()
         {
-            SingletonMod<TypeMod>.Logger.Debug($"Enable tool");
+            ModInstance.Logger.Debug($"Enable tool");
             Reset(DefaultMode);
             base.OnEnable();
         }
         protected override void OnDisable()
         {
-            SingletonMod<TypeMod>.Logger.Debug($"Disable tool");
+            ModInstance.Logger.Debug($"Disable tool");
             Reset(null);
         }
         protected void Reset(IToolMode mode)
@@ -297,8 +304,8 @@ namespace ModsCommon
         #endregion
     }
     public abstract class BaseTool<TypeMod, TypeTool, TypeModeType> : BaseTool<TypeMod, TypeTool>
-        where TypeMod : BaseMod<TypeMod>
-        where TypeTool : BaseTool<TypeMod, TypeTool>
+        where TypeMod : ICustomMod
+        where TypeTool : ToolBase, ITool
         where TypeModeType : Enum
     {
         protected Dictionary<TypeModeType, IToolMode<TypeModeType>> ToolModes { get; set; } = new Dictionary<TypeModeType, IToolMode<TypeModeType>>();
@@ -310,25 +317,20 @@ namespace ModsCommon
 
         public void SetMode(TypeModeType mode) => SetMode(ToolModes[mode]);
     }
-    public abstract class BaseThreadingExtension<TypeMod, TypeTool> : ThreadingExtensionBase
-        where TypeMod : BaseMod<TypeMod>
-        where TypeTool : BaseTool<TypeMod, TypeTool>
+    public abstract class BaseThreadingExtension<TypeTool> : ThreadingExtensionBase
+        where TypeTool : ITool
     {
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            if (SingletonItem<TypeTool>.Instance is not TypeTool toolInstance)
-                return;
-
-            if (!UIView.HasModalInput() && !UIView.HasInputFocus() && toolInstance.Activation.IsKeyUp)
+            if (SingletonTool<TypeTool>.Instance is TypeTool toolInstance && !UIView.HasModalInput() && !UIView.HasInputFocus() && toolInstance.Activation.IsKeyUp)
             {
-                SingletonMod<TypeMod>.Logger.Debug($"On press shortcut");
+                SingletonTool<TypeTool>.Logger.Debug($"On press shortcut");
                 toolInstance.Toggle();
             }
         }
     }
-    public abstract class BaseToolLoadingExtension<TypeMod, TypeTool> : LoadingExtensionBase
-        where TypeMod : BaseMod<TypeMod>
-        where TypeTool : BaseTool<TypeMod, TypeTool>
+    public abstract class BaseToolLoadingExtension<TypeTool> : LoadingExtensionBase
+        where TypeTool : ITool
     {
         public override void OnLevelLoaded(LoadMode mode)
         {
@@ -341,7 +343,7 @@ namespace ModsCommon
                 case LoadMode.LoadAsset:
                 case LoadMode.NewMap:
                 case LoadMode.LoadMap:
-                    SingletonItem<TypeTool>.Instance.Init();
+                    SingletonTool<TypeTool>.Instance.Init();
                     break;
             }
         }

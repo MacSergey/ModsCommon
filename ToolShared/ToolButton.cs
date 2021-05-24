@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class NetToolButton<TypeMod, TypeTool> : CustomUIButton
-        where TypeMod : BaseMod<TypeMod>
-        where TypeTool : BaseTool<TypeMod, TypeTool>
+    public abstract class NetToolButton<TypeTool> : CustomUIButton
+        where TypeTool : ITool
     {
         private static int ButtonSize => 31;
         protected abstract Vector2 ButtonPosition { get; }
@@ -51,14 +50,14 @@ namespace ModsCommon.UI
 
         protected override void OnClick(UIMouseEventParameter p)
         {
-            SingletonMod<TypeMod>.Logger.Debug($"On button click");
+            SingletonTool<TypeTool>.Logger.Debug($"On button click");
 
             base.OnClick(p);
             SingletonTool<TypeTool>.Instance.Toggle();
         }
         protected override void OnTooltipEnter(UIMouseEventParameter p)
         {
-            tooltip = $"{SingletonMod<TypeMod>.Instance.NameRaw} ({SingletonTool<TypeTool>.Activation})";
+            tooltip = $"{SingletonTool<TypeTool>.Instance.ModInstance.NameRaw} ({SingletonTool<TypeTool>.Activation})";
             base.OnTooltipEnter(p);
         }
     }
