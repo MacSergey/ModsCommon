@@ -27,17 +27,17 @@ namespace ModsCommon.Utilities
         private List<BaseDependencyWatcher> Dependencies => _dependencies ??= Infos.SelectMany(i => i.GetWatcher(this)).ToList();
         private DependenciesMessageBox MessageBox { get; set; }
 
-        private bool _isValid = true;
-        public bool IsValid
+        public bool IsValid => State == WatcherState.Valid;
+        private WatcherState _state = WatcherState.Valid;
+        private WatcherState State
         {
-            get => _isValid;
-            private set
+            get => _state;
+            set
             {
-                if (value != _isValid)
+                if (value != _state)
                 {
-                    _isValid = value;
+                    _state = value;
                     ModInstance.Logger.Debug(IsValid ? "Dependencies valid" : "Dependencies not valid");
-
                     UpdateMessageBox();
                 }
             }
@@ -71,7 +71,7 @@ namespace ModsCommon.Utilities
         {
             ModInstance.Logger.Debug("Dependencies watcher disabled");
 
-            _isValid = true;
+            _state = WatcherState.Valid;
             PluginManager.instance.eventPluginsChanged -= UpdateWatchers;
             SetWatchersState();
         }
@@ -105,19 +105,19 @@ namespace ModsCommon.Utilities
         }
         public void UpdateValid()
         {
-            IsMissing = false;
-            IsConflict = false;
+            var state = WatcherState.Valid;
+
             foreach (var dependency in Dependencies)
             {
                 if (dependency.IsValid)
                     continue;
                 else if (dependency is NeedDependencyWatcher)
-                    IsMissing = true;
+                    state |= WatcherState.Missing;
                 else if (dependency is ConflictDependencyWatcher)
-                    IsConflict = true;
+                    state |= WatcherState.Conflict;
             }
 
-            IsValid = !IsMissing && !IsConflict;
+            State = state;
         }
 
         private void Show()
@@ -161,13 +161,12 @@ namespace ModsCommon.Utilities
             }
             else
             {
-                var text = string.Empty;
-                if (IsMissing && IsConflict)
-                    text = CommonLocalize.Dependency_MissingAndConflict;
-                else if (IsMissing)
-                    text = CommonLocalize.Dependency_Missing;
-                else if (IsConflict)
-                    text = CommonLocalize.Dependency_Conflict;
+                var text = State switch
+                {
+                    WatcherState.Missing => CommonLocalize.Dependency_Missing,
+                    WatcherState.Conflict => CommonLocalize.Dependency_Conflict,
+                    WatcherState.All => CommonLocalize.Dependency_MissingAndConflict,
+                };
 
                 MessageBox.MessageText = $"{text}\n{string.Format(CommonLocalize.Dependency_NeedFix, ModInstance.NameRaw)}";
                 MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_DisableMod, ModInstance.NameRaw);
@@ -203,6 +202,14 @@ namespace ModsCommon.Utilities
             watcher.Infos = infos;
 
             return watcher;
+        }
+
+        private enum WatcherState
+        {
+            Valid = 0,
+            Missing = 1,
+            Conflict = 2,
+            All = Missing | Conflict,
         }
     }
 
