@@ -246,6 +246,7 @@ namespace ModsCommon.Utilities
                 }
             }
         }
+        protected string PluginName => Watcher?.Name ?? Info.Name;
 
         protected NeedDependencyInfo Info { get; }
         protected PluginStateWatcher Watcher { get; set; }
@@ -313,7 +314,7 @@ namespace ModsCommon.Utilities
 
         protected override PluginMessage AddMessage()
         {
-            MainWatcher.logger.Debug($"Detected missing dependency: {Info.Name}");
+            MainWatcher.logger.Debug($"Detected missing dependency: {PluginName}");
 
             var message = base.AddMessage();
             message.Text = Info.Name;
@@ -325,7 +326,7 @@ namespace ModsCommon.Utilities
         }
         protected override void RemoveMessage(PluginMessage message)
         {
-            MainWatcher.logger.Debug($"Dependency found: {Watcher.Name}");
+            MainWatcher.logger.Debug($"Dependency found: {PluginName}");
             base.RemoveMessage(message);
         }
 
@@ -335,7 +336,7 @@ namespace ModsCommon.Utilities
             {
                 if (WorkshopAvailable)
                 {
-                    MainWatcher.logger.Debug($"Subscribe missing dependency: {Watcher.Name}");
+                    MainWatcher.logger.Debug($"Subscribe missing dependency: {PluginName}");
                     Message.InProgress = true;
                     PlatformService.workshop.Subscribe(new PublishedFileId(Info.Id));
                 }
@@ -356,7 +357,7 @@ namespace ModsCommon.Utilities
 
         protected override PluginMessage AddMessage()
         {
-            MainWatcher.logger.Debug($"Detected not enable dependency: {Info.Name}");
+            MainWatcher.logger.Debug($"Detected not enable dependency: {PluginName}");
 
             var message = base.AddMessage();
             message.Text = Watcher.Name;
@@ -367,7 +368,7 @@ namespace ModsCommon.Utilities
         }
         protected override void RemoveMessage(PluginMessage message)
         {
-            MainWatcher.logger.Debug($"Dependency enabled: {Watcher.Name}");
+            MainWatcher.logger.Debug($"Dependency enabled: {PluginName}");
             base.RemoveMessage(message);
         }
     }
