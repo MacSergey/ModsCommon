@@ -3,12 +3,12 @@
   <PropertyGroup>
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>d5b649ec-0fec-48f3-8316-6e266169cdcc</SharedGUID>
+    <SharedGUID>a3055caa-4807-4c49-973c-7b92610c25c8</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>MessageBoxShared</Import_RootNamespace>
+    <Import_RootNamespace>SimpleMessageBoxShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)BaseMessageBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SimpleMessageBox.cs" />
   </ItemGroup>
 </Project>
