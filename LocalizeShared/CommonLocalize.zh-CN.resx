@@ -118,43 +118,43 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Detected сonflicting mods.</value>
+    <value>检测到mod冲突。</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>禁用</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Disable {0}</value>
+    <value>禁用 {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>启用</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Enable {0}</value>
+    <value>启用 {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Get</value>
+    <value>获取</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Detected missing dependencies.</value>
+    <value>检测到缺失依赖项。</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detected missing dependencies and сonflicting mods.</value>
+    <value>检测到缺失依赖项和mod冲突.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+    <value>要继续使用 {0} ，需要修复这些问题，否则mod将被禁用。</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>All issues are fixed, {0} can be enabled.</value>
+    <value>所有问题都已修复， {0} 可以启用。</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>移除</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Subscribe</value>
+    <value>订阅</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Unsubscribe</value>
+    <value>取消订阅</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
     <value>使用滚轮改变参数

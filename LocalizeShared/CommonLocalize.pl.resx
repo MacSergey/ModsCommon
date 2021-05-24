@@ -118,43 +118,43 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Detected сonflicting mods.</value>
+    <value>Wykryto modyfikacje powodujące konflikt.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>Wyłącz</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Disable {0}</value>
+    <value>Wyłącz {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>Włącz</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Enable {0}</value>
+    <value>Włącz {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Get</value>
+    <value>Weź</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Detected missing dependencies.</value>
+    <value>Wykryto brakujące zależności.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detected missing dependencies and сonflicting mods.</value>
+    <value>Wykryto brakujące zależności i modyfikacje powodujące konflikt.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+    <value>Aby kontynuować używanie {0}, należy rozwiązać te problemy, w przeciwnym razie modyfikacja zostanie wyłączona.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>All issues are fixed, {0} can be enabled.</value>
+    <value>Wszystkie problemy zostały naprawione, {0} może zostać włączony.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>Usuń</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Subscribe</value>
+    <value>Zasubskrybuj</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Unsubscribe</value>
+    <value>Anuluj subskrybcje</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
     <value>Użyj kółka myszy aby zmienić wartość
