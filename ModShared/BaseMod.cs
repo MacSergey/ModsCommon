@@ -1,6 +1,5 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
-using ColossalFramework.UI;
 using ICities;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
@@ -9,9 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 using UnityEngine.SceneManagement;
-using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
 {
@@ -31,8 +28,8 @@ namespace ModsCommon
         public abstract string Description { get; }
 
         public PluginSearcher ThisSearcher { get; }
-        public PluginInfo Plugin => PluginUtilities.GetPlugin(ThisSearcher);
         private DependenciesWatcher DependencyWatcher { get; set; }
+
         public ILogger Logger { get; private set; }
         protected abstract ulong StableWorkshopId { get; }
         protected abstract ulong BetaWorkshopId { get; }
@@ -77,7 +74,7 @@ namespace ModsCommon
             Logger.Debug($"Create mod instance Version {VersionString}");
 
             ThisSearcher = new UserModInstanceSearcher(this);
-            DependencyWatcher = DependenciesWatcher.Create(ThisSearcher, DependencyInfos, NameRaw, Name);
+            DependencyWatcher = DependenciesWatcher.Create(this, DependencyInfos);
 
             ChangeLocale();
             LocaleManager.eventUIComponentLocaleChanged += ChangeLocale;

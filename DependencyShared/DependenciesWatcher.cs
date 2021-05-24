@@ -13,14 +13,11 @@ using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon.Utilities
 {
-    public class DependenciesWatcher : MonoBehaviour
+    public abstract class DependenciesWatcher : MonoBehaviour
     {
         private bool Inited { get; set; }
-
-        private PluginSearcher PluginSearcher { get; set; }
-        private PluginInfo Plugin => PluginUtilities.GetPlugin(PluginSearcher);
-        private string ModName { get; set; }
-        private string ModFullName { get; set; }
+        private ICustomMod Instance { get; set; }
+        private PluginInfo Plugin { get; set; }
         private List<BaseDependencyInfo> Infos { get; set; }
 
         private List<BaseDependencyWatcher> Dependencies { get; } = new List<BaseDependencyWatcher>();
@@ -111,7 +108,7 @@ namespace ModsCommon.Utilities
             if (MessageBox == null)
             {
                 MessageBox = UI.MessageBox.Show<DependenciesMessageBox>();
-                MessageBox.CaptionText = ModFullName;
+                MessageBox.CaptionText = Instance.Name;
                 MessageBox.OnButtonClick = () => IsValid ? EnablePlugin() : DisablePlugin();
                 MessageBox.OnCloseClick += () => enabled = false;
                 UpdateMessageBox();
@@ -140,8 +137,8 @@ namespace ModsCommon.Utilities
         {
             if (IsValid)
             {
-                MessageBox.MessageText = string.Format(CommonLocalize.Dependency_NoIssues, ModName);
-                MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_EnableMod, ModName);
+                MessageBox.MessageText = string.Format(CommonLocalize.Dependency_NoIssues, Instance.NameRaw);
+                MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_EnableMod, Instance.NameRaw);
             }
             else
             {
@@ -153,8 +150,8 @@ namespace ModsCommon.Utilities
                 else if (IsConflict)
                     text = CommonLocalize.Dependency_Conflict;
 
-                MessageBox.MessageText = $"{text}\n{string.Format(CommonLocalize.Dependency_NeedFix, ModName)}";
-                MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_DisableMod, ModName);
+                MessageBox.MessageText = $"{text}\n{string.Format(CommonLocalize.Dependency_NeedFix, Instance.NameRaw)}";
+                MessageBox.ButtonText = string.Format(CommonLocalize.Dependency_DisableMod, Instance.NameRaw);
             }
         }
 
@@ -177,15 +174,14 @@ namespace ModsCommon.Utilities
             return true;
         }
 
-        public static DependenciesWatcher Create(PluginSearcher searcher, List<BaseDependencyInfo> infos, string modName, string fullName = null)
+        public static DependenciesWatcher Create(ICustomMod instance, List<BaseDependencyInfo> infos)
         {
             var gameObject = new GameObject();
             DontDestroyOnLoad(gameObject);
             var watcher = gameObject.AddComponent<DependenciesWatcher>();
 
-            watcher.PluginSearcher = searcher;
-            watcher.ModName = modName;
-            watcher.ModFullName = fullName ?? modName;
+            var pluginSearcher = new UserModInstanceSearcher(instance);
+            watcher.Plugin = PluginUtilities.GetPlugin(pluginSearcher);
             watcher.Infos = infos;
 
             return watcher;

@@ -13,7 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)BaseSelectMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BaseTool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BaseToolMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Singleton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ToolButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selection.cs" />
   </ItemGroup>

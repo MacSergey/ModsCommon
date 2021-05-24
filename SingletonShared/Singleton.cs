@@ -10,6 +10,7 @@ namespace ModsCommon
 
     public interface ICustomMod : IUserMod
     {
+        public string NameRaw { get; }
         public ILogger Logger { get; }
         public Version Version { get; }
     }
@@ -17,19 +18,8 @@ namespace ModsCommon
         where T : ICustomMod
     {
         public static string Name => Instance.Name;
+        public static string NameRaw => Instance.NameRaw;
         public static ILogger Logger => Instance.Logger;
         public static Version Version => Instance.Version;
     }
-    public static class SingletonManager<T>
-        where T : class, IManager, new()
-    {
-        private static T _instance;
-        public static T Instance
-        {
-            get => _instance ??= new T();
-            set => _instance = value;
-        }
-        public static void Destroy() => Instance = null;
-    }
-    public interface IManager { }
 }

@@ -10,11 +10,16 @@ using UnityEngine;
 
 namespace ModsCommon
 {
-    public abstract class BaseTool<TypeTool> : ToolBase where TypeTool : BaseTool<TypeTool>
+    public interface ITool
     {
-        public abstract Shortcut Activation { get; }
+        public Shortcut Activation { get; }
     }
-    public abstract class BaseTool<TypeMod, TypeTool> : BaseTool<TypeTool>
+    public abstract class SingletonTool<T> : SingletonItem<T>
+    where T : ITool
+    {
+        public static Shortcut Activation => Instance.Activation;
+    }
+    public abstract class BaseTool<TypeMod, TypeTool> : ToolBase, ITool
         where TypeMod : BaseMod<TypeMod>
         where TypeTool : BaseTool<TypeMod, TypeTool>
     {
@@ -38,6 +43,7 @@ namespace ModsCommon
         protected bool IsInit { get; set; } = false;
         public IToolMode Mode { get; private set; }
         public IToolMode NextMode { get; private set; }
+        public abstract Shortcut Activation { get; }
 
         private ToolBase PrevTool { get; set; }
 
