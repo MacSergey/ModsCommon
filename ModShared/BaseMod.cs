@@ -97,7 +97,6 @@ namespace ModsCommon
             try
             {
                 DependencyWatcher.SetState(false);
-                ChangeLocale();
                 Disable();
             }
             catch (Exception error)
@@ -111,10 +110,7 @@ namespace ModsCommon
             {
                 DependencyWatcher.SetState(true);
                 if (DependencyWatcher.IsValid)
-                {
-                    ChangeLocale();
                     Enable();
-                }
             }
             catch (Exception error)
             {
@@ -138,10 +134,7 @@ namespace ModsCommon
 
         public void ChangeLocale()
         {
-            var locale = string.Empty;
-
-            if (IsEnable)
-                locale = BaseSettings<TypeMod>.Locale.value;
+            var locale = BaseSettings<TypeMod>.Locale.value;
 
             if (string.IsNullOrEmpty(locale))
             {
