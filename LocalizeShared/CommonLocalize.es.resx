@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Detected сonflicting mods.</value>
+    <value>Se han detectado mods que generan conflictos.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
     <value>Desactivar</value>
@@ -139,13 +139,13 @@
     <value>Se han detectado dependencias faltantes.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detected missing dependencies and сonflicting mods.</value>
+    <value>Se han detectado dependencias faltantes y mods que generan conflictos.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+    <value>Para continuar utilizando {0}, se deben arreglar los siguientes problemas. De lo contrario, el mod será desactivado.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>All issues are fixed, {0} can be enabled.</value>
+    <value>Todos los problemas han sido arreglados, {0} puede activarse.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
     <value>Eliminar</value>
@@ -154,7 +154,7 @@
     <value>Subscribir</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Unsubscribe</value>
+    <value>Anular suscripción</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
     <value>Desplazar la rueda para cambiar
