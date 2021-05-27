@@ -118,46 +118,46 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Detected сonflicting mods.</value>
+    <value>Rivelato conflitto con altre Mod.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>Disabilita</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Disable {0}</value>
+    <value>Disabilita {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>Attiva</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Enable {0}</value>
+    <value>Attiva {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Get</value>
+    <value>Ottieni</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Detected missing dependencies.</value>
+    <value>Rilevate dipendenze mancanti.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detected missing dependencies and сonflicting mods.</value>
+    <value>Rilevate dipendenze mancanti e conflitti con altre Mod.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+    <value>Per utilizzare {0} vanno risolti questi problemi, altrimenti la Mod sarà disattivata.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>All issues are fixed, {0} can be enabled.</value>
+    <value>Tutti i problemi sono corretti, {0} può essere attivato.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>Rimuovi</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Subscribe</value>
+    <value>Abbonati</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Unsubscribe</value>
+    <value>Annulla abbonamento</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scorri con la rotella per cambiare
+    <value>Utilizza la rotellina per cambiare
 Shift X10, Ctrl X0.1</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
@@ -182,7 +182,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Ottieni la versione stabile</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Stai utilizzando la versione BETA di {0}. Serve per testare nuove funzionalità e potrebbe contenere errori che interromperanno o cancelleranno i contrassegni. Se ti sei iscritto per errore, passa alla versione stabile.</value>
+    <value>Stai usando la versione BETA di {0}. Serve per testare nuove funzionalità e potrebbe contenere errori. Se ti sei iscritto per errore, passa alla versione stabile.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Questa è una versione BETA, potrebbero verificarsi errori e la stabilità non è garantita!</value>
@@ -256,7 +256,7 @@ Riavvia il gioco.</value>
     <value>Annulla</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Change log</value>
+    <value>Registro delle modifiche</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Generali</value>
@@ -277,7 +277,7 @@ Riavvia il gioco.</value>
     <value>Mostra i suggerimenti</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Mostra cosa c'è di nuovo</value>
+    <value>Mostra le novità</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Supporto</value>
