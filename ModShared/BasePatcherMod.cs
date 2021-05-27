@@ -30,8 +30,8 @@ namespace ModsCommon
                 var infos = base.DependencyInfos;
 
                 var searcher = PluginUtilities.GetSearcher("Harmony 2", 2040656402ul, 2399204842ul);
-                var info = new NeedDependencyInfo(DependencyState.Subscribe, searcher, "Harmony", 2040656402ul);
-                infos.Add(info);
+                infos.Add(new NeedDependencyInfo(DependencyState.Subscribe, searcher, "Harmony", 2040656402ul));
+                infos.Add(new ConflictDependencyInfo(DependencyState.Unsubscribe, new IdSearcher(2399343344ul)));
 
                 return infos;
             }
