@@ -1,6 +1,4 @@
-using ColossalFramework;
 using ColossalFramework.IO;
-using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using ICities;
@@ -34,7 +32,7 @@ namespace ModsCommon.Utilities
                 return localSearcher;
             else
             {
-                var idSearcher = ids.Length <= 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
+                var idSearcher = ids.Length == 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
                 var workshopSearcher = idSearcher & PathSearcher.Workshop;
                 return workshopSearcher | localSearcher;
             }
