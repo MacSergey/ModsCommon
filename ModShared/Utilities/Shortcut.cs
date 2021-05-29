@@ -33,10 +33,10 @@ namespace ModsCommon.Utilities
         public override string ToString() => InputKey.ToLocalizedString("KEYNAME");
     }
 
-    public abstract class BaseShortcut<TypeMod> : Shortcut
+    public abstract class ModShortcut<TypeMod> : Shortcut
         where TypeMod : BaseMod<TypeMod>
     {
         public override string Label => SingletonMod<TypeMod>.Instance.GetLocalizeString(LabelKey);
-        public BaseShortcut(string name, string labelKey, InputKey key, Action action = null) : base(BaseSettings<TypeMod>.SettingsFile, name, labelKey, key, action) { }
+        public ModShortcut(string name, string labelKey, InputKey key, Action action = null) : base(BaseSettings<TypeMod>.SettingsFile, name, labelKey, key, action) { }
     }
 }

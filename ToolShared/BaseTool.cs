@@ -322,6 +322,18 @@ namespace ModsCommon
 
         public void SetMode(TypeModeType mode) => SetMode(ToolModes[mode]);
     }
+    public abstract class ToolShortcut<TypeMod, TypeTool, TypeMode> : ModShortcut<TypeMod>
+    where TypeMod : BaseMod<TypeMod>
+    where TypeTool : BaseTool<TypeMod, TypeTool, TypeMode>
+    where TypeMode : Enum
+    {
+        public TypeMode Mode { get; }
+        public ToolShortcut(string name, string labelKey, InputKey key, Action action, TypeMode mode) : base(name, labelKey, key, action)
+        {
+            Mode = mode;
+        }
+        public override bool Press(Event e) => (SingletonTool<TypeTool>.Instance.CurrentMode.ToInt() & Mode.ToInt()) != 0 && base.Press(e);
+    }
     public abstract class BaseThreadingExtension<TypeTool> : ThreadingExtensionBase
         where TypeTool : ITool
     {
