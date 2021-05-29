@@ -62,6 +62,7 @@ namespace ModsCommon
         public IToolMode Mode { get; private set; }
         public IToolMode NextMode { get; private set; }
         public abstract Shortcut Activation { get; }
+        public virtual IEnumerable<Shortcut> Shortcuts { get { yield break; } }
 
         private ToolBase PrevTool { get; set; }
 
@@ -262,8 +263,12 @@ namespace ModsCommon
         #region GUI
 
         private bool IsMouseMove { get; set; }
+        private Shortcut LastShortcut { get; set; }
         protected override void OnToolGUI(Event e)
         {
+            if ((LastShortcut = Shortcuts.FirstOrDefault(s => s != LastShortcut && s.Press(e))) != null)
+                return;
+
             if (Mode == null)
                 return;
 
