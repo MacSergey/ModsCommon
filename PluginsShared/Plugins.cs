@@ -122,7 +122,10 @@ namespace ModsCommon.Utilities
         }
         public override bool IsMatch(PluginInfo plugin)
         {
-            var toMatch = ApplyOptions(GetMatch(plugin));
+            if (GetMatch(plugin) is not string toMatch)
+                return false;
+
+            toMatch = ApplyOptions(toMatch);
 
             if (toMatch == ToSearch)
                 return true;
@@ -163,7 +166,11 @@ namespace ModsCommon.Utilities
 
             return base.IsMatch(plugin);
         }
-        protected sealed override string GetMatch(PluginInfo plugin) => GetMatch(plugin.userModInstance as IUserMod);
+        protected sealed override string GetMatch(PluginInfo plugin)
+        {
+            try { return GetMatch(plugin.userModInstance as IUserMod); }
+            catch { return null; }
+        }
         protected abstract string GetMatch(IUserMod mod);
 
     }
@@ -289,7 +296,7 @@ namespace ModsCommon.Utilities
             get => _enable;
             set
             {
-                if(value != _enable)
+                if (value != _enable)
                 {
                     _enable = value;
 
