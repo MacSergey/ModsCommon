@@ -1,4 +1,4 @@
-using ColossalFramework.IO;
+using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
 using ColossalFramework.UI;
 using ICities;
@@ -26,15 +26,14 @@ namespace ModsCommon.Utilities
 
         public static PluginSearcher GetSearcher(string name, params ulong[] ids)
         {
-            var localSearcher = new UserModNameSearcher(name) & PathSearcher.Local;
+            var localSearcher = IdSearcher.Invalid & new UserModNameSearcher(name);
 
             if (ids.Length == 0)
                 return localSearcher;
             else
             {
-                var idSearcher = ids.Length == 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());
-                var workshopSearcher = idSearcher & PathSearcher.Workshop;
-                return workshopSearcher | localSearcher;
+                var idSearcher = ids.Length == 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());;
+                return idSearcher | localSearcher;
             }
         }
 
@@ -71,6 +70,8 @@ namespace ModsCommon.Utilities
 
     public class IdSearcher : PluginSearcher
     {
+        public static IdSearcher Invalid { get; } = new IdSearcher(PublishedFileId.invalid.AsUInt64);
+
         public ulong Id { get; }
         public IdSearcher(ulong id)
         {
@@ -78,27 +79,6 @@ namespace ModsCommon.Utilities
         }
 
         public override bool IsMatch(PluginInfo plugin) => plugin.publishedFileID.AsUInt64 == Id;
-    }
-    public class PathSearcher : PluginSearcher
-    {
-        public static PathSearcher Local { get; } = new PathSearcher(Option.Local);
-        public static PathSearcher Workshop { get; } = new PathSearcher(Option.Workshop);
-
-        public Option Options { get; }
-        private PathSearcher(Option options)
-        {
-            Options = options;
-        }
-
-        public override bool IsMatch(PluginInfo plugin) => Options == Option.Workshop ^ plugin.modPath.StartsWith(DataLocation.modsPath);
-
-        public static PathSearcher operator !(PathSearcher searcher) => searcher.Options == Option.Local ? Workshop : Local;
-
-        public enum Option
-        {
-            Local = 1,
-            Workshop = 2,
-        }
     }
     public abstract class BaseMatchSearcher : PluginSearcher
     {
