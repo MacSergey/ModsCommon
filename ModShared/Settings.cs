@@ -185,7 +185,7 @@ namespace ModsCommon
     }
     public static class SettingsHelper
     {
-        public static void AddFloatField(UIHelper group, string label, SavedFloat saved, float? defaultValue, float? min = null, float? max = null, Action onSubmit = null)
+        public static void AddFloatField(UIHelper group, string label, SavedFloat saved, float? defaultValue = null, float? min = null, float? max = null, Action onSubmit = null)
         {
             UITextField field = null;
             field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
