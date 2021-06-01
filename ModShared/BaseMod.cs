@@ -61,11 +61,18 @@ namespace ModsCommon
             }
         }
 
-        public virtual CultureInfo Culture
+        private CultureInfo _culture;
+        public CultureInfo Culture
         {
-            get => null;
-            protected set { }
+            get => _culture;
+            protected set
+            {
+                _culture = value;
+                CommonLocalize.Culture = value;
+                SetCulture(value);
+            }
         }
+        protected virtual System.Resources.ResourceManager LocalizeManager => null;
 
         public BaseMod()
         {
@@ -147,10 +154,8 @@ namespace ModsCommon
             if (locale == "zh")
                 locale = "zh-cn";
 
-            var culture = new CultureInfo(locale);
-            CommonLocalize.Culture = culture;
-            Culture = culture;
-            Logger.Debug($"Current cultute - {culture?.Name ?? "null"}");
+            Culture = new CultureInfo(locale);
+            Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
         }
 
         protected void CheckLoadError(bool condition)
@@ -161,7 +166,13 @@ namespace ModsCommon
                 ErrorShown = shown;
             }
         }
-        public virtual string GetLocalizeString(string str, CultureInfo culture = null) => str;
+        protected virtual void SetCulture(CultureInfo culture) { }
+        public virtual string GetLocalizeString(string key, CultureInfo culture = null)
+        {
+            culture ??= Culture;
+            return LocalizeManager?.GetString(key, culture) ?? CommonLocalize.ResourceManager.GetString(key, culture);
+        }
+
         protected virtual void OnLoadError(out bool shown) => shown = ErrorShown;
 
         public void ShowWhatsNew()
