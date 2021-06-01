@@ -26,8 +26,8 @@ namespace ModsCommon.UI
             }
         }
 
-        private CustomUILabel[] Labels { get; }
-        private FloatUITextField[] Fields { get; }
+        protected CustomUILabel[] Labels { get; }
+        protected FloatUITextField[] Fields { get; }
         public bool WheelTip
         {
             set
@@ -74,7 +74,7 @@ namespace ModsCommon.UI
         protected abstract float Get(ref TypeVector vector, int index);
         protected abstract void Set(ref TypeVector vector, int index, float value);
 
-        private void AddField(int index,  out CustomUILabel label, out FloatUITextField field)
+        protected void AddField(int index,  out CustomUILabel label, out FloatUITextField field)
         {
             label = Content.AddUIComponent<CustomUILabel>();
             label.isVisible = false;
@@ -87,6 +87,7 @@ namespace ModsCommon.UI
             field.UseWheel = true;
             field.WheelStep = 1;
             field.width = 30;
+            field.NumberFormat = "0.##";
             field.OnValueChanged += (value) => FieldChanged(index, value);
         }
         private void FieldChanged(int index, float value)
