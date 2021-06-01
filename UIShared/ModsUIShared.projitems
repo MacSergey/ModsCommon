@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SizeChanger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TabPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextureHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UIExtension.cs" />
