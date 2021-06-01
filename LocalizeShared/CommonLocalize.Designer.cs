@@ -505,6 +505,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Activate tool.
+        /// </summary>
+        public static string Settings_ShortcutActivateTool {
+            get {
+                return ResourceManager.GetString("Settings_ShortcutActivateTool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Shortcuts.
         /// </summary>
         public static string Settings_Shortcuts {
