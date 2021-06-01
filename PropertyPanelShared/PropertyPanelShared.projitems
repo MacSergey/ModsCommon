@@ -19,5 +19,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ListProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VectorProperty.cs" />
   </ItemGroup>
 </Project>

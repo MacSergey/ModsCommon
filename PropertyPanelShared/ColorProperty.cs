@@ -128,7 +128,6 @@ namespace ModsCommon.UI
             base.DeInit();
 
             WheelTip = false;
-
             OnValueChanged = null;
         }
         private ByteUITextField AddField(string name)
