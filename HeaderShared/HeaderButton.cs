@@ -60,8 +60,8 @@ namespace ModsCommon.UI
         }
     }
 
-    public abstract class HeaderPopupButton<PopupType> : HeaderButton
-        where PopupType : PopupPanel
+    public abstract class BaseHeaderPopupButton<PopupType> : HeaderButton
+        where PopupType : UIComponent
     {
         public event Action<PopupType> OpenPopupEvent;
         public PopupType Popup { get; private set; }
@@ -89,7 +89,6 @@ namespace ModsCommon.UI
             Popup.Focus();
 
             OnOpenPopup();
-            Popup.Init();
 
             SetPopupPosition();
             Popup.parent.eventPositionChanged += SetPopupPosition;
@@ -144,6 +143,15 @@ namespace ModsCommon.UI
             }
 
             static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);
+        }
+    }
+    public abstract class HeaderPopupButton<PopupType> : BaseHeaderPopupButton<PopupType>
+        where PopupType : PopupPanel
+    {
+        protected override void OnOpenPopup()
+        {
+            base.OnOpenPopup();
+            Popup.Init();
         }
     }
 }
