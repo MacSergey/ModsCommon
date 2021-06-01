@@ -267,6 +267,9 @@ Starte das Spiel neu.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Benachrichtigungen</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>Tool aktivieren</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Tastenkürzel</value>
   </data>

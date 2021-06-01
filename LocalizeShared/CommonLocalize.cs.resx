@@ -267,6 +267,9 @@ Restartujte hru.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Oznámení</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>Aktivovat nástroj</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Klávesové zkratky</value>
   </data>

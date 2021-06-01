@@ -267,6 +267,9 @@ Rechargez le jeu.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Paramètres de notification</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>Activer l'outil</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Raccourcis</value>
   </data>

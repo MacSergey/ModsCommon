@@ -269,6 +269,9 @@
   <data name="Settings_Notifications" xml:space="preserve">
     <value>通知の設定</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>ノードコントローラーの有効化</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>ショートカットの設定</value>
   </data>

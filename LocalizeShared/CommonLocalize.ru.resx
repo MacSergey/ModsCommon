@@ -267,6 +267,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Уведомления</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>Активация инструмента</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Горячие клавиши</value>
   </data>

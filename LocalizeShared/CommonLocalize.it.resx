@@ -267,6 +267,9 @@ Riavvia il gioco.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notifiche</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>Attiva il tool</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Scorciatoie da tastiera</value>
   </data>

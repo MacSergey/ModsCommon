@@ -267,6 +267,9 @@ Uruchom ponownie grę.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Powiadomienia</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>Aktywuj narzędzie</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Skróty klawiszowe</value>
   </data>

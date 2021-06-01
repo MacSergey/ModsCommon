@@ -267,6 +267,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>通知消息</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>启用工具</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>快捷键</value>
   </data>

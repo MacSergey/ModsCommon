@@ -266,6 +266,9 @@ Restart the game.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notifications</value>
   </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>Activate tool</value>
+  </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Shortcuts</value>
   </data>
