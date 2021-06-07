@@ -132,9 +132,10 @@ namespace ModsCommon.UI
         }
         private ByteUITextField AddField(string name)
         {
-            var lable = Content.AddUIComponent<CustomUILabel>();
-            lable.text = name;
-            lable.textScale = 0.7f;
+            var label = Content.AddUIComponent<CustomUILabel>();
+            label.text = name;
+            label.textScale = 0.7f;
+            label.padding = new RectOffset(0, 0, 2, 0);
 
             var field = Content.AddUIComponent<ByteUITextField>();
             field.SetDefaultStyle();

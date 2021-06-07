@@ -80,6 +80,7 @@ namespace ModsCommon.UI
             label.isVisible = false;
             label.text = GetName(index);
             label.textScale = 0.7f;
+            label.padding = new RectOffset(0, 0, 2, 0);
 
             field = Content.AddUIComponent<FloatUITextField>();
             field.isVisible = false;

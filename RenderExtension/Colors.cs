@@ -15,6 +15,8 @@ namespace ModsCommon.Utilities
         public static Color32 Gray { get; } = new Color32(192, 192, 192, 255);
         public static Color32 Purple { get; } = new Color32(148, 87, 255, 255);
         public static Color32 Hover { get; } = new Color32(217, 251, 255, 255);
+        public static Color32 Error { get; } = new Color32(253, 77, 60, 255);
+        public static Color32 Warning { get; } = new Color32(253, 150, 62, 255);
 
         public static Color32[] OverlayColors { get; } = new Color32[]
         {
