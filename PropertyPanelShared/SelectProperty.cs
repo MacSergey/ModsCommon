@@ -11,7 +11,7 @@ namespace ModsCommon.UI
     {
         public event Action<Type> OnValueChanged;
         public event Action<PanelType> OnSelect;
-        public event Action<PanelType> OnHover;
+        public event Action<PanelType> OnEnter;
         public event Action<PanelType> OnLeave;
 
         bool IReusable.InCache { get; set; }
@@ -72,7 +72,7 @@ namespace ModsCommon.UI
             base.DeInit();
 
             OnSelect = null;
-            OnHover = null;
+            OnEnter = null;
             OnLeave = null;
             OnValueChanged = null;
         }
@@ -91,7 +91,7 @@ namespace ModsCommon.UI
             Selector.text = Value?.ToString() ?? NotSet;
         }
         protected virtual void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => OnSelect?.Invoke((PanelType)this);
-        protected virtual void ButtonMouseEnter(UIComponent component, UIMouseEventParameter eventParam) => OnHover?.Invoke((PanelType)this);
+        protected virtual void ButtonMouseEnter(UIComponent component, UIMouseEventParameter eventParam) => OnEnter?.Invoke((PanelType)this);
         protected virtual void ButtonMouseLeave(UIComponent component, UIMouseEventParameter eventParam) => OnLeave?.Invoke((PanelType)this);
     }
 
