@@ -406,6 +406,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Chinese Traditional.
+        /// </summary>
+        public static string Mod_Locale_zh_tw {
+            get {
+                return ResourceManager.GetString("Mod_Locale_zh-tw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Game Language.
         /// </summary>
         public static string Mod_LocaleGame {
