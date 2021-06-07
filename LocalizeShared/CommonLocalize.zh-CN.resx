@@ -237,6 +237,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>简体中文</value>
   </data>
+  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+    <value>Chinese Traditional</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>支持服务</value>
   </data>
