@@ -237,6 +237,9 @@ Käynnistä peli uudelleen.</value>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Yksinkertaistettu kiina</value>
   </data>
+  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+    <value>Chinese Traditional</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Tuki</value>
   </data>

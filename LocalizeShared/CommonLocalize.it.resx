@@ -237,6 +237,9 @@ Riavvia il gioco.</value>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Cinese Semplificato</value>
   </data>
+  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+    <value>Chinese Traditional</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Supporto</value>
   </data>

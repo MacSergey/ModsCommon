@@ -236,6 +236,9 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinês Simplificado</value>
   </data>
+  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+    <value>Chinese Traditional</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Apoio</value>
   </data>

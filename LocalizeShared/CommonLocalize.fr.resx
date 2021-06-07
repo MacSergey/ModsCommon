@@ -185,12 +185,12 @@ Maj X10, Ctrl X0.1</value>
     <value>Vous utilisez la version bêta de {0}. C'est une version de test avec de nouvelles fonctionnalités et elle peut contenir des erreurs qui vont briser ou supprimer vos configurations. Si vous vous êtes abonné par erreur, veuillez vous abonner à la version stable.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Ceci est une version BETA, des erreurs peuvent se produire et la stabilité n'est pas garantie!</value>
+    <value>Ceci est une version BETA, des erreurs peuvent se produire et la stabilité n'est pas garantie !</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Le mod a chargé avec des erreurs. 
-Il n'est pas conseillé d'utiliser le mod dans cet état car il peut avoir un comportement instable. 
-Rechargez le jeu.</value>
+    <value>Mod chargé avec des erreurs.
+Il n'est pas recommandé d'utiliser le mod dans cet état car il peut conduire à un comportement imprévisible.
+Redémarrez le jeu.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Langue du jeu</value>
@@ -236,6 +236,9 @@ Rechargez le jeu.</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinois simplifié</value>
+  </data>
+  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+    <value>Chinese Traditional</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>

@@ -118,176 +118,177 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Detected сonflicting mods.</value>
+    <value>偵測到衝突的模組。</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>停用</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Disable {0}</value>
+    <value>停用 {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>啟用</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Enable {0}</value>
+    <value>啟用 {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Get</value>
+    <value>取得</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Detected missing dependencies.</value>
+    <value>偵測到缺少所需的項目。</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detected missing dependencies and сonflicting mods.</value>
+    <value>偵測到缺少所需的項目和衝突的模組。</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+    <value>請修正這些問題以繼續使用 {0}，否則將停用該模組。</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>All issues are fixed, {0} can be enabled.</value>
+    <value>已修復所有問題，可以啟用 {0} 了。</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>移除</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Subscribe</value>
+    <value>訂閱</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Unsubscribe</value>
+    <value>取消訂閱</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Değiştirmek için tekerleği kaydırın Shift X10, Ctrl X0.1</value>
+    <value>使用滾輪調整
+Shift X10, Ctrl X0.1</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>İptal</value>
+    <value>取消</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Hayır</value>
+    <value>否</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>TAMAM</value>
+    <value>確定</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Evet</value>
+    <value>是</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Kabul ediyorum</value>
+    <value>我同意</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA sürüm uyarısı</value>
+    <value>警告：BETA 版本</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Stabil sürümü indirin</value>
+    <value>取得穩定版</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>您正在使用 BETA 版的 {0}。此版本為測試新功能用，並可能包含一些錯誤。如果您是不小心訂閱到它，請切換到穩定版。</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>這是 BETA 版本，可能會發生錯誤並且不保證穩定性！</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Mod loaded with errors.
-It is not recommended to use the mod in this state as it can lead to unpredictable behavior.
-Restart the game.</value>
+    <value>模組載入時發生錯誤。
+不建議在此狀態下使用本模組，否則可能發生不可預期的行為。
+請重新啟動遊戲。</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Game Language</value>
+    <value>遊戲語言</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Czech</value>
+    <value>捷克文</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>German</value>
+    <value>德文</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>English US</value>
+    <value>英文（美國）</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>English UK</value>
+    <value>英文（英國）</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spanish</value>
+    <value>西班牙文</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finnish</value>
+    <value>芬蘭文</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>French</value>
+    <value>法文</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italian</value>
+    <value>義大利文</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japanese</value>
+    <value>日文</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Dutch</value>
+    <value>荷蘭文</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Polish</value>
+    <value>波籣文</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portuguese</value>
+    <value>葡萄牙文</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russian</value>
+    <value>俄文</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinese Simplified</value>
+    <value>簡體中文</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Chinese Traditional</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Destek</value>
+    <value>支援</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>What's new in {0}</value>
+    <value>{0} 更新內容</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Version {0}</value>
+    <value>版本 {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Additional</value>
+    <value>附加功能</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>取消</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Change log</value>
+    <value>變更記錄</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>General</value>
+    <value>一般</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Language</value>
+    <value>語言</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Notifications</value>
+    <value>通知</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activate tool</value>
+    <value>啟動工具</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Shortcuts</value>
+    <value>快速鍵</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Notification only about major updates</value>
+    <value>只顯示主要更新內容的通知</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Show tooltips</value>
+    <value>顯示提示</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Show what's new</value>
+    <value>顯示更新內容</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Support</value>
+    <value>支援</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Troubleshooting</value>
+    <value>疑難排解</value>
   </data>
 </root>

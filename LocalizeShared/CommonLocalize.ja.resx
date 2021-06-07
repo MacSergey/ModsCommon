@@ -239,6 +239,9 @@
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>簡体中国語</value>
   </data>
+  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+    <value>Chinese Traditional</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>サポート</value>
   </data>
