@@ -63,7 +63,10 @@ namespace ModsCommon.Utilities
             }
         }
     }
-    public class NetObjectsMap : NetObjectsMap<NetObjectId> { }
+    public class NetObjectsMap : NetObjectsMap<NetObjectId> 
+    {
+        public NetObjectsMap(bool isSimple = false) : base(isSimple) { }
+    }
 
     public class NetObjectId : ObjectId
     {
