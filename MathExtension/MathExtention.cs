@@ -29,6 +29,16 @@ namespace ModsCommon.Utilities
             return new Vector3(newX, vector.y, newZ);
         }
 
+        public static Vector4 Turn90(this Vector4 v, bool isClockWise) => isClockWise ? new Vector4(v.z, v.y, -v.x, v.w) : new Vector4(-v.z, v.y, v.x, v.w);
+        public static Vector4 TurnDeg(this Vector4 vector, float turnAngle, bool isClockWise) => vector.TurnRad(turnAngle * Mathf.Deg2Rad, isClockWise);
+        public static Vector4 TurnRad(this Vector4 vector, float turnAngle, bool isClockWise)
+        {
+            turnAngle = isClockWise ? -turnAngle : turnAngle;
+            var newX = vector.x * Mathf.Cos(turnAngle) - vector.z * Mathf.Sin(turnAngle);
+            var newZ = vector.x * Mathf.Sin(turnAngle) + vector.z * Mathf.Cos(turnAngle);
+            return new Vector4(newX, vector.y, newZ, vector.w);
+        }
+
         public static float Length(this Bezier3 bezier, float minAngleDelta = 10, int depth = 5)
         {
             var start = bezier.b - bezier.a;

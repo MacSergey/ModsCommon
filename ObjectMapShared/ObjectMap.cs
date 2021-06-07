@@ -6,12 +6,12 @@ using System.Text;
 
 namespace ModsCommon.Utilities
 {
-    public interface IObjectsMap
+    public interface INetObjectsMap
     {
         void AddSegment(ushort source, ushort target);
         void AddNode(ushort source, ushort target);
     }
-    public abstract class BaseObjectsMap<TypeObjectId> : IEnumerable<KeyValuePair<TypeObjectId, TypeObjectId>>, IObjectsMap
+    public abstract class BaseObjectsMap<TypeObjectId> : IEnumerable<KeyValuePair<TypeObjectId, TypeObjectId>>
         where TypeObjectId : ObjectId, new()
     {
         public bool IsSimple { get; }
@@ -38,6 +38,19 @@ namespace ModsCommon.Utilities
         }
 
         public bool TryGetValue(TypeObjectId key, out TypeObjectId value) => Map.TryGetValue(key, out value);
+
+        public IEnumerator<KeyValuePair<TypeObjectId, TypeObjectId>> GetEnumerator() => Map.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public void Remove(TypeObjectId key) => Map.Remove(key);
+
+        public delegate bool TryGetDelegate<T>(T key, out T value);
+    }
+    public abstract class NetObjectsMap<TypeObjectId> : BaseObjectsMap<TypeObjectId>, INetObjectsMap
+        where TypeObjectId : NetObjectId, new()
+    {
+        public NetObjectsMap(bool isSimple = false) : base(isSimple) { }
+
         public bool TryGetNode(ushort nodeIdKey, out ushort nodeIdValue)
         {
             if (Map.TryGetValue(new TypeObjectId() { Node = nodeIdKey }, out TypeObjectId value))
@@ -64,16 +77,9 @@ namespace ModsCommon.Utilities
                 return false;
             }
         }
-
-        public IEnumerator<KeyValuePair<TypeObjectId, TypeObjectId>> GetEnumerator() => Map.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        
+       
         public void AddSegment(ushort source, ushort target) => this[new TypeObjectId() { Segment = source }] = new TypeObjectId() { Segment = target };
         public void AddNode(ushort source, ushort target) => this[new TypeObjectId() { Node = source }] = new TypeObjectId() { Node = target };
-
-        public void Remove(TypeObjectId key) => Map.Remove(key);
-
-        public delegate bool TryGetDelegate<T>(T key, out T value);
 
         public void FromDictionary(Dictionary<InstanceID, InstanceID> sourceMap)
         {
@@ -91,30 +97,14 @@ namespace ModsCommon.Utilities
             }
         }
     }
-    public class ObjectsMap : BaseObjectsMap<ObjectId>
-    {
-        public ObjectsMap(bool isSimple = false) : base(isSimple) { }
-    }
 
     public class ObjectId
     {
         public static long DataMask = 0xFFFFFFFFL;
         public static long TypeMask = DataMask << 32;
-        public static long NodeType = 1L << 32;
-        public static long SegmentType = 2L << 32;
 
-        public long Id;
-
-        public ushort Node
-        {
-            get => (Id & NodeType) == 0 ? 0 : (ushort)(Id & DataMask);
-            set => Id = NodeType | value;
-        }
-        public ushort Segment
-        {
-            get => (Id & SegmentType) == 0 ? 0 : (ushort)(Id & DataMask);
-            set => Id = SegmentType | value;
-        }
+        protected long Id;
+       
         public long Type => Id & TypeMask;
 
         public override bool Equals(object obj) => Equals(obj as ObjectId);
@@ -132,6 +122,24 @@ namespace ModsCommon.Utilities
 
 
         public override int GetHashCode() => Id.GetHashCode();
+        public override string ToString() => $"{Type}: {Id}";
+    }
+    public class NetObjectId : ObjectId
+    {
+        public static long NodeType = 1L << 32;
+        public static long SegmentType = 2L << 32;
+
+        public ushort Node
+        {
+            get => (Id & NodeType) == 0 ? 0 : (ushort)(Id & DataMask);
+            set => Id = NodeType | value;
+        }
+        public ushort Segment
+        {
+            get => (Id & SegmentType) == 0 ? 0 : (ushort)(Id & DataMask);
+            set => Id = SegmentType | value;
+        }
+
         public override string ToString()
         {
             if (Type == NodeType)
@@ -139,7 +147,7 @@ namespace ModsCommon.Utilities
             else if (Type == SegmentType)
                 return $"{nameof(Segment)}: {Segment}";
             else
-                return $"{Type}: {Id}";
+                return base.ToString();
         }
     }
 }
