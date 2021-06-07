@@ -240,7 +240,7 @@
     <value>簡体中国語</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Chinese Traditional</value>
+    <value>繁体中国語</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>サポート</value>
@@ -273,7 +273,7 @@
     <value>通知の設定</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>ノードコントローラーの有効化</value>
+    <value>ツールの有効化</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>ショートカットの設定</value>
