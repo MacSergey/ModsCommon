@@ -261,6 +261,9 @@ Restartujte hru.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Seznam změn</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Základní nastavení</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Základní nastavení</value>
   </data>

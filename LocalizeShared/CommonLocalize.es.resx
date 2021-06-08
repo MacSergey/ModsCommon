@@ -261,6 +261,9 @@ Reinicia el juego.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Registro de cambios</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Ajustes generales</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Ajustes generales</value>
   </data>

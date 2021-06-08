@@ -261,6 +261,9 @@ Redémarrez le jeu.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Notes de mise à jour</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Général</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Général</value>
   </data>

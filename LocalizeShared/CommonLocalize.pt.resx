@@ -260,6 +260,9 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Registo de alterações</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Geral</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Geral</value>
   </data>

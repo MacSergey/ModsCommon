@@ -261,6 +261,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>變更記錄</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>一般</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>一般</value>
   </data>

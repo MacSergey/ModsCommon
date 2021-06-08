@@ -263,6 +263,9 @@
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>更新履歴</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>基本設定</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>基本設定</value>
   </data>

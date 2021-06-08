@@ -261,6 +261,9 @@ Uruchom ponownie grę.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Dziennik zmian</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Ogólne</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Ogólne</value>
   </data>

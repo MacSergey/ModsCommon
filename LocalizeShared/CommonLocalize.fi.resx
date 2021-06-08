@@ -261,6 +261,9 @@ Käynnistä peli uudelleen.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Muutosloki</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Yleiset</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Yleiset</value>
   </data>

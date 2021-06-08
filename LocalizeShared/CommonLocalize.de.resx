@@ -261,6 +261,9 @@ Starte das Spiel neu.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Änderungsprotokoll</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Allgemein</value>
   </data>

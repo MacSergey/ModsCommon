@@ -489,6 +489,15 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на General.
         /// </summary>
+        public static string Settings_General {
+            get {
+                return ResourceManager.GetString("Settings_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на General.
+        /// </summary>
         public static string Settings_GeneralTab {
             get {
                 return ResourceManager.GetString("Settings_GeneralTab", resourceCulture);

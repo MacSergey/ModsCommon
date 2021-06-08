@@ -261,6 +261,9 @@ Herstart het spel.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Wijzigingenlogboek</value>
   </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>Algemeen</value>
+  </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
     <value>Algemeen</value>
   </data>
