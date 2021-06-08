@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ComponentPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MultyAtlasUIButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SizeChanger.cs" />
