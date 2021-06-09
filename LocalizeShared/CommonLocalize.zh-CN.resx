@@ -142,7 +142,7 @@
     <value>检测到缺失依赖项和mod冲突.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>要继续使用 {0} ，需要修复这些问题，否则mod将被禁用。</value>
+    <value>要继续使用 {0} ，需要修复这些问题，否则模组将被禁用。</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
     <value>所有问题都已修复， {0} 可以启用。</value>
@@ -176,20 +176,20 @@ Shift x10，Ctrl x0.1</value>
     <value>我同意</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>警告：BETA版本</value>
+    <value>测试版警告</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
     <value>获取稳定版本</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>你在使用 {0} BETA版。此版本为测试新功能用，且可能含有BUG。如果是不小心订阅到了此版本，请订阅回稳定版。</value>
+    <value>你在使用 {0} 测试版。此版本用于测试新功能但可能含有BUG。如果是意外订阅了此版本，请改用稳定版。</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>这是BETA测试版，可能会出现功能性错误。无法担保工作稳定！</value>
+    <value>这是测试版，可能会出现功能性错误。无法保证稳定运行！</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Mod加载出错。
-不建议此状况下继续使用本mod，否则可能工作异常。
+    <value>模组加载出错。
+不建议此状况下继续使用本模组，否则可能工作异常。
 请重启游戏。</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
