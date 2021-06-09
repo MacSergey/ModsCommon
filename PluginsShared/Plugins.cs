@@ -172,12 +172,6 @@ namespace ModsCommon.Utilities
 
         protected override string GetMatch(IUserMod mod) => mod.GetType().Namespace.Split('.').FirstOrDefault();
     }
-    public class UserModAssemblySearcher : BaseUserModSearcher
-    {
-        public UserModAssemblySearcher(string toSearch, Option options = Option.DefaultSearch) : base(toSearch, options) { }
-
-        protected override string GetMatch(IUserMod mod) => mod.GetType().Assembly.GetName().Name;
-    }
     public class UserModInstanceSearcher : PluginSearcher
     {
         public IUserMod Instance { get; }
@@ -187,6 +181,16 @@ namespace ModsCommon.Utilities
         }
 
         public override bool IsMatch(PluginInfo plugin) => plugin.userModInstance == Instance;
+    }
+    public class AssemblySearcher : PluginSearcher
+    {
+        public Assembly Assembly { get; }
+        public AssemblySearcher(Assembly assembly)
+        {
+            Assembly = assembly;
+        }
+
+        public override bool IsMatch(PluginInfo plugin) => plugin.userModInstance?.GetType().Assembly == Assembly;
     }
     public class VersionSearcher : PluginSearcher
     {

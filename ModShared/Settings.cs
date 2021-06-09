@@ -164,6 +164,24 @@ namespace ModsCommon
         }
 
         #endregion
+
+        #region HARMONY REPORT
+
+        protected void AddHarmonyReport(UIHelper group)
+        {
+            group.AddButton("Print harmony report", Print);
+
+            static void Print()
+            {
+                var report = HarmonyReport.Get();
+                SingletonMod<TypeMod>.Instance.Logger.Debug(report.Print());
+
+                var message = MessageBox.Show<OkMessageBox>();
+                message.MessageText = "Report printed to log";
+            }
+        }
+
+        #endregion
     }
     public class UIAdvancedHelper : UIHelper
     {
