@@ -53,16 +53,17 @@ namespace ModsCommon.Utilities
 
         public string Print()
         {
-            var text = "\n====================Start Harmony report====================\n";
-            foreach (var conflict in Conflicts)
-            {
-                text += $"Possible conflict with {(conflict.Plugin.userModInstance as IUserMod)?.Name ?? "Unknown"} by methods:";
-                foreach (var method in conflict.Methods)
-                    text += $"\n{method.DeclaringType.FullName}.{method.Name}";
-                text += "--------------------------------------------------";
-            }
-            text += "====================End Harmony report====================\n";
+            var text = "\n====================Start Harmony report====================\n"
+                + string.Join("\n--------------------------------------------------\n", Conflicts.Select(c => PrintConflict(c)).ToArray())
+                + "\n====================End Harmony report====================\n";
 
+            return text;
+        }
+        private string PrintConflict(Conflict conflict)
+        {
+            var text = $"Possible conflict with {(conflict.Plugin.userModInstance as IUserMod)?.Name ?? "Unknown"} by methods:";
+            foreach (var method in conflict.Methods)
+                text += $"\n--- {method.DeclaringType.FullName}.{method.Name}";
             return text;
         }
 

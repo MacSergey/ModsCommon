@@ -9,6 +9,6 @@
     <Import_RootNamespace>HarmonyCheckerShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Checker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Report.cs" />
   </ItemGroup>
 </Project>
