@@ -11,30 +11,28 @@ namespace ModsCommon.Utilities
 {
     public class HarmonyReport
     {
-        public PluginInfo Plugin { get; }
         private Info[] PatchInfos { get; }
 
-        public bool IsPossibleConflicts => PatchInfos.Any(i => !i.Exclusive(Plugin));
-
-        private HarmonyReport(PluginInfo plugin, Info[] patchInfos)
+        public static HarmonyReport Get() => new HarmonyReport();
+        private HarmonyReport()
         {
-            Plugin = plugin;
-            PatchInfos = patchInfos;
+            var patchedMethods = Harmony.GetAllPatchedMethods().ToArray();
+            PatchInfos = patchedMethods.Select(p => new Info(p)).ToArray();
         }
-        public Conflict[] Conflicts
+
+        public bool IsPossibleConflicts(PluginInfo checkPlugin) => PatchInfos.Any(i => !i.Exclusive(checkPlugin));
+        public Conflict[] GetConflicts(PluginInfo checkPlugin)
         {
-            get
-            {
                 var conflicts = new Dictionary<PluginInfo, Conflict>();
 
                 foreach (var patchInfo in PatchInfos)
                 {
-                    if (patchInfo.Exclusive(Plugin))
+                    if (patchInfo.Exclusive(checkPlugin))
                         continue;
 
                     foreach (var plugin in patchInfo.Plugins)
                     {
-                        if (plugin == Plugin)
+                        if (plugin == checkPlugin)
                             continue;
 
                         if (!conflicts.TryGetValue(plugin, out var conflict))
@@ -48,14 +46,33 @@ namespace ModsCommon.Utilities
                 }
 
                 return conflicts.Values.ToArray();
-            }
         }
 
+        public string PrintConflicts() => PrintConflicts(Assembly.GetExecutingAssembly());
+        public string PrintConflicts(Assembly assembly)
+        {
+            if (new AssemblySearcher(assembly).GetPlugin() is PluginInfo plugin)
+                return PrintConflicts(plugin);
+            else
+                return "Plugin not found";
+        }
+        public string PrintConflicts(PluginInfo checkPlugin)
+        {
+            var conflictText = GetConflicts(checkPlugin).Select(c => PrintConflict(c)).ToArray();
+
+            var text = "\n====================Start Harmony report====================\n";
+            text += string.Join("\n--------------------------------------------------\n", conflictText);
+            text += "\n====================End Harmony report====================\n";
+
+            return text;
+        }
         public string Print()
         {
-            var text = "\n====================Start Harmony report====================\n"
-                + string.Join("\n--------------------------------------------------\n", Conflicts.Select(c => PrintConflict(c)).ToArray())
-                + "\n====================End Harmony report====================\n";
+            var infosText = PatchInfos.Select(i => i.Print()).ToArray();
+
+            var text = "\n====================Start Harmony report====================\n";
+            text += string.Join("\n--------------------------------------------------\n", infosText);
+            text += "\n====================End Harmony report====================\n";
 
             return text;
         }
@@ -65,18 +82,6 @@ namespace ModsCommon.Utilities
             foreach (var method in conflict.Methods)
                 text += $"\n--- {method.DeclaringType.FullName}.{method.Name}";
             return text;
-        }
-
-        public static HarmonyReport Get() => Get(Assembly.GetExecutingAssembly());
-        public static HarmonyReport Get(Assembly assembly)
-        {
-            if (new AssemblySearcher(assembly).GetPlugin() is not PluginInfo plugin)
-                return null;
-
-            var patchedMethods = Harmony.GetAllPatchedMethods().ToArray();
-            var patchInfos = patchedMethods.Select(p => new Info(p)).ToArray();
-
-            return new HarmonyReport(plugin, patchInfos);
         }
 
         private class Info
@@ -120,6 +125,15 @@ namespace ModsCommon.Utilities
 
             public bool Contains(PluginInfo plugin) => PluginsDic.ContainsKey(plugin);
             public bool Exclusive(PluginInfo plugin) => !Contains(plugin) || IsSingle;
+
+            public string Print()
+            {
+                var text = $"{Method.DeclaringType.FullName}.{Method.Name} patched by mods:";
+                foreach(var plugin in Plugins)
+                    text += $"\n--- {(plugin.userModInstance as IUserMod)?.Name ?? "Unknown"}";
+
+                return text;
+            }
         }
         public class Conflict
         {

@@ -170,11 +170,20 @@ namespace ModsCommon
         protected void AddHarmonyReport(UIHelper group)
         {
             group.AddButton("Print harmony report", Print);
+            group.AddButton("Print harmony conflict report", PrintConflict);
 
             static void Print()
             {
                 var report = HarmonyReport.Get();
                 SingletonMod<TypeMod>.Instance.Logger.Debug(report.Print());
+
+                var message = MessageBox.Show<OkMessageBox>();
+                message.MessageText = "Report printed to log";
+            }
+            static void PrintConflict()
+            {
+                var report = HarmonyReport.Get();
+                SingletonMod<TypeMod>.Instance.Logger.Debug(report.PrintConflicts());
 
                 var message = MessageBox.Show<OkMessageBox>();
                 message.MessageText = "Report printed to log";
