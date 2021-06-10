@@ -3,13 +3,12 @@
   <PropertyGroup>
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>e1394815-5550-4ba4-af65-cad097d335a6</SharedGUID>
+    <SharedGUID>b3e09c99-1583-40d2-ae3b-ae1453766dc3</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>RenderExtension</Import_RootNamespace>
+    <Import_RootNamespace>ColorsShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)OverlayData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RenderExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Colors.cs" />
   </ItemGroup>
 </Project>
