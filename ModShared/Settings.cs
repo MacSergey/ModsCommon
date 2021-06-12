@@ -65,7 +65,9 @@ namespace ModsCommon
         {
             GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
             AddSupport(SupportTab);
+#if DEBUG
             AddDebug(DebugTab);
+#endif
         }
 
         protected void CreateTabStrip()
