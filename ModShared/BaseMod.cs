@@ -14,6 +14,7 @@ namespace ModsCommon
     public abstract class BaseMod<TypeMod> : ICustomMod
         where TypeMod : BaseMod<TypeMod>
     {
+        public static string DiscordURL { get; } = "https://discord.gg/NnwhuBKMqj";
         public static string BETA => "[BETA]";
 
         public bool IsEnable { get; private set; }
@@ -282,6 +283,11 @@ namespace ModsCommon
         public bool OpenSupport()
         {
             SupportUrl.OpenUrl();
+            return true;
+        }
+        public bool OpenDiscord()
+        {
+            DiscordURL.OpenUrl();
             return true;
         }
     }

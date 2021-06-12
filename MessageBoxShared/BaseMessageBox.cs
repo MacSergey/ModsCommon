@@ -64,7 +64,14 @@ namespace ModsCommon.UI
         public static float DefaultHeight => 200f;
         public static float ButtonHeight => 47f;
         public static int Padding => 16;
-        public static float MaxContentHeight => 500f;
+        public Vector2 MaxContentSize
+        {
+            get
+            {
+                var resolution = GetUIView().GetScreenResolution();
+                return new Vector2(DefaultWidth, resolution.y - 580f);
+            }
+        }
         protected static float ButtonsSpace => 25f;
         protected virtual int ContentSpacing => 0;
 
@@ -85,16 +92,17 @@ namespace ModsCommon.UI
             isVisible = true;
             canFocus = true;
             isInteractive = true;
-            relativePosition = (GetUIView().GetScreenResolution() - new Vector2(width, height)) / 2f;
             size = new Vector2(DefaultWidth, DefaultHeight);
             color = new Color32(58, 88, 104, 255);
             backgroundSprite = "MenuPanel";
+            anchor = UIAnchorStyle.Left | UIAnchorStyle.Top | UIAnchorStyle.Proportional;
 
             AddHeader();
             AddContent();
             AddButtonPanel();
 
             SetSize();
+            CenterToParent();
         }
         private void AddHeader()
         {
@@ -125,7 +133,8 @@ namespace ModsCommon.UI
         private void AddContent()
         {
             Panel = AddUIComponent<AutoSizeAdvancedScrollablePanel>();
-            Panel.MaxSize = new Vector2(DefaultWidth, MaxContentHeight);
+            Panel.MaxSize = MaxContentSize;
+            Panel.size = new Vector2(DefaultWidth, 0f);
             Panel.relativePosition = new Vector2(0, Header.height);
             Panel.Content.autoLayoutPadding = new RectOffset(Padding, Padding, ContentSpacing, 0);
             Panel.Content.autoReset = true;
@@ -150,21 +159,16 @@ namespace ModsCommon.UI
             var delta = (size - SizeBefore) / 2;
             SizeBefore = size;
 
-            var x = Mathf.Clamp(relativePosition.x - delta.x, 0f, resolution.x - size.x);
-            var y = Mathf.Clamp(relativePosition.y - delta.y, 0f, resolution.y - size.y);
-
-            relativePosition = new Vector2(x, y);
+            var newPosition = Vector2.Max(Vector2.Min((Vector2)relativePosition - delta, resolution - size), Vector2.zero);
+            relativePosition = newPosition;
         }
         protected override void OnResolutionChanged(Vector2 previousResolution, Vector2 currentResolution)
         {
             base.OnResolutionChanged(previousResolution, currentResolution);
 
-            PerformLayout();
-            var deltaX = currentResolution.x - previousResolution.x;
-            var deltaY = currentResolution.y - previousResolution.y;
-            relativePosition += new Vector3(deltaX / 2f, deltaY / 2f);
+            Panel.MaxSize = MaxContentSize;
+            Panel.size = Panel.size;
         }
-
         private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
         private void SetSize()
         {
@@ -240,7 +244,6 @@ namespace ModsCommon.UI
             OnCloseClick?.Invoke();
             Close();
         }
-
 
 
         public void StopLayout() => Panel.StopLayout();

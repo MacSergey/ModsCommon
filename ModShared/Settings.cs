@@ -34,7 +34,12 @@ namespace ModsCommon
         private UIPanel MainPanel { get; set; }
         protected TabStrip TabStrip { get; set; }
         protected List<CustomUIPanel> TabPanels { get; set; }
-        protected UIAdvancedHelper GeneralTab { get; private set; }
+        private Dictionary<string, UIAdvancedHelper> Tabs { get; } = new Dictionary<string, UIAdvancedHelper>();
+        protected UIAdvancedHelper GeneralTab => Tabs[nameof(GeneralTab)];
+        protected UIAdvancedHelper SupportTab => Tabs[nameof(SupportTab)];
+#if DEBUG
+        protected UIAdvancedHelper DebugTab => Tabs[nameof(DebugTab)];
+#endif
 
         public void OnSettingsUI(UIHelperBase helper)
         {
@@ -47,17 +52,21 @@ namespace ModsCommon
             MainPanel.autoLayout = true;
             MainPanel.autoLayoutDirection = LayoutDirection.Vertical;
             MainPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
+
             CreateTabStrip();
-
-            GeneralTab = CreateTab(CommonLocalize.Settings_GeneralTab);
-            GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
-
-            OnSettingsUI();
+            CreateTabs();
+            FillSettings();
 
             TabStrip.SelectedTab = 0;
             TabStrip.isVisible = TabPanels.Count > 1;
         }
-        protected virtual void OnSettingsUI() { }
+        protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalTabs { get; }
+        protected virtual void FillSettings()
+        {
+            GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
+            AddSupport(SupportTab);
+            AddDebug(DebugTab);
+        }
 
         protected void CreateTabStrip()
         {
@@ -89,9 +98,21 @@ namespace ModsCommon
             panel.size = new Vector2(MainPanel.width, MainPanel.height - (TabStrip.isVisible ? MainPanel.autoLayoutPadding.vertical + TabStrip.height : 0f));
         }
 
-        protected UIAdvancedHelper CreateTab(string name)
+        private void CreateTabs()
         {
-            TabStrip.AddTab(name, 1.25f);
+            CreateTab(nameof(GeneralTab), CommonLocalize.Settings_GeneralTab);
+
+            foreach (var tab in AdditionalTabs)
+                CreateTab(tab.Key, tab.Value);
+
+            CreateTab(nameof(SupportTab), CommonLocalize.Settings_SupportTab);
+#if DEBUG
+            CreateTab(nameof(DebugTab), "Debug");
+#endif
+        }
+        private UIAdvancedHelper CreateTab(string name, string label)
+        {
+            TabStrip.AddTab(label, 1.25f);
 
             var tabPanel = MainPanel.AddUIComponent<AdvancedScrollablePanel>();
             tabPanel.Content.autoLayoutPadding = new RectOffset(8, 8, 0, 0);
@@ -99,8 +120,11 @@ namespace ModsCommon
             tabPanel.isVisible = false;
             TabPanels.Add(tabPanel);
 
-            return new UIAdvancedHelper(tabPanel.Content);
+            var helper = new UIAdvancedHelper(tabPanel.Content);
+            Tabs[name] = helper;
+            return helper;
         }
+        protected UIAdvancedHelper GetTab(string label) => Tabs[label];
 
         #region LANGUAGE
 
@@ -165,23 +189,65 @@ namespace ModsCommon
 
         #endregion
 
-        #region HARMONY REPORT
+        #region SUPPORT
 
-        protected void AddHarmonyReport(UIHelper group)
+        private void AddSupport(UIAdvancedHelper helper)
         {
-            group.AddButton("Print harmony report", Print);
+            var group = helper.AddGroup();
 
-            static void Print()
-            {
-                var report = HarmonyReport.Get();
-                SingletonMod<TypeMod>.Instance.Logger.Debug(report.Print());
-
-                var message = MessageBox.Show<OkMessageBox>();
-                message.MessageText = "Report printed to log";
-            }
+            AddButton(group, CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
+            AddButton(group, "Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
+            AddButton(group, CommonLocalize.Settings_ChangeLog, ShowChangeLog);
+        }
+        private void ShowChangeLog()
+        {
+            var messages = SingletonMod<TypeMod>.Instance.GetWhatsNewMessages(new Version(1, 0));
+            var messageBox = MessageBox.Show<WhatsNewMessageBox>();
+            messageBox.CaptionText = CommonLocalize.Settings_ChangeLog;
+            messageBox.OkText = CommonLocalize.MessageBox_OK;
+            messageBox.Init(messages, SingletonMod<TypeMod>.Instance.GetVersionString, false);
         }
 
         #endregion
+
+        #region DEBUG
+
+        private void AddDebug(UIAdvancedHelper helper)
+        {
+            var group = helper.AddGroup("Base");
+
+            AddStringField(group, "Whats new version", WhatsNewVersion);
+            AddCheckBox(group, "Beta agreement", BetaWarning);
+        }
+
+        #endregion
+
+        //#region HARMONY REPORT
+
+        //protected void AddHarmonyReport(UIHelper group)
+        //{
+        //    group.AddButton("Print harmony report", Print);
+        //    group.AddButton("Print harmony conflict report", PrintConflict);
+
+        //    static void Print()
+        //    {
+        //        var report = HarmonyReport.Get();
+        //        SingletonMod<TypeMod>.Instance.Logger.Debug(report.Print());
+
+        //        var message = MessageBox.Show<OkMessageBox>();
+        //        message.MessageText = "Report printed to log";
+        //    }
+        //    static void PrintConflict()
+        //    {
+        //        var report = HarmonyReport.Get();
+        //        SingletonMod<TypeMod>.Instance.Logger.Debug(report.PrintConflicts());
+
+        //        var message = MessageBox.Show<OkMessageBox>();
+        //        message.MessageText = "Report printed to log";
+        //    }
+        //}
+
+        //#endregion
     }
     public class UIAdvancedHelper : UIHelper
     {
@@ -211,7 +277,7 @@ namespace ModsCommon
             static void OnChanged(string distance) { }
             void OnSubmitted(string text)
             {
-                if (float.TryParse(text, out float value))
+                if (float.TryParse(text, out var value))
                 {
                     if ((min.HasValue && value < min.Value) || (max.HasValue && value > max.Value))
                         value = defaultValue ?? 0;
@@ -222,6 +288,40 @@ namespace ModsCommon
                 else
                     field.text = saved.ToString();
 
+                onSubmit?.Invoke();
+            }
+        }
+        public static void AddIntField(UIHelper group, string label, SavedInt saved, int? defaultValue = null, int? min = null, int? max = null, Action onSubmit = null)
+        {
+            UITextField field = null;
+            field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+
+            static void OnChanged(string distance) { }
+            void OnSubmitted(string text)
+            {
+                if (int.TryParse(text, out var value))
+                {
+                    if ((min.HasValue && value < min.Value) || (max.HasValue && value > max.Value))
+                        value = defaultValue ?? 0;
+
+                    saved.value = value;
+                    field.text = value.ToString();
+                }
+                else
+                    field.text = saved.ToString();
+
+                onSubmit?.Invoke();
+            }
+        }
+        public static void AddStringField(UIHelper group, string label, SavedString saved, Action onSubmit = null)
+        {
+            UITextField field = null;
+            field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+
+            static void OnChanged(string distance) { }
+            void OnSubmitted(string text)
+            {
+                saved.value = text;
                 onSubmit?.Invoke();
             }
         }

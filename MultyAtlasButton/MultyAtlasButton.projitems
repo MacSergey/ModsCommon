@@ -3,13 +3,12 @@
   <PropertyGroup>
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>e1394815-5550-4ba4-af65-cad097d335a6</SharedGUID>
+    <SharedGUID>423f5152-7a64-4db3-9979-74d61efe365a</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>RenderExtension</Import_RootNamespace>
+    <Import_RootNamespace>MultyAtlasButton</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)OverlayData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RenderExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MultyAtlasUIButton.cs" />
   </ItemGroup>
 </Project>

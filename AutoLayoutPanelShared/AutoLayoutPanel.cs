@@ -158,7 +158,8 @@ namespace ModsCommon.UI
             public override void StartLayout(bool layoutNow = true)
             {
                 base.StartLayout(layoutNow);
-                FitContentChildren();
+                if (layoutNow)
+                    FitContentChildren();
             }
         }
     }
