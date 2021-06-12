@@ -134,6 +134,7 @@ namespace ModsCommon.UI
         {
             Panel = AddUIComponent<AutoSizeAdvancedScrollablePanel>();
             Panel.MaxSize = MaxContentSize;
+            Panel.size = new Vector2(DefaultWidth, 0f);
             Panel.relativePosition = new Vector2(0, Header.height);
             Panel.Content.autoLayoutPadding = new RectOffset(Padding, Padding, ContentSpacing, 0);
             Panel.Content.autoReset = true;
@@ -160,6 +161,13 @@ namespace ModsCommon.UI
 
             var newPosition = Vector2.Max(Vector2.Min((Vector2)relativePosition - delta, resolution - size), Vector2.zero);
             relativePosition = newPosition;
+        }
+        protected override void OnResolutionChanged(Vector2 previousResolution, Vector2 currentResolution)
+        {
+            base.OnResolutionChanged(previousResolution, currentResolution);
+
+            Panel.MaxSize = MaxContentSize;
+            Panel.size = Panel.size;
         }
         private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
         private void SetSize()
@@ -236,7 +244,6 @@ namespace ModsCommon.UI
             OnCloseClick?.Invoke();
             Close();
         }
-
 
 
         public void StopLayout() => Panel.StopLayout();

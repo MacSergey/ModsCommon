@@ -165,7 +165,7 @@ namespace ModsCommon.UI
             betaMessage.textColor = Color.red;
             betaMessage.text = betaText;
 
-            StartLayout();
+            StartLayout(false);
 
             base.Init(messages, toString);
         }
