@@ -157,11 +157,15 @@ namespace ModsCommon.UI
 
         public void Init(Dictionary<Version, string> messages, string betaText, Func<Version, string> toString = null)
         {
+            StopLayout();
+
             var betaMessage = Panel.Content.AddUIComponent<CustomUILabel>();
             betaMessage.wordWrap = true;
             betaMessage.autoHeight = true;
             betaMessage.textColor = Color.red;
             betaMessage.text = betaText;
+
+            StartLayout();
 
             base.Init(messages, toString);
         }
