@@ -68,8 +68,8 @@ namespace ModsCommon.UI
         {
             get
             {
-                var uiView = GetUIView();
-                return new Vector2(DefaultWidth, uiView.GetScreenResolution().y * uiView.inputScale - 580f);
+                var resolution = GetUIView().GetScreenResolution();
+                return new Vector2(DefaultWidth, resolution.y - 580f);
             }
         }
         protected static float ButtonsSpace => 25f;
@@ -92,17 +92,17 @@ namespace ModsCommon.UI
             isVisible = true;
             canFocus = true;
             isInteractive = true;
-            var uiView = GetUIView();
-            relativePosition = (uiView.GetScreenResolution() * uiView.inputScale - size) / 2f;
             size = new Vector2(DefaultWidth, DefaultHeight);
             color = new Color32(58, 88, 104, 255);
             backgroundSprite = "MenuPanel";
+            anchor = UIAnchorStyle.Left | UIAnchorStyle.Top | UIAnchorStyle.Proportional;
 
             AddHeader();
             AddContent();
             AddButtonPanel();
 
             SetSize();
+            CenterToParent();
         }
         private void AddHeader()
         {
@@ -154,26 +154,13 @@ namespace ModsCommon.UI
         {
             base.OnSizeChanged();
 
-            var uiView = GetUIView();
-            var resolution = uiView.GetScreenResolution() * uiView.inputScale;
+            var resolution = GetUIView().GetScreenResolution();
             var delta = (size - SizeBefore) / 2;
             SizeBefore = size;
 
             var newPosition = Vector2.Max(Vector2.Min((Vector2)relativePosition - delta, resolution - size), Vector2.zero);
             relativePosition = newPosition;
         }
-        protected override void OnResolutionChanged(Vector2 previousResolution, Vector2 currentResolution)
-        {
-            base.OnResolutionChanged(previousResolution, currentResolution);
-
-            PerformLayout();
-            Panel.MaxSize = MaxContentSize;
-            var delta = (currentResolution - previousResolution) / 2f;
-
-            var newPosition = Vector2.Max(Vector2.Min((Vector2)relativePosition + delta, currentResolution - size), Vector2.zero);
-            relativePosition = newPosition;
-        }
-
         private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
         private void SetSize()
         {
