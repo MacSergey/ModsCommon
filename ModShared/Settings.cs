@@ -60,7 +60,7 @@ namespace ModsCommon
             TabStrip.SelectedTab = 0;
             TabStrip.isVisible = TabPanels.Count > 1;
         }
-        protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalTabs { get; }
+        protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalTabs => new KeyValuePair<string, string>[0];
         protected virtual void FillSettings()
         {
             GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
