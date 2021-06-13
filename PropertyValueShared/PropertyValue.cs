@@ -34,7 +34,7 @@ namespace ModsCommon.Utilities
 
         protected abstract bool Equals(T x, T y);
 
-        public void ToXml(XElement element) => element.Add(ToXml());
+        public virtual void ToXml(XElement element) => element.Add(ToXml());
         protected virtual XAttribute ToXml() => new XAttribute(Label, Value);
         public virtual void FromXml(XElement config) => FromXml(config, Value);
         public virtual void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue);
@@ -51,7 +51,7 @@ namespace ModsCommon.Utilities
         protected override bool Equals(T x, T y) => object.Equals(x, y);
     }
     public class PropertyStructValue<T> : PropertyValue<T>
-    where T : struct
+        where T : struct
     {
         public PropertyStructValue(Action onChanged, T value = default) : base(onChanged, value) { }
         public PropertyStructValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
@@ -68,6 +68,26 @@ namespace ModsCommon.Utilities
         protected override bool Equals(T x, T y) => x.ToInt() == y.ToInt();
         protected override XAttribute ToXml() => new XAttribute(Label, Value.ToInt());
         public override void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue.ToInt()).ToEnum<T>();
+    }
+    public class PropertyLongEnumValue<T> : PropertyStructValue<T>
+        where T : struct, Enum
+    {
+        public PropertyLongEnumValue(Action onChanged, T value = default) : base(onChanged, value) { }
+        public PropertyLongEnumValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
+
+        protected override bool Equals(T x, T y) => x.ToLong() == y.ToLong();
+        protected override XAttribute ToXml() => new XAttribute(Label, Value.ToLong());
+        public override void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue.ToLong()).ToEnum<T>();
+    }
+    public class PropertyULongEnumValue<T> : PropertyStructValue<T>
+        where T : struct, Enum
+    {
+        public PropertyULongEnumValue(Action onChanged, T value = default) : base(onChanged, value) { }
+        public PropertyULongEnumValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
+
+        protected override bool Equals(T x, T y) => x.ToULong() == y.ToULong();
+        protected override XAttribute ToXml() => new XAttribute(Label, Value.ToULong());
+        public override void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue.ToULong()).ToEnum<T>();
     }
     public class PropertyBoolValue : PropertyStructValue<bool>
     {
@@ -89,5 +109,60 @@ namespace ModsCommon.Utilities
             var color = config.GetAttrValue(Label, 0);
             Value = color != 0 ? new Color32((byte)(color >> 24), (byte)(color >> 16), (byte)(color >> 8), (byte)color) : defaultValue;
         }
+    }
+    public abstract class PropertyVectorValue<T> : PropertyStructValue<T>
+            where T : struct
+    {
+        protected abstract uint Dimension { get; }
+
+        protected string[] Labels { get; } 
+        protected PropertyVectorValue(Action onChanged, T value, params string[] labels) : base(onChanged, value) 
+        {
+            Labels = labels;
+        }
+
+        protected abstract float Get(ref T vector, int index);
+        protected abstract void Set(ref T vector, int index, float value);
+
+        public override void ToXml(XElement element)
+        {
+            var value = Value;
+            for (var i = 0; i < Dimension; i += 1)
+                element.AddAttr(Labels[i], Get(ref value, i));
+        }
+        public override void FromXml(XElement config, T defaultValue)
+        {
+            for (var i = 0; i < Dimension; i += 1)
+                Set(ref defaultValue, i, config.GetAttrValue(Labels[i], Get(ref defaultValue, i)));
+
+            Value = defaultValue;
+        }
+    }
+    public class PropertyVector2Value : PropertyVectorValue<Vector2>
+    {
+        protected override uint Dimension => 2;
+
+        public PropertyVector2Value(Action onChanged, Vector2 value = default, string labelX = "X", string labelY = "Y") : base(onChanged, value, labelX, labelY) { }
+
+        protected override float Get(ref Vector2 vector, int index) => vector[index];
+        protected override void Set(ref Vector2 vector, int index, float value) => vector[index] = value;
+    }
+    public class PropertyVector3Value : PropertyVectorValue<Vector3>
+    {
+        protected override uint Dimension => 3;
+
+        public PropertyVector3Value(Action onChanged, Vector3 value = default, string labelX = "X", string labelY = "Y", string labelZ = "Z") : base(onChanged, value, labelX, labelY, labelZ) { }
+
+        protected override float Get(ref Vector3 vector, int index) => vector[index];
+        protected override void Set(ref Vector3 vector, int index, float value) => vector[index] = value;
+    }
+    public class PropertyVector4Value : PropertyVectorValue<Vector4>
+    {
+        protected override uint Dimension => 4;
+
+        public PropertyVector4Value(Action onChanged, Vector4 value = default, string labelX = "X", string labelY = "Y", string labelZ = "Z", string labelW = "W") : base(onChanged, value, labelX, labelY, labelZ, labelW) { }
+
+        protected override float Get(ref Vector4 vector, int index) => vector[index];
+        protected override void Set(ref Vector4 vector, int index, float value) => vector[index] = value;
     }
 }

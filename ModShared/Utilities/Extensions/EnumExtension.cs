@@ -33,6 +33,11 @@ namespace ModsCommon.Utilities
 
         public static int ToInt<T>(this T value) where T : Enum => (int)(object)value;
         public static T ToEnum<T>(this int value) where T : Enum => (T)(object)value;
+        public static long ToLong<T>(this T value) where T : Enum => (long)(object)value;
+        public static T ToEnum<T>(this long value) where T : Enum => (T)(object)value;
+        public static ulong ToULong<T>(this T value) where T : Enum => (ulong)(object)value;
+        public static T ToEnum<T>(this ulong value) where T : Enum => (T)(object)value;
+
         public static ToT ToEnum<ToT, FromT>(this FromT item) where ToT : Enum where FromT : Enum => (ToT)(object)item;
 
         public static bool IsSet<T>(this T flags, T flag) where T : Enum => (flags.ToInt() & flag.ToInt()) == flag.ToInt();
