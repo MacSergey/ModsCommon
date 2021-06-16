@@ -118,180 +118,180 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Conflicterende mods gedetecteerd.</value>
+    <value>Konflik mod terdeteksi.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Uitschakelen</value>
+    <value>Nonaktifkan</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>{0} uitschakelen</value>
+    <value>Nononaktifkan {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Inschakelen</value>
+    <value>Aktifkan</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>{0} inschakelen</value>
+    <value>Aktifkan {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Verkrijgen</value>
+    <value>Dapatkan</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Ontbrekende afhankelijkheden gedetecteerd.</value>
+    <value>Kehilangan ketergantungan terdeteksi.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Ontbrekende afhankelijkheden en conflicterende mods gedetecteerd.</value>
+    <value>Kehilangan ketergantungan dan konflik mod terdeteksi.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Om {0} te kunnen blijven gebruiken moeten deze problemen worden verholpen, anders wordt de mod uitgeschakeld.</value>
+    <value>Untuk lanjut menggunakan {0}, diharuskan untuk membenarkan isu-isu ini, jika tidak, mod akan dimatikan.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>Alle problemen zijn verholpen, {0} kan worden ingeschakeld.</value>
+    <value>Semua isu telah diperbaiki, {0} sudah dapat diaktifkan.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Verwijderen</value>
+    <value>Hapuskan</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Abonneren</value>
+    <value>Berlangganan</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>De-abonneren</value>
+    <value>Berhenti berlangganan</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll om te veranderen
-Shift X10, Ctrl X0.1</value>
+    <value>Scroll roda mouse untuk mengubah
+Shift X10, Ctrl X0,1</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Annuleren</value>
+    <value>Batalkan</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Nee</value>
+    <value>Tidak</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>Ok</value>
+    <value>OK</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Ja</value>
+    <value>Iya</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Ik ga akkoord</value>
+    <value>Setuju</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA versie waarschuwing</value>
+    <value>Peringatan versi BETA</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Overstappen naar stabiele versie</value>
+    <value>Dapatkan versi stabil</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd bent op de bèta, kun je naar de stabiele versie overstappen.</value>
+    <value>Anda menggunakan versi BETA {0}. Ini untuk mengetes fitur-fitur baru dan mungkin berisi error. Jika Anda berlangganan dengan tidak sengaja, ganti ke versi stabil.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Dit is een BETA versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
+    <value>Ini adalah versi BETA, error mungkin terjadi dan stabilitas tidak terjamin!</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Mod is geladen met errors.
-Het is niet aanbevolen om de mod te gebruiken in de huidige staat omdat het tot onvoorspelbaar gedrag kan leiden.
-Herstart het spel.</value>
+    <value>Mod dimuat dengan kendala.
+Tidak direkomendasikan untuk menggunakan mod ini dalam keadaan ini karena dapat menimbulkan tingkah laku yang tidak dapat diprediksi.
+Mohon restart game ini.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Gebruik zelfde taal als spel</value>
+    <value>Bahasa Game</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Tsjechisch</value>
+    <value>Ceko</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Duits</value>
+    <value>Jerman</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Engels VS</value>
+    <value>Inggris Amerika</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Engels VK</value>
+    <value>Inggris UK</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spaans</value>
+    <value>Spanyol</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Fins</value>
+    <value>Finlandia</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Frans</value>
+    <value>Perancis</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italiaans</value>
+    <value>Italia</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japans</value>
+    <value>Jepang</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Nederlands</value>
+    <value>Belanda</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Pools</value>
+    <value>Polandia</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portugees</value>
+    <value>Portugis</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russisch</value>
+    <value>Rusia</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinees vereenvoudigd</value>
+    <value>Mandarin Sederhana</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Chinees (traditioneel)</value>
+    <value>Mandarin Tradisional</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>Dukungan</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Wat is er nieuw in {0}</value>
+    <value>Apa yang baru di {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Bekijk de actuele bèta change log op Discord</value>
+    <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Versie {0}</value>
+    <value>Versi {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Extra</value>
+    <value>Tambahan</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Annuleer</value>
+    <value>Batalkan</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Wijzigingenlogboek</value>
+    <value>Catatan perubahan</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Algemeen</value>
+    <value>Umum</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Algemeen</value>
+    <value>Umum</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Taal</value>
+    <value>Bahasa</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Meldingen</value>
+    <value>Notifikasi</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Tool activeren</value>
+    <value>Aktifkan alat</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Snelkoppelingen</value>
+    <value>Pintasan</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Alleen meldingen over grote updates</value>
+    <value>Notifikasi hanya tentang pembaruan besar</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Tooltips weergeven</value>
+    <value>Tampilkan tooltip</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Toon wat nieuw is</value>
+    <value>Tampilkan apa yang baru</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>Dukungan</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Probleemoplossing</value>
+    <value>Pemecahan masalah</value>
   </data>
 </root>
