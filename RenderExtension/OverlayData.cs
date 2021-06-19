@@ -11,9 +11,10 @@ namespace ModsCommon.Utilities
         public RenderManager.CameraInfo CameraInfo { get; }
         public Color? Color;
         public float? Width;
-        public bool? AlphaBlend;
         public bool? CutStart;
         public bool? CutEnd;
+        public bool? RenderLimit;
+        public bool? AlphaBlend;
         public bool SplitPoint;
 
         public bool Cut
@@ -30,9 +31,10 @@ namespace ModsCommon.Utilities
             CameraInfo = cameraInfo;
             Color = null;
             Width = null;
-            AlphaBlend = null;
+            RenderLimit = null;
             CutStart = null;
             CutEnd = null;
+            AlphaBlend = null;
             SplitPoint = false;
         }
 

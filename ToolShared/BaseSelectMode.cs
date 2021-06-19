@@ -23,10 +23,25 @@ namespace ModsCommon
         protected virtual bool SelectNodes { get; } = true;
         protected virtual bool SelectSegments { get; } = true;
 
+        bool _underground;
+        protected bool Underground
+        {
+            get => _underground;
+            set
+            {
+                if (value != _underground)
+                {
+                    _underground = value;
+                    Singleton<InfoManager>.instance.SetCurrentMode(_underground ? InfoManager.InfoMode.Underground : InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
+                }
+            }
+        }
+
         protected override void Reset(IToolMode prevMode)
         {
             HoverNode = null;
             HoverSegment = null;
+            Underground = false;
         }
 
         public override void OnToolUpdate()
@@ -146,31 +161,36 @@ namespace ModsCommon
                 return false;
             }
         }
-        protected virtual bool IsValidNode(ushort nodeId) => true;
+        protected virtual bool IsValidNode(ushort nodeId) => nodeId.GetNode().m_flags.IsSet(NetNode.Flags.Underground) ^ !Underground;
         protected virtual bool IsValidSegment(ushort segmentId) => true;
 
         protected virtual bool CheckSegment(ushort segmentId)
         {
-            ref var segment = ref segmentId.GetSegment();
-            if ((segment.m_flags & NetSegment.Flags.Created) == 0)
-                return false;
+            var segment = segmentId.GetSegment();
 
-            var itemClass = segment.Info.GetConnectionClass();
-            if ((itemClass.m_layer & ItemClass.Layer.Default) == 0)
+            if (!segment.m_flags.IsSet(NetSegment.Flags.Created))
                 return false;
-
-            return CheckItemClass(itemClass);
+            else
+                return CheckItemClass(segment.Info.GetConnectionClass());
         }
-        protected virtual bool CheckItemClass(ItemClass itemClass) => true;
+        protected virtual bool CheckItemClass(ItemClass itemClass)
+        {
+            if (!Underground && itemClass.m_layer != ItemClass.Layer.Default)
+                return false;
+            else if (Underground && itemClass.m_layer != ItemClass.Layer.MetroTunnels)
+                return false;
+            else
+                return true;
+        }
 
         public override void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public override void OnSecondaryMouseClicked() => Tool.Disable();
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             if (IsHoverNode)
-                HoverNode.Render(new OverlayData(cameraInfo) { Color = NodeColor });
+                HoverNode.Render(new OverlayData(cameraInfo) { Color = NodeColor, RenderLimit = Underground });
             else if (IsHoverSegment)
-                HoverSegment.Render(new OverlayData(cameraInfo) { Color = SegmentColor });
+                HoverSegment.Render(new OverlayData(cameraInfo) { Color = SegmentColor, RenderLimit = Underground });
         }
     }
 }
