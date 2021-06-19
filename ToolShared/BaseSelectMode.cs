@@ -170,18 +170,20 @@ namespace ModsCommon
 
             if (!segment.m_flags.IsSet(NetSegment.Flags.Created))
                 return false;
+
+            var startUndeground = segment.m_startNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
+            var endUndeground = segment.m_endNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
+
+            if (Underground && !startUndeground && !endUndeground)
+                return false;
+
+            if (!Underground && startUndeground && endUndeground)
+                return false;
+
             else
                 return CheckItemClass(segment.Info.GetConnectionClass());
         }
-        protected virtual bool CheckItemClass(ItemClass itemClass)
-        {
-            if (!Underground && itemClass.m_layer != ItemClass.Layer.Default)
-                return false;
-            else if (Underground && itemClass.m_layer != ItemClass.Layer.MetroTunnels)
-                return false;
-            else
-                return true;
-        }
+        protected virtual bool CheckItemClass(ItemClass itemClass) => true;
 
         public override void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public override void OnSecondaryMouseClicked() => Tool.Disable();
