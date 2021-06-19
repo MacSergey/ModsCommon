@@ -242,9 +242,9 @@ namespace ModsCommon.Utilities
 
         public override bool IsMatch(PluginInfo plugin) => Searchers.Any(s => s.IsMatch(plugin));
 
-        public static AnySearcher operator &(AnySearcher first, PluginSearcher second) => new AnySearcher(Concat(first.Searchers, new PluginSearcher[] { second }));
-        public static AnySearcher operator &(PluginSearcher first, AnySearcher second) => new AnySearcher(Concat(new PluginSearcher[] { first }, second.Searchers));
-        public static AnySearcher operator &(AnySearcher first, AnySearcher second) => new AnySearcher(Concat(first.Searchers, second.Searchers));
+        public static AnySearcher operator |(AnySearcher first, PluginSearcher second) => new AnySearcher(Concat(first.Searchers, new PluginSearcher[] { second }));
+        public static AnySearcher operator |(PluginSearcher first, AnySearcher second) => new AnySearcher(Concat(new PluginSearcher[] { first }, second.Searchers));
+        public static AnySearcher operator |(AnySearcher first, AnySearcher second) => new AnySearcher(Concat(first.Searchers, second.Searchers));
     }
     public class AllSearcher : BaseCombineSearcher
     {
