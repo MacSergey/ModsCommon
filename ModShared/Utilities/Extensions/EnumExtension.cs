@@ -42,6 +42,11 @@ namespace ModsCommon.Utilities
 
         public static bool IsSet<T>(this T flags, T flag) where T : Enum => (flags.ToInt() & flag.ToInt()) == flag.ToInt();
 
+        public static bool CheckFlags<T>(this T value, T required, T forbidden)
+            where T : Enum, IConvertible
+        {
+            return (value.ToInt() & (required.ToInt() | forbidden.ToInt())) == required.ToInt();
+        }
         public static bool CheckFlags(this NetNode.Flags value, NetNode.Flags required, NetNode.Flags forbidden = 0) => (value & (required | forbidden)) == required;
         public static bool CheckFlags(this NetSegment.Flags value, NetSegment.Flags required, NetSegment.Flags forbidden = 0) => (value & (required | forbidden)) == required;
     }
