@@ -89,15 +89,20 @@ namespace ModsCommon.UI
             add => Button.eventClicked += value;
             remove => Button.eventClicked -= value;
         }
-        private TypeButton Button { get; set; }
+        public TypeButton Button { get; }
 
         public HeaderButtonState State { get; }
         public string Text { get; }
         private Action OnClick { get; }
 
         public bool Visible { get; set; } = true;
+        public bool Enable
+        {
+            get => Button.isEnabled;
+            set => Button.isEnabled = value;
+        }
 
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick)
+        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null)
         {
             State = state;
             Text = text;

@@ -74,9 +74,9 @@ namespace ModsCommon.UI
         private void DeleteClick(UIComponent component, UIMouseEventParameter eventParam) => OnDelete?.Invoke();
     }
 
-    public abstract class BaseHeaderContent : CustomUIPanel
+    public class BaseHeaderContent : CustomUIPanel
     {
-        private List<IHeaderButtonInfo> Infos { get; }
+        private List<IHeaderButtonInfo> Infos { get; } = new List<IHeaderButtonInfo>();
         private List<IHeaderButtonInfo> MainInfos { get; set; }
         private List<IHeaderButtonInfo> AdditionalInfos { get; set; }
         private bool ShowAdditional => AdditionalInfos.Count > 0;
@@ -94,12 +94,15 @@ namespace ModsCommon.UI
             Additional.PopupOpenedEvent += OnPopupOpened;
             Additional.PopupCloseEvent += OnPopupClose;
 
-            Infos = GetInfos().ToList();
-
             Refresh();
         }
 
-        protected abstract IEnumerable<IHeaderButtonInfo> GetInfos();
+        public void AddButton(IHeaderButtonInfo info, bool refresh = false)
+        {
+            Infos.Add(info);
+            if (refresh)
+                Refresh();
+        }
         private void OnPopupOpened(AdditionallyPopup popup)
         {
             foreach (var info in AdditionalInfos)
