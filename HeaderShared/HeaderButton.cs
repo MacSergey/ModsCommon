@@ -7,8 +7,10 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class HeaderButton : CustomUIButton
+    public abstract class HeaderButton : CustomUIButton, IReusable
     {
+        bool IReusable.InCache { get; set; }
+
         public static int Size => IconSize + 2 * IconPadding;
         public static int IconSize => 25;
         public static int IconPadding => 2;
@@ -21,13 +23,11 @@ namespace ModsCommon.UI
         protected virtual Color32 PressedIconColor => new Color32(224, 224, 224, 255);
         protected virtual Color32 DisabledIconColor => new Color32(144, 144, 144, 255);
 
-        protected abstract UITextureAtlas IconAtlas { get; }
-
         public HeaderButton()
         {
+            atlas = CommonTextures.Atlas;
             hoveredBgSprite = pressedBgSprite = focusedBgSprite = CommonTextures.HeaderHoverSprite;
             size = new Vector2(Size, Size);
-            atlas = CommonTextures.Atlas;
             hoveredColor = HoveredColor;
             pressedColor = focusedColor = PressedColor;
             clipChildren = true;
@@ -38,7 +38,6 @@ namespace ModsCommon.UI
 
             Icon = AddUIComponent<CustomUIButton>();
             Icon.size = new Vector2(IconSize, IconSize);
-            Icon.atlas = IconAtlas;
             Icon.relativePosition = new Vector2(IconPadding, IconPadding);
 
             Icon.color = IconColor;
@@ -46,25 +45,98 @@ namespace ModsCommon.UI
             Icon.pressedColor = PressedIconColor;
             Icon.disabledColor = DisabledIconColor;
         }
-
-        public void SetIconSprite(string sprite)
+        public void SetIcon(UITextureAtlas atlas, string sprite)
         {
+            Icon.atlas = atlas ?? TextureHelper.InGameAtlas;
             Icon.normalBgSprite = sprite;
             Icon.hoveredBgSprite = sprite;
             Icon.pressedBgSprite = sprite;
         }
+
         public override void Update()
         {
             base.Update();
             if (state == ButtonState.Focused)
                 state = ButtonState.Normal;
         }
+
+        public virtual void DeInit()
+        {
+            SetIcon(null, string.Empty);
+        }
+    }
+    [Flags]
+    public enum HeaderButtonState
+    {
+        Main = 1,
+        Additional = 2,
+        //Auto = Main | Additional,
+    }
+    public interface IHeaderButtonInfo
+    {
+        public event MouseEventHandler ClickedEvent;
+
+        public void AddButton(UIComponent parent, bool showText);
+        public void RemoveButton();
+        public HeaderButtonState State { get; }
+        public bool Visible { get; set; }
+    }
+    public class HeaderButtonInfo<TypeButton> : IHeaderButtonInfo
+        where TypeButton : HeaderButton
+    {
+        public event MouseEventHandler ClickedEvent
+        {
+            add => Button.eventClicked += value;
+            remove => Button.eventClicked -= value;
+        }
+        private TypeButton Button { get; set; }
+
+        public HeaderButtonState State { get; }
+        public string Text { get; }
+        private Action OnClick { get; }
+
+        public bool Visible { get; set; } = true;
+
+        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick)
+        {
+            State = state;
+            Text = text;
+            OnClick = onClick;
+
+            Button = new GameObject(typeof(TypeButton).Name).AddComponent<TypeButton>();
+            Button.SetIcon(atlas, sprite);
+            Button.eventClicked += ButtonClicked;
+        }
+        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(state, atlas, sprite, GetText(text, shortcut), shortcut.Press) { }
+
+        public void AddButton(UIComponent parent, bool showText)
+        {
+            RemoveButton();
+
+            parent.AttachUIComponent(Button.gameObject);
+            Button.transform.parent = parent.cachedTransform;
+
+            Button.text = showText ? Text ?? string.Empty : string.Empty;
+            Button.tooltip = showText ? string.Empty : Text;
+        }
+        public void RemoveButton()
+        {
+            Button.parent?.RemoveUIComponent(Button);
+            Button.transform.parent = null;
+        }
+
+        private void ButtonClicked(UIComponent component, UIMouseEventParameter eventParam) => OnClick?.Invoke();
+
+        protected static string GetText(string text, Shortcut shortcut) => $"{text} ({shortcut})";
     }
 
     public abstract class BaseHeaderPopupButton<PopupType> : HeaderButton
         where PopupType : UIComponent
     {
-        public event Action<PopupType> OpenPopupEvent;
+        public event Action PopupOpenEvent;
+        public event Action<PopupType> PopupOpenedEvent;
+        public event Action<PopupType> PopupCloseEvent;
+        public event Action PopupClosedEvent;
         public PopupType Popup { get; private set; }
 
         protected override void OnClick(UIMouseEventParameter p)
@@ -83,23 +155,25 @@ namespace ModsCommon.UI
 
         protected void OpenPopup()
         {
+            OnPopupOpen();
+
             var root = GetRootContainer();
             Popup = root.AddUIComponent<PopupType>();
             Popup.eventLostFocus += OnPopupLostFocus;
             Popup.eventKeyDown += OnPopupKeyDown;
             Popup.Focus();
 
-            OnOpenPopup();
+            OnPopupOpened();
 
             SetPopupPosition();
             Popup.parent.eventPositionChanged += SetPopupPosition;
         }
-
-        protected virtual void OnOpenPopup() => OpenPopupEvent?.Invoke(Popup);
         public virtual void ClosePopup()
         {
             if (Popup != null)
             {
+                OnPopupClose();
+
                 Popup.eventLostFocus -= OnPopupLostFocus;
                 Popup.eventKeyDown -= OnPopupKeyDown;
 
@@ -108,8 +182,15 @@ namespace ModsCommon.UI
 
                 ComponentPool.Free(Popup);
                 Popup = null;
+
+                OnPopupClosed();
             }
         }
+        protected virtual void OnPopupOpen() => PopupOpenEvent?.Invoke();
+        protected virtual void OnPopupOpened() => PopupOpenedEvent?.Invoke(Popup);
+        protected virtual void OnPopupClose() => PopupCloseEvent?.Invoke(Popup);
+        protected virtual void OnPopupClosed() => PopupClosedEvent?.Invoke();
+
         private void OnPopupLostFocus(UIComponent component, UIFocusEventParameter eventParam)
         {
             var uiView = Popup.GetUIView();
@@ -149,9 +230,9 @@ namespace ModsCommon.UI
     public abstract class HeaderPopupButton<PopupType> : BaseHeaderPopupButton<PopupType>
         where PopupType : PopupPanel
     {
-        protected override void OnOpenPopup()
+        protected override void OnPopupOpened()
         {
-            base.OnOpenPopup();
+            base.OnPopupOpened();
             Popup.Init();
         }
     }
@@ -168,9 +249,9 @@ namespace ModsCommon.UI
             Items = items;
         }
 
-        protected override void OnOpenPopup()
+        protected override void OnPopupOpened()
         {
-            base.OnOpenPopup();
+            base.OnPopupOpened();
 
             Popup.atlas = CommonTextures.Atlas;
             Popup.normalBgSprite = CommonTextures.FieldHovered;

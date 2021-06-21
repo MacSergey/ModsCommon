@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -73,46 +74,49 @@ namespace ModsCommon.UI
         private void DeleteClick(UIComponent component, UIMouseEventParameter eventParam) => OnDelete?.Invoke();
     }
 
-    public class BaseHeaderContent : CustomUIPanel
+    public abstract class BaseHeaderContent : CustomUIPanel
     {
+        private List<IHeaderButtonInfo> Infos { get; }
+        private List<IHeaderButtonInfo> MainInfos { get; set; }
+        private List<IHeaderButtonInfo> AdditionalInfos { get; set; }
+        private bool ShowAdditional => AdditionalInfos.Count > 0;
+
+        private BaseAdditionallyHeaderButton Additional { get; }
+
         public BaseHeaderContent()
         {
             autoLayoutDirection = LayoutDirection.Horizontal;
-            autoLayoutPadding = new RectOffset(0, Math.Max(5 - 2 * HeaderButton.IconPadding, 0), 0, 0);
+            autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+
+            Additional = AddUIComponent<BaseAdditionallyHeaderButton>();
+            Additional.tooltip = CommonLocalize.Panel_Additional;
+            Additional.SetIcon(CommonTextures.Atlas, CommonTextures.HeaderAdditional);
+            Additional.PopupOpenedEvent += OnPopupOpened;
+            Additional.PopupCloseEvent += OnPopupClose;
+
+            Infos = GetInfos().ToList();
+
+            Refresh();
         }
 
-        public ButtonType AddButton<ButtonType>(string sprite, string text, bool showText = false, MouseEventHandler onClick = null) where ButtonType : HeaderButton
-            => AddButton<ButtonType>(this, sprite, text, showText, onClick);
-        public ButtonType AddButton<ButtonType>(UIComponent parent, string sprite, string text, bool showText = false, MouseEventHandler onClick = null)
-            where ButtonType : HeaderButton
+        protected abstract IEnumerable<IHeaderButtonInfo> GetInfos();
+        private void OnPopupOpened(AdditionallyPopup popup)
         {
-            var button = parent.AddUIComponent<ButtonType>();
-            if (showText)
-                button.text = text ?? string.Empty;
-            else
-                button.tooltip = text;
-            button.SetIconSprite(sprite);
-
-            if (onClick != null)
-                button.eventClick += onClick;
-            return button;
+            foreach (var info in AdditionalInfos)
+            {
+                info.AddButton(popup.Content, true);
+                info.ClickedEvent += PopupClicked;
+            }
         }
-
-        protected override void OnComponentAdded(UIComponent child)
+        private void OnPopupClose(AdditionallyPopup popup)
         {
-            base.OnComponentAdded(child);
-            child.eventVisibilityChanged += ChildVisibilityChanged;
-            child.eventSizeChanged += ChildSizeChanged;
+            foreach (var info in AdditionalInfos)
+            {
+                info.RemoveButton();
+                info.ClickedEvent -= PopupClicked;
+            }
         }
-        protected override void OnComponentRemoved(UIComponent child)
-        {
-            base.OnComponentRemoved(child);
-            child.eventVisibilityChanged -= ChildVisibilityChanged;
-            child.eventSizeChanged -= ChildSizeChanged;
-        }
-
-        private void ChildVisibilityChanged(UIComponent component, bool value) => Refresh();
-        private void ChildSizeChanged(UIComponent component, Vector2 value) => Refresh();
+        private void PopupClicked(UIComponent component, UIMouseEventParameter eventParam) => Additional.ClosePopup();
 
         protected override void OnSizeChanged()
         {
@@ -121,6 +125,8 @@ namespace ModsCommon.UI
         }
         public virtual void Refresh()
         {
+            PlaceButtons();
+
             autoLayout = true;
             autoLayout = false;
             FitChildrenHorizontally();
@@ -128,77 +134,43 @@ namespace ModsCommon.UI
             foreach (var item in components)
                 item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
         }
+
+        private void PlaceButtons()
+        {
+            //var visibleButtons = Infos.Where(i => i.Visible).ToArray();
+
+            //var mainCount = visibleButtons.Count(i => i.State == HeaderButtonState.Main);
+            //var additionalCount = visibleButtons.Count(i => i.State == HeaderButtonState.Additional);
+            //var autoCount = visibleButtons.Count(i => i.State == HeaderButtonState.Auto);
+            //var maxButtons = maximumSize.x > 0 ? ((int)maximumSize.x / HeaderButton.IconSize) : int.MaxValue;
+
+            //var needAdditional = additionalCount > 0 || (autoCount > 0 && (mainCount + autoCount) > maxButtons);
+
+            MainInfos = Infos.Where(i => i.Visible && i.State == HeaderButtonState.Main).ToList();
+            AdditionalInfos = Infos.Where(i => i.Visible && i.State == HeaderButtonState.Additional).ToList();
+
+            foreach (var info in Infos)
+                info.RemoveButton();
+
+            foreach (var info in MainInfos)
+                info.AddButton(this, false);
+
+            Additional.isVisible = ShowAdditional;
+            Additional.zOrder = int.MaxValue; 
+        }
     }
 
-    public abstract class BasePanelHeaderContent<TypeButton, TypeAdditionallyButton> : BaseHeaderContent
-        where TypeButton : HeaderButton
-        where TypeAdditionallyButton : BaseAdditionallyHeaderButton
-    {
-        private TypeAdditionallyButton Additionally { get; }
-
-        public BasePanelHeaderContent()
-        {
-            AddButtons();
-            if (GetAdditionally() is TypeAdditionallyButton additional)
-            {
-                Additionally = additional;
-                Additionally.OpenPopupEvent += OnAdditionallyPopup;
-            }
-        }
-        private void OnAdditionallyPopup(AdditionallyPopup popup)
-        {
-            AddAdditionallyButtons(popup.Content);
-            var buttons = popup.Content.components.OfType<TypeButton>().ToArray();
-            foreach (var button in buttons)
-            {
-                button.autoSize = true;
-                button.autoSize = false;
-            }
-
-            popup.Width = buttons.Max(b => b.width);
-        }
-
-        protected virtual void AddButtons() { }
-        protected virtual void AddAdditionallyButtons(UIComponent parent) { }
-        protected virtual TypeAdditionallyButton GetAdditionally() => null;
-
-        protected TypeButton AddButton(string sprite, string text, Shortcut shortcut) => AddButton<TypeButton>(sprite, GetText(text, shortcut), onClick: (_, _) => shortcut.Press());
-        protected TypeButton AddButton(string sprite, string text, MouseEventHandler onClick) => AddButton<TypeButton>(sprite, text, onClick: onClick);
-
-        protected TypeButton AddPopupButton(UIComponent parent, string sprite, string text, Shortcut shortcut)
-        {
-            return AddButton<TypeButton>(parent, sprite, GetText(text, shortcut), true, action);
-
-            void action(UIComponent component, UIMouseEventParameter eventParam)
-            {
-                Additionally.ClosePopup();
-                shortcut.Press();
-            }
-        }
-        protected TypeButton AddPopupButton(UIComponent parent, string sprite, string text, MouseEventHandler onClick)
-        {
-            return AddButton<TypeButton>(parent, sprite, text, true, action);
-
-            void action(UIComponent component, UIMouseEventParameter eventParam)
-            {
-                Additionally.ClosePopup();
-                onClick(component, eventParam);
-            }
-        }
-
-        protected string GetText(string text, Shortcut shortcut) => $"{text} ({shortcut})";
-    }
     public class AdditionallyPopup : PopupPanel
     {
         protected override Color32 Background => new Color32(64, 64, 64, 255);
     }
-    public abstract class BasePanelHeaderButton : HeaderButton
+    public class BasePanelHeaderButton : HeaderButton
     {
         protected override Color32 HoveredColor => new Color32(112, 112, 112, 255);
         protected override Color32 PressedColor => new Color32(144, 144, 144, 255);
         protected override Color32 PressedIconColor => Color.white;
     }
-    public abstract class BaseAdditionallyHeaderButton : HeaderPopupButton<AdditionallyPopup>
+    public class BaseAdditionallyHeaderButton : HeaderPopupButton<AdditionallyPopup>
     {
         protected override Color32 HoveredColor => new Color32(112, 112, 112, 255);
         protected override Color32 PressedColor => new Color32(144, 144, 144, 255);

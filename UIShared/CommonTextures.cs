@@ -53,6 +53,8 @@ namespace ModsCommon.Utilities
         public static string DeleteHover { get; } = nameof(DeleteHover);
         public static string DeletePressed { get; } = nameof(DeletePressed);
 
+        public static string HeaderAdditional { get; } = nameof(HeaderAdditional);
+
         private static Dictionary<string, TextureHelper.SpriteParamsGetter> Files { get; } = new Dictionary<string, TextureHelper.SpriteParamsGetter>
         {
             {nameof(CloseButton), CloseButton},
@@ -64,6 +66,7 @@ namespace ModsCommon.Utilities
             {nameof(Resize), Resize},
             {nameof(TabButton), TabButton},
             {nameof(TextFieldPanel), TextFieldPanel},
+            {nameof(CommonHeaderButtons), CommonHeaderButtons},
         };
 
         static CommonTextures()
@@ -90,5 +93,6 @@ namespace ModsCommon.Utilities
         private static UITextureAtlas.SpriteInfo[] Resize(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, ResizeSprite).ToArray();
         private static UITextureAtlas.SpriteInfo[] HeaderHover(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 4), 0, HeaderHoverSprite).ToArray();
         private static UITextureAtlas.SpriteInfo[] CloseButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 32, 32, DeleteNormal, DeleteHover, DeletePressed).ToArray();
+        private static UITextureAtlas.SpriteInfo[] CommonHeaderButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 25, 25, new RectOffset(4, 4, 4, 4), 2, HeaderAdditional).ToArray();
     }
 }
