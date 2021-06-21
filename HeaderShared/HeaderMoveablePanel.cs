@@ -73,10 +73,10 @@ namespace ModsCommon.UI
             base.OnSizeChanged();
             Refresh();
         }
-        public virtual void Refresh()
+        public override void Refresh()
         {
             Content.height = height;
-            Content.Refresh();
+            base.Refresh();
 
             Caption.width = width - Content.width - 20;
             Content.relativePosition = new Vector2(Caption.width - 5 + 20, (height - Content.height) / 2);

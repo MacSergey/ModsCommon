@@ -17,7 +17,7 @@ namespace ModsCommon.UI
             set
             {
                 _width = value;
-                Init();
+                Refresh();
             }
         }
         public Vector2 MaxSize
@@ -51,15 +51,11 @@ namespace ModsCommon.UI
             Content.relativePosition = new Vector2(Padding, Padding);
             this.AddScrollbar(Content);
         }
-        public void Init()
-        {
-            FitContentChildren();
-            ContentSizeChanged();
-        }
-        private void FitContentChildren()
+        public void Refresh()
         {
             Content.FitChildrenVertically();
             Content.width = Content.verticalScrollbar.isVisible ? Width - Content.verticalScrollbar.width : Width;
+            ContentSizeChanged();
         }
         private void ContentSizeChanged(UIComponent component = null, Vector2 value = default)
         {

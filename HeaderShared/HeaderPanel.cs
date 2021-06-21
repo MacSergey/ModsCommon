@@ -19,10 +19,20 @@ namespace ModsCommon.UI
         {
             AddContent();
         }
+        public override void Init()
+        {
+            base.Init();
+            Refresh();
+        }
         private void AddContent()
         {
             Content = AddUIComponent<TypeContent>();
             Content.relativePosition = new Vector2(0, 0);
+        }
+
+        public virtual void Refresh()
+        {
+            Content.Refresh();
         }
     }
     public abstract class BaseDeletableHeaderPanel<TypeContent> : BaseHeaderPanel<TypeContent>
@@ -72,111 +82,5 @@ namespace ModsCommon.UI
             DeleteButton.eventClick += DeleteClick;
         }
         private void DeleteClick(UIComponent component, UIMouseEventParameter eventParam) => OnDelete?.Invoke();
-    }
-
-    public class BaseHeaderContent : CustomUIPanel
-    {
-        private List<IHeaderButtonInfo> Infos { get; } = new List<IHeaderButtonInfo>();
-        private List<IHeaderButtonInfo> MainInfos { get; set; }
-        private List<IHeaderButtonInfo> AdditionalInfos { get; set; }
-        private bool ShowAdditional => AdditionalInfos.Count > 0;
-
-        private BaseAdditionallyHeaderButton Additional { get; }
-
-        public BaseHeaderContent()
-        {
-            autoLayoutDirection = LayoutDirection.Horizontal;
-            autoLayoutPadding = new RectOffset(0, 0, 0, 0);
-
-            Additional = AddUIComponent<BaseAdditionallyHeaderButton>();
-            Additional.tooltip = CommonLocalize.Panel_Additional;
-            Additional.SetIcon(CommonTextures.Atlas, CommonTextures.HeaderAdditional);
-            Additional.PopupOpenedEvent += OnPopupOpened;
-            Additional.PopupCloseEvent += OnPopupClose;
-
-            Refresh();
-        }
-
-        public void AddButton(IHeaderButtonInfo info, bool refresh = false)
-        {
-            Infos.Add(info);
-            if (refresh)
-                Refresh();
-        }
-        private void OnPopupOpened(AdditionallyPopup popup)
-        {
-            foreach (var info in AdditionalInfos)
-            {
-                info.AddButton(popup.Content, true);
-                info.ClickedEvent += PopupClicked;
-            }
-        }
-        private void OnPopupClose(AdditionallyPopup popup)
-        {
-            foreach (var info in AdditionalInfos)
-            {
-                info.RemoveButton();
-                info.ClickedEvent -= PopupClicked;
-            }
-        }
-        private void PopupClicked(UIComponent component, UIMouseEventParameter eventParam) => Additional.ClosePopup();
-
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
-            Refresh();
-        }
-        public virtual void Refresh()
-        {
-            PlaceButtons();
-
-            autoLayout = true;
-            autoLayout = false;
-            FitChildrenHorizontally();
-
-            foreach (var item in components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
-        }
-
-        private void PlaceButtons()
-        {
-            //var visibleButtons = Infos.Where(i => i.Visible).ToArray();
-
-            //var mainCount = visibleButtons.Count(i => i.State == HeaderButtonState.Main);
-            //var additionalCount = visibleButtons.Count(i => i.State == HeaderButtonState.Additional);
-            //var autoCount = visibleButtons.Count(i => i.State == HeaderButtonState.Auto);
-            //var maxButtons = maximumSize.x > 0 ? ((int)maximumSize.x / HeaderButton.IconSize) : int.MaxValue;
-
-            //var needAdditional = additionalCount > 0 || (autoCount > 0 && (mainCount + autoCount) > maxButtons);
-
-            MainInfos = Infos.Where(i => i.Visible && i.State == HeaderButtonState.Main).ToList();
-            AdditionalInfos = Infos.Where(i => i.Visible && i.State == HeaderButtonState.Additional).ToList();
-
-            foreach (var info in Infos)
-                info.RemoveButton();
-
-            foreach (var info in MainInfos)
-                info.AddButton(this, false);
-
-            Additional.isVisible = ShowAdditional;
-            Additional.zOrder = int.MaxValue; 
-        }
-    }
-
-    public class AdditionallyPopup : PopupPanel
-    {
-        protected override Color32 Background => new Color32(64, 64, 64, 255);
-    }
-    public class BasePanelHeaderButton : HeaderButton
-    {
-        protected override Color32 HoveredColor => new Color32(112, 112, 112, 255);
-        protected override Color32 PressedColor => new Color32(144, 144, 144, 255);
-        protected override Color32 PressedIconColor => Color.white;
-    }
-    public class BaseAdditionallyHeaderButton : HeaderPopupButton<AdditionallyPopup>
-    {
-        protected override Color32 HoveredColor => new Color32(112, 112, 112, 255);
-        protected override Color32 PressedColor => new Color32(144, 144, 144, 255);
-        protected override Color32 PressedIconColor => Color.white;
     }
 }
