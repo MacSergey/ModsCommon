@@ -82,7 +82,7 @@ namespace ModsCommon.UI
         public TypeButton Button { get; }
 
         public HeaderButtonState State { get; }
-        public string Text { get; }
+        public Func<string> TextGetter { get; }
         private Action OnClick { get; }
 
         public bool Visible { get; set; } = true;
@@ -91,18 +91,18 @@ namespace ModsCommon.UI
             get => Button.isEnabled;
             set => Button.isEnabled = value;
         }
-
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null)
+        private HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, Func<string> textGetter, Action onClick)
         {
             State = state;
-            Text = text;
+            TextGetter = textGetter;
             OnClick = onClick;
 
             Button = new GameObject(typeof(TypeButton).Name).AddComponent<TypeButton>();
             Button.SetIcon(atlas, sprite);
             Button.eventClicked += ButtonClicked;
         }
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(state, atlas, sprite, GetText(text, shortcut), shortcut.Press) { }
+        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null) : this(state, atlas, sprite, () => text, onClick) { }
+        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(state, atlas, sprite, () => GetText(text, shortcut), shortcut.Press) { }
 
         public void AddButton(UIComponent parent, bool showText)
         {
@@ -111,8 +111,8 @@ namespace ModsCommon.UI
             parent.AttachUIComponent(Button.gameObject);
             Button.transform.parent = parent.cachedTransform;
 
-            Button.text = showText ? Text ?? string.Empty : string.Empty;
-            Button.tooltip = showText ? string.Empty : Text;
+            Button.text = showText ? TextGetter() : string.Empty;
+            Button.tooltip = showText ? string.Empty : TextGetter();
         }
         public void RemoveButton()
         {
@@ -122,6 +122,6 @@ namespace ModsCommon.UI
 
         private void ButtonClicked(UIComponent component, UIMouseEventParameter eventParam) => OnClick?.Invoke();
 
-        protected static string GetText(string text, Shortcut shortcut) => $"{text} ({shortcut})";
+        protected static string GetText(string text, Shortcut shortcut) => shortcut.NotSet ? text : $"{text} ({shortcut})";
     }
 }

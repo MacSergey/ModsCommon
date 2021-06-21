@@ -10,6 +10,7 @@ namespace ModsCommon.Utilities
         protected string LabelKey { get; }
         public SavedInputKey InputKey { get; }
         private Action Action { get; }
+        public bool NotSet => InputKey.Key == KeyCode.None;
         public Shortcut(string fileName, string name, string labelKey, InputKey key, Action action = null)
         {
             LabelKey = labelKey;
