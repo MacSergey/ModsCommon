@@ -272,8 +272,14 @@ namespace ModsCommon
         private Shortcut LastShortcut { get; set; }
         protected override void OnToolGUI(Event e)
         {
-            if ((LastShortcut = Shortcuts.FirstOrDefault(s => s != LastShortcut && s.Press(e))) != null)
+            if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is not Shortcut shortcut)
+                LastShortcut = null;
+            else if(shortcut != LastShortcut)
+            {
+                shortcut.Press(e);
+                LastShortcut = shortcut;
                 return;
+            }
 
             if (Mode == null)
                 return;
