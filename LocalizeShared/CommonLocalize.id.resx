@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
     <value>Konflik mod terdeteksi.</value>
@@ -136,13 +136,13 @@
     <value>Dapatkan</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Kehilangan ketergantungan terdeteksi.</value>
+    <value>Ketiadaan ketergantungan terdeteksi.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Kehilangan ketergantungan dan konflik mod terdeteksi.</value>
+    <value>Ketiadaan ketergantungan dan konflik mod terdeteksi.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Untuk lanjut menggunakan {0}, diharuskan untuk membenarkan isu-isu ini, jika tidak, mod akan dimatikan.</value>
+    <value>Untuk lanjut menggunakan {0}, diharuskan untuk membenarkan isu-isu ini. Jika tidak, mod akan dimatikan.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
     <value>Semua isu telah diperbaiki, {0} sudah dapat diaktifkan.</value>
@@ -189,7 +189,7 @@ Shift X10, Ctrl X0,1</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod dimuat dengan kendala.
-Tidak direkomendasikan untuk menggunakan mod ini dalam keadaan ini karena dapat menimbulkan tingkah laku yang tidak dapat diprediksi.
+Tidak dianjurkan untuk menggunakan mod dalam keadaan ini karena dapat menimbulkan tingkah laku yang tidak dapat diprediksi.
 Mohon restart game ini.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
@@ -205,7 +205,7 @@ Mohon restart game ini.</value>
     <value>Inggris Amerika</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Inggris UK</value>
+    <value>Inggris Britania Raya</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
     <value>Spanyol</value>
@@ -215,6 +215,9 @@ Mohon restart game ini.</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>Perancis</value>
+  </data>
+  <data name="Mod_Locale_id" xml:space="preserve">
+    <value>Bahasa Indonesia</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
     <value>Italia</value>
@@ -256,7 +259,7 @@ Mohon restart game ini.</value>
     <value>Tambahan</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Batalkan</value>
+    <value>Batal</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Catatan perubahan</value>
