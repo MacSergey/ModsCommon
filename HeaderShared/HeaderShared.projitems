@@ -10,8 +10,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)HeaderButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HeaderMoveablePanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HeaderPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HeaderPopup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeaderPopupButton.cs" />
   </ItemGroup>
 </Project>

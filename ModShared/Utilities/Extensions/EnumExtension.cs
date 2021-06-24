@@ -33,10 +33,20 @@ namespace ModsCommon.Utilities
 
         public static int ToInt<T>(this T value) where T : Enum => (int)(object)value;
         public static T ToEnum<T>(this int value) where T : Enum => (T)(object)value;
+        public static long ToLong<T>(this T value) where T : Enum => (long)(object)value;
+        public static T ToEnum<T>(this long value) where T : Enum => (T)(object)value;
+        public static ulong ToULong<T>(this T value) where T : Enum => (ulong)(object)value;
+        public static T ToEnum<T>(this ulong value) where T : Enum => (T)(object)value;
+
         public static ToT ToEnum<ToT, FromT>(this FromT item) where ToT : Enum where FromT : Enum => (ToT)(object)item;
 
         public static bool IsSet<T>(this T flags, T flag) where T : Enum => (flags.ToInt() & flag.ToInt()) == flag.ToInt();
 
+        public static bool CheckFlags<T>(this T value, T required, T forbidden)
+            where T : Enum, IConvertible
+        {
+            return (value.ToInt() & (required.ToInt() | forbidden.ToInt())) == required.ToInt();
+        }
         public static bool CheckFlags(this NetNode.Flags value, NetNode.Flags required, NetNode.Flags forbidden = 0) => (value & (required | forbidden)) == required;
         public static bool CheckFlags(this NetSegment.Flags value, NetSegment.Flags required, NetSegment.Flags forbidden = 0) => (value & (required | forbidden)) == required;
     }

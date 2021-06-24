@@ -1,4 +1,5 @@
 ﻿using CitiesHarmony.API;
+using ColossalFramework;
 using ColossalFramework.UI;
 using HarmonyLib;
 using System;
@@ -26,41 +27,29 @@ namespace ModsCommon
             where TypeMod : ICustomMod
             where TypeTool : BaseTool<TypeMod, TypeTool>
         {
-            var instructionList = instructions.ToList();
+            var returnLabel = generator.DefineLabel();
+            var elseLabel = generator.DefineLabel();
+            var getExist = AccessTools.PropertyGetter(typeof(Singleton<InfoManager>), nameof(Singleton<InfoManager>.exists));
 
-            var elseIndex = instructionList.FindLastIndex(i => i.opcode == OpCodes.Brfalse);
-            var elseLabel = (Label)instructionList[elseIndex].operand;
-
-            for (var i = elseIndex + 1; i < instructionList.Count; i += 1)
+            foreach (var instruction in instructions)
             {
-                if (instructionList[i].labels.Contains(elseLabel))
+                if (instruction.opcode == OpCodes.Call && instruction.operand == getExist)
                 {
-                    var elseInstruction = instructionList[i];
-                    var oldElseLabels = elseInstruction.labels;
-                    var newElseLabel = generator.DefineLabel();
-                    elseInstruction.labels = new List<Label>() { newElseLabel };
-                    var returnLabel = generator.DefineLabel();
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(SingletonTool<TypeTool>), nameof(SingletonTool<TypeTool>.Instance))) { labels = instruction.labels };
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(TypeTool), nameof(BaseTool<TypeMod, TypeTool>.enabled)));
+                    yield return new CodeInstruction(OpCodes.Brfalse, elseLabel);
 
-                    var newInstructions = new List<CodeInstruction>()
-                    {
-                        new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(SingletonTool<TypeTool>), nameof(SingletonTool<TypeTool>.Instance))),
-                        new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(TypeTool), nameof(BaseTool<TypeMod, TypeTool>.enabled))),
-                        new CodeInstruction(OpCodes.Brfalse, newElseLabel),
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(SingletonTool<TypeTool>), nameof(SingletonTool<TypeTool>.Instance)));
+                    yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(TypeTool), nameof(BaseTool<TypeMod, TypeTool>.Escape)));
+                    yield return new CodeInstruction(OpCodes.Br, returnLabel);
 
-                        new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(SingletonTool<TypeTool>), nameof(SingletonTool<TypeTool>.Instance))),
-                        new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(TypeTool), nameof(BaseTool<TypeMod, TypeTool>.Escape))),
-                        new CodeInstruction(OpCodes.Br, returnLabel),
-                    };
-
-                    newInstructions[0].labels = oldElseLabels;
-                    instructionList.InsertRange(i, newInstructions);
-                    instructionList.Last().labels.Add(returnLabel);
-
-                    break;
+                    instruction.labels = new List<Label>() { elseLabel };
                 }
-            }
+                else if (instruction.opcode == OpCodes.Ret)
+                    instruction.labels.Add(returnLabel);
 
-            return instructionList;
+                yield return instruction;
+            }
         }
 
         public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeMod, TypeButton>(string templateName, ref OptionPanelBase __result)

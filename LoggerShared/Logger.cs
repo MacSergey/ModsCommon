@@ -6,28 +6,31 @@ namespace ModsCommon
     {
         public void Debug(string message);
 
-        public void Warning(string message, Exception error = null);
-        public void Warning(Exception error);
-
         public void Error(string message, Exception error = null);
         public void Error(Exception error);
     }
     public class Logger : ILogger
     {
+        private static string DebugFormat => "[{0}] {1}";
+        private static string ErrorFormat => "[{0}] {1}\n{2}\n{3}";
+        private static string ExceptionFormat => "[{0}] {1}\n{2}";
+
         private string Name { get; }
-        public Logger(string name) => Name = name;
+        private UnityEngine.ILogHandler Handle { get; } = UnityEngine.Debug.logger.logHandler;
+        public Logger(string name)
+        {
+            Name = name;
+        }
 
-        public void Debug(string message) => Log(UnityEngine.Debug.Log, message);
+        public void Debug(string message) => Handle.LogFormat(UnityEngine.LogType.Log, null, DebugFormat, Name, message);
 
-        public void Warning(string message, Exception error = null) => Log(UnityEngine.Debug.LogWarning, GetMessage(message, error));
-        public void Warning(Exception error) => Log(UnityEngine.Debug.LogWarning, GetMessage(error));
-
-        public void Error(string message, Exception error = null) => Log(UnityEngine.Debug.LogError, GetMessage(message, error));
-        public void Error(Exception error) => Log(UnityEngine.Debug.LogError, GetMessage(error));
-
-        private void Log(Action<string> logFunc, string message) => logFunc($"[{Name}] {message}");
-
-        private string GetMessage(string message, Exception error) => error == null ? message : $"{message}\n{GetMessage(error)}";
-        private string GetMessage(Exception error) => $"{error.Message}\n{error.StackTrace}";
+        public void Error(string message, Exception error = null)
+        {
+            if (error != null)
+                Handle.LogFormat(UnityEngine.LogType.Log, null, ErrorFormat, Name, message, error.Message, error.StackTrace);
+            else
+                Handle.LogFormat(UnityEngine.LogType.Log, null, DebugFormat, Name, message);
+        }
+        public void Error(Exception error) => Handle.LogFormat(UnityEngine.LogType.Log, null, ExceptionFormat, Name, error.Message, error.StackTrace);
     }
 }

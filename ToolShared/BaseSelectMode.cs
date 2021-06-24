@@ -23,10 +23,25 @@ namespace ModsCommon
         protected virtual bool SelectNodes { get; } = true;
         protected virtual bool SelectSegments { get; } = true;
 
+        bool _underground;
+        protected bool Underground
+        {
+            get => _underground;
+            set
+            {
+                if (value != _underground)
+                {
+                    _underground = value;
+                    Singleton<InfoManager>.instance.SetCurrentMode(_underground ? InfoManager.InfoMode.Underground : InfoManager.InfoMode.None, InfoManager.SubInfoMode.Default);
+                }
+            }
+        }
+
         protected override void Reset(IToolMode prevMode)
         {
             HoverNode = null;
             HoverSegment = null;
+            Underground = false;
         }
 
         public override void OnToolUpdate()
@@ -146,20 +161,27 @@ namespace ModsCommon
                 return false;
             }
         }
-        protected virtual bool IsValidNode(ushort nodeId) => true;
+        protected virtual bool IsValidNode(ushort nodeId) => nodeId.GetNode().m_flags.IsSet(NetNode.Flags.Underground) ^ !Underground;
         protected virtual bool IsValidSegment(ushort segmentId) => true;
 
         protected virtual bool CheckSegment(ushort segmentId)
         {
-            ref var segment = ref segmentId.GetSegment();
-            if ((segment.m_flags & NetSegment.Flags.Created) == 0)
+            var segment = segmentId.GetSegment();
+
+            if (!segment.m_flags.IsSet(NetSegment.Flags.Created))
                 return false;
 
-            var itemClass = segment.Info.GetConnectionClass();
-            if ((itemClass.m_layer & ItemClass.Layer.Default) == 0)
+            var startUndeground = segment.m_startNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
+            var endUndeground = segment.m_endNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
+
+            if (Underground && !startUndeground && !endUndeground)
                 return false;
 
-            return CheckItemClass(itemClass);
+            if (!Underground && startUndeground && endUndeground)
+                return false;
+
+            else
+                return CheckItemClass(segment.Info.GetConnectionClass());
         }
         protected virtual bool CheckItemClass(ItemClass itemClass) => true;
 
@@ -168,9 +190,9 @@ namespace ModsCommon
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
         {
             if (IsHoverNode)
-                HoverNode.Render(new OverlayData(cameraInfo) { Color = NodeColor });
+                HoverNode.Render(new OverlayData(cameraInfo) { Color = NodeColor, RenderLimit = Underground });
             else if (IsHoverSegment)
-                HoverSegment.Render(new OverlayData(cameraInfo) { Color = SegmentColor });
+                HoverSegment.Render(new OverlayData(cameraInfo) { Color = SegmentColor, RenderLimit = Underground });
         }
     }
 }

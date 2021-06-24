@@ -125,7 +125,11 @@ namespace ModsCommon
             cursorInfoLabel.text = string.Empty;
             extraInfoLabel.isVisible = false;
             extraInfoLabel.text = string.Empty;
+
+            OnReset();
         }
+        protected virtual void OnReset() { }
+
         public void Toggle()
         {
             if (ToolsModifierControl.toolController.CurrentTool == this)
@@ -170,16 +174,17 @@ namespace ModsCommon
         #region UPDATE
         protected override void OnToolUpdate()
         {
+            if (!CheckInfoMode(Singleton<InfoManager>.instance.NextMode, Singleton<InfoManager>.instance.NextSubMode))
+            {
+                Disable(false);
+                return;
+            }
+
             if (NextMode != null)
             {
                 var nextMode = NextMode;
                 NextMode = null;
                 SetModeNow(nextMode);
-            }
-            if (Singleton<InfoManager>.instance.NextMode != InfoManager.InfoMode.None)
-            {
-                Disable(false);
-                return;
             }
 
             var uiView = UIView.GetAView();
@@ -202,6 +207,7 @@ namespace ModsCommon
 
             base.OnToolUpdate();
         }
+        protected virtual bool CheckInfoMode(InfoManager.InfoMode mode, InfoManager.SubInfoMode subInfo) => mode == InfoManager.InfoMode.None && subInfo == InfoManager.SubInfoMode.Default;
 
         #endregion
 
@@ -266,8 +272,14 @@ namespace ModsCommon
         private Shortcut LastShortcut { get; set; }
         protected override void OnToolGUI(Event e)
         {
-            if ((LastShortcut = Shortcuts.FirstOrDefault(s => s != LastShortcut && s.Press(e))) != null)
+            if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is not Shortcut shortcut)
+                LastShortcut = null;
+            else if(shortcut != LastShortcut)
+            {
+                shortcut.Press(e);
+                LastShortcut = shortcut;
                 return;
+            }
 
             if (Mode == null)
                 return;

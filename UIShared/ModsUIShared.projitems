@@ -33,4 +33,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\TabButton.tga" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\TextFieldPanel.tga" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CommonHeaderButtons.png" />
+  </ItemGroup>
 </Project>

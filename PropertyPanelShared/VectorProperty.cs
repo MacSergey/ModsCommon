@@ -12,7 +12,7 @@ namespace ModsCommon.UI
         public event Action<TypeVector> OnValueChanged;
 
         bool IReusable.InCache { get; set; }
-        protected abstract int Dimension { get; }
+        protected abstract uint Dimension { get; }
 
         TypeVector _value;
         public TypeVector Value
@@ -48,10 +48,13 @@ namespace ModsCommon.UI
 
         public void Init(params int[] indexes)
         {
-            foreach(var index in indexes)
+            for(var i = 0; i < indexes.Length; i += 1)
             {
-                Labels[index].isVisible = true;
-                Fields[index].isVisible = true;
+                Labels[indexes[i]].isVisible = true;
+                Fields[indexes[i]].isVisible = true;
+
+                Labels[indexes[i]].zOrder = i * 2;
+                Fields[indexes[i]].zOrder = i * 2 + 1;
             }
 
             base.Init();
@@ -100,7 +103,7 @@ namespace ModsCommon.UI
 
     public class Vector2PropertyPanel : BaseVectorPropertyPanel<Vector2>
     {
-        protected override int Dimension => 2;
+        protected override uint Dimension => 2;
 
         protected override float Get(ref Vector2 vector, int index) => vector[index];
         protected override void Set(ref Vector2 vector, int index, float value) => vector[index] = value;
@@ -113,7 +116,7 @@ namespace ModsCommon.UI
     }
     public class Vector3PropertyPanel : BaseVectorPropertyPanel<Vector3>
     {
-        protected override int Dimension => 3;
+        protected override uint Dimension => 3;
 
         protected override float Get(ref Vector3 vector, int index) => vector[index];
         protected override void Set(ref Vector3 vector, int index, float value) => vector[index] = value;
@@ -127,7 +130,7 @@ namespace ModsCommon.UI
     }
     public class Vector4PropertyPanel : BaseVectorPropertyPanel<Vector4>
     {
-        protected override int Dimension => 4;
+        protected override uint Dimension => 4;
 
         protected override float Get(ref Vector4 vector, int index) => vector[index];
         protected override void Set(ref Vector4 vector, int index, float value) => vector[index] = value;

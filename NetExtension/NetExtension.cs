@@ -139,5 +139,27 @@ namespace ModsCommon.Utilities
                 }
             }
         }
+
+        public static IEnumerable<ushort> NextNodes(this ushort nodeId, ushort segmentId, bool includeEnds = false, ushort maxCount = ushort.MaxValue)
+        {
+            var info = segmentId.GetSegment().Info;
+            var nextSegmetId = segmentId;
+            var nextNodeId = nextSegmetId.GetSegment().GetOtherNode(nodeId);
+            var nodeSegments = nextNodeId.GetNode().SegmentIds().ToArray();
+            var count = 0;
+
+            while (nodeSegments.Length == 2 && nodeSegments.All(s => s.GetSegment().Info == info) && count < maxCount)
+            {
+                yield return nextNodeId;
+
+                nextSegmetId = nextNodeId.GetNode().SegmentIds().FirstOrDefault(s => s != nextSegmetId);
+                nextNodeId = nextSegmetId.GetSegment().GetOtherNode(nextNodeId);
+                nodeSegments = nextNodeId.GetNode().SegmentIds().ToArray();
+
+                count += 1;
+            }
+            if (includeEnds && count < maxCount)
+                yield return nextNodeId;
+        }
     }
 }
