@@ -33,7 +33,8 @@ namespace ModsCommon.UI
             IsEven = false;
             EnableControl = true;
         }
-        public virtual void Init(float? height = null)
+        public virtual void Init() => Init(null);
+        protected virtual void Init(float? height)
         {
             size = new Vector2(GetWidth(), height ?? DefaultHeight);
         }
@@ -94,7 +95,7 @@ namespace ModsCommon.UI
             Content = AddUIComponent<ContentPanel>();
         }
 
-        public override void Init(float? height = null)
+        protected override void Init(float? height)
         {
             base.Init(height);
             Refresh();

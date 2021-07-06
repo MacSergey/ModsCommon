@@ -33,7 +33,7 @@ namespace ModsCommon.UI
             Button.isEnabled = EnableControl;
             Button.eventClick += ButtonClick;
         }
-        public override void Init(float? height = null)
+        protected override void Init(float? height)
         {
             base.Init(height);
             SetSize();
@@ -81,7 +81,7 @@ namespace ModsCommon.UI
             }
         }
 
-        public override void Init(float? height = null)
+        protected override void Init(float? height)
         {
             base.Init(height);
             SetSize();

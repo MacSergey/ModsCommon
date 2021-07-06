@@ -48,7 +48,7 @@ namespace ModsCommon.UI
             OnDropDownStateChange?.Invoke(false);
         }
 
-        public override void Init(float? height = null)
+        protected override void Init(float? height)
         {
             base.Init(height);
             Selector.Clear();

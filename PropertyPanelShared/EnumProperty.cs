@@ -11,9 +11,11 @@ namespace ModsCommon.UI
         where UISelector : UIComponent, IUIOnceSelector<EnumType>
     {
         protected override bool AllowNull => false;
+
+        public override void Init() => Init(null);
         public void Init(Func<EnumType, bool> selector)
         {
-            base.Init();
+            base.Init(null);
             FillItems(selector);
         }
         protected virtual void FillItems(Func<EnumType, bool> selector)
@@ -46,9 +48,11 @@ namespace ModsCommon.UI
             get => Selector.SelectedObjects.GetEnum();
             set => Selector.SelectedObjects = value.GetEnumValues().ToList();
         }
+
+        public override void Init() => Init(null);
         public void Init(Func<EnumType, bool> selector)
         {
-            base.Init();
+            base.Init(null);
             FillItems(selector);
         }
         protected virtual void FillItems(Func<EnumType, bool> selector)
@@ -80,9 +84,11 @@ namespace ModsCommon.UI
     {
         protected override bool AllowNull => false;
         protected override bool IsEqual(bool first, bool second) => first == second;
+
+        public override void Init() => Init(CommonLocalize.MessageBox_No, CommonLocalize.MessageBox_Yes);
         public void Init(string falseLabel, string trueLabel, bool invert = true)
         {
-            base.Init();
+            base.Init(null);
 
             Selector.StopLayout();
             if (invert)
@@ -104,9 +110,11 @@ namespace ModsCommon.UI
     {
         protected override bool AllowNull => false;
         protected override bool IsEqual(int first, int second) => first == second;
+
+        public override void Init() => Init(2);
         public void Init(int count)
         {
-            base.Init();
+            base.Init(null);
 
             Selector.StopLayout();
             for (var i = 1; i <= count; i += 1)
