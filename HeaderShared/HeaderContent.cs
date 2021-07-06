@@ -71,11 +71,12 @@ namespace ModsCommon.UI
         }
         private void PopupClicked(UIComponent component, UIMouseEventParameter eventParam) => Additional.ClosePopup();
 
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
-            Refresh();
-        }
+        //Seem it leads to stack overflow and not needed.
+        //protected override void OnSizeChanged()
+        //{
+        //    base.OnSizeChanged();
+        //    Refresh();
+        //}
         public virtual void Refresh()
         {
             PlaceButtons();
