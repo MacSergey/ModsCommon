@@ -28,13 +28,12 @@ namespace ModsCommon.UI
             IsEven = false;
         }
 
-        public virtual void Init() => Init(null);
         public virtual void DeInit()
         {
             IsEven = false;
             EnableControl = true;
         }
-        public void Init(float? height = null)
+        public virtual void Init(float? height = null)
         {
             size = new Vector2(GetWidth(), height ?? DefaultHeight);
         }
@@ -95,9 +94,9 @@ namespace ModsCommon.UI
             Content = AddUIComponent<ContentPanel>();
         }
 
-        public override void Init()
+        public override void Init(float? height = null)
         {
-            base.Init();
+            base.Init(height);
             Refresh();
         }
         public override void DeInit()

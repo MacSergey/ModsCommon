@@ -11,7 +11,6 @@ namespace ModsCommon.UI
         where UISelector : UIComponent, IUIOnceSelector<EnumType>
     {
         protected override bool AllowNull => false;
-        public override void Init() => Init(null);
         public void Init(Func<EnumType, bool> selector)
         {
             base.Init();
@@ -47,7 +46,6 @@ namespace ModsCommon.UI
             get => Selector.SelectedObjects.GetEnum();
             set => Selector.SelectedObjects = value.GetEnumValues().ToList();
         }
-        public override void Init() => Init(null);
         public void Init(Func<EnumType, bool> selector)
         {
             base.Init();
