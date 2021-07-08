@@ -203,6 +203,12 @@ namespace ModsCommon
             AddButton(group, CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
             AddButton(group, "Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
             AddButton(group, CommonLocalize.Settings_ChangeLog, ShowChangeLog);
+
+            if (SingletonMod<TypeMod>.Instance.NeedMonoDevelop)
+            {
+                var linuxGroup = helper.AddGroup(CommonLocalize.Settings_ForLinuxUsers);
+                AddButton(linuxGroup, CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
+            }
         }
         private void ShowChangeLog()
         {
