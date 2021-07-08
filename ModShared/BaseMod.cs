@@ -176,7 +176,7 @@ namespace ModsCommon
                     OnLoadError(out var shown);
                     ErrorShown = shown;
                 }
-                else if (BaseSettings<TypeMod>.LinuxWarning)
+                else if (NeedMonoDevelop && BaseSettings<TypeMod>.LinuxWarning)
                 {
                     ShowLinuxTip();
                     ErrorShown = true;
