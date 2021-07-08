@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace ModsCommon
 {
@@ -42,6 +43,10 @@ namespace ModsCommon
         protected abstract string IdRaw { get; }
         public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
         public abstract bool IsBeta { get; }
+
+
+        public bool NeedMonoDevelop => Application.platform == RuntimePlatform.LinuxPlayer && NeedMonoDevelopImpl;
+        protected virtual bool NeedMonoDevelopImpl => false;
 
         protected virtual List<BaseDependencyInfo> DependencyInfos
         {
@@ -127,7 +132,7 @@ namespace ModsCommon
             }
             finally
             {
-                CheckLoadError(LoadError && !ErrorShown);
+                CheckLoadError();
             }
         }
         protected abstract void Enable();
@@ -159,12 +164,20 @@ namespace ModsCommon
             Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
         }
 
-        protected void CheckLoadError(bool condition)
+        protected void CheckLoadError()
         {
-            if (condition)
+            if (!ErrorShown)
             {
-                OnLoadError(out var shown);
-                ErrorShown = shown;
+                if (LoadError)
+                {
+                    OnLoadError(out var shown);
+                    ErrorShown = shown;
+                }
+                else if (BaseSettings<TypeMod>.LinuxWarning)
+                {
+                    ShowLinuxTip();
+                    ErrorShown = true;
+                }
             }
         }
         protected virtual void SetCulture(CultureInfo culture) { }

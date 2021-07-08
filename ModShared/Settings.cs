@@ -26,9 +26,7 @@ namespace ModsCommon
         public static SavedBool ShowWhatsNew { get; } = new SavedBool(nameof(ShowWhatsNew), SettingsFile, true, true);
         public static SavedBool ShowOnlyMajor { get; } = new SavedBool(nameof(ShowOnlyMajor), SettingsFile, false, true);
         public static SavedBool BetaWarning { get; } = new SavedBool(nameof(BetaWarning), SettingsFile, true, true);
-        public static SavedBool LinuxWarning { get; } = new SavedBool(nameof(LinuxWarning), SettingsFile, true, IsLinux);
-
-        public static bool IsLinux => Application.platform == RuntimePlatform.LinuxPlayer;
+        public static SavedBool LinuxWarning { get; } = new SavedBool(nameof(LinuxWarning), SettingsFile, true, SingletonMod<TypeMod>.Instance.NeedMonoDevelop);
 
         static BaseSettings()
         {
@@ -217,7 +215,7 @@ namespace ModsCommon
         protected void AddLinuxTip(UIAdvancedHelper helper)
         {
 #if !DEBUG
-            if (!IsLinux)
+            if (!SingletonMod<TypeMod>.Instance.NeedMonoDevelop)
                 return;
 #endif
             var group = helper.AddGroup(CommonLocalize.Settings_ForLinuxUsers);
