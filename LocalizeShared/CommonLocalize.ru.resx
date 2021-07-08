@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
     <value>Обнаружены конфликтующие моды.</value>
@@ -163,6 +163,12 @@ Shift X10, Ctrl X0.1</value>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="MessageBox_DontShowAgain" xml:space="preserve">
+    <value>Больше не показывать</value>
+  </data>
+  <data name="MessageBox_MoreInfo" xml:space="preserve">
+    <value>Больше информации</value>
+  </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>Нет</value>
   </data>
@@ -186,6 +192,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Это BETA версия, стабильная работа и отсутствие ошибок не гарантировано!</value>
+  </data>
+  <data name="Mod_LinuxWarning" xml:space="preserve">
+    <value>Linux версия Cities Skylines не имеет всех необходимых библиотек для корректной работы мода. Вы должны установить пакет "Mono Develop" в вашу систему. Если все работает без вылетов, просто проигнорируйте это сообщение.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Мод загрузился с ошибками.
@@ -264,6 +273,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Список изменений</value>
   </data>
+  <data name="Settings_ForLinuxUsers" xml:space="preserve">
+    <value>Для пользователей Linux</value>
+  </data>
   <data name="Settings_General" xml:space="preserve">
     <value>Основные</value>
   </data>
@@ -290,6 +302,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Показывать что нового</value>
+  </data>
+  <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
+    <value>Решение вылетов на Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Поддержка</value>

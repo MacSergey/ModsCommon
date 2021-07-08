@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
     <value>動作に競合するMODを検出しました。</value>
@@ -163,6 +163,12 @@
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
+  <data name="MessageBox_DontShowAgain" xml:space="preserve">
+    <value>Don't show again</value>
+  </data>
+  <data name="MessageBox_MoreInfo" xml:space="preserve">
+    <value>More info</value>
+  </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>No</value>
   </data>
@@ -188,6 +194,9 @@
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>これはβ版で、エラーが発生する可能性があります。安定性は保証されていません！</value>
+  </data>
+  <data name="Mod_LinuxWarning" xml:space="preserve">
+    <value>Linux version of Cities Skylines doesn't have all necessary libraries for correctly mod work. You need to install the "Mono Develop" package to your system. If all work without crashes, just ignore this message.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>MODのロード中に、エラーが発生しました。
@@ -266,6 +275,9 @@
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>更新履歴</value>
   </data>
+  <data name="Settings_ForLinuxUsers" xml:space="preserve">
+    <value>For Linux users</value>
+  </data>
   <data name="Settings_General" xml:space="preserve">
     <value>基本設定</value>
   </data>
@@ -292,6 +304,9 @@
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>新着情報を表示する</value>
+  </data>
+  <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
+    <value>Solve crash on Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>サポート</value>

@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
     <value>Detected сonflicting mods.</value>
@@ -162,6 +162,12 @@
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>İptal</value>
   </data>
+  <data name="MessageBox_DontShowAgain" xml:space="preserve">
+    <value>Don't show again</value>
+  </data>
+  <data name="MessageBox_MoreInfo" xml:space="preserve">
+    <value>More info</value>
+  </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>Hayır</value>
   </data>
@@ -185,6 +191,9 @@
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+  </data>
+  <data name="Mod_LinuxWarning" xml:space="preserve">
+    <value>Linux version of Cities Skylines doesn't have all necessary libraries for correctly mod work. You need to install the "Mono Develop" package to your system. If all work without crashes, just ignore this message.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod loaded with errors.
@@ -263,6 +272,9 @@ Restart the game.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Change log</value>
   </data>
+  <data name="Settings_ForLinuxUsers" xml:space="preserve">
+    <value>For Linux users</value>
+  </data>
   <data name="Settings_General" xml:space="preserve">
     <value>General</value>
   </data>
@@ -289,6 +301,9 @@ Restart the game.</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Show what's new</value>
+  </data>
+  <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
+    <value>Solve crash on Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Support</value>
