@@ -197,6 +197,24 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Don&apos;t show again.
+        /// </summary>
+        public static string MessageBox_DontShowAgain {
+            get {
+                return ResourceManager.GetString("MessageBox_DontShowAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на More info.
+        /// </summary>
+        public static string MessageBox_MoreInfo {
+            get {
+                return ResourceManager.GetString("MessageBox_MoreInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на No.
         /// </summary>
         public static string MessageBox_No {
@@ -265,6 +283,15 @@ namespace ModsCommon {
         public static string Mod_DescriptionBeta {
             get {
                 return ResourceManager.GetString("Mod_DescriptionBeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Linux version of Cities Skylines doesn&apos;t have all necessary libraries for correctly mod work. You need to install the &quot;Mono Develop&quot; package to your system. If all work without crashes, just ignore this message..
+        /// </summary>
+        public static string Mod_LinuxWarning {
+            get {
+                return ResourceManager.GetString("Mod_LinuxWarning", resourceCulture);
             }
         }
         
@@ -496,6 +523,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на For Linux users.
+        /// </summary>
+        public static string Settings_ForLinuxUsers {
+            get {
+                return ResourceManager.GetString("Settings_ForLinuxUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на General.
         /// </summary>
         public static string Settings_General {
@@ -573,6 +609,15 @@ namespace ModsCommon {
         public static string Settings_ShowWhatsNew {
             get {
                 return ResourceManager.GetString("Settings_ShowWhatsNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Solve crash on Linux.
+        /// </summary>
+        public static string Settings_SolveCrashOnLinux {
+            get {
+                return ResourceManager.GetString("Settings_SolveCrashOnLinux", resourceCulture);
             }
         }
         

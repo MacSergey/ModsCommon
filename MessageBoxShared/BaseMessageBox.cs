@@ -60,9 +60,10 @@ namespace ModsCommon.UI
         public event Action OnCloseClick;
         public event Action OnClose;
 
-        public static float DefaultWidth => 573f;
-        public static float DefaultHeight => 200f;
-        public static float ButtonHeight => 47f;
+        public static int DefaultWidth => 573;
+        public static int DefaultHeight => 200;
+        public static int ButtonHeight => 47;
+        protected static int ButtonsSpace => 25;
         public static int Padding => 16;
         public Vector2 MaxContentSize
         {
@@ -72,7 +73,6 @@ namespace ModsCommon.UI
                 return new Vector2(DefaultWidth, resolution.y - 580f);
             }
         }
-        protected static float ButtonsSpace => 25f;
         protected virtual int ContentSpacing => 0;
 
 
@@ -80,6 +80,7 @@ namespace ModsCommon.UI
         private CustomUILabel Caption { get; set; }
         protected AutoSizeAdvancedScrollablePanel Panel { get; set; }
         private CustomUIPanel ButtonPanel { get; set; }
+        private IEnumerable<CustomUIButton> Buttons => ButtonPanel.components.OfType<CustomUIButton>();
 
         private List<uint> ButtonsRatio { get; } = new List<uint>();
         public string CaptionText { set => Caption.text = value; }
@@ -135,7 +136,7 @@ namespace ModsCommon.UI
             Panel = AddUIComponent<AutoSizeAdvancedScrollablePanel>();
             Panel.MaxSize = MaxContentSize;
             Panel.size = new Vector2(DefaultWidth, 0f);
-            Panel.relativePosition = new Vector2(0, Header.height);
+            Panel.relativePosition = new Vector2(0, Header.height + Padding);
             Panel.Content.autoLayoutPadding = new RectOffset(Padding, Padding, ContentSpacing, 0);
             Panel.Content.autoReset = true;
             Panel.eventSizeChanged += ContentSizeChanged;
@@ -172,8 +173,8 @@ namespace ModsCommon.UI
         private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
         private void SetSize()
         {
-            height = Mathf.Floor(Header.height + Panel.height + ButtonPanel.height + Padding);
-            ButtonPanel.relativePosition = new Vector2(0, Header.height + Panel.height + Padding);
+            height = Mathf.Floor(Header.height + Padding + Panel.height + ButtonPanel.height + Padding);
+            ButtonPanel.relativePosition = new Vector2(0, Header.height + Padding + Panel.height + Padding);
         }
 
         #endregion
@@ -198,12 +199,30 @@ namespace ModsCommon.UI
 
             ChangeButtons();
         }
+        public void SetAutoButtonRatio()
+        {
+            var widths = Buttons.Select(b => b.MinimumAutoSize.x).ToArray();
+            var allWidth = (int)(width - (widths.Length + 3) * (ButtonsSpace / 2));
+            var sumWidth = widths.Sum();
+            var allDelta = allWidth - sumWidth;
+
+            for (var i = 0; i < widths.Length; i += 1)
+            {
+                var delta = allDelta / (widths.Length - i);
+                allDelta += widths[i];
+                widths[i] = Math.Max(widths[i] + delta, ButtonHeight);
+                allDelta -= widths[i];
+            }
+
+            SetButtonsRatio(widths.Select(i => (uint)i).ToArray());
+        }
+
         public void ChangeButtons()
         {
             var sum = 0u;
             var before = ButtonsRatio.Select(i => (sum += i) - i).ToArray();
 
-            var buttons = ButtonPanel.components.OfType<CustomUIButton>().ToArray();
+            var buttons = Buttons.ToArray();
             for (var i = 0; i < buttons.Length; i += 1)
                 ChangeButton(buttons[i], i + 1, buttons.Length, (float)before[i] / sum, (float)ButtonsRatio[i] / sum);
         }
