@@ -19,9 +19,9 @@ namespace ModsCommon.UI
         {
             AddContent();
         }
-        public override void Init()
+        protected override void Init(float? height)
         {
-            base.Init();
+            base.Init(height);
             Refresh();
         }
         private void AddContent()
