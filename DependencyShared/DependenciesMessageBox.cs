@@ -34,7 +34,7 @@ namespace ModsCommon.Utilities
 
         public DependenciesMessageBox()
         {
-            Panel.Content.autoLayoutPadding = new RectOffset((int)ButtonsSpace, (int)ButtonsSpace, ContentSpacing, ContentSpacing);
+            Panel.Content.autoLayoutPadding = new RectOffset(ButtonsSpace, ButtonsSpace, ContentSpacing, ContentSpacing);
 
             Panel.Content.StopLayout();
             AddLabel();

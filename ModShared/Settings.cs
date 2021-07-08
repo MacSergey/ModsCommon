@@ -1,10 +1,12 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
+using ColossalFramework.IO;
 using ColossalFramework.UI;
 using ICities;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -24,6 +26,9 @@ namespace ModsCommon
         public static SavedBool ShowWhatsNew { get; } = new SavedBool(nameof(ShowWhatsNew), SettingsFile, true, true);
         public static SavedBool ShowOnlyMajor { get; } = new SavedBool(nameof(ShowOnlyMajor), SettingsFile, false, true);
         public static SavedBool BetaWarning { get; } = new SavedBool(nameof(BetaWarning), SettingsFile, true, true);
+        public static SavedBool LinuxWarning { get; } = new SavedBool(nameof(LinuxWarning), SettingsFile, true, IsLinux);
+
+        public static bool IsLinux => Application.platform == RuntimePlatform.LinuxPlayer;
 
         static BaseSettings()
         {
@@ -209,6 +214,15 @@ namespace ModsCommon
             messageBox.OkText = CommonLocalize.MessageBox_OK;
             messageBox.Init(messages, SingletonMod<TypeMod>.Instance.GetVersionString, false);
         }
+        protected void AddLinuxTip(UIAdvancedHelper helper)
+        {
+#if !DEBUG
+            if (!IsLinux)
+                return;
+#endif
+            var group = helper.AddGroup(CommonLocalize.Settings_ForLinuxUsers);
+            AddButton(group, CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
+        }
 
         #endregion
 
@@ -219,40 +233,15 @@ namespace ModsCommon
             var group = helper.AddGroup("Base");
 
             AddStringField(group, "Whats new version", WhatsNewVersion);
-            AddCheckBox(group, "Beta agreement", BetaWarning);
+            AddCheckBox(group, "Show Beta warning", BetaWarning);
+            AddCheckBox(group, "Show Linux warning", LinuxWarning);
         }
 
         #endregion
-
-        //#region HARMONY REPORT
-
-        //protected void AddHarmonyReport(UIHelper group)
-        //{
-        //    group.AddButton("Print harmony report", Print);
-        //    group.AddButton("Print harmony conflict report", PrintConflict);
-
-        //    static void Print()
-        //    {
-        //        var report = HarmonyReport.Get();
-        //        SingletonMod<TypeMod>.Instance.Logger.Debug(report.Print());
-
-        //        var message = MessageBox.Show<OkMessageBox>();
-        //        message.MessageText = "Report printed to log";
-        //    }
-        //    static void PrintConflict()
-        //    {
-        //        var report = HarmonyReport.Get();
-        //        SingletonMod<TypeMod>.Instance.Logger.Debug(report.PrintConflicts());
-
-        //        var message = MessageBox.Show<OkMessageBox>();
-        //        message.MessageText = "Report printed to log";
-        //    }
-        //}
-
-        //#endregion
     }
-    public class UIAdvancedHelper : UIHelper
+    public class UIAdvancedHelper : UIHelper, IEnumerable<UIHelper>
     {
+        private List<UIHelper> Groups { get; } = new List<UIHelper>();
         public UIAutoLayoutScrollablePanel Content => self as UIAutoLayoutScrollablePanel;
         public UIAdvancedHelper(UIAutoLayoutScrollablePanel panel) : base(panel) { }
 
@@ -266,8 +255,14 @@ namespace ModsCommon
             else
                 label.isVisible = false;
 
-            return new UIHelper(panel.Find("Content"));
+            var group = new UIHelper(panel.Find("Content"));
+            Groups.Add(group);
+
+            return group;
         }
+
+        public IEnumerator<UIHelper> GetEnumerator() => Groups.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
     public static class SettingsHelper
     {

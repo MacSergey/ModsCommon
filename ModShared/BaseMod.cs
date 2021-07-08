@@ -269,6 +269,34 @@ namespace ModsCommon
                 }
             }
         }
+        public void ShowLinuxTip()
+        {
+            var message = MessageBox.Show<ThreeButtonMessageBox>();
+            message.CaptionText = NameRaw;
+            message.MessageText = CommonLocalize.Mod_LinuxWarning +
+                "\n" +
+                "\nArch Linux: sudo pacman -S mono" +
+                "\nLinux Mint: apt install mono-devel" +
+                "\nFedora: sudo dnf install mono-core mono-devel";
+            message.Button1Text = CommonLocalize.MessageBox_OK;
+            message.Button2Text = CommonLocalize.MessageBox_DontShowAgain;
+            message.Button3Text = CommonLocalize.MessageBox_MoreInfo;
+            message.OnButton2Click = OnDontShowMore;
+            message.OnButton3Click = OnMoreInfo;
+
+            message.SetAutoButtonRatio();
+
+            static bool OnDontShowMore()
+            {
+                BaseSettings<TypeMod>.LinuxWarning.value = false;
+                return true;
+            }
+            static bool OnMoreInfo()
+            {
+                Utility.OpenUrl("https://github.com/MacSergey/NodeMarkup/issues/96");
+                return false;
+            }
+        }
 
         public bool GetStable()
         {
