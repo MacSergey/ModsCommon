@@ -160,6 +160,9 @@
     <value>Použijte kolečko myši pro změnu hodnoty
 Shift ×10, Ctrl ×0.1</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>Použijte kolečko myši pro změnu hodnoty</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Zrušit</value>
   </data>
@@ -294,6 +297,9 @@ Restartujte hru.</value>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Klávesové zkratky</value>
   </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>Selection step over</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Oznamovat pouze o významných aktualizacích</value>
   </data>
@@ -311,5 +317,9 @@ Restartujte hru.</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Řešení problémů</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>Press {0} to
+selection step over</value>
   </data>
 </root>

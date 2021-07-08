@@ -159,6 +159,9 @@
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
     <value>Değiştirmek için tekerleği kaydırın Shift X10, Ctrl X0.1</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>Değiştirmek için tekerleği kaydırın</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>İptal</value>
   </data>
@@ -293,6 +296,9 @@ Restart the game.</value>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Shortcuts</value>
   </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>Selection step over</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Notification only about major updates</value>
   </data>
@@ -310,5 +316,9 @@ Restart the game.</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Troubleshooting</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>Press {0} to
+selection step over</value>
   </data>
 </root>

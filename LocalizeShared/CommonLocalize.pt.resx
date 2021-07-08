@@ -160,6 +160,9 @@
     <value>Faça scroll para mudar
 Shift X10, Ctrl X0.1</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>Faça scroll para mudar</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
@@ -293,6 +296,9 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Atalhos</value>
   </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>Selection step over</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Notificar apenas sobre actualizações principais</value>
   </data>
@@ -310,5 +316,9 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolução de problemas</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>Press {0} to
+selection step over</value>
   </data>
 </root>

@@ -160,6 +160,9 @@
     <value>Крутите колесико для изменения
 Shift X10, Ctrl X0.1</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>Крутите колесико для изменения</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
@@ -167,7 +170,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Больше не показывать</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>Больше информации</value>
+    <value>Подробнее</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>Нет</value>
@@ -294,6 +297,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Горячие клавиши</value>
   </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>Пропустить выделенное</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Уведомления только о важных обновлениях</value>
   </data>
@@ -311,5 +317,9 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Устранение неполадок</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>Нажмите {0}
+чтобы пропустить выделенное</value>
   </data>
 </root>

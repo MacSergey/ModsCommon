@@ -160,14 +160,17 @@
     <value>ホイールのスクロールで増減
 +Shift ｘ 10倍 / +Ctrl ｘ 0.1倍</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>ホイールのスクロールで増減</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Don't show again</value>
+    <value>今後表示しない</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>More info</value>
+    <value>詳細情報</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>No</value>
@@ -196,7 +199,8 @@
     <value>これはβ版で、エラーが発生する可能性があります。安定性は保証されていません！</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux version of Cities Skylines doesn't have all necessary libraries for correctly mod work. You need to install the "Mono Develop" package to your system. If all work without crashes, just ignore this message.</value>
+    <value>Linux版のCSLは、MODの動作に必要なMONOライブラリが不完全で、「Mono Develop」パッケージをインストールする必要があります。
+エラーやクラッシュが発生しない場合は、このメッセージは無視して構いません。</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>MODのロード中に、エラーが発生しました。
@@ -276,7 +280,7 @@
     <value>更新履歴</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>For Linux users</value>
+    <value>Linuxユーザー向け</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
     <value>基本設定</value>
@@ -296,6 +300,9 @@
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>ショートカットの設定</value>
   </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>Selection step over</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>主要なアップデートのみ通知</value>
   </data>
@@ -306,12 +313,16 @@
     <value>新着情報を表示する</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Solve crash on Linux</value>
+    <value>クラッシュ問題を解決</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>サポート</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>トラブルシューティング</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>Press {0} to
+selection step over</value>
   </data>
 </root>

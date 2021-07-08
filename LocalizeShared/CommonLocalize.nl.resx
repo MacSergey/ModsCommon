@@ -160,14 +160,17 @@
     <value>Scroll om te veranderen
 Shift X10, Ctrl X0.1</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>Scroll om te veranderen</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Annuleren</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Don't show again</value>
+    <value>Niet meer weergeven</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>More info</value>
+    <value>Meer informatie</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>Nee</value>
@@ -274,7 +277,7 @@ Herstart het spel.</value>
     <value>Wijzigingenlogboek</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>For Linux users</value>
+    <value>Voor Linuxgebruikers</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
     <value>Algemeen</value>
@@ -294,6 +297,9 @@ Herstart het spel.</value>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Snelkoppelingen</value>
   </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>Selection step over</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Alleen meldingen over grote updates</value>
   </data>
@@ -311,5 +317,9 @@ Herstart het spel.</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Probleemoplossing</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>Press {0} to
+selection step over</value>
   </data>
 </root>

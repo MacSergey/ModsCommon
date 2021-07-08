@@ -160,14 +160,17 @@
     <value>使用滚轮改变参数
 Shift x10，Ctrl x0.1</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>使用滚轮改变参数</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Don't show again</value>
+    <value>不再提示</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>More info</value>
+    <value>更多信息</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>取消</value>
@@ -194,7 +197,7 @@ Shift x10，Ctrl x0.1</value>
     <value>这是测试版，可能会出现功能性错误。无法保证稳定运行！</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux version of Cities Skylines doesn't have all necessary libraries for correctly mod work. You need to install the "Mono Develop" package to your system. If all work without crashes, just ignore this message.</value>
+    <value>Linux 版本的都市天际线缺少一些必要的库来使模组正常工作。 您需要将"Mono Develop"包安装到您的系统。如果全部工作正常没有崩溃，请忽略此消息。</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>模组加载出错。
@@ -274,7 +277,7 @@ Shift x10，Ctrl x0.1</value>
     <value>更新日志</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>For Linux users</value>
+    <value>适用于 Linux 用户</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
     <value>常规设置</value>
@@ -294,6 +297,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>快捷键</value>
   </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>选择覆盖的节点</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>只推送重要更新提示消息</value>
   </data>
@@ -304,12 +310,16 @@ Shift x10，Ctrl x0.1</value>
     <value>显示更新提示框</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Solve crash on Linux</value>
+    <value>解决Linux崩溃问题</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>支持服务</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>故障排除</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>按下 {0} 
+来选择其它被遮挡到的节点</value>
   </data>
 </root>

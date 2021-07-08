@@ -160,6 +160,9 @@
     <value>Utilisez la molette pour changer
 Maj X10, Ctrl X0.1</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>Utilisez la molette pour changer</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
@@ -294,6 +297,9 @@ Redémarrez le jeu.</value>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Raccourcis</value>
   </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>Selection step over</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Uniquement notifier les mise à jour majeures</value>
   </data>
@@ -311,5 +317,9 @@ Redémarrez le jeu.</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Dépannage</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>Press {0} to
+selection step over</value>
   </data>
 </root>
