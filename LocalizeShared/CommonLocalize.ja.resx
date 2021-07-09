@@ -161,7 +161,7 @@
 +Shift ｘ 10倍 / +Ctrl ｘ 0.1倍</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>ホイールのスクロールで増減</value>
+    <value>ホイールスクロールで増減</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>キャンセル</value>
