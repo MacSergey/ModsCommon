@@ -44,11 +44,7 @@ namespace ModsCommon
         public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
         public abstract bool IsBeta { get; }
 
-#if DEBUG
-        public bool NeedMonoDevelop => NeedMonoDevelopImpl;
-#else
         public bool NeedMonoDevelop => Application.platform == RuntimePlatform.LinuxPlayer && NeedMonoDevelopImpl;
-#endif
         protected virtual bool NeedMonoDevelopImpl => false;
 
         protected virtual List<BaseDependencyInfo> DependencyInfos
@@ -176,7 +172,7 @@ namespace ModsCommon
                     OnLoadError(out var shown);
                     ErrorShown = shown;
                 }
-                else if (BaseSettings<TypeMod>.LinuxWarning)
+                else if (NeedMonoDevelop && BaseSettings<TypeMod>.LinuxWarning)
                 {
                     ShowLinuxTip();
                     ErrorShown = true;
@@ -291,6 +287,7 @@ namespace ModsCommon
             message.CaptionText = NameRaw;
             message.MessageText = CommonLocalize.Mod_LinuxWarning +
                 "\n" +
+                "\nUbuntu: sudo apt install mono-devel" +
                 "\nArch Linux: sudo pacman -S mono" +
                 "\nLinux Mint: apt install mono-devel" +
                 "\nFedora: sudo dnf install mono-core mono-devel";

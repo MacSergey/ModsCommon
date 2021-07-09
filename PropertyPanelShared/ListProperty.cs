@@ -80,6 +80,15 @@ namespace ModsCommon.UI
             get => Selector.SelectedObject;
             set => Selector.SelectedObject = value;
         }
+        public bool UseWheel
+        {
+            get => Selector.UseWheel;
+            set => Selector.UseWheel = value;
+        }
+        public bool WheelTip
+        {
+            set => Selector.WheelTip = value;
+        }
 
         protected override void AddSelector()
         {
@@ -91,6 +100,8 @@ namespace ModsCommon.UI
         public override void DeInit()
         {
             OnSelectObjectChanged = null;
+            UseWheel = false;
+            WheelTip = false;
             base.DeInit();
         }
         public override string ToString() => $"{base.ToString()}: {SelectedObject}";

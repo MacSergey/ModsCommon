@@ -10,7 +10,7 @@ using static ModsCommon.SettingsHelper;
 
 namespace ModsCommon.Utilities
 {
-    public abstract class Selection : IOverlay
+    public abstract class Selection : IOverlay, IEquatable<Selection>
     {
 #if DEBUG
         public static SavedBool AlphaBlendOverlay { get; } = new SavedBool(nameof(AlphaBlendOverlay), string.Empty, false);
@@ -27,6 +27,7 @@ namespace ModsCommon.Utilities
 #else
         public static float BorderOverlayWidth => 3f;
 #endif
+        public static SelectionComparer Comparer { get; } = new SelectionComparer();
 
         public ushort Id { get; }
         protected Data[] DataArray { get; }
@@ -75,6 +76,7 @@ namespace ModsCommon.Utilities
                 }
             }
         }
+        public abstract bool Equals(Selection other);
         protected abstract IEnumerable<Data> Calculate();
         private void CalculateCenter()
         {
@@ -312,6 +314,19 @@ namespace ModsCommon.Utilities
             }
             public Vector3 GetCornerDelta(float width) => CornerDir * (width / DeltaAngleCos);
         }
+
+        public class SelectionComparer : IEqualityComparer<Selection>
+        {
+            public bool Equals(Selection x, Selection y)
+            {
+                if (x == null)
+                    return y == null;
+                else
+                    return x.Equals(y);
+            }
+
+            public int GetHashCode(Selection obj) => obj.Id;
+        }
     }
     public class NodeSelection : Selection
     {
@@ -375,6 +390,8 @@ namespace ModsCommon.Utilities
 
             base.Render(overlayData);
         }
+
+        public override bool Equals(Selection other) => other is NodeSelection selection && selection.Id == Id;
     }
     public class SegmentSelection : Selection
     {
@@ -433,5 +450,7 @@ namespace ModsCommon.Utilities
 
             base.Render(overlayData);
         }
+
+        public override bool Equals(Selection other) => other is SegmentSelection selection && selection.Id == Id;
     }
 }

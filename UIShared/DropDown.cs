@@ -18,6 +18,12 @@ namespace ModsCommon.UI
             get => selectedIndex >= 0 ? Objects[selectedIndex] : default;
             set => selectedIndex = Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || o.Equals(value));
         }
+        public bool CanWheel { get; set; }
+        public bool UseWheel { get; set; }
+        public bool WheelTip
+        {
+            set => tooltip = value ? CommonLocalize.ListPanel_ScrollWheel : string.Empty;
+        }
 
         public UIDropDown()
         {
@@ -36,7 +42,33 @@ namespace ModsCommon.UI
             Objects.Clear();
             items = new string[0];
         }
-        protected override void OnMouseWheel(UIMouseEventParameter p) { }
+        protected override void OnMouseMove(UIMouseEventParameter p)
+        {
+            base.OnMouseMove(p);
+            CanWheel = true;
+        }
+        protected override void OnMouseLeave(UIMouseEventParameter p)
+        {
+            base.OnMouseLeave(p);
+            CanWheel = false;
+        }
+        protected sealed override void OnMouseWheel(UIMouseEventParameter p)
+        {
+            m_TooltipShowing = true;
+            tooltipBox.Hide();
+
+            if (!CanWheel && Time.realtimeSinceStartup - m_HoveringStartTime < 1f)
+                base.OnMouseWheel(p);
+            else if (UseWheel)
+            {
+                if (p.wheelDelta > 0 && selectedIndex > 0)
+                    selectedIndex -= 1;
+                else if (p.wheelDelta < 0 && selectedIndex < Objects.Count - 1)
+                    selectedIndex += 1;
+
+                p.Use();
+            }
+        }
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
@@ -122,6 +154,11 @@ namespace ModsCommon.UI
         public void StopLayout() { }
         public void StartLayout(bool layoutNow = true) { }
 
-        void IReusable.DeInit() { }
+        void IReusable.DeInit()
+        {
+            Clear();
+            UseWheel = false;
+            WheelTip = false;
+        }
     }
 }

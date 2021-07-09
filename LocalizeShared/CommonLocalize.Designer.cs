@@ -188,6 +188,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll the wheel to change.
+        /// </summary>
+        public static string ListPanel_ScrollWheel {
+            get {
+                return ResourceManager.GetString("ListPanel_ScrollWheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
         public static string MessageBox_Cancel {
@@ -586,6 +595,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Selection step over.
+        /// </summary>
+        public static string Settings_ShortcutSelectionStepOver {
+            get {
+                return ResourceManager.GetString("Settings_ShortcutSelectionStepOver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Notification only about major updates.
         /// </summary>
         public static string Settings_ShowOnlyMajor {
@@ -636,6 +654,16 @@ namespace ModsCommon {
         public static string Settings_Troubleshooting {
             get {
                 return ResourceManager.GetString("Settings_Troubleshooting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Press {0} to
+        ///selection step over.
+        /// </summary>
+        public static string Tool_InfoSelectionStepOver {
+            get {
+                return ResourceManager.GetString("Tool_InfoSelectionStepOver", resourceCulture);
             }
         }
     }

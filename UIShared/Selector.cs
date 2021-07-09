@@ -17,6 +17,8 @@ namespace ModsCommon.UI
         event Action<ValueType> OnSelectObjectChanged;
 
         ValueType SelectedObject { get; set; }
+        bool UseWheel { get; set; }
+        bool WheelTip { set; }
     }
     public interface IUIMultySelector<ValueType> : IUISelector<ValueType>
     {
