@@ -188,6 +188,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll the wheel to change.
+        /// </summary>
+        public static string ListPanel_ScrollWheel {
+            get {
+                return ResourceManager.GetString("ListPanel_ScrollWheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
         public static string MessageBox_Cancel {

@@ -160,6 +160,11 @@ namespace ModsCommon.UI
             get => SelectedObject;
             set => SelectedObject = value;
         }
+        public bool UseWheel { get; set; }
+        public bool WheelTip
+        {
+            set { }
+        }
         string IValueChanger<ValueType>.Format { set { } }
 
 
@@ -184,6 +189,7 @@ namespace ModsCommon.UI
         {
             base.DeInit();
             OnSelectObjectChanged = null;
+            UseWheel = false;
         }
         public override void Clear()
         {

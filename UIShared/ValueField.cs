@@ -206,6 +206,7 @@ namespace ModsCommon.UI
             CheckMin = false;
             CheckMax = false;
             CyclicalValue = false;
+            UseWheel = false;
             WheelTip = false;
         }
 

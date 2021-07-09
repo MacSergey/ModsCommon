@@ -160,6 +160,9 @@
     <value>Scroll the wheel to change
 Shift X10, Ctrl X0.1</value>
   </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>Scroll the wheel to change</value>
+  </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
