@@ -287,6 +287,7 @@ namespace ModsCommon
             message.CaptionText = NameRaw;
             message.MessageText = CommonLocalize.Mod_LinuxWarning +
                 "\n" +
+                "\nUbuntu: sudo apt install mono-devel" +
                 "\nArch Linux: sudo pacman -S mono" +
                 "\nLinux Mint: apt install mono-devel" +
                 "\nFedora: sudo dnf install mono-core mono-devel";
