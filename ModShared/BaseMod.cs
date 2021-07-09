@@ -44,11 +44,7 @@ namespace ModsCommon
         public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
         public abstract bool IsBeta { get; }
 
-#if DEBUG
-        public bool NeedMonoDevelop => NeedMonoDevelopImpl;
-#else
         public bool NeedMonoDevelop => Application.platform == RuntimePlatform.LinuxPlayer && NeedMonoDevelopImpl;
-#endif
         protected virtual bool NeedMonoDevelopImpl => false;
 
         protected virtual List<BaseDependencyInfo> DependencyInfos

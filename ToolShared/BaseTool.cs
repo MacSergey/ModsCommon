@@ -22,6 +22,8 @@ namespace ModsCommon
         public float MouseRayLength { get; }
         public bool MouseRayValid { get; }
         public Vector3 MousePosition { get; }
+        public Vector3 PrevMousePosition { get; }
+        public bool MouseMoved { get; }
         public Vector3 MousePositionScaled { get; }
         public Vector3 MouseWorldPosition { get; }
         public Vector3 CameraDirection { get; }
@@ -74,6 +76,8 @@ namespace ModsCommon
         public float MouseRayLength { get; private set; }
         public bool MouseRayValid { get; private set; }
         public Vector3 MousePosition { get; private set; }
+        public Vector3 PrevMousePosition { get; private set; }
+        public bool MouseMoved => MousePosition != PrevMousePosition;
         public Vector3 MousePositionScaled { get; private set; }
         public Vector3 MouseWorldPosition { get; private set; }
         public Vector3 CameraDirection { get; private set; }
@@ -188,6 +192,7 @@ namespace ModsCommon
             }
 
             var uiView = UIView.GetAView();
+            PrevMousePosition = MousePosition;
             MousePosition = uiView.ScreenPointToGUI(Input.mousePosition / uiView.inputScale);
             MousePositionScaled = MousePosition * uiView.inputScale;
             MouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
