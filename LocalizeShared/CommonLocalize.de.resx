@@ -167,10 +167,10 @@ Shift x10, Strg x0,1</value>
     <value>Abbrechen</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Don't show again</value>
+    <value>Nicht erneut anzeigen</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>More info</value>
+    <value>Mehr Informationen</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>Nein</value>
@@ -197,7 +197,7 @@ Shift x10, Strg x0,1</value>
     <value>Dies ist eine BETA Version. Stabilität und Fehlerfreiheit sind nicht garantiert!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux version of Cities Skylines doesn't have all necessary libraries for correctly mod work. You need to install the "Mono Develop" package to your system. If all work without crashes, just ignore this message.</value>
+    <value>Die Linux-Version von Cities Skylines verfügt nicht über alle notwendigen Bibliotheken, damit die Mod korrekt funktioniert. Das "Mono Develop" Paket muss auf dem System installiert sein. Wenn alles ohne Abstürze funktioniert, ignoriere diese Meldung.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod fehlerhaft geladen.
@@ -277,7 +277,7 @@ Starte das Spiel neu.</value>
     <value>Änderungsprotokoll</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>For Linux users</value>
+    <value>Für Linux-Nutzer</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
     <value>Allgemein</value>
@@ -298,7 +298,7 @@ Starte das Spiel neu.</value>
     <value>Tastenkürzel</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Selection step over</value>
+    <value>Auswahl überspringen</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Benachrichtigungen nur bei Haupt-Versions-Updates</value>
@@ -310,7 +310,7 @@ Starte das Spiel neu.</value>
     <value>"Was gibt es neues" zeigen</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Solve crash on Linux</value>
+    <value>Absturz unter Linux lösen</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Support/Hilfe</value>
@@ -319,7 +319,7 @@ Starte das Spiel neu.</value>
     <value>Hilfe</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Press {0} to
-selection step over</value>
+    <value>Drücke {0} zum
+Überspringen der Auswahl</value>
   </data>
 </root>

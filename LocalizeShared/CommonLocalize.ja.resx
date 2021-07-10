@@ -301,7 +301,7 @@
     <value>ショートカットの設定</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Selection step over</value>
+    <value>ステップオーバーで順次選択</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>主要なアップデートのみ通知</value>
@@ -322,7 +322,7 @@
     <value>トラブルシューティング</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Press {0} to
-selection step over</value>
+    <value>{0} を押して、
+ステップオーバーで順次選択</value>
   </data>
 </root>

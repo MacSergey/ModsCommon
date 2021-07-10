@@ -197,7 +197,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Dit is een BETA versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux version of Cities Skylines doesn't have all necessary libraries for correctly mod work. You need to install the "Mono Develop" package to your system. If all work without crashes, just ignore this message.</value>
+    <value>Linux version of Cities Skylines doesn't have all necessary libraries for the mod to work correctly. You need to install the "Mono Develop" package to your system. If everything works without crashes, just ignore this message.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod is geladen met errors.
