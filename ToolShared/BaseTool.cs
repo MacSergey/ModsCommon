@@ -16,6 +16,7 @@ namespace ModsCommon
 
         public ICustomMod ModInstance { get; }
         public Shortcut Activation { get; }
+        public IEnumerable<Shortcut> Shortcuts { get; }
 
         public Segment3 Ray { get; }
         public Ray MouseRay { get; }
@@ -37,9 +38,10 @@ namespace ModsCommon
     where T : ITool
     {
         public static Shortcut Activation => Instance.Activation;
+        public static IEnumerable<Shortcut> Shortcuts => Instance.Shortcuts;
         public static ILogger Logger => Instance.ModInstance.Logger;
     }
-    public abstract class BaseTool<TypeMod, TypeTool> : ToolBase, ITool
+    public abstract partial class BaseTool<TypeMod, TypeTool> : ToolBase, ITool
         where TypeMod : ICustomMod
         where TypeTool : ToolBase, ITool
     {
