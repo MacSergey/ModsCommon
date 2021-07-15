@@ -147,9 +147,9 @@ namespace ModsCommon
             foreach (var locale in GetSupportLanguages())
             {
                 var localizeString = $"Mod_Locale_{locale}";
-                var localeText = CommonLocalize.ResourceManager.GetString(localizeString, CommonLocalize.Culture);
+                var localeText = CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(locale));
                 if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale)
-                    localeText += $" ({CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(locale))})";
+                    localeText += $" ({CommonLocalize.ResourceManager.GetString(localizeString, CommonLocalize.Culture)})";
 
                 dropDown.AddItem(locale, localeText);
             }
