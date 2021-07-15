@@ -25,6 +25,20 @@ namespace ModsCommon.UI
                     Fields[i].Value = Get(ref _value, i);
             }
         }
+        float _fieldsWidth = 30f;
+        public float FieldsWidth
+        {
+            get => _fieldsWidth;
+            set
+            {
+                if(value != _fieldsWidth && value > 0)
+                {
+                    _fieldsWidth = value;
+                    foreach (var field in Fields)
+                        field.width = _fieldsWidth;
+                }
+            }
+        }
 
         protected CustomUILabel[] Labels { get; }
         protected FloatUITextField[] Fields { get; }
@@ -90,7 +104,7 @@ namespace ModsCommon.UI
             field.SetDefaultStyle();
             field.UseWheel = true;
             field.WheelStep = 1;
-            field.width = 30;
+            field.width = FieldsWidth;
             field.NumberFormat = "0.##";
             field.OnValueChanged += (value) => FieldChanged(index, value);
         }
