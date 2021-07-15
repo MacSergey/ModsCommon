@@ -39,6 +39,7 @@ namespace ModsCommon.UI
                 isVisible = value;
             }
         }
+        protected virtual bool NeedRefresh => isVisible;
         public virtual bool IsHover => (isVisible && this.IsHover(SingletonTool<TypeTool>.Instance.MousePosition)) || components.Any(c => c.isVisible && c.IsHover(SingletonTool<TypeTool>.Instance.MousePosition));
 
         public override void Awake()
@@ -65,7 +66,7 @@ namespace ModsCommon.UI
         {
             base.OnVisibilityChanged();
 
-            if (isVisible)
+            if (NeedRefresh)
                 RefreshPanel();
         }
         private void SetDefaultPosition()
