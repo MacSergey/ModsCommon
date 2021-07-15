@@ -12,7 +12,7 @@ namespace ModsCommon
     where TypeMod : ICustomMod
     where TypeTool : ToolBase, ITool
     {
-        private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul);
+        private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul) & new VersionSearcher(new Version(1,2),(m,s) => m >= s);
         public static bool IsUUIInstaled => UUISearcher.GetPlugin() != null;
 
         protected abstract UITextureAtlas UUIAtlas { get; }
