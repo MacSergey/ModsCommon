@@ -41,12 +41,7 @@ namespace ModsCommon
                     var tool = SingletonTool<TypeTool>.Instance;
                     var button = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
 
-                    button.eventTooltipEnter += OnTooltipEnter;
-
-                    void OnTooltipEnter(UIComponent component, UIMouseEventParameter eventParam)
-                    {
-                        component.tooltip = Activation.NotSet ? ModInstance.NameRaw : $"{ModInstance.NameRaw} ({Activation})";
-                    }
+                    button.eventTooltipEnter += (UIComponent component, UIMouseEventParameter eventParam) => component.tooltip = ToolTip;
                 }
                 catch (Exception error)
                 {

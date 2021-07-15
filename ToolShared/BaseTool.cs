@@ -17,6 +17,7 @@ namespace ModsCommon
         public ICustomMod ModInstance { get; }
         public Shortcut Activation { get; }
         public IEnumerable<Shortcut> Shortcuts { get; }
+        public string ToolTip { get; }
 
         public Segment3 Ray { get; }
         public Ray MouseRay { get; }
@@ -67,6 +68,7 @@ namespace ModsCommon
         public IToolMode NextMode { get; private set; }
         public abstract Shortcut Activation { get; }
         public virtual IEnumerable<Shortcut> Shortcuts { get { yield break; } }
+        public string ToolTip => Activation.NotSet? ModInstance.NameRaw : $"{ModInstance.NameRaw} ({Activation})";
 
         private ToolBase PrevTool { get; set; }
 
