@@ -46,6 +46,9 @@ namespace ModsCommon
 
         public bool NeedMonoDevelop => Application.platform == RuntimePlatform.LinuxPlayer && NeedMonoDevelopImpl;
         protected virtual bool NeedMonoDevelopImpl => false;
+#if DEBUG
+        public bool NeedMonoDevelopDebug => NeedMonoDevelopImpl;
+#endif
 
         protected virtual List<BaseDependencyInfo> DependencyInfos
         {
