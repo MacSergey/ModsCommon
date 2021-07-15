@@ -12,7 +12,7 @@ namespace ModsCommon
     where TypeMod : ICustomMod
     where TypeTool : ToolBase, ITool
     {
-        private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul) & new VersionSearcher(new Version(1,2),(m,s) => m >= s);
+        private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul) & new VersionSearcher(new Version(1, 3), (m, s) => m >= s);
         public static bool IsUUIInstaled => UUISearcher.GetPlugin() != null;
 
         protected abstract UITextureAtlas UUIAtlas { get; }
@@ -39,7 +39,14 @@ namespace ModsCommon
                     };
 
                     var tool = SingletonTool<TypeTool>.Instance;
-                    UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, string.Empty, string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
+                    var button = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
+
+                    button.eventTooltipEnter += OnTooltipEnter;
+
+                    void OnTooltipEnter(UIComponent component, UIMouseEventParameter eventParam)
+                    {
+                        component.tooltip = Activation.NotSet ? ModInstance.NameRaw : $"{ModInstance.NameRaw} ({Activation})";
+                    }
                 }
                 catch (Exception error)
                 {
