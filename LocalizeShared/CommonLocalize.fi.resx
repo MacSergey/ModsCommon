@@ -167,10 +167,10 @@ Shift X10, Ctrl X0,1</value>
     <value>Peruuta</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Don't show again</value>
+    <value>Älä näytä uudelleen</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>More info</value>
+    <value>Lisätietoja</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>Ei</value>
@@ -197,7 +197,7 @@ Shift X10, Ctrl X0,1</value>
     <value>Tämä on BETA-versio. Virheitä voi esiintyä, eikä vakautta ole taattu!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux version of Cities Skylines doesn't have all necessary libraries for the mod to work correctly. You need to install the "Mono Develop" package to your system. If everything works without crashes, just ignore this message.</value>
+    <value>Cities Skylinesin Linux-versiolla ei ole kaikkia tarvittavia kirjastoja, jotta työkalu toimisi oikein. Sinun täytyy asentaa "Mono Develop"-paketti järjestelmääsi. Jos kaikki toimii ongelmitta, jätä tämä viesti huomiotta.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Lisäosa latautui virheellisesti.
@@ -229,7 +229,7 @@ Käynnistä peli uudelleen.</value>
     <value>Ranska</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
-    <value>Indonesian</value>
+    <value>Indonesia</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
     <value>Italia</value>
@@ -253,7 +253,7 @@ Käynnistä peli uudelleen.</value>
     <value>Yksinkertaistettu kiina</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Chinese Traditional</value>
+    <value>Perinteinen kiina</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Tuki</value>
@@ -277,7 +277,7 @@ Käynnistä peli uudelleen.</value>
     <value>Muutosloki</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>For Linux users</value>
+    <value>Linux-käyttäjille</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
     <value>Yleiset</value>
@@ -298,7 +298,7 @@ Käynnistä peli uudelleen.</value>
     <value>Pikanäppäimet</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Selection step over</value>
+    <value>Valinnan taso</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Ilmoita vain merkittävistä päivityksistä</value>
@@ -310,7 +310,7 @@ Käynnistä peli uudelleen.</value>
     <value>Näytä, mikä on uutta</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Solve crash on Linux</value>
+    <value>Ratkaise kaatuminen Linuxissa</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Tuki</value>
@@ -319,7 +319,7 @@ Käynnistä peli uudelleen.</value>
     <value>Vianmääritys</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Press {0} to
-selection step over</value>
+    <value>Paina {0}
+vaihtaaksesi valinnan taso</value>
   </data>
 </root>
