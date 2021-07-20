@@ -147,9 +147,9 @@ namespace ModsCommon
             foreach (var locale in GetSupportLanguages())
             {
                 var localizeString = $"Mod_Locale_{locale}";
-                var localeText = CommonLocalize.ResourceManager.GetString(localizeString, CommonLocalize.Culture);
+                var localeText = CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(locale));
                 if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale)
-                    localeText += $" ({CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(locale))})";
+                    localeText += $" ({CommonLocalize.ResourceManager.GetString(localizeString, CommonLocalize.Culture)})";
 
                 dropDown.AddItem(locale, localeText);
             }
@@ -203,8 +203,11 @@ namespace ModsCommon
             AddButton(group, CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
             AddButton(group, "Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
             AddButton(group, CommonLocalize.Settings_ChangeLog, ShowChangeLog);
-
+#if DEBUG
+            if (SingletonMod<TypeMod>.Instance.NeedMonoDevelopDebug)
+#else
             if (SingletonMod<TypeMod>.Instance.NeedMonoDevelop)
+#endif
             {
                 var linuxGroup = helper.AddGroup(CommonLocalize.Settings_ForLinuxUsers);
                 AddButton(linuxGroup, CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
@@ -218,19 +221,10 @@ namespace ModsCommon
             messageBox.OkText = CommonLocalize.MessageBox_OK;
             messageBox.Init(messages, SingletonMod<TypeMod>.Instance.GetVersionString, false);
         }
-        protected void AddLinuxTip(UIAdvancedHelper helper)
-        {
-#if !DEBUG
-            if (!SingletonMod<TypeMod>.Instance.NeedMonoDevelop)
-                return;
-#endif
-            var group = helper.AddGroup(CommonLocalize.Settings_ForLinuxUsers);
-            AddButton(group, CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
-        }
 
-        #endregion
+#endregion
 
-        #region DEBUG
+#region DEBUG
 
         private void AddDebug(UIAdvancedHelper helper)
         {
@@ -241,7 +235,7 @@ namespace ModsCommon
             AddCheckBox(group, "Show Linux warning", LinuxWarning);
         }
 
-        #endregion
+#endregion
     }
     public class UIAdvancedHelper : UIHelper, IEnumerable<UIHelper>
     {

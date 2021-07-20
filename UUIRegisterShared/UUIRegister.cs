@@ -8,12 +8,14 @@ using UnifiedUI.Helpers;
 
 namespace ModsCommon
 {
-    public abstract partial class BaseTool<TypeMod, TypeTool> : ToolBase, ITool
+    public abstract partial class BaseTool<TypeMod, TypeTool> : ToolBase, ITool, IUUITool
     where TypeMod : ICustomMod
     where TypeTool : ToolBase, ITool
     {
-        private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul) & new VersionSearcher(new Version(1,2),(m,s) => m >= s);
+        private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul) & new VersionSearcher(new Version(1, 3), (m, s) => m >= s);
         public static bool IsUUIInstaled => UUISearcher.GetPlugin() != null;
+
+        public bool UUIRegistered { get; private set; }
 
         protected abstract UITextureAtlas UUIAtlas { get; }
         protected abstract string UUINormalSprite { get; }
@@ -39,7 +41,11 @@ namespace ModsCommon
                     };
 
                     var tool = SingletonTool<TypeTool>.Instance;
-                    UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, string.Empty, string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
+                    var button = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
+
+                    button.eventTooltipEnter += (UIComponent component, UIMouseEventParameter eventParam) => component.tooltip = ToolTip;
+
+                    UUIRegistered = true;
                 }
                 catch (Exception error)
                 {
@@ -49,5 +55,10 @@ namespace ModsCommon
             else
                 SingletonMod<TypeMod>.Logger.Debug("UUI not found");
         }
+    }
+    public abstract class BaseUUIThreadingExtension<TypeTool> : BaseThreadingExtension<TypeTool>
+    where TypeTool : IUUITool
+    {
+        protected override bool Detected(TypeTool instance) => !instance.UUIRegistered && base.Detected(instance);
     }
 }

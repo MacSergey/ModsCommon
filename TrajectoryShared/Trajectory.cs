@@ -314,4 +314,30 @@ namespace ModsCommon.Utilities
             return GetT(findIndex);
         }
     }
+
+    public static class TrajectoryHelper
+    {
+        public static Direction GetDirection(this IEnumerable<ITrajectory> trajectories)
+        {
+            var isClockWise = 0;
+            var contour = trajectories.ToArray();
+            for (var i = 0; i < contour.Length; i += 1)
+                isClockWise += (Vector3.Cross(-contour[i].Direction, contour[(i + 1) % contour.Length].Direction).y < 0) ? 1 : -1;
+
+            return isClockWise >= 0 ? Direction.ClockWise : Direction.CounterClockWise;
+        }
+        public static IEnumerable<ITrajectory> GetTrajectories(this Rect rect, float height = 0f)
+        {
+            yield return new StraightTrajectory(new Vector3(rect.xMin, height, rect.yMin), new Vector3(rect.xMax, height, rect.yMin));
+            yield return new StraightTrajectory(new Vector3(rect.xMin, height, rect.yMax), new Vector3(rect.xMax, height, rect.yMax));
+            yield return new StraightTrajectory(new Vector3(rect.xMin, height, rect.yMin), new Vector3(rect.xMin, height, rect.yMax));
+            yield return new StraightTrajectory(new Vector3(rect.xMax, height, rect.yMin), new Vector3(rect.xMax, height, rect.yMax));
+        }
+
+        public enum Direction
+        {
+            ClockWise,
+            CounterClockWise
+        }
+    }
 }

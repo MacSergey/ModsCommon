@@ -17,6 +17,7 @@ namespace ModsCommon
         public ICustomMod ModInstance { get; }
         public Shortcut Activation { get; }
         public IEnumerable<Shortcut> Shortcuts { get; }
+        public string ToolTip { get; }
 
         public Segment3 Ray { get; }
         public Ray MouseRay { get; }
@@ -33,6 +34,10 @@ namespace ModsCommon
         public void Toggle();
         public void Enable();
         public void Disable(bool setPrev = true);
+    }
+    public interface IUUITool : ITool
+    {
+        public bool UUIRegistered { get; }
     }
     public abstract class SingletonTool<T> : SingletonItem<T>
     where T : ITool
@@ -67,6 +72,7 @@ namespace ModsCommon
         public IToolMode NextMode { get; private set; }
         public abstract Shortcut Activation { get; }
         public virtual IEnumerable<Shortcut> Shortcuts { get { yield break; } }
+        public string ToolTip => Activation.NotSet ? ModInstance.NameRaw : $"{ModInstance.NameRaw} ({Activation})";
 
         private ToolBase PrevTool { get; set; }
 
@@ -281,7 +287,7 @@ namespace ModsCommon
         {
             if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is not Shortcut shortcut)
                 LastShortcut = null;
-            else if(shortcut != LastShortcut)
+            else if (shortcut != LastShortcut)
             {
                 shortcut.Press(e);
                 LastShortcut = shortcut;
@@ -356,9 +362,10 @@ namespace ModsCommon
     public abstract class BaseThreadingExtension<TypeTool> : ThreadingExtensionBase
         where TypeTool : ITool
     {
+        protected virtual bool Detected(TypeTool instance) => !UIView.HasModalInput() && !UIView.HasInputFocus() && instance.Activation.IsKeyUp;
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            if (SingletonTool<TypeTool>.Instance is TypeTool toolInstance && !UIView.HasModalInput() && !UIView.HasInputFocus() && toolInstance.Activation.IsKeyUp)
+            if (SingletonTool<TypeTool>.Instance is TypeTool toolInstance && Detected(toolInstance))
             {
                 SingletonTool<TypeTool>.Logger.Debug($"On press shortcut");
                 toolInstance.Toggle();

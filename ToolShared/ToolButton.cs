@@ -57,7 +57,7 @@ namespace ModsCommon.UI
         }
         protected override void OnTooltipEnter(UIMouseEventParameter p)
         {
-            tooltip = SingletonTool<TypeTool>.Activation.NotSet ? SingletonTool<TypeTool>.Instance.ModInstance.NameRaw : $"{SingletonTool<TypeTool>.Instance.ModInstance.NameRaw} ({SingletonTool<TypeTool>.Activation})";
+            tooltip = SingletonTool<TypeTool>.Instance.ToolTip;
             base.OnTooltipEnter(p);
         }
     }

@@ -9,8 +9,6 @@ namespace ModsCommon.UI
 {
     public class SizeChanger : CustomUIPanel
     {
-        private bool InProgress { get; set; }
-
         private UIComponent _target;
         public UIComponent Target
         {
@@ -26,6 +24,18 @@ namespace ModsCommon.UI
                     _target.eventSizeChanged += TargetSizeChanged;
             }
         }
+        public bool HasTarget => _target != null;
+
+        private Vector2 LastPosition { get; set; }
+        private Vector2 LastSize { get; set; }
+        private Vector2 CurrentPosition
+        {
+            get
+            {
+                var uiView = UIView.GetAView();
+                return uiView.ScreenPointToGUI(Input.mousePosition / uiView.inputScale);
+            }
+        }
 
         private void TargetSizeChanged(UIComponent component, Vector2 value) => SetPosition();
 
@@ -35,11 +45,6 @@ namespace ModsCommon.UI
             atlas = CommonTextures.Atlas;
             backgroundSprite = CommonTextures.ResizeSprite;
             color = new Color32(255, 255, 255, 160);
-
-            var handle = AddUIComponent<CustomUIDragHandle>();
-            handle.size = size;
-            handle.relativePosition = Vector2.zero;
-            handle.target = this;
         }
         public override void Start()
         {
@@ -47,16 +52,40 @@ namespace ModsCommon.UI
             Target ??= parent;
         }
         private void SetPosition() => relativePosition = Target.size - size;
-        protected override void OnPositionChanged()
+
+        protected override void OnMouseDown(UIMouseEventParameter p)
         {
-            if (!InProgress)
+            p.Use();
+            LastPosition = CurrentPosition;
+
+            if(Target is UIComponent target)
             {
-                InProgress = true;
-                base.OnPositionChanged();
-                Target.size = (Vector2)relativePosition + size;
-                SetPosition();
-                InProgress = false;
+                target.BringToFront();
+                LastSize = target.size;
             }
+            else
+            {
+                GetRootContainer().BringToFront();
+                LastSize = Vector2.zero;
+            }
+
+            base.OnMouseDown(p);
+        }
+        protected override void OnMouseUp(UIMouseEventParameter p)
+        {
+            base.OnMouseUp(p);
+            Target?.MakePixelPerfect();
+            SetPosition();
+        }
+        protected override void OnMouseMove(UIMouseEventParameter p)
+        {
+            p.Use();
+            if (p.buttons.IsFlagSet(UIMouseButton.Left) && Target is UIComponent target)
+            {
+                var delta = CurrentPosition - LastPosition;
+                target.size = LastSize + delta;
+            }
+            base.OnMouseMove(p);
         }
     }
 }
