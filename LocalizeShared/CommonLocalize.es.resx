@@ -318,6 +318,9 @@ Reinicia el juego.</value>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolución de problemas</value>
   </data>
+  <data name="Setting_Donate" xml:space="preserve">
+    <value>If you like {0}, you can support author</value>
+  </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Presiona {0} para seleccionar objetos superpuestos</value>
   </data>

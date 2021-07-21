@@ -318,6 +318,9 @@ Uruchom ponownie grę.</value>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Rozwiązywanie problemów</value>
   </data>
+  <data name="Setting_Donate" xml:space="preserve">
+    <value>If you like {0}, you can support author</value>
+  </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Naciśnij {0} aby zaznaczyć poniżej</value>
   </data>

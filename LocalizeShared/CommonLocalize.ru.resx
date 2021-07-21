@@ -318,6 +318,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Устранение неполадок</value>
   </data>
+  <data name="Setting_Donate" xml:space="preserve">
+    <value>Если вам нравится {0}, вы можете поддержать автора</value>
+  </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Нажмите {0}
 чтобы пропустить выделенное</value>
