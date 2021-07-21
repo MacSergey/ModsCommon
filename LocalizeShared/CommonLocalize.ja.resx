@@ -322,7 +322,7 @@
     <value>トラブルシューティング</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
+    <value>{0} が気に入った場合は、作成者を支援してください。</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>{0} を押して、

@@ -161,7 +161,7 @@
 Mayús x10, Ctrl x0.1</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Desplazar la rueda para cambiar</value>
+    <value>Desplazca la rueda para cambiar</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Anular</value>
@@ -277,7 +277,7 @@ Reinicia el juego.</value>
     <value>Registro de cambios</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>Para usuarios en Linux</value>
+    <value>Para usuarios de Linux</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
     <value>Ajustes generales</value>
@@ -319,7 +319,7 @@ Reinicia el juego.</value>
     <value>Resolución de problemas</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
+    <value>Si le gusta {0}, puede apoyar al autor</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Presiona {0} para seleccionar objetos superpuestos</value>
