@@ -61,7 +61,7 @@ namespace ModsCommon
 #if DEBUG
                 var info = new ConflictDependencyInfo(DependencyState.Disable, searcher);
 #else
-                var info = new ConflictDependencyInfo(DependencyState.Unsubscribe, searcher);
+                var info = new ConflictDependencyInfo(BaseSettings<TypeMod>.AnyVersions ? DependencyState.Disable : DependencyState.Unsubscribe, searcher);
 #endif
                 infos.Add(info);
 
@@ -208,7 +208,7 @@ namespace ModsCommon
                 messageBox.CaptionText = string.Format(CommonLocalize.Mod_WhatsNewCaption, NameRaw);
                 messageBox.OnButtonClick = Confirm;
                 messageBox.OkText = CommonLocalize.MessageBox_OK;
-                messageBox.Init(messages, GetVersionString);
+                messageBox.Init(messages, GetVersionString, modName: NameRaw);
             }
             else
             {
