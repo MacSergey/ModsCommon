@@ -20,6 +20,8 @@ namespace ModsCommon.Utilities
         }
         public static void OpenWorkshop(this ulong id) => id.GetWorkshopUrl().OpenUrl();
         public static string GetWorkshopUrl(this ulong id) => $"https://steamcommunity.com/sharedfiles/filedetails/?id={id}";
+        public static void OpenPatreon() => OpenUrl("https://www.patreon.com/MacSergey");
+        public static void OpenPayPal() => OpenUrl("https://www.paypal.me/macsergey");
 
         public static bool InGame => !OnStartup && !InMenu;
         public static bool InMenu => SceneManager.GetActiveScene().name is string scene && scene == "MainMenu";

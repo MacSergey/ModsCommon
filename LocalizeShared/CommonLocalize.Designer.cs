@@ -296,7 +296,7 @@ namespace ModsCommon {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Linux version of Cities Skylines doesn&apos;t have all necessary libraries for correctly mod work. You need to install the &quot;Mono Develop&quot; package to your system. If all work without crashes, just ignore this message..
+        ///   Ищет локализованную строку, похожую на Linux version of Cities Skylines doesn&apos;t have all necessary libraries for the mod to work correctly. You need to install the &quot;Mono Develop&quot; package to your system. If everything works without crashes, just ignore this message..
         /// </summary>
         public static string Mod_LinuxWarning {
             get {
@@ -510,6 +510,15 @@ namespace ModsCommon {
         public static string Panel_Additional {
             get {
                 return ResourceManager.GetString("Panel_Additional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на If you like {0}, you can support author.
+        /// </summary>
+        public static string Setting_Donate {
+            get {
+                return ResourceManager.GetString("Setting_Donate", resourceCulture);
             }
         }
         

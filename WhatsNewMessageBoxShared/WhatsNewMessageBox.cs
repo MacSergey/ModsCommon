@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,9 +24,15 @@ namespace ModsCommon.UI
                 Close();
         }
 
-        public virtual void Init(Dictionary<Version, string> messages, Func<Version, string> toString = null, bool MaximizeFirst = true)
+        public virtual void Init(Dictionary<Version, string> messages, Func<Version, string> toString = null, bool MaximizeFirst = true, string modName = null)
         {
             StopLayout();
+
+            if (!string.IsNullOrEmpty(modName))
+            {
+                var donate = Panel.Content.AddUIComponent<DonatePanel>();
+                donate.Init(modName, new Vector2(200f, 50f));
+            }
 
             var first = default(VersionMessage);
             foreach (var message in messages)
@@ -138,6 +145,49 @@ namespace ModsCommon.UI
                     line.width = width;
             }
         }
+
+        //private void AddDonate(string modName)
+        //{
+        //    if (!string.IsNullOrEmpty(modName))
+        //    {
+        //        var label = Panel.Content.AddUIComponent<UILabel>();
+        //        label.text = string.Format(CommonLocalize.Setting_Donate, modName);
+        //        label.autoHeight = true;
+        //        label.wordWrap = true;
+        //        label.textAlignment = UIHorizontalAlignment.Center;
+
+        //        var panel = Panel.Content.AddUIComponent<UIPanel>();
+        //        panel.height = 80f;
+        //        //panel.autoLayout = true;
+        //        //panel.autoLayoutDirection = LayoutDirection.Horizontal;
+        //        //panel.autoLayoutPadding = new RectOffset(3,3,0,0);
+        //        //panel.autoFitChildrenHorizontally = true;
+        //        //panel.autoFitChildrenVertically = true;
+
+        //        var patreon = AddButton(panel, CommonTextures.Patreon, Utility.OpenPatreon);
+        //        var paypal = AddButton(panel, CommonTextures.PayPal, Utility.OpenPayPal);
+
+        //        panel.eventSizeChanged += PanelSizeChanged;
+
+        //        void PanelSizeChanged(UIComponent component, Vector2 value)
+        //        {
+        //            patreon.relativePosition = new Vector2(value.x / 2f - 205f, 10f);
+        //            paypal.relativePosition = new Vector2(value.x / 2f +5f, 10f);
+        //        }
+        //    }
+
+        //    static UIButton AddButton(UIPanel parent, string sprite, Action onClick)
+        //    {
+        //        var button = parent.AddUIComponent<UIButton>();
+        //        button.size = new Vector2(200f, 50f);
+        //        button.atlas = CommonTextures.Atlas;
+        //        button.normalBgSprite = sprite;
+        //        button.hoveredColor = new Color32(224, 224, 224, 255);
+
+        //        button.eventClicked += (_, _) => onClick?.Invoke();
+        //        return button;
+        //    }
+        //}
     }
     public class BetaWhatsNewMessageBox : WhatsNewMessageBox
     {

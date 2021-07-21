@@ -27,6 +27,7 @@ namespace ModsCommon
         public static SavedBool ShowOnlyMajor { get; } = new SavedBool(nameof(ShowOnlyMajor), SettingsFile, false, true);
         public static SavedBool BetaWarning { get; } = new SavedBool(nameof(BetaWarning), SettingsFile, true, true);
         public static SavedBool LinuxWarning { get; } = new SavedBool(nameof(LinuxWarning), SettingsFile, true, true);
+        public static SavedBool AnyVersions { get; } = new SavedBool(nameof(AnyVersions), SettingsFile, false, true);
 
         static BaseSettings()
         {
@@ -66,7 +67,14 @@ namespace ModsCommon
         protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalTabs => new KeyValuePair<string, string>[0];
         protected virtual void FillSettings()
         {
-            GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
+            var donateGroup = GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
+
+            var donateMain = donateGroup.self as UIPanel;
+            donateMain.verticalSpacing = 0;
+            var donatePanel = donateMain.AddUIComponent<DonatePanel>();
+            donatePanel.Init(SingletonMod<TypeMod>.Instance.NameRaw, new Vector2(300f, 75f), 1.25f);
+            donatePanel.width = donateMain.width - donateMain.padding.left * 2f;
+
             AddSupport(SupportTab);
 #if DEBUG
             AddDebug(DebugTab);
@@ -219,7 +227,11 @@ namespace ModsCommon
             var messageBox = MessageBox.Show<WhatsNewMessageBox>();
             messageBox.CaptionText = CommonLocalize.Settings_ChangeLog;
             messageBox.OkText = CommonLocalize.MessageBox_OK;
+#if DEBUG
+            messageBox.Init(messages, SingletonMod<TypeMod>.Instance.GetVersionString, false, SingletonMod<TypeMod>.Instance.NameRaw);
+#else
             messageBox.Init(messages, SingletonMod<TypeMod>.Instance.GetVersionString, false);
+#endif
         }
 
 #endregion
@@ -233,6 +245,7 @@ namespace ModsCommon
             AddStringField(group, "Whats new version", WhatsNewVersion);
             AddCheckBox(group, "Show Beta warning", BetaWarning);
             AddCheckBox(group, "Show Linux warning", LinuxWarning);
+            AddCheckBox(group, "Any versions", AnyVersions);
         }
 
 #endregion
@@ -394,6 +407,18 @@ namespace ModsCommon
             label.textScale = size;
             label.textColor = color ?? Color.white;
             label.padding = new RectOffset(padding, 0, 0, 0);
+        }
+        public static UIHelper AddHorizontalPanel(UIHelper helper, RectOffset padding)
+        {
+            var component = helper.self as UIComponent;
+
+            var panel = component.AddUIComponent<UIPanel>();
+            panel.autoLayout = true;
+            panel.autoLayoutDirection = LayoutDirection.Horizontal;
+            panel.autoLayoutPadding = padding;
+            panel.autoFitChildrenHorizontally = true;
+            panel.autoFitChildrenVertically = true;
+            return new UIHelper(panel);
         }
         public static KeymappingsPanel AddKeyMappingPanel(UIHelper helper) => (helper.self as UIPanel).gameObject.AddComponent<KeymappingsPanel>();
     }
