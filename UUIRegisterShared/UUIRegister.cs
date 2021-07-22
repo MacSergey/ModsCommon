@@ -13,7 +13,7 @@ namespace ModsCommon
     where TypeTool : ToolBase, ITool
     {
         private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul) & new VersionSearcher(new Version(1, 3), (m, s) => m >= s);
-        public static bool IsUUIInstaled => UUISearcher.GetPlugin() != null;
+        public static bool IsUUIEnabled => UUISearcher.GetPlugin()?.isEnabled == true;
 
         public bool UUIRegistered { get; private set; }
 
@@ -25,7 +25,7 @@ namespace ModsCommon
 
         public void RegisterUUI()
         {
-            if (IsUUIInstaled)
+            if (IsUUIEnabled)
             {
                 SingletonMod<TypeMod>.Logger.Debug("Register button in UUI");
 
