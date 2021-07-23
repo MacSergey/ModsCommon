@@ -406,6 +406,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Malay.
+        /// </summary>
+        public static string Mod_Locale_ms {
+            get {
+                return ResourceManager.GetString("Mod_Locale_ms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Dutch.
         /// </summary>
         public static string Mod_Locale_nl {
