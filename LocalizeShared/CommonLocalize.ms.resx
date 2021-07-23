@@ -118,214 +118,214 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Обнаружены конфликтующие моды.</value>
+    <value>Percanggahan mod dikesan.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Отключить</value>
+    <value>Nyahdayakan</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Отключить {0}</value>
+    <value>Nyahdayakan {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Включить</value>
+    <value>Dayakan</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Включить {0}</value>
+    <value>Dayakan {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Получить</value>
+    <value>Dapatkan</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Обнаружены недостающие зависимости.</value>
+    <value>Kehilangan kebergantungan dikesan.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Обнаружены недостающие зависимости и конфликтующие моды.</value>
+    <value>Kehilangan kebergantungan dan percanggahan mod dikesan.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Для продолжения использования {0} необходимо исправить эти проблемы, иначе мод будет отключен.</value>
+    <value>Isu ini perlu dibaiki untuk terus menggunakan {0}, jika tidak mod ini akan dinyahdayakan.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>Все проблемы исправлены, {0} может быть включен.</value>
+    <value>Semua isu telah dibaiki, {0} boleh didayakan.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Удалить</value>
+    <value>Buang</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Подписаться</value>
+    <value>Langgan</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Отписаться</value>
+    <value>Nyahlanggan</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Крутите колесико для изменения
-Shift X10, Ctrl X0.1</value>
+    <value>Tatal roda tetikus untuk ubah
+Shift x10, Ctrl x0.1</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Крутите колесико для изменения</value>
+    <value>Tatal roda tetikus untuk ubah</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Batal</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Больше не показывать</value>
+    <value>Jangan tunjukkan lagi</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>Подробнее</value>
+    <value>Maklumat lanjut</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Нет</value>
+    <value>Tidak</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>ОК</value>
+    <value>OK</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Да</value>
+    <value>Ya</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Я согласен</value>
+    <value>Saya setuju</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Предупреждение о BETA версии</value>
+    <value>Amaran versi BETA</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Получить стабильную</value>
+    <value>Dapatkan versi stabil</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Вы используете BETA версию {0}. Она предназначена для тестирования новых функций и может содержать ошибки. Если вы подписались по ошибки, то перейдите на стабильную версию.</value>
+    <value>Anda menggunakan {0} versi BETA. Versi ini digunakan untuk menguji ciri baharu dan mungkin mengandungi ralat. Jika anda terlanggan secara tidak sengaja, sila tukar ke versi stabil.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Это BETA версия, стабильная работа и отсутствие ошибок не гарантировано!</value>
+    <value>Ini versi BETA, ralat mungkin berlaku dan kestabilan tidak dijamin!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux версия Cities Skylines не имеет всех необходимых библиотек для корректной работы мода. Вы должны установить пакет "Mono Develop" в вашу систему. Если все работает без вылетов, просто проигнорируйте это сообщение.</value>
+    <value>Cities Skylines versi Linux tidak semestinya mempunyai kesemua pustaka yang diperlukan untuk kefungsian mod. Anda perlu pasangkan pakej "Mono Develop" di sistem anda. Jika segalanya berfungsi tanpa nahas, abaikan mesej ini.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Мод загрузился с ошибками.
-Не рекомендуется использовать мод в таком состояние, это может привести к непредсказуемым результатам.
-Перезагрузите игру.</value>
+    <value>Mod dimuatkan dengan ralat.
+Anda tidak digalakkan untuk gunakan mod ini dalam keadaan ini kerana ia boleh menyebabkan perilaku tidak dijangka.
+Mulakan semula permainan.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Язык игры</value>
+    <value>Bahasa Permainan</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Чешский</value>
+    <value>Czech</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Немецкий</value>
+    <value>Jerman</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Английский США</value>
+    <value>Inggeris AS</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Английский Великобритания</value>
+    <value>Inggeris UK</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Испанский</value>
+    <value>Sepanyol</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Финский</value>
+    <value>Finland</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Французский</value>
+    <value>Perancis</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
-    <value>Индонезийский</value>
+    <value>Indonesia</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Итальянский</value>
+    <value>Itali</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Японский</value>
+    <value>Jepun</value>
   </data>
   <data name="Mod_Locale_ms" xml:space="preserve">
-    <value>Малайский</value>
+    <value>Melayu</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Голландский</value>
+    <value>Belanda</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Польский</value>
+    <value>Poland</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Португальский</value>
+    <value>Portugis</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Русский</value>
+    <value>Rusia</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Китайский упрощенный</value>
+    <value>Cina Ringkas</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Китайский традиционный</value>
+    <value>Cina Tradisional</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Поддержка</value>
+    <value>Sokongan</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Что нового в {0}</value>
+    <value>Terbaharu dalam {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Версия {0}</value>
+    <value>Versi {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Дополнительно</value>
+    <value>Tambahan</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Batal</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Список изменений</value>
+    <value>Log perubahan</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>Для пользователей Linux</value>
+    <value>Untuk pengguna Linux</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Основные</value>
+    <value>Umum</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Основные</value>
+    <value>Umum</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Язык</value>
+    <value>Bahasa</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Уведомления</value>
+    <value>Pemberitahuan</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Активация инструмента</value>
+    <value>Aktifkan alatan</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Горячие клавиши</value>
+    <value>Pintasan</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Пропустить выделенное</value>
+    <value>Pilihan pertindihan</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Уведомления только о важных обновлениях</value>
+    <value>Pemberitahuan untuk kemas kini utama sahaja</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Показывать подсказки</value>
+    <value>Tunjuk petua alatan</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Показывать что нового</value>
+    <value>Tunjuk apa yang baru</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Решение вылетов на Linux</value>
+    <value>Selesaikan nahas di Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Поддержка</value>
+    <value>Sokongan</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Устранение неполадок</value>
+    <value>Menyelesaikan masalah</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Если вам нравится {0}, вы можете поддержать автора</value>
+    <value>Jika anda suka {0}, anda boleh sokong pencipta</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Нажмите {0}
-чтобы пропустить выделенное</value>
+    <value>Tekan {0} untuk
+pilihan pertindihan</value>
   </data>
 </root>
