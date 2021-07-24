@@ -238,7 +238,7 @@ Shift X10, Ctrl X0.1</value>
     <value>日文</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malay</value>
+    <value>馬來文</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
     <value>荷蘭文</value>
@@ -322,7 +322,7 @@ Shift X10, Ctrl X0.1</value>
     <value>疑難排解</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
+    <value>如果您喜歡 {0}，您可以支援作者</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>按下 {0}

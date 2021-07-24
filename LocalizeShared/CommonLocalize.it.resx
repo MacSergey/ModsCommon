@@ -238,7 +238,7 @@ Riavvia il gioco.</value>
     <value>Giapponese</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malay</value>
+    <value>Malese</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
     <value>Olandese</value>
@@ -322,7 +322,7 @@ Riavvia il gioco.</value>
     <value>Risoluzione problemi</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
+    <value>Se ti piace {0}, puoi supportare l'autore</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Premi {0} per
