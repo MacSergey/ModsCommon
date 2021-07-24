@@ -42,14 +42,21 @@ namespace ModsCommon.Utilities
         public Vector3 Center { get; private set; }
         protected abstract Vector3 Position { get; }
         protected abstract float HalfWidth { get; }
-        protected IEnumerable<ITrajectory> BorderLines
+
+        public IEnumerable<StraightTrajectory> DataLines
+        {
+            get
+            {
+                foreach (var data in DataArray)
+                    yield return new StraightTrajectory(data.leftPos, data.rightPos);
+            }
+        }
+        public IEnumerable<BezierTrajectory> BetweenDataLines
         {
             get
             {
                 for (var i = 0; i < DataArray.Length; i += 1)
                 {
-                    yield return new StraightTrajectory(DataArray[i].leftPos, DataArray[i].rightPos);
-
                     var j = (i + 1) % DataArray.Length;
                     if (DataArray.Length != 1)
                         yield return new BezierTrajectory(GetBezier(DataArray[i].leftPos, DataArray[i].LeftDir, DataArray[j].rightPos, DataArray[j].RightDir));
@@ -58,6 +65,18 @@ namespace ModsCommon.Utilities
                 }
             }
         }
+        protected IEnumerable<ITrajectory> BorderLines
+        {
+            get
+            {
+                foreach (var line in DataLines)
+                    yield return line;
+
+                foreach (var line in BetweenDataLines)
+                    yield return line;
+            }
+        }
+
         public Selection(ushort id)
         {
             Id = id;
