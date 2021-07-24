@@ -408,9 +408,9 @@ namespace ModsCommon {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Malay.
         /// </summary>
-        public static string Mod_Locale_ms {
+        public static string Mod_Locale_mr {
             get {
-                return ResourceManager.GetString("Mod_Locale_ms", resourceCulture);
+                return ResourceManager.GetString("Mod_Locale_mr", resourceCulture);
             }
         }
         
