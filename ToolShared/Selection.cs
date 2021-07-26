@@ -423,6 +423,7 @@ namespace ModsCommon.Utilities
                         RenderMiddle(overlayData, data1, data2);
                     }
                 }
+                else
                 {
                     var bezier = new BezierTrajectory(data1.Position, data1.Direction, data2.Position, data2.Direction);
                     overlayData.Width = Mathf.Max(BorderOverlayWidth / 2f, width1, width2);
