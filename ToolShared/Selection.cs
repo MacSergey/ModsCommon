@@ -116,9 +116,20 @@ namespace ModsCommon.Utilities
         }
         public virtual bool Contains(Segment3 ray, out float t)
         {
-            var line = new StraightTrajectory(GetHitPosition(ray, out t), Center);
-            var contains = !BorderLines.Any(b => Intersection.Intersect(line, b));
-            return contains;
+            var position = GetHitPosition(ray, out t);
+            var line = new StraightTrajectory(position, position + 1000f * Vector3.right);
+
+            var count = 0;
+            foreach (var border in BorderLines)
+            {
+                foreach (var intersect in Intersection.Calculate(line, border))
+                {
+                    if (intersect.IsIntersect)
+                        count += 1;
+                }
+            }
+
+            return count % 2 == 1;
         }
         public virtual Vector3 GetHitPosition(Segment3 ray, out float t) => ray.GetRayPosition(Center.y, out t);
         public virtual void Render(OverlayData overlayData)
@@ -145,8 +156,8 @@ namespace ModsCommon.Utilities
         }
         protected void RenderBorder(OverlayData overlayData, Data data1, Data data2)
         {
-            var cornerDelta1 = data1.GetCornerDelta(BorderOverlayWidth / 2);
-            var cornerDelta2 = data2.GetCornerDelta(BorderOverlayWidth / 2);
+            var cornerDelta1 = data1.GetCornerDelta(Math.Min(data1.halfWidth, BorderOverlayWidth / 2));
+            var cornerDelta2 = data2.GetCornerDelta(Math.Min(data2.halfWidth, BorderOverlayWidth / 2));
 
             var position1 = data1.leftPos + cornerDelta1;
             var position2 = data2.rightPos - cornerDelta2;
@@ -395,15 +406,27 @@ namespace ModsCommon.Utilities
             {
                 var data1 = DataArray[i];
                 var data2 = DataArray[(i + 1) % DataArray.Length];
-                overlayData.Width = Mathf.Min(BorderOverlayWidth, data1.halfWidth * 2, data2.halfWidth * 2);
+                var width1 = data1.halfWidth * 2;
+                var width2 = data2.halfWidth * 2;
 
-                RenderCorner(overlayData, data1);
-                if (DataArray.Length == 1)
-                    RenderEnd(overlayData, DataArray[0]);
-                else
+                if (width1 >= BorderOverlayWidth || width2 >= BorderOverlayWidth)
                 {
-                    RenderBorder(overlayData, data1, data2);
-                    RenderMiddle(overlayData, data1, data2);
+                    overlayData.Width = Mathf.Min(BorderOverlayWidth, width1, width2);
+
+                    if (width1 >= BorderOverlayWidth)
+                        RenderCorner(overlayData, data1);
+                    if (DataArray.Length == 1)
+                        RenderEnd(overlayData, DataArray[0]);
+                    else
+                    {
+                        RenderBorder(overlayData, data1, data2);
+                        RenderMiddle(overlayData, data1, data2);
+                    }
+                }
+                {
+                    var bezier = new BezierTrajectory(data1.Position, data1.Direction, data2.Position, data2.Direction);
+                    overlayData.Width = Mathf.Max(BorderOverlayWidth / 2f, width1, width2);
+                    bezier.Render(overlayData);
                 }
             }
 
@@ -454,18 +477,31 @@ namespace ModsCommon.Utilities
 
         public override void Render(OverlayData overlayData)
         {
-            overlayData.Width = Mathf.Min(BorderOverlayWidth, DataArray[0].halfWidth * 2, DataArray[1].halfWidth * 2);
+            var width1 = DataArray[0].halfWidth * 2;
+            var width2 = DataArray[1].halfWidth * 2;
 #if DEBUG
             overlayData.AlphaBlend = AlphaBlendOverlay;
 #else
             overlayData.AlphaBlend = false;
 #endif
+            if (width1 >= BorderOverlayWidth || width2 >= BorderOverlayWidth)
+            {
+                overlayData.Width = Mathf.Min(BorderOverlayWidth, width1, width2);
 
-            RenderCorner(overlayData, DataArray[0]);
-            RenderCorner(overlayData, DataArray[1]);
-            RenderBorder(overlayData, DataArray[0], DataArray[1]);
-            RenderBorder(overlayData, DataArray[1], DataArray[0]);
-            RenderMiddle(overlayData, DataArray[0], DataArray[1]);
+                if (width1 >= BorderOverlayWidth)
+                    RenderCorner(overlayData, DataArray[0]);
+                if (width2 >= BorderOverlayWidth)
+                    RenderCorner(overlayData, DataArray[1]);
+                RenderBorder(overlayData, DataArray[0], DataArray[1]);
+                RenderBorder(overlayData, DataArray[1], DataArray[0]);
+                RenderMiddle(overlayData, DataArray[0], DataArray[1]);
+            }
+            else
+            {
+                var bezier = new BezierTrajectory(DataArray[0].Position, DataArray[0].Direction, DataArray[1].Position, DataArray[1].Direction);
+                overlayData.Width = Mathf.Max(BorderOverlayWidth / 2f, width1, width2);
+                bezier.Render(overlayData);
+            }
 
             base.Render(overlayData);
         }

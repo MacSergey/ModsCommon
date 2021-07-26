@@ -9,7 +9,7 @@ namespace ModsCommon.Utilities
         public static Color32 White { get; } = new Color32(255, 255, 255, 255);
         public static Color32 Green { get; } = new Color32(0, 200, 81, 255);
         public static Color32 Red { get; } = new Color32(255, 68, 68, 255);
-        public static Color32 Blue { get; } = new Color32(2, 117, 216, 255);
+        public static Color32 Blue { get; } = new Color32(0, 180, 255, 255);
         public static Color32 Orange { get; } = new Color32(255, 136, 0, 255);
         public static Color32 Yellow { get; } = new Color32(255, 187, 51, 255);
         public static Color32 Gray { get; } = new Color32(192, 192, 192, 255);

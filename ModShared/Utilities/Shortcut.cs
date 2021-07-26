@@ -21,7 +21,7 @@ namespace ModsCommon.Utilities
             Action = action;
         }
 
-        public bool IsKeyUp => CanRepeat ? (InputKey.IsPressed() && (DateTime.UtcNow - LastPress).TotalMilliseconds > 100f) : InputKey.IsKeyUp();
+        public bool IsKeyUp => CanRepeat ? (InputKey.IsPressed() && (DateTime.UtcNow - LastPress).TotalMilliseconds > 150f) : InputKey.IsKeyUp();
         public virtual bool Press(Event e)
         {
             if (e.type != EventType.Used && IsKeyUp)
