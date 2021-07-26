@@ -186,6 +186,8 @@ namespace ModsCommon
         #region UPDATE
         protected override void OnToolUpdate()
         {
+            UpdateGUI(Event.current);
+
             if (!CheckInfoMode(Singleton<InfoManager>.instance.NextMode, Singleton<InfoManager>.instance.NextSubMode))
             {
                 Disable(false);
@@ -199,6 +201,18 @@ namespace ModsCommon
                 SetModeNow(nextMode);
             }
 
+            UpdateMouse();
+
+            Mode.OnToolUpdate();
+            Info();
+            ExtraInfo();
+
+            base.OnToolUpdate();
+        }
+
+        protected virtual bool CheckInfoMode(InfoManager.InfoMode mode, InfoManager.SubInfoMode subInfo) => mode == InfoManager.InfoMode.None && subInfo == InfoManager.SubInfoMode.Default;
+        private void UpdateMouse()
+        {
             var uiView = UIView.GetAView();
             PrevMousePosition = MousePosition;
             MousePosition = uiView.ScreenPointToGUI(Input.mousePosition / uiView.inputScale);
@@ -213,14 +227,7 @@ namespace ModsCommon
             var cameraDirection = Vector3.forward.TurnDeg(Camera.main.transform.eulerAngles.y, true);
             cameraDirection.y = 0;
             CameraDirection = cameraDirection.normalized;
-
-            Mode.OnToolUpdate();
-            Info();
-            ExtraInfo();
-
-            base.OnToolUpdate();
         }
-        protected virtual bool CheckInfoMode(InfoManager.InfoMode mode, InfoManager.SubInfoMode subInfo) => mode == InfoManager.InfoMode.None && subInfo == InfoManager.SubInfoMode.Default;
 
         #endregion
 
@@ -283,16 +290,24 @@ namespace ModsCommon
 
         private bool IsMouseMove { get; set; }
         private Shortcut LastShortcut { get; set; }
-        protected override void OnToolGUI(Event e)
+        private void UpdateGUI(Event e)
         {
-            if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is not Shortcut shortcut)
-                LastShortcut = null;
-            else if (shortcut != LastShortcut)
+            if (e.type == EventType.Used)
+                return;
+
+            if(Shortcuts.FirstOrDefault(s => s.IsKeyUp) is Shortcut shortcut)
             {
                 shortcut.Press(e);
-                LastShortcut = shortcut;
                 return;
             }
+            //if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is not Shortcut shortcut)
+            //    LastShortcut = null;
+            //else if (shortcut != LastShortcut)
+            //{
+            //    shortcut.Press(e);
+            //    LastShortcut = shortcut;
+            //    return;
+            //}
 
             if (Mode == null)
                 return;
