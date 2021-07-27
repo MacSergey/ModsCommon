@@ -186,7 +186,7 @@ namespace ModsCommon
         #region UPDATE
         protected override void OnToolUpdate()
         {
-            UpdateGUI(Event.current);
+            ProcessEnter(Event.current);
 
             if (!CheckInfoMode(Singleton<InfoManager>.instance.NextMode, Singleton<InfoManager>.instance.NextSubMode))
             {
@@ -210,6 +210,43 @@ namespace ModsCommon
             base.OnToolUpdate();
         }
 
+        private bool IsMouseMove { get; set; }
+        private void ProcessEnter(Event e)
+        {
+            if (e.type == EventType.Used)
+                return;
+
+            if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is Shortcut shortcut)
+            {
+                shortcut.Press(e);
+                return;
+            }
+
+            if (Mode is not IToolMode mode)
+                return;
+
+            switch (e.type)
+            {
+                case EventType.MouseDown when MouseRayValid && e.button == 0:
+                    IsMouseMove = false;
+                    mode.OnMouseDown(e);
+                    break;
+                case EventType.MouseDrag when MouseRayValid:
+                    IsMouseMove = true;
+                    mode.OnMouseDrag(e);
+                    break;
+                case EventType.MouseUp when MouseRayValid && e.button == 0:
+                    if (IsMouseMove)
+                        mode.OnMouseUp(e);
+                    else
+                        mode.OnPrimaryMouseClicked(e);
+                    break;
+                case EventType.MouseUp when MouseRayValid && e.button == 1:
+                    mode.OnSecondaryMouseClicked();
+                    break;
+            }
+        }
+
         protected virtual bool CheckInfoMode(InfoManager.InfoMode mode, InfoManager.SubInfoMode subInfo) => mode == InfoManager.InfoMode.None && subInfo == InfoManager.SubInfoMode.Default;
         private void UpdateMouse()
         {
@@ -227,6 +264,14 @@ namespace ModsCommon
             var cameraDirection = Vector3.forward.TurnDeg(Camera.main.transform.eulerAngles.y, true);
             cameraDirection.y = 0;
             CameraDirection = cameraDirection.normalized;
+        }
+
+        protected override void OnToolGUI(Event e)
+        {
+            if (Mode is IToolMode mode)
+                mode.OnToolGUI(e);
+
+            base.OnToolGUI(e);
         }
 
         #endregion
@@ -282,58 +327,6 @@ namespace ModsCommon
             var relativePosition = uIView.ScreenPointToGUI(startScreenPosition / uIView.inputScale) - extraInfoLabel.size * 0.5f + screenDir * (extraInfoLabel.size.magnitude * 0.5f);
 
             extraInfoLabel.relativePosition = relativePosition;
-        }
-
-        #endregion
-
-        #region GUI
-
-        private bool IsMouseMove { get; set; }
-        private Shortcut LastShortcut { get; set; }
-        private void UpdateGUI(Event e)
-        {
-            if (e.type == EventType.Used)
-                return;
-
-            if(Shortcuts.FirstOrDefault(s => s.IsKeyUp) is Shortcut shortcut)
-            {
-                shortcut.Press(e);
-                return;
-            }
-            //if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is not Shortcut shortcut)
-            //    LastShortcut = null;
-            //else if (shortcut != LastShortcut)
-            //{
-            //    shortcut.Press(e);
-            //    LastShortcut = shortcut;
-            //    return;
-            //}
-
-            if (Mode == null)
-                return;
-
-            Mode.OnToolGUI(e);
-
-            switch (e.type)
-            {
-                case EventType.MouseDown when MouseRayValid && e.button == 0:
-                    IsMouseMove = false;
-                    Mode.OnMouseDown(e);
-                    break;
-                case EventType.MouseDrag when MouseRayValid:
-                    IsMouseMove = true;
-                    Mode.OnMouseDrag(e);
-                    break;
-                case EventType.MouseUp when MouseRayValid && e.button == 0:
-                    if (IsMouseMove)
-                        Mode.OnMouseUp(e);
-                    else
-                        Mode.OnPrimaryMouseClicked(e);
-                    break;
-                case EventType.MouseUp when MouseRayValid && e.button == 1:
-                    Mode.OnSecondaryMouseClicked();
-                    break;
-            }
         }
 
         #endregion
