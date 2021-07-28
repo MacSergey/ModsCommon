@@ -169,6 +169,16 @@ namespace ModsCommon.Utilities
         public static float DeltaAngle(this Bezier3 bezier) => 180 - Vector3.Angle(bezier.b - bezier.a, bezier.c - bezier.d);
         public static Vector3 Direction(this float absoluteAngle) => Vector3.right.TurnRad(absoluteAngle, false).normalized;
         public static float Magnitude(this Bounds bounds) => bounds.size.magnitude / Mathf.Sqrt(3);
+        public static float GetAngle(Vector3 firstDir, Vector3 secondDir)
+        {
+            var first = NormalizeXZ(firstDir);
+            var second = NormalizeXZ(secondDir);
+
+            var sign = -Mathf.Sign(VectorUtilsExtensions.CrossXZ(first, second));
+            var angle = Mathf.Acos(Mathf.Clamp(DotXZ(first, second), -1f, 1f));
+
+            return sign * angle;
+        }
 
         public static Bezier3 GetBezier(this Line3 line)
         {
