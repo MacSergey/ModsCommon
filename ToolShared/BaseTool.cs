@@ -66,6 +66,7 @@ namespace ModsCommon
         #region PROPERTIES
 
         public ICustomMod ModInstance => SingletonMod<TypeMod>.Instance;
+        public event Action<bool> OnStateChanged;
 
         protected bool IsInit { get; set; } = false;
         public IToolMode Mode { get; private set; }
@@ -123,11 +124,13 @@ namespace ModsCommon
             ModInstance.Logger.Debug($"Enable tool");
             Reset(DefaultMode);
             base.OnEnable();
+            OnStateChanged?.Invoke(true);
         }
         protected override void OnDisable()
         {
             ModInstance.Logger.Debug($"Disable tool");
             Reset(null);
+            OnStateChanged?.Invoke(false);
         }
         protected void Reset(IToolMode mode)
         {
