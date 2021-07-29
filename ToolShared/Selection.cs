@@ -43,26 +43,39 @@ namespace ModsCommon.Utilities
         protected abstract Vector3 Position { get; }
         protected abstract float HalfWidth { get; }
 
+        private StraightTrajectory[] _dataLines;
+        private BezierTrajectory[] _betweenDataLines;
+        private Rect? _rect;
         public IEnumerable<StraightTrajectory> DataLines
         {
             get
             {
-                foreach (var data in DataArray)
-                    yield return new StraightTrajectory(data.leftPos, data.rightPos);
+                if (_dataLines == null)
+                {
+                    _dataLines = new StraightTrajectory[DataArray.Length];
+                    for (var i = 0; i < DataArray.Length; i += 1)
+                        _dataLines[i] = new StraightTrajectory(DataArray[i].leftPos, DataArray[i].rightPos);
+                }
+                return _dataLines;
             }
         }
         public IEnumerable<BezierTrajectory> BetweenDataLines
         {
             get
             {
-                for (var i = 0; i < DataArray.Length; i += 1)
+                if (_betweenDataLines == null)
                 {
-                    var j = (i + 1) % DataArray.Length;
-                    if (DataArray.Length != 1)
-                        yield return new BezierTrajectory(GetBezier(DataArray[i].leftPos, DataArray[i].LeftDir, DataArray[j].rightPos, DataArray[j].RightDir));
-                    else
-                        yield return new BezierTrajectory(GetEndBezier(DataArray[i].leftPos, DataArray[i].LeftDir, DataArray[j].rightPos, DataArray[j].RightDir));
+                    _betweenDataLines = new BezierTrajectory[DataArray.Length];
+                    for (var i = 0; i < DataArray.Length; i += 1)
+                    {
+                        var j = (i + 1) % DataArray.Length;
+                        if (DataArray.Length != 1)
+                            _betweenDataLines[i] = new BezierTrajectory(GetBezier(DataArray[i].leftPos, DataArray[i].LeftDir, DataArray[j].rightPos, DataArray[j].RightDir));
+                        else
+                            _betweenDataLines[i] = new BezierTrajectory(GetEndBezier(DataArray[i].leftPos, DataArray[i].LeftDir, DataArray[j].rightPos, DataArray[j].RightDir));
+                    }
                 }
+                return _betweenDataLines;
             }
         }
         protected IEnumerable<ITrajectory> BorderLines
@@ -74,6 +87,14 @@ namespace ModsCommon.Utilities
 
                 foreach (var line in BetweenDataLines)
                     yield return line;
+            }
+        }
+        protected Rect Rect
+        {
+            get
+            {
+                _rect ??= BorderLines.GetRect();
+                return _rect.Value;
             }
         }
 
@@ -117,6 +138,9 @@ namespace ModsCommon.Utilities
         public virtual bool Contains(Segment3 ray, out float t)
         {
             var position = GetHitPosition(ray, out t);
+            if (!Rect.Contains(XZ(position)))
+                return false;
+
             var line = new StraightTrajectory(position, position + 1000f * Vector3.right);
 
             var count = 0;

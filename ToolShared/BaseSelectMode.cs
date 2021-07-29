@@ -23,7 +23,10 @@ namespace ModsCommon
         protected virtual bool SelectNodes { get; } = true;
         protected virtual bool SelectSegments { get; } = true;
 
+
         private HashSet<Selection> IgnoreList { get; } = new HashSet<Selection>(Selection.Comparer);
+        private Dictionary<ushort, NodeSelection> NodeBuffer { get; } = new Dictionary<ushort, NodeSelection>(NetManager.MAX_NODE_COUNT);
+        private Dictionary<ushort, SegmentSelection> SegmentBuffer { get; } = new Dictionary<ushort, SegmentSelection>(NetManager.MAX_SEGMENT_COUNT);
 
         bool _underground;
         protected bool Underground
@@ -39,6 +42,12 @@ namespace ModsCommon
             }
         }
 
+        public override void Deactivate()
+        {
+            base.Deactivate();
+            NodeBuffer.Clear();
+            SegmentBuffer.Clear();
+        }
         protected override void Reset(IToolMode prevMode)
         {
             HoverNode = null;
@@ -166,7 +175,11 @@ namespace ModsCommon
                 ignoreNodes.Add(nodeId);
                 if (IsValidNode(nodeId))
                 {
-                    selection = new NodeSelection(nodeId);
+                    if (!NodeBuffer.TryGetValue(nodeId, out selection))
+                    {
+                        selection = new NodeSelection(nodeId);
+                        NodeBuffer[nodeId] = selection;
+                    }
 
                     if (!IgnoreList.Contains(selection))
                         return selection.Contains(Ray, out t);
@@ -183,7 +196,11 @@ namespace ModsCommon
         {
             if (IsValidSegment(segmentId))
             {
-                selection = new SegmentSelection(segmentId);
+                if (!SegmentBuffer.TryGetValue(segmentId, out selection))
+                {
+                    selection = new SegmentSelection(segmentId);
+                    SegmentBuffer[segmentId] = selection;
+                }
 
                 if (!IgnoreList.Contains(selection))
                     return selection.Contains(Ray, out t);
