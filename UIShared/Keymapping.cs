@@ -42,7 +42,7 @@ namespace ModsCommon.UI
                 else if (p.keycode != KeyCode.Escape)
                     EditBinding.value = SavedInputKey.Encode(p.keycode, p.control, p.shift, p.alt);
 
-                (p.source as UITextComponent).text = EditBinding.ToLocalizedString("KEYNAME");
+                (p.source as UITextComponent).text = EditBinding.GetLocale();
                 EditBinding = null;
             }
         }
@@ -64,7 +64,7 @@ namespace ModsCommon.UI
                 UIView.PopModal();
                 EditBinding.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utility.CtrlIsPressed, Utility.ShiftIsPressed, Utility.AltIsPressed);
                 var button = p.source as UIButton;
-                button.text = EditBinding.ToLocalizedString("KEYNAME");
+                button.text = EditBinding.GetLocale();
                 button.buttonsMask = UIMouseButton.Left;
                 EditBinding = null;
             }

@@ -10,7 +10,10 @@ namespace ModsCommon.Utilities
         protected string LabelKey { get; }
         public SavedInputKey InputKey { get; }
         private Action Action { get; }
+        public bool CanRepeat { get; set; } = false;
         public bool NotSet => InputKey.Key == KeyCode.None;
+        private DateTime LastPress { get; set; }
+
         public Shortcut(string fileName, string name, string labelKey, InputKey key, Action action = null)
         {
             LabelKey = labelKey;
@@ -18,12 +21,14 @@ namespace ModsCommon.Utilities
             Action = action;
         }
 
-        public bool IsKeyUp => InputKey.IsKeyUp();
+        public bool IsKeyUp => CanRepeat ? (InputKey.IsPressed() && (DateTime.UtcNow - LastPress).TotalMilliseconds > 150f) : InputKey.IsKeyUp();
         public virtual bool Press(Event e)
         {
-            if (IsKeyUp)
+            if (e.type != EventType.Used && IsKeyUp)
             {
                 Press();
+                e.Use();
+                LastPress = DateTime.UtcNow;
                 return true;
             }
             else
@@ -31,7 +36,7 @@ namespace ModsCommon.Utilities
         }
         public void Press() => Action?.Invoke();
 
-        public override string ToString() => InputKey.ToLocalizedString("KEYNAME");
+        public override string ToString() => InputKey.GetLocale();
     }
 
     public abstract class ModShortcut<TypeMod> : Shortcut

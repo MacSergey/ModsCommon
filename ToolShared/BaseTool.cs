@@ -66,6 +66,7 @@ namespace ModsCommon
         #region PROPERTIES
 
         public ICustomMod ModInstance => SingletonMod<TypeMod>.Instance;
+        public event Action<bool> OnStateChanged;
 
         protected bool IsInit { get; set; } = false;
         public IToolMode Mode { get; private set; }
@@ -76,7 +77,7 @@ namespace ModsCommon
 
         private ToolBase PrevTool { get; set; }
 
-        protected abstract bool ShowToolTip { get; }
+        protected virtual bool ShowToolTip => UIInput.hoveredComponent == null;
         protected abstract IToolMode DefaultMode { get; }
 
         public Segment3 Ray { get; private set; }
@@ -123,11 +124,13 @@ namespace ModsCommon
             ModInstance.Logger.Debug($"Enable tool");
             Reset(DefaultMode);
             base.OnEnable();
+            OnStateChanged?.Invoke(true);
         }
         protected override void OnDisable()
         {
             ModInstance.Logger.Debug($"Disable tool");
             Reset(null);
+            OnStateChanged?.Invoke(false);
         }
         protected void Reset(IToolMode mode)
         {
@@ -186,6 +189,8 @@ namespace ModsCommon
         #region UPDATE
         protected override void OnToolUpdate()
         {
+            ProcessEnter(Event.current);
+
             if (!CheckInfoMode(Singleton<InfoManager>.instance.NextMode, Singleton<InfoManager>.instance.NextSubMode))
             {
                 Disable(false);
@@ -199,6 +204,55 @@ namespace ModsCommon
                 SetModeNow(nextMode);
             }
 
+            UpdateMouse();
+
+            Mode.OnToolUpdate();
+            Info();
+            ExtraInfo();
+
+            base.OnToolUpdate();
+        }
+
+        private bool IsMouseMove { get; set; }
+        private void ProcessEnter(Event e)
+        {
+            if (e.type == EventType.Used)
+                return;
+
+            if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is Shortcut shortcut)
+            {
+                shortcut.Press(e);
+                return;
+            }
+
+            if (Mode is not IToolMode mode)
+                return;
+
+            switch (e.type)
+            {
+                case EventType.MouseDown when MouseRayValid && e.button == 0:
+                    IsMouseMove = false;
+                    mode.OnMouseDown(e);
+                    break;
+                case EventType.MouseDrag when MouseRayValid:
+                    IsMouseMove = true;
+                    mode.OnMouseDrag(e);
+                    break;
+                case EventType.MouseUp when MouseRayValid && e.button == 0:
+                    if (IsMouseMove)
+                        mode.OnMouseUp(e);
+                    else
+                        mode.OnPrimaryMouseClicked(e);
+                    break;
+                case EventType.MouseUp when MouseRayValid && e.button == 1:
+                    mode.OnSecondaryMouseClicked();
+                    break;
+            }
+        }
+
+        protected virtual bool CheckInfoMode(InfoManager.InfoMode mode, InfoManager.SubInfoMode subInfo) => mode == InfoManager.InfoMode.None && subInfo == InfoManager.SubInfoMode.Default;
+        private void UpdateMouse()
+        {
             var uiView = UIView.GetAView();
             PrevMousePosition = MousePosition;
             MousePosition = uiView.ScreenPointToGUI(Input.mousePosition / uiView.inputScale);
@@ -213,14 +267,15 @@ namespace ModsCommon
             var cameraDirection = Vector3.forward.TurnDeg(Camera.main.transform.eulerAngles.y, true);
             cameraDirection.y = 0;
             CameraDirection = cameraDirection.normalized;
-
-            Mode.OnToolUpdate();
-            Info();
-            ExtraInfo();
-
-            base.OnToolUpdate();
         }
-        protected virtual bool CheckInfoMode(InfoManager.InfoMode mode, InfoManager.SubInfoMode subInfo) => mode == InfoManager.InfoMode.None && subInfo == InfoManager.SubInfoMode.Default;
+
+        protected override void OnToolGUI(Event e)
+        {
+            if (Mode is IToolMode mode)
+                mode.OnToolGUI(e);
+
+            base.OnToolGUI(e);
+        }
 
         #endregion
 
@@ -279,50 +334,6 @@ namespace ModsCommon
 
         #endregion
 
-        #region GUI
-
-        private bool IsMouseMove { get; set; }
-        private Shortcut LastShortcut { get; set; }
-        protected override void OnToolGUI(Event e)
-        {
-            if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is not Shortcut shortcut)
-                LastShortcut = null;
-            else if (shortcut != LastShortcut)
-            {
-                shortcut.Press(e);
-                LastShortcut = shortcut;
-                return;
-            }
-
-            if (Mode == null)
-                return;
-
-            Mode.OnToolGUI(e);
-
-            switch (e.type)
-            {
-                case EventType.MouseDown when MouseRayValid && e.button == 0:
-                    IsMouseMove = false;
-                    Mode.OnMouseDown(e);
-                    break;
-                case EventType.MouseDrag when MouseRayValid:
-                    IsMouseMove = true;
-                    Mode.OnMouseDrag(e);
-                    break;
-                case EventType.MouseUp when MouseRayValid && e.button == 0:
-                    if (IsMouseMove)
-                        Mode.OnMouseUp(e);
-                    else
-                        Mode.OnPrimaryMouseClicked(e);
-                    break;
-                case EventType.MouseUp when MouseRayValid && e.button == 1:
-                    Mode.OnSecondaryMouseClicked();
-                    break;
-            }
-        }
-
-        #endregion
-
         #region OVERLAY
 
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo)
@@ -339,6 +350,8 @@ namespace ModsCommon
         where TypeModeType : Enum
     {
         protected Dictionary<TypeModeType, IToolMode<TypeModeType>> ToolModes { get; set; } = new Dictionary<TypeModeType, IToolMode<TypeModeType>>();
+        public IEnumerable<IToolMode<TypeModeType>> Modes => ToolModes.Values;
+
         public new IToolMode<TypeModeType> Mode => base.Mode as IToolMode<TypeModeType>;
         public TypeModeType CurrentMode => Mode != null ? Mode.Type : 0.ToEnum<TypeModeType>();
 

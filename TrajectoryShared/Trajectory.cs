@@ -63,6 +63,7 @@ namespace ModsCommon.Utilities
         public BezierTrajectory(BezierTrajectory trajectory) : this(trajectory.Trajectory) { }
         public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
         public BezierTrajectory(ref NetSegment segment) : this(segment.m_startNode.GetNode().m_position, segment.m_startDirection, segment.m_endNode.GetNode().m_position, segment.m_endDirection) { }
+        public BezierTrajectory(ushort segmentId) : this(ref segmentId.GetSegment()) { }
 
         private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize)
         {
@@ -332,6 +333,43 @@ namespace ModsCommon.Utilities
             yield return new StraightTrajectory(new Vector3(rect.xMin, height, rect.yMax), new Vector3(rect.xMax, height, rect.yMax));
             yield return new StraightTrajectory(new Vector3(rect.xMin, height, rect.yMin), new Vector3(rect.xMin, height, rect.yMax));
             yield return new StraightTrajectory(new Vector3(rect.xMax, height, rect.yMin), new Vector3(rect.xMax, height, rect.yMax));
+        }
+        public static Rect GetRect(this IEnumerable<ITrajectory> contour)
+        {
+            var firstPos = contour.FirstOrDefault(t => t != null)?.StartPosition ?? default;
+            var rect = Rect.MinMaxRect(firstPos.x, firstPos.z, firstPos.x, firstPos.z);
+
+            foreach (var trajectory in contour)
+            {
+                switch (trajectory)
+                {
+                    case BezierTrajectory bezierTrajectory:
+                        Set(bezierTrajectory.Trajectory.a);
+                        Set(bezierTrajectory.Trajectory.b);
+                        Set(bezierTrajectory.Trajectory.c);
+                        Set(bezierTrajectory.Trajectory.d);
+                        break;
+                    case StraightTrajectory straightTrajectory:
+                        Set(straightTrajectory.Trajectory.a);
+                        Set(straightTrajectory.Trajectory.b);
+                        break;
+                }
+            }
+
+            return rect;
+
+            void Set(Vector3 pos)
+            {
+                if (pos.x < rect.xMin)
+                    rect.xMin = pos.x;
+                else if (pos.x > rect.xMax)
+                    rect.xMax = pos.x;
+
+                if (pos.z < rect.yMin)
+                    rect.yMin = pos.z;
+                else if (pos.z > rect.yMax)
+                    rect.yMax = pos.z;
+            }
         }
 
         public enum Direction

@@ -234,9 +234,9 @@ namespace ModsCommon
 #endif
         }
 
-#endregion
+        #endregion
 
-#region DEBUG
+        #region DEBUG
 
         private void AddDebug(UIAdvancedHelper helper)
         {
@@ -248,7 +248,7 @@ namespace ModsCommon
             AddCheckBox(group, "Any versions", AnyVersions);
         }
 
-#endregion
+        #endregion
     }
     public class UIAdvancedHelper : UIHelper, IEnumerable<UIHelper>
     {
@@ -345,27 +345,16 @@ namespace ModsCommon
             }
         }
 
+        public static void AddCheckboxPanel(UIHelper group, string mainLabel, SavedInt optionsSaved, string[] labels, Action onChanged = null)
+        {
+            AddLabel(group, mainLabel, padding: 25);
+            AddCheckboxPanel(group, optionsSaved, labels, 25, onChanged, out _);
+        }
         public static void AddCheckboxPanel(UIHelper group, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
-            var inProcess = false;
-            var checkBoxes = new UICheckBox[labels.Length];
             var optionsPanel = default(CustomUIPanel);
-
             var mainCheckBox = group.AddCheckbox(mainLabel, mainSaved, OnMainChanged) as UICheckBox;
-
-            optionsPanel = (group.self as UIComponent).AddUIComponent<CustomUIPanel>();
-            optionsPanel.autoLayout = true;
-            optionsPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            optionsPanel.autoFitChildrenHorizontally = true;
-            optionsPanel.autoFitChildrenVertically = true;
-            optionsPanel.autoLayoutPadding = new RectOffset(25, 0, 0, 5);
-            var panelHelper = new UIHelper(optionsPanel);
-
-            for (var i = 0; i < checkBoxes.Length; i += 1)
-            {
-                var index = i;
-                checkBoxes[i] = panelHelper.AddCheckbox(labels[i], optionsSaved == i, (value) => Set(index, value)) as UICheckBox;
-            }
+            AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged, out optionsPanel);
 
             SetVisible();
 
@@ -376,6 +365,26 @@ namespace ModsCommon
                 SetVisible();
             }
             void SetVisible() => optionsPanel.isVisible = mainSaved;
+        }
+        private static void AddCheckboxPanel(UIHelper group, SavedInt optionsSaved, string[] labels, int padding, Action onChanged, out CustomUIPanel optionsPanel)
+        {
+            var inProcess = false;
+            var checkBoxes = new UICheckBox[labels.Length];
+
+            optionsPanel = (group.self as UIComponent).AddUIComponent<CustomUIPanel>();
+            optionsPanel.autoLayout = true;
+            optionsPanel.autoLayoutDirection = LayoutDirection.Vertical;
+            optionsPanel.autoFitChildrenHorizontally = true;
+            optionsPanel.autoFitChildrenVertically = true;
+            optionsPanel.autoLayoutPadding = new RectOffset(25 + padding, 0, 0, 5);
+            var panelHelper = new UIHelper(optionsPanel);
+
+            for (var i = 0; i < checkBoxes.Length; i += 1)
+            {
+                var index = i;
+                checkBoxes[i] = panelHelper.AddCheckbox(labels[i], optionsSaved == i, (value) => Set(index, value)) as UICheckBox;
+            }
+
             void Set(int index, bool value)
             {
                 if (!inProcess)
@@ -389,6 +398,7 @@ namespace ModsCommon
                 }
             }
         }
+
         public static UIButton AddButton(UIHelper group, string text, OnButtonClicked click, float width = 400)
         {
             var button = group.AddButton(text, click) as UIButton;

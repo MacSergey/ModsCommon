@@ -92,7 +92,25 @@ namespace ModsCommon.Utilities
                 laneId = GetLane(laneId).m_nextLane;
             }
         }
+        public static bool GetCommon(ushort firstId, ushort secondId, out ushort segmentId)
+        {
+            var firstSegmentIds = firstId.GetNode().SegmentIds().ToArray();
+            var secondSegmentIds = secondId.GetNode().SegmentIds().ToArray();
 
+            foreach(var firstSegmentId in firstSegmentIds)
+            {
+                if(secondSegmentIds.Contains(firstSegmentId))
+                {
+                    segmentId = firstSegmentId;
+                    return true;
+                }
+            }
+
+            segmentId = 0;
+            return false;
+        }
+        public static bool Contains(ref this NetNode node, ushort segmentId) => node.SegmentIds().Contains(segmentId);
+        public static bool Contains(ref this NetSegment segment, ushort nodeId) => segment.NodeIds().Contains(nodeId); 
 
         public static bool IsInvert(ref this NetSegment segment) => (segment.m_flags & NetSegment.Flags.Invert) != 0;
 

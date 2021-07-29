@@ -16,6 +16,7 @@ namespace ModsCommon
         public static bool IsUUIEnabled => UUISearcher.GetPlugin()?.isEnabled == true;
 
         public bool UUIRegistered { get; private set; }
+        public UIComponent UUIButton { get; private set; }
 
         protected abstract UITextureAtlas UUIAtlas { get; }
         protected abstract string UUINormalSprite { get; }
@@ -23,7 +24,7 @@ namespace ModsCommon
         protected abstract string UUIPressedSprite { get; }
         protected abstract string UUIDisabledSprite { get; }
 
-        public void RegisterUUI()
+        public virtual void RegisterUUI()
         {
             if (IsUUIEnabled)
             {
@@ -41,10 +42,9 @@ namespace ModsCommon
                     };
 
                     var tool = SingletonTool<TypeTool>.Instance;
-                    var button = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
+                    UUIButton = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
 
-                    button.eventTooltipEnter += (UIComponent component, UIMouseEventParameter eventParam) => component.tooltip = ToolTip;
-
+                    UUIButton.eventTooltipEnter += (UIComponent component, UIMouseEventParameter eventParam) => component.tooltip = ToolTip;
                     UUIRegistered = true;
                 }
                 catch (Exception error)
