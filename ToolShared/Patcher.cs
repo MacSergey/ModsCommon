@@ -52,16 +52,21 @@ namespace ModsCommon
             }
         }
 
-        public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeMod, TypeButton>(string templateName, ref OptionPanelBase __result)
+        public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeMod, TypeButton>(string templateName, ref OptionPanelBase __result, params string[] allow)
             where TypeMod : ICustomMod
             where TypeButton : UIButton
         {
-            if (__result == null || templateName != "RoadsOptionPanel" || __result.component.Find<TypeButton>(typeof(TypeButton).Name) != null)
+            if (__result == null || !allow.Any(i => i == templateName) || __result.component.Find<TypeButton>(typeof(TypeButton).Name) != null)
                 return;
 
-            SingletonMod<TypeMod>.Logger.Debug($"Create button");
+            SingletonMod<TypeMod>.Logger.Debug($"Create button on {templateName}");
             __result.component.AddUIComponent<TypeButton>();
             SingletonMod<TypeMod>.Logger.Debug($"Button created");
         }
+        public static string RoadsOptionPanel => nameof(RoadsOptionPanel);
+        public static string PathsOptionPanel => nameof(PathsOptionPanel);
+        public static string CanalsOptionPanel => nameof(CanalsOptionPanel);
+        public static string QuaysOptionPanel => nameof(QuaysOptionPanel);
+        public static string FloodWallsOptionPanel => nameof(FloodWallsOptionPanel);
     }
 }

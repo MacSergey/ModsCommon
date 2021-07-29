@@ -76,7 +76,7 @@ namespace ModsCommon
 
         private ToolBase PrevTool { get; set; }
 
-        protected abstract bool ShowToolTip { get; }
+        protected virtual bool ShowToolTip => UIInput.hoveredComponent == null;
         protected abstract IToolMode DefaultMode { get; }
 
         public Segment3 Ray { get; private set; }
@@ -347,6 +347,8 @@ namespace ModsCommon
         where TypeModeType : Enum
     {
         protected Dictionary<TypeModeType, IToolMode<TypeModeType>> ToolModes { get; set; } = new Dictionary<TypeModeType, IToolMode<TypeModeType>>();
+        public IEnumerable<IToolMode<TypeModeType>> Modes => ToolModes.Values;
+
         public new IToolMode<TypeModeType> Mode => base.Mode as IToolMode<TypeModeType>;
         public TypeModeType CurrentMode => Mode != null ? Mode.Type : 0.ToEnum<TypeModeType>();
 
