@@ -36,7 +36,7 @@ namespace ModsCommon.Utilities
         }
         public void Press() => Action?.Invoke();
 
-        public override string ToString() => InputKey.ToLocalizedString("KEYNAME");
+        public override string ToString() => InputKey.GetLocale();
     }
 
     public abstract class ModShortcut<TypeMod> : Shortcut
