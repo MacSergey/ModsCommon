@@ -322,7 +322,7 @@ Redémarrez le jeu.</value>
     <value>Dépannage</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
+    <value>Si vous aimez {0}, vous pouvez soutenir l'auteur</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Appuyez sur {0} pour changer parmi les nœuds proches</value>
