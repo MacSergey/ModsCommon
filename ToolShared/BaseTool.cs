@@ -197,16 +197,17 @@ namespace ModsCommon
                 return;
             }
 
-            if (NextMode != null)
+            if (NextMode is IToolMode nextMode)
             {
-                var nextMode = NextMode;
                 NextMode = null;
                 SetModeNow(nextMode);
             }
 
             UpdateMouse();
 
-            Mode.OnToolUpdate();
+            if (Mode is IToolMode mode)
+                mode.OnToolUpdate();
+
             Info();
             ExtraInfo();
 
