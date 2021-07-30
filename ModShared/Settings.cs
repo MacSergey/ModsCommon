@@ -287,14 +287,16 @@ namespace ModsCommon
             {
                 if (float.TryParse(text, out var value))
                 {
-                    if ((min.HasValue && value < min.Value) || (max.HasValue && value > max.Value))
-                        value = defaultValue ?? 0;
+                    if (min.HasValue && value < min.Value)
+                        value = min.Value;
+                    if (max.HasValue && value > max.Value)
+                        value = max.Value;
 
                     saved.value = value;
                     field.text = value.ToString();
                 }
                 else
-                    field.text = saved.ToString();
+                    field.text = defaultValue.HasValue ? defaultValue.ToString() : saved.ToString();
 
                 onSubmit?.Invoke();
             }
@@ -309,14 +311,16 @@ namespace ModsCommon
             {
                 if (int.TryParse(text, out var value))
                 {
-                    if ((min.HasValue && value < min.Value) || (max.HasValue && value > max.Value))
-                        value = defaultValue ?? 0;
+                    if (min.HasValue && value < min.Value)
+                        value = min.Value;
+                    if (max.HasValue && value > max.Value)
+                        value = max.Value;
 
                     saved.value = value;
                     field.text = value.ToString();
                 }
                 else
-                    field.text = saved.ToString();
+                    field.text = defaultValue.HasValue ? defaultValue.ToString() : saved.ToString();
 
                 onSubmit?.Invoke();
             }

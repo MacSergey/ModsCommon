@@ -45,8 +45,7 @@ namespace ModsCommon
         public override void Deactivate()
         {
             base.Deactivate();
-            NodeBuffer.Clear();
-            SegmentBuffer.Clear();
+            Reset(this);
         }
         protected override void Reset(IToolMode prevMode)
         {
@@ -54,6 +53,8 @@ namespace ModsCommon
             HoverSegment = null;
             Underground = false;
             IgnoreList.Clear();
+            NodeBuffer.Clear();
+            SegmentBuffer.Clear();
         }
         public void IgnoreSelected()
         {
