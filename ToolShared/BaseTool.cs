@@ -206,10 +206,11 @@ namespace ModsCommon
             UpdateMouse();
 
             if (Mode is IToolMode mode)
+            {
                 mode.OnToolUpdate();
-
-            Info();
-            ExtraInfo();
+                Info(mode);
+                ExtraInfo(mode);
+            }
 
             base.OnToolUpdate();
         }
@@ -279,10 +280,10 @@ namespace ModsCommon
 
         #region INFO
 
-        private void Info()
+        private void Info(IToolMode mode)
         {
-            if (!UIView.HasModalInput() && ShowToolTip && Mode.GetToolInfo() is string info && !string.IsNullOrEmpty(info))
-                ShowToolInfo(Mode.GetToolInfo());
+            if (!UIView.HasModalInput() && ShowToolTip && mode.GetToolInfo() is string info && !string.IsNullOrEmpty(info))
+                ShowToolInfo(info);
             else
                 cursorInfoLabel.isVisible = false;
         }
@@ -306,9 +307,9 @@ namespace ModsCommon
 
             static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);
         }
-        private void ExtraInfo()
+        private void ExtraInfo(IToolMode mode)
         {
-            if (!UIView.HasModalInput() && Mode.GetExtraInfo(out var text, out var color, out float size, out var position, out var direction))
+            if (!UIView.HasModalInput() && mode.GetExtraInfo(out var text, out var color, out float size, out var position, out var direction))
                 ShowExtraInfo(text, color, size, position, direction);
             else
                 extraInfoLabel.isVisible = false;
