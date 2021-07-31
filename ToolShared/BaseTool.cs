@@ -217,14 +217,11 @@ namespace ModsCommon
         private bool IsMouseMove { get; set; }
         private void ProcessEnter(Event e)
         {
-            if (e.type == EventType.Used)
+            if (e.type == EventType.Used || e.type == EventType.Repaint)
                 return;
 
-            if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is Shortcut shortcut)
-            {
-                shortcut.Press(e);
+            if (Shortcuts.FirstOrDefault(s => s.Press(e)) is Shortcut shortcut)
                 return;
-            }
 
             if (Mode is not IToolMode mode)
                 return;
@@ -376,7 +373,7 @@ namespace ModsCommon
     public abstract class BaseThreadingExtension<TypeTool> : ThreadingExtensionBase
         where TypeTool : ITool
     {
-        protected virtual bool Detected(TypeTool instance) => !UIView.HasModalInput() && !UIView.HasInputFocus() && instance.Activation.IsKeyUp;
+        protected virtual bool Detected(TypeTool instance) => !UIView.HasModalInput() && !UIView.HasInputFocus() && instance.Activation.IsPressed;
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             if (SingletonTool<TypeTool>.Instance is TypeTool toolInstance && Detected(toolInstance))
