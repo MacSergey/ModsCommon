@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Dependency_Conflict" xml:space="preserve">
+    <value>비호환 모드가 있습니다.</value>
+  </data>
+  <data name="Dependency_Disable" xml:space="preserve">
+    <value>비활성화</value>
+  </data>
+  <data name="Dependency_DisableMod" xml:space="preserve">
+    <value>{0} 비활성화</value>
+  </data>
+  <data name="Dependency_Enable" xml:space="preserve">
+    <value>활성화</value>
+  </data>
+  <data name="Dependency_EnableMod" xml:space="preserve">
+    <value>{0} 활성화</value>
+  </data>
+  <data name="Dependency_Get" xml:space="preserve">
+    <value>얻기</value>
+  </data>
+  <data name="Dependency_Missing" xml:space="preserve">
+    <value>누락된 디펜던시(Dependency)가 있습니다.</value>
+  </data>
+  <data name="Dependency_MissingAndConflict" xml:space="preserve">
+    <value>누락된 디펜던시(Dependency)와 비호환 모드가 있습니다.</value>
+  </data>
+  <data name="Dependency_NeedFix" xml:space="preserve">
+    <value>{0}을(를) 사용하려면 다음을 해결해야 합니다. 해결하지 않으면 모드가 비활성화됩니다.</value>
+  </data>
+  <data name="Dependency_NoIssues" xml:space="preserve">
+    <value>모든 오류가 수정되었습니다. {0}을(를) 활성화할 수 있습니다.</value>
+  </data>
+  <data name="Dependency_Remove" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Dependency_Subscribe" xml:space="preserve">
+    <value>구독</value>
+  </data>
+  <data name="Dependency_Unsubscribe" xml:space="preserve">
+    <value>구독 취소</value>
+  </data>
+  <data name="FieldPanel_ScrollWheel" xml:space="preserve">
+    <value>마우스 휠을 돌려 변경하세요
+Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
+  </data>
+  <data name="ListPanel_ScrollWheel" xml:space="preserve">
+    <value>마우스 휠을 돌려 변경하세요</value>
+  </data>
+  <data name="MessageBox_Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="MessageBox_DontShowAgain" xml:space="preserve">
+    <value>다시 표시하지 않음</value>
+  </data>
+  <data name="MessageBox_MoreInfo" xml:space="preserve">
+    <value>더 많은 정보</value>
+  </data>
+  <data name="MessageBox_No" xml:space="preserve">
+    <value>아니오</value>
+  </data>
+  <data name="MessageBox_OK" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="MessageBox_Yes" xml:space="preserve">
+    <value>예</value>
+  </data>
+  <data name="Mod_BetaWarningAgree" xml:space="preserve">
+    <value>동의함</value>
+  </data>
+  <data name="Mod_BetaWarningCaption" xml:space="preserve">
+    <value>베타 버전 경고</value>
+  </data>
+  <data name="Mod_BetaWarningGetStable" xml:space="preserve">
+    <value>Stable 버전을 사용하세요</value>
+  </data>
+  <data name="Mod_BetaWarningMessage" xml:space="preserve">
+    <value>현재 {0}의 베타 버전을 사용하고 있습니다. 베타 버전은 새 기능을 실험하는 버전으로, 오류가 있을 수 있습니다. 만약 실수로 구독했거나 위 사항을 모른다면 Stable 버전을 사용하세요.</value>
+  </data>
+  <data name="Mod_DescriptionBeta" xml:space="preserve">
+    <value>현재 베타 버전을 사용하고 있습니다. 오류가 있을 수 있으며 안전성이 보장되지 않습니다!</value>
+  </data>
+  <data name="Mod_LinuxWarning" xml:space="preserve">
+    <value>시티즈: 스카이라인 리눅스 버전은 모드가 정상 작동하기 위한 몇몇 필수 라이브러리기 없기 때문에 "Mono Develop" 패키지를 다운받아서 사용해야 합니다. 아무 문제가 없다면 이 메세지를 무시하셔도 좋아요.</value>
+  </data>
+  <data name="Mod_LoadedWithErrors" xml:space="preserve">
+    <value>모드에 에러가 있습니다.
+귀차니즘으로 인해 그대로 사용하실 수도 있지만 추천드리지 않습니다. 게임을 재시작해주세요.</value>
+  </data>
+  <data name="Mod_LocaleGame" xml:space="preserve">
+    <value>게임 언어</value>
+  </data>
+  <data name="Mod_Locale_cs" xml:space="preserve">
+    <value>체코어</value>
+  </data>
+  <data name="Mod_Locale_de" xml:space="preserve">
+    <value>독일어</value>
+  </data>
+  <data name="Mod_Locale_en" xml:space="preserve">
+    <value>영어 (미국)</value>
+  </data>
+  <data name="Mod_Locale_en-gb" xml:space="preserve">
+    <value>영어 (영국)</value>
+  </data>
+  <data name="Mod_Locale_es" xml:space="preserve">
+    <value>스페인어</value>
+  </data>
+  <data name="Mod_Locale_fi" xml:space="preserve">
+    <value>핀란드어</value>
+  </data>
+  <data name="Mod_Locale_fr" xml:space="preserve">
+    <value>프랑스어</value>
+  </data>
+  <data name="Mod_Locale_id" xml:space="preserve">
+    <value>인도네시아어</value>
+  </data>
+  <data name="Mod_Locale_it" xml:space="preserve">
+    <value>이탈리아어</value>
+  </data>
+  <data name="Mod_Locale_ja" xml:space="preserve">
+    <value>일본어</value>
+  </data>
+  <data name="Mod_Locale_mr" xml:space="preserve">
+    <value>말레이시아어</value>
+  </data>
+  <data name="Mod_Locale_nl" xml:space="preserve">
+    <value>네덜란드어</value>
+  </data>
+  <data name="Mod_Locale_pl" xml:space="preserve">
+    <value>폴란드어</value>
+  </data>
+  <data name="Mod_Locale_pt" xml:space="preserve">
+    <value>포르투갈어</value>
+  </data>
+  <data name="Mod_Locale_ru" xml:space="preserve">
+    <value>러시아어</value>
+  </data>
+  <data name="Mod_Locale_zh-cn" xml:space="preserve">
+    <value>중국어 (간체)</value>
+  </data>
+  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+    <value>중국어 (번체)</value>
+  </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>지원</value>
+  </data>
+  <data name="Mod_WhatsNewCaption" xml:space="preserve">
+    <value>{0}의 새로운 기능</value>
+  </data>
+  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
+    <value>Look for actual beta change log on Discord</value>
+  </data>
+  <data name="Mod_WhatsNewVersion" xml:space="preserve">
+    <value>버전 {0}</value>
+  </data>
+  <data name="Panel_Additional" xml:space="preserve">
+    <value>추가적</value>
+  </data>
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>체인지로그</value>
+  </data>
+  <data name="Settings_ForLinuxUsers" xml:space="preserve">
+    <value>리눅스 유저 여러분께</value>
+  </data>
+  <data name="Settings_General" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>언어</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>알림</value>
+  </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>활성화 도구</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>바로가기</value>
+  </data>
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>선택 스텝오버</value>
+  </data>
+  <data name="Settings_ShowOnlyMajor" xml:space="preserve">
+    <value>주요 업데이트만 안내하기</value>
+  </data>
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>툴팁 보이기</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>새 기능 보기</value>
+  </data>
+  <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
+    <value>리눅스에서 크래시 해결하기</value>
+  </data>
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>지원</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>문제 해결</value>
+  </data>
+  <data name="Setting_Donate" xml:space="preserve">
+    <value>{0}가 마음에 들으셨다면 제작자를 후원해 주세요</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>{0}을 눌러
+선택 스텝오버</value>
+  </data>
+</root>
