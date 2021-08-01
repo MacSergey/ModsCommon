@@ -8,50 +8,54 @@ namespace ModsCommon.UI
 {
     public class KeymappingsPanel : UICustomControl
     {
-        private SavedInputKey EditBinding { get; set; }
-        private int count;
+        private static Shortcut EditShortcut { get; set; }
 
         public void AddKeymapping(Shortcut shortcut)
         {
             var panel = component.AttachUIComponent(UITemplateManager.GetAsGameObject("KeyBindingTemplate")) as UIPanel;
 
-            if (count % 2 == 1)
+            if (component.components.Count % 2 == 0)
                 panel.backgroundSprite = null;
 
-            count += 1;
+            if (panel.Find<UILabel>("Name") is UILabel label)
+                label.text = shortcut.Label;
 
-            var label = panel.Find<UILabel>("Name");
-            label.text = shortcut.Label;
-
-            var button = panel.Find<UIButton>("Binding");
-            button.eventKeyDown += OnBindingKeyDown;
-            button.eventMouseDown += OnBindingMouseDown;
-            button.text = shortcut.ToString();
-            button.objectUserData = shortcut.InputKey;
+            if (panel.Find<UIButton>("Binding") is UIButton button)
+            {
+                button.eventKeyDown += OnBindingKeyDown;
+                button.eventMouseDown += OnBindingMouseDown;
+                button.text = shortcut.ToString();
+                button.objectUserData = shortcut;
+            }
         }
 
         private void OnBindingKeyDown(UIComponent comp, UIKeyEventParameter p)
         {
-            if (EditBinding != null && !IsModifierKey(p.keycode))
+            if (EditShortcut != null && !IsModifierKey(p.keycode))
             {
                 p.Use();
                 UIView.PopModal();
 
                 if (p.keycode == KeyCode.Backspace)
-                    EditBinding.value = SavedInputKey.Empty;
+                    EditShortcut.InputKey.value = SavedInputKey.Empty;
                 else if (p.keycode != KeyCode.Escape)
-                    EditBinding.value = SavedInputKey.Encode(p.keycode, p.control, p.shift, p.alt);
+                {
+                    if (EditShortcut.IgnoreModifiers)
+                        EditShortcut.InputKey.value = SavedInputKey.Encode(p.keycode, false, false, false);
+                    else
+                        EditShortcut.InputKey.value = SavedInputKey.Encode(p.keycode, p.control, p.shift, p.alt);
+                }
 
-                (p.source as UITextComponent).text = EditBinding.GetLocale();
-                EditBinding = null;
+                (p.source as UITextComponent).text = EditShortcut.InputKey.GetLocale();
+                EditShortcut = null;
             }
         }
         private void OnBindingMouseDown(UIComponent comp, UIMouseEventParameter p)
         {
-            if (EditBinding == null)
+            if (EditShortcut == null)
             {
                 p.Use();
-                EditBinding = (SavedInputKey)p.source.objectUserData;
+                EditShortcut = (Shortcut)p.source.objectUserData;
                 var button = p.source as UIButton;
                 button.buttonsMask = UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle | UIMouseButton.Special0 | UIMouseButton.Special1 | UIMouseButton.Special2 | UIMouseButton.Special3;
                 button.text = Locale.Get("KEYMAPPING_PRESSANYKEY");
@@ -62,11 +66,16 @@ namespace ModsCommon.UI
             {
                 p.Use();
                 UIView.PopModal();
-                EditBinding.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utility.CtrlIsPressed, Utility.ShiftIsPressed, Utility.AltIsPressed);
+
+                if (EditShortcut.IgnoreModifiers)
+                    EditShortcut.InputKey.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), false, false, false);
+                else
+                    EditShortcut.InputKey.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utility.CtrlIsPressed, Utility.ShiftIsPressed, Utility.AltIsPressed);
+
                 var button = p.source as UIButton;
-                button.text = EditBinding.GetLocale();
+                button.text = EditShortcut.InputKey.GetLocale();
                 button.buttonsMask = UIMouseButton.Left;
-                EditBinding = null;
+                EditShortcut = null;
             }
         }
 
