@@ -237,6 +237,9 @@ Riavvia il gioco.</value>
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>Giapponese</value>
   </data>
+  <data name="Mod_Locale_ko" xml:space="preserve">
+    <value>Korean</value>
+  </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>Malese</value>
   </data>

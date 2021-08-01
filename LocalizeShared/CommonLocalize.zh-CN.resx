@@ -237,6 +237,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>日语</value>
   </data>
+  <data name="Mod_Locale_ko" xml:space="preserve">
+    <value>Korean</value>
+  </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>马来语</value>
   </data>

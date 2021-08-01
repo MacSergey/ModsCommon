@@ -182,13 +182,13 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>예</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>동의함</value>
+    <value>계속하기</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
     <value>베타 버전 경고</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Stable 버전을 사용하세요</value>
+    <value>Stable 버전 구독</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
     <value>현재 {0}의 베타 버전을 사용하고 있습니다. 베타 버전은 새 기능을 실험하는 버전으로, 오류가 있을 수 있습니다. 만약 실수로 구독했거나 위 사항을 모른다면 Stable 버전을 사용하세요.</value>
@@ -213,10 +213,10 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>독일어</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>영어 (미국)</value>
+    <value>영어, 미국</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>영어 (영국)</value>
+    <value>영어, 영국</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
     <value>스페인어</value>
@@ -236,6 +236,9 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>일본어</value>
   </data>
+  <data name="Mod_Locale_ko" xml:space="preserve">
+    <value>한국어</value>
+  </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>말레이시아어</value>
   </data>
@@ -252,10 +255,10 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>러시아어</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>중국어 (간체)</value>
+    <value>중국어, 간체</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>중국어 (번체)</value>
+    <value>중국어, 번체</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>지원</value>
@@ -270,7 +273,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>버전 {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>추가적</value>
+    <value>추가 옵션</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
     <value>취소</value>

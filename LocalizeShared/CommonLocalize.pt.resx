@@ -236,6 +236,9 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>Japonês</value>
   </data>
+  <data name="Mod_Locale_ko" xml:space="preserve">
+    <value>Korean</value>
+  </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>Malay</value>
   </data>

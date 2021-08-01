@@ -237,6 +237,9 @@ Käynnistä peli uudelleen.</value>
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>Japani</value>
   </data>
+  <data name="Mod_Locale_ko" xml:space="preserve">
+    <value>Korean</value>
+  </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>Malay</value>
   </data>
