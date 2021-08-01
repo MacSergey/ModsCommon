@@ -200,8 +200,9 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>시티즈: 스카이라인 리눅스 버전은 모드가 정상 작동하기 위한 몇몇 필수 라이브러리기 없기 때문에 "Mono Develop" 패키지를 다운받아서 사용해야 합니다. 아무 문제가 없다면 이 메세지를 무시하셔도 좋아요.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>모드에 에러가 있습니다.
-귀차니즘으로 인해 그대로 사용하실 수도 있지만 추천드리지 않습니다. 게임을 재시작해주세요.</value>
+    <value>모드가 오류와 함께 로드됨.
+예기치 않은 동작으로 이어질 수 있으므로 이 상태로 모드를 사용하지 않는 것을 권장합니다.
+게임을 재시작하세요.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>게임 언어</value>
@@ -226,6 +227,9 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>프랑스어</value>
+  </data>
+  <data name="Mod_Locale_hu" xml:space="preserve">
+    <value>Hungarian</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>인도네시아어</value>
@@ -279,7 +283,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>취소</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>체인지로그</value>
+    <value>변경 사항</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
     <value>리눅스 유저 여러분께</value>
@@ -297,13 +301,13 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>알림</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>활성화 도구</value>
+    <value>도구 활성화</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>바로가기</value>
+    <value>단축키</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>선택 스텝오버</value>
+    <value>선택 건너뛰기</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>주요 업데이트만 안내하기</value>
@@ -327,7 +331,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>{0}가 마음에 들으셨다면 제작자를 후원해 주세요</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>{0}을 눌러
-선택 스텝오버</value>
+    <value>{0} 을 눌러
+선택 건너뛰기</value>
   </data>
 </root>

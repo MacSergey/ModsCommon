@@ -118,217 +118,220 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Detected сonflicting mods.</value>
+    <value>Összeférhetetlen mod észlelve.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Disable</value>
+    <value>Letiltás</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Disable {0}</value>
+    <value>Letiltás: {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Enable</value>
+    <value>Engedélyezés</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Enable {0}</value>
+    <value>Engedélyezés: {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Get</value>
+    <value>Megszerzés</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Detected missing dependencies.</value>
+    <value>Hiányzó függőség észlelve.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detected missing dependencies and сonflicting mods.</value>
+    <value>Hiányzó függőség és összeférhetetlen mod észlelve.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>To continue using {0} need to fix these issues, otherwise the mod will be disabled.</value>
+    <value>{0} használatának folytatásához ki kell javítania ezeket a problémákat, különben a mod le lesz tiltva.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>All issues are fixed, {0} can be enabled.</value>
+    <value>Minden probléma megoldva, {0} engedélyezhető.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>Eltávolítás</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Subscribe</value>
+    <value>Feliratkozás</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Unsubscribe</value>
+    <value>Leiratkozás</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll the wheel to change
+    <value>Használd a görgőt a változtatáshoz
 Shift X10, Ctrl X0.1</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll the wheel to change</value>
+    <value>Használd a görgőt a változtatáshoz</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Mégse</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Don't show again</value>
+    <value>Ne mutasd többet</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>More info</value>
+    <value>További információ</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>No</value>
+    <value>Nem</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Igen</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>I agree</value>
+    <value>Elfogadom</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA version warning</value>
+    <value>BÉTA verzió figyelmeztetés</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Get stable version</value>
+    <value>Stabil verzió beszerzése</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>You are using the BETA version of {0}. It is for testing new features and may contain errors. If you subscribed to it by mistake, then switch to the stable version.</value>
+    <value>{0} BETA verzióját használod, mely új funkciók tesztelésére szolgál és hibákat tartalmazhat. Ha véletlenül iratkoztál fel rá, akkor válts a stabil verzióra!</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>This is a BETA version, errors may occur and stability is not guaranteed!</value>
+    <value>Ez egy BETA verzió, hibák előfordulhatnak és a stabilitás nem garantált!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux version of Cities Skylines doesn't have all necessary libraries for the mod to work correctly. You need to install the "Mono Develop" package to your system. If everything works without crashes, just ignore this message.</value>
+    <value>A Cities Skylines Linux verziója nem rendelkezik minden szükséges könyvtárral a mod megfelelő működéséhez. Telepítsd a "Mono Develop" csomagot a gépedre. Ha minden összeomlás nélkül működik, hagyd figyelmen kívül ezt az üzenetet.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Mod loaded with errors.
-It is not recommended to use the mod in this state as it can lead to unpredictable behavior.
-Restart the game.</value>
+    <value>A mod hibákkal lett betöltve.
+Nem ajánlott ebben az állapotban használni a modot, mivel ez kiszámíthatatlan viselkedéshez vezethet.
+Indítsd újra a játékot!</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Game Language</value>
+    <value>Játék nyelve</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Czech</value>
+    <value>Cseh</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>German</value>
+    <value>Német</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>English US</value>
+    <value>Angol US</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>English UK</value>
+    <value>Angol UK</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spanish</value>
+    <value>Spanyol</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finnish</value>
+    <value>Finn</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>French</value>
+    <value>Francia</value>
+  </data>
+  <data name="Mod_Locale_hu" xml:space="preserve">
+    <value>Hungarian</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
-    <value>Indonesian</value>
+    <value>Indonéz</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italian</value>
+    <value>Olasz</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japanese</value>
+    <value>Japán</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Korean</value>
+    <value>Koreai</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malay</value>
+    <value>Maláj</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Dutch</value>
+    <value>Holland</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Polish</value>
+    <value>Lengyel</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portuguese</value>
+    <value>Portugál</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russian</value>
+    <value>Orosz</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinese Simplified</value>
+    <value>Kínai egyszerűsített</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Chinese Traditional</value>
+    <value>Kínai hagyományos</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Support</value>
+    <value>Támogatás</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>What's new in {0}</value>
+    <value>Újdonságok: {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
     <value>Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Version {0}</value>
+    <value>Verzió {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Additional</value>
+    <value>Továbbiak</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Mégse</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Change log</value>
+    <value>Változások listája</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>For Linux users</value>
+    <value>Linux felhasználóknak</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>General</value>
+    <value>Általános</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>General</value>
+    <value>Általános</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Nyelv</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Notifications</value>
+    <value>Értesítések</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activate tool</value>
+    <value>Eszköz aktiválása</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Shortcuts</value>
+    <value>Gyorsbillentyűk</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Selection step over</value>
+    <value>Kiválasztás léptetése</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Notification only about major updates</value>
+    <value>Értesítés csak a fontosabb frissítésekről</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Show tooltips</value>
+    <value>Eszköztippek megjelenítése</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Show what's new</value>
+    <value>Újdonságok megjelenítése</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Solve crash on Linux</value>
+    <value>Összeomlás megoldása Linuxon</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Support</value>
+    <value>Támogatás</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Troubleshooting</value>
+    <value>Hibaelhárítás</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
+    <value>Ha tetszik a(z) {0}, támogathatod az alkotóját</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Press {0} to
-selection step over</value>
+    <value>Nyomd meg a {0} gombot
+a kiválasztás léptetéséhez</value>
   </data>
 </root>

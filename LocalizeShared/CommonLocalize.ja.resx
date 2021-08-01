@@ -231,6 +231,9 @@
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>フランス語</value>
   </data>
+  <data name="Mod_Locale_hu" xml:space="preserve">
+    <value>Hungarian</value>
+  </data>
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>インドネシア語</value>
   </data>
@@ -241,7 +244,7 @@
     <value>日本語</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Korean</value>
+    <value>韓国語</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>マレー語</value>

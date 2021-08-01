@@ -228,6 +228,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>法语</value>
   </data>
+  <data name="Mod_Locale_hu" xml:space="preserve">
+    <value>Hungarian</value>
+  </data>
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>印尼语</value>
   </data>
@@ -238,7 +241,7 @@ Shift x10，Ctrl x0.1</value>
     <value>日语</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Korean</value>
+    <value>韩语</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>马来语</value>
@@ -325,7 +328,7 @@ Shift x10，Ctrl x0.1</value>
     <value>故障排除</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
+    <value>如果您喜欢 {0}，您可以支持作者</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>按下 {0} 

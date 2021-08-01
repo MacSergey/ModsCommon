@@ -228,6 +228,9 @@ Restartujte hru.</value>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>Francouzština</value>
   </data>
+  <data name="Mod_Locale_hu" xml:space="preserve">
+    <value>Hungarian</value>
+  </data>
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>Indonesian</value>
   </data>
