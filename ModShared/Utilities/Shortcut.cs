@@ -11,8 +11,41 @@ namespace ModsCommon.Utilities
         public SavedInputKey InputKey { get; }
         private Action Action { get; }
         public bool CanRepeat { get; set; } = false;
+        public bool IgnoreModifiers { get; set; } = false;
+
         public bool NotSet => InputKey.Key == KeyCode.None;
         private DateTime LastPress { get; set; }
+        private bool DelayIsOut => (DateTime.UtcNow - LastPress).TotalMilliseconds > 150f;
+
+        public bool IsPressed
+        {
+            get
+            {
+                var value = InputKey.value;
+                var keyCode = (KeyCode)(value & 0xFFFFFFF);
+
+                //only modifier press?
+                //if (keyCode == KeyCode.None)
+                //    return false;
+
+                if (CanRepeat ? !DelayIsOut || !Input.GetKey(keyCode) : (!Input.GetKeyUp(keyCode)))
+                    return false;
+
+                if (!IgnoreModifiers)
+                {
+                    if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) != ((value & 0x40000000) != 0))
+                        return false;
+
+                    if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) != ((value & 0x20000000) != 0))
+                        return false;
+
+                    if ((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.AltGr)) != ((value & 0x10000000) != 0))
+                        return false;
+                }
+
+                return true;
+            }
+        }
 
         public Shortcut(string fileName, string name, string labelKey, InputKey key, Action action = null)
         {
@@ -21,10 +54,9 @@ namespace ModsCommon.Utilities
             Action = action;
         }
 
-        public bool IsKeyUp => CanRepeat ? (InputKey.IsPressed() && (DateTime.UtcNow - LastPress).TotalMilliseconds > 150f) : InputKey.IsKeyUp();
         public virtual bool Press(Event e)
         {
-            if (e.type != EventType.Used && IsKeyUp)
+            if (e.type != EventType.Used && IsPressed)
             {
                 Press();
                 e.Use();

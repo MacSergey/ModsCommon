@@ -197,18 +197,20 @@ namespace ModsCommon
                 return;
             }
 
-            if (NextMode != null)
+            if (NextMode is IToolMode nextMode)
             {
-                var nextMode = NextMode;
                 NextMode = null;
                 SetModeNow(nextMode);
             }
 
             UpdateMouse();
 
-            Mode.OnToolUpdate();
-            Info();
-            ExtraInfo();
+            if (Mode is IToolMode mode)
+            {
+                mode.OnToolUpdate();
+                Info(mode);
+                ExtraInfo(mode);
+            }
 
             base.OnToolUpdate();
         }
@@ -216,14 +218,11 @@ namespace ModsCommon
         private bool IsMouseMove { get; set; }
         private void ProcessEnter(Event e)
         {
-            if (e.type == EventType.Used)
+            if (e.type == EventType.Used || e.type == EventType.Repaint)
                 return;
 
-            if (Shortcuts.FirstOrDefault(s => s.IsKeyUp) is Shortcut shortcut)
-            {
-                shortcut.Press(e);
+            if (Shortcuts.FirstOrDefault(s => s.Press(e)) is Shortcut shortcut)
                 return;
-            }
 
             if (Mode is not IToolMode mode)
                 return;
@@ -281,10 +280,10 @@ namespace ModsCommon
 
         #region INFO
 
-        private void Info()
+        private void Info(IToolMode mode)
         {
-            if (!UIView.HasModalInput() && ShowToolTip && Mode.GetToolInfo() is string info && !string.IsNullOrEmpty(info))
-                ShowToolInfo(Mode.GetToolInfo());
+            if (!UIView.HasModalInput() && ShowToolTip && mode.GetToolInfo() is string info && !string.IsNullOrEmpty(info))
+                ShowToolInfo(info);
             else
                 cursorInfoLabel.isVisible = false;
         }
@@ -308,9 +307,9 @@ namespace ModsCommon
 
             static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);
         }
-        private void ExtraInfo()
+        private void ExtraInfo(IToolMode mode)
         {
-            if (!UIView.HasModalInput() && Mode.GetExtraInfo(out var text, out var color, out float size, out var position, out var direction))
+            if (!UIView.HasModalInput() && mode.GetExtraInfo(out var text, out var color, out float size, out var position, out var direction))
                 ShowExtraInfo(text, color, size, position, direction);
             else
                 extraInfoLabel.isVisible = false;
@@ -375,7 +374,7 @@ namespace ModsCommon
     public abstract class BaseThreadingExtension<TypeTool> : ThreadingExtensionBase
         where TypeTool : ITool
     {
-        protected virtual bool Detected(TypeTool instance) => !UIView.HasModalInput() && !UIView.HasInputFocus() && instance.Activation.IsKeyUp;
+        protected virtual bool Detected(TypeTool instance) => !UIView.HasModalInput() && !UIView.HasInputFocus() && instance.Activation.IsPressed;
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
             if (SingletonTool<TypeTool>.Instance is TypeTool toolInstance && Detected(toolInstance))
