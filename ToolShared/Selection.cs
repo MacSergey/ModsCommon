@@ -156,6 +156,9 @@ namespace ModsCommon.Utilities
             return count % 2 == 1;
         }
         public virtual Vector3 GetHitPosition(Segment3 ray, out float t) => ray.GetRayPosition(Center.y, out t);
+
+        #region RENDER
+
         public virtual void Render(OverlayData overlayData)
         {
 #if DEBUG
@@ -296,6 +299,8 @@ namespace ModsCommon.Utilities
             };
             return bezier;
         }
+
+        #endregion
 
         public struct Data
         {

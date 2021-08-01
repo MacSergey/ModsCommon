@@ -104,10 +104,10 @@ namespace ModsCommon
             segmentSelection = null;
 
             var hitPos = SingletonTool<TypeTool>.Instance.MouseWorldPosition;
-            var gridMinX = Max(hitPos.x);
-            var gridMinZ = Max(hitPos.z);
-            var gridMaxX = Min(hitPos.x);
-            var gridMaxZ = Min(hitPos.z);
+            var gridMinX = Min(hitPos.x);
+            var gridMinZ = Min(hitPos.z);
+            var gridMaxX = Max(hitPos.x);
+            var gridMaxZ = Max(hitPos.z);
             var segmentBuffer = Singleton<NetManager>.instance.m_segments.m_buffer;
             var ignoreNodes = new HashSet<ushort>();
 
@@ -128,8 +128,8 @@ namespace ModsCommon
                 }
             }
 
-            static int Max(float value) => Mathf.Max((int)((value - 16f) / 64f + 135f) - 1, 0);
-            static int Min(float value) => Mathf.Min((int)((value + 16f) / 64f + 135f) + 1, 269);
+            static int Min(float value) => Mathf.Max((int)((value - 16f) / 64f + 135f) - 1, 0);
+            static int Max(float value) => Mathf.Min((int)((value + 16f) / 64f + 135f) + 1, 269);
         }
         private bool RayCast(ushort segmentId, HashSet<ushort> ignoreNodes, ref float priority, ref NodeSelection nodeSelection, ref SegmentSelection segmentSelection)
         {
