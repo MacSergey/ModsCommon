@@ -292,6 +292,7 @@ namespace ModsCommon
             if (cursorInfoLabel == null)
                 return;
 
+            cursorInfoLabel.BringToFront();
             cursorInfoLabel.isVisible = true;
             cursorInfoLabel.text = text ?? string.Empty;
 
