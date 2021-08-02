@@ -45,9 +45,10 @@ namespace ModsCommon
         public override void Deactivate()
         {
             base.Deactivate();
-            Reset(this);
+            Clear();
         }
-        protected override void Reset(IToolMode prevMode)
+        protected override void Reset(IToolMode prevMode) => Clear();
+        private void Clear()
         {
             HoverNode = null;
             HoverSegment = null;

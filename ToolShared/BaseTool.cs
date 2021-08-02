@@ -83,7 +83,7 @@ namespace ModsCommon
         public Segment3 Ray { get; private set; }
         public Ray MouseRay { get; private set; }
         public float MouseRayLength { get; private set; }
-        public bool MouseRayValid { get; private set; }
+        public virtual bool MouseRayValid => !UIView.HasModalInput() && (UIInput.hoveredComponent?.isInteractive != true) && Cursor.visible;
         public Vector3 MousePosition { get; private set; }
         public Vector3 PrevMousePosition { get; private set; }
         public bool MouseMoved => MousePosition != PrevMousePosition;
@@ -258,7 +258,6 @@ namespace ModsCommon
             MousePositionScaled = MousePosition * uiView.inputScale;
             MouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             MouseRayLength = Camera.main.farClipPlane;
-            MouseRayValid = !UIView.IsInsideUI() && Cursor.visible;
             Ray = new Segment3(MouseRay.origin, MouseRay.origin + MouseRay.direction.normalized * MouseRayLength);
             RayCast(new RaycastInput(MouseRay, MouseRayLength), out RaycastOutput output);
             MouseWorldPosition = output.m_hitPos;
