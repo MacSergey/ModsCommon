@@ -216,6 +216,8 @@ namespace ModsCommon
         }
 
         private bool IsMouseMove { get; set; }
+        private float LastPrimary { get; set; }
+        private float LastSecondary { get; set; }
         private void ProcessEnter(Event e)
         {
             if (e.type == EventType.Used || e.type == EventType.Repaint)
@@ -240,11 +242,28 @@ namespace ModsCommon
                 case EventType.MouseUp when MouseRayValid && e.button == 0:
                     if (IsMouseMove)
                         mode.OnMouseUp(e);
-                    else
+                    else if (Time.realtimeSinceStartup - LastPrimary > 0.25f)
+                    {
                         mode.OnPrimaryMouseClicked(e);
+                        LastPrimary = Time.realtimeSinceStartup;
+                    }
+                    else
+                    {
+                        mode.OnPrimaryMouseDoubleClicked(e);
+                        LastPrimary = 0f;
+                    }
                     break;
                 case EventType.MouseUp when MouseRayValid && e.button == 1:
-                    mode.OnSecondaryMouseClicked();
+                    if (Time.realtimeSinceStartup - LastSecondary > 0.25f)
+                    {
+                        mode.OnSecondaryMouseClicked();
+                        LastSecondary = Time.realtimeSinceStartup;
+                    }
+                    else
+                    {
+                        mode.OnSecondaryMouseDoubleClicked();
+                        LastSecondary = 0f;
+                    }
                     break;
             }
         }
