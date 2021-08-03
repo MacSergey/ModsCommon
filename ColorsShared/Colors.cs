@@ -7,12 +7,18 @@ namespace ModsCommon.Utilities
     {
         private const byte Alpha = 224;
         public static Color32 White { get; } = new Color32(255, 255, 255, 255);
+        public static Color32 White192 { get; } = new Color32(255, 255, 255, 192);
+        public static Color32 White128 { get; } = new Color32(255, 255, 255, 128);
+        public static Color32 White64 { get; } = new Color32(255, 255, 255, 64);
         public static Color32 Green { get; } = new Color32(0, 200, 81, 255);
         public static Color32 Red { get; } = new Color32(255, 68, 68, 255);
         public static Color32 Blue { get; } = new Color32(0, 180, 255, 255);
         public static Color32 Orange { get; } = new Color32(255, 136, 0, 255);
         public static Color32 Yellow { get; } = new Color32(255, 187, 51, 255);
-        public static Color32 Gray { get; } = new Color32(192, 192, 192, 255);
+        public static Color32 Gray224 { get; } = new Color32(224, 224, 224, 255);
+        public static Color32 Gray192 { get; } = new Color32(192, 192, 192, 255);
+        public static Color32 Gray128 { get; } = new Color32(128, 128, 128, 255);
+        public static Color32 Gray64 { get; } = new Color32(64, 64, 64, 255);
         public static Color32 Purple { get; } = new Color32(148, 87, 255, 255);
         public static Color32 Hover { get; } = new Color32(217, 251, 255, 255);
         public static Color32 Error { get; } = new Color32(253, 77, 60, 255);
