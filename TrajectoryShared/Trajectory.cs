@@ -119,8 +119,9 @@ namespace ModsCommon.Utilities
             }
             else
             {
-                middlePos1 = startPos + startDir * (distance * 0.3f);
-                middlePos2 = endPos + endDir * (distance * 0.3f);
+                distance *= forceSmooth ? 0.75f : 0.3f;
+                middlePos1 = startPos + startDir * distance;
+                middlePos2 = endPos + endDir * distance;
             }
         }
 
