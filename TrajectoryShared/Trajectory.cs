@@ -57,25 +57,25 @@ namespace ModsCommon.Utilities
             StartDirection = (Trajectory.b - Trajectory.a).normalized;
             EndDirection = (Trajectory.c - Trajectory.d).normalized;
         }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true) : this(GetBezier(startPos, startDir, endPos, endDir, normalize)) { }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos) : this(GetBezier(startPos, startDir, endPos)) { }
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true, bool forceSmooth = false) : this(GetBezier(startPos, startDir, endPos, endDir, normalize, forceSmooth)) { }
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool forceSmooth = false) : this(GetBezier(startPos, startDir, endPos, forceSmooth)) { }
 
         public BezierTrajectory(BezierTrajectory trajectory) : this(trajectory.Trajectory) { }
         public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
         public BezierTrajectory(ref NetSegment segment) : this(segment.m_startNode.GetNode().m_position, segment.m_startDirection, segment.m_endNode.GetNode().m_position, segment.m_endDirection) { }
         public BezierTrajectory(ushort segmentId) : this(ref segmentId.GetSegment()) { }
 
-        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize)
+        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize, bool forceSmooth)
         {
             var bezier = new Bezier3()
             {
                 a = startPos,
                 d = endPos,
             };
-            NetSegment.CalculateMiddlePoints(bezier.a, normalize ? startDir.normalized : startDir, bezier.d, normalize ? endDir.normalized : endDir, true, true, out bezier.b, out bezier.c);
+            GetMiddlePoints(bezier.a, normalize ? startDir.normalized : startDir, bezier.d, normalize ? endDir.normalized : endDir, forceSmooth, out bezier.b, out bezier.c);
             return bezier;
         }
-        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos)
+        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool forceSmooth)
         {
             var startAngle = startDir.AbsoluteAngle();
             var dir = endPos - startPos;
@@ -89,11 +89,39 @@ namespace ModsCommon.Utilities
             };
 
             if (Vector3.Dot(startDir, dir) < 0)
-                NetSegment.CalculateMiddlePoints(bezier.a, dir, bezier.d, -dir, true, true, out bezier.b, out bezier.c);
+                GetMiddlePoints(bezier.a, dir, bezier.d, -dir, forceSmooth, out bezier.b, out bezier.c);
             else
-                NetSegment.CalculateMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), true, true, out bezier.b, out bezier.c);
+                GetMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), forceSmooth, out bezier.b, out bezier.c);
 
             return bezier;
+        }
+        private static void GetMiddlePoints(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool forceSmooth, out Vector3 middlePos1, out Vector3 middlePos2)
+        {
+            if (NetSegment.IsStraight(startPos, startDir, endPos, endDir, out var distance))
+            {
+                middlePos1 = startPos + startDir * (distance * 0.3f);
+                middlePos2 = endPos + endDir * (distance * 0.3f);
+                return;
+            }
+            var dot = startDir.x * endDir.x + startDir.z * endDir.z;
+            if (dot >= -0.999f && Line2.Intersect(XZ(startPos), XZ(startPos + startDir), XZ(endPos), XZ(endPos + endDir), out var u, out var v))
+            {
+                if (forceSmooth)
+                {
+                    u = Mathf.Abs(u);
+                    v = Mathf.Abs(v);
+                }
+                u = Mathf.Clamp(u, distance * 0.1f, distance);
+                v = Mathf.Clamp(v, distance * 0.1f, distance);
+                distance = u + v;
+                middlePos1 = startPos + startDir * Mathf.Min(u, distance * 0.3f);
+                middlePos2 = endPos + endDir * Mathf.Min(v, distance * 0.3f);
+            }
+            else
+            {
+                middlePos1 = startPos + startDir * (distance * 0.3f);
+                middlePos2 = endPos + endDir * (distance * 0.3f);
+            }
         }
 
         public BezierTrajectory Cut(float t0, float t1) => new BezierTrajectory(Trajectory.Cut(t0, t1));
