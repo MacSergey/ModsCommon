@@ -235,7 +235,7 @@ namespace ModsCommon
                     IsMouseMove = false;
                     mode.OnMouseDown(e);
                     break;
-                case EventType.MouseDrag when MouseRayValid && e.button == 0:
+                case EventType.MouseDrag when e.button == 0:
                     IsMouseMove = true;
                     mode.OnMouseDrag(e);
                     break;
