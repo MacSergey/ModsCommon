@@ -95,6 +95,8 @@ namespace ModsCommon.Utilities
             var endCut = data.CutEnd == true ? cutValue : 0f;
 
             var renderLimit = data.RenderLimit ?? DefaultLimit;
+            //var minLimit = renderLimit ? Mathf.Min(bezier.a.y, bezier.b.y, bezier.c.y, bezier.d.y) - 0.01f : DefaultMinLimit;
+            //var maxLimit = renderLimit ? Mathf.Max(bezier.a.y, bezier.b.y, bezier.c.y, bezier.d.y) + 0.01f : DefaultMaxLimit;
             var minLimit = renderLimit ? (bezier.a.y + bezier.d.y) / 2f - 0.01f : DefaultMinLimit;
             var maxLimit = renderLimit ? (bezier.a.y + bezier.d.y) / 2f + 0.01f : DefaultMaxLimit;
 
@@ -128,7 +130,6 @@ namespace ModsCommon.Utilities
             }
             while (data.Width > to);
         }
-        //public static void RenderQuad(this Quad3 quad, OverlayData data) => RenderManager.OverlayEffect.DrawQuad(data.CameraInfo, data.Color ?? Colors.White, quad, -1f, 1280f, false, data.AlphaBlend ?? DefaultBlend);
 
         public static void RenderAngle(this Vector3 position, OverlayData data, Vector3 startDir, Vector3 endDir, float innerRadius, float outterRadius)
         {

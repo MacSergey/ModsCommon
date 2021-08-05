@@ -235,11 +235,11 @@ namespace ModsCommon
                     IsMouseMove = false;
                     mode.OnMouseDown(e);
                     break;
-                case EventType.MouseDrag when MouseRayValid:
+                case EventType.MouseDrag when MouseRayValid && e.button == 0:
                     IsMouseMove = true;
                     mode.OnMouseDrag(e);
                     break;
-                case EventType.MouseUp when MouseRayValid && e.button == 0:
+                case EventType.MouseUp when e.button == 0:
                     if (IsMouseMove)
                         mode.OnMouseUp(e);
                     else if (Time.realtimeSinceStartup - LastPrimary > 0.25f)
@@ -253,7 +253,7 @@ namespace ModsCommon
                         LastPrimary = 0f;
                     }
                     break;
-                case EventType.MouseUp when MouseRayValid && e.button == 1:
+                case EventType.MouseUp when e.button == 1:
                     if (Time.realtimeSinceStartup - LastSecondary > 0.25f)
                     {
                         mode.OnSecondaryMouseClicked();

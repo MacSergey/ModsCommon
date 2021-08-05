@@ -41,6 +41,7 @@ namespace ModsCommon
                 }
             }
         }
+        protected virtual bool CheckUnderground => true;
 
         public override void Deactivate()
         {
@@ -223,17 +224,19 @@ namespace ModsCommon
             if (!segment.m_flags.IsSet(NetSegment.Flags.Created))
                 return false;
 
-            var startUndeground = segment.m_startNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
-            var endUndeground = segment.m_endNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
+            if (CheckUnderground)
+            {
+                var startUndeground = segment.m_startNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
+                var endUndeground = segment.m_endNode.GetNode().m_flags.IsSet(NetNode.Flags.Underground);
 
-            if (Underground && !startUndeground && !endUndeground)
-                return false;
+                if (Underground && !startUndeground && !endUndeground)
+                    return false;
 
-            if (!Underground && startUndeground && endUndeground)
-                return false;
+                if (!Underground && startUndeground && endUndeground)
+                    return false;
+            }
 
-            else
-                return CheckItemClass(segment.Info.GetConnectionClass());
+            return CheckItemClass(segment.Info.GetConnectionClass());
         }
         protected virtual bool CheckItemClass(ItemClass itemClass) => true;
 
