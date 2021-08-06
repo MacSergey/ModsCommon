@@ -182,13 +182,14 @@ namespace ModsCommon.Utilities
 
         public static Bezier3 GetBezier(this Line3 line)
         {
+            var dir = line.b - line.a;
             var bezier = new Bezier3
             {
                 a = line.a,
+                b = line.a + dir * 0.3f,
+                c = line.b - dir * 0.3f,
                 d = line.b,
             };
-            var dir = line.b - line.a;
-            NetSegment.CalculateMiddlePoints(bezier.a, dir, bezier.d, -dir, true, true, out bezier.b, out bezier.c);
 
             return bezier;
         }

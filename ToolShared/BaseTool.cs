@@ -83,7 +83,7 @@ namespace ModsCommon
         public Segment3 Ray { get; private set; }
         public Ray MouseRay { get; private set; }
         public float MouseRayLength { get; private set; }
-        public bool MouseRayValid { get; private set; }
+        public virtual bool MouseRayValid => !UIView.HasModalInput() && (UIInput.hoveredComponent?.isInteractive != true) && Cursor.visible;
         public Vector3 MousePosition { get; private set; }
         public Vector3 PrevMousePosition { get; private set; }
         public bool MouseMoved => MousePosition != PrevMousePosition;
@@ -216,6 +216,8 @@ namespace ModsCommon
         }
 
         private bool IsMouseMove { get; set; }
+        private float LastPrimary { get; set; }
+        private float LastSecondary { get; set; }
         private void ProcessEnter(Event e)
         {
             if (e.type == EventType.Used || e.type == EventType.Repaint)
@@ -233,18 +235,35 @@ namespace ModsCommon
                     IsMouseMove = false;
                     mode.OnMouseDown(e);
                     break;
-                case EventType.MouseDrag when MouseRayValid:
+                case EventType.MouseDrag when e.button == 0:
                     IsMouseMove = true;
                     mode.OnMouseDrag(e);
                     break;
-                case EventType.MouseUp when MouseRayValid && e.button == 0:
+                case EventType.MouseUp when e.button == 0:
                     if (IsMouseMove)
                         mode.OnMouseUp(e);
-                    else
+                    else if (Time.realtimeSinceStartup - LastPrimary > 0.25f)
+                    {
                         mode.OnPrimaryMouseClicked(e);
+                        LastPrimary = Time.realtimeSinceStartup;
+                    }
+                    else
+                    {
+                        mode.OnPrimaryMouseDoubleClicked(e);
+                        LastPrimary = 0f;
+                    }
                     break;
-                case EventType.MouseUp when MouseRayValid && e.button == 1:
-                    mode.OnSecondaryMouseClicked();
+                case EventType.MouseUp when e.button == 1:
+                    if (Time.realtimeSinceStartup - LastSecondary > 0.25f)
+                    {
+                        mode.OnSecondaryMouseClicked();
+                        LastSecondary = Time.realtimeSinceStartup;
+                    }
+                    else
+                    {
+                        mode.OnSecondaryMouseDoubleClicked();
+                        LastSecondary = 0f;
+                    }
                     break;
             }
         }
@@ -258,7 +277,6 @@ namespace ModsCommon
             MousePositionScaled = MousePosition * uiView.inputScale;
             MouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             MouseRayLength = Camera.main.farClipPlane;
-            MouseRayValid = !UIView.IsInsideUI() && Cursor.visible;
             Ray = new Segment3(MouseRay.origin, MouseRay.origin + MouseRay.direction.normalized * MouseRayLength);
             RayCast(new RaycastInput(MouseRay, MouseRayLength), out RaycastOutput output);
             MouseWorldPosition = output.m_hitPos;
@@ -292,6 +310,7 @@ namespace ModsCommon
             if (cursorInfoLabel == null)
                 return;
 
+            cursorInfoLabel.BringToFront();
             cursorInfoLabel.isVisible = true;
             cursorInfoLabel.text = text ?? string.Empty;
 

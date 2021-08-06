@@ -18,7 +18,9 @@ namespace ModsCommon
         public void OnMouseDrag(Event e);
         public void OnMouseUp(Event e);
         public void OnPrimaryMouseClicked(Event e);
+        public void OnPrimaryMouseDoubleClicked(Event e);
         public void OnSecondaryMouseClicked();
+        public void OnSecondaryMouseDoubleClicked();
         public bool OnEscape();
         public void RenderOverlay(RenderManager.CameraInfo cameraInfo);
     }
@@ -78,7 +80,9 @@ namespace ModsCommon
         public virtual void OnMouseDrag(Event e) { }
         public virtual void OnMouseUp(Event e) => OnPrimaryMouseClicked(e);
         public virtual void OnPrimaryMouseClicked(Event e) { }
+        public virtual void OnPrimaryMouseDoubleClicked(Event e) { }
         public virtual void OnSecondaryMouseClicked() { }
+        public virtual void OnSecondaryMouseDoubleClicked() { }
         public virtual bool OnEscape() => false;
         public virtual void RenderOverlay(RenderManager.CameraInfo cameraInfo) { }
     }
