@@ -91,6 +91,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.mr", "Locali
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.ko", "LocalizeShared\LocalizeShared.ko.shproj", "{D75D6301-BF72-4211-837A-0CA68FC63BD1}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.hu", "LocalizeShared\LocalizeShared.hu.shproj", "{A1E3C011-4D61-49C6-84CE-1C6F74A96DD3}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LocalizeShared\LocalizeShared.pl.projitems*{0814bfcf-bb66-493c-8dd9-ca17ee904afa}*SharedItemsImports = 13
@@ -113,6 +115,7 @@ Global
 		LocalizeShared\LocalizeShared.en-GB.projitems*{92b146ad-f9d5-4c3b-8712-ebc5140a3f20}*SharedItemsImports = 13
 		LocalizeShared\LocalizeShared.cs.projitems*{93e25ce1-9093-40bc-88a2-7362ffa44174}*SharedItemsImports = 13
 		LocalizeShared\LocalizeShared.fr.projitems*{9cb86de4-4cd4-4265-ac8b-b041707112d9}*SharedItemsImports = 13
+		LocalizeShared\LocalizeShared.hu.projitems*{a1e3c011-4d61-49c6-84ce-1c6f74a96dd3}*SharedItemsImports = 13
 		SimpleMessageBoxShared\SimpleMessageBoxShared.projitems*{a3055caa-4807-4c49-973c-7b92610c25c8}*SharedItemsImports = 13
 		PropertyPanelShared\PropertyPanelShared.projitems*{abe0f508-441b-4871-a17f-3f345f5dc42b}*SharedItemsImports = 13
 		LocalizeShared\LocalizeShared.ja.projitems*{b0c05991-7f01-40c4-8efb-9d765cc72534}*SharedItemsImports = 13
@@ -186,6 +189,7 @@ Global
 		{394407E5-B4DB-4807-B4DC-34CD6585E0CF} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 		{3EA095E9-7448-4DD4-9221-FCD7C17598BE} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 		{D75D6301-BF72-4211-837A-0CA68FC63BD1} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
+		{A1E3C011-4D61-49C6-84CE-1C6F74A96DD3} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CEA4CED6-9511-454F-8F3E-E3E48AB0A236}

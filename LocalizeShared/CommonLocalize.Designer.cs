@@ -379,6 +379,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Hungarian.
+        /// </summary>
+        public static string Mod_Locale_hu {
+            get {
+                return ResourceManager.GetString("Mod_Locale_hu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Indonesian.
         /// </summary>
         public static string Mod_Locale_id {
