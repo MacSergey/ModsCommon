@@ -229,7 +229,7 @@ Uruchom ponownie grę.</value>
     <value>Francuski</value>
   </data>
   <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Hungarian</value>
+    <value>Węgierski</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>Indonezyjski</value>
@@ -241,10 +241,10 @@ Uruchom ponownie grę.</value>
     <value>Japoński</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Korean</value>
+    <value>Koreański</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malay</value>
+    <value>Malajski</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
     <value>Holenderski</value>
@@ -328,7 +328,7 @@ Uruchom ponownie grę.</value>
     <value>Rozwiązywanie problemów</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
+    <value>Jeśli lubisz {0}, możesz wesprzeć autora</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Naciśnij {0} aby zaznaczyć poniżej</value>
