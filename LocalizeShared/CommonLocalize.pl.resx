@@ -270,9 +270,7 @@ Uruchom ponownie grę.</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Co nowego w {0}</value>
   </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
-  </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Wersja {0}</value>
   </data>

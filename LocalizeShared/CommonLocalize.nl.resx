@@ -196,9 +196,7 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Dit is een BETA versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
   </data>
-  <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux version of Cities Skylines doesn't have all necessary libraries for the mod to work correctly. You need to install the "Mono Develop" package to your system. If everything works without crashes, just ignore this message.</value>
-  </data>
+  
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Mod is geladen met errors.
 Het is niet aanbevolen om de mod te gebruiken in de huidige staat omdat het tot onvoorspelbaar gedrag kan leiden.
@@ -228,9 +226,7 @@ Herstart het spel.</value>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>Frans</value>
   </data>
-  <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Hungarian</value>
-  </data>
+  
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>Indonesisch</value>
   </data>
@@ -240,12 +236,8 @@ Herstart het spel.</value>
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>Japans</value>
   </data>
-  <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Korean</value>
-  </data>
-  <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malay</value>
-  </data>
+  
+  
   <data name="Mod_Locale_nl" xml:space="preserve">
     <value>Nederlands</value>
   </data>
@@ -306,9 +298,7 @@ Herstart het spel.</value>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Snelkoppelingen</value>
   </data>
-  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Selection step over</value>
-  </data>
+  
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Alleen meldingen over grote updates</value>
   </data>
@@ -318,20 +308,13 @@ Herstart het spel.</value>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Toon wat nieuw is</value>
   </data>
-  <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Solve crash on Linux</value>
-  </data>
+  
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Ondersteuning</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Probleemoplossing</value>
   </data>
-  <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
-  </data>
-  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Press {0} to
-selection step over</value>
-  </data>
+  
+  
 </root>

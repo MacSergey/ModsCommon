@@ -227,9 +227,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>Francês</value>
   </data>
-  <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Hungarian</value>
-  </data>
+  
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>Indonésio</value>
   </data>
@@ -239,12 +237,8 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>Japonês</value>
   </data>
-  <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Korean</value>
-  </data>
-  <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malay</value>
-  </data>
+  
+  
   <data name="Mod_Locale_nl" xml:space="preserve">
     <value>Holandês</value>
   </data>
@@ -326,9 +320,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolução de problemas</value>
   </data>
-  <data name="Setting_Donate" xml:space="preserve">
-    <value>If you like {0}, you can support author</value>
-  </data>
+  
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Pressione {0} para
 etapa de seleção acima</value>

@@ -270,9 +270,7 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 版本的新功能</value>
   </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
-  </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>版本{0}</value>
   </data>

@@ -228,9 +228,7 @@ Mohon restart game ini.</value>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>Perancis</value>
   </data>
-  <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Hungarian</value>
-  </data>
+  
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>Indonesia</value>
   </data>
@@ -240,9 +238,7 @@ Mohon restart game ini.</value>
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>Jepang</value>
   </data>
-  <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Korean</value>
-  </data>
+  
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>Malaysia</value>
   </data>
