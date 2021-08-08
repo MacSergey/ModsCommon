@@ -196,7 +196,7 @@ namespace ModsCommon
         #region UPDATE
         protected override void OnToolUpdate()
         {
-            ProcessEnter(Event.current);
+            //ProcessEnter(Event.current);
 
             if (!CheckInfoMode(Singleton<InfoManager>.instance.NextMode, Singleton<InfoManager>.instance.NextSubMode))
             {
@@ -227,37 +227,42 @@ namespace ModsCommon
         private float LastSecondary { get; set; }
         private void ProcessEnter(Event e)
         {
-            if (e.type == EventType.Used || e.type == EventType.Repaint)
-                return;
-
-            if (Shortcuts.FirstOrDefault(s => s.Press(e)) is Shortcut shortcut)
-                return;
-
             if (Mode is not IToolMode mode)
                 return;
 
             switch (e.type)
             {
+                case EventType.KeyDown:
+                case EventType.KeyUp:
+                    Shortcuts.FirstOrDefault(s => s.Press(e));
+                    break;
                 case EventType.MouseDown when MouseRayValid && e.button == 0:
                     IsMouseMove = false;
                     mode.OnMouseDown(e);
+                    e.Use();
                     break;
                 case EventType.MouseDrag when e.button == 0:
                     IsMouseMove = true;
                     mode.OnMouseDrag(e);
+                    e.Use();
                     break;
                 case EventType.MouseUp when e.button == 0:
                     if (IsMouseMove)
+                    {
                         mode.OnMouseUp(e);
+                        e.Use();
+                    }
                     else if (Time.realtimeSinceStartup - LastPrimary > 0.25f)
                     {
                         mode.OnPrimaryMouseClicked(e);
                         LastPrimary = Time.realtimeSinceStartup;
+                        e.Use();
                     }
                     else
                     {
                         mode.OnPrimaryMouseDoubleClicked(e);
                         LastPrimary = 0f;
+                        e.Use();
                     }
                     break;
                 case EventType.MouseUp when e.button == 1:
@@ -265,11 +270,13 @@ namespace ModsCommon
                     {
                         mode.OnSecondaryMouseClicked();
                         LastSecondary = Time.realtimeSinceStartup;
+                        e.Use();
                     }
                     else
                     {
                         mode.OnSecondaryMouseDoubleClicked();
                         LastSecondary = 0f;
+                        e.Use();
                     }
                     break;
             }
@@ -295,6 +302,8 @@ namespace ModsCommon
 
         protected override void OnToolGUI(Event e)
         {
+            ProcessEnter(e);
+
             if (Mode is IToolMode mode)
                 mode.OnToolGUI(e);
 
