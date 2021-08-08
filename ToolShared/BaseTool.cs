@@ -12,6 +12,7 @@ namespace ModsCommon
 {
     public interface ITool
     {
+        public event Action<bool> OnStateChanged;
         public bool enabled { get; }
 
         public ICustomMod ModInstance { get; }
@@ -31,6 +32,7 @@ namespace ModsCommon
         public Vector3 CameraDirection { get; }
 
         public void Init();
+        public void Deinit();
         public void Toggle();
         public void Enable();
         public void Disable(bool setPrev = true);
@@ -38,6 +40,7 @@ namespace ModsCommon
     public interface IUUITool : ITool
     {
         public bool UUIRegistered { get; }
+        public void RegisterUUI();
     }
     public abstract class SingletonTool<T> : SingletonItem<T>
     where T : ITool
@@ -111,6 +114,11 @@ namespace ModsCommon
             IsInit = true;
 
             ModInstance.Logger.Debug($"Tool inited");
+        }
+        public void Deinit()
+        {
+            ModInstance.Logger.Debug($"Deinit tool");
+            OnStateChanged = null;
         }
         protected virtual void InitProcess() { }
 
@@ -406,7 +414,7 @@ namespace ModsCommon
     public abstract class BaseToolLoadingExtension<TypeTool> : LoadingExtensionBase
         where TypeTool : ITool
     {
-        public override void OnLevelLoaded(LoadMode mode)
+        public sealed override void OnLevelLoaded(LoadMode mode)
         {
             switch (mode)
             {
@@ -417,9 +425,19 @@ namespace ModsCommon
                 case LoadMode.LoadAsset:
                 case LoadMode.NewMap:
                 case LoadMode.LoadMap:
-                    SingletonTool<TypeTool>.Instance.Init();
+                    OnLoad();
                     break;
             }
+        }
+        public sealed override void OnLevelUnloading() => OnUnload();
+
+        protected virtual void OnLoad()
+        {
+            SingletonTool<TypeTool>.Instance?.Init();
+        }
+        protected virtual void OnUnload() 
+        {
+            SingletonTool<TypeTool>.Instance?.Deinit();
         }
     }
 }

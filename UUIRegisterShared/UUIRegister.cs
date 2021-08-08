@@ -61,4 +61,13 @@ namespace ModsCommon
     {
         protected override bool Detected(TypeTool instance) => !instance.UUIRegistered && base.Detected(instance);
     }
+    public abstract class BaseUUIToolLoadingExtension<TypeTool> : BaseToolLoadingExtension<TypeTool>
+        where TypeTool : IUUITool
+    {
+        protected override void OnLoad()
+        {
+            SingletonTool<TypeTool>.Instance.RegisterUUI();
+            base.OnLoad();
+        }
+    }
 }
