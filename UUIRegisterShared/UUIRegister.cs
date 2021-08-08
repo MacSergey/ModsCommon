@@ -66,8 +66,8 @@ namespace ModsCommon
     {
         protected override void OnLoad()
         {
-            SingletonTool<TypeTool>.Instance.RegisterUUI();
             base.OnLoad();
+            SingletonTool<TypeTool>.Instance.RegisterUUI();
         }
     }
 }

@@ -31,8 +31,8 @@ namespace ModsCommon
         public Vector3 MouseWorldPosition { get; }
         public Vector3 CameraDirection { get; }
 
-        public void Init();
-        public void Deinit();
+        public void OnLevelLoad();
+        public void OnLevelUnload();
         public void Toggle();
         public void Enable();
         public void Disable(bool setPrev = true);
@@ -102,24 +102,23 @@ namespace ModsCommon
         {
             enabled = false;
         }
-        public void Init()
+        public virtual void OnLevelLoad()
         {
-            if (IsInit)
-                return;
+            if (!IsInit)
+                Init();
+        }
+        public virtual void OnLevelUnload() { }
 
+        private void Init()
+        {
             ModInstance.Logger.Debug($"Init tool");
 
             InitProcess();
-
             IsInit = true;
 
             ModInstance.Logger.Debug($"Tool inited");
         }
-        public void Deinit()
-        {
-            ModInstance.Logger.Debug($"Deinit tool");
-            OnStateChanged = null;
-        }
+
         protected virtual void InitProcess() { }
 
         public Mode CreateToolMode<Mode>() where Mode : BaseToolMode<TypeTool>
@@ -431,13 +430,7 @@ namespace ModsCommon
         }
         public sealed override void OnLevelUnloading() => OnUnload();
 
-        protected virtual void OnLoad()
-        {
-            SingletonTool<TypeTool>.Instance?.Init();
-        }
-        protected virtual void OnUnload() 
-        {
-            SingletonTool<TypeTool>.Instance?.Deinit();
-        }
+        protected virtual void OnLoad() => SingletonTool<TypeTool>.Instance?.OnLevelLoad();
+        protected virtual void OnUnload() => SingletonTool<TypeTool>.Instance?.OnLevelUnload();
     }
 }
