@@ -118,220 +118,218 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Conflits détectés.</value>
+    <value>Fundne Mods i konflikt.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Désactiver</value>
+    <value>Deaktivér</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Désactiver {0}</value>
+    <value>Deaktiver {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Activer</value>
+    <value>Aktiver</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Activer {0}</value>
+    <value>Aktiver {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Obtenir</value>
+    <value>Hent</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Dépendances manquantes détectées.</value>
+    <value>Manglende afhængigheder.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Dépendances manquantes et conflits détectés.</value>
+    <value>Manglende afhængigheder og mods i konflikt.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Pour continuer à utiliser {0}, vous devez résoudre ces problèmes, sinon le mod sera désactivé.</value>
+    <value>For at fortsætte med at bruge {0} skal du løse disse problemer, ellers vil mod blive deaktiveret.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>Tous les problèmes sont résolus, {0} peut être activé.</value>
+    <value>Alle problemer er rettet, {0} kan aktiveres.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Retirer</value>
+    <value>Fjern</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>S'abonner</value>
+    <value>Abonnér</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Se désabonner</value>
+    <value>Afmeld</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Utilisez la molette pour changer
-Maj X10, Ctrl X0.1</value>
+    <value>Brug Scroll for at ændre
+Shift X10, Ctrl X0.1</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Utilisez la molette pour changer</value>
+    <value>Brug Scroll for at ændre</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Annuller</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Ne plus afficher</value>
+    <value>Vis ikke igen</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>Plus d'informations</value>
+    <value>Yderligere info</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Non</value>
+    <value>Nej</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>Ok</value>
+    <value>OK</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Oui</value>
+    <value>Ja</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>J'accepte</value>
+    <value>Jeg accepterer</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Alerte de version BETA</value>
+    <value>BETA versionsadvarsel</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Obtenir la version stable</value>
+    <value>Hent en stabil version</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Vous utilisez la version bêta de {0}. C'est une version de test avec de nouvelles fonctionnalités et elle peut contenir des erreurs qui vont briser ou supprimer vos configurations. Si vous vous êtes abonné par erreur, veuillez vous abonner à la version stable.</value>
+    <value>Du bruger BETA versionen af {0}. Den er til at teste nye funktioner og kan indeholde fejl. Hvis du ved en fejltagelse har abonneret på den, skal du skifte til den stabile version.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Ceci est une version BETA, des erreurs peuvent se produire et la stabilité n'est pas garantie !</value>
+    <value>Dette er en BETA version, fejl kan forekomme og stabilitet er ikke garanteret!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>La version Linux de Cities Skylines ne dispose pas de toutes les bibliothèques nécessaires au bon fonctionnement du mod. Vous devez installer le pack "Mono Develop" sur votre système. Si tout fonctionne, ignorez ce message.</value>
+    <value>Linux-version af Cities Skylines har ikke alle nødvendige biblioteker til, at Mod kan fungere korrekt. Du skal installere pakken "Mono Develop". Hvis alt fungerer uden nedbrud, så ignorér blot denne besked.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Mod chargé avec des erreurs.
-Il n'est pas recommandé d'utiliser le mod dans cet état car il peut conduire à un comportement imprévisible.
-Redémarrez le jeu.</value>
+    <value>Mod indlæst med fejl.
+Det anbefales ikke at bruge moddet i denne tilstand, da det kan føre til uforudsigelig adfærd.
+Genstart spillet.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Langue du jeu</value>
+    <value>Sprog i spil</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Tchèque</value>
+    <value>Tjekkisk</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Allemand</value>
+    <value>Tysk</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Anglais États-Unis</value>
+    <value>Engelsk US</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Anglais Royaume-Uni</value>
+    <value>Engelsk UK</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Espagnol</value>
+    <value>Spansk</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finnois</value>
+    <value>Finsk</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Français</value>
+    <value>Fransk</value>
   </data>
   <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Hongrois</value>
+    <value>Ungarsk</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
-    <value>Indonésien</value>
+    <value>Indonesisk</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italien</value>
+    <value>Italiensk</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japonais</value>
+    <value>Japansk</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Coréen</value>
+    <value>Koreansk</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malaisien</value>
+    <value>Malaysisk</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Néerlandais</value>
+    <value>Hollandsk</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Polonais</value>
+    <value>Polsk</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portugais</value>
+    <value>Portugesisk</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russe</value>
+    <value>Russisk</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinois simplifié</value>
+    <value>Kinesisk Forenklet</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Chinois traditionnel</value>
+    <value>Kinesisk Traditionelt</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Quoi de neuf dans {0}</value>
+    <value>Nyt i {0}</value>
   </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Allez sur Discord pour retrouver le journal des changements de la version bêta</value>
-  </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Autres</value>
+    <value>Yderligere</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Annuller</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Notes de mise à jour</value>
+    <value>Ændringslog</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>Pour les utilisateurs Linux</value>
+    <value>Til Linux brugere</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Général</value>
+    <value>Generelt</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Général</value>
+    <value>Generelt</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Langue</value>
+    <value>Sprog</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Paramètres de notification</value>
+    <value>Notifikationer</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Activer l'outil</value>
+    <value>Aktivér værktøj</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Raccourcis</value>
+    <value>Genveje</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Changer rapidement parmi les nœuds proches ou superposés</value>
+    <value>Spring valgmulighed over</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Notifier uniquement pour les mise à jour majeures</value>
+    <value>Underret kun ved større opdateringer</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Afficher les infobulles</value>
+    <value>Vis værktøjstip</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Afficher les nouveautés</value>
+    <value>Vis hvad er nyt</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Résoudre le plantage sous Linux</value>
+    <value>Løs nedbrud på Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Support</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Dépannage</value>
+    <value>Fejlfinding</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Si vous aimez {0}, vous pouvez soutenir l'auteur</value>
+    <value>Hvis du synes om {0}, kan du støtte forfatteren</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Appuyez sur {0} pour changer
-parmi les nœuds proches</value>
+    <value>Tryk på {0} for at springe
+markeringstrin over</value>
   </data>
 </root>
