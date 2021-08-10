@@ -195,9 +195,14 @@ namespace ModsCommon
         protected void AddNotifications(UIAdvancedHelper helper)
         {
             var group = helper.AddGroup(CommonLocalize.Settings_Notifications);
+            var panel = default(CustomUIPanel);
+            AddCheckBox(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew, OnChange);
+            panel = AddPanel(group);
+            AddCheckBox(new UIHelper(panel), CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
 
-            AddCheckBox(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
-            AddCheckBox(group, CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
+            OnChange();
+
+            void OnChange() => panel.isVisible = ShowWhatsNew;
         }
 
         #endregion
@@ -375,12 +380,7 @@ namespace ModsCommon
             var inProcess = false;
             var checkBoxes = new UICheckBox[labels.Length];
 
-            optionsPanel = (group.self as UIComponent).AddUIComponent<CustomUIPanel>();
-            optionsPanel.autoLayout = true;
-            optionsPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            optionsPanel.autoFitChildrenHorizontally = true;
-            optionsPanel.autoFitChildrenVertically = true;
-            optionsPanel.autoLayoutPadding = new RectOffset(25 + padding, 0, 0, 5);
+            optionsPanel = AddPanel(group, 25 + padding);
             var panelHelper = new UIHelper(optionsPanel);
 
             for (var i = 0; i < checkBoxes.Length; i += 1)
@@ -402,7 +402,16 @@ namespace ModsCommon
                 }
             }
         }
-
+        public static CustomUIPanel AddPanel(UIHelper group, int padding = 25)
+        {
+            var optionsPanel = (group.self as UIComponent).AddUIComponent<CustomUIPanel>();
+            optionsPanel.autoLayout = true;
+            optionsPanel.autoLayoutDirection = LayoutDirection.Vertical;
+            optionsPanel.autoFitChildrenHorizontally = true;
+            optionsPanel.autoFitChildrenVertically = true;
+            optionsPanel.autoLayoutPadding = new RectOffset(padding, 0, 0, 5);
+            return optionsPanel;
+        }
         public static UIButton AddButton(UIHelper group, string text, OnButtonClicked click, float width = 400)
         {
             var button = group.AddButton(text, click) as UIButton;
