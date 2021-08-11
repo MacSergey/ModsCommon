@@ -356,8 +356,8 @@ namespace ModsCommon
 
         public static void AddCheckboxPanel(UIHelper group, string mainLabel, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
-            AddLabel(group, mainLabel, padding: 25);
-            AddCheckboxPanel(group, optionsSaved, labels, 25, onChanged, out _);
+            AddLabel(group, mainLabel, padding: 0);
+            AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged, out _);
         }
         public static void AddCheckboxPanel(UIHelper group, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
