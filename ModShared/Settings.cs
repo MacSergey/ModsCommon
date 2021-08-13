@@ -425,7 +425,10 @@ namespace ModsCommon
         {
             var component = helper.self as UIComponent;
 
-            var label = component.AddUIComponent<CustomUILabel>();
+            var temp = UITemplateManager.GetAsGameObject("OptionsCheckBoxTemplate").GetComponent<UIComponent>();
+            var label = temp.Find<UILabel>("Label");
+            component.AttachUIComponent(label.gameObject);
+            GameObject.Destroy(temp.gameObject);
             label.text = text;
             label.textScale = size;
             label.textColor = color ?? Color.white;
