@@ -210,6 +210,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>체코어</value>
   </data>
+  
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>독일어</value>
   </data>

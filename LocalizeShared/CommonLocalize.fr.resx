@@ -210,6 +210,7 @@ Redémarrez le jeu.</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Tchèque</value>
   </data>
+  
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Allemand</value>
   </data>

@@ -210,6 +210,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Чешский</value>
   </data>
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>Датский</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Немецкий</value>
   </data>

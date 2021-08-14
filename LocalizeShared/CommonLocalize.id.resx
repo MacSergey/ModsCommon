@@ -210,6 +210,7 @@ Mohon restart game ini.</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Ceko</value>
   </data>
+  
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Jerman</value>
   </data>
