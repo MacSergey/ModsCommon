@@ -160,6 +160,11 @@
     <value>Utilizza la rotellina per cambiare
 Shift X10, Ctrl X0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Utilizza la rotellina per cambiare</value>
   </data>
@@ -210,7 +215,9 @@ Riavvia il gioco.</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Ceco</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>Danese</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Tedesco</value>
   </data>
@@ -259,6 +266,7 @@ Riavvia il gioco.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Russo</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Cinese Semplificato</value>
   </data>
@@ -299,6 +307,7 @@ Riavvia il gioco.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notifiche</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Attiva il tool</value>
   </data>

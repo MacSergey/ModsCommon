@@ -160,6 +160,11 @@
     <value>Użyj kółka myszy aby zmienić wartość
 Shift x10, Ctrl x0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Użyj kółka myszy aby zmienić wartość</value>
   </data>
@@ -259,6 +264,7 @@ Uruchom ponownie grę.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Rosyjski</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chiński uproszczony</value>
   </data>
@@ -299,6 +305,7 @@ Uruchom ponownie grę.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Powiadomienia</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Aktywuj narzędzie</value>
   </data>

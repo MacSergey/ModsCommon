@@ -160,6 +160,11 @@
     <value>Scroll roda mouse untuk mengubah
 Shift X10, Ctrl X0,1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Scroll roda mouse untuk mengubah</value>
   </data>
@@ -255,6 +260,7 @@ Mohon restart game ini.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Rusia</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Mandarin Sederhana</value>
   </data>
@@ -297,6 +303,7 @@ Mohon restart game ini.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notifikasi</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Aktifkan alat</value>
   </data>

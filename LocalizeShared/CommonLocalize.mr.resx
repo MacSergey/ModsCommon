@@ -160,6 +160,11 @@
     <value>Tatal roda tetikus untuk ubah
 Shift x10, Ctrl x0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Tatal roda tetikus untuk ubah</value>
   </data>
@@ -210,7 +215,9 @@ Mulakan semula permainan.</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Czech</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>Denmark</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Jerman</value>
   </data>
@@ -259,6 +266,7 @@ Mulakan semula permainan.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Rusia</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Cina Ringkas</value>
   </data>
@@ -299,6 +307,7 @@ Mulakan semula permainan.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Pemberitahuan</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Aktifkan alatan</value>
   </data>

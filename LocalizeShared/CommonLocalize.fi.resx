@@ -160,6 +160,11 @@
     <value>Vieritä hiiren rullalla vaihtaaksesi
 Shift X10, Ctrl X0,1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Vieritä hiiren rullalla vaihtaaksesi</value>
   </data>
@@ -259,6 +264,7 @@ Käynnistä peli uudelleen.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Venäjä</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Yksinkertaistettu kiina</value>
   </data>
@@ -299,6 +305,7 @@ Käynnistä peli uudelleen.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Ilmoitukset</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Käynnistä työkalu</value>
   </data>

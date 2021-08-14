@@ -160,6 +160,11 @@
     <value>使用滾輪調整
 Shift X10, Ctrl X0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>使用滾輪調整</value>
   </data>
@@ -210,7 +215,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>捷克文</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>丹麥文</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>德文</value>
   </data>
@@ -229,7 +236,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>法文</value>
   </data>
-  
+  <data name="Mod_Locale_hu" xml:space="preserve">
+    <value>匈牙利文</value>
+  </data>
   <data name="Mod_Locale_id" xml:space="preserve">
     <value>印尼文</value>
   </data>
@@ -239,7 +248,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>日文</value>
   </data>
-  
+  <data name="Mod_Locale_ko" xml:space="preserve">
+    <value>韓文</value>
+  </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
     <value>馬來文</value>
   </data>
@@ -255,6 +266,7 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>俄文</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>簡體中文</value>
   </data>
@@ -295,6 +307,7 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>通知</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>啟動工具</value>
   </data>

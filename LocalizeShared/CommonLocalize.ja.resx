@@ -160,6 +160,11 @@
     <value>ホイールのスクロールで増減
 +Shift ｘ 10倍 / +Ctrl ｘ 0.1倍</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>ホイールのスクロールで増減</value>
   </data>
@@ -213,7 +218,9 @@
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>チェコ語</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>デンマーク語</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>ドイツ語</value>
   </data>
@@ -262,6 +269,7 @@
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>ロシア語</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>簡体中国語</value>
   </data>
@@ -302,6 +310,7 @@
   <data name="Settings_Notifications" xml:space="preserve">
     <value>通知の設定</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>ツールの有効化</value>
   </data>

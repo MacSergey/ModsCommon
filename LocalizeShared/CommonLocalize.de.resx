@@ -160,6 +160,11 @@
     <value>Mausrad scrollen zum Ändern
 Shift x10, Strg x0,1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Mausrad scrollen zum Ändern</value>
   </data>
@@ -210,7 +215,9 @@ Starte das Spiel neu.</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Tschechisch</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>Dänisch</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Deutsch</value>
   </data>
@@ -259,6 +266,7 @@ Starte das Spiel neu.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Russisch</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Vereinfachtes Chinesisch</value>
   </data>
@@ -301,6 +309,7 @@ Starte das Spiel neu.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Benachrichtigungen</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Tool aktivieren</value>
   </data>

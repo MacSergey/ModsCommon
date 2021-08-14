@@ -160,6 +160,11 @@
     <value>Faça scroll para mudar
 Shift X10, Ctrl X0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Faça scroll para mudar</value>
   </data>
@@ -258,6 +263,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Russo</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinês Simplificado</value>
   </data>
@@ -300,6 +306,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notificações</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Ativar ferramenta</value>
   </data>

@@ -160,14 +160,23 @@
     <value>Použijte kolečko myši pro změnu hodnoty
 Shift ×10, Ctrl ×0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Použijte kolečko myši pro změnu hodnoty</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Zrušit</value>
   </data>
-  
-  
+  <data name="MessageBox_DontShowAgain" xml:space="preserve">
+    <value>Znovu nezobrazovat</value>
+  </data>
+  <data name="MessageBox_MoreInfo" xml:space="preserve">
+    <value>Více informací</value>
+  </data>
   <data name="MessageBox_No" xml:space="preserve">
     <value>Ne</value>
   </data>
@@ -192,7 +201,9 @@ Shift ×10, Ctrl ×0.1</value>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Toto je BETA verze, mohou se zde vyskytovat chyby a stabilita není zaručena!</value>
   </data>
-  
+  <data name="Mod_LinuxWarning" xml:space="preserve">
+    <value>Linux verze Cities Skylines nemá všechny potřebné knihovny pro správnou funkcionalitu modu. Je potřeba do systému nainstalovat balíček "Mono Develop". Pokud při používání nástroje neregistrujete žádné pády hry, můžete tuto zprávu ignorovat.</value>
+  </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Načitání modu neproběhlo v pořádku.
 Spouštění modu v tomto stavu není doporučené a může vést k neočekávanému chování.
@@ -204,7 +215,9 @@ Restartujte hru.</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Čeština</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>Dánština</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Němčina</value>
   </data>
@@ -223,16 +236,24 @@ Restartujte hru.</value>
   <data name="Mod_Locale_fr" xml:space="preserve">
     <value>Francouzština</value>
   </data>
-  
-  
+  <data name="Mod_Locale_hu" xml:space="preserve">
+    <value>Maďarština</value>
+  </data>
+  <data name="Mod_Locale_id" xml:space="preserve">
+    <value>Indonéština</value>
+  </data>
   <data name="Mod_Locale_it" xml:space="preserve">
     <value>Italština</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
     <value>Japonština</value>
   </data>
-  
-  
+  <data name="Mod_Locale_ko" xml:space="preserve">
+    <value>Korejština</value>
+  </data>
+  <data name="Mod_Locale_mr" xml:space="preserve">
+    <value>Malajština</value>
+  </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
     <value>Holandština</value>
   </data>
@@ -245,10 +266,13 @@ Restartujte hru.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Ruština</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Zjednodušená čínština</value>
   </data>
-  
+  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+    <value>Čínština tradiční</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Podpora</value>
   </data>
@@ -268,7 +292,9 @@ Restartujte hru.</value>
   <data name="Settings_ChangeLog" xml:space="preserve">
     <value>Seznam změn</value>
   </data>
-  
+  <data name="Settings_ForLinuxUsers" xml:space="preserve">
+    <value>Pro uživatele Linuxu</value>
+  </data>
   <data name="Settings_General" xml:space="preserve">
     <value>Základní nastavení</value>
   </data>
@@ -281,13 +307,16 @@ Restartujte hru.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Oznámení</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Aktivovat nástroj</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
     <value>Klávesové zkratky</value>
   </data>
-  
+  <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
+    <value>Výběr překrývajích-se křižovatek</value>
+  </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Oznamovat pouze o významných aktualizacích</value>
   </data>
@@ -297,13 +326,20 @@ Restartujte hru.</value>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
     <value>Zobrazovat novinky</value>
   </data>
-  
+  <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
+    <value>Řešení pádu hry na Linuxových systémech</value>
+  </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Podpora</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Řešení problémů</value>
   </data>
-  
-  
+  <data name="Setting_Donate" xml:space="preserve">
+    <value>Pokud se vám {0} líbí, můžete podpořit autora</value>
+  </data>
+  <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
+    <value>Stiskněte {0} pro
+výběr překrývané křižovatky</value>
+  </data>
 </root>

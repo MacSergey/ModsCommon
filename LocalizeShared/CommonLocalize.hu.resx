@@ -160,6 +160,11 @@
     <value>Használd a görgőt a változtatáshoz
 Shift X10, Ctrl X0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Használd a görgőt a változtatáshoz</value>
   </data>
@@ -259,6 +264,7 @@ Indítsd újra a játékot!</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Orosz</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Kínai egyszerűsített</value>
   </data>
@@ -299,6 +305,7 @@ Indítsd újra a játékot!</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Értesítések</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Eszköz aktiválása</value>
   </data>

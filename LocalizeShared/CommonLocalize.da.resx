@@ -157,11 +157,16 @@
     <value>Afmeld</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Brug Scroll for at ændre
+    <value>Brug Scroll hjulet for at ændre
 Shift X10, Ctrl X0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Brug Scroll for at ændre</value>
+    <value>Brug Scroll hjul for at ændre</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Annuller</value>
@@ -185,13 +190,13 @@ Shift X10, Ctrl X0.1</value>
     <value>Jeg accepterer</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA versionsadvarsel</value>
+    <value>BETA version advarsel</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Hent en stabil version</value>
+    <value>Hent stabil version</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Du bruger BETA versionen af {0}. Den er til at teste nye funktioner og kan indeholde fejl. Hvis du ved en fejltagelse har abonneret på den, skal du skifte til den stabile version.</value>
+    <value>Du bruger BETA versionen af {0}. Den er til at teste nye funktioner og kan indeholde fejl. Hvis du ved en fejl har abonneret på den, skal du skifte til den stabile version.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
     <value>Dette er en BETA version, fejl kan forekomme og stabilitet er ikke garanteret!</value>
@@ -210,7 +215,9 @@ Genstart spillet.</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Tjekkisk</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>Dansk</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Tysk</value>
   </data>
@@ -259,6 +266,7 @@ Genstart spillet.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Russisk</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Kinesisk Forenklet</value>
   </data>
@@ -299,6 +307,7 @@ Genstart spillet.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notifikationer</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Aktivér værktøj</value>
   </data>

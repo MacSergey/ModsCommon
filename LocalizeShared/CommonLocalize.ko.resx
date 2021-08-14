@@ -160,6 +160,11 @@
     <value>마우스 휠을 돌려 변경하세요
 Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>마우스 휠을 돌려 변경하세요</value>
   </data>
@@ -210,7 +215,9 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>체코어</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>덴마크어</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>독일어</value>
   </data>
@@ -259,6 +266,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>러시아어</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>중국어, 간체</value>
   </data>
@@ -299,6 +307,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>알림</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>도구 활성화</value>
   </data>

@@ -160,6 +160,11 @@
     <value>Utilisez la molette pour changer
 Maj X10, Ctrl X0.1</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Utilisez la molette pour changer</value>
   </data>
@@ -259,6 +264,7 @@ Redémarrez le jeu.</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Russe</value>
   </data>
+  
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinois simplifié</value>
   </data>
@@ -301,6 +307,7 @@ Redémarrez le jeu.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Paramètres de notification</value>
   </data>
+  
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Activer l'outil</value>
   </data>
