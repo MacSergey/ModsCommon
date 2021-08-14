@@ -56,7 +56,7 @@ namespace ModsCommon.Utilities
 
         public virtual bool Press(Event e)
         {
-            if (e.type != EventType.Used && IsPressed)
+            if ((CanRepeat ? e.type == EventType.keyDown : e.type == EventType.KeyUp) && IsPressed)
             {
                 Press();
                 e.Use();

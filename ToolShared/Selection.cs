@@ -313,8 +313,8 @@ namespace ModsCommon.Utilities
             private Vector3 _leftDir;
             private Vector3 _rightDir;
 
-            private float _leftDirLenght;
-            private float _rightDirLenght;
+            private float _leftDirLength;
+            private float _rightDirLength;
 
             public float halfWidth;
 
@@ -324,7 +324,7 @@ namespace ModsCommon.Utilities
                 set
                 {
                     _leftDir = value.normalized;
-                    _leftDirLenght = LengthXZ(value);
+                    _leftDirLength = LengthXZ(value);
                 }
             }
             public Vector3 RightDir
@@ -333,7 +333,7 @@ namespace ModsCommon.Utilities
                 set
                 {
                     _rightDir = value.normalized;
-                    _rightDirLenght = LengthXZ(value);
+                    _rightDirLength = LengthXZ(value);
                 }
             }
 
@@ -348,8 +348,8 @@ namespace ModsCommon.Utilities
                 _leftDir = Vector3.zero;
                 _rightDir = Vector3.zero;
 
-                _leftDirLenght = 1f;
-                _rightDirLenght = 1f;
+                _leftDirLength = 1f;
+                _rightDirLength = 1f;
 
                 halfWidth = 0f;
             }
@@ -369,7 +369,7 @@ namespace ModsCommon.Utilities
             public float GetDirLength(float t)
             {
                 t = Mathf.Clamp01(t);
-                return _leftDirLenght * t + _rightDirLenght * (1 - t);
+                return _leftDirLength * t + _rightDirLength * (1 - t);
             }
             public Vector3 GetCornerDelta(float width) => CornerDir * (width / DeltaAngleCos);
         }
