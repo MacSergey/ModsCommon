@@ -33,6 +33,7 @@ namespace ModsCommon.Utilities
         public static bool OnlyAltIsPressed => AltIsPressed && !ShiftIsPressed && !CtrlIsPressed;
         public static bool OnlyShiftIsPressed => ShiftIsPressed && !AltIsPressed && !CtrlIsPressed;
         public static bool OnlyCtrlIsPressed => CtrlIsPressed && !AltIsPressed && !ShiftIsPressed;
+        public static bool NotPressed => !AltIsPressed && !ShiftIsPressed && !CtrlIsPressed;
     }
     public static class IntroUtility
     {
