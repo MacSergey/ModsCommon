@@ -325,6 +325,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Danish.
+        /// </summary>
+        public static string Mod_Locale_da {
+            get {
+                return ResourceManager.GetString("Mod_Locale_da", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на German.
         /// </summary>
         public static string Mod_Locale_de {

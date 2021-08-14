@@ -210,6 +210,9 @@ Restart the game.</value>
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Czech</value>
   </data>
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>Danish</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>German</value>
   </data>
