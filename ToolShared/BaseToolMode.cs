@@ -23,6 +23,7 @@ namespace ModsCommon
         public void OnSecondaryMouseDoubleClicked();
         public bool OnEscape();
         public void RenderOverlay(RenderManager.CameraInfo cameraInfo);
+        public void RenderGeometry(RenderManager.CameraInfo cameraInfo);
     }
     public interface IToolMode<ModeType> : IToolMode
     where ModeType : Enum
@@ -85,5 +86,6 @@ namespace ModsCommon
         public virtual void OnSecondaryMouseDoubleClicked() { }
         public virtual bool OnEscape() => false;
         public virtual void RenderOverlay(RenderManager.CameraInfo cameraInfo) { }
+        public virtual void RenderGeometry(RenderManager.CameraInfo cameraInfo) { }
     }
 }

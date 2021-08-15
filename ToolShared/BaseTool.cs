@@ -375,6 +375,11 @@ namespace ModsCommon
             Mode.RenderOverlay(cameraInfo);
             base.RenderOverlay(cameraInfo);
         }
+        public override void RenderGeometry(RenderManager.CameraInfo cameraInfo)
+        {
+            Mode.RenderGeometry(cameraInfo);
+            base.RenderGeometry(cameraInfo);
+        }
 
         #endregion
     }
