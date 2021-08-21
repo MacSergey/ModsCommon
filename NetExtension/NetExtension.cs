@@ -110,6 +110,14 @@ namespace ModsCommon.Utilities
             segmentId = 0;
             return false;
         }
+        public static bool IsCommon(ushort firstId, ushort secondId)
+        {
+            ref var first = ref firstId.GetSegment();
+            ref var second = ref secondId.GetSegment();
+
+            return (first.m_startNode == second.m_startNode || first.m_startNode == second.m_endNode || first.m_endNode == second.m_startNode || first.m_endNode == second.m_endNode);
+        }
+
         public static bool Contains(ref this NetNode node, ushort segmentId) => node.SegmentIds().Contains(segmentId);
         public static bool Contains(ref this NetSegment segment, ushort nodeId) => segment.NodeIds().Contains(nodeId); 
 
