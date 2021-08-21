@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using UnityEngine;
 
 namespace ModsCommon.Utilities
 {
@@ -128,6 +129,7 @@ namespace ModsCommon.Utilities
         public static ref NetSegment GetSegment(this ushort segmentId) => ref NetManager.m_segments.m_buffer[segmentId];
         public static ref NetLane GetLane(this uint laneId) => ref NetManager.m_lanes.m_buffer[laneId];
         public static ushort GetNode(ref this NetSegment segment, bool isStartNode) => isStartNode ? segment.m_startNode : segment.m_endNode;
+        public static Vector3 GetDirection(ref this NetSegment segment, bool isStart) => isStart ? segment.m_startDirection : segment.m_endDirection;
 
         public static bool IsStartNode(ref this NetSegment segment, ushort nodeId) => segment.m_startNode == nodeId;
         public static bool IsValid(ref this NetNode node) => node.Info != null && node.m_flags.CheckFlags(required: NetNode.Flags.Created, forbidden: NetNode.Flags.Deleted);
