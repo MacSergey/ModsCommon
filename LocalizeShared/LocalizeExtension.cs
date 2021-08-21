@@ -9,16 +9,25 @@ namespace ModsCommon
 {
     public static class LocalizeExtension
     {
+        private static string Separator => " + ";
+        public static string Ctrl => Locale.Get("KEYNAME", KeyCode.LeftControl.ToString());
+        public static string Alt => Locale.Get("KEYNAME", KeyCode.LeftAlt.ToString());
+        public static string Shift => Locale.Get("KEYNAME", KeyCode.LeftShift.ToString());
+        public static string CtrlAlt => $"{Ctrl}{Separator}{Alt}";
+        public static string CtrlShift => $"{Ctrl}{Separator}{Shift}";
+        public static string AltShift => $"{Alt}{Separator}{Shift}";
+        public static string CtrlAltShift => $"{Ctrl}{Separator}{Alt}{Separator}{Shift}";
+
         public static string GetLocale(this SavedInputKey savedKey)
         {
             var text = string.Empty;
 
             if (savedKey.Control)
-                text += Locale.Get("KEYNAME", KeyCode.LeftControl.ToString()) + " + ";
+                text += Ctrl + Separator;
             if (savedKey.Alt)
-                text += Locale.Get("KEYNAME", KeyCode.LeftAlt.ToString()) + " + ";
+                text += Alt + Separator;
             if (savedKey.Shift)
-                text += Locale.Get("KEYNAME", KeyCode.LeftShift.ToString()) + " + ";
+                text += Shift + Separator;
             text += savedKey.GetKeyLocale();
 
             return text;
@@ -31,6 +40,6 @@ namespace ModsCommon
             KeyCode.Minus or KeyCode.KeypadMinus => "-",
             _ => savedKey.Key.GetLocale(),
         };
-        private static string GetLocale(this KeyCode key) => Locale.Exists("KEYNAME", key.ToString()) ? Locale.Get("KEYNAME", key.ToString()) : key.ToString();
+        public static string GetLocale(this KeyCode key) => Locale.Exists("KEYNAME", key.ToString()) ? Locale.Get("KEYNAME", key.ToString()) : key.ToString();
     }
 }
