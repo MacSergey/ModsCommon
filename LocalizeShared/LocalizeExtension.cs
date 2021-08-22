@@ -10,9 +10,9 @@ namespace ModsCommon
     public static class LocalizeExtension
     {
         private static string Separator => " + ";
-        public static string Ctrl => Locale.Get("KEYNAME", KeyCode.LeftControl.ToString());
-        public static string Alt => Locale.Get("KEYNAME", KeyCode.LeftAlt.ToString());
-        public static string Shift => Locale.Get("KEYNAME", KeyCode.LeftShift.ToString());
+        public static string Ctrl => CommonLocalize.Key_Control;
+        public static string Alt => CommonLocalize.Key_Alt;
+        public static string Shift => CommonLocalize.Key_Shift;
         public static string CtrlAlt => $"{Ctrl}{Separator}{Alt}";
         public static string CtrlShift => $"{Ctrl}{Separator}{Shift}";
         public static string AltShift => $"{Alt}{Separator}{Shift}";
