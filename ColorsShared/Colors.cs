@@ -81,5 +81,10 @@ namespace ModsCommon.Utilities
         public static string AddErrorColor(this string text) => $"<color #FF7E00>{text}</color>";
         public static string AddActionColor(this string text) => $"<color #5CE66E>{text}</color>";
         public static string AddWarningColor(this string text) => $"<color #FFD119>{text}</color>";
+
+        public static string AddInfoColor(this Shortcut shortcut) => AddInfoColor(shortcut.ToString());
+        public static string AddErrorColor(this Shortcut shortcut) => AddErrorColor(shortcut.ToString());
+        public static string AddActionColor(this Shortcut shortcut) => AddActionColor(shortcut.ToString());
+        public static string AddWarningColor(this Shortcut shortcut) => AddWarningColor(shortcut.ToString());
     }
 }
