@@ -188,6 +188,51 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Alt.
+        /// </summary>
+        public static string Key_Alt {
+            get {
+                return ResourceManager.GetString("Key_Alt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Control.
+        /// </summary>
+        public static string Key_Control {
+            get {
+                return ResourceManager.GetString("Key_Control", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter.
+        /// </summary>
+        public static string Key_Enter {
+            get {
+                return ResourceManager.GetString("Key_Enter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shift.
+        /// </summary>
+        public static string Key_Shift {
+            get {
+                return ResourceManager.GetString("Key_Shift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tab.
+        /// </summary>
+        public static string Key_Tab {
+            get {
+                return ResourceManager.GetString("Key_Tab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Scroll the wheel to change.
         /// </summary>
         public static string ListPanel_ScrollWheel {
@@ -478,6 +523,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Turkish.
+        /// </summary>
+        public static string Mod_Locale_tr {
+            get {
+                return ResourceManager.GetString("Mod_Locale_tr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Chinese Simplified.
         /// </summary>
         public static string Mod_Locale_zh_cn {
@@ -618,6 +672,15 @@ namespace ModsCommon {
         public static string Settings_Notifications {
             get {
                 return ResourceManager.GetString("Settings_Notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Press any key.
+        /// </summary>
+        public static string Settings_PressAnyKey {
+            get {
+                return ResourceManager.GetString("Settings_PressAnyKey", resourceCulture);
             }
         }
         

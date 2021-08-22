@@ -54,6 +54,10 @@ namespace ModsCommon
             HoverNode = null;
             HoverSegment = null;
             Underground = false;
+            ClearSelectionBuffer();
+        }
+        protected void ClearSelectionBuffer()
+        {
             IgnoreList.Clear();
             NodeBuffer.Clear();
             SegmentBuffer.Clear();
