@@ -38,6 +38,11 @@ namespace ModsCommon
             KeyCode.RightBracket => "]",
             KeyCode.Plus or KeyCode.KeypadPlus => "+",
             KeyCode.Minus or KeyCode.KeypadMinus => "-",
+            KeyCode.LeftControl or KeyCode.RightControl => CommonLocalize.Key_Control,
+            KeyCode.LeftAlt or KeyCode.RightAlt => CommonLocalize.Key_Alt,
+            KeyCode.LeftShift or KeyCode.RightShift => CommonLocalize.Key_Shift,
+            KeyCode.KeypadEnter or KeyCode.Return => CommonLocalize.Key_Enter,
+            KeyCode.Tab => CommonLocalize.Key_Tab,
             _ => savedKey.Key.GetLocale(),
         };
         public static string GetLocale(this KeyCode key) => Locale.Exists("KEYNAME", key.ToString()) ? Locale.Get("KEYNAME", key.ToString()) : key.ToString();

@@ -58,7 +58,7 @@ namespace ModsCommon.UI
                 EditShortcut = (Shortcut)p.source.objectUserData;
                 var button = p.source as UIButton;
                 button.buttonsMask = UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle | UIMouseButton.Special0 | UIMouseButton.Special1 | UIMouseButton.Special2 | UIMouseButton.Special3;
-                button.text = Locale.Get("KEYMAPPING_PRESSANYKEY");
+                button.text = CommonLocalize.Settings_PressAnyKey;
                 p.source.Focus();
                 UIView.PushModal(p.source);
             }
