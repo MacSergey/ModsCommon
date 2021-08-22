@@ -9,7 +9,7 @@ namespace ModsCommon
 {
     public static class LocalizeExtension
     {
-        private static string Separator => " + ";
+        public static string Separator => " + ";
         public static string Ctrl => CommonLocalize.Key_Control;
         public static string Alt => CommonLocalize.Key_Alt;
         public static string Shift => CommonLocalize.Key_Shift;
@@ -31,6 +31,19 @@ namespace ModsCommon
             text += savedKey.GetKeyLocale();
 
             return text;
+        }
+        public static string GetModifiers(bool ctrl = false, bool alt = false, bool shift = false)
+        {
+            var modifiers = new List<string>(3);
+
+            if (ctrl)
+                modifiers.Add(Ctrl);
+            if (alt)
+                modifiers.Add(Alt);
+            if (shift)
+                modifiers.Add(Shift);
+
+            return string.Join(Separator, modifiers.ToArray());
         }
         private static string GetKeyLocale(this SavedInputKey savedKey) => savedKey.Key switch
         {

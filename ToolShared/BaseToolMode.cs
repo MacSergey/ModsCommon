@@ -87,11 +87,5 @@ namespace ModsCommon
         public virtual bool OnEscape() => false;
         public virtual void RenderOverlay(RenderManager.CameraInfo cameraInfo) { }
         public virtual void RenderGeometry(RenderManager.CameraInfo cameraInfo) { }
-
-        protected static string AddColor(string text, Color32 color) => $"<color #{color.r:X}{color.g:X}{color.b:X}>{text}</color>";
-        protected static string AddInfoColor(string text) => $"<color #87D3FF>{text}</color>";
-        protected static string AddErrorColor(string text) => $"<color #FF7E00>{text}</color>";
-        protected static string AddActionColor(string text) => $"<color #5CE66E>{text}</color>";
-        protected static string AddWarningColor(string text) => $"<color #FFD119>{text}</color>";
     }
 }
