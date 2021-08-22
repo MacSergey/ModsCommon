@@ -523,6 +523,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Turkish.
+        /// </summary>
+        public static string Mod_Locale_tr {
+            get {
+                return ResourceManager.GetString("Mod_Locale_tr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Chinese Simplified.
         /// </summary>
         public static string Mod_Locale_zh_cn {
