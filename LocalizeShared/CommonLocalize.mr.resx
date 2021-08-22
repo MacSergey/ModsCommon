@@ -319,7 +319,9 @@ Mulakan semula permainan.</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Pemberitahuan</value>
   </data>
-  
+  <data name="Settings_PressAnyKey" xml:space="preserve">
+    <value>Tekan sebarang kekunci</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Aktifkan alatan</value>
   </data>

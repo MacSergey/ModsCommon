@@ -164,16 +164,16 @@ Shift x10, Strg x0,1</value>
     <value>Alt</value>
   </data>
   <data name="Key_Control" xml:space="preserve">
-    <value>Steuerungstaste</value>
+    <value>Strg</value>
   </data>
   <data name="Key_Enter" xml:space="preserve">
-    <value>Eingabetaste</value>
+    <value>Enter</value>
   </data>
   <data name="Key_Shift" xml:space="preserve">
-    <value>Umschalttaste</value>
+    <value>Shift</value>
   </data>
   <data name="Key_Tab" xml:space="preserve">
-    <value>Tabulatortaste</value>
+    <value>Tab</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Mausrad scrollen zum Ändern</value>
