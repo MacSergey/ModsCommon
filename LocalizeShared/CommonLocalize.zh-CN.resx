@@ -160,11 +160,21 @@
     <value>使用滚轮改变参数
 Shift x10，Ctrl x0.1</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Key_Control" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>使用滚轮改变参数</value>
   </data>
@@ -266,7 +276,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>俄语</value>
   </data>
-  
+  <data name="Mod_Locale_tr" xml:space="preserve">
+    <value>土耳其语</value>
+  </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>简体中文</value>
   </data>
@@ -307,7 +319,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>通知消息</value>
   </data>
-  
+  <data name="Settings_PressAnyKey" xml:space="preserve">
+    <value>按任意键</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>启用工具</value>
   </data>

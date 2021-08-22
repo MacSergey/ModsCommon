@@ -160,11 +160,21 @@
     <value>마우스 휠을 돌려 변경하세요
 Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Key_Control" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>마우스 휠을 돌려 변경하세요</value>
   </data>
@@ -266,7 +276,9 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>러시아어</value>
   </data>
-  
+  <data name="Mod_Locale_tr" xml:space="preserve">
+    <value>터키어</value>
+  </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>중국어, 간체</value>
   </data>
@@ -307,7 +319,9 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Settings_Notifications" xml:space="preserve">
     <value>알림</value>
   </data>
-  
+  <data name="Settings_PressAnyKey" xml:space="preserve">
+    <value>아무 키나 누르세요</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>도구 활성화</value>
   </data>
