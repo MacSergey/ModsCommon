@@ -86,7 +86,7 @@ namespace ModsCommon.Utilities
             if (Plugin.isEnabled)
             {
                 ModInstance.Logger.Debug("Level unloaded");
-                SetState(Utility.InMenu);
+                SetState(Utility.OnMenu);
             }
         }
 

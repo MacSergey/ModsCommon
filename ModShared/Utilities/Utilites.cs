@@ -23,8 +23,9 @@ namespace ModsCommon.Utilities
         public static void OpenPatreon() => OpenUrl("https://www.patreon.com/MacSergey");
         public static void OpenPayPal() => OpenUrl("https://www.paypal.me/macsergey");
 
-        public static bool InGame => !OnStartup && !InMenu;
-        public static bool InMenu => SceneManager.GetActiveScene().name is string scene && scene == "MainMenu";
+        public static bool InGame => !OnStartup && !OnMenu;
+        public static bool OnGame => SceneManager.GetActiveScene().name is string scene && scene == "Game";
+        public static bool OnMenu => SceneManager.GetActiveScene().name is string scene && scene == "MainMenu";
         public static bool OnStartup => SceneManager.GetActiveScene().name is string scene && scene == "Startup";
 
         public static bool AltIsPressed => Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
