@@ -17,7 +17,7 @@ using static ModsCommon.SettingsHelper;
 
 namespace ModsCommon
 {
-    public abstract class BaseSettings<TypeMod>
+    public abstract partial class BaseSettings<TypeMod>
         where TypeMod : BaseMod<TypeMod>
     {
         public static string SettingsFile { get; } = $"{typeof(TypeMod).Namespace}{nameof(SettingsFile)}";
