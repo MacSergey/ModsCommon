@@ -17,7 +17,7 @@ namespace ModsCommon
         public UIComponent UUIButton { get; }
         public void RegisterUUI();
     }
-    public abstract partial class BaseTool<TypeMod, TypeTool> : ToolBase, ITool, IUUITool
+    public abstract partial class BaseTool<TypeMod, TypeTool> : ToolBase, IUUITool
     where TypeMod : ICustomMod
     where TypeTool : ToolBase, ITool
     {
@@ -53,7 +53,7 @@ namespace ModsCommon
                     var tool = SingletonTool<TypeTool>.Instance;
                     UUIButton = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
 
-                    UUIButton.isVisible = NetworkMultitool.Settings.IsUUIButtonVisible();
+                    UUIButton.isVisible = BaseSettings<TypeMod>.IsUUIButtonVisible();
                     UUIButton.eventTooltipEnter += (UIComponent component, UIMouseEventParameter eventParam) => component.tooltip = ToolTip;
                     UUIRegistered = true;
                 }
@@ -81,21 +81,21 @@ namespace ModsCommon
         }
     }
     public abstract class UUINetToolButton<TypeMod, TypeTool> : NetToolButton<TypeTool>
-        where TypeMod : BaseMod<TypeMod>
-        where TypeTool : ToolBase, IUUITool
+        where TypeMod : ICustomMod
+        where TypeTool : IUUITool
     {
         public override void Start()
         {
             base.Start();
-            isVisible = NetworkMultitool.Settings.IsToolbarButtonVisible<TypeTool>();
+            isVisible = BaseSettings<TypeMod>.IsToolbarButtonVisible<TypeTool>();
         }
     }
     public abstract partial class BaseSettings<TypeMod>
-        where TypeMod : BaseMod<TypeMod>
+        where TypeMod : ICustomMod
     {
         public static SavedInt ToolButtonVisible { get; } = new SavedInt(nameof(ToolButtonVisible), SettingsFile, (int)ButtonVisible.Both, true);
         public static bool IsUUIButtonVisible() => ToolButtonVisible != (int)ButtonVisible.OnlyToolbar;
-        public static bool IsToolbarButtonVisible<TypeTool>() where TypeTool : ToolBase, IUUITool
+        public static bool IsToolbarButtonVisible<TypeTool>() where TypeTool : IUUITool
             => ToolButtonVisible != (int)ButtonVisible.OnlyUUI || !SingletonTool<TypeTool>.Instance.UUIRegistered;
 
         public static void AddToolButton<TypeTool, TypeButton>(UIHelper group)
