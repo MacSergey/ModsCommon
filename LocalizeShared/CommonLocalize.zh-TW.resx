@@ -346,6 +346,18 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>支援</value>
   </data>
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>工具按鈕</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>同時在兩處顯示</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>只在工具列顯示</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>只在 UUI 顯示</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>疑難排解</value>
   </data>

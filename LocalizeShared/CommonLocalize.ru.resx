@@ -346,6 +346,18 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Поддержка</value>
   </data>
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>Кнопка инструмента</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>Показывать в обоих местах</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>Показывать только в панели инструментов</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>Показывать только в UUI</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Устранение неполадок</value>
   </data>

@@ -349,6 +349,18 @@
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>サポート</value>
   </data>
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>ツールボタンの表示</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>両方で表示</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>ツールボタンだけ表示</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>UUI MODでのみ表示</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>トラブルシューティング</value>
   </data>

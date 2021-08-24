@@ -345,6 +345,10 @@ Lütfen oyunu tekrar başlatın.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Destek</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Sorun Giderme</value>
   </data>

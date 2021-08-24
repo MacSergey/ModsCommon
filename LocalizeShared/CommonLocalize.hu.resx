@@ -330,6 +330,10 @@ Indítsd újra a játékot!</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Támogatás</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Hibaelhárítás</value>
   </data>

@@ -346,6 +346,10 @@ Käynnistä peli uudelleen.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Tuki</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Vianmääritys</value>
   </data>

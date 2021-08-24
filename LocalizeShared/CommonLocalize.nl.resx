@@ -320,6 +320,10 @@ Herstart het spel.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Ondersteuning</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Probleemoplossing</value>
   </data>

@@ -346,6 +346,18 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>지원</value>
   </data>
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>도구 버튼</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>모든 장소에서 표시</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>툴바에만 표시하기</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>UUI에만 표시하기</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>문제 해결</value>
   </data>

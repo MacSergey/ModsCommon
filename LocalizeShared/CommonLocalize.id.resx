@@ -328,6 +328,10 @@ Mohon restart game ini.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Dukungan</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Pemecahan masalah</value>
   </data>

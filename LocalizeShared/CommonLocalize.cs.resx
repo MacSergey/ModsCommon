@@ -346,6 +346,10 @@ Restartujte hru.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Podpora</value>
   </data>
+  
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Řešení problémů</value>
   </data>

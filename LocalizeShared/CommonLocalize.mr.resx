@@ -346,6 +346,18 @@ Mulakan semula permainan.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Sokongan</value>
   </data>
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>Butang alatan</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>Tunjukkan di kedua-dua tempat</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>Tunjukkan di bar alatan sahaja</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>Tunjukkan di UUI sahaja</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Menyelesaikan masalah</value>
   </data>

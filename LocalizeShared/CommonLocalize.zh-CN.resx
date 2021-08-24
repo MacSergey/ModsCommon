@@ -346,6 +346,18 @@ Shift x10，Ctrl x0.1</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>支持服务</value>
   </data>
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>工具按钮</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>两处同时显示</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>只在工具栏中显示</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>仅在 UnifiedUI 中显示</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>故障排除</value>
   </data>

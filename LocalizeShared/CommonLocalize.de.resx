@@ -348,6 +348,18 @@ Starte das Spiel neu.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Support/Hilfe</value>
   </data>
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>Werkzeug-Taste</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>An beiden Stellen anzeigen</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>Nur in der Funktionsleiste anzeigen</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>Nur in UUI anzeigen</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Hilfe</value>
   </data>
