@@ -464,6 +464,7 @@ namespace ModsCommon.Utilities
         }
 
         public override bool Equals(Selection other) => other is NodeSelection selection && selection.Id == Id;
+        public override string ToString() => $"Node #{Id}";
     }
     public class SegmentSelection : Selection
     {
@@ -537,5 +538,6 @@ namespace ModsCommon.Utilities
         }
 
         public override bool Equals(Selection other) => other is SegmentSelection selection && selection.Id == Id;
+        public override string ToString() => $"Segment #{Id}";
     }
 }
