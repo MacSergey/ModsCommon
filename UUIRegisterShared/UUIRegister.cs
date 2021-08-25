@@ -1,14 +1,23 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework;
+using ColossalFramework.UI;
+using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnifiedUI.Helpers;
+using static ModsCommon.SettingsHelper;
 
 namespace ModsCommon
 {
-    public abstract partial class BaseTool<TypeMod, TypeTool> : ToolBase, ITool, IUUITool
+    public interface IUUITool : ITool
+    {
+        public bool UUIRegistered { get; }
+        public UIComponent UUIButton { get; }
+        public void RegisterUUI();
+    }
+    public abstract partial class BaseTool<TypeMod, TypeTool> : ToolBase, IUUITool
     where TypeMod : ICustomMod
     where TypeTool : ToolBase, ITool
     {
@@ -44,6 +53,7 @@ namespace ModsCommon
                     var tool = SingletonTool<TypeTool>.Instance;
                     UUIButton = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
 
+                    UUIButton.isVisible = BaseSettings<TypeMod>.IsUUIButtonVisible();
                     UUIButton.eventTooltipEnter += (UIComponent component, UIMouseEventParameter eventParam) => component.tooltip = ToolTip;
                     UUIRegistered = true;
                 }
@@ -68,6 +78,48 @@ namespace ModsCommon
         {
             base.OnLoad();
             SingletonTool<TypeTool>.Instance.RegisterUUI();
+        }
+    }
+    public abstract class UUINetToolButton<TypeMod, TypeTool> : NetToolButton<TypeTool>
+        where TypeMod : ICustomMod
+        where TypeTool : IUUITool
+    {
+        public override void Start()
+        {
+            base.Start();
+            isVisible = BaseSettings<TypeMod>.IsToolbarButtonVisible<TypeTool>();
+        }
+    }
+    public abstract partial class BaseSettings<TypeMod>
+        where TypeMod : ICustomMod
+    {
+        public static SavedInt ToolButtonVisible { get; } = new SavedInt(nameof(ToolButtonVisible), SettingsFile, (int)ButtonVisible.Both, true);
+        public static bool IsUUIButtonVisible() => ToolButtonVisible != (int)ButtonVisible.OnlyToolbar;
+        public static bool IsToolbarButtonVisible<TypeTool>() where TypeTool : IUUITool
+            => ToolButtonVisible != (int)ButtonVisible.OnlyUUI || !SingletonTool<TypeTool>.Instance.UUIRegistered;
+
+        public static void AddToolButton<TypeTool, TypeButton>(UIHelper group)
+            where TypeTool : ToolBase, IUUITool
+            where TypeButton : UUINetToolButton<TypeMod, TypeTool>
+        {
+            if (BaseTool<TypeMod, TypeTool>.IsUUIEnabled)
+                AddCheckboxPanel(group, CommonLocalize.Settings_ToolButton, ToolButtonVisible, new string[] { CommonLocalize.Settings_ToolButtonOnlyToolbar, CommonLocalize.Settings_ToolButtonOnlyUUI, CommonLocalize.Settings_ToolButtonBoth }, OnButtonVisibleChanged);
+
+            static void OnButtonVisibleChanged()
+            {
+                foreach (var button in UIView.GetAView().GetComponentsInChildren<TypeButton>())
+                    button.isVisible = IsToolbarButtonVisible<TypeTool>();
+
+                if (SingletonTool<TypeTool>.Instance.UUIRegistered)
+                    SingletonTool<TypeTool>.Instance.UUIButton.isVisible = IsUUIButtonVisible();
+            }
+        }
+
+        private enum ButtonVisible
+        {
+            OnlyToolbar,
+            OnlyUUI,
+            Both,
         }
     }
 }

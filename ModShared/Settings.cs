@@ -17,8 +17,8 @@ using static ModsCommon.SettingsHelper;
 
 namespace ModsCommon
 {
-    public abstract class BaseSettings<TypeMod>
-        where TypeMod : BaseMod<TypeMod>
+    public abstract partial class BaseSettings<TypeMod>
+        where TypeMod : ICustomMod
     {
         public static string SettingsFile { get; } = $"{typeof(TypeMod).Namespace}{nameof(SettingsFile)}";
         public static SavedString Locale { get; } = new SavedString(nameof(Locale), SettingsFile, string.Empty, true);

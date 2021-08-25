@@ -37,11 +37,6 @@ namespace ModsCommon
         public void Enable();
         public void Disable(bool setPrev = true);
     }
-    public interface IUUITool : ITool
-    {
-        public bool UUIRegistered { get; }
-        public void RegisterUUI();
-    }
     public abstract class SingletonTool<T> : SingletonItem<T>
     where T : ITool
     {

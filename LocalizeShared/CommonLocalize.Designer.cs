@@ -757,6 +757,42 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Tool button.
+        /// </summary>
+        public static string Settings_ToolButton {
+            get {
+                return ResourceManager.GetString("Settings_ToolButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show in both places.
+        /// </summary>
+        public static string Settings_ToolButtonBoth {
+            get {
+                return ResourceManager.GetString("Settings_ToolButtonBoth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show only in toolbar.
+        /// </summary>
+        public static string Settings_ToolButtonOnlyToolbar {
+            get {
+                return ResourceManager.GetString("Settings_ToolButtonOnlyToolbar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show only in UUI.
+        /// </summary>
+        public static string Settings_ToolButtonOnlyUUI {
+            get {
+                return ResourceManager.GetString("Settings_ToolButtonOnlyUUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Troubleshooting.
         /// </summary>
         public static string Settings_Troubleshooting {

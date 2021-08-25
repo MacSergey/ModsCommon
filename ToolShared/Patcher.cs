@@ -65,6 +65,7 @@ namespace ModsCommon
         }
         public static string RoadsOptionPanel => nameof(RoadsOptionPanel);
         public static string PathsOptionPanel => nameof(PathsOptionPanel);
+        public static string TracksOptionPanel => nameof(TracksOptionPanel);
         public static string CanalsOptionPanel => nameof(CanalsOptionPanel);
         public static string QuaysOptionPanel => nameof(QuaysOptionPanel);
         public static string FloodWallsOptionPanel => nameof(FloodWallsOptionPanel);

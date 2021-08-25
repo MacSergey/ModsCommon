@@ -42,6 +42,7 @@ namespace ModsCommon
             }
         }
         protected virtual bool CheckUnderground => true;
+        private bool NeedClear { get; set; }
 
         public override void Deactivate()
         {
@@ -51,17 +52,19 @@ namespace ModsCommon
         protected override void Reset(IToolMode prevMode) => Clear();
         private void Clear()
         {
-            HoverNode = null;
-            HoverSegment = null;
             Underground = false;
             ClearSelectionBuffer();
         }
         protected void ClearSelectionBuffer()
         {
+            NeedClear = false;
+            HoverNode = null;
+            HoverSegment = null;
             IgnoreList.Clear();
             NodeBuffer.Clear();
             SegmentBuffer.Clear();
         }
+        public void NeedClearSelectionBuffer() => NeedClear = true;
         public void IgnoreSelected()
         {
             if (IsHoverNode)
@@ -78,6 +81,9 @@ namespace ModsCommon
 
         public override void OnToolUpdate()
         {
+            if(NeedClear)
+                ClearSelectionBuffer();
+
             if (SingletonTool<TypeTool>.Instance.MouseMoved)
                 IgnoreList.Clear();
 
