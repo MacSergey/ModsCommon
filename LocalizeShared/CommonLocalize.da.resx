@@ -271,7 +271,7 @@ Genstart spillet.</value>
     <value>Polsk</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portugesisk</value>
+    <value>Portugisisk</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Russisk</value>
@@ -346,10 +346,18 @@ Genstart spillet.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Support</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>Værktøjsknap</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>Vis begge steder</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>Vis kun i værktøjslinjen</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>Vis kun i UUI</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Fejlfinding</value>
   </data>

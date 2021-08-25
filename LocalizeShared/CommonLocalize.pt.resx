@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Foram detectados mods em conflito.</value>
+    <value>Foram detetados mods em conflito.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
     <value>Desativar</value>
@@ -136,10 +136,10 @@
     <value>Obter</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Dependências em falta detectadas.</value>
+    <value>Detetadas dependências.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detectadas dependências em falta e mods em conflito.</value>
+    <value>Detetadas dependências em falta e mods em conflito.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
     <value>Para continuar a usar {0} precisa corrigir estes problemas, caso contrário o mod será desativado.</value>
@@ -160,11 +160,21 @@
     <value>Faça scroll para mudar
 Shift X10, Ctrl X0.1</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="Key_Alt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="Key_Control" xml:space="preserve">
+    <value>Control</value>
+  </data>
+  <data name="Key_Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Key_Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="Key_Tab" xml:space="preserve">
+    <value>Tab</value>
+  </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
     <value>Faça scroll para mudar</value>
   </data>
@@ -214,7 +224,9 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_cs" xml:space="preserve">
     <value>Checo</value>
   </data>
-  
+  <data name="Mod_Locale_da" xml:space="preserve">
+    <value>Dinamarquês</value>
+  </data>
   <data name="Mod_Locale_de" xml:space="preserve">
     <value>Alemão</value>
   </data>
@@ -263,7 +275,9 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Russo</value>
   </data>
-  
+  <data name="Mod_Locale_tr" xml:space="preserve">
+    <value>Turco</value>
+  </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Chinês Simplificado</value>
   </data>
@@ -306,7 +320,9 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Settings_Notifications" xml:space="preserve">
     <value>Notificações</value>
   </data>
-  
+  <data name="Settings_PressAnyKey" xml:space="preserve">
+    <value>Pressione qualquer tecla</value>
+  </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
     <value>Ativar ferramenta</value>
   </data>
@@ -314,7 +330,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
     <value>Atalhos</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Etapa de seleção sobre</value>
+    <value>Saltar a seleção</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
     <value>Notificar apenas sobre actualizações principais</value>
@@ -326,23 +342,31 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
     <value>Mostrar as novidades</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Resolver falha em Linux</value>
+    <value>Resolver erro no Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Apoio</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>Botão de ferramenta</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>Mostrar em ambos os lugares</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>Mostrar apenas na barra de ferramentas</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>Mostrar apenas na UUI</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolução de problemas</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Se você gostou de {0}, você pode ajudar o autor</value>
+    <value>Se você gostou de {0}, você pode apoiar o autor</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Pressione {0} para
-etapa de seleção acima</value>
+saltar a seleção</value>
   </data>
 </root>
