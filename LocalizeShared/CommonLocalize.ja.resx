@@ -182,7 +182,7 @@
     <value>キャンセル</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>今後表示しない</value>
+    <value>次回から非表示</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
     <value>詳細情報</value>
@@ -200,7 +200,7 @@
     <value>同意します</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>警告 これはβ版です</value>
+    <value>警告！これはβ版です</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
     <value>安定版を入手</value>
@@ -329,7 +329,7 @@
     <value>ツールの有効化</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>ショートカットの設定</value>
+    <value>ショートカット</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
     <value>ステップオーバーで順次選択</value>
@@ -365,10 +365,9 @@
     <value>トラブルシューティング</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>{0} が気に入った場合は、作成者を支援してください。</value>
+    <value>{0} が気に入った場合は、作成者を支援してください</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>{0} を押して、
-ステップオーバーで順次選択</value>
+    <value>{0} で、ステップオーバーの順次選択</value>
   </data>
 </root>

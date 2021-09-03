@@ -345,10 +345,18 @@ Lütfen oyunu tekrar başlatın.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Destek</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>Araç tuşu</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>İki konumda da göster</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>Yalnızca araç çubuğunda göster</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>Sadece UnifiedUI (UUI) kullanıcı arayüzünde göster</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Sorun Giderme</value>
   </data>

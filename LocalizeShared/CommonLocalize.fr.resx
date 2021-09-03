@@ -348,10 +348,18 @@ Redémarrez le jeu.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Support</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>Bouton de l'outil</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>Afficher dans les deux</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>Afficher uniquement dans la barre d'outils</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>Afficher uniquement dans UUI</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Dépannage</value>
   </data>
