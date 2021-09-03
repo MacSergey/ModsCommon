@@ -1,4 +1,5 @@
-﻿using ModsCommon.Utilities;
+﻿using ColossalFramework;
+using ModsCommon.Utilities;
 using System;
 using UnityEngine;
 
@@ -87,5 +88,25 @@ namespace ModsCommon
         public virtual bool OnEscape() => false;
         public virtual void RenderOverlay(RenderManager.CameraInfo cameraInfo) { }
         public virtual void RenderGeometry(RenderManager.CameraInfo cameraInfo) { }
+
+        private SavedFloat LightIntensity = new SavedFloat(Settings.mouseLightIntensity, Settings.gameSettingsFile, DefaultSettings.mouseLightIntensity, autoUpdate: true);
+        protected void RenderLight(RenderManager.CameraInfo cameraInfo)
+        {
+            if (Singleton<InfoManager>.instance.CurrentMode == InfoManager.InfoMode.None && Tool.MouseRayValid)
+            {
+                var lightSystem = Singleton<RenderManager>.instance.lightSystem;
+                var ray = Tool.MouseWorldPosition - cameraInfo.m_position;
+                var magnitude = ray.magnitude;
+                var range = Mathf.Sqrt(magnitude);
+                var intensity = LightIntensity.value;
+                range *= 1f + intensity * 4f;
+                intensity += intensity * intensity * intensity * 2f;
+                intensity *= MathUtils.SmoothStep(0.9f, 0.1f, lightSystem.DayLightIntensity);
+                var dir = ray * (1f / Mathf.Max(1f, magnitude));
+                var pos = Tool.MouseWorldPosition - dir * (range * 0.2f);
+                if (intensity > 0.001f)
+                    lightSystem.DrawLight(LightType.Spot, pos, dir, Vector3.zero, Color.white, intensity, range, 90f, 1f, volume: false);
+            }
+        }
     }
 }

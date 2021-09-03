@@ -282,10 +282,13 @@ namespace ModsCommon
     }
     public static class SettingsHelper
     {
-        public static void AddFloatField(UIHelper group, string label, SavedFloat saved, float? defaultValue = null, float? min = null, float? max = null, Action onSubmit = null)
+        public static UIPanel AddFloatField(UIHelper group, string label, SavedFloat saved, float? defaultValue = null, float? min = null, float? max = null, Action onSubmit = null, int padding = 0)
         {
             UITextField field = null;
             field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+            var panel = field.parent as UIPanel;
+            panel.padding.left = padding;
+            return panel;
 
             static void OnChanged(string distance) { }
             void OnSubmitted(string text)
@@ -306,10 +309,13 @@ namespace ModsCommon
                 onSubmit?.Invoke();
             }
         }
-        public static void AddIntField(UIHelper group, string label, SavedInt saved, int? defaultValue = null, int? min = null, int? max = null, Action onSubmit = null)
+        public static UIPanel AddIntField(UIHelper group, string label, SavedInt saved, int? defaultValue = null, int? min = null, int? max = null, Action onSubmit = null, int padding = 0)
         {
             UITextField field = null;
             field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+            var panel = field.parent as UIPanel;
+            panel.padding.left = padding;
+            return panel;
 
             static void OnChanged(string distance) { }
             void OnSubmitted(string text)
@@ -330,10 +336,13 @@ namespace ModsCommon
                 onSubmit?.Invoke();
             }
         }
-        public static void AddStringField(UIHelper group, string label, SavedString saved, Action onSubmit = null)
+        public static UIPanel AddStringField(UIHelper group, string label, SavedString saved, Action onSubmit = null, int padding = 0)
         {
             UITextField field = null;
             field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+            var panel = field.parent as UIPanel;
+            panel.padding.left = padding;
+            return panel;
 
             static void OnChanged(string distance) { }
             void OnSubmitted(string text)
