@@ -1,12 +1,10 @@
-﻿using ColossalFramework;
+using ColossalFramework;
 using ColossalFramework.UI;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnifiedUI.Helpers;
+using UnityEngine;
 using static ModsCommon.SettingsHelper;
 
 namespace ModsCommon
@@ -15,6 +13,9 @@ namespace ModsCommon
     {
         public bool UUIRegistered { get; }
         public UIComponent UUIButton { get; }
+        public Texture2D UUIIconTexture { get; }
+        public string Mod_Description { get; }
+        public string Mod_Group { get; }
         public void RegisterUUI();
     }
     public abstract partial class BaseTool<TypeMod, TypeTool> : ToolBase, IUUITool
@@ -26,12 +27,9 @@ namespace ModsCommon
 
         public bool UUIRegistered { get; private set; }
         public UIComponent UUIButton { get; private set; }
-
-        protected abstract UITextureAtlas UUIAtlas { get; }
-        protected abstract string UUINormalSprite { get; }
-        protected abstract string UUIHoveredSprite { get; }
-        protected abstract string UUIPressedSprite { get; }
-        protected abstract string UUIDisabledSprite { get; }
+        public abstract string Mod_Description { get; }
+        public abstract string Mod_Group { get; }
+        public abstract Texture2D UUIIconTexture { get; }
 
         public virtual void RegisterUUI()
         {
@@ -41,20 +39,18 @@ namespace ModsCommon
 
                 try
                 {
-                    var uuiSprites = new UUIHelpers.UUISprites()
-                    {
-                        Atlas = UUIAtlas,
-                        NormalSprite = UUINormalSprite,
-                        HoveredSprite = UUIHoveredSprite,
-                        PressedSprite = UUIPressedSprite,
-                        DisabledSprite = UUIDisabledSprite,
-                    };
+                    var icon = UUIIconTexture;
+                    SingletonMod<TypeMod>.Logger.Debug($"[{SingletonMod<TypeMod>.Name}] Unified UI button loaded");
+                    var hotkeys = new UUIHotKeys { ActivationKey = Activation.InputKey };
 
-                    var tool = SingletonTool<TypeTool>.Instance;
-                    UUIButton = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
+                    UUIButton = UUIHelpers.RegisterToolButton(
+                        name: SingletonMod<TypeMod>.Name,
+                        groupName: Mod_Group,
+                        tooltip: Mod_Description,
+                        tool: this,
+                        icon: icon,
+                        hotkeys: hotkeys);
 
-                    UUIButton.isVisible = BaseSettings<TypeMod>.IsUUIButtonVisible();
-                    UUIButton.eventTooltipEnter += (UIComponent component, UIMouseEventParameter eventParam) => component.tooltip = ToolTip;
                     UUIRegistered = true;
                 }
                 catch (Exception error)
