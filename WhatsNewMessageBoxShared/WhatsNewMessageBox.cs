@@ -28,11 +28,11 @@ namespace ModsCommon.UI
         {
             StopLayout();
 
-            if (!string.IsNullOrEmpty(modName))
-            {
-                var donate = Panel.Content.AddUIComponent<DonatePanel>();
-                donate.Init(modName, new Vector2(200f, 50f));
-            }
+            //if (!string.IsNullOrEmpty(modName))
+            //{
+            //    var donate = Panel.Content.AddUIComponent<DonatePanel>();
+            //    donate.Init(modName, new Vector2(200f, 50f));
+            //}
 
             var first = default(VersionMessage);
             foreach (var message in messages)
