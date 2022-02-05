@@ -14,8 +14,8 @@ namespace ModsCommon.Utilities
         public bool IgnoreModifiers { get; set; } = false;
 
         public bool NotSet => InputKey.Key == KeyCode.None;
-        private DateTime LastPress { get; set; }
-        private bool DelayIsOut => (DateTime.UtcNow - LastPress).TotalMilliseconds > 150f;
+        private float LastPress { get; set; }
+        private bool DelayIsOut => Time.time - LastPress > 0.150f;
 
         public bool IsPressed
         {
@@ -60,7 +60,7 @@ namespace ModsCommon.Utilities
             {
                 Press();
                 e.Use();
-                LastPress = DateTime.UtcNow;
+                LastPress = Time.time;
                 return true;
             }
             else
