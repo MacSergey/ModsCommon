@@ -56,6 +56,9 @@ namespace ModsCommon.Utilities
         {
             var search = $".{textureFile}.";
             var path = assembly.GetManifestResourceNames().FirstOrDefault(n => n.Contains(search));
+            if (path == null)
+                return null;
+
             var manifestResourceStream = assembly.GetManifestResourceStream(path);
             var data = new byte[manifestResourceStream.Length];
             manifestResourceStream.Read(data, 0, data.Length);
