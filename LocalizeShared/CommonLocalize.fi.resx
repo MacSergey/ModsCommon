@@ -346,10 +346,18 @@ Käynnistä peli uudelleen.</value>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>Tuki</value>
   </data>
-  
-  
-  
-  
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>Työkalun painike</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>Näytä molemmissa paikoissa</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>Näytä vain työkalupalkissa</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>Näytä vain UUI:ssa</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Vianmääritys</value>
   </data>
