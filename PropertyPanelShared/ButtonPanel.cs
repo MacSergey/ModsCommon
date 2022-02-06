@@ -80,6 +80,7 @@ namespace ModsCommon.UI
                     button.isEnabled = value;
             }
         }
+        public CustomUIButton this[int index] => Buttons[index];
 
         protected override void Init(float? height)
         {
