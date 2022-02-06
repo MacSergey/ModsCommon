@@ -14,8 +14,8 @@ namespace ModsCommon.Utilities
         public bool IgnoreModifiers { get; set; } = false;
 
         public bool NotSet => InputKey.Key == KeyCode.None;
-        private float LastPress { get; set; }
-        private bool DelayIsOut => Time.time - LastPress > 0.150f;
+        protected float LastPress { get; private set; }
+        protected bool DelayIsOut => Time.time - LastPress > 0.150f;
 
         public bool IsPressed
         {
@@ -28,7 +28,7 @@ namespace ModsCommon.Utilities
                 //if (keyCode == KeyCode.None)
                 //    return false;
 
-                if (CanRepeat ? !DelayIsOut || !Input.GetKey(keyCode) : (!Input.GetKeyUp(keyCode)))
+                if (!DelayIsOut || CanRepeat ? !Input.GetKey(keyCode) : !Input.GetKeyUp(keyCode))
                     return false;
 
                 if (!IgnoreModifiers)
