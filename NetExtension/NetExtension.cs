@@ -132,6 +132,7 @@ namespace ModsCommon.Utilities
         public static VehicleInfo.VehicleType GroundType { get; } = DriveType | VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Metro | VehicleInfo.VehicleType.Monorail;
         public static bool IsDriveLane(this NetInfo.Lane info) => (info.m_vehicleType & DriveType) != VehicleInfo.VehicleType.None;
         public static bool IsGroundLane(this NetInfo.Lane info) => (info.m_vehicleType & GroundType) != VehicleInfo.VehicleType.None;
+        public static bool IsTaxiway(this NetInfo.Lane info) => info.m_vehicleType.IsFlagSet(VehicleInfo.VehicleType.Plane);
 
         public static ref NetNode GetNode(this ushort nodeId) => ref NetManager.m_nodes.m_buffer[nodeId];
         public static ref NetSegment GetSegment(this ushort segmentId) => ref NetManager.m_segments.m_buffer[segmentId];
