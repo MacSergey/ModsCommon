@@ -15,7 +15,8 @@ namespace ModsCommon.Utilities
 
         public bool NotSet => InputKey.Key == KeyCode.None;
         protected float LastPress { get; private set; }
-        protected bool DelayIsOut => Time.time - LastPress > 0.150f;
+        protected int LastPressFrame { get; private set; }
+        protected bool DelayIsOut => Time.time - LastPress > 0.150f && LastPressFrame != Time.frameCount;
 
         public bool IsPressed
         {
@@ -24,11 +25,7 @@ namespace ModsCommon.Utilities
                 var value = InputKey.value;
                 var keyCode = (KeyCode)(value & 0xFFFFFFF);
 
-                //only modifier press?
-                //if (keyCode == KeyCode.None)
-                //    return false;
-
-                if (!DelayIsOut || CanRepeat ? !Input.GetKey(keyCode) : !Input.GetKeyUp(keyCode))
+                if (!DelayIsOut || (CanRepeat ? !Input.GetKey(keyCode) : !Input.GetKeyUp(keyCode)))
                     return false;
 
                 if (!IgnoreModifiers)
@@ -61,6 +58,7 @@ namespace ModsCommon.Utilities
                 Press();
                 e.Use();
                 LastPress = Time.time;
+                LastPressFrame = Time.frameCount;
                 return true;
             }
             else
