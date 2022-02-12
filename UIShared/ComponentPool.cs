@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using UnityEngine;
 
 namespace ModsCommon.UI
 {
@@ -13,6 +15,7 @@ namespace ModsCommon.UI
     public static class ComponentPool
     {
         private static Dictionary<Type, Queue<UIComponent>> Pool { get; } = new Dictionary<Type, Queue<UIComponent>>();
+        private static Dictionary<Type, FieldInfo[]> EventFields { get; } = new Dictionary<Type, FieldInfo[]>();
 
         public static Component GetAfter<Component>(UIComponent parent, string beforeName, string name = null)
             where Component : UIComponent, IReusable
@@ -67,9 +70,19 @@ namespace ModsCommon.UI
                     component.cachedName = string.Empty;
                     component.isVisible = true;
                     component.isEnabled = true;
+                
                     reusable.DeInit();
 
-                    var queue = GetQueue(component.GetType());
+                    var type = component.GetType();
+                    if (!EventFields.TryGetValue(type, out var eventFields))
+                    {
+                        eventFields = GetFields(type);
+                        EventFields[type] = eventFields;
+                    }
+                    foreach (var field in eventFields)
+                        field.SetValue(component, null);
+
+                    var queue = GetQueue(type);
                     queue.Enqueue(component);
                     reusable.InCache = true;
                 }
@@ -77,7 +90,6 @@ namespace ModsCommon.UI
             else
                 Delete(component);
         }
-
         private static Queue<UIComponent> GetQueue(Type type)
         {
             if (!Pool.TryGetValue(type, out Queue<UIComponent> queue))
@@ -86,6 +98,18 @@ namespace ModsCommon.UI
                 Pool[type] = queue;
             }
             return queue;
+        }
+        private static FieldInfo[] GetFields(Type type)
+        {
+            if (type == null)
+                return new FieldInfo[0];
+            else
+            {
+                var flags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+                var fields = type.GetFields(flags).Where(f => typeof(Delegate).IsAssignableFrom(f.FieldType) && !f.IsDefined(typeof(HideInInspector), inherit: true));
+                fields = fields.Concat(GetFields(type.BaseType));
+                return fields.ToArray();
+            }
         }
 
         public static void Clear()
