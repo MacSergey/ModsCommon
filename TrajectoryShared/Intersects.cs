@@ -64,8 +64,13 @@ namespace ModsCommon.Utilities
                 else if (secondTrajectory is CombinedTrajectory secondCombined)
                 {
                     result = new List<Intersection>();
-                    foreach (var secondPart in secondCombined)
-                        result.AddRange(Calculate(firstBezier, secondPart));
+                    for(var i = 0; i < secondCombined.Count; i += 1)
+                    {
+                        var secondPart = secondCombined[i];
+                        var intersections = Calculate(firstBezier, secondPart);
+                        foreach(var intersection in intersections)
+                            result.Add(new Intersection(intersection.FirstT, secondCombined.FromPartT(i, intersection.SecondT)));
+                    }
                 }
             }
             else if (firstTrajectory is StraightTrajectory firstStraight)
@@ -77,15 +82,25 @@ namespace ModsCommon.Utilities
                 else if (secondTrajectory is CombinedTrajectory secondCombined)
                 {
                     result = new List<Intersection>();
-                    foreach (var secondPart in secondCombined)
-                        result.AddRange(Calculate(firstStraight, secondPart));
+                    for (var i = 0; i < secondCombined.Count; i += 1)
+                    {
+                        var secondPart = secondCombined[i];
+                        var intersections = Calculate(firstStraight, secondPart);
+                        foreach (var intersection in intersections)
+                            result.Add(new Intersection(intersection.FirstT, secondCombined.FromPartT(i, intersection.SecondT)));
+                    }
                 }
             }
             else if (firstTrajectory is CombinedTrajectory combined)
             {
                 result = new List<Intersection>();
-                foreach (var part in combined)
-                    result.AddRange(Calculate(part, secondTrajectory));
+                for (var i = 0; i < combined.Count; i += 1)
+                {
+                    var part = combined[i];
+                    var intersections = Calculate(part, secondTrajectory);
+                    foreach (var intersection in intersections)
+                        result.Add(new Intersection(combined.FromPartT(i, intersection.FirstT), intersection.SecondT));
+                }
             }
 
             if (result == null)

@@ -285,6 +285,8 @@ namespace ModsCommon.Utilities
                 return parts;
             }
         }
+        public ITrajectory this[int i] => Trajectories[i];
+
         public float Magnitude { get; }
         public float DeltaAngle { get; }
         public Vector3 Direction { get; }
@@ -293,6 +295,7 @@ namespace ModsCommon.Utilities
         public Vector3 StartPosition => Trajectories.First().StartPosition;
         public Vector3 EndPosition => Trajectories.Last().EndPosition;
 
+        public CombinedTrajectory(params ITrajectory[] trajectories) : this((IEnumerable<ITrajectory>)trajectories) { }
         public CombinedTrajectory(IEnumerable<ITrajectory> trajectories)
         {
             Trajectories = new List<ITrajectory>(trajectories);
@@ -319,39 +322,45 @@ namespace ModsCommon.Utilities
 
             return 0;
         }
-        private void GetBounds(int i, out float t0, out float t1)
+        public void GetBounds(int i, out float t0, out float t1)
         {
             t0 = Parts[i];
             t1 = i < Count - 1 ? Parts[i + 1] : 1f;
         }
-        private float GetRelativeLength(int i) => Trajectories[i].Length / Length;
+        public float GetRelativeLength(int i) => Trajectories[i].Length / Length;
+
+        public float ToPartT(float t, out int i)
+        {
+            i = GetIndex(t);
+            t = (t - Parts[i]) / GetRelativeLength(i);
+            return t;
+        }
+        public float FromPartT(int i, float t)
+        {
+            t = t * GetRelativeLength(i) + Parts[i];
+            return t;
+        }
 
         public CombinedTrajectory Copy() => new CombinedTrajectory(Trajectories.Select(t => t.Copy()));
         ITrajectory ITrajectory.Copy() => Copy();
 
         public ITrajectory Cut(float t0, float t1)
         {
-            var startI = GetIndex(t0);
-            var endI = GetIndex(t1);
+            t0 = ToPartT(t0, out var startI);
+            t1 = ToPartT(t1, out var endI);
 
             if (startI == endI)
-            {
-                var relative = GetRelativeLength(startI);
-                t0 = (t0 - Parts[startI]) / relative;
-                t1 = (t0 - Parts[endI]) / relative;
-
                 return Trajectories[startI].Cut(t0, t1);
-            }
             else
             {
                 var trajectories = new List<ITrajectory>();
 
-                trajectories.Add(Trajectories[startI].Cut((t0 - Parts[startI]) / GetRelativeLength(startI), 1f));
+                trajectories.Add(Trajectories[startI].Cut(t0, 1f));
 
                 for (var i = startI + 1; i < endI; i += 1)
                     trajectories.Add(Trajectories[i]);
 
-                trajectories.Add(Trajectories[endI].Cut(0f, (t1 - Parts[endI]) / GetRelativeLength(endI)));
+                trajectories.Add(Trajectories[endI].Cut(0f, t1));
 
                 return new CombinedTrajectory(trajectories);
             }
@@ -360,27 +369,21 @@ namespace ModsCommon.Utilities
 
         public float Distance(float from = 0, float to = 1)
         {
-            var startI = GetIndex(from);
-            var endI = GetIndex(to);
+            from = ToPartT(from, out var startI);
+            to = ToPartT(to, out var endI);
 
             if (startI == endI)
-            {
-                var relative = GetRelativeLength(startI);
-                from = (from - Parts[startI]) / relative;
-                to = (to - Parts[endI]) / relative;
-
                 return Trajectories[startI].Distance(from, to);
-            }
             else
             {
                 var distance = 0f;
 
-                distance += Trajectories[startI].Distance((from - Parts[startI]) / GetRelativeLength(startI), 1f);
+                distance += Trajectories[startI].Distance(from, 1f);
 
                 for (var i = startI + 1; i < endI - 1; i += 1)
                     distance += Trajectories[i].Length;
 
-                distance += Trajectories[startI].Distance(0f, (to - Parts[endI]) / GetRelativeLength(endI));
+                distance += Trajectories[endI].Distance(0f, to);
 
                 return distance;
             }
@@ -416,23 +419,20 @@ namespace ModsCommon.Utilities
 
         public Vector3 Position(float t)
         {
-            var i = GetIndex(t);
-            t = (t - Parts[i]) / GetRelativeLength(i);
+            t = ToPartT(t, out var i);
             return Trajectories[i].Position(t);
         }
 
         public Vector3 Tangent(float t)
         {
-            var i = GetIndex(t);
-            t = (t - Parts[i]) / GetRelativeLength(i);
+            t = ToPartT(t, out var i);
             return Trajectories[i].Tangent(t);
         }
 
         public float Travel(float distance) => Travel(0f, distance);
         public float Travel(float start, float distance)
         {
-
-            for (var i = GetIndex(start); i < Count; i += 1)
+            for (var i = 0; i < Count; i += 1)
             {
                 var lenght = Trajectories[i].Length;
 
@@ -441,7 +441,7 @@ namespace ModsCommon.Utilities
                 else
                 {
                     var t = Trajectories[i].Travel(distance);
-                    t = t * GetRelativeLength(i) + Parts[i];
+                    t = FromPartT(i, t);
                     return t;
                 }
             }
@@ -454,15 +454,18 @@ namespace ModsCommon.Utilities
             trajectoryT = 0f;
             position = default;
             var result = default(Vector3);
+            var delta = float.MaxValue;
 
-            foreach (var trajectory in Trajectories)
+            for (var i = 0; i < Count; i += 1)
             {
-                var thisResult = trajectory.GetHitPosition(ray, out var thisRayT, out var thisTrajectoryT, out var thisPosition);
-                if(thisRayT < rayT)
+                var thisResult = Trajectories[i].GetHitPosition(ray, out var thisRayT, out var thisTrajectoryT, out var thisPosition);
+                var thisDelta = (thisResult - thisPosition).magnitude;
+                if(thisDelta < delta)
                 {
+                    delta = thisDelta;
                     result = thisResult;
                     rayT = thisRayT;
-                    trajectoryT = thisTrajectoryT;
+                    trajectoryT = FromPartT(i, thisTrajectoryT);
                     position = thisPosition;
                 }
             }

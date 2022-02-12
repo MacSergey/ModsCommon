@@ -153,6 +153,7 @@ namespace ModsCommon.Utilities
         {
             var normal = (line.b - line.a).MakeFlatNormalized().Turn90(true);
             Line2.Intersect(XZ(line.a), XZ(line.b), XZ(point), XZ(point + normal), out t, out _);
+            t = Mathf.Clamp01(t);
             direction = (line.b - line.a).normalized;
             position = line.a + (line.b - line.a) * t;
         }
