@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.Math;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,7 +11,8 @@ namespace ModsCommon.Utilities
     public enum TrajectoryType
     {
         Line,
-        Bezier
+        Bezier,
+        Combined
     }
     public interface ITrajectory : IOverlay
     {
@@ -32,6 +34,9 @@ namespace ModsCommon.Utilities
         float Distance(float from = 0f, float to = 1f);
         ITrajectory Invert();
         ITrajectory Copy();
+
+        public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position);
+        public float GetLength(float minAngleDelta = 10, int depth = 5);
     }
     public class BezierTrajectory : ITrajectory
     {
@@ -142,6 +147,8 @@ namespace ModsCommon.Utilities
         ITrajectory ITrajectory.Invert() => Invert();
         public BezierTrajectory Copy() => new BezierTrajectory(Trajectory);
         ITrajectory ITrajectory.Copy() => Copy();
+        public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
+        public float GetLength(float minAngleDelta, int depth) => Trajectory.Length(minAngleDelta, depth);
 
         public void Render(OverlayData data) => Trajectory.RenderBezier(data);
         public override string ToString() => $"Bezier: {StartPosition} - {EndPosition}";
@@ -214,6 +221,8 @@ namespace ModsCommon.Utilities
         ITrajectory ITrajectory.Invert() => Invert();
         public StraightTrajectory Copy() => new StraightTrajectory(Trajectory, IsSection);
         ITrajectory ITrajectory.Copy() => Copy();
+        public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
+        public float GetLength(float minAngleDelta, int depth) => Length;
 
         public void Render(OverlayData data) => Trajectory.GetBezier().RenderBezier(data);
         public override string ToString() => $"Straight: {StartPosition} - {EndPosition}";
@@ -241,6 +250,233 @@ namespace ModsCommon.Utilities
                 return first.Equals(second);
         }
         public static bool operator !=(StraightTrajectory first, StraightTrajectory second) => !(first == second);
+    }
+    public class CombinedTrajectory : ITrajectory, IEnumerable<ITrajectory>
+    {
+        public TrajectoryType TrajectoryType => TrajectoryType.Combined;
+        private List<ITrajectory> Trajectories { get; }
+
+        private float? _length = null;
+        private float[] _parts;
+
+        public int Count => Trajectories.Count;
+        public float Length => _length ??= Trajectories.Sum(t => t.Length);
+        public float[] Parts
+        {
+            get
+            {
+                var parts = _parts;
+
+                if (parts == null)
+                {
+                    var totalLenght = Length;
+                    parts = new float[Trajectories.Count];
+
+                    var sum = 0f;
+                    for (var i = 0; i < parts.Length; i += 1)
+                    {
+                        parts[i] = sum;
+                        sum += Trajectories[i].Length / totalLenght;
+                    }
+
+                    _parts = parts;
+                }
+
+                return parts;
+            }
+        }
+        public float Magnitude { get; }
+        public float DeltaAngle { get; }
+        public Vector3 Direction { get; }
+        public Vector3 StartDirection { get; }
+        public Vector3 EndDirection { get; }
+        public Vector3 StartPosition => Trajectories.First().StartPosition;
+        public Vector3 EndPosition => Trajectories.Last().EndPosition;
+
+        public CombinedTrajectory(IEnumerable<ITrajectory> trajectories)
+        {
+            Trajectories = new List<ITrajectory>(trajectories);
+
+            var first = trajectories.First();
+            var last = trajectories.Last();
+            Magnitude = (last.EndPosition - first.StartPosition).magnitude;
+            DeltaAngle = 180 - Vector3.Angle(first.StartDirection, last.EndDirection);
+            Direction = (last.EndPosition - first.StartPosition).normalized;
+            StartDirection = first.StartDirection;
+            EndDirection = last.EndDirection;
+        }
+
+        public IEnumerator<ITrajectory> GetEnumerator() => Trajectories.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        private int GetIndex(float t)
+        {
+            for (var i = Count - 1; i >= 0; i -= 1)
+            {
+                if (t >= Parts[i])
+                    return i;
+            }
+
+            return 0;
+        }
+        private void GetBounds(int i, out float t0, out float t1)
+        {
+            t0 = Parts[i];
+            t1 = i < Count - 1 ? Parts[i + 1] : 1f;
+        }
+        private float GetRelativeLength(int i) => Trajectories[i].Length / Length;
+
+        public CombinedTrajectory Copy() => new CombinedTrajectory(Trajectories.Select(t => t.Copy()));
+        ITrajectory ITrajectory.Copy() => Copy();
+
+        public ITrajectory Cut(float t0, float t1)
+        {
+            var startI = GetIndex(t0);
+            var endI = GetIndex(t1);
+
+            if (startI == endI)
+            {
+                var relative = GetRelativeLength(startI);
+                t0 = (t0 - Parts[startI]) / relative;
+                t1 = (t0 - Parts[endI]) / relative;
+
+                return Trajectories[startI].Cut(t0, t1);
+            }
+            else
+            {
+                var trajectories = new List<ITrajectory>();
+
+                trajectories.Add(Trajectories[startI].Cut((t0 - Parts[startI]) / GetRelativeLength(startI), 1f));
+
+                for (var i = startI + 1; i < endI; i += 1)
+                    trajectories.Add(Trajectories[i]);
+
+                trajectories.Add(Trajectories[endI].Cut(0f, (t1 - Parts[endI]) / GetRelativeLength(endI)));
+
+                return new CombinedTrajectory(trajectories);
+            }
+        }
+        ITrajectory ITrajectory.Cut(float t0, float t1) => Cut(t0, t1);
+
+        public float Distance(float from = 0, float to = 1)
+        {
+            var startI = GetIndex(from);
+            var endI = GetIndex(to);
+
+            if (startI == endI)
+            {
+                var relative = GetRelativeLength(startI);
+                from = (from - Parts[startI]) / relative;
+                to = (to - Parts[endI]) / relative;
+
+                return Trajectories[startI].Distance(from, to);
+            }
+            else
+            {
+                var distance = 0f;
+
+                distance += Trajectories[startI].Distance((from - Parts[startI]) / GetRelativeLength(startI), 1f);
+
+                for (var i = startI + 1; i < endI - 1; i += 1)
+                    distance += Trajectories[i].Length;
+
+                distance += Trajectories[startI].Distance(0f, (to - Parts[endI]) / GetRelativeLength(endI));
+
+                return distance;
+            }
+        }
+
+        public void Divide(out ITrajectory trajectory1, out ITrajectory trajectory2)
+        {
+            var firstHalf = new List<ITrajectory>();
+            var secondHalf = new List<ITrajectory>();
+
+            for (var i = 0; i < Count; i += 1)
+            {
+                GetBounds(i, out var t0, out var t1);
+
+                if (t1 <= 0.5f)
+                    firstHalf.Add(Trajectories[i].Copy());
+                else if (t0 >= 0.5f)
+                    secondHalf.Add(Trajectories[i].Copy());
+                else
+                {
+                    var t = (0.5f - t0) / GetRelativeLength(i);
+                    firstHalf.Add(Trajectories[i].Cut(0f, t));
+                    secondHalf.Add(Trajectories[i].Cut(t, 1f));
+                }
+            }
+
+            trajectory1 = firstHalf.Count == 1 ? firstHalf[1] : new CombinedTrajectory(firstHalf);
+            trajectory2 = secondHalf.Count == 1 ? secondHalf[1] : new CombinedTrajectory(secondHalf);
+        }
+
+        public CombinedTrajectory Invert() => new CombinedTrajectory(Trajectories.Select(t => t.Invert()).Reverse());
+        ITrajectory ITrajectory.Invert() => Invert();
+
+        public Vector3 Position(float t)
+        {
+            var i = GetIndex(t);
+            t = (t - Parts[i]) / GetRelativeLength(i);
+            return Trajectories[i].Position(t);
+        }
+
+        public Vector3 Tangent(float t)
+        {
+            var i = GetIndex(t);
+            t = (t - Parts[i]) / GetRelativeLength(i);
+            return Trajectories[i].Tangent(t);
+        }
+
+        public float Travel(float distance) => Travel(0f, distance);
+        public float Travel(float start, float distance)
+        {
+
+            for (var i = GetIndex(start); i < Count; i += 1)
+            {
+                var lenght = Trajectories[i].Length;
+
+                if (lenght <= distance)
+                    distance -= lenght;
+                else
+                {
+                    var t = Trajectories[i].Travel(distance);
+                    t = t * GetRelativeLength(i) + Parts[i];
+                    return t;
+                }
+            }
+
+            return 1f;
+        }
+        public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position)
+        {
+            rayT = 1f;
+            trajectoryT = 0f;
+            position = default;
+            var result = default(Vector3);
+
+            foreach (var trajectory in Trajectories)
+            {
+                var thisResult = trajectory.GetHitPosition(ray, out var thisRayT, out var thisTrajectoryT, out var thisPosition);
+                if(thisRayT < rayT)
+                {
+                    result = thisResult;
+                    rayT = thisRayT;
+                    trajectoryT = thisTrajectoryT;
+                    position = thisPosition;
+                }
+            }
+
+            return result;
+        }
+        public float GetLength(float minAngleDelta, int depth) => Trajectories.Sum(t => t.GetLength(minAngleDelta, depth));
+
+        public void Render(OverlayData data)
+        {
+            foreach (var trajectory in Trajectories)
+                trajectory.Render(data);
+        }
+        public override string ToString() => string.Join("\n", Trajectories.Select(t => t.ToString()).ToArray());
     }
     public class TrajectoryBound : IOverlay
     {

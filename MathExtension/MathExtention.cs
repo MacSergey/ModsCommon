@@ -139,6 +139,24 @@ namespace ModsCommon.Utilities
             position = bezier.Position(t);
             direction = NormalizeXZ(bezier.Tangent(t));
         }
+        public static Vector3 ClosestPosition(this Line3 line, Vector3 point)
+        {
+            line.ClosestPositionAndDirection(point, out var position, out _, out _);
+            return position;
+        }
+        public static Vector3 ClosestDirection(this Line3 line, Vector3 point)
+        {
+            line.ClosestPositionAndDirection(point, out _, out var direction, out _);
+            return direction;
+        }
+        public static void ClosestPositionAndDirection(this Line3 line, Vector3 point, out Vector3 position, out Vector3 direction, out float t)
+        {
+            var normal = (line.b - line.a).MakeFlatNormalized().Turn90(true);
+            Line2.Intersect(XZ(line.a), XZ(line.b), XZ(point), XZ(point + normal), out t, out _);
+            direction = (line.b - line.a).normalized;
+            position = line.a + (line.b - line.a) * t;
+        }
+
         public static Vector3 GetHitPosition(this Bezier3 bezier, Segment3 ray, out float rayT, out float bezierT, out Vector3 position)
         {
             var hitPos = ray.GetRayPosition(bezier.Position(0.5f).y, out rayT);
@@ -148,6 +166,19 @@ namespace ModsCommon.Utilities
             {
                 hitPos = ray.GetRayPosition(position.y, out rayT);
                 bezier.ClosestPositionAndDirection(hitPos, out position, out _, out bezierT);
+            }
+
+            return hitPos;
+        }
+        public static Vector3 GetHitPosition(this Line3 line, Segment3 ray, out float rayT, out float bezierT, out Vector3 position)
+        {
+            var hitPos = ray.GetRayPosition((line.a.y + line.b.y) / 2f, out rayT);
+            line.ClosestPositionAndDirection(hitPos, out position, out _, out bezierT);
+
+            for (var i = 0; i < 3 && Mathf.Abs(hitPos.y - position.y) > 1f; i += 1)
+            {
+                hitPos = ray.GetRayPosition(position.y, out rayT);
+                line.ClosestPositionAndDirection(hitPos, out position, out _, out bezierT);
             }
 
             return hitPos;

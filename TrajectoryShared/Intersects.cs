@@ -61,6 +61,12 @@ namespace ModsCommon.Utilities
                     result = Calculate(firstBezier, secondBezier);
                 else if (secondTrajectory is StraightTrajectory secondStraight)
                     result = Calculate(firstBezier, secondStraight);
+                else if (secondTrajectory is CombinedTrajectory secondCombined)
+                {
+                    result = new List<Intersection>();
+                    foreach (var secondPart in secondCombined)
+                        result.AddRange(Calculate(firstBezier, secondPart));
+                }
             }
             else if (firstTrajectory is StraightTrajectory firstStraight)
             {
@@ -68,17 +74,29 @@ namespace ModsCommon.Utilities
                     result = Calculate(firstStraight, secondBezier);
                 else if (secondTrajectory is StraightTrajectory secondStraight)
                     result = Calculate(firstStraight, secondStraight);
+                else if (secondTrajectory is CombinedTrajectory secondCombined)
+                {
+                    result = new List<Intersection>();
+                    foreach (var secondPart in secondCombined)
+                        result.AddRange(Calculate(firstStraight, secondPart));
+                }
+            }
+            else if (firstTrajectory is CombinedTrajectory combined)
+            {
+                result = new List<Intersection>();
+                foreach (var part in combined)
+                    result.AddRange(Calculate(part, secondTrajectory));
             }
 
-            if(result == null)
+            if (result == null)
                 return new List<Intersection>();
             else
             {
-                foreach(var item in result)
+                foreach (var item in result)
                 {
                     item.First = firstTrajectory;
                     item.Second = secondTrajectory;
-                }    
+                }
 
                 return result;
             }
