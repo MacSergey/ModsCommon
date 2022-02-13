@@ -2,12 +2,16 @@
 using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using ModsCommon.Utilities;
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ModsCommon.UI
 {
     public class KeymappingsPanel : UICustomControl
     {
+        public event Action<Shortcut> BindingChanged;
+
         private static Shortcut EditShortcut { get; set; }
 
         public void AddKeymapping(Shortcut shortcut)
@@ -47,6 +51,8 @@ namespace ModsCommon.UI
                 }
 
                 (p.source as UITextComponent).text = EditShortcut.InputKey.GetLocale();
+
+                BindingChanged?.Invoke(EditShortcut);
                 EditShortcut = null;
             }
         }
@@ -75,6 +81,8 @@ namespace ModsCommon.UI
                 var button = p.source as UIButton;
                 button.text = EditShortcut.InputKey.GetLocale();
                 button.buttonsMask = UIMouseButton.Left;
+
+                BindingChanged?.Invoke(EditShortcut);
                 EditShortcut = null;
             }
         }

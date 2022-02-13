@@ -363,18 +363,32 @@ namespace ModsCommon
             }
         }
 
-        public static void AddCheckboxPanel(UIHelper group, string mainLabel, SavedInt optionsSaved, string[] labels, Action onChanged = null)
+        public static OptionPanelWithLabelData AddCheckboxPanel(UIHelper group, string mainLabel, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
-            AddLabel(group, mainLabel, padding: 0);
-            AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged, out _);
+            var label = AddLabel(group, mainLabel, padding: 0);
+            var result = AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged);
+
+            return new OptionPanelWithLabelData()
+            {
+                label = label,
+                panel = result.panel,
+                checkBoxes = result.checkBoxes,
+            };
         }
-        public static void AddCheckboxPanel(UIHelper group, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
+        public static OptionPanelWithMainData AddCheckboxPanel(UIHelper group, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
             var optionsPanel = default(CustomUIPanel);
             var mainCheckBox = group.AddCheckbox(mainLabel, mainSaved, OnMainChanged) as UICheckBox;
-            AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged, out optionsPanel);
+            var result = AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged);
 
             SetVisible();
+
+            return new OptionPanelWithMainData()
+            {
+                mainCheckBox = mainCheckBox,
+                panel = result.panel,
+                checkBoxes = result.checkBoxes,
+            };
 
             void OnMainChanged(bool value)
             {
@@ -384,12 +398,12 @@ namespace ModsCommon
             }
             void SetVisible() => optionsPanel.isVisible = mainSaved;
         }
-        private static void AddCheckboxPanel(UIHelper group, SavedInt optionsSaved, string[] labels, int padding, Action onChanged, out CustomUIPanel optionsPanel)
+        private static OptionPanelData AddCheckboxPanel(UIHelper group, SavedInt optionsSaved, string[] labels, int padding, Action onChanged)
         {
             var inProcess = false;
             var checkBoxes = new UICheckBox[labels.Length];
 
-            optionsPanel = AddPanel(group, 25 + padding);
+            var optionsPanel = AddPanel(group, 25 + padding);
             var panelHelper = new UIHelper(optionsPanel);
 
             for (var i = 0; i < checkBoxes.Length; i += 1)
@@ -397,6 +411,12 @@ namespace ModsCommon
                 var index = i;
                 checkBoxes[i] = panelHelper.AddCheckbox(labels[i], optionsSaved == i, (value) => Set(index, value)) as UICheckBox;
             }
+
+            return new OptionPanelData()
+            {
+                panel = optionsPanel,
+                checkBoxes = checkBoxes,
+            };
 
             void Set(int index, bool value)
             {
@@ -430,7 +450,7 @@ namespace ModsCommon
 
             return button;
         }
-        public static void AddLabel(UIHelper helper, string text, float size = 1.125f, Color? color = null, int padding = 0)
+        public static UILabel AddLabel(UIHelper helper, string text, float size = 1.125f, Color? color = null, int padding = 0)
         {
             var component = helper.self as UIComponent;
 
@@ -442,6 +462,8 @@ namespace ModsCommon
             label.textScale = size;
             label.textColor = color ?? Color.white;
             label.padding = new RectOffset(padding, 0, 0, 0);
+
+            return label;
         }
         public static UIHelper AddHorizontalPanel(UIHelper helper, RectOffset padding)
         {
@@ -456,6 +478,24 @@ namespace ModsCommon
             return new UIHelper(panel);
         }
         public static KeymappingsPanel AddKeyMappingPanel(UIHelper helper) => (helper.self as UIPanel).gameObject.AddComponent<KeymappingsPanel>();
+
+        public struct OptionPanelData
+        {
+            public CustomUIPanel panel;
+            public UICheckBox[] checkBoxes;
+        }
+        public struct OptionPanelWithMainData
+        {
+            public UICheckBox mainCheckBox;
+            public CustomUIPanel panel;
+            public UICheckBox[] checkBoxes;
+        }
+        public struct OptionPanelWithLabelData
+        {
+            public UILabel label;
+            public CustomUIPanel panel;
+            public UICheckBox[] checkBoxes;
+        }
     }
 
     public class LanguageDropDown : UIDropDown<string>
