@@ -160,6 +160,12 @@ namespace ModsCommon.Utilities
 
         protected override string GetMatch(IUserMod mod) => mod.Name;
     }
+    public class UserModDescriptionSearcher : BaseUserModSearcher
+    {
+        public UserModDescriptionSearcher(string toSearch, Option options = Option.DefaultSearch) : base(toSearch, options) { }
+
+        protected override string GetMatch(IUserMod mod) => mod.Description;
+    }
     public class UserModTypeSearcher : BaseUserModSearcher
     {
         public UserModTypeSearcher(string toSearch, Option options = Option.DefaultSearch) : base(toSearch, options) { }

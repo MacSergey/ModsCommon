@@ -29,8 +29,14 @@ namespace ModsCommon
             {
                 var infos = base.DependencyInfos;
 
-                var searcher = PluginUtilities.GetSearcher("Harmony", 2040656402ul, 2399204842ul, 2399343344ul);
-                infos.Add(new NeedDependencyInfo(DependencyState.Subscribe, searcher, "Harmony", 2040656402ul));
+                var nameSearcher = IdSearcher.Invalid & 
+                    new UserModNameSearcher("Harmony 2", BaseMatchSearcher.Option.AllOptions | BaseMatchSearcher.Option.StartsWidth) & 
+                    new UserModDescriptionSearcher("Mod Dependency", BaseMatchSearcher.Option.AllOptions);
+                var idSearcher = new IdSearcher(2040656402ul) | new IdSearcher(2399204842ul);
+                infos.Add(new NeedDependencyInfo(DependencyState.Subscribe, nameSearcher | idSearcher, "Harmony", 2040656402ul));
+
+                var conflictSearcher = new IdSearcher(2399343344ul);
+                infos.Add(new ConflictDependencyInfo(DependencyState.Unsubscribe, conflictSearcher));
 
                 return infos;
             }
