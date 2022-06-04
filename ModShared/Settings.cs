@@ -380,6 +380,7 @@ namespace ModsCommon
             var optionsPanel = default(CustomUIPanel);
             var mainCheckBox = group.AddCheckbox(mainLabel, mainSaved, OnMainChanged) as UICheckBox;
             var result = AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged);
+            optionsPanel = result.panel;
 
             SetVisible();
 
