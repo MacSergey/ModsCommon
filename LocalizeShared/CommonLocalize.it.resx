@@ -273,6 +273,9 @@ Riavvia il gioco.</value>
   <data name="Mod_Locale_pt" xml:space="preserve">
     <value>Portoghese</value>
   </data>
+  <data name="Mod_Locale_ro" xml:space="preserve">
+    <value>Rumeno</value>
+  </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Russo</value>
   </data>

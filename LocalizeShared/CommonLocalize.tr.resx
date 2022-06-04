@@ -272,6 +272,7 @@ Lütfen oyunu tekrar başlatın.</value>
   <data name="Mod_Locale_pt" xml:space="preserve">
     <value>Portekizce</value>
   </data>
+  
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Rusça</value>
   </data>

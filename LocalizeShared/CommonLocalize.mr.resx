@@ -273,6 +273,9 @@ Mulakan semula permainan.</value>
   <data name="Mod_Locale_pt" xml:space="preserve">
     <value>Portugis</value>
   </data>
+  <data name="Mod_Locale_ro" xml:space="preserve">
+    <value>Romania</value>
+  </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Rusia</value>
   </data>

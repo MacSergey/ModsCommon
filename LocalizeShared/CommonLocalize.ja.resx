@@ -276,6 +276,9 @@
   <data name="Mod_Locale_pt" xml:space="preserve">
     <value>ポルトガル語</value>
   </data>
+  <data name="Mod_Locale_ro" xml:space="preserve">
+    <value>ルーマニア語</value>
+  </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>ロシア語</value>
   </data>

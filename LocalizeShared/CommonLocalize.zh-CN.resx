@@ -273,6 +273,7 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_pt" xml:space="preserve">
     <value>葡萄牙语</value>
   </data>
+  
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>俄语</value>
   </data>
