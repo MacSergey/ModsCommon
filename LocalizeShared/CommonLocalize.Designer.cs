@@ -514,6 +514,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Romanian.
+        /// </summary>
+        public static string Mod_Locale_ro {
+            get {
+                return ResourceManager.GetString("Mod_Locale_ro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Russian.
         /// </summary>
         public static string Mod_Locale_ru {
