@@ -165,4 +165,13 @@ namespace ModsCommon.Utilities
         protected override float Get(ref Vector4 vector, int index) => vector[index];
         protected override void Set(ref Vector4 vector, int index, float value) => vector[index] = value;
     }
+    public class PropertyStringValue : PropertyClassValue<string>
+    {
+        public PropertyStringValue(Action onChanged, string value = default) : base(onChanged, value) { }
+        public PropertyStringValue(string label, Action onChanged, string value = default) : base(label, onChanged, value) { }
+
+        protected override bool Equals(string x, string y) => x == y;
+        protected override XAttribute ToXml() => new XAttribute(Label, Value);
+        public override void FromXml(XElement config, string defaultValue) => Value = config.GetAttrValue(Label, defaultValue);
+    }
 }
