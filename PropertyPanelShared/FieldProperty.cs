@@ -26,6 +26,10 @@ namespace ModsCommon.UI
             get => Field;
             set => Field.Value = value;
         }
+        public string Format
+        {
+            set => Field.Format = value;
+        }
 
         public FieldPropertyPanel()
         {
@@ -42,9 +46,10 @@ namespace ModsCommon.UI
         {
             base.DeInit();
 
-            SubmitOnFocusLost = true;
-
             OnValueChanged = null;
+
+            Format = null;
+            SubmitOnFocusLost = true;
         }
         public void Edit() => Field.Focus();
         public override string ToString() => $"{base.ToString()}: {Value}";
@@ -65,15 +70,15 @@ namespace ModsCommon.UI
             get => Field.MaxValue;
             set => Field.MaxValue = value;
         }
-        public bool CheckMax
-        {
-            get => Field.CheckMax;
-            set => Field.CheckMax = value;
-        }
         public bool CheckMin
         {
             get => Field.CheckMin;
             set => Field.CheckMin = value;
+        }
+        public bool CheckMax
+        {
+            get => Field.CheckMax;
+            set => Field.CheckMax = value;
         }
         public bool CyclicalValue
         {
@@ -109,6 +114,7 @@ namespace ModsCommon.UI
             WheelStep = default;
             WheelTip = false;
             CyclicalValue = false;
+
             Field.SetDefault();
         }
     }
@@ -116,4 +122,211 @@ namespace ModsCommon.UI
     public class IntPropertyPanel : ComparableFieldPropertyPanel<int, IntUITextField> { }
     public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField> { }
 
+    public abstract class ComparableFieldRangePropertyPanel<ValueType, FieldType> : EditorPropertyPanel, IReusable
+        where FieldType : ComparableUITextField<ValueType>
+        where ValueType : IComparable<ValueType>
+    {
+        bool IReusable.InCache { get; set; }
+        protected FieldType FieldA { get; set; }
+        protected FieldType FieldB { get; set; }
+
+        public event Action<ValueType, ValueType> OnValueChanged;
+
+        public float FieldWidth
+        {
+            get => (FieldA.width + FieldB.width) * 0.5f;
+            set
+            {
+                FieldA.width = value;
+                FieldB.width = value;
+            }
+        }
+        public bool SubmitOnFocusLost
+        {
+            get => FieldA.submitOnFocusLost && FieldB.submitOnFocusLost;
+            set
+            {
+                FieldA.submitOnFocusLost = value;
+                FieldB.submitOnFocusLost = value;
+            }
+        }
+
+        public ValueType ValueA
+        {
+            get => FieldA;
+            set
+            {
+                FieldA.Value = value;
+                SetLimits();
+            }
+        }
+        public ValueType ValueB
+        {
+            get => FieldB;
+            set
+            {
+                FieldB.Value = value;
+                SetLimits();
+            }
+        }
+        public string Format
+        {
+            set
+            {
+                FieldA.Format = value;
+                FieldB.Format = value;
+            }
+        }
+
+        public ValueType MinValue
+        {
+            get => FieldA.MinValue;
+            set
+            {
+                FieldA.MinValue = value;
+                SetLimits();
+            }
+        }
+        public ValueType MaxValue
+        {
+            get => FieldB.MaxValue;
+            set
+            {
+                FieldB.MaxValue = value;
+                SetLimits();
+            }
+        }
+        public bool CheckMin
+        {
+            get => FieldA.CheckMin;
+            set
+            {
+                FieldA.CheckMin = value;
+                SetLimits();
+            }
+        }
+        public bool CheckMax
+        {
+            get => FieldB.CheckMax;
+            set
+            {
+                FieldB.CheckMax = value;
+                SetLimits();
+            }
+        }
+
+        private bool _allowInvert;
+        public bool AllowInvert
+        {
+            get => _allowInvert;
+            set
+            {
+                if(value != _allowInvert)
+                {
+                    _allowInvert = value;
+                    SetLimits();
+                }
+            }
+        }
+
+        public bool UseWheel
+        {
+            get => FieldA.UseWheel && FieldB.UseWheel;
+            set
+            {
+                FieldA.UseWheel = value;
+                FieldB.UseWheel = value;
+            }
+        }
+        public ValueType WheelStep
+        {
+            set
+            {
+                FieldA.WheelStep = value;
+                FieldB.WheelStep = value;
+            }
+        }
+        public bool WheelTip
+        {
+            set
+            {
+                FieldA.WheelTip = value;
+                FieldB.WheelTip = value;
+            }
+        }
+
+        public ComparableFieldRangePropertyPanel()
+        {
+            FieldA = Content.AddUIComponent<FieldType>();
+            FieldA.SetDefaultStyle();
+            FieldA.name = nameof(FieldA);
+            FieldA.CheckMax = true;
+
+            FieldB = Content.AddUIComponent<FieldType>();
+            FieldB.SetDefaultStyle();
+            FieldB.name = nameof(FieldB);
+            FieldB.CheckMin = true;
+
+            FieldA.OnValueChanged += ValueAChanged;
+            FieldB.OnValueChanged += ValueBChanged;
+        }
+
+        public override void DeInit()
+        {
+            base.DeInit();
+
+            OnValueChanged = null;
+
+            AllowInvert = false;
+            UseWheel = false;
+            WheelStep = default;
+            WheelTip = false;
+            SubmitOnFocusLost = true;
+            Format = null;
+
+            FieldA.SetDefault();
+            FieldB.SetDefault();
+        }
+
+        public void SetValues(ValueType valueA, ValueType valueB)
+        {
+            FieldA.Value = valueA;
+            FieldB.Value = valueB;
+            SetLimits();
+        }
+        private void ValueAChanged(ValueType value)
+        {
+            SetLimits();
+            OnValueChanged?.Invoke(value, FieldB.Value);
+        }
+        private void ValueBChanged(ValueType value)
+        {
+            SetLimits();
+            OnValueChanged?.Invoke(FieldA.Value, value);
+        }
+
+        private void SetLimits()
+        {
+            if(!AllowInvert)
+            {
+                FieldA.MaxValue = FieldB.Value;
+                FieldA.CheckMax = true;
+
+                FieldB.MinValue = FieldA.Value;
+                FieldB.CheckMin = true;
+            }
+            else
+            {
+                FieldA.MaxValue = FieldB.MaxValue;
+                FieldA.CheckMax = FieldB.CheckMax;
+
+                FieldB.MinValue = FieldA.MinValue;
+                FieldB.CheckMin = FieldB.CheckMin;
+            }
+        }
+
+        public override string ToString() => $"{base.ToString()}: from {ValueA} to {ValueB}";
+    }
+
+    public class FloatRangePropertyPanel : ComparableFieldRangePropertyPanel<float, FloatUITextField> { }
 }
