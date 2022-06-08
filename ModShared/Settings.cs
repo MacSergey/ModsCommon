@@ -67,7 +67,7 @@ namespace ModsCommon
         protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalTabs => new KeyValuePair<string, string>[0];
         protected virtual void FillSettings()
         {
-            //var donateGroup = GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
+            var donateGroup = GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
 
             //var donateMain = donateGroup.self as UIPanel;
             //donateMain.verticalSpacing = 0;
