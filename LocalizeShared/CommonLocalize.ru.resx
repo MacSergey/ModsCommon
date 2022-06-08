@@ -273,7 +273,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_pt" xml:space="preserve">
     <value>Португальский</value>
   </data>
-  
+  <data name="Mod_Locale_ro" xml:space="preserve">
+    <value>Румынский</value>
+  </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Русский</value>
   </data>
