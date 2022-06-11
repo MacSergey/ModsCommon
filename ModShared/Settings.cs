@@ -463,6 +463,11 @@ namespace ModsCommon
             label.textScale = size;
             label.textColor = color ?? Color.white;
             label.padding = new RectOffset(padding, 0, 0, 0);
+            label.wordWrap = true;
+            label.autoSize = false;
+            label.autoHeight = true;
+            if (component is UIPanel panel)
+                label.width = panel.width - panel.padding.left;
 
             return label;
         }
