@@ -208,6 +208,7 @@ namespace ModsCommon.UI
             CyclicalValue = false;
             UseWheel = false;
             WheelTip = false;
+            WheelStep = default;
         }
 
         protected enum WheelMode

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace ModsCommon.UI
 {
@@ -14,6 +15,11 @@ namespace ModsCommon.UI
         {
             get => Field.width;
             set => Field.width = value;
+        }
+        public Color32 FieldTextColor
+        {
+            get => Field.textColor;
+            set => Field.textColor = value;
         }
         public bool SubmitOnFocusLost
         {
@@ -109,12 +115,6 @@ namespace ModsCommon.UI
         public override void DeInit()
         {
             base.DeInit();
-
-            UseWheel = false;
-            WheelStep = default;
-            WheelTip = false;
-            CyclicalValue = false;
-
             Field.SetDefault();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using ModsCommon.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -25,6 +26,15 @@ namespace ModsCommon.UI
                     Fields[i].Value = Get(ref _value, i);
             }
         }
+        public string Format
+        {
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].Format = value;
+            }
+        }
+
         float _fieldsWidth = 30f;
         public float FieldsWidth
         {
@@ -42,6 +52,106 @@ namespace ModsCommon.UI
 
         protected CustomUILabel[] Labels { get; }
         protected FloatUITextField[] Fields { get; }
+
+        public Color32 FieldTextColor
+        {
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].textColor = value;
+            }
+        }
+        public bool SubmitOnFocusLost
+        {
+            get => Fields.All(f => f.submitOnFocusLost);
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].submitOnFocusLost = value;
+            }
+        }
+
+        public TypeVector MinValue
+        {
+            get
+            {
+                var value = default(TypeVector);
+                for (var i = 0; i < Dimension; i += 1)
+                    Set(ref value, i, Fields[i].MinValue);
+                return value;
+            }
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].MinValue = Get(ref value, i);
+            }
+        }
+        public TypeVector MaxValue
+        {
+            get
+            {
+                var value = default(TypeVector);
+                for (var i = 0; i < Dimension; i += 1)
+                    Set(ref value, i, Fields[i].MaxValue);
+                return value;
+            }
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].MaxValue = Get(ref value, i);
+            }
+        }
+        public bool CheckMin
+        {
+            get => Fields.All(f => f.CheckMin);
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].CheckMin = value;
+            }
+        }
+        public bool CheckMax
+        {
+            get => Fields.All(f => f.CheckMax);
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].CheckMax = value;
+            }
+        }
+        public bool CyclicalValue
+        {
+            get => Fields.All(f => f.CyclicalValue);
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].CyclicalValue = value;
+            }
+        }
+        public bool UseWheel
+        {
+            get => Fields.All(f => f.UseWheel);
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].UseWheel = value;
+            }
+        }
+        public TypeVector WheelStep
+        {
+            get
+            {
+                var value = default(TypeVector);
+                for (var i = 0; i < Dimension; i += 1)
+                    Set(ref value, i, Fields[i].WheelStep);
+                return value;
+            }
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].WheelStep = Get(ref value, i);
+            }
+        }
         public bool WheelTip
         {
             set
@@ -64,14 +174,22 @@ namespace ModsCommon.UI
         {
             for(var i = 0; i < indexes.Length; i += 1)
             {
-                Labels[indexes[i]].isVisible = true;
-                Fields[indexes[i]].isVisible = true;
+                if (indexes[i] < Dimension)
+                {
+                    Labels[indexes[i]].isVisible = true;
+                    Fields[indexes[i]].isVisible = true;
 
-                Labels[indexes[i]].zOrder = i * 2;
-                Fields[indexes[i]].zOrder = i * 2 + 1;
+                    Labels[indexes[i]].zOrder = i * 2;
+                    Fields[indexes[i]].zOrder = i * 2 + 1;
+                }
             }
 
             base.Init();
+        }
+        public void SetLabels(params string[] labels)
+        {
+            for (var i = 0; i < labels.Length && i < Dimension; i += 1)
+                Labels[i].text = labels[i];
         }
         public override void DeInit()
         {
@@ -80,10 +198,11 @@ namespace ModsCommon.UI
             for (var i = 0; i < Dimension; i += 1)
             {
                 Labels[i].isVisible = false;
+                Labels[i].text = GetName(i);
                 Fields[i].isVisible = false;
+                Fields[i].SetDefault();
             }
 
-            WheelTip = false;
             OnValueChanged = null;
         }
 
