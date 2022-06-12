@@ -332,12 +332,16 @@ namespace ModsCommon.Utilities
         public float ToPartT(float t, out int i)
         {
             i = GetIndex(t);
-            t = (t - Parts[i]) / GetRelativeLength(i);
+            return ToPartT(i, t);
+        }
+        public float ToPartT(int i, float t)
+        {
+            t = Mathf.Clamp01(t - Parts[i]) / GetRelativeLength(i);
             return t;
         }
         public float FromPartT(int i, float t)
         {
-            t = t * GetRelativeLength(i) + Parts[i];
+            t = Mathf.Clamp01(t * GetRelativeLength(i) + Parts[i]);
             return t;
         }
 
