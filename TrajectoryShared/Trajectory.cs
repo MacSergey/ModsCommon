@@ -36,6 +36,10 @@ namespace ModsCommon.Utilities
         ITrajectory Copy();
 
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position);
+
+        public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT);
+        public Vector3 GetDirectionPosition(Vector3 hitPos, out float closestT);
+        public void GetClosestPositionAndDirection(Vector3 hitPos, out Vector3 position, out Vector3 direction, out float closestT);
         public float GetLength(float minAngleDelta = 10, int depth = 5);
     }
     public class BezierTrajectory : ITrajectory
@@ -148,6 +152,17 @@ namespace ModsCommon.Utilities
         public BezierTrajectory Copy() => new BezierTrajectory(Trajectory);
         ITrajectory ITrajectory.Copy() => Copy();
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
+        public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
+        {
+            GetClosestPositionAndDirection(hitPos, out var position, out _, out closestT);
+            return position;
+        }
+        public Vector3 GetDirectionPosition(Vector3 hitPos, out float closestT)
+        {
+            GetClosestPositionAndDirection(hitPos, out _, out var direction, out closestT);
+            return direction;
+        }
+        public void GetClosestPositionAndDirection(Vector3 hitPos, out Vector3 position, out Vector3 direction, out float closestT) => Trajectory.ClosestPositionAndDirection(hitPos, out position, out direction, out closestT);
         public float GetLength(float minAngleDelta, int depth) => Trajectory.Length(minAngleDelta, depth);
 
         public void Render(OverlayData data) => Trajectory.RenderBezier(data);
@@ -222,6 +237,17 @@ namespace ModsCommon.Utilities
         public StraightTrajectory Copy() => new StraightTrajectory(Trajectory, IsSection);
         ITrajectory ITrajectory.Copy() => Copy();
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
+        public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
+        {
+            GetClosestPositionAndDirection(hitPos, out var position, out _, out closestT);
+            return position;
+        }
+        public Vector3 GetDirectionPosition(Vector3 hitPos, out float closestT)
+        {
+            GetClosestPositionAndDirection(hitPos, out _, out var direction, out closestT);
+            return direction;
+        }
+        public void GetClosestPositionAndDirection(Vector3 hitPos, out Vector3 position, out Vector3 direction, out float closestT) => Trajectory.ClosestPositionAndDirection(hitPos, out position, out direction, out closestT);
         public float GetLength(float minAngleDelta, int depth) => Length;
 
         public void Render(OverlayData data) => Trajectory.GetBezier().RenderBezier(data);
@@ -476,6 +502,18 @@ namespace ModsCommon.Utilities
 
             return result;
         }
+        public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
+        {
+            GetClosestPositionAndDirection(hitPos, out var position, out _, out closestT);
+            return position;
+        }
+        public Vector3 GetDirectionPosition(Vector3 hitPos, out float closestT)
+        {
+            GetClosestPositionAndDirection(hitPos, out _, out var direction, out closestT);
+            return direction;
+        }
+        public void GetClosestPositionAndDirection(Vector3 hitPos, out Vector3 position, out Vector3 direction, out float closestT) => TrajectoryHelper.ClosestPositionAndDirection(this, hitPos, out position, out direction, out closestT);
+
         public float GetLength(float minAngleDelta, int depth) => Trajectories.Sum(t => t.GetLength(minAngleDelta, depth));
 
         public void Render(OverlayData data)
@@ -642,6 +680,50 @@ namespace ModsCommon.Utilities
                 else if (pos.z > rect.yMax)
                     rect.yMax = pos.z;
             }
+        }
+        public static Vector3 ClosestPosition(this ITrajectory trajectory, Vector3 point)
+        {
+            ClosestPositionAndDirection(trajectory, point, out var position, out _, out _);
+            return position;
+        }
+        public static Vector3 ClosestDirection(this ITrajectory trajectory, Vector3 point)
+        {
+            ClosestPositionAndDirection(trajectory, point, out _, out var direction, out _);
+            return direction;
+        }
+        public static void ClosestPositionAndDirection(this ITrajectory trajectory, Vector3 point, out Vector3 position, out Vector3 direction, out float t)
+        {
+            var distance = 1E+11f;
+            t = 0f;
+            var prevPosition = trajectory.StartPosition;
+            for (var i = 1; i <= 16; i += 1)
+            {
+                var currentPosition = trajectory.Position(i / 16f);
+                var currentDistance = Segment3.DistanceSqr(prevPosition, currentPosition, point, out var u);
+                if (currentDistance < distance)
+                {
+                    distance = currentDistance;
+                    t = (i - 1f + u) / 16f;
+                }
+                prevPosition = currentPosition;
+            }
+
+            float delta = 0.03125f;
+            for (var i = 0; i < 4; i += 1)
+            {
+                var minPosition = trajectory.Position(Mathf.Max(0f, t - delta));
+                var currentPosition = trajectory.Position(t);
+                var maxPosition = trajectory.Position(Mathf.Min(1f, t + delta));
+
+                var minDistance = Segment3.DistanceSqr(minPosition, currentPosition, point, out var minU);
+                var maxDistance = Segment3.DistanceSqr(currentPosition, maxPosition, point, out var maxU);
+
+                t = minDistance >= maxDistance ? Mathf.Min(1f, t + delta * maxU) : Mathf.Max(0f, t - delta * (1f - minU));
+                delta *= 0.5f;
+            }
+
+            position = trajectory.Position(t);
+            direction = NormalizeXZ(trajectory.Tangent(t));
         }
 
         public enum Direction
