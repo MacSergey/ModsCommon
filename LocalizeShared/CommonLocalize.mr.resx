@@ -371,10 +371,22 @@ Mulakan semula permainan.</value>
     <value>Tekan {0} untuk
 pilihan pertindihan</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>DIBAIKI</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>BAHARU</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>DIBUANG</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>DIUNDUR</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>TERJEMAHAN</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>DIKEMAS KINI</value>
+  </data>
 </root>

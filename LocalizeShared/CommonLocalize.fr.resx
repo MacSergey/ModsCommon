@@ -373,10 +373,22 @@ Redémarrez le jeu.</value>
     <value>Appuyez sur {0} pour changer
 parmi les nœuds proches</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>CORRIGÉ</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>NOUVEAU</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>SUPPRIMÉ</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>RETOUR</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>TRADUCTION</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>MIS À JOUR</value>
+  </data>
 </root>
