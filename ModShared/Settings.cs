@@ -235,7 +235,7 @@ namespace ModsCommon
 #if DEBUG
             messageBox.Init(messages, SingletonMod<TypeMod>.Instance.NameRaw, false, culture: SingletonMod<TypeMod>.Instance.Culture);
 #else
-            messageBox.Init(messages, maximizeFirst: false, culture: SingletonMod<TypeMod>.Instance.Culture));
+            messageBox.Init(messages, maximizeFirst: false, culture: SingletonMod<TypeMod>.Instance.Culture);
 #endif
         }
 
