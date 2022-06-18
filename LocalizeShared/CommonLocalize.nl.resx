@@ -390,5 +390,7 @@ Herstart het spel.</value>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
     <value>BIJGEWERKT</value>
   </data>
-  
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>WAARSCHUWING</value>
+  </data>
 </root>

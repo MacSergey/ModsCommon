@@ -383,7 +383,7 @@ Starte das Spiel neu.</value>
     <value>ENTFERNT</value>
   </data>
   <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>RÜCKGÄNGIG GEMACHt</value>
+    <value>ZURÜCKGESETZT</value>
   </data>
   <data name="WhatsNew_TRANSLATION" xml:space="preserve">
     <value>ÜBERSETZUNG</value>
@@ -391,5 +391,7 @@ Starte das Spiel neu.</value>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
     <value>AKTUALISIERT</value>
   </data>
-  
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>WARNUNG</value>
+  </data>
 </root>

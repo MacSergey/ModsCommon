@@ -389,5 +389,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
     <value>업데이트</value>
   </data>
-  
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>경고</value>
+  </data>
 </root>

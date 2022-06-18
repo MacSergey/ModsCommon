@@ -371,11 +371,25 @@ Shift X10, Ctrl X0.1</value>
     <value>按下 {0}
 選擇其他高度的節點</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>已修正</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>新功能</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>已移除</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>已還原</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>翻譯</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>已更新</value>
+  </data>
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>警告</value>
+  </data>
 </root>

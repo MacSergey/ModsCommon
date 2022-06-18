@@ -391,5 +391,7 @@ parmi les nœuds proches</value>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
     <value>MIS À JOUR</value>
   </data>
-  
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>AVERTISSEMENT</value>
+  </data>
 </root>

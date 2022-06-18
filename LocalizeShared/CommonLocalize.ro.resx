@@ -381,7 +381,7 @@ termina selecția</value>
     <value>ELIMINAT</value>
   </data>
   <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>REVENIRE LA O VERSIUNE ANTERIOARĂ</value>
+    <value>RESTABILIT</value>
   </data>
   <data name="WhatsNew_TRANSLATION" xml:space="preserve">
     <value>TRADUCERE</value>
@@ -389,5 +389,7 @@ termina selecția</value>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
     <value>ACTUALIZAT</value>
   </data>
-  
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>ATENȚIE</value>
+  </data>
 </root>
