@@ -873,5 +873,14 @@ namespace ModsCommon {
                 return ResourceManager.GetString("WhatsNew_UPDATED", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на WARNING.
+        /// </summary>
+        public static string WhatsNew_WARNING {
+            get {
+                return ResourceManager.GetString("WhatsNew_WARNING", resourceCulture);
+            }
+        }
     }
 }

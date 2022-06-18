@@ -154,7 +154,7 @@ namespace ModsCommon.UI
                 {
                     if (i < lines.Length)
                     {
-                        lines[i] = lines[i].Replace("---", $"\n—");
+                        lines[i] = lines[i].Replace("---", $"\n\t");
                         var match = Regex.Match(lines[i], @"(\[(?<label>.+)\])?(?<text>(\n|.)+)");
                         var label = match.Groups["label"];
                         var text = match.Groups["text"];
@@ -247,7 +247,7 @@ namespace ModsCommon.UI
                             break;
                         case "REMOVED":
                             Label.text = CommonLocalize.WhatsNew_REMOVED;
-                            Label.color = new Color32(255, 34, 45, 255);
+                            Label.color = new Color32(225, 56, 225, 255);
                             break;
                         case "REVERTED":
                             Label.text = CommonLocalize.WhatsNew_REVERTED;
@@ -256,6 +256,10 @@ namespace ModsCommon.UI
                         case "TRANSLATION":
                             Label.text = CommonLocalize.WhatsNew_TRANSLATION;
                             Label.color = new Color32(0, 120, 255, 255);
+                            break;
+                        case "WARNING":
+                            Label.text = CommonLocalize.WhatsNew_WARNING;
+                            Label.color = new Color32(255, 34, 45, 255);
                             break;
                         default:
                             Label.text = label.ToUpper();
@@ -266,6 +270,7 @@ namespace ModsCommon.UI
                     Label.isVisible = false;
 
                 Text.text = text.Trim();
+                Label.textScale = Label.text.Length <= 11 ? 0.7f : 0.5f;
                 Fit();
             }
             protected override void OnSizeChanged()
