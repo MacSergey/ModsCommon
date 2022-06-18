@@ -371,10 +371,22 @@ Reporniți jocul.</value>
     <value>Apăsați {0} pentru a
 termina selecția</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>REZOLVAT</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>NOU</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>ELIMINAT</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>REVENIRE LA O VERSIUNE ANTERIOARĂ</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>TRADUCERE</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>ACTUALIZAT</value>
+  </data>
 </root>
