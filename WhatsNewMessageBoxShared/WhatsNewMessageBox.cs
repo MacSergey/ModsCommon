@@ -301,19 +301,23 @@ namespace ModsCommon.UI
                 Close();
         }
 
-        public void Init(Dictionary<ModVersion, string> messages, string betaText)
+        public void Init(Dictionary<ModVersion, string> messages, string betaText, string modName = null, bool maximizeFirst = true, CultureInfo culture = null)
         {
             StopLayout();
 
             var betaMessage = Panel.Content.AddUIComponent<CustomUILabel>();
             betaMessage.wordWrap = true;
             betaMessage.autoHeight = true;
-            betaMessage.textColor = Color.red;
+            betaMessage.textColor = new Color32(255, 160, 0, 255);
             betaMessage.text = betaText;
+            betaMessage.atlas = TextureHelper.InGameAtlas;
+            betaMessage.backgroundSprite = "TextFieldPanel";
+            betaMessage.color = new Color32(96, 96, 96, 255);
+            betaMessage.padding = new RectOffset(7, 7, 7, 7);
 
             StartLayout(false);
 
-            base.Init(messages);
+            base.Init(messages, modName, maximizeFirst, culture);
         }
     }
 }

@@ -239,7 +239,7 @@ namespace ModsCommon
                 messageBox.OnGetStableClick = GetStable;
                 messageBox.OkText = CommonLocalize.MessageBox_OK;
                 messageBox.GetStableText = CommonLocalize.Mod_BetaWarningGetStable;
-                messageBox.Init(messages, string.Format(CommonLocalize.Mod_BetaWarningMessage, NameRaw), culture: _culture);
+                messageBox.Init(messages, string.Format(CommonLocalize.Mod_BetaWarningMessage, NameRaw), NameRaw, culture: _culture);
             }
 
             static bool Confirm()

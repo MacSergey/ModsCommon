@@ -13,6 +13,7 @@ namespace ModsCommon.UI
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
+        protected Dictionary<CustomUIButton, bool> Clickable { get; } = new Dictionary<CustomUIButton, bool>();
         protected virtual int TextPadding => AutoButtonSize ? 8 : (int)Mathf.Clamp((_buttonWidth - 20f) / 2f, 0, 8);
 
         private bool _autoButtonSize = true;
@@ -49,7 +50,8 @@ namespace ModsCommon.UI
             autoFitChildrenVertically = true;
         }
 
-        public void AddItem(ValueType item, string label = null)
+        public void AddItem(ValueType item, string label = null) => AddItem(item, label, true, null);
+        public void AddItem(ValueType item, string label = null, bool clickable = true, float? width = null)
         {
             Objects.Add(item);
 
@@ -59,16 +61,19 @@ namespace ModsCommon.UI
             button.text = label ?? item.ToString();
             button.textScale = 0.8f;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
-            SetButtonWidth(button);
+            SetButtonWidth(button, width);
             button.height = 20;
-            button.eventClick += ButtonClick;
+            if (clickable)
+                button.eventClick += ButtonClick;
 
             var last = Buttons.LastOrDefault();
             Buttons.Add(button);
+            Clickable.Add(button, clickable);
 
             SetSprite(button, false);
             if (last != null)
                 SetSprite(last, IsSelect(Buttons.Count - 2));
+
         }
         private void SetButtonsWidth()
         {
@@ -79,7 +84,7 @@ namespace ModsCommon.UI
 
             StartLayout();
         }
-        private void SetButtonWidth(CustomUIButton button)
+        private void SetButtonWidth(CustomUIButton button, float? width = null)
         {
             button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
 
@@ -88,6 +93,8 @@ namespace ModsCommon.UI
                 button.autoSize = true;
                 button.autoSize = false;
             }
+            else if (width.HasValue)
+                button.width = width.Value;
             else
                 button.width = ButtonWidth;
         }
@@ -100,6 +107,11 @@ namespace ModsCommon.UI
             {
                 button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldFocused}{suffix}";
                 button.disabledColor = new Color32(192, 192, 192, 255);
+            }
+            else if(!Clickable[button])
+            {
+                button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldDisabled}{suffix}";
+                button.disabledColor = Color.white;
             }
             else
             {
@@ -135,6 +147,7 @@ namespace ModsCommon.UI
                 ComponentPool.Free(button);
 
             Buttons.Clear();
+            Clickable.Clear();
         }
 
         public void SetDefaultStyle(Vector2? size = null) { }
