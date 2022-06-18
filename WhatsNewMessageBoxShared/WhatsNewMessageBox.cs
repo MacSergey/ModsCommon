@@ -100,6 +100,7 @@ namespace ModsCommon.UI
                 Title.textScale = 1.4f;
                 Title.textAlignment = UIHorizontalAlignment.Center;
                 Title.verticalAlignment = UIVerticalAlignment.Middle;
+                Title.padding = new RectOffset(0, 0, 4, 0);
 
                 SubTitle = versionPanel.AddUIComponent<CustomUILabel>();
                 SubTitle.autoSize = false;
@@ -217,6 +218,7 @@ namespace ModsCommon.UI
                 Text.verticalAlignment = UIVerticalAlignment.Middle;
                 Text.textScale = 0.8f;
                 Text.wordWrap = true;
+                Text.autoSize = false;
                 Text.autoHeight = true;
                 Text.relativePosition = new Vector3(17, 7);
                 Text.minimumSize = new Vector2(100, 20);
@@ -269,10 +271,15 @@ namespace ModsCommon.UI
                 base.OnSizeChanged();
                 Fit();
             }
+            protected override void OnVisibilityChanged()
+            {
+                base.OnVisibilityChanged();
+                Fit();
+            }
             private void Fit()
             {
                 if (Text != null)
-                    Text.width = width - (Label.isVisible ? 100f + autoLayoutPadding.horizontal : 0f);
+                    Text.width = width - (Label?.isVisible == true ? 100f + autoLayoutPadding.horizontal : 0f);
             }
         }
     }
