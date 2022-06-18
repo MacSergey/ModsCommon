@@ -197,7 +197,9 @@ namespace ModsCommon.Utilities
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Line;
         public Line3 Trajectory { get; }
-        public bool IsSection { get; }
+        public bool StartLimited { get; }
+        public bool EndLimited { get; }
+        public bool IsSection => StartLimited && EndLimited;
         public float Length { get; }
         public float Magnitude => Length;
         public float DeltaAngle => 0f;
@@ -206,16 +208,22 @@ namespace ModsCommon.Utilities
         public Vector3 EndDirection => -Direction;
         public Vector3 StartPosition => Trajectory.a;
         public Vector3 EndPosition => Trajectory.b;
-        public StraightTrajectory(Line3 trajectory, bool isSection = true)
+        public StraightTrajectory(Line3 trajectory, bool startLimited, bool endLimited)
         {
             Trajectory = trajectory;
-            IsSection = isSection;
+            StartLimited = startLimited;
+            EndLimited = endLimited;
 
             Length = (Trajectory.b - Trajectory.a).magnitude;
             Direction = (Trajectory.b - Trajectory.a).normalized;
         }
-        public StraightTrajectory(Vector3 start, Vector3 end, bool isSection = true) : this(new Line3(start, end), isSection) { }
-        public StraightTrajectory(ITrajectory trajectory, bool isSection = true) : this(new Line3(trajectory.StartPosition, trajectory.EndPosition), isSection) { }
+        public StraightTrajectory(Line3 trajectory, bool isSection = true) : this(trajectory, isSection, isSection) { }
+
+        public StraightTrajectory(Vector3 start, Vector3 end, bool startLimited, bool endLimited) : this(new Line3(start, end), startLimited, endLimited) { }
+        public StraightTrajectory(Vector3 start, Vector3 end, bool isSection = true) : this(new Line3(start, end), isSection, isSection) { }
+
+        public StraightTrajectory(ITrajectory trajectory, bool startLimited, bool endLimited) : this(new Line3(trajectory.StartPosition, trajectory.EndPosition), startLimited, endLimited) { }
+        public StraightTrajectory(ITrajectory trajectory, bool isSection = true) : this(new Line3(trajectory.StartPosition, trajectory.EndPosition), isSection, isSection) { }
 
         public StraightTrajectory Cut(float t0, float t1) => new StraightTrajectory(Position(t0), Position(t1));
         ITrajectory ITrajectory.Cut(float t0, float t1) => Cut(t0, t1);
@@ -232,9 +240,9 @@ namespace ModsCommon.Utilities
         public float Travel(float distance) => distance / Length;
         public float Travel(float start, float distance) => start + Travel(distance);
         public float Distance(float from = 0f, float to = 1f) => Length * (to - from);
-        public StraightTrajectory Invert() => new StraightTrajectory(Trajectory.b, Trajectory.a, IsSection);
+        public StraightTrajectory Invert() => new StraightTrajectory(Trajectory.b, Trajectory.a, EndLimited, StartLimited);
         ITrajectory ITrajectory.Invert() => Invert();
-        public StraightTrajectory Copy() => new StraightTrajectory(Trajectory, IsSection);
+        public StraightTrajectory Copy() => new StraightTrajectory(Trajectory, StartLimited, EndLimited);
         ITrajectory ITrajectory.Copy() => Copy();
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
