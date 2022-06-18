@@ -146,6 +146,7 @@ namespace ModsCommon.UI
             }
             private void SetMessage(string message)
             {
+                message = message.Replace("\r\n", "\n").Replace($"\n---", "---");
                 var lines = message.Split('\n');
                 var max = Math.Max(lines.Length, Lines.Count);
 
@@ -153,7 +154,8 @@ namespace ModsCommon.UI
                 {
                     if (i < lines.Length)
                     {
-                        var match = Regex.Match(lines[i], @"(\[(?<label>.+)\])?(?<text>.+)");
+                        lines[i] = lines[i].Replace("---", $"\n—");
+                        var match = Regex.Match(lines[i], @"(\[(?<label>.+)\])?(?<text>(\n|.)+)");
                         var label = match.Groups["label"];
                         var text = match.Groups["text"];
 
