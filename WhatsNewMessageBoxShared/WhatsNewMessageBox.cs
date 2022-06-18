@@ -147,7 +147,7 @@ namespace ModsCommon.UI
             private void SetMessage(string message)
             {
                 message = message.Replace("\r\n", "\n").Replace($"\n---", "---");
-                var lines = message.Split('\n');
+                var lines = message.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 var max = Math.Max(lines.Length, Lines.Count);
 
                 for (var i = 0; i < max; i += 1)
