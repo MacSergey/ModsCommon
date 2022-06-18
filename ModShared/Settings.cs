@@ -22,7 +22,7 @@ namespace ModsCommon
     {
         public static string SettingsFile { get; } = $"{typeof(TypeMod).Namespace}{nameof(SettingsFile)}";
         public static SavedString Locale { get; } = new SavedString(nameof(Locale), SettingsFile, string.Empty, true);
-        public static SavedString WhatsNewVersion { get; } = new SavedString(nameof(WhatsNewVersion), SettingsFile, SingletonMod<TypeMod>.Instance.Version.PrevMinor(SingletonMod<TypeMod>.Instance.Versions).ToString(), true);
+        public static SavedString WhatsNewVersion { get; } = new SavedString(nameof(WhatsNewVersion), SettingsFile, SingletonMod<TypeMod>.Instance.Version.PrevMinor(SingletonMod<TypeMod>.Instance.Versions.Select(v => v.Number).ToList()).ToString(), true);
         public static SavedBool ShowWhatsNew { get; } = new SavedBool(nameof(ShowWhatsNew), SettingsFile, true, true);
         public static SavedBool ShowOnlyMajor { get; } = new SavedBool(nameof(ShowOnlyMajor), SettingsFile, false, true);
         public static SavedBool BetaWarning { get; } = new SavedBool(nameof(BetaWarning), SettingsFile, true, true);
@@ -233,9 +233,9 @@ namespace ModsCommon
             messageBox.CaptionText = CommonLocalize.Settings_ChangeLog;
             messageBox.OkText = CommonLocalize.MessageBox_OK;
 #if DEBUG
-            messageBox.Init(messages, SingletonMod<TypeMod>.Instance.GetVersionString, false, SingletonMod<TypeMod>.Instance.NameRaw);
+            messageBox.Init(messages, SingletonMod<TypeMod>.Instance.NameRaw, false, culture: SingletonMod<TypeMod>.Instance.Culture);
 #else
-            messageBox.Init(messages, SingletonMod<TypeMod>.Instance.GetVersionString, false);
+            messageBox.Init(messages, maximizeFirst: false, culture: SingletonMod<TypeMod>.Instance.Culture));
 #endif
         }
 

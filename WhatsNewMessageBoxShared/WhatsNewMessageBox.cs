@@ -2,6 +2,8 @@
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -24,7 +26,7 @@ namespace ModsCommon.UI
                 Close();
         }
 
-        public virtual void Init(Dictionary<Version, string> messages, Func<Version, string> toString = null, bool MaximizeFirst = true, string modName = null)
+        public virtual void Init(Dictionary<ModVersion, string> messages, string modName = null, bool maximizeFirst = true, CultureInfo culture = null)
         {
             StopLayout();
 
@@ -38,12 +40,12 @@ namespace ModsCommon.UI
             foreach (var message in messages)
             {
                 var versionMessage = Panel.Content.AddUIComponent<VersionMessage>();
-                versionMessage.Init(toString?.Invoke(message.Key) ?? message.Key.ToString(), message.Value);
+                versionMessage.Init(message.Key, message.Value, culture);
 
                 if (first == null)
                     first = versionMessage;
             }
-            if (MaximizeFirst)
+            if (maximizeFirst)
                 first.IsMinimize = false;
 
             StartLayout();
@@ -57,32 +59,66 @@ namespace ModsCommon.UI
                 set
                 {
                     Container.isVisible = !value;
-                    Button.text = $"{(value ? "►" : "▼")} {Label}";
+                    Button.text = value ? "►" : "▼";
                 }
             }
+            private CustomUILabel Title { get; set; }
+            private CustomUILabel SubTitle { get; set; }
             private CustomUIButton Button { get; set; }
             private UIAutoLayoutPanel Container { get; set; }
-            private List<CustomUILabel> Lines { get; } = new List<CustomUILabel>();
-            private string Label { get; set; }
+            private List<UpdateMessage> Lines { get; } = new List<UpdateMessage>();
             public VersionMessage()
             {
                 autoLayoutDirection = LayoutDirection.Vertical;
                 autoFitChildrenVertically = true;
-                autoLayoutPadding = new RectOffset(0, 0, 0, 6);
+                autoLayoutPadding = new RectOffset(0, 0, 0, 8);
 
-                AddButton();
+                AddTitle();
                 AddLinesContainer();
             }
-            private void AddButton()
+            private void AddTitle()
             {
-                Button = AddUIComponent<CustomUIButton>();
-                Button.height = 20;
+                var titlePanel = AddUIComponent<UIAutoLayoutPanel>();
+                titlePanel.autoLayoutDirection = LayoutDirection.Horizontal;
+                titlePanel.autoFitChildrenVertically = true;
+                titlePanel.autoFitChildrenHorizontally = true;
+                titlePanel.autoLayoutPadding = new RectOffset(0, 10, 0, 0);
+                titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsMinimize = !IsMinimize;
+
+                var versionPanel = titlePanel.AddUIComponent<UIAutoLayoutPanel>();
+                versionPanel.autoLayoutDirection = LayoutDirection.Vertical;
+                versionPanel.autoFitChildrenVertically = true;
+                versionPanel.autoFitChildrenHorizontally = true;
+                versionPanel.atlas = TextureHelper.InGameAtlas;
+                versionPanel.backgroundSprite = "TextFieldPanel";
+                versionPanel.color = new Color32(180, 180, 180, 255);
+
+                Title = versionPanel.AddUIComponent<CustomUILabel>();
+                Title.autoSize = false;
+                Title.width = 100f;
+                Title.height = 30f;
+                Title.textScale = 1.4f;
+                Title.textAlignment = UIHorizontalAlignment.Center;
+                Title.verticalAlignment = UIVerticalAlignment.Middle;
+
+                SubTitle = versionPanel.AddUIComponent<CustomUILabel>();
+                SubTitle.autoSize = false;
+                SubTitle.width = 100f;
+                SubTitle.height = 20f;
+                SubTitle.textScale = 0.7f;
+                SubTitle.textAlignment = UIHorizontalAlignment.Center;
+                SubTitle.verticalAlignment = UIVerticalAlignment.Middle;
+
+                Button = titlePanel.AddUIComponent<CustomUIButton>();
+                Button.autoSize = false;
+                Button.height = 50f;
+                Button.width = 50f;
                 Button.horizontalAlignment = UIHorizontalAlignment.Left;
                 Button.color = Color.white;
+                Button.textScale = 1.5f;
                 Button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-                Button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsMinimize = !IsMinimize;
+                Button.textVerticalAlignment = UIVerticalAlignment.Middle;
             }
-
             private void AddLinesContainer()
             {
                 Container = AddUIComponent<UIAutoLayoutPanel>();
@@ -93,11 +129,15 @@ namespace ModsCommon.UI
                 Container.verticalSpacing = 15;
             }
 
-            public void Init(string version, string message)
+            public void Init(ModVersion version, string message, CultureInfo culture)
             {
                 Container.StopLayout();
 
-                Label = version;
+                Title.text = version.Number.ToString();
+                if(version.IsBeta)
+                    SubTitle.text = "BETA";
+                else
+                    SubTitle.text = version.Date.ToString("d MMM yyyy", culture);
                 SetMessage(message);
                 IsMinimize = true;
 
@@ -112,10 +152,19 @@ namespace ModsCommon.UI
                 {
                     if (i < lines.Length)
                     {
-                        if (i >= Lines.Count)
-                            AddLine();
-                        Lines[i].isVisible = true;
-                        Lines[i].text = lines[i];
+                        var match = Regex.Match(lines[i], @"(\[(?<label>.+)\])?(?<text>.+)");
+                        var label = match.Groups["label"];
+                        var text = match.Groups["text"];
+
+                        if (text.Success)
+                        {
+                            if (i >= Lines.Count)
+                                AddLine();
+                            Lines[i].isVisible = true;
+                            Lines[i].Init(label.Success ? label.Value : null, text.Value);
+                        }
+                        else
+                            Lines[i].isVisible = false;
                     }
                     else
                         Lines[i].isVisible = false;
@@ -123,12 +172,7 @@ namespace ModsCommon.UI
             }
             private void AddLine()
             {
-                var line = Container.AddUIComponent<CustomUILabel>();
-                line.textAlignment = UIHorizontalAlignment.Left;
-                line.verticalAlignment = UIVerticalAlignment.Middle;
-                line.textScale = 0.8f;
-                line.wordWrap = true;
-                line.autoHeight = true;
+                var line = Container.AddUIComponent<UpdateMessage>();
                 line.relativePosition = new Vector3(17, 7);
                 Lines.Add(line);
             }
@@ -143,6 +187,92 @@ namespace ModsCommon.UI
                     Container.width = width;
                 foreach (var line in Lines)
                     line.width = width;
+            }
+        }
+        public class UpdateMessage : UIAutoLayoutPanel
+        {
+            private CustomUILabel Label { get; set; }
+            private CustomUILabel Text { get; set; }
+
+            public UpdateMessage()
+            {
+                autoLayoutDirection = LayoutDirection.Horizontal;
+                autoFitChildrenVertically = true;
+                autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+                autoLayoutPadding = new RectOffset(0, 10, 0, 0);
+
+                Label = AddUIComponent<CustomUILabel>();
+                Label.autoSize = false;
+                Label.height = 20f;
+                Label.width = 100f;
+                Label.atlas = TextureHelper.InGameAtlas;
+                Label.backgroundSprite = "TextFieldPanel";
+                Label.textAlignment = UIHorizontalAlignment.Center;
+                Label.verticalAlignment = UIVerticalAlignment.Middle;
+                Label.textScale = 0.7f;
+                Label.padding = new RectOffset(0, 0, 4, 0);
+
+                Text = AddUIComponent<CustomUILabel>();
+                Text.textAlignment = UIHorizontalAlignment.Left;
+                Text.verticalAlignment = UIVerticalAlignment.Middle;
+                Text.textScale = 0.8f;
+                Text.wordWrap = true;
+                Text.autoHeight = true;
+                Text.relativePosition = new Vector3(17, 7);
+                Text.minimumSize = new Vector2(100, 20);
+                Text.padding = new RectOffset(0, 0, 4, 0);
+            }
+            public void Init(string label, string text)
+            {
+                if (!string.IsNullOrEmpty(label))
+                {
+                    Label.isVisible = true;
+                    switch (label.Trim().ToUpper())
+                    {
+                        case "NEW":
+                            Label.text = CommonLocalize.WhatsNew_NEW;
+                            Label.color = new Color32(40, 178, 72, 255);
+                            break;
+                        case "FIXED":
+                            Label.text = CommonLocalize.WhatsNew_FIXED;
+                            Label.color = new Color32(255, 160, 0, 255);
+                            break;
+                        case "UPDATED":
+                            Label.text = CommonLocalize.WhatsNew_UPDATED;
+                            Label.color = new Color32(75, 228, 238, 255);
+                            break;
+                        case "REMOVED":
+                            Label.text = CommonLocalize.WhatsNew_REMOVED;
+                            Label.color = new Color32(255, 34, 45, 255);
+                            break;
+                        case "REVERTED":
+                            Label.text = CommonLocalize.WhatsNew_REVERTED;
+                            Label.color = new Color32(225, 56, 225, 255);
+                            break;
+                        case "TRANSLATION":
+                            Label.text = CommonLocalize.WhatsNew_TRANSLATION;
+                            Label.color = new Color32(0, 120, 255, 255);
+                            break;
+                        default:
+                            Label.text = label.ToUpper();
+                            break;
+                    }
+                }
+                else
+                    Label.isVisible = false;
+
+                Text.text = text.Trim();
+                Fit();
+            }
+            protected override void OnSizeChanged()
+            {
+                base.OnSizeChanged();
+                Fit();
+            }
+            private void Fit()
+            {
+                if (Text != null)
+                    Text.width = width - (Label.isVisible ? 100f + autoLayoutPadding.horizontal : 0f);
             }
         }
     }
@@ -162,7 +292,7 @@ namespace ModsCommon.UI
                 Close();
         }
 
-        public void Init(Dictionary<Version, string> messages, string betaText, Func<Version, string> toString = null)
+        public void Init(Dictionary<ModVersion, string> messages, string betaText)
         {
             StopLayout();
 
@@ -174,7 +304,7 @@ namespace ModsCommon.UI
 
             StartLayout(false);
 
-            base.Init(messages, toString);
+            base.Init(messages);
         }
     }
 }

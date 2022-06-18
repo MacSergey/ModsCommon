@@ -39,7 +39,7 @@ namespace ModsCommon
 
         protected virtual string ModSupportUrl => string.Empty;
         public string SupportUrl => !string.IsNullOrEmpty(ModSupportUrl) ? ModSupportUrl : WorkshopId.GetWorkshopUrl();
-        public abstract List<Version> Versions { get; }
+        public abstract List<ModVersion> Versions { get; }
         protected abstract string IdRaw { get; }
         public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
         public abstract bool IsBeta { get; }
@@ -159,8 +159,29 @@ namespace ModsCommon
                     locale = new SavedString(Settings.localeID, Settings.gameSettingsFile, DefaultSettings.localeID).value;
             }
 
-            if (locale == "zh")
-                locale = "zh-cn";
+            switch(locale)
+            {
+                case "cs": locale = "cs-cz"; break;
+                case "da": locale = "da-dk"; break;
+                case "de": locale = "de-de"; break;
+                case "en": locale = "en-us"; break;
+                case "es": locale = "es-es"; break;
+                case "fi": locale = "fi-fi"; break;
+                case "fr": locale = "fr-fr"; break;
+                case "hu": locale = "hu-hu"; break;
+                case "id": locale = "id-id"; break;
+                case "it": locale = "it-it"; break;
+                case "ja": locale = "ja-jp"; break;
+                case "ko": locale = "ko-kr"; break;
+                case "mr": locale = "mr-in"; break;
+                case "nl": locale = "nl-nl"; break;
+                case "pl": locale = "pl-pl"; break;
+                case "pt": locale = "pt-pt"; break;
+                case "ro": locale = "ro-ro"; break;
+                case "ru": locale = "ru-ru"; break;
+                case "tr": locale = "tr-tr"; break;
+                case "zh": locale = "zh-cn"; break;
+            }
 
             Culture = new CultureInfo(locale);
             Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
@@ -208,7 +229,7 @@ namespace ModsCommon
                 messageBox.CaptionText = string.Format(CommonLocalize.Mod_WhatsNewCaption, NameRaw);
                 messageBox.OnButtonClick = Confirm;
                 messageBox.OkText = CommonLocalize.MessageBox_OK;
-                messageBox.Init(messages, GetVersionString, modName: NameRaw);
+                messageBox.Init(messages, NameRaw, culture: _culture);
             }
             else
             {
@@ -218,7 +239,7 @@ namespace ModsCommon
                 messageBox.OnGetStableClick = GetStable;
                 messageBox.OkText = CommonLocalize.MessageBox_OK;
                 messageBox.GetStableText = CommonLocalize.Mod_BetaWarningGetStable;
-                messageBox.Init(messages, string.Format(CommonLocalize.Mod_BetaWarningMessage, NameRaw), GetVersionString);
+                messageBox.Init(messages, string.Format(CommonLocalize.Mod_BetaWarningMessage, NameRaw), culture: _culture);
             }
 
             static bool Confirm()
@@ -233,30 +254,32 @@ namespace ModsCommon
             }
         }
 
-        public Dictionary<Version, string> GetWhatsNewMessages(Version whatNewVersion)
+        public Dictionary<ModVersion, string> GetWhatsNewMessages(Version whatNewVersion)
         {
-            var messages = new Dictionary<Version, string>(Versions.Count);
+            var messages = new Dictionary<ModVersion, string>(Versions.Count);
 #if BETA
-            messages[Version] = CommonLocalize.Mod_WhatsNewMessageBeta;
+            messages[new ModVersion(Version, isBeta: true)] = CommonLocalize.Mod_WhatsNewMessageBeta;
 #endif
             foreach (var version in Versions)
             {
-                if (Version < version)
+#if !BETA
+                if (Version < version.Number)
                     continue;
+#endif
 
-                if (version <= whatNewVersion)
+                if (version.Number <= whatNewVersion)
                     break;
 
-                if (BaseSettings<TypeMod>.ShowOnlyMajor && !version.IsMinor())
+                if (BaseSettings<TypeMod>.ShowOnlyMajor && !version.Number.IsMinor())
                     continue;
 
-                if (GetLocalizeString($"Mod_WhatsNewMessage{version.ToString().Replace('.', '_')}") is string message && !string.IsNullOrEmpty(message))
+                if (GetLocalizeString($"Mod_WhatsNewMessage{version.Number.ToString().Replace('.', '_')}") is string message && !string.IsNullOrEmpty(message))
                     messages[version] = message;
             }
 
             return messages;
         }
-        public string GetVersionString(Version version) => string.Format(CommonLocalize.Mod_WhatsNewVersion, version == Version ? VersionString : version.ToString());
+        public string GetVersionString(ModVersion version) => string.Format(CommonLocalize.Mod_WhatsNewVersion, version.Number == Version ? VersionString : version.ToString());
 
         public void ShowBetaWarning()
         {
@@ -334,5 +357,20 @@ namespace ModsCommon
             DiscordURL.OpenUrl();
             return true;
         }
+    }
+    public struct ModVersion
+    {
+        public Version Number { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsBeta { get; set; }
+
+        public ModVersion(Version number, DateTime date = default, bool isBeta = false)
+        {
+            Number = number;
+            Date = date;
+            IsBeta = isBeta;
+        }
+
+        public override int GetHashCode() => Number.GetHashCode();
     }
 }

@@ -15,7 +15,7 @@ namespace ModsCommon
         public string NameRaw { get; }
         public ILogger Logger { get; }
         public Version Version { get; }
-        public List<Version> Versions { get; }
+        public List<ModVersion> Versions { get; }
         public CultureInfo Culture { get; }
 #if DEBUG
         public bool NeedMonoDevelopDebug { get; }
@@ -23,8 +23,7 @@ namespace ModsCommon
         public bool NeedMonoDevelop { get; }
 #endif
 
-        public Dictionary<Version, string> GetWhatsNewMessages(Version whatNewVersion);
-        public string GetVersionString(Version version);
+        public Dictionary<ModVersion, string> GetWhatsNewMessages(Version whatNewVersion);
         public void ShowLinuxTip();
         public bool OpenDiscord();
         public bool OpenSupport();
