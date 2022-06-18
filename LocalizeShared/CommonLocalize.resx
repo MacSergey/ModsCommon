@@ -295,7 +295,7 @@ Restart the game.</value>
     <value>What's new in {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Look for actual beta change log on Discord</value>
+    <value>[BETA] Look for actual beta change log on Discord</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
@@ -372,5 +372,23 @@ Restart the game.</value>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Press {0} to
 selection step over</value>
+  </data>
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>FIXED</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>NEW</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>REMOVED</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>REVERTED</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>TRANSLATION</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>UPDATED</value>
   </data>
 </root>
