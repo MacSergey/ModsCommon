@@ -164,7 +164,7 @@ namespace ModsCommon.Utilities
             return false;
         }
         private static bool IntersectSections(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out float p, out float q)
-            => Line2.Intersect(XZ(a), XZ(b), XZ(c), XZ(d), out p, out q) && CorrectT(p) && CorrectT(q);
+            => Line2.Intersect(XZ(a), XZ(b), XZ(c), XZ(d), out p, out q) && IsCorrectT(p) && IsCorrectT(q);
         private static IEnumerable<int> WillTryParts(int i, int count, float p)
         {
             yield return i;
@@ -214,7 +214,7 @@ namespace ModsCommon.Utilities
             }
         }
         private static bool IntersectSectionAndRay(StraightTrajectory line, Vector3 start, Vector3 end, out float p, out float q) =>
-            Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && (!line.IsSection || CorrectT(p)) && CorrectT(q);
+            Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && IsCorrectT(line, p) && IsCorrectT(q);
 
         #endregion
 
@@ -224,7 +224,7 @@ namespace ModsCommon.Utilities
             var intersects = new List<Intersection>();
             var trajectory1 = firstStraight.Trajectory;
             var trajectory2 = secondStraight.Trajectory;
-            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && (!firstStraight.IsSection || CorrectT(p)) && (!secondStraight.IsSection || CorrectT(q)))
+            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && IsCorrectT(firstStraight, p) && IsCorrectT(secondStraight, q))
             {
                 var intersect = new Intersection(p, q);
                 intersects.Add(intersect);
@@ -254,7 +254,8 @@ namespace ModsCommon.Utilities
                 positons[i] = bezier.Position(points[i]);
             }
         }
-        public static bool CorrectT(float t) => 0f <= t && t <= 1f;
+        public static bool IsCorrectT(float t) => 0f <= t && t <= 1f;
+        public static bool IsCorrectT(StraightTrajectory line, float t) => (line.StartLimited ? 0f : float.MinValue) <= t && t <= (line.EndLimited ? 1f : float.MaxValue);
 
         public override string ToString() => $"{IsIntersect}:{FirstT};{SecondT}";
 
