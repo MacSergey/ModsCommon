@@ -41,7 +41,8 @@ namespace ModsCommon
 
                 try
                 {
-                    var uuiSprites = new UUIHelpers.UUISprites()
+                    var tool = SingletonTool<TypeTool>.Instance;
+                    var uuiSprites = new UUISprites()
                     {
                         Atlas = UUIAtlas,
                         NormalSprite = UUINormalSprite,
@@ -49,9 +50,11 @@ namespace ModsCommon
                         PressedSprite = UUIPressedSprite,
                         DisabledSprite = UUIDisabledSprite,
                     };
+                    var hotkeys = new UUIHotKeys(){ActivationKey = tool.Activation.InputKey,};
+                    foreach (var inToolKey in tool.Shortcuts.Select(s => s.InputKey))
+                        hotkeys.AddInToolKey(inToolKey);
 
-                    var tool = SingletonTool<TypeTool>.Instance;
-                    UUIButton = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, uuiSprites, tool, tool.Activation.InputKey, tool.Shortcuts.Select(s => s.InputKey));
+                    UUIButton = UUIHelpers.RegisterToolButton(SingletonMod<TypeMod>.Name, "MacSergeyMods", string.Empty, tool, uuiSprites, hotkeys);
 
                     UUIButton.isVisible = BaseSettings<TypeMod>.IsUUIButtonVisible();
                     UUIButton.eventTooltipEnter += (UIComponent component, UIMouseEventParameter eventParam) => component.tooltip = ToolTip;

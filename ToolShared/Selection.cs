@@ -270,7 +270,7 @@ namespace ModsCommon.Utilities
                 var startDir = data.GetDir(tDir) * data.GetDirLength(tDir);
                 var endDir = data.GetDir(1 - tDir) * data.GetDirLength(1 - tDir);
 
-                var bezier = GetEndBezier(startPos, startDir, endPos, endDir, halfOverlayWidth);
+                var bezier = GetEndBezier(startPos, startDir, endPos, endDir);
                 bezier.RenderBezier(overlayData);
             }
         }
@@ -286,10 +286,9 @@ namespace ModsCommon.Utilities
             NetSegment.CalculateMiddlePoints(bezier.a, leftDir, bezier.d, rightDir, true, true, out bezier.b, out bezier.c);
             return bezier;
         }
-        private Bezier3 GetEndBezier(Vector3 leftPos, Vector3 leftDir, Vector3 rightPos, Vector3 rightDir, float halfWidth = 0f)
+        private Bezier3 GetEndBezier(Vector3 leftPos, Vector3 leftDir, Vector3 rightPos, Vector3 rightDir)
         {
-            var length = Mathf.Min(LengthXZ(leftPos - rightPos) / 2 + halfWidth, 8f);
-            length = (length - halfWidth) / 0.75f;
+            var length = Id.GetNode().Info.m_netAI.GetEndRadius() / 0.75f;
             var bezier = new Bezier3()
             {
                 a = leftPos,

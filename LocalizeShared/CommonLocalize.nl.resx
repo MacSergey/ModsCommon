@@ -372,4 +372,22 @@ Herstart het spel.</value>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Druk op {0} om de selectie over te slaan</value>
   </data>
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>OPGELOST</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>NIEUW</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>VERWIJDERD</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>HERSTELD</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>VERTALING</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>BIJGEWERKT</value>
+  </data>
 </root>

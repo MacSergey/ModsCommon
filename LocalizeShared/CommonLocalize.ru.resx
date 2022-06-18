@@ -371,4 +371,22 @@ Shift X10, Ctrl X0.1</value>
     <value>Нажмите {0}
 чтобы пропустить выделенное</value>
   </data>
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>ИСПРАВЛЕНО</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>НОВОЕ</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>УДАЛЕНО</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>ВОЗВРАЩЕНО</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>ПЕРЕВОД</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>ОБНОВЛЕНО</value>
+  </data>
 </root>

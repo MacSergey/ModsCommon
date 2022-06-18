@@ -371,4 +371,22 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>{0} 을 눌러
 선택 건너뛰기</value>
   </data>
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>수정</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>신규</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>제거</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>되돌림</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>번역</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
 </root>

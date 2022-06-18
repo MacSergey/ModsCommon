@@ -586,7 +586,7 @@ namespace ModsCommon {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Look for actual beta change log on Discord.
+        ///   Ищет локализованную строку, похожую на [BETA] Look for actual beta change log on Discord.
         /// </summary>
         public static string Mod_WhatsNewMessageBeta {
             get {
@@ -817,6 +817,60 @@ namespace ModsCommon {
         public static string Tool_InfoSelectionStepOver {
             get {
                 return ResourceManager.GetString("Tool_InfoSelectionStepOver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FIXED.
+        /// </summary>
+        public static string WhatsNew_FIXED {
+            get {
+                return ResourceManager.GetString("WhatsNew_FIXED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на NEW.
+        /// </summary>
+        public static string WhatsNew_NEW {
+            get {
+                return ResourceManager.GetString("WhatsNew_NEW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на REMOVED.
+        /// </summary>
+        public static string WhatsNew_REMOVED {
+            get {
+                return ResourceManager.GetString("WhatsNew_REMOVED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на REVERTED.
+        /// </summary>
+        public static string WhatsNew_REVERTED {
+            get {
+                return ResourceManager.GetString("WhatsNew_REVERTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на TRANSLATION.
+        /// </summary>
+        public static string WhatsNew_TRANSLATION {
+            get {
+                return ResourceManager.GetString("WhatsNew_TRANSLATION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на UPDATED.
+        /// </summary>
+        public static string WhatsNew_UPDATED {
+            get {
+                return ResourceManager.GetString("WhatsNew_UPDATED", resourceCulture);
             }
         }
     }

@@ -373,4 +373,22 @@ Starte das Spiel neu.</value>
     <value>Drücke {0} zum
 Überspringen der Auswahl</value>
   </data>
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>BEHOBEN</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>NEU</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>ENTFERNT</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>RÜCKGÄNGIG GEMACHt</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>ÜBERSETZUNG</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>AKTUALISIERT</value>
+  </data>
 </root>
