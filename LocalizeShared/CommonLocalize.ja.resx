@@ -374,10 +374,22 @@
     <value>{0} を順次押して
 ステップオーバーの選択</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>修正済</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>新機能</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>削除済</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>元に戻す</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>翻訳</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>更新済</value>
+  </data>
 </root>
