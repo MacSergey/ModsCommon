@@ -391,4 +391,7 @@ selection step over</value>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
     <value>UPDATED</value>
   </data>
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>WARNING</value>
+  </data>
 </root>
