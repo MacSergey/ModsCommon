@@ -83,7 +83,7 @@ namespace ModsCommon.UI
             }
 
 
-            public Field(BaseVectorPropertyPanel<TypeVector> property, int index)
+            public Proxy(BaseVectorPropertyPanel<TypeVector> property, int index)
             {
                 Property = property;
                 Index = index;
@@ -94,14 +94,14 @@ namespace ModsCommon.UI
         bool IReusable.InCache { get; set; }
         public abstract uint Dimension { get; }
 
-        public Field this[int index]
+        public Proxy this[int index]
         {
             get
             {
                 if (index < 0 && index >= Dimension)
                     throw new IndexOutOfRangeException();
                 else
-                    return new Field(this, index);
+                    return new Proxy(this, index);
             }
         }
 
