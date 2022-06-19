@@ -273,7 +273,9 @@ Uruchom ponownie grę.</value>
   <data name="Mod_Locale_pt" xml:space="preserve">
     <value>Portugalski</value>
   </data>
-  
+  <data name="Mod_Locale_ro" xml:space="preserve">
+    <value>Rumuński</value>
+  </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>Rosyjski</value>
   </data>
@@ -368,11 +370,25 @@ Uruchom ponownie grę.</value>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Naciśnij {0} aby zaznaczyć poniżej</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>POPRAWIONE</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>NOWE</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>USUNIĘTE</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>PRZYWRÓCONE</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>TŁUMACZENIE</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>ZAKTUALIZOWANE</value>
+  </data>
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>OSTRZEŻENIE</value>
+  </data>
 </root>

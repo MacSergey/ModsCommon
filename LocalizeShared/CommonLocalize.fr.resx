@@ -295,7 +295,7 @@ Redémarrez le jeu.</value>
     <value>Quoi de neuf dans {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Allez sur Discord pour retrouver le journal des changements de la version bêta</value>
+    <value>[BETA] Allez sur Discord pour retrouver le journal des changements de la version bêta</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
@@ -383,7 +383,7 @@ parmi les nœuds proches</value>
     <value>SUPPRIMÉ</value>
   </data>
   <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>DÉPROGRAMMÉ</value>
+    <value>ANNULÉ</value>
   </data>
   <data name="WhatsNew_TRANSLATION" xml:space="preserve">
     <value>TRADUCTION</value>

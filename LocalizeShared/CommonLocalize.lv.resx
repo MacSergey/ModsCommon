@@ -118,53 +118,53 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Foram detetados mods em conflito.</value>
+    <value>Konstatētas pretrunīgas modifikācijas.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Desativar</value>
+    <value>Izslēgt</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Desativar {0}</value>
+    <value>Izslēgt {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Ativar</value>
+    <value>Ieslēgt</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Ativar {0}</value>
+    <value>Ieslēgt {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Obter</value>
+    <value>Iegūt</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Detetadas dependências.</value>
+    <value>Atrastas trūkstošās atkarības.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Detetadas dependências em falta e mods em conflito.</value>
+    <value>Atrastas trūkstošās atkarības un pretrunīgas modifikācijas.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Para continuar a usar {0} precisa corrigir estes problemas, caso contrário o mod será desativado.</value>
+    <value>Lai turpinātu lietot {0}, ir jānovērš šīs kļudas, pretējā gadījumā modifikācija tiks izsliegta.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>Todas os problemas foram corrigidos, {0} pode ser ativado.</value>
+    <value>Visas problēmas ir novērstas, {0} var ieslēgt.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Remover</value>
+    <value>Noņemt</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Subscrever</value>
+    <value>Abonēt</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Cancelar Subscrição</value>
+    <value>Anulēt abonementu</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Faça scroll para mudar
+    <value>Ritiniet riteni, lai mainītu
 Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Key_Alt" xml:space="preserve">
     <value>Alt</value>
   </data>
   <data name="Key_Control" xml:space="preserve">
-    <value>Control</value>
+    <value>Ctrl</value>
   </data>
   <data name="Key_Enter" xml:space="preserve">
     <value>Enter</value>
@@ -176,221 +176,220 @@ Shift X10, Ctrl X0.1</value>
     <value>Tab</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Faça scroll para mudar</value>
+    <value>Ritiniet riteni, lai mainītu</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Atcelt</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Não mostrar novamente</value>
+    <value>Vairāk nerādīt</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>Mais informação</value>
+    <value>Vairāk informācijas</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Não</value>
+    <value>Nē</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Sim</value>
+    <value>Jā</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Concordo</value>
+    <value>Es piekrītu</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Aviso de versão BETA</value>
+    <value>Brīdinājums par BETA versiju</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Obter versão estável</value>
+    <value>Iegūt stabilu versiju</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Está a usar a versão BETA da {0}. Serve para testar novas funcionalidades e pode conter erros que façam você perder todas as marcações. Se subscreveu por engano troque para a versão estável.</value>
+    <value>Jūs izmantojat beta versiju {0}. Tas ir paredzēts jaunu funkciju pārbaudei un var saturēt kļūdas. Ja esat to abonējis kļūdas dēļ, pārslēdzieties uz stabilo versiju.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Isto é uma versão BETA, podem ocorrer erros e não é garantida a estabilidade!</value>
+    <value>Šī ir BETA versija, var rasties kļūdas un stabilitāte nav garantēta!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>A versão Linux do Cities Skylines não tem todas as bibliotecas necessárias para o mod funcionar corretamente. Você precisa instalar o pacote "Mono Develop" no seu sistema. Se tudo funciona sem falhas, basta ignorar esta mensagem.</value>
+    <value>Cities Skylines Linux versijai nav visu nepieciešamo bibliotēku, lai modifikācija darbotos pareizi. Sistēmā jāinstalē pakotne "Mono Develop". Ja viss darbojas bez problēmu, ignorējiet šo ziņojumu.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>O mod carregou com erros.
-Não é recomendado usar o mod neste estado pois pode levar a comportamento imprevisível.</value>
+    <value>Mod ir ielādēts ar kļūdām.
+ Nav ieteicams izmantot modi šādā stāvoklī, jo tas var izraisīt neparedzamu uzvedību.
+ Restartējiet spēli.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Língua do jogo</value>
+    <value>Spēles valoda</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Checo</value>
+    <value>Čehu</value>
   </data>
   <data name="Mod_Locale_da" xml:space="preserve">
-    <value>Dinamarquês</value>
+    <value>Dāņu</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Alemão</value>
+    <value>Vācu</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Inglês EUA</value>
+    <value>Angļu (ASV)</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Inglês RU</value>
+    <value>Angļu (AK)</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Espanhol</value>
+    <value>Spāņu</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Finlandês</value>
+    <value>Somu</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Francês</value>
+    <value>Franču</value>
   </data>
   <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Húngaro</value>
+    <value>Ungāru</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
-    <value>Indonésio</value>
+    <value>Indonēziešu</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italiano</value>
+    <value>Itāļu</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japonês</value>
+    <value>Japāņu</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Coreano</value>
+    <value>Korejiešu</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malaio</value>
+    <value>Malajiešu</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Holandês</value>
+    <value>Nīderlandiešu</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Polaco</value>
+    <value>Poļu</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Português</value>
+    <value>Portugāļu</value>
   </data>
   <data name="Mod_Locale_ro" xml:space="preserve">
-    <value>Romeno</value>
+    <value>Rumāņu</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russo</value>
+    <value>Krievu</value>
   </data>
   <data name="Mod_Locale_tr" xml:space="preserve">
-    <value>Turco</value>
+    <value>Turku</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinês Simplificado</value>
+    <value>Ķīniešu vienkāršota</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Chinês tradicional</value>
+    <value>Ķīniešu tradicionāla</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Apoio</value>
+    <value>Atbalsts</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>O que há de novo em {0}</value>
+    <value>Kas ir jauna šeit: {0}</value>
   </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Consulta o registo de alterações beta no Discord</value>
-  </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Versão {0}</value>
+    <value>Versija {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Adicional</value>
+    <value>Papildus</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Atcelt</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Registo de alterações</value>
+    <value>Izmaiņas saraksta</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>Para utilizadores Linux</value>
+    <value>Linux lietotājiem</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Geral</value>
+    <value>Vispārēji</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Geral</value>
+    <value>Vispārēji</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Linguagem</value>
+    <value>Valoda</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Notificações</value>
+    <value>Paziņojumi</value>
   </data>
   <data name="Settings_PressAnyKey" xml:space="preserve">
-    <value>Pressione qualquer tecla</value>
+    <value>Nospiediet jebkuru taustiņu</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Ativar ferramenta</value>
+    <value>Instrumenta aktivizēšana</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Atalhos</value>
+    <value>Īsinājumtaustiņi</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Saltar a seleção</value>
+    <value>Izlaistu atlase</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Notificar apenas sobre actualizações principais</value>
+    <value>Paziņojums tikai par galvenajiem atjauninājumiem</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Mostrar dicas</value>
+    <value>Rādīt padomus</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Mostrar as novidades</value>
+    <value>Parādiet, kas jauns</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Resolver erro no Linux</value>
+    <value>Problēmu risināšana ar modifikāciju uz Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Apoio</value>
+    <value>Atbalsts</value>
   </data>
   <data name="Settings_ToolButton" xml:space="preserve">
-    <value>Botão de ferramenta</value>
+    <value>Instrumenta poga</value>
   </data>
   <data name="Settings_ToolButtonBoth" xml:space="preserve">
-    <value>Mostrar em ambos os lugares</value>
+    <value>Rādīt abās vietās</value>
   </data>
   <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
-    <value>Mostrar apenas na barra de ferramentas</value>
+    <value>Rādīt tikai rīkjoslā</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Mostrar apenas na UUI</value>
+    <value>Rādīt tikai UUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Resolução de problemas</value>
+    <value>Problēmu novēršana</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Se você gostou de {0}, você pode apoiar o autor</value>
+    <value>Ja jums patīk {0}, jūs varat atbalstīt autoru</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Pressione {0} para
-saltar a seleção</value>
+    <value>Nospiediet {0}
+lai izlaistu atlase</value>
   </data>
   <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>CORRIGIDO</value>
+    <value>LABOTS</value>
   </data>
   <data name="WhatsNew_NEW" xml:space="preserve">
-    <value>NOVO</value>
+    <value>JAUNS</value>
   </data>
   <data name="WhatsNew_REMOVED" xml:space="preserve">
-    <value>Removido</value>
+    <value>DZĒSTS</value>
   </data>
   <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>REVERTIDO</value>
+    <value>ATGRIEZTS</value>
   </data>
   <data name="WhatsNew_TRANSLATION" xml:space="preserve">
-    <value>TRADUÇÃO</value>
+    <value>TULKOJUMS</value>
   </data>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
-    <value>ATUALIZADO</value>
+    <value>ATJAUNOTS</value>
   </data>
   <data name="WhatsNew_WARNING" xml:space="preserve">
-    <value>AVISO</value>
+    <value>BRĪDINĀJUMS</value>
   </data>
 </root>

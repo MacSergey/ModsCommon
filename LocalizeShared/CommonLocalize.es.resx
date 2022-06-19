@@ -373,7 +373,7 @@ Reinicia el juego.</value>
     <value>Presiona la tecla {0} para seleccionar objetos superpuestos</value>
   </data>
   <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>FIJADO</value>
+    <value>CORREGIDO</value>
   </data>
   <data name="WhatsNew_NEW" xml:space="preserve">
     <value>NUEVO</value>
