@@ -123,17 +123,6 @@ namespace ModsCommon.Utilities
 
         public static bool IsInvert(ref this NetSegment segment) => (segment.m_flags & NetSegment.Flags.Invert) != 0;
 
-        public static VehicleInfo.VehicleType DriveType { get; } =
-                    VehicleInfo.VehicleType.Car |
-                    VehicleInfo.VehicleType.Bicycle |
-                    VehicleInfo.VehicleType.Tram |
-                    VehicleInfo.VehicleType.Trolleybus |
-                    VehicleInfo.VehicleType.Plane;
-        public static VehicleInfo.VehicleType GroundType { get; } = DriveType | VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Metro | VehicleInfo.VehicleType.Monorail;
-        public static bool IsDriveLane(this NetInfo.Lane info) => (info.m_vehicleType & DriveType) != VehicleInfo.VehicleType.None;
-        public static bool IsGroundLane(this NetInfo.Lane info) => (info.m_vehicleType & GroundType) != VehicleInfo.VehicleType.None;
-        public static bool IsTaxiway(this NetInfo.Lane info) => info.m_vehicleType.IsFlagSet(VehicleInfo.VehicleType.Plane);
-
         public static ref NetNode GetNode(this ushort nodeId) => ref NetManager.m_nodes.m_buffer[nodeId];
         public static ref NetSegment GetSegment(this ushort segmentId) => ref NetManager.m_segments.m_buffer[segmentId];
         public static ref NetLane GetLane(this uint laneId) => ref NetManager.m_lanes.m_buffer[laneId];
