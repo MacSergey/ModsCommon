@@ -16,7 +16,7 @@ namespace ModsCommon.UI
         public ValueType SelectedObject
         {
             get => selectedIndex >= 0 ? Objects[selectedIndex] : default;
-            set => selectedIndex = Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || o.Equals(value));
+            set => selectedIndex = Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || (o != null && o.Equals(value)));
         }
         public bool CanWheel { get; set; }
         public bool UseWheel { get; set; }
@@ -24,11 +24,17 @@ namespace ModsCommon.UI
         {
             set => tooltip = value ? CommonLocalize.ListPanel_ScrollWheel : string.Empty;
         }
+        public bool UseScrollBar { get; set; }
 
+        static UIDropDown()
+        {
+
+        }
         public UIDropDown()
         {
             eventSelectedIndexChanged += IndexChanged;
         }
+
         protected virtual void IndexChanged(UIComponent component, int value) => OnSelectObjectChanged?.Invoke(SelectedObject);
 
         public void AddItem(ValueType item, string label = null)
@@ -57,9 +63,7 @@ namespace ModsCommon.UI
             m_TooltipShowing = true;
             tooltipBox.Hide();
 
-            if (!CanWheel && Time.realtimeSinceStartup - m_HoveringStartTime < 1f)
-                base.OnMouseWheel(p);
-            else if (UseWheel)
+            if (UseWheel && (CanWheel || Time.realtimeSinceStartup - m_HoveringStartTime >= 1f))
             {
                 if (p.wheelDelta > 0 && selectedIndex > 0)
                     selectedIndex -= 1;
@@ -100,6 +104,11 @@ namespace ModsCommon.UI
             verticalAlignment = UIVerticalAlignment.Middle;
             horizontalAlignment = UIHorizontalAlignment.Left;
             itemPadding = new RectOffset(14, 0, 5, 0);
+
+            if(UseScrollBar)
+            {
+                listScrollbar = UIHelper.ScrollBar;
+            }
 
             var button = AddUIComponent<CustomUIButton>();
             button.atlas = TextureHelper.InGameAtlas;
@@ -148,6 +157,11 @@ namespace ModsCommon.UI
             itemPadding = new RectOffset(14, 14, 4, 0);
             triggerButton = this;
 
+            if (UseScrollBar)
+            {
+                listScrollbar = UIHelper.ScrollBar;
+            }
+
             this.size = size ?? new Vector2(400, 31);
         }
 
@@ -159,6 +173,7 @@ namespace ModsCommon.UI
             Clear();
             UseWheel = false;
             WheelTip = false;
+            UseScrollBar = false;
         }
     }
 }

@@ -10,6 +10,39 @@ namespace ModsCommon.UI
     public static class UIHelper
     {
         private static UIView UIRoot { get; set; } = null;
+        public static CustomUIScrollbar ScrollBar { get; private set; }
+
+        static UIHelper()
+        {
+            var gameObject = new GameObject(typeof(CustomUIScrollbar).Name);
+            GameObject.DontDestroyOnLoad(gameObject);
+            ScrollBar = gameObject.AddComponent<CustomUIScrollbar>();
+            ScrollBar.orientation = UIOrientation.Vertical;
+            ScrollBar.pivot = UIPivotPoint.TopLeft;
+            ScrollBar.minValue = 0;
+            ScrollBar.value = 0;
+            ScrollBar.incrementAmount = 50;
+            ScrollBar.autoHide = true;
+            ScrollBar.width = 10;
+
+            UISlicedSprite trackSprite = ScrollBar.AddUIComponent<UISlicedSprite>();
+            trackSprite.relativePosition = Vector2.zero;
+            trackSprite.autoSize = true;
+            trackSprite.anchor = UIAnchorStyle.All;
+            trackSprite.size = trackSprite.parent.size;
+            trackSprite.fillDirection = UIFillDirection.Vertical;
+            trackSprite.spriteName = "ScrollbarTrack";
+            ScrollBar.trackObject = trackSprite;
+
+            UISlicedSprite thumbSprite = trackSprite.AddUIComponent<UISlicedSprite>();
+            thumbSprite.relativePosition = Vector2.zero;
+            thumbSprite.fillDirection = UIFillDirection.Vertical;
+            thumbSprite.autoSize = true;
+            thumbSprite.width = thumbSprite.parent.width;
+            thumbSprite.spriteName = "ScrollbarThumb";
+            ScrollBar.thumbObject = thumbSprite;
+        }
+
         private static void FindUIRoot()
         {
             UIRoot = null;
@@ -74,31 +107,9 @@ namespace ModsCommon.UI
 
         public static void AddScrollbar(this UIComponent parent, UIScrollablePanel scrollablePanel)
         {
-            var scrollbar = parent.AddUIComponent<CustomUIScrollbar>();
-            scrollbar.orientation = UIOrientation.Vertical;
-            scrollbar.pivot = UIPivotPoint.TopLeft;
-            scrollbar.minValue = 0;
-            scrollbar.value = 0;
-            scrollbar.incrementAmount = 50;
-            scrollbar.autoHide = true;
-            scrollbar.width = 10;
-
-            UISlicedSprite trackSprite = scrollbar.AddUIComponent<UISlicedSprite>();
-            trackSprite.relativePosition = Vector2.zero;
-            trackSprite.autoSize = true;
-            trackSprite.anchor = UIAnchorStyle.All;
-            trackSprite.size = trackSprite.parent.size;
-            trackSprite.fillDirection = UIFillDirection.Vertical;
-            trackSprite.spriteName = "ScrollbarTrack";
-            scrollbar.trackObject = trackSprite;
-
-            UISlicedSprite thumbSprite = trackSprite.AddUIComponent<UISlicedSprite>();
-            thumbSprite.relativePosition = Vector2.zero;
-            thumbSprite.fillDirection = UIFillDirection.Vertical;
-            thumbSprite.autoSize = true;
-            thumbSprite.width = thumbSprite.parent.width;
-            thumbSprite.spriteName = "ScrollbarThumb";
-            scrollbar.thumbObject = thumbSprite;
+            var gameObject = GameObject.Instantiate(ScrollBar.gameObject);
+            parent.AttachUIComponent(gameObject);
+            var scrollbar = gameObject.GetComponent<CustomUIScrollbar>();
 
             scrollbar.eventValueChanged += (component, value) => scrollablePanel.scrollPosition = new Vector2(0, value);
 

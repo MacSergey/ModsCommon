@@ -173,9 +173,7 @@ namespace ModsCommon.UI
             m_TooltipShowing = true;
             tooltipBox.Hide();
 
-            if (!CanWheel && Time.realtimeSinceStartup - m_HoveringStartTime < 1f)
-                base.OnMouseWheel(p);
-            else if (UseWheel)
+            if (UseWheel && (CanWheel || Time.realtimeSinceStartup - m_HoveringStartTime >= 1f))
             {
                 var mode = Utility.ShiftIsPressed ? WheelMode.High : Utility.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
                 if (p.wheelDelta < 0)

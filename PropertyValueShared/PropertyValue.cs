@@ -115,8 +115,8 @@ namespace ModsCommon.Utilities
     {
         protected abstract uint Dimension { get; }
 
-        protected string[] Labels { get; } 
-        protected PropertyVectorValue(Action onChanged, T value, params string[] labels) : base(onChanged, value) 
+        protected string[] Labels { get; }
+        protected PropertyVectorValue(Action onChanged, T value, params string[] labels) : base(onChanged, value)
         {
             Labels = labels;
         }
@@ -173,5 +173,25 @@ namespace ModsCommon.Utilities
         protected override bool Equals(string x, string y) => x == y;
         protected override XAttribute ToXml() => new XAttribute(Label, Value);
         public override void FromXml(XElement config, string defaultValue) => Value = config.GetAttrValue(Label, defaultValue);
+    }
+
+    public class PropertyPrefabValue<PrefabType> : PropertyClassValue<PrefabType>
+        where PrefabType : PrefabInfo
+    {
+        public PropertyPrefabValue(Action onChanged, PrefabType value = default) : base(onChanged, value) { }
+        public PropertyPrefabValue(string label, Action onChanged, PrefabType value = default) : base(label, onChanged, value) { }
+
+        public PropertyPrefabValue(Action onChanged, string name) : this(onChanged, PrefabCollection<PrefabType>.FindLoaded(name)) { }
+        public PropertyPrefabValue(string label, Action onChanged, string name) : this(label, onChanged, PrefabCollection<PrefabType>.FindLoaded(name)) { }
+
+        public override void ToXml(XElement element)
+        {
+            element.AddAttr(Label, Value?.name ?? string.Empty);
+        }
+        public override void FromXml(XElement config, PrefabType defaultValue)
+        {
+            var name = config.GetAttrValue(Label, string.Empty);
+            Value = PrefabCollection<PrefabType>.FindLoaded(name) ?? defaultValue;
+        }
     }
 }
