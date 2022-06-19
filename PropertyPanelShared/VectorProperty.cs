@@ -10,7 +10,7 @@ namespace ModsCommon.UI
     public abstract class BaseVectorPropertyPanel<TypeVector> : EditorPropertyPanel, IReusable
         where TypeVector : struct
     {
-        public class Field
+        public struct Field
         {
             BaseVectorPropertyPanel<TypeVector> Property { get; }
             int Index { get; }
@@ -83,7 +83,7 @@ namespace ModsCommon.UI
             }
 
 
-            public Proxy(BaseVectorPropertyPanel<TypeVector> property, int index)
+            public Field(BaseVectorPropertyPanel<TypeVector> property, int index)
             {
                 Property = property;
                 Index = index;
@@ -94,14 +94,14 @@ namespace ModsCommon.UI
         bool IReusable.InCache { get; set; }
         public abstract uint Dimension { get; }
 
-        public Proxy this[int index]
+        public Field this[int index]
         {
             get
             {
                 if (index < 0 && index >= Dimension)
                     throw new IndexOutOfRangeException();
                 else
-                    return new Proxy(this, index);
+                    return new Field(this, index);
             }
         }
 
