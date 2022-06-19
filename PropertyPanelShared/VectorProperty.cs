@@ -10,10 +10,100 @@ namespace ModsCommon.UI
     public abstract class BaseVectorPropertyPanel<TypeVector> : EditorPropertyPanel, IReusable
         where TypeVector : struct
     {
+        public class Field
+        {
+            BaseVectorPropertyPanel<TypeVector> Property { get; }
+            int Index { get; }
+
+            public float Value
+            {
+                get => Property.Fields[Index].Value;
+                set => Property.Fields[Index].Value = value;
+            }
+            public float Width
+            {
+                get => Property.Fields[Index].width;
+                set => Property.Fields[Index].width = value;
+            }
+            public string Format
+            {
+                set => Property.Fields[Index].Format = value;
+            }
+            public string NumberFormat
+            {
+                set => Property.Fields[Index].NumberFormat = value;
+            }
+            public Color32 FieldTextColor
+            {
+                set => Property.Fields[Index].textColor = value;
+            }
+            public bool SubmitOnFocusLost
+            {
+                get => Property.Fields[Index].submitOnFocusLost;
+                set => Property.Fields[Index].submitOnFocusLost = value;
+            }
+            public float MinValue
+            {
+                get => Property.Fields[Index].MinValue;
+                set => Property.Fields[Index].MinValue = value;
+            }
+            public float MaxValue
+            {
+                get => Property.Fields[Index].MaxValue;
+                set => Property.Fields[Index].MaxValue = value;
+            }
+            public bool CheckMin
+            {
+                get => Property.Fields[Index].CheckMin;
+                set => Property.Fields[Index].CheckMin = value;
+            }
+            public bool CheckMax
+            {
+                get => Property.Fields[Index].CheckMax;
+                set => Property.Fields[Index].CheckMax = value;
+            }
+            public bool CyclicalValue
+            {
+                get => Property.Fields[Index].CyclicalValue;
+                set => Property.Fields[Index].CyclicalValue = value;
+            }
+            public bool UseWheel
+            {
+                get => Property.Fields[Index].UseWheel;
+                set => Property.Fields[Index].UseWheel = value;
+            }
+            public float WheelStep
+            {
+                get => Property.Fields[Index].WheelStep;
+                set => Property.Fields[Index].WheelStep = value;
+            }
+            public bool WheelTip
+            {
+                set => Property.Fields[Index].WheelTip = value;
+            }
+
+
+            public Proxy(BaseVectorPropertyPanel<TypeVector> property, int index)
+            {
+                Property = property;
+                Index = index;
+            }
+        }
         public event Action<TypeVector> OnValueChanged;
 
         bool IReusable.InCache { get; set; }
-        protected abstract uint Dimension { get; }
+        public abstract uint Dimension { get; }
+
+        public Proxy this[int index]
+        {
+            get
+            {
+                if (index < 0 && index >= Dimension)
+                    throw new IndexOutOfRangeException();
+                else
+                    return new Proxy(this, index);
+            }
+        }
 
         TypeVector _value;
         public TypeVector Value
@@ -32,6 +122,14 @@ namespace ModsCommon.UI
             {
                 for (var i = 0; i < Dimension; i += 1)
                     Fields[i].Format = value;
+            }
+        }
+        public string NumberFormat
+        {
+            set
+            {
+                for (var i = 0; i < Dimension; i += 1)
+                    Fields[i].NumberFormat = value;
             }
         }
 
@@ -236,7 +334,7 @@ namespace ModsCommon.UI
 
     public class Vector2PropertyPanel : BaseVectorPropertyPanel<Vector2>
     {
-        protected override uint Dimension => 2;
+        public override uint Dimension => 2;
 
         protected override float Get(ref Vector2 vector, int index) => vector[index];
         protected override void Set(ref Vector2 vector, int index, float value) => vector[index] = value;
@@ -249,7 +347,7 @@ namespace ModsCommon.UI
     }
     public class Vector3PropertyPanel : BaseVectorPropertyPanel<Vector3>
     {
-        protected override uint Dimension => 3;
+        public override uint Dimension => 3;
 
         protected override float Get(ref Vector3 vector, int index) => vector[index];
         protected override void Set(ref Vector3 vector, int index, float value) => vector[index] = value;
@@ -263,7 +361,7 @@ namespace ModsCommon.UI
     }
     public class Vector4PropertyPanel : BaseVectorPropertyPanel<Vector4>
     {
-        protected override uint Dimension => 4;
+        public override uint Dimension => 4;
 
         protected override float Get(ref Vector4 vector, int index) => vector[index];
         protected override void Set(ref Vector4 vector, int index, float value) => vector[index] = value;
