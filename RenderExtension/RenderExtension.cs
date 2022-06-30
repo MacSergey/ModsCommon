@@ -15,6 +15,8 @@ namespace ModsCommon.Utilities
         public static int ID_LimitsY { get; }
         public static int ID_Color { get; }
         public static int ID_CenterPos { get; }
+        public static int ID_CornersAC { get; }
+        public static int ID_CornersBD { get; }
 
         public static Material ShapeMaterial { get; }
         public static Material BlendShapeMaterial { get; }
@@ -31,6 +33,8 @@ namespace ModsCommon.Utilities
             ID_LimitsY = Shader.PropertyToID("_LimitsY");
             ID_Color = Shader.PropertyToID("_Color");
             ID_CenterPos = Shader.PropertyToID("_CenterPos");
+            ID_CornersAC = Shader.PropertyToID("_CornersAC");
+            ID_CornersBD = Shader.PropertyToID("_CornersBD");
 
             Mesh = CreateBoxMesh();
             ShapeMaterial = new Material(Shader.Find("Custom/Overlay/Shape"));
@@ -95,14 +99,24 @@ namespace ModsCommon.Utilities
             var endCut = data.CutEnd == true ? cutValue : 0f;
 
             var renderLimit = data.RenderLimit ?? DefaultLimit;
-            //var minLimit = renderLimit ? Mathf.Min(bezier.a.y, bezier.b.y, bezier.c.y, bezier.d.y) - 0.01f : DefaultMinLimit;
-            //var maxLimit = renderLimit ? Mathf.Max(bezier.a.y, bezier.b.y, bezier.c.y, bezier.d.y) + 0.01f : DefaultMaxLimit;
-            var minLimit = renderLimit ? (bezier.a.y + bezier.d.y) / 2f - 0.01f : DefaultMinLimit;
-            var maxLimit = renderLimit ? (bezier.a.y + bezier.d.y) / 2f + 0.01f : DefaultMaxLimit;
+            var minLimit = renderLimit ? (bezier.a.y + bezier.d.y) * 0.5f - 0.01f : DefaultMinLimit;
+            var maxLimit = renderLimit ? (bezier.a.y + bezier.d.y) * 0.5f + 0.01f : DefaultMaxLimit;
 
             var alphaBlend = data.AlphaBlend ?? DefaultBlend;
 
             DrawBezier(data.CameraInfo, color, bezier, width, startCut, endCut, minLimit, maxLimit, renderLimit, alphaBlend);
+        }
+        public static void RenderQuad(this Quad3 quad, OverlayData data)
+        {
+            var color = data.Color ?? DefaultColor;
+
+            var renderLimit = data.RenderLimit ?? DefaultLimit;
+            var minLimit = renderLimit ? (quad.a.y + quad.b.y + quad.c.y + quad.d.y) * 0.25f - 0.01f : DefaultMinLimit;
+            var maxLimit = renderLimit ? (quad.a.y + quad.b.y + quad.c.y + quad.d.y) * 0.25f + 0.01f : DefaultMaxLimit;
+
+            var alphaBlend = data.AlphaBlend ?? DefaultBlend;
+
+            DrawQuad(data.CameraInfo, color, quad, minLimit, maxLimit, renderLimit, alphaBlend);
         }
         public static void RenderCircle(this Vector3 position, OverlayData data)
         {
@@ -210,11 +224,34 @@ namespace ModsCommon.Utilities
                 DrawEffect(cameraInfo, material, 3, bounds);
             }
         }
+        private static void DrawQuad(RenderManager.CameraInfo cameraInfo, Color color, Quad3 quad, float minY, float maxY, bool renderLimits, bool alphaBlend)
+        {
+            var min = quad.Min();
+            var max = quad.Max();
+            var distance = Vector2.Distance(cameraInfo.m_position, (min + max) * 0.5f) * 0.001f + 1f;
+            var cornerAC = new Vector4(quad.a.x, quad.a.z, quad.c.x, quad.c.z);
+            var cornerBD = new Vector4(quad.b.x, quad.b.z, quad.d.x, quad.d.z);
+            var limits = renderLimits ? new Vector4(minY, -100000f, 100000f, maxY) : new Vector4(-100000f, minY, maxY, 100000f);
+            min.y = Mathf.Min(min.y, minY);
+            max.y = Mathf.Max(max.y, maxY);
+            var bounds = default(Bounds);
+            var distance3 = new Vector3(distance, distance, distance);
+            bounds.SetMinMax(min - distance3, max + distance3);
+            if (bounds.Intersects(cameraInfo.m_bounds))
+            {
+                Material material = alphaBlend ? BlendShapeMaterial : ShapeMaterial;
+                material.color = color.linear;
+                material.SetVector(ID_CornersAC, cornerAC);
+                material.SetVector(ID_CornersBD, cornerBD);
+                material.SetVector(ID_LimitsY, limits);
+                DrawEffect(cameraInfo, material, 0, bounds);
+            }
+        }
         private static void DrawCircle(RenderManager.CameraInfo cameraInfo, Color color, Vector3 center, float size, float minY, float maxY, bool renderLimits, bool alphaBlend)
         {
             float num = Vector2.Distance(cameraInfo.m_position, center) * 0.001f + 1f;
             Vector4 value = new Vector4(center.x, center.z, size * -0.5f, size * 0.5f);
-            Vector4 value2 = ((!renderLimits) ? new Vector4(-100000f, minY, maxY, 100000f) : new Vector4(minY, -100000f, 100000f, maxY));
+            Vector4 value2 = renderLimits ? new Vector4(minY, -100000f, 100000f, maxY) : new Vector4(-100000f, minY, maxY, 100000f);
             Vector3 vector = center - new Vector3(size * 0.5f, 0f, size * 0.5f);
             Vector3 vector2 = center + new Vector3(size * 0.5f, 0f, size * 0.5f);
             vector.y = Mathf.Min(vector.y, minY);
