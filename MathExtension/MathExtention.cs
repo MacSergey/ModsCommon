@@ -71,7 +71,7 @@ namespace ModsCommon.Utilities
             else
             {
                 bezier.Travel(distance, depth, out _, out var t);
-                return t;
+                return t == -1f ? 1f : t;
             }
         }
         private static void Travel(this Bezier3 bezier, float distance, int depth, out float length, out float t, int idx = 0, int of = 1)
@@ -92,7 +92,7 @@ namespace ModsCommon.Utilities
                 if (distance < length)
                     t = 1f / of * (idx + distance / length);
                 else
-                    t = -1;
+                    t = -1f;
             }
         }
         public static Vector3 ClosestPosition(this Bezier3 bezier, Vector3 point)
