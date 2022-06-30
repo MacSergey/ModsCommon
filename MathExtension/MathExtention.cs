@@ -235,6 +235,9 @@ namespace ModsCommon.Utilities
 
         public static int NextIndex(this int i, int count, int shift = 1) => (i + shift) % count;
         public static int PrevIndex(this int i, int count, int shift = 1) => shift > i ? i + count - (shift % count) : i - shift;
+
+        public static LinkedListNode<T> GetPrevious<T>(this LinkedListNode<T> item) => item.Previous ?? item.List.Last;
+        public static LinkedListNode<T> GetNext<T>(this LinkedListNode<T> item) => item.Next ?? item.List.First;
     }
     public static class VectorUtilsExtensions
     {

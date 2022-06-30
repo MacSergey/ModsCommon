@@ -1,6 +1,4 @@
-﻿using ModsCommon.Utilities;
-using NodeMarkup.Utilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
@@ -169,55 +167,6 @@ namespace ModsCommon.Utilities
 
         }
     }
-
-    //public class TriangulatorNew
-    //{
-    //    public static int[] Triangulate(IEnumerable<Vector3> points, TrajectoryHelper.Direction direction) => Triangulate(points.Select(p => XZ(p)), direction);
-    //    public static int[] Triangulate(IEnumerable<Vector2> points, TrajectoryHelper.Direction direction)
-    //    {
-    //        var triangulator = new TriangulatorNew(points, direction);
-    //        return triangulator.Triangulate();
-    //    }
-
-    //    private TrajectoryHelper.Direction Direction { get; }
-    //    private LinkedList<Vertex> Vertices { get; }
-
-    //    private TriangulatorNew(IEnumerable<Vector2> points, TrajectoryHelper.Direction direction)
-    //    {
-    //        Vertices = new LinkedList<Vertex>(points.Select((p, i) => new Vertex(p, i)));
-    //        Direction = direction;
-
-    //        foreach (var vertex in EnumerateVertex())
-    //        {
-
-    //        }
-    //    }
-
-    //    private int[] Triangulate()
-    //    {
-
-    //    }
-
-    //    private void SetConvex(LinkedListNode<Vertex> vertex)
-    //    {
-    //        if (!vertex.Value.IsConvex)
-    //            vertex.Value.SetConvex(vertex.GetPrevious().Value, vertex.GetNext().Value, Direction);
-    //    }
-
-    //    private IEnumerable<LinkedListNode<Vertex>> EnumerateVertex() => EnumerateVertex(Vertices.First);
-    //    private IEnumerable<LinkedListNode<Vertex>> EnumerateVertex(LinkedListNode<Vertex> startFrom)
-    //    {
-    //        yield return startFrom;
-
-    //        for (var vertex = startFrom.GetNext(); vertex != startFrom; vertex = vertex.GetNext())
-    //            yield return vertex;
-    //    }
-    //    private IEnumerable<LinkedListNode<Vertex>> EnumerateVertex(LinkedListNode<Vertex> from, LinkedListNode<Vertex> to)
-    //    {
-    //        for (var vertex = from.GetNext(); vertex != to; vertex = vertex.GetNext())
-    //            yield return vertex;
-    //    }
-    //}
 
     internal class Vertex
     {
