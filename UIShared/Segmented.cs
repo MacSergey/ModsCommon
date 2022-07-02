@@ -43,6 +43,20 @@ namespace ModsCommon.UI
             }
         }
 
+        private float _textScale = 0.8f;
+        public float TextScale
+        {
+            get => _textScale;
+            set
+            {
+                if(value != _textScale)
+                {
+                    _textScale = value;
+                    SetButtonsWidth();
+                }
+            }
+        }
+
         public UISegmented()
         {
             autoLayoutDirection = LayoutDirection.Horizontal;
@@ -50,19 +64,25 @@ namespace ModsCommon.UI
             autoFitChildrenVertically = true;
         }
 
-        public void AddItem(ValueType item, string label = null) => AddItem(item, label, true, null);
-        public void AddItem(ValueType item, string label = null, bool clickable = true, float? width = null)
+        public void AddItem(ValueType item, string label = null) => AddItem(item, label, null, null, true, null);
+        public void AddItem(ValueType item, string label = null, UITextureAtlas iconAtlas = null, string iconSprite = null, bool clickable = true, float? width = null)
         {
             Objects.Add(item);
 
-            var button = AddUIComponent<CustomUIButton>();
-
+            var button = AddUIComponent<MultyAtlasUIButton>();
             button.atlas = CommonTextures.Atlas;
-            button.text = label ?? item.ToString();
-            button.textScale = 0.8f;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
-            SetButtonWidth(button, width);
-            button.height = 20;
+
+            if(iconAtlas != null && !string.IsNullOrEmpty(iconSprite))
+            {
+                button.FgAtlas = iconAtlas;
+                button.normalFgSprite = iconSprite;
+                button.tooltip = label ?? item.ToString();
+            }
+            else
+                button.text = label ?? item.ToString();
+
+            UpdateButton(button, width);
             if (clickable)
                 button.eventClick += ButtonClick;
 
@@ -80,13 +100,14 @@ namespace ModsCommon.UI
             StopLayout();
 
             foreach (var button in Buttons)
-                SetButtonWidth(button);
+                UpdateButton(button);
 
             StartLayout();
         }
-        private void SetButtonWidth(CustomUIButton button, float? width = null)
+        private void UpdateButton(CustomUIButton button, float? width = null)
         {
             button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
+            button.textScale = TextScale;
 
             if (AutoButtonSize)
             {
@@ -97,6 +118,8 @@ namespace ModsCommon.UI
                 button.width = width.Value;
             else
                 button.width = ButtonWidth;
+
+            button.height = 20;
         }
         protected void SetSprite(CustomUIButton button, bool isSelect)
         {
@@ -138,6 +161,7 @@ namespace ModsCommon.UI
 
             _autoButtonSize = true;
             _buttonWidth = 50f;
+            _textScale = 0.8f;
         }
         public virtual void Clear()
         {
