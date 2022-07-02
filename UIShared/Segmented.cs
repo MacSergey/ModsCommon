@@ -212,6 +212,13 @@ namespace ModsCommon.UI
         protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => SetSelected(Buttons.FindIndex(b => b == component));
         protected override bool IsSelect(int index) => SelectedIndex == index;
     }
+    public class BoolSegmented : UIOnceSegmented<bool> 
+    {
+        public BoolSegmented()
+        {
+            IsEqualDelegate = (x, y) => x == y;
+        }
+    }
 
     public abstract class UIMultySegmented<ValueType> : UISegmented<ValueType>, IUIMultySelector<ValueType>, IValueChanger<List<ValueType>>
     {
