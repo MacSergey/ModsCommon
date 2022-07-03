@@ -91,6 +91,7 @@ namespace ModsCommon.UI
             itemHighlight = CommonTextures.FieldFocused;
             normalBgSprite = CommonTextures.FieldNormal;
             hoveredBgSprite = CommonTextures.FieldHovered;
+            disabledBgSprite = CommonTextures.FieldDisabled;
             listHeight = 700;
             listPosition = PopupListPosition.Below;
             clampListToScreen = true;
