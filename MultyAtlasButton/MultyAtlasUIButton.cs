@@ -183,6 +183,13 @@ namespace ModsCommon.UI
         protected UIRenderData FgRenderData { get; set; }
         protected UIRenderData TextRenderData { get; set; }
 
+        public override void OnDisable()
+        {
+            BgRenderData = null;
+            FgRenderData = null;
+            TextRenderData = null;
+            base.OnDisable();
+        }
         protected override void OnRebuildRenderData()
         {
             if (BgRenderData == null)
