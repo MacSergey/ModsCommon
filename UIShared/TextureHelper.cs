@@ -1,6 +1,8 @@
 ﻿using ColossalFramework.Importers;
 using ColossalFramework.UI;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -22,6 +24,27 @@ namespace ModsCommon.Utilities
             }
             return UIView.GetAView().defaultAtlas;
         }
+        public static UITextureAtlas CreateAtlas(string atlasName, Dictionary<string, RectOffset> spriteParams) => CreateAtlas(Assembly.GetExecutingAssembly(), atlasName, spriteParams);
+        public static UITextureAtlas CreateAtlas(Assembly assembly, string atlasName, Dictionary<string, RectOffset> spriteParams)
+        {
+            var textures = assembly.LoadAllTexturesFromAssembly(n => spriteParams.ContainsKey(n));
+            var atlas = CreateAtlas(textures, atlasName, out Rect[] regions);
+
+            for (int i = 0; i < textures.Length; i += 1)
+            {
+                var info = new UITextureAtlas.SpriteInfo
+                {
+                    name = textures[i].name,
+                    texture = textures[i],
+                    region = regions[i],
+                    border = spriteParams[textures[i].name],
+                };
+
+                atlas.AddSprite(info);
+            }
+
+            return atlas;
+        }
         public static UITextureAtlas CreateAtlas(string atlasName, Dictionary<string, SpriteParamsGetter> files)
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -33,7 +56,7 @@ namespace ModsCommon.Utilities
             {
                 foreach (var sptiteInfo in paramsGetters[i](textures[i].width, textures[i].height, rects[i]))
                 {
-                    sptiteInfo.texture = atlas.material.mainTexture as Texture2D;
+                    sptiteInfo.texture = textures[i];
                     atlas.AddSprite(sptiteInfo);
                 }
             }
@@ -46,12 +69,43 @@ namespace ModsCommon.Utilities
             atlas.material = UnityEngine.Object.Instantiate(UIView.GetAView().defaultAtlas.material);
             atlas.material.mainTexture = CreateTexture(1, 1, Color.white);
             atlas.name = name;
+            atlas.padding = 5;
 
             rects = atlas.texture.PackTextures(textures, atlas.padding, 4096, false);
 
             return atlas;
         }
 
+        public static Texture2D[] LoadAllTexturesFromAssembly(this Assembly assembly, Func<string, bool> filter = null)
+        {
+            var textures = new List<Texture2D>();
+
+            foreach (var path in assembly.GetManifestResourceNames())
+            {
+                if (string.IsNullOrEmpty(path))
+                    continue;
+
+                var extension = Path.GetExtension(path);
+                if (extension != ".png" && extension != ".jpg")
+                    continue;
+
+                var name = Path.GetFileNameWithoutExtension(path).Split('.').Last();
+                if (filter != null && !filter(name))
+                    continue;
+
+                var manifestResourceStream = assembly.GetManifestResourceStream(path);
+                var data = new byte[manifestResourceStream.Length];
+                manifestResourceStream.Read(data, 0, data.Length);
+
+                var texture = new Image(data).CreateTexture();
+                texture.wrapMode = TextureWrapMode.Clamp;
+                texture.name = name;
+
+                textures.Add(texture);
+            }
+
+            return textures.ToArray();
+        }
         public static Texture2D LoadTextureFromAssembly(this Assembly assembly, string textureFile)
         {
             var search = $".{textureFile}.";
@@ -64,6 +118,7 @@ namespace ModsCommon.Utilities
             manifestResourceStream.Read(data, 0, data.Length);
 
             var texture = new Image(data).CreateTexture();
+            texture.name = textureFile;
             return texture;
         }
 

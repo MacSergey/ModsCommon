@@ -75,6 +75,110 @@ namespace ModsCommon.UI
                 atlas = value;
             }
         }
+
+        Color32? _bgColor;
+        Color32? _bgFocusedColor;
+        Color32? _bgHoveredColor;
+        Color32? _bgPressedColor;
+        Color32? _bgDisabledColor;
+
+        Color32? _fgColor;
+        Color32? _fgFocusedColor;
+        Color32? _fgHoveredColor;
+        Color32? _fgPressedColor;
+        Color32? _fgDisabledColor;
+
+        public Color32 BgColor
+        {
+            get => _bgColor ?? color;
+            set
+            {
+                _bgColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 BgFocusedColor
+        {
+            get => _bgFocusedColor ?? focusedColor;
+            set
+            {
+                _bgFocusedColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 BgHoveredColor
+        {
+            get => _bgHoveredColor ?? hoveredColor;
+            set
+            {
+                _bgHoveredColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 BgPressedColor
+        {
+            get => _bgPressedColor ?? pressedColor;
+            set
+            {
+                _bgPressedColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 BgDisabledColor
+        {
+            get => _bgDisabledColor ?? disabledColor;
+            set
+            {
+                _bgDisabledColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 FgColor
+        {
+            get => _fgColor ?? color;
+            set
+            {
+                _fgColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 FgFocusedColor
+        {
+            get => _fgFocusedColor ?? focusedColor;
+            set
+            {
+                _bgFocusedColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 FgHoveredColor
+        {
+            get => _fgHoveredColor ?? hoveredColor;
+            set
+            {
+                _fgHoveredColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 FgPressedColor
+        {
+            get => _fgPressedColor ?? pressedColor;
+            set
+            {
+                _fgPressedColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 FgDisabledColor
+        {
+            get => _fgDisabledColor ?? disabledColor;
+            set
+            {
+                _fgDisabledColor = value;
+                Invalidate();
+            }
+        }
+
         protected UIRenderData BgRenderData { get; set; }
         protected UIRenderData FgRenderData { get; set; }
         protected UIRenderData TextRenderData { get; set; }
@@ -178,6 +282,28 @@ namespace ModsCommon.UI
                 };
             }
         }
+        private Color32 GetBackgroundColor()
+        {
+            return state switch
+            {
+                ButtonState.Focused => BgFocusedColor,
+                ButtonState.Hovered => BgHoveredColor,
+                ButtonState.Pressed => BgPressedColor,
+                ButtonState.Disabled => BgDisabledColor,
+                _ => BgColor,
+            };
+        }
+        private Color32 GetForegroundColor()
+        {
+            return state switch
+            {
+                ButtonState.Focused => FgFocusedColor,
+                ButtonState.Hovered => FgHoveredColor,
+                ButtonState.Pressed => FgPressedColor,
+                ButtonState.Disabled => FgDisabledColor,
+                _ => FgColor,
+            };
+        }
         private Vector3 GetVertAlignOffset(UIFontRenderer fontRenderer)
         {
             var num = PixelsToUnits();
@@ -236,7 +362,7 @@ namespace ModsCommon.UI
         {
             if (GetBackgroundSprite() is UITextureAtlas.SpriteInfo backgroundSprite)
             {
-                var color = ApplyOpacity(GetActiveColor());
+                var color = ApplyOpacity(GetBackgroundColor());
 
                 var renderOptions = new RenderOptions()
                 {
@@ -262,7 +388,7 @@ namespace ModsCommon.UI
             {
                 var foregroundRenderSize = GetForegroundRenderSize(foregroundSprite);
                 var foregroundRenderOffset = GetForegroundRenderOffset(foregroundRenderSize);
-                var color = ApplyOpacity(GetActiveColor());
+                var color = ApplyOpacity(GetForegroundColor());
 
                 var renderOptions = new RenderOptions()
                 {

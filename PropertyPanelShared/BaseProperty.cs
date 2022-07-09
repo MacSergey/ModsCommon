@@ -23,7 +23,7 @@ namespace ModsCommon.UI
         {
             Even = AddUIComponent<CustomUIPanel>();
             Even.atlas = CommonTextures.Atlas;
-            Even.backgroundSprite = CommonTextures.EmptySprite;
+            Even.backgroundSprite = CommonTextures.Empty;
             Even.color = new Color32(0, 0, 0, 48);
             IsEven = false;
         }

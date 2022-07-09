@@ -7,36 +7,32 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class HeaderButton : CustomUIButton, IReusable
+    public class HeaderButton : MultyAtlasUIButton, IReusable
     {
         bool IReusable.InCache { get; set; }
 
         public static int Size => IconSize + 2 * IconPadding;
         public static int IconSize => 25;
         public static int IconPadding => 2;
-        public CustomUIButton Icon { get; }
 
         public HeaderButton()
         {
-            atlas = CommonTextures.Atlas;
-            hoveredBgSprite = pressedBgSprite = focusedBgSprite = CommonTextures.HeaderHoverSprite;
+            BgAtlas = CommonTextures.Atlas;
+            hoveredBgSprite = pressedBgSprite = focusedBgSprite = CommonTextures.HeaderHover;
             size = new Vector2(Size, Size);
             clipChildren = true;
             textPadding = new RectOffset(IconSize + 5, 5, 5, 0);
             textScale = 0.8f;
             textHorizontalAlignment = UIHorizontalAlignment.Left;
             minimumSize = size;
-
-            Icon = AddUIComponent<CustomUIButton>();
-            Icon.size = new Vector2(IconSize, IconSize);
-            Icon.relativePosition = new Vector2(IconPadding, IconPadding);
+            foregroundSpriteMode = UIForegroundSpriteMode.Fill;
         }
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            Icon.atlas = atlas ?? TextureHelper.InGameAtlas;
-            Icon.normalBgSprite = sprite;
-            Icon.hoveredBgSprite = sprite;
-            Icon.pressedBgSprite = sprite;
+            FgAtlas = atlas ?? TextureHelper.InGameAtlas;
+            normalFgSprite = sprite;
+            hoveredFgSprite = sprite;
+            pressedFgSprite = sprite;
         }
 
         public override void Update()

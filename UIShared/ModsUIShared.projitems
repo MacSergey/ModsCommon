@@ -25,17 +25,52 @@
     <Compile Include="$(MSBuildThisFileDirectory)ValueField.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CloseButton.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\ColorPicker.tga" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\DefaultTabButtons.tga" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Empty.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\HeaderHover.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider.tga" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Resize.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\TabButton.tga" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\TextFieldPanel.tga" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CommonHeaderButtons.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\PatreonButton.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\PayPalButton.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\HeaderAdditionalButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CloseButton\CloseButtonHovered.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CloseButton\CloseButtonNormal.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\CloseButton\CloseButtonPressed.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\ColorPickerBoard.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\ColorPickerColor.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\ColorPickerDisabled.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\ColorPickerHovered.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\ColorPickerNormal.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\OpacitySliderBoard.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\OpacitySliderColor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Resources\CloseButton\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabled.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledMiddle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocused.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedMiddle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHovered.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredMiddle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormal.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalMiddle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\Tab.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\TabDisabled.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\TabFocused.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\TabHover.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\TabNormal.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\TabPressed.png" />
   </ItemGroup>
 </Project>

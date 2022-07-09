@@ -109,7 +109,7 @@ namespace ModsCommon.UI
             hoveredBgSprite = CommonTextures.FieldHovered;
             focusedBgSprite = CommonTextures.FieldNormal;
             disabledBgSprite = CommonTextures.FieldDisabled;
-            selectionSprite = CommonTextures.EmptySprite;
+            selectionSprite = CommonTextures.Empty;
 
             allowFloats = true;
             isInteractive = true;

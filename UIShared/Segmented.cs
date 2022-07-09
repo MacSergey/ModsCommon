@@ -78,6 +78,7 @@ namespace ModsCommon.UI
                 button.FgAtlas = iconAtlas;
                 button.normalFgSprite = iconSprite;
                 button.tooltip = label ?? item.ToString();
+                button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
             }
             else
                 button.text = label ?? item.ToString();

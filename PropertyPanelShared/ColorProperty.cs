@@ -162,16 +162,16 @@ namespace ModsCommon.UI
 
             ColorSample = Instantiate(template.Find<UIColorField>("LineColor").gameObject).GetComponent<UIColorField>();
             panel.AttachUIComponent(ColorSample.gameObject);
-            ColorSample.size = panel.size = new Vector2(26f, 28f);
+            ColorSample.size = panel.size = new Vector2(20f, 20f);
             ColorSample.relativePosition = new Vector2(0, 0);
             ColorSample.anchor = UIAnchorStyle.None;
 
             ColorSample.atlas = CommonTextures.Atlas;
             ColorSample.normalBgSprite = CommonTextures.ColorPickerNormal;
             ColorSample.normalFgSprite = CommonTextures.ColorPickerColor;
-            ColorSample.hoveredBgSprite = CommonTextures.ColorPickerHover;
+            ColorSample.hoveredBgSprite = CommonTextures.ColorPickerHovered;
             ColorSample.hoveredFgSprite = CommonTextures.ColorPickerColor;
-            ColorSample.disabledBgSprite = CommonTextures.ColorPickerDisable;
+            ColorSample.disabledBgSprite = CommonTextures.ColorPickerDisabled;
             ColorSample.disabledFgSprite = CommonTextures.ColorPickerColor;
 
             ColorSample.eventSelectedColorChanged += SelectedColorChanged;
