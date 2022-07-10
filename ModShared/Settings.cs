@@ -459,7 +459,6 @@ namespace ModsCommon
             var label = temp.Find<UILabel>("Label");
             component.AttachUIComponent(label.gameObject);
             GameObject.Destroy(temp.gameObject);
-            label.text = text;
             label.textScale = size;
             label.textColor = color ?? Color.white;
             label.padding = new RectOffset(padding, 0, 0, 0);
@@ -468,6 +467,9 @@ namespace ModsCommon
             label.autoHeight = true;
             if (component is UIPanel panel)
                 label.width = panel.width - panel.padding.left;
+
+            //text should be set after everything, otherwise it cause game crash on chenise logalization
+            label.text = text;
 
             return label;
         }
