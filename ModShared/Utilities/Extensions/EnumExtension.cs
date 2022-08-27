@@ -22,10 +22,10 @@ namespace ModsCommon.Utilities
         public static T GetEnum<T>(this List<T> values) where T : Enum => values.Aggregate(0, (r, v) => r | v.ToInt()).ToEnum<T>();
         public static string Description<T, TypeMod>(this T value)
             where T : Enum
-            where TypeMod : BaseMod<TypeMod>
+            where TypeMod : ICustomMod
         {
             var description = value.GetAttr<DescriptionAttribute, T>()?.Description ?? value.ToString();
-            return SingletonMod<TypeMod>.Instance.GetLocalizeString(description);
+            return SingletonMod<TypeMod>.Instance.GetLocalizedString(description);
         }
 
         public static bool IsVisible<T>(this T value) where T : Enum => value.GetAttr<NotVisibleAttribute, T>() == null;

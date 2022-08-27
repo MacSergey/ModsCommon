@@ -76,7 +76,7 @@ namespace ModsCommon.Utilities
         public static Vector4 ToX3Vector(this Color c) => new Vector4(ColorChange(c.r), ColorChange(c.g), ColorChange(c.b), Mathf.Pow(c.a, 2)/* c.a == 0 ? 0 : ColorChange(c.a) * 0.985f + 0.015f*/);
         private static float ColorChange(float c) => Mathf.Pow(c, 4);
 
-        public static string AddColor(this string text, Color32 color) => $"<color #{color.r:X}{color.g:X}{color.b:X}>{text}</color>";
+        public static string AddColor(this string text, Color32 color) => $"<color #{color.r:X2}{color.g:X2}{color.b:X2}>{text}</color>";
         public static string AddInfoColor(this string text) => $"<color #87D3FF>{text}</color>";
         public static string AddErrorColor(this string text) => $"<color #FF7E00>{text}</color>";
         public static string AddActionColor(this string text) => $"<color #5CE66E>{text}</color>";

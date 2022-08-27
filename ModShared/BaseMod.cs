@@ -5,25 +5,47 @@ using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
 {
     public abstract class BaseMod<TypeMod> : ICustomMod
         where TypeMod : BaseMod<TypeMod>
     {
+        public event Action OnStatusChanged;
+
         public static string DiscordURL { get; } = "https://discord.gg/NnwhuBKMqj";
         public static string BETA => "[BETA]";
 
         public bool IsEnable { get; private set; }
-        protected virtual bool LoadError { get; set; }
-        private bool ErrorShown { get; set; }
+
+        private ModStatus _status;
+        public virtual ModStatus Status 
+        {
+            get => _status;
+            protected set
+            {
+                if(value != _status)
+                {
+                    _status = value;
+                    StatusChanged();
+                }
+            }
+        }
 
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
         public string VersionString => !IsBeta ? Version.ToString() : $"{Version} {BETA}";
+        protected abstract Version RequiredGameVersion { get; }
+        protected Version CurrentGameVersion => new Version(
+            (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_VERSION_A)).GetValue(null),
+            (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_VERSION_B)).GetValue(null),
+            (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_VERSION_C)).GetValue(null),
+            (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_BUILD_NUMBER)).GetValue(null));
 
         public string Name => !IsBeta ? $"{NameRaw} {Version.GetString()}" : $"{NameRaw} {Version.GetString()} {BETA}";
         public abstract string NameRaw { get; }
@@ -99,8 +121,7 @@ namespace ModsCommon
         {
             Logger.Debug($"Enabled");
             IsEnable = true;
-            LoadError = false;
-            ErrorShown = false;
+            Status = ModStatus.Unknown;
 
             IntroUtility.OnLoaded(EnableImpl);
         }
@@ -123,13 +144,22 @@ namespace ModsCommon
         {
             try
             {
+                var gameVersion = CurrentGameVersion;
+                var requiredVersion = RequiredGameVersion;
+
+                if (gameVersion != requiredVersion)
+                    Status |= gameVersion < requiredVersion ? ModStatus.GameOutOfDate : ModStatus.ModOutOfDate;
+
                 DependencyWatcher.SetState(true);
                 if (DependencyWatcher.IsValid)
                     Enable();
+
+                if (Status == ModStatus.Unknown)
+                    Status = ModStatus.Ok;
             }
             catch (Exception error)
             {
-                LoadError = true;
+                Status |= ModStatus.LoadingError;
                 Logger.Error("Enable failed", error);
             }
             finally
@@ -146,6 +176,7 @@ namespace ModsCommon
             GetSettings(helper);
         }
         protected virtual void GetSettings(UIHelperBase helper) { }
+        protected void StatusChanged() => OnStatusChanged?.Invoke();
 
         public void ChangeLocale()
         {
@@ -159,7 +190,7 @@ namespace ModsCommon
                     locale = new SavedString(Settings.localeID, Settings.gameSettingsFile, DefaultSettings.localeID).value;
             }
 
-            switch(locale)
+            switch (locale)
             {
                 case "cs": locale = "cs-cz"; break;
                 case "da": locale = "da-dk"; break;
@@ -189,28 +220,33 @@ namespace ModsCommon
 
         protected void CheckLoadError()
         {
-            if (!ErrorShown)
+            if ((Status & ModStatus.ErrorShown) == 0)
             {
-                if (LoadError)
+                if ((Status & ModStatus.NotOk) != 0)
                 {
                     OnLoadError(out var shown);
-                    ErrorShown = shown;
+                    Status |= shown ? ModStatus.ErrorShown : ModStatus.Unknown;
                 }
                 else if (NeedMonoDevelop && BaseSettings<TypeMod>.LinuxWarning)
                 {
                     ShowLinuxTip();
-                    ErrorShown = true;
+                    Status |= ModStatus.ErrorShown;
                 }
+
+                if ((Status & ModStatus.GameOutOfDate) != 0)
+                    ShowGameOutOfDate();
+                else if ((Status & ModStatus.ModOutOfDate) != 0)
+                    ShowModOutOfDate();
             }
         }
         protected virtual void SetCulture(CultureInfo culture) { }
-        public virtual string GetLocalizeString(string key, CultureInfo culture = null)
+        public virtual string GetLocalizedString(string key, CultureInfo culture = null)
         {
             culture ??= Culture;
             return LocalizeManager?.GetString(key, culture) ?? CommonLocalize.ResourceManager.GetString(key, culture);
         }
 
-        protected virtual void OnLoadError(out bool shown) => shown = ErrorShown;
+        protected virtual void OnLoadError(out bool shown) => shown = (Status & ModStatus.ErrorShown) != 0;
 
         public void ShowWhatsNew()
         {
@@ -273,7 +309,7 @@ namespace ModsCommon
                 if (BaseSettings<TypeMod>.ShowOnlyMajor && !version.Number.IsMinor())
                     continue;
 
-                if (GetLocalizeString($"Mod_WhatsNewMessage{version.Number.ToString().Replace('.', '_')}") is string message && !string.IsNullOrEmpty(message))
+                if (GetLocalizedString($"Mod_WhatsNewMessage{version.Number.ToString().Replace('.', '_')}") is string message && !string.IsNullOrEmpty(message))
                     messages[version] = message;
             }
 
@@ -337,6 +373,47 @@ namespace ModsCommon
             }
         }
 
+        public void ShowGameOutOfDate()
+        {
+            var message = MessageBox.Show<TwoButtonMessageBox>();
+            message.CaptionText = NameRaw;
+            var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
+            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_GameOutOfDate, requiredString, BuildConfig.applicationVersion);
+            message.Button1Text = CommonLocalize.MessageBox_OK;
+            message.Button2Text = CommonLocalize.Dependency_Disable;
+            message.OnButton2Click = OnDisable;
+
+            message.SetAutoButtonRatio();
+
+            bool OnDisable()
+            {
+                if (new UserModInstanceSearcher(this).GetPlugin() is PluginInfo plugin)
+                    plugin.SetState(false);
+
+                return true;
+            }
+        }
+        public void ShowModOutOfDate()
+        {
+            var message = MessageBox.Show<TwoButtonMessageBox>();
+            message.CaptionText = NameRaw;
+            var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
+            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_ModOutOfDate, requiredString, BuildConfig.applicationVersion);
+            message.Button1Text = CommonLocalize.MessageBox_OK;
+            message.Button2Text = CommonLocalize.Dependency_Disable;
+            message.OnButton2Click = OnDisable;
+
+            message.SetAutoButtonRatio();
+
+            bool OnDisable()
+            {
+                if (new UserModInstanceSearcher(this).GetPlugin() is PluginInfo plugin)
+                    plugin.SetState(false);
+
+                return true;
+            }
+        }
+
         public bool GetStable()
         {
             StableWorkshopId.OpenWorkshop();
@@ -372,5 +449,30 @@ namespace ModsCommon
         }
 
         public override int GetHashCode() => Number.GetHashCode();
+
+        public override string ToString() => $"{Number} {Date}";
+    }
+
+    [Flags]
+    public enum ModStatus
+    {
+        [Description(nameof(CommonLocalize.Mod_Status_Unknown))]
+        Unknown = 0,
+
+        [Description(nameof(CommonLocalize.Mod_Status_Ok))]
+        Ok = 1,
+
+        [Description(nameof(CommonLocalize.Mod_Status_LoadingError))]
+        LoadingError = 2,
+        [Description(nameof(CommonLocalize.Mod_Status_ModOutOfDate))]
+        ModOutOfDate = 4,
+        [Description(nameof(CommonLocalize.Mod_Status_GameOutOfDate))]
+        GameOutOfDate = 8,
+
+        [NotVisible]
+        ErrorShown = 16,
+
+        [NotVisible]
+        NotOk = LoadingError | ModOutOfDate | GameOutOfDate,
     }
 }

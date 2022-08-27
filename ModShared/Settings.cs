@@ -67,18 +67,37 @@ namespace ModsCommon
         protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalTabs => new KeyValuePair<string, string>[0];
         protected virtual void FillSettings()
         {
-            var donateGroup = GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
+            var infoGroup = GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
 
-            //var donateMain = donateGroup.self as UIPanel;
-            //donateMain.verticalSpacing = 0;
-            //var donatePanel = donateMain.AddUIComponent<DonatePanel>();
-            //donatePanel.Init(SingletonMod<TypeMod>.Instance.NameRaw, new Vector2(300f, 75f), 1.25f);
-            //donatePanel.width = donateMain.width - donateMain.padding.left * 2f;
+            var infoLabel = AddLabel(infoGroup, GetStatusText());
+            infoLabel.processMarkup = true;
+
+            SingletonMod<TypeMod>.Instance.OnStatusChanged += () =>
+                {
+                    infoLabel.text = GetStatusText();
+                };
 
             AddSupport(SupportTab);
 #if DEBUG
             AddDebug(DebugTab);
 #endif
+        }
+        private string GetStatusText()
+        {
+            var statusText = string.Empty;
+            var status = SingletonMod<TypeMod>.Instance.Status;
+            if (status == ModStatus.Unknown)
+                statusText = ModStatus.Unknown.Description<ModStatus, TypeMod>().AddColor(Color.yellow);
+            else if (status == ModStatus.Ok)
+                statusText = ModStatus.Ok.Description<ModStatus, TypeMod>().AddColor(Color.green);
+            else
+            {
+                status &= ModStatus.NotOk;
+                var errors = status.GetEnumValues().Select(s => s.Description<ModStatus, TypeMod>()).ToArray();
+                statusText = string.Join(" | ", errors).AddColor(Color.red);
+            }
+
+            return string.Format(CommonLocalize.Mod_Status, statusText);
         }
 
         protected void CreateTabStrip()

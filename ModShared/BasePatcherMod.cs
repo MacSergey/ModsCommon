@@ -15,12 +15,25 @@ namespace ModsCommon
     {
         #region PROPERTIES
 
-        protected override bool LoadError
+        public override ModStatus Status 
         {
-            get => base.LoadError || PatchResult.IsSet(Result.Failed);
-            set => base.LoadError = value;
+            get => base.Status | (PatchResult == PatchResult.Failed ? ModStatus.LoadingError : ModStatus.Unknown);
+            protected set => base.Status = value; 
         }
-        protected Result PatchResult { get; private set; }
+
+        private PatchResult _patchResult;
+        protected PatchResult PatchResult
+        {
+            get => _patchResult;
+            set
+            {
+                if(value != _patchResult)
+                {
+                    _patchResult = value;
+                    StatusChanged();
+                }
+            }
+        }
         public object Harmony => new Harmony(Id);
 
         protected override List<BaseDependencyInfo> DependencyInfos
@@ -48,15 +61,15 @@ namespace ModsCommon
 
         protected override void Enable()
         {
-            PatchResult = Result.None;
+            PatchResult = PatchResult.None;
             Patch();
         }
         protected override void Disable()
         {
-            if (PatchResult == Result.Success)
+            if (PatchResult == PatchResult.Success)
                 Unpatch();
 
-            PatchResult = Result.None;
+            PatchResult = PatchResult.None;
         }
         private void Patch()
         {
@@ -64,12 +77,12 @@ namespace ModsCommon
 
             try
             {
-                PatchResult = PatchProcess() ? Result.Success : Result.Failed;
+                PatchResult = PatchProcess() ? PatchResult.Success : PatchResult.Failed;
                 Logger.Debug($"Patch {PatchResult}");
             }
             catch (Exception error)
             {
-                PatchResult = Result.Failed;
+                PatchResult = PatchResult.Failed;
                 Logger.Error($"Patch {PatchResult}", error);
             }
         }
@@ -86,7 +99,7 @@ namespace ModsCommon
 
             if (shown)
                 return;
-            else if (PatchResult == Result.Failed)
+            else if (PatchResult == PatchResult.Failed)
             {
                 var message = MessageBox.Show<ErrorPatchMessageBox>();
                 message.Init<TypeMod>();
@@ -183,16 +196,16 @@ namespace ModsCommon
             Postfix,
             Transpiler
         }
-        protected enum Result
-        {
-            None = 0,
-            Success = 1,
-            Failed = 2,
-        }
         private class PatchExeption : Exception
         {
             public PatchExeption(string message) : base(message) { }
         }
         #endregion
+    }
+    public enum PatchResult
+    {
+        None = 0,
+        Success = 1,
+        Failed = 2,
     }
 }

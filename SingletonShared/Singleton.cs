@@ -12,10 +12,13 @@ namespace ModsCommon
 
     public interface ICustomMod : IUserMod
     {
+        public event Action OnStatusChanged;
+
         public string NameRaw { get; }
         public ILogger Logger { get; }
         public Version Version { get; }
         public List<ModVersion> Versions { get; }
+        public ModStatus Status { get; }
         public CultureInfo Culture { get; }
 #if DEBUG
         public bool NeedMonoDevelopDebug { get; }
@@ -27,6 +30,8 @@ namespace ModsCommon
         public void ShowLinuxTip();
         public bool OpenDiscord();
         public bool OpenSupport();
+
+        public string GetLocalizedString(string key, CultureInfo culture = null);
     }
     public abstract class SingletonMod<T> : SingletonItem<T>
         where T : ICustomMod
