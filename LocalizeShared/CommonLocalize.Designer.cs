@@ -568,6 +568,60 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Mod status: {0}.
+        /// </summary>
+        public static string Mod_Status {
+            get {
+                return ResourceManager.GetString("Mod_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Game version is out of date.
+        /// </summary>
+        public static string Mod_Status_GameOutOfDate {
+            get {
+                return ResourceManager.GetString("Mod_Status_GameOutOfDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Loading error.
+        /// </summary>
+        public static string Mod_Status_LoadingError {
+            get {
+                return ResourceManager.GetString("Mod_Status_LoadingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Mod version is out of date.
+        /// </summary>
+        public static string Mod_Status_ModOutOfDate {
+            get {
+                return ResourceManager.GetString("Mod_Status_ModOutOfDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на OK.
+        /// </summary>
+        public static string Mod_Status_Ok {
+            get {
+                return ResourceManager.GetString("Mod_Status_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unknown.
+        /// </summary>
+        public static string Mod_Status_Unknown {
+            get {
+                return ResourceManager.GetString("Mod_Status_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Support.
         /// </summary>
         public static string Mod_Support {

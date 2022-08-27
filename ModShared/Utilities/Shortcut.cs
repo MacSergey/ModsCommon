@@ -73,7 +73,7 @@ namespace ModsCommon.Utilities
     public abstract class ModShortcut<TypeMod> : Shortcut
         where TypeMod : BaseMod<TypeMod>
     {
-        public override string Label => SingletonMod<TypeMod>.Instance.GetLocalizeString(LabelKey);
+        public override string Label => SingletonMod<TypeMod>.Instance.GetLocalizedString(LabelKey);
         public ModShortcut(string name, string labelKey, InputKey key, Action action = null) : base(BaseSettings<TypeMod>.SettingsFile, name, labelKey, key, action) { }
     }
 }
