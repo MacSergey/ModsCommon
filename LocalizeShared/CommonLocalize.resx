@@ -291,6 +291,22 @@ Restart the game.</value>
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>
   </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>The game version is out of date.
+
+The mod requires version: {0}
+Current game version: {1}
+
+Update the game to the newest version, otherwise the correct working of the mod is not guaranteed and can lead unpredictable errors.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>The mod version is out of date.
+
+The mod was made for version: {0}
+Current game version: {1}
+
+Update the mod to the newest version, otherwise the correct working of the mod is not guaranteed and can lead unpredictable errors.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>What's new in {0}</value>
   </data>

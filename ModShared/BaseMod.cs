@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
 {
@@ -24,6 +25,12 @@ namespace ModsCommon
 
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
         public string VersionString => !IsBeta ? Version.ToString() : $"{Version} {BETA}";
+        protected abstract Version RequiredGameVersion { get; }
+        protected Version CurrentGameVersion => new Version(
+            (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_VERSION_A)).GetValue(null),
+            (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_VERSION_B)).GetValue(null),
+            (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_VERSION_C)).GetValue(null),
+            (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_BUILD_NUMBER)).GetValue(null));
 
         public string Name => !IsBeta ? $"{NameRaw} {Version.GetString()}" : $"{NameRaw} {Version.GetString()} {BETA}";
         public abstract string NameRaw { get; }
@@ -201,6 +208,17 @@ namespace ModsCommon
                     ShowLinuxTip();
                     ErrorShown = true;
                 }
+
+                var gameVersion = CurrentGameVersion;
+                var requiredVersion = RequiredGameVersion;
+
+                if(gameVersion != requiredVersion)
+                {
+                    if (gameVersion < requiredVersion)
+                        ShowGameOutOfDate();
+                    else
+                        ShowModOutOfDate();
+                }
             }
         }
         protected virtual void SetCulture(CultureInfo culture) { }
@@ -334,6 +352,47 @@ namespace ModsCommon
             {
                 Utility.OpenUrl("https://github.com/MacSergey/NodeMarkup/issues/96");
                 return false;
+            }
+        }
+
+        public void ShowGameOutOfDate()
+        {
+            var message = MessageBox.Show<TwoButtonMessageBox>();
+            message.CaptionText = NameRaw;
+            var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
+            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_GameOutOfDate, requiredString, BuildConfig.applicationVersion);
+            message.Button1Text = CommonLocalize.MessageBox_OK;
+            message.Button2Text = CommonLocalize.Dependency_Disable;
+            message.OnButton2Click = OnDisable;
+
+            message.SetAutoButtonRatio();
+
+            bool OnDisable()
+            {
+                if (new UserModInstanceSearcher(this).GetPlugin() is PluginInfo plugin)
+                    plugin.SetState(false);
+
+                return true;
+            }
+        }
+        public void ShowModOutOfDate()
+        {
+            var message = MessageBox.Show<TwoButtonMessageBox>();
+            message.CaptionText = NameRaw;
+            var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
+            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_ModOutOfDate, requiredString, BuildConfig.applicationVersion);
+            message.Button1Text = CommonLocalize.MessageBox_OK;
+            message.Button2Text = CommonLocalize.Dependency_Disable;
+            message.OnButton2Click = OnDisable;
+
+            message.SetAutoButtonRatio();
+
+            bool OnDisable()
+            {
+                if (new UserModInstanceSearcher(this).GetPlugin() is PluginInfo plugin)
+                    plugin.SetState(false);
+
+                return true;
             }
         }
 

@@ -577,6 +577,34 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The game version is out of date.
+        ///
+        ///The mod requires version: {0}
+        ///Current game version: {1}
+        ///
+        ///Update the game to the newest version, otherwise the correct working of the mod is not guaranteed and can lead unpredictable errors..
+        /// </summary>
+        public static string Mod_VersionWarning_GameOutOfDate {
+            get {
+                return ResourceManager.GetString("Mod_VersionWarning_GameOutOfDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The mod version is out of date.
+        ///
+        ///The mod was made for version: {0}
+        ///Current game version: {1}
+        ///
+        ///Update the mod to the newest version, otherwise the correct working of the mod is not guaranteed and can lead unpredictable errors..
+        /// </summary>
+        public static string Mod_VersionWarning_ModOutOfDate {
+            get {
+                return ResourceManager.GetString("Mod_VersionWarning_ModOutOfDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на What&apos;s new in {0}.
         /// </summary>
         public static string Mod_WhatsNewCaption {
