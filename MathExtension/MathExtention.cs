@@ -71,7 +71,7 @@ namespace ModsCommon.Utilities
             else
             {
                 bezier.Travel(distance, depth, out _, out var t);
-                return t;
+                return t == -1f ? 1f : t;
             }
         }
         private static void Travel(this Bezier3 bezier, float distance, int depth, out float length, out float t, int idx = 0, int of = 1)
@@ -92,7 +92,7 @@ namespace ModsCommon.Utilities
                 if (distance < length)
                     t = 1f / of * (idx + distance / length);
                 else
-                    t = -1;
+                    t = -1f;
             }
         }
         public static Vector3 ClosestPosition(this Bezier3 bezier, Vector3 point)
@@ -235,6 +235,9 @@ namespace ModsCommon.Utilities
 
         public static int NextIndex(this int i, int count, int shift = 1) => (i + shift) % count;
         public static int PrevIndex(this int i, int count, int shift = 1) => shift > i ? i + count - (shift % count) : i - shift;
+
+        public static LinkedListNode<T> GetPrevious<T>(this LinkedListNode<T> item) => item.Previous ?? item.List.Last;
+        public static LinkedListNode<T> GetNext<T>(this LinkedListNode<T> item) => item.Next ?? item.List.First;
     }
     public static class VectorUtilsExtensions
     {

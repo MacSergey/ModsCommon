@@ -43,7 +43,7 @@ namespace ModsCommon.UI
         {
             size = new Vector2(9, 9);
             atlas = CommonTextures.Atlas;
-            backgroundSprite = CommonTextures.ResizeSprite;
+            backgroundSprite = CommonTextures.Resize;
             color = new Color32(255, 255, 255, 160);
         }
         public override void Start()

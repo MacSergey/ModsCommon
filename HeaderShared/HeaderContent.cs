@@ -33,7 +33,7 @@ namespace ModsCommon.UI
 
             Additional = AddUIComponent<AdditionalHeaderButton>();
             Additional.tooltip = CommonLocalize.Panel_Additional;
-            Additional.SetIcon(CommonTextures.Atlas, CommonTextures.HeaderAdditional);
+            Additional.SetIcon(CommonTextures.Atlas, CommonTextures.HeaderAdditionalButton);
             Additional.PopupOpenedEvent += OnPopupOpened;
             Additional.PopupCloseEvent += OnPopupClose;
             SetButtonColors(Additional);
@@ -71,12 +71,6 @@ namespace ModsCommon.UI
         }
         private void PopupClicked(UIComponent component, UIMouseEventParameter eventParam) => Additional.ClosePopup();
 
-        //Seem it leads to stack overflow and not needed.
-        //protected override void OnSizeChanged()
-        //{
-        //    base.OnSizeChanged();
-        //    Refresh();
-        //}
         public virtual void Refresh()
         {
             PlaceButtons();
@@ -91,15 +85,6 @@ namespace ModsCommon.UI
 
         private void PlaceButtons()
         {
-            //var visibleButtons = Infos.Where(i => i.Visible).ToArray();
-
-            //var mainCount = visibleButtons.Count(i => i.State == HeaderButtonState.Main);
-            //var additionalCount = visibleButtons.Count(i => i.State == HeaderButtonState.Additional);
-            //var autoCount = visibleButtons.Count(i => i.State == HeaderButtonState.Auto);
-            //var maxButtons = maximumSize.x > 0 ? ((int)maximumSize.x / HeaderButton.IconSize) : int.MaxValue;
-
-            //var needAdditional = additionalCount > 0 || (autoCount > 0 && (mainCount + autoCount) > maxButtons);
-
             MainInfos = Infos.Where(i => i.Visible && i.State == HeaderButtonState.Main).ToList();
             AdditionalInfos = Infos.Where(i => i.Visible && i.State == HeaderButtonState.Additional).ToList();
 
@@ -121,10 +106,10 @@ namespace ModsCommon.UI
             button.pressedColor = ButtonPressedColor;
             button.focusedColor = ButtonPressedColor;
 
-            button.Icon.color = IconNormalColor;
-            button.Icon.hoveredColor = IconHoverColor;
-            button.Icon.pressedColor = IconPressedColor;
-            button.Icon.disabledColor = IconDisabledColor;
+            button.FgColor = IconNormalColor;
+            button.FgHoveredColor = IconHoverColor;
+            button.FgPressedColor = IconPressedColor;
+            button.FgDisabledColor = IconDisabledColor;
         }
         private void SetAdditionalButtonColors(HeaderButton button)
         {
@@ -132,10 +117,10 @@ namespace ModsCommon.UI
             button.pressedColor = AdditionalButtonPressedColor;
             button.focusedColor = AdditionalButtonPressedColor;
 
-            button.Icon.color = IconNormalColor;
-            button.Icon.hoveredColor = IconHoverColor;
-            button.Icon.pressedColor = IconPressedColor;
-            button.Icon.disabledColor = IconDisabledColor;
+            button.FgColor = IconNormalColor;
+            button.FgHoveredColor = IconHoverColor;
+            button.FgPressedColor = IconPressedColor;
+            button.FgDisabledColor = IconDisabledColor;
         }
     }
     public class HeaderContent : BaseHeaderContent

@@ -34,74 +34,84 @@ namespace ModsCommon.Utilities
         public static string TabFocused { get; } = nameof(TabFocused);
         public static string TabDisabled { get; } = nameof(TabDisabled);
 
-        public static string EmptySprite => nameof(EmptySprite);
+        public static string Empty => nameof(Empty);
 
         public static string OpacitySliderBoard { get; } = nameof(OpacitySliderBoard);
         public static string OpacitySliderColor { get; } = nameof(OpacitySliderColor);
 
         public static string ColorPickerNormal { get; } = nameof(ColorPickerNormal);
-        public static string ColorPickerHover { get; } = nameof(ColorPickerHover);
-        public static string ColorPickerDisable { get; } = nameof(ColorPickerDisable);
+        public static string ColorPickerHovered { get; } = nameof(ColorPickerHovered);
+        public static string ColorPickerDisabled { get; } = nameof(ColorPickerDisabled);
         public static string ColorPickerColor { get; } = nameof(ColorPickerColor);
         public static string ColorPickerBoard { get; } = nameof(ColorPickerBoard);
 
-        public static string ResizeSprite { get; } = nameof(ResizeSprite);
+        public static string Resize { get; } = nameof(Resize);
 
-        public static string HeaderHoverSprite { get; } = nameof(HeaderHoverSprite);
+        public static string HeaderHover { get; } = nameof(HeaderHover);
 
-        public static string DeleteNormal { get; } = nameof(DeleteNormal);
-        public static string DeleteHover { get; } = nameof(DeleteHover);
-        public static string DeletePressed { get; } = nameof(DeletePressed);
+        public static string CloseButtonNormal { get; } = nameof(CloseButtonNormal);
+        public static string CloseButtonHovered { get; } = nameof(CloseButtonHovered);
+        public static string CloseButtonPressed { get; } = nameof(CloseButtonPressed);
 
-        public static string HeaderAdditional { get; } = nameof(HeaderAdditional);
-
-        public static string Patreon { get; } = nameof(Patreon);
-        public static string PayPal { get; } = nameof(PayPal);
-
-        private static Dictionary<string, TextureHelper.SpriteParamsGetter> Files { get; } = new Dictionary<string, TextureHelper.SpriteParamsGetter>
-        {
-            {nameof(CloseButton), CloseButton},
-            {nameof(ColorPicker), ColorPicker},
-            {nameof(DefaultTabButtons), DefaultTabButtons},
-            {nameof(Empty), Empty},
-            {nameof(HeaderHover), HeaderHover},
-            {nameof(OpacitySlider), OpacitySlider},
-            {nameof(Resize), Resize},
-            {nameof(TabButton), TabButton},
-            {nameof(TextFieldPanel), TextFieldPanel},
-            {nameof(CommonHeaderButtons), CommonHeaderButtons},
-            {nameof(PatreonButton), PatreonButton},
-            {nameof(PayPalButton), PayPalButton},
-        };
+        public static string HeaderAdditionalButton { get; } = nameof(HeaderAdditionalButton);
 
         static CommonTextures()
         {
-            Atlas = TextureHelper.CreateAtlas(nameof(ModsCommon), Files);
+            var spriteParams = new Dictionary<string, RectOffset>();
+
+            //UUIButton
+            spriteParams[CloseButtonNormal] = new RectOffset();
+            spriteParams[CloseButtonHovered] = new RectOffset();
+            spriteParams[CloseButtonPressed] = new RectOffset();
+
+            //ColorPicker
+            spriteParams[ColorPickerNormal] = new RectOffset();
+            spriteParams[ColorPickerHovered] = new RectOffset();
+            spriteParams[ColorPickerDisabled] = new RectOffset();
+            spriteParams[ColorPickerColor] = new RectOffset();
+            spriteParams[ColorPickerBoard] = new RectOffset();
+
+            //Field
+            spriteParams[FieldNormal] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldHovered] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldFocused] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldDisabled] = new RectOffset(4, 4, 4, 4);
+
+            spriteParams[FieldNormalLeft] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldHoveredLeft] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldFocusedLeft] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldDisabledLeft] = new RectOffset(4, 4, 4, 4);
+
+            spriteParams[FieldNormalRight] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldHoveredRight] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldFocusedRight] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldDisabledRight] = new RectOffset(4, 4, 4, 4);
+
+            spriteParams[FieldNormalMiddle] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldHoveredMiddle] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldFocusedMiddle] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldDisabledMiddle] = new RectOffset(4, 4, 4, 4);
+
+            //Tab
+            spriteParams[Tab] = new RectOffset(4, 4, 4, 4);
+            spriteParams[TabNormal] = new RectOffset(4, 4, 4, 0);
+            spriteParams[TabHover] = new RectOffset(4, 4, 4, 0);
+            spriteParams[TabPressed] = new RectOffset(4, 4, 4, 0);
+            spriteParams[TabFocused] = new RectOffset(4, 4, 4, 0);
+            spriteParams[TabDisabled] = new RectOffset(4, 4, 4, 0);
+
+            //OpacitySlider
+            spriteParams[OpacitySliderBoard] = new RectOffset();
+            spriteParams[OpacitySliderColor] = new RectOffset();
+
+            //Header
+            spriteParams[HeaderAdditionalButton] = new RectOffset();
+            spriteParams[HeaderHover] = new RectOffset(4, 4, 4, 4);
+
+            spriteParams[Empty] = new RectOffset();
+            spriteParams[Resize] = new RectOffset();
+
+            Atlas = TextureHelper.CreateAtlas(nameof(ModsCommon), spriteParams);
         }
-
-        private static UITextureAtlas.SpriteInfo[] TextFieldPanel(int texWidth, int texHeight, Rect rect)
-           => TextureHelper.GetSpritesRowsInfo(texWidth, texHeight, rect, 32, 32, new RectOffset(4, 4, 4, 4), 2, 4,
-       FieldNormal, FieldHovered, FieldFocused, FieldDisabled,
-       FieldNormalLeft, FieldHoveredLeft, FieldFocusedLeft, FieldDisabledLeft,
-       FieldNormalRight, FieldHoveredRight, FieldFocusedRight, FieldDisabledRight,
-       FieldNormalMiddle, FieldHoveredMiddle, FieldFocusedMiddle, FieldDisabledMiddle).ToArray();
-        private static UITextureAtlas.SpriteInfo[] TabButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 0), 1, Tab).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] DefaultTabButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 58, 25, new RectOffset(4, 4, 4, 0), 2, TabNormal, TabHover, TabPressed, TabFocused, TabDisabled).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] Empty(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 28, 28, new RectOffset(2, 2, 2, 2), 2, EmptySprite).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] OpacitySlider(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 18, 200, new RectOffset(), 2, OpacitySliderBoard, OpacitySliderColor).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] ColorPicker(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 43, 49, ColorPickerNormal, ColorPickerHover, ColorPickerDisable, ColorPickerColor, ColorPickerBoard).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] Resize(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, ResizeSprite).ToArray();
-        private static UITextureAtlas.SpriteInfo[] HeaderHover(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, new RectOffset(4, 4, 4, 4), 0, HeaderHoverSprite).ToArray();
-        private static UITextureAtlas.SpriteInfo[] CloseButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 32, 32, DeleteNormal, DeleteHover, DeletePressed).ToArray();
-        private static UITextureAtlas.SpriteInfo[] CommonHeaderButtons(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, 25, 25, new RectOffset(4, 4, 4, 4), 2, HeaderAdditional).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] PatreonButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, Patreon).ToArray();
-
-        private static UITextureAtlas.SpriteInfo[] PayPalButton(int texWidth, int texHeight, Rect rect) => TextureHelper.GetSpritesInfo(texWidth, texHeight, rect, PayPal).ToArray();
     }
 }
