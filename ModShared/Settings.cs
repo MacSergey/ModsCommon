@@ -44,6 +44,7 @@ namespace ModsCommon
 #if DEBUG
         protected UIAdvancedHelper DebugTab => Tabs[nameof(DebugTab)];
 #endif
+        private static Action InfoCallback { get; set; }
 
         public void OnSettingsUI(UIHelperBase helper)
         {
@@ -69,13 +70,31 @@ namespace ModsCommon
         {
             var infoGroup = GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
 
+            if (InfoCallback != null)
+            {
+                SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
+                InfoCallback = null;
+            }
+
             var infoLabel = AddLabel(infoGroup, GetStatusText());
             infoLabel.processMarkup = true;
 
-            SingletonMod<TypeMod>.Instance.OnStatusChanged += () =>
+            InfoCallback = () =>
+            {
+                try
                 {
                     infoLabel.text = GetStatusText();
-                };
+                }
+                catch
+                {
+                    if (InfoCallback != null)
+                    {
+                        SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
+                        InfoCallback = null;
+                    }
+                }
+            };
+            SingletonMod<TypeMod>.Instance.OnStatusChanged += InfoCallback;
 
             AddSupport(SupportTab);
 #if DEBUG
@@ -98,6 +117,10 @@ namespace ModsCommon
             }
 
             return string.Format(CommonLocalize.Mod_Status, statusText);
+        }
+        private void SetStatusText()
+        {
+
         }
 
         protected void CreateTabStrip()
