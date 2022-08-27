@@ -291,12 +291,22 @@
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>繁体中国語</value>
   </data>
+  <data name="Mod_Status" xml:space="preserve">
+    <value>MODのステータス: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>ゲームのバージョンが古いです</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>ロードエラー</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>MODのバージョンが古いです</value>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>不明</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>サポート</value>
   </data>

@@ -289,7 +289,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Китайский традиционный</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">
-    <value>Состояние мода: {0}</value>
+    <value>Состояние: {0}</value>
   </data>
   <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
     <value>Устаревшая версия игры</value>
@@ -300,8 +300,8 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
     <value>Устаревшая версия мода</value>
   </data>
-  <data name="Mod_Status_Ok" xml:space="preserve">
-    <value>ОК</value>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Работает нормально</value>
   </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
     <value>Неизвестно</value>

@@ -288,12 +288,22 @@ Redémarrez le jeu.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Chinois traditionnel</value>
   </data>
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Statut du mod : {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>La version du jeu est obsolète</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Erreur de chargement</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>La version du mod est obsolète</value>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>
   </data>
@@ -306,12 +316,12 @@ Version actuelle du jeu : {1}
 Mettrez à jour le jeu vers la version la plus récente, sinon le bon fonctionnement du mod n'est pas garanti et peut entraîner des erreurs imprévisibles.</value>
   </data>
   <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
-    <value>La version du jeu est obsolète.
+    <value>La version du mod est obsolète.
 
-Le mod nécessite la version : {0}
+Le mod a été fait pour la version : {0}
 Version actuelle du jeu : {1}
 
-Mettrez à jour le jeu vers la version la plus récente, sinon le bon fonctionnement du mod n'est pas garanti et peut entraîner des erreurs imprévisibles.</value>
+Mettrez à jour le mod vers la version la plus récente, sinon le bon fonctionnement du mod n'est pas garanti et peut entraîner des erreurs imprévisibles.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Quoi de neuf dans {0}</value>
