@@ -288,9 +288,17 @@ Herstart het spel.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Traditioneel Chinees</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Ondersteuning</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Wat is er nieuw in {0}</value>
   </data>

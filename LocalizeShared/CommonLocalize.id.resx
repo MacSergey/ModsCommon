@@ -286,9 +286,17 @@ Mohon restart game ini.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Mandarin Tradisional</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Dukungan</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Apa yang baru di {0}</value>
   </data>

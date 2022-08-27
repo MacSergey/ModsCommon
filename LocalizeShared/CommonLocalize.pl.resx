@@ -288,9 +288,17 @@ Uruchom ponownie grę.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Chiński tradycyjny</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Wsparcie</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Co nowego w {0}</value>
   </data>

@@ -272,9 +272,17 @@ Indítsd újra a játékot!</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Kínai hagyományos</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Támogatás</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Újdonságok: {0}</value>
   </data>

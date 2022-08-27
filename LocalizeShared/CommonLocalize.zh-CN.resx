@@ -286,9 +286,17 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>繁体中文</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>支持服务</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 版本的新功能</value>
   </data>

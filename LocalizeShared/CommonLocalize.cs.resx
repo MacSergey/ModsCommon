@@ -288,9 +288,17 @@ Restartujte hru.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Čínština tradiční</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Podpora</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Co je nového v {0}</value>
   </data>

@@ -288,8 +288,30 @@ Mulakan semula permainan.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Cina Tradisional</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Sokongan</value>
+  </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>Versi permainan ketinggalan zaman.
+
+Mod ini memerlukan versi: {0}
+Versi permainan semasa: {1}
+
+Kemas kini permainan ke versi terbaru, jika tidak keberfungsian mod yang betul tidak dijamin dan boleh menyebabkan ralat tidak dijangka.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>Versi mod ketinggalan zaman.
+
+Mod ini dicipta untuk versi: {0}
+Versi permainan semasa: {1}
+
+Kemas kini mod ke versi terbaru, jika tidak keberfungsian mod yang betul tidak dijamin dan boleh menyebabkan ralat tidak dijangka.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Terbaharu dalam {0}</value>

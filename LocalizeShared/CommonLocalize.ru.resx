@@ -288,8 +288,42 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Китайский традиционный</value>
   </data>
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Состояние мода: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>Устаревшая версия игры</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Ошибка загрузки</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>Устаревшая версия мода</value>
+  </data>
+  <data name="Mod_Status_Ok" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Неизвестно</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Поддержка</value>
+  </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>Устаревшая версия игры.
+
+Мод требует версию: {0}
+Текущая версия игры: {1}
+
+Обновите игру до последней версии, иначе корректная работа мода не гарантируется и может привести к непредсказуемым ошибкам.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>Устаревшая версия мода.
+
+Мод был создан для версии: {0}
+Текущая версия игры: {1}
+
+Обновите мод до последней версии, иначе корректная работа мода не гарантируется и может привести к непредсказуемым ошибкам.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Что нового в {0}</value>

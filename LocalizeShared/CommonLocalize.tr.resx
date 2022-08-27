@@ -285,9 +285,17 @@ Lütfen oyunu tekrar başlatın.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Geleneksel Çince</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Destek</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0}'daki yenilikler</value>
   </data>

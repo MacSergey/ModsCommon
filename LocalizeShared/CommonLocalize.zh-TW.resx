@@ -288,9 +288,17 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>繁體中文</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>支援</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 更新內容</value>
   </data>

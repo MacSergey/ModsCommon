@@ -288,9 +288,17 @@ Reporniți jocul.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Chineză Tradițională</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Asistență</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Ce este nou în {0}</value>
   </data>

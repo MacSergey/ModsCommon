@@ -288,9 +288,17 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Ķīniešu tradicionāla</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Atbalsts</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Kas ir jauna šeit: {0}</value>
   </data>

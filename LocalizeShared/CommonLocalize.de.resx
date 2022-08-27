@@ -288,8 +288,30 @@ Starte das Spiel neu.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Traditionelles Chinesisch</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>
+  </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>Die Version des Spiels ist veraltet.
+
+Die Mod benötigt Version: {0}
+Aktuelle Spielversion: {1}
+
+Aktualisiere das Spiel auf die neueste Version, ansonsten ist das korrekte Funktionieren der Mod nicht garantiert und dies kann unvorhersehbare Fehler verursachen.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>Die Version der Mods ist veraltet.
+
+Die Mod wurde erstellt für Version: {0}
+Aktuelle Spielversion: {1}
+
+Aktualisiere die Mod auf die neueste Version, andernfalls ist das korrekte Funktionieren der Mod nicht garantiert und dies kann unvorhersehbare Fehler verursachen.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Was ist neu in {0}</value>

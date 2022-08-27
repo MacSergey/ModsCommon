@@ -287,9 +287,17 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Chinês tradicional</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Apoio</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>O que há de novo em {0}</value>
   </data>

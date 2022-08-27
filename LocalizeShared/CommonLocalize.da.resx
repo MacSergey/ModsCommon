@@ -286,9 +286,17 @@ Genstart spillet.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Kinesisk Traditionelt</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Nyt i {0}</value>
   </data>
