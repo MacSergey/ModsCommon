@@ -288,17 +288,43 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>중국어, 번체</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>상태: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>게임 버전이 오래됨</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>불러오기 오류</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>모드 버전이 오래됨</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>정상 작동 중</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>알 수 없음</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>지원</value>
   </data>
-  
-  
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>게임 버전이 오래되었습니다.
+
+모드에서 요구하는 버전: {0}
+현재 게임 버전: {1}
+
+게임을 최신 버전으로 업데이트하십시오. 오래된 버전을 쓰는 경우 모드가 올바르게 동작하지 않을 수 있으며 예상치 못한 오류를 일으킬 수 있습니다.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>모드 버전이 오래되었습니다.
+
+현재 모드의 대상 게임 버전: {0}
+현재 게임 버전: {1}
+
+모드를 최신 버전으로 업데이트하십시오. 오래된 버전을 쓰는 경우 모드가 올바르게 동작하지 않을 수 있으며 예상치 못한 오류를 일으킬 수 있습니다.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0}의 새로운 기능</value>
   </data>

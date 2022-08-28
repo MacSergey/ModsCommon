@@ -287,17 +287,41 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Chinês tradicional</value>
   </data>
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Estado: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>A versão do jogo está desatualizada</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Erro a carregar</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>A versão do jogo está desatualizada</value>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Desconhecido</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Apoio</value>
   </data>
-  
-  
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>A versão do jogo está desatualizada.
+
+O mod requer versão: {0}
+Versão atual do jogo: {1}
+
+Atualize o jogo para a versão mais recente, caso contrário, o funcionamento correto do mod não é garantido e pode causar erros imprevisíveis.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>A versão do jogo está desatualizada.
+
+O mod requer versão: {0}
+Versão atual do jogo: {1}
+
+Atualize o jogo para a versão mais recente, caso contrário, o funcionamento correto do mod não é garantido e pode causar erros imprevisíveis.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>O que há de novo em {0}</value>
   </data>

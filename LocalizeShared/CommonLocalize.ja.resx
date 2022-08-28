@@ -292,7 +292,7 @@
     <value>繁体中国語</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">
-    <value>MODのステータス: {0}</value>
+    <value>ステータス: {0}</value>
   </data>
   <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
     <value>ゲームのバージョンが古いです</value>
@@ -303,7 +303,9 @@
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
     <value>MODのバージョンが古いです</value>
   </data>
-  
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>正常に動作中</value>
+  </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
     <value>不明</value>
   </data>

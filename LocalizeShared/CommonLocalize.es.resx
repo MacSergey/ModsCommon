@@ -288,17 +288,43 @@ Reinicia el juego.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Chino Tradicional</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Estado: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>La versión del juego está desactualizada</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Ocurrió un error al cargar los datos</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>La versión del mod está desactualizada</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Funciona con normalidad</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Desconocido</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Apoyo</value>
   </data>
-  
-  
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>La versión del juego está desactualizada.
+
+El mod requiere la versión: {0}
+Versión actual del juego: {1}
+
+Actualiza el juego a la versión más reciente, de lo contrario el funcionamiento correcto del mod no está garantizado y puede llevar a errores impredecibles.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>La versión del mod está desactualizada.
+
+El mod es para la versión: {0}
+Versión actual del juego: {1}
+
+Actualizar el mod a la versión más reciente, de lo contrario el funcionamiento correcto del mod no está garantizado y puede llevar a errores impredecibles.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Novedades de {0}</value>
   </data>

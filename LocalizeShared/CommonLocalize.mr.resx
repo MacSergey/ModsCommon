@@ -288,12 +288,24 @@ Mulakan semula permainan.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Cina Tradisional</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Status: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>Versi permainan ketinggalan zaman</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Ralat pemuatan</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>Versi mod ketinggalan zaman</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Berfungsi dengan biasa</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Tidak diketahui</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Sokongan</value>
   </data>

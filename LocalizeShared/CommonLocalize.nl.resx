@@ -288,17 +288,43 @@ Herstart het spel.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Traditioneel Chinees</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Status: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>De spelversie is verouderd</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Fout bij het laden</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>De versie van de mod is verouderd</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Functioneert normaal</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Onbekend</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Ondersteuning</value>
   </data>
-  
-  
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>De versie van het spel is verouderd.
+
+De mod vereist versie: {0}
+Huidige spelversie: {1}
+
+Update het spel naar de laatste versie, anders is de correcte werking van de mod niet gegarandeerd en dit kan onvoorspelbare fouten veroorzaken.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>De versie van de mod is verouderd.
+
+De mod is gemaakt voor versie: {0}
+Huidige spelversie: {1}
+
+Update de mod naar de laatste versie, anders is de correcte werking van de mod niet gegarandeerd en dit kan onvoorspelbare fouten veroorzaken.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Wat is er nieuw in {0}</value>
   </data>

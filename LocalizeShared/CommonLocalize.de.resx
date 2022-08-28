@@ -288,12 +288,24 @@ Starte das Spiel neu.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Traditionelles Chinesisch</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Status: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>Die Spielversion ist veraltet</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Ladefehler</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>Die Mod-Version ist veraltet</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Funktioniert normal</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Unbekannt</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>
   </data>
@@ -306,7 +318,7 @@ Aktuelle Spielversion: {1}
 Aktualisiere das Spiel auf die neueste Version, ansonsten ist das korrekte Funktionieren der Mod nicht garantiert und dies kann unvorhersehbare Fehler verursachen.</value>
   </data>
   <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
-    <value>Die Version der Mods ist veraltet.
+    <value>Die Version der Mod ist veraltet.
 
 Die Mod wurde erstellt für Version: {0}
 Aktuelle Spielversion: {1}
