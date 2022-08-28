@@ -11,6 +11,7 @@ namespace ModsCommon.Utilities
         public static T GetAttrValue<T>(this XElement element, string attrName, T defaultValue = default, Func<T, bool> predicate = null) => Convert(element.Attribute(attrName)?.Value, defaultValue, predicate);
         public static object GetAttrValue(this XElement element, string attrName, Type type) => Convert(element.Attribute(attrName)?.Value, type);
         public static T GetValue<T>(this XElement element, T defaultValue = default, Func<T, bool> predicate = null) => Convert(element.Value, defaultValue, predicate);
+
         private static T Convert<T>(string str, T defaultValue = default, Func<T, bool> predicate = null)
         {
             try
@@ -39,6 +40,27 @@ namespace ModsCommon.Utilities
                 return null;
             }
         }
+
+        public static bool TryGetAttrValue<T>(this XElement element, string attrName, out T value, Func<T, bool> predicate = null)
+        {
+            try
+            {
+                if (element.Attribute(attrName) is XAttribute attr)
+                {
+                    var obj = Convert(attr.Value, typeof(T));
+                    if (obj is T tValue && predicate?.Invoke(tValue) != false)
+                    {
+                        value = tValue;
+                        return true;
+                    }
+                }
+            }
+            catch { }
+
+            value = default;
+            return false;
+        }
+
         public static void AddAttr(this XElement element, string name, object value) => element.Add(new XAttribute(name, value));
 
         public static XDocument Load(string file, LoadOptions options = LoadOptions.None)
