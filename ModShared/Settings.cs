@@ -68,7 +68,10 @@ namespace ModsCommon
         protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalTabs => new KeyValuePair<string, string>[0];
         protected virtual void FillSettings()
         {
-            var infoGroup = GeneralTab.AddGroup(SingletonMod<TypeMod>.Instance.Name);
+            var infoGroup = GeneralTab.AddGroup(out var title, SingletonMod<TypeMod>.Instance.NameRaw);
+            title.textScale = 2f;
+
+            AddLabel(infoGroup, string.Format("Version: {0}", SingletonMod<TypeMod>.Instance.VersionString));
 
             if (InfoCallback != null)
             {
@@ -107,11 +110,11 @@ namespace ModsCommon
             var status = SingletonMod<TypeMod>.Instance.Status;
             if (status == ModStatus.Unknown)
                 statusText = ModStatus.Unknown.Description<ModStatus, TypeMod>().AddColor(Color.yellow);
-            else if (status == ModStatus.Ok)
-                statusText = ModStatus.Ok.Description<ModStatus, TypeMod>().AddColor(Color.green);
+            else if (status == ModStatus.Normal)
+                statusText = ModStatus.Normal.Description<ModStatus, TypeMod>().AddColor(Color.green);
             else
             {
-                status &= ModStatus.NotOk;
+                status &= ModStatus.WithErrors;
                 var errors = status.GetEnumValues().Select(s => s.Description<ModStatus, TypeMod>()).ToArray();
                 statusText = string.Join(" | ", errors).AddColor(Color.red);
             }
@@ -303,10 +306,11 @@ namespace ModsCommon
         public UIAutoLayoutScrollablePanel Content => self as UIAutoLayoutScrollablePanel;
         public UIAdvancedHelper(UIAutoLayoutScrollablePanel panel) : base(panel) { }
 
-        public new UIHelper AddGroup(string name = null)
+        public new UIHelper AddGroup(string name = null) => AddGroup(out _, name);
+        public UIHelper AddGroup(out UILabel label, string name = null)
         {
             var panel = Content.AttachUIComponent(UITemplateManager.GetAsGameObject("OptionsGroupTemplate")) as UIPanel;
-            var label = panel.Find<UILabel>("Label");
+            label = panel.Find<UILabel>("Label");
 
             if (!string.IsNullOrEmpty(name))
                 label.text = name;

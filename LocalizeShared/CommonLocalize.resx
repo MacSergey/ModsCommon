@@ -289,7 +289,7 @@ Restart the game.</value>
     <value>Chinese Traditional</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">
-    <value>Mod status: {0}</value>
+    <value>Status: {0}</value>
   </data>
   <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
     <value>Game version is out of date</value>
@@ -300,8 +300,8 @@ Restart the game.</value>
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
     <value>Mod version is out of date</value>
   </data>
-  <data name="Mod_Status_Ok" xml:space="preserve">
-    <value>OK</value>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Operate normally</value>
   </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
     <value>Unknown</value>

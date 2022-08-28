@@ -17,6 +17,7 @@ namespace ModsCommon
         public string NameRaw { get; }
         public ILogger Logger { get; }
         public Version Version { get; }
+        public string VersionString { get; }
         public List<ModVersion> Versions { get; }
         public ModStatus Status { get; }
         public CultureInfo Culture { get; }

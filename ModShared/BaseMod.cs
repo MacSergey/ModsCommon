@@ -155,7 +155,7 @@ namespace ModsCommon
                     Enable();
 
                 if (Status == ModStatus.Unknown)
-                    Status = ModStatus.Ok;
+                    Status = ModStatus.Normal;
             }
             catch (Exception error)
             {
@@ -222,7 +222,7 @@ namespace ModsCommon
         {
             if ((Status & ModStatus.ErrorShown) == 0)
             {
-                if ((Status & ModStatus.NotOk) != 0)
+                if ((Status & ModStatus.WithErrors) != 0)
                 {
                     OnLoadError(out var shown);
                     Status |= shown ? ModStatus.ErrorShown : ModStatus.Unknown;
@@ -459,8 +459,8 @@ namespace ModsCommon
         [Description(nameof(CommonLocalize.Mod_Status_Unknown))]
         Unknown = 0,
 
-        [Description(nameof(CommonLocalize.Mod_Status_Ok))]
-        Ok = 1,
+        [Description(nameof(CommonLocalize.Mod_Status_OperateNormally))]
+        Normal = 1,
 
         [Description(nameof(CommonLocalize.Mod_Status_LoadingError))]
         LoadingError = 2,
@@ -473,6 +473,6 @@ namespace ModsCommon
         ErrorShown = 16,
 
         [NotVisible]
-        NotOk = LoadingError | ModOutOfDate | GameOutOfDate,
+        WithErrors = LoadingError | ModOutOfDate | GameOutOfDate,
     }
 }

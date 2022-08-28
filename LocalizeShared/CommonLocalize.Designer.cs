@@ -568,7 +568,7 @@ namespace ModsCommon {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Mod status: {0}.
+        ///   Ищет локализованную строку, похожую на Status: {0}.
         /// </summary>
         public static string Mod_Status {
             get {
@@ -604,11 +604,11 @@ namespace ModsCommon {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на OK.
+        ///   Ищет локализованную строку, похожую на Operate normally.
         /// </summary>
-        public static string Mod_Status_Ok {
+        public static string Mod_Status_OperateNormally {
             get {
-                return ResourceManager.GetString("Mod_Status_Ok", resourceCulture);
+                return ResourceManager.GetString("Mod_Status_OperateNormally", resourceCulture);
             }
         }
         
