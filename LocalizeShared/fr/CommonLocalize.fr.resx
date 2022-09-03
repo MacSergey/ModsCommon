@@ -118,47 +118,47 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Conflicterende mods gedetecteerd.</value>
+    <value>Conflits détectés.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Uitschakelen</value>
+    <value>Désactiver</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>{0} uitschakelen</value>
+    <value>Désactiver {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Inschakelen</value>
+    <value>Activer</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>{0} inschakelen</value>
+    <value>Activer {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Verkrijgen</value>
+    <value>Obtenir</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Ontbrekende afhankelijkheden gedetecteerd.</value>
+    <value>Dépendances manquantes détectées.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Ontbrekende afhankelijkheden en conflicterende mods gedetecteerd.</value>
+    <value>Dépendances manquantes et conflits détectés.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Om {0} te kunnen blijven gebruiken moeten deze problemen worden verholpen, anders wordt de mod uitgeschakeld.</value>
+    <value>Pour continuer à utiliser {0}, vous devez résoudre ces problèmes, sinon le mod sera désactivé.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>Alle problemen zijn verholpen, {0} kan worden ingeschakeld.</value>
+    <value>Tous les problèmes sont résolus, {0} peut être activé.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Verwijderen</value>
+    <value>Retirer</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Abonneren</value>
+    <value>S'abonner</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>De-abonneren</value>
+    <value>Se désabonner</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll om te veranderen
-Shift X10, Ctrl X0.1</value>
+    <value>Utilisez la molette pour changer
+Maj X10, Ctrl X0.1</value>
   </data>
   <data name="Key_Alt" xml:space="preserve">
     <value>Alt</value>
@@ -167,267 +167,268 @@ Shift X10, Ctrl X0.1</value>
     <value>Ctrl</value>
   </data>
   <data name="Key_Enter" xml:space="preserve">
-    <value>Enter</value>
+    <value>Entrer</value>
   </data>
   <data name="Key_Shift" xml:space="preserve">
-    <value>Shift</value>
+    <value>Maj</value>
   </data>
   <data name="Key_Tab" xml:space="preserve">
     <value>Tab</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll om te veranderen</value>
+    <value>Utilisez la molette pour changer</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Annuleren</value>
+    <value>Annuler</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Niet meer weergeven</value>
+    <value>Ne plus afficher</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>Meer informatie</value>
+    <value>Plus d'informations</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Nee</value>
+    <value>Non</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Ja</value>
+    <value>Oui</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Ik ga akkoord</value>
+    <value>J'accepte</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA versie waarschuwing</value>
+    <value>Alerte de version BETA</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Overstappen naar stabiele versie</value>
+    <value>Obtenir la version stable</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd bent op de bèta, kun je naar de stabiele versie overstappen.</value>
+    <value>Vous utilisez la version bêta de {0}. C'est une version de test avec de nouvelles fonctionnalités et elle peut contenir des erreurs qui vont briser ou supprimer vos configurations. Si vous vous êtes abonné par erreur, veuillez vous abonner à la version stable.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Dit is een BETA versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
+    <value>Ceci est une version BETA, des erreurs peuvent se produire et la stabilité n'est pas garantie !</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>De Linux versie van Cities Skylines heeft niet alle benodigde bibliotheken om de mod correct te laten werken. Het is noodzakelijk dat u de "Mono Develop" pakket op uw systeem installeert. Wanneer alles werkt zonder crashes, dan kunt u dit bericht negeren.</value>
+    <value>La version Linux de Cities Skylines ne dispose pas de toutes les bibliothèques nécessaires au bon fonctionnement du mod. Vous devez installer le pack "Mono Develop" sur votre système. Si tout fonctionne, ignorez ce message.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Mod is geladen met errors.
-Het is niet aanbevolen om de mod te gebruiken in de huidige staat omdat het tot onvoorspelbaar gedrag kan leiden.
-Herstart het spel.</value>
+    <value>Mod chargé avec des erreurs.
+Il n'est pas recommandé d'utiliser le mod dans cet état car il peut conduire à un comportement imprévisible.
+Redémarrez le jeu.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Gebruik zelfde taal als spel</value>
+    <value>Langue du jeu</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Tsjechisch</value>
+    <value>Tchèque</value>
   </data>
   <data name="Mod_Locale_da" xml:space="preserve">
-    <value>Deens</value>
+    <value>Danois</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Duits</value>
+    <value>Allemand</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Engels VS</value>
+    <value>Anglais États-Unis</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Engels VK</value>
+    <value>Anglais Royaume-Uni</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spaans</value>
+    <value>Espagnol</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Fins</value>
+    <value>Finnois</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Frans</value>
+    <value>Français</value>
   </data>
   <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Hungaars</value>
+    <value>Hongrois</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
-    <value>Indonesisch</value>
+    <value>Indonésien</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italiaans</value>
+    <value>Italien</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japans</value>
+    <value>Japonais</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Koreaans</value>
+    <value>Coréen</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malays</value>
+    <value>Malaisien</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Nederlands</value>
+    <value>Néerlandais</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Pools</value>
+    <value>Polonais</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portugees</value>
+    <value>Portugais</value>
   </data>
   <data name="Mod_Locale_ro" xml:space="preserve">
-    <value>Roemeens</value>
+    <value>Roumain</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russisch</value>
+    <value>Russe</value>
   </data>
   <data name="Mod_Locale_tr" xml:space="preserve">
-    <value>Turks</value>
+    <value>Turc</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinees vereenvoudigd</value>
+    <value>Chinois simplifié</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Traditioneel Chinees</value>
+    <value>Chinois traditionnel</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">
-    <value>Status: {0}</value>
+    <value>Statut : {0}</value>
   </data>
   <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
-    <value>De spelversie is verouderd</value>
+    <value>La version du jeu est obsolète</value>
   </data>
   <data name="Mod_Status_LoadingError" xml:space="preserve">
-    <value>Fout bij het laden</value>
+    <value>Erreur de chargement</value>
   </data>
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
-    <value>De versie van de mod is verouderd</value>
+    <value>La version du mod est obsolète</value>
   </data>
   <data name="Mod_Status_OperateNormally" xml:space="preserve">
-    <value>Functioneert normaal</value>
+    <value>Fonctionne normalement</value>
   </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
-    <value>Onbekend</value>
+    <value>Inconnu</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>Support</value>
   </data>
   <data name="Mod_Version" xml:space="preserve">
-    <value>Versie: {0}</value>
+    <value>Version : {0}</value>
   </data>
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
-    <value>De versie van het spel is verouderd.
+    <value>La version du jeu est obsolète.
 
-De mod vereist versie: {0}
-Huidige spelversie: {1}
+Le mod nécessite la version : {0}
+Version actuelle du jeu : {1}
 
-Update het spel naar de laatste versie, anders is de correcte werking van de mod niet gegarandeerd en dit kan onvoorspelbare fouten veroorzaken.</value>
+Mettrez à jour le jeu vers la version la plus récente, sinon le bon fonctionnement du mod n'est pas garanti et peut entraîner des erreurs imprévisibles.</value>
   </data>
   <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
-    <value>De versie van de mod is verouderd.
+    <value>La version du mod est obsolète.
 
-De mod is gemaakt voor versie: {0}
-Huidige spelversie: {1}
+Le mod a été fait pour la version : {0}
+Version actuelle du jeu : {1}
 
-Update de mod naar de laatste versie, anders is de correcte werking van de mod niet gegarandeerd en dit kan onvoorspelbare fouten veroorzaken.</value>
+Mettrez à jour le mod vers la version la plus récente, sinon le bon fonctionnement du mod n'est pas garanti et peut entraîner des erreurs imprévisibles.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Wat is er nieuw in {0}</value>
+    <value>Quoi de neuf dans {0}</value>
   </data>
   <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Bekijk de actuele bèta change log op Discord</value>
+    <value>[BETA] Allez sur Discord pour retrouver le journal des changements de la version bêta</value>
   </data>
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Versie {0}</value>
+    <value>Version {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Extra</value>
+    <value>Autres</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Annuleer</value>
+    <value>Annuler</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Wijzigingenlogboek</value>
+    <value>Notes de mise à jour</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>Voor Linuxgebruikers</value>
+    <value>Pour les utilisateurs Linux</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Algemeen</value>
+    <value>Général</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Algemeen</value>
+    <value>Général</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Taal</value>
+    <value>Langue</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Meldingen</value>
+    <value>Paramètres de notification</value>
   </data>
   <data name="Settings_PressAnyKey" xml:space="preserve">
-    <value>Druk op een toets</value>
+    <value>Appuyez sur n'importe quelle touche</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Tool activeren</value>
+    <value>Activer l'outil</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Snelkoppelingen</value>
+    <value>Raccourcis</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Selectie overslaan</value>
+    <value>Changer rapidement parmi les nœuds proches ou superposés</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Alleen meldingen over grote updates</value>
+    <value>Notifier uniquement pour les mise à jour majeures</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Tooltips weergeven</value>
+    <value>Afficher les infobulles</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Toon wat nieuw is</value>
+    <value>Afficher les nouveautés</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Los de crash op Linux op</value>
+    <value>Résoudre le plantage sous Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>Support</value>
   </data>
   <data name="Settings_ToolButton" xml:space="preserve">
-    <value>Gereedschap knop / Functie knop</value>
+    <value>Bouton de l'outil</value>
   </data>
   <data name="Settings_ToolButtonBoth" xml:space="preserve">
-    <value>Tonen op beide plaatsen</value>
+    <value>Afficher dans les deux</value>
   </data>
   <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
-    <value>Alleen tonen op de werkbalk</value>
+    <value>Afficher uniquement dans la barre d'outils</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Alleen tonen op de UUI</value>
+    <value>Afficher uniquement dans UUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Probleemoplossing</value>
+    <value>Dépannage</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Als je {0} leuk vindt, dan kan je de auteur steunen</value>
+    <value>Si vous aimez {0}, vous pouvez soutenir l'auteur</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Druk op {0} om de selectie over te slaan</value>
+    <value>Appuyez sur {0} pour changer
+parmi les nœuds proches</value>
   </data>
   <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>OPGELOST</value>
+    <value>CORRIGÉ</value>
   </data>
   <data name="WhatsNew_NEW" xml:space="preserve">
-    <value>NIEUW</value>
+    <value>NOUVEAU</value>
   </data>
   <data name="WhatsNew_REMOVED" xml:space="preserve">
-    <value>VERWIJDERD</value>
+    <value>SUPPRIMÉ</value>
   </data>
   <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>HERSTELD</value>
+    <value>ANNULÉ</value>
   </data>
   <data name="WhatsNew_TRANSLATION" xml:space="preserve">
-    <value>VERTALING</value>
+    <value>TRADUCTION</value>
   </data>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
-    <value>BIJGEWERKT</value>
+    <value>MIS À JOUR</value>
   </data>
   <data name="WhatsNew_WARNING" xml:space="preserve">
-    <value>WAARSCHUWING</value>
+    <value>AVERTISSEMENT</value>
   </data>
 </root>

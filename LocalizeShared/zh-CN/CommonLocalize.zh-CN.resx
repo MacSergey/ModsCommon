@@ -118,47 +118,47 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Conflicterende mods gedetecteerd.</value>
+    <value>检测到模组冲突。</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Uitschakelen</value>
+    <value>禁用</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>{0} uitschakelen</value>
+    <value>禁用 {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Inschakelen</value>
+    <value>启用</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>{0} inschakelen</value>
+    <value>启用 {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Verkrijgen</value>
+    <value>获取</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Ontbrekende afhankelijkheden gedetecteerd.</value>
+    <value>检测到缺失依赖项。</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Ontbrekende afhankelijkheden en conflicterende mods gedetecteerd.</value>
+    <value>检测到缺失依赖项和模组冲突.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Om {0} te kunnen blijven gebruiken moeten deze problemen worden verholpen, anders wordt de mod uitgeschakeld.</value>
+    <value>要继续使用 {0} ，需要修复这些问题，否则模组将被禁用。</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>Alle problemen zijn verholpen, {0} kan worden ingeschakeld.</value>
+    <value>所有问题都已修复， {0} 可以启用。</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Verwijderen</value>
+    <value>移除</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Abonneren</value>
+    <value>订阅</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>De-abonneren</value>
+    <value>取消订阅</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll om te veranderen
-Shift X10, Ctrl X0.1</value>
+    <value>使用滚轮改变参数
+Shift x10，Ctrl x0.1</value>
   </data>
   <data name="Key_Alt" xml:space="preserve">
     <value>Alt</value>
@@ -176,258 +176,213 @@ Shift X10, Ctrl X0.1</value>
     <value>Tab</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll om te veranderen</value>
+    <value>使用滚轮改变参数</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Annuleren</value>
+    <value>取消</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Niet meer weergeven</value>
+    <value>不再提示</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>Meer informatie</value>
+    <value>更多信息</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Nee</value>
+    <value>取消</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>Ok</value>
+    <value>确认</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Ja</value>
+    <value>确定</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Ik ga akkoord</value>
+    <value>我同意</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA versie waarschuwing</value>
+    <value>测试版警告</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Overstappen naar stabiele versie</value>
+    <value>获取稳定版本</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd bent op de bèta, kun je naar de stabiele versie overstappen.</value>
+    <value>你在使用 {0} BETA版。此版本为测试新功能用，且可能含有BUG。如果是不小心订阅到了此版本，请订阅回稳定版。</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Dit is een BETA versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
+    <value>这是测试版，可能会出现功能性错误。无法保证稳定运行！</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>De Linux versie van Cities Skylines heeft niet alle benodigde bibliotheken om de mod correct te laten werken. Het is noodzakelijk dat u de "Mono Develop" pakket op uw systeem installeert. Wanneer alles werkt zonder crashes, dan kunt u dit bericht negeren.</value>
+    <value>Linux 版本的都市天际线缺少一些必要的库来使模组正常工作。 您需要将"Mono Develop"包安装到您的系统。如果全部工作正常没有崩溃，请忽略此消息。</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Mod is geladen met errors.
-Het is niet aanbevolen om de mod te gebruiken in de huidige staat omdat het tot onvoorspelbaar gedrag kan leiden.
-Herstart het spel.</value>
+    <value>模组加载出错。
+不建议此状况下继续使用本模组，否则可能工作异常。
+请重启游戏。</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Gebruik zelfde taal als spel</value>
+    <value>游戏语言</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Tsjechisch</value>
+    <value>捷克语</value>
   </data>
   <data name="Mod_Locale_da" xml:space="preserve">
-    <value>Deens</value>
+    <value>丹麦语</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Duits</value>
+    <value>德语</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Engels VS</value>
+    <value>美式英语</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Engels VK</value>
+    <value>英式英语</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spaans</value>
+    <value>西班牙语</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Fins</value>
+    <value>芬兰语</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Frans</value>
+    <value>法语</value>
   </data>
   <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Hungaars</value>
+    <value>匈牙利语</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
-    <value>Indonesisch</value>
+    <value>印尼语</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italiaans</value>
+    <value>意大利语</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japans</value>
+    <value>日语</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Koreaans</value>
+    <value>韩语</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malays</value>
+    <value>马来语</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Nederlands</value>
+    <value>荷兰语</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Pools</value>
+    <value>波兰语</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portugees</value>
+    <value>葡萄牙语</value>
   </data>
-  <data name="Mod_Locale_ro" xml:space="preserve">
-    <value>Roemeens</value>
-  </data>
+  
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russisch</value>
+    <value>俄语</value>
   </data>
   <data name="Mod_Locale_tr" xml:space="preserve">
-    <value>Turks</value>
+    <value>土耳其语</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinees vereenvoudigd</value>
+    <value>简体中文</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Traditioneel Chinees</value>
+    <value>繁体中文</value>
   </data>
-  <data name="Mod_Status" xml:space="preserve">
-    <value>Status: {0}</value>
-  </data>
-  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
-    <value>De spelversie is verouderd</value>
-  </data>
-  <data name="Mod_Status_LoadingError" xml:space="preserve">
-    <value>Fout bij het laden</value>
-  </data>
-  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
-    <value>De versie van de mod is verouderd</value>
-  </data>
-  <data name="Mod_Status_OperateNormally" xml:space="preserve">
-    <value>Functioneert normaal</value>
-  </data>
-  <data name="Mod_Status_Unknown" xml:space="preserve">
-    <value>Onbekend</value>
-  </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>支持服务</value>
   </data>
-  <data name="Mod_Version" xml:space="preserve">
-    <value>Versie: {0}</value>
-  </data>
-  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
-    <value>De versie van het spel is verouderd.
-
-De mod vereist versie: {0}
-Huidige spelversie: {1}
-
-Update het spel naar de laatste versie, anders is de correcte werking van de mod niet gegarandeerd en dit kan onvoorspelbare fouten veroorzaken.</value>
-  </data>
-  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
-    <value>De versie van de mod is verouderd.
-
-De mod is gemaakt voor versie: {0}
-Huidige spelversie: {1}
-
-Update de mod naar de laatste versie, anders is de correcte werking van de mod niet gegarandeerd en dit kan onvoorspelbare fouten veroorzaken.</value>
-  </data>
+  
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Wat is er nieuw in {0}</value>
+    <value>{0} 版本的新功能</value>
   </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Bekijk de actuele bèta change log op Discord</value>
-  </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Versie {0}</value>
+    <value>版本{0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Extra</value>
+    <value>附加</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Annuleer</value>
+    <value>取消</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Wijzigingenlogboek</value>
+    <value>更新日志</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>Voor Linuxgebruikers</value>
+    <value>适用于 Linux 用户</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Algemeen</value>
+    <value>常规设置</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Algemeen</value>
+    <value>常规设置</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Taal</value>
+    <value>语言</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Meldingen</value>
+    <value>通知消息</value>
   </data>
   <data name="Settings_PressAnyKey" xml:space="preserve">
-    <value>Druk op een toets</value>
+    <value>按任意键</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Tool activeren</value>
+    <value>启用工具</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Snelkoppelingen</value>
+    <value>快捷键</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Selectie overslaan</value>
+    <value>选择覆盖的节点</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Alleen meldingen over grote updates</value>
+    <value>只推送重要更新提示消息</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Tooltips weergeven</value>
+    <value>显示提示</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Toon wat nieuw is</value>
+    <value>显示更新提示框</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Los de crash op Linux op</value>
+    <value>解决Linux崩溃问题</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>支持服务</value>
   </data>
   <data name="Settings_ToolButton" xml:space="preserve">
-    <value>Gereedschap knop / Functie knop</value>
+    <value>工具按钮</value>
   </data>
   <data name="Settings_ToolButtonBoth" xml:space="preserve">
-    <value>Tonen op beide plaatsen</value>
+    <value>两处同时显示</value>
   </data>
   <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
-    <value>Alleen tonen op de werkbalk</value>
+    <value>只在工具栏中显示</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Alleen tonen op de UUI</value>
+    <value>仅在 UnifiedUI 中显示</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Probleemoplossing</value>
+    <value>故障排除</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Als je {0} leuk vindt, dan kan je de auteur steunen</value>
+    <value>如果您喜欢 {0}，您可以支持作者</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Druk op {0} om de selectie over te slaan</value>
+    <value>按下 {0} 
+来选择其它被遮挡到的节点</value>
   </data>
-  <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>OPGELOST</value>
-  </data>
-  <data name="WhatsNew_NEW" xml:space="preserve">
-    <value>NIEUW</value>
-  </data>
-  <data name="WhatsNew_REMOVED" xml:space="preserve">
-    <value>VERWIJDERD</value>
-  </data>
-  <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>HERSTELD</value>
-  </data>
-  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
-    <value>VERTALING</value>
-  </data>
-  <data name="WhatsNew_UPDATED" xml:space="preserve">
-    <value>BIJGEWERKT</value>
-  </data>
-  <data name="WhatsNew_WARNING" xml:space="preserve">
-    <value>WAARSCHUWING</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
 </root>

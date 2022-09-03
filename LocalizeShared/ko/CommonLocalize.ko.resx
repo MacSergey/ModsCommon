@@ -118,47 +118,47 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Conflicterende mods gedetecteerd.</value>
+    <value>비호환 모드가 있습니다.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Uitschakelen</value>
+    <value>비활성화</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>{0} uitschakelen</value>
+    <value>{0} 비활성화</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Inschakelen</value>
+    <value>활성화</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>{0} inschakelen</value>
+    <value>{0} 활성화</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Verkrijgen</value>
+    <value>얻기</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Ontbrekende afhankelijkheden gedetecteerd.</value>
+    <value>누락된 디펜던시(Dependency)가 있습니다.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Ontbrekende afhankelijkheden en conflicterende mods gedetecteerd.</value>
+    <value>누락된 디펜던시(Dependency)와 비호환 모드가 있습니다.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Om {0} te kunnen blijven gebruiken moeten deze problemen worden verholpen, anders wordt de mod uitgeschakeld.</value>
+    <value>{0}을(를) 사용하려면 다음을 해결해야 합니다. 해결하지 않으면 모드가 비활성화됩니다.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>Alle problemen zijn verholpen, {0} kan worden ingeschakeld.</value>
+    <value>모든 오류가 수정되었습니다. {0}을(를) 활성화할 수 있습니다.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Verwijderen</value>
+    <value>삭제</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Abonneren</value>
+    <value>구독</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>De-abonneren</value>
+    <value>구독 취소</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll om te veranderen
-Shift X10, Ctrl X0.1</value>
+    <value>마우스 휠을 돌려 변경하세요
+Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   </data>
   <data name="Key_Alt" xml:space="preserve">
     <value>Alt</value>
@@ -176,258 +176,255 @@ Shift X10, Ctrl X0.1</value>
     <value>Tab</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Scroll om te veranderen</value>
+    <value>마우스 휠을 돌려 변경하세요</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Annuleren</value>
+    <value>취소</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Niet meer weergeven</value>
+    <value>다시 표시하지 않음</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>Meer informatie</value>
+    <value>더 많은 정보</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Nee</value>
+    <value>아니오</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>Ok</value>
+    <value>확인</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Ja</value>
+    <value>예</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Ik ga akkoord</value>
+    <value>계속하기</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>BETA versie waarschuwing</value>
+    <value>베타 버전 경고</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Overstappen naar stabiele versie</value>
+    <value>Stable 버전 구독</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Je gebruikt de bèta versie van {0}. Deze wordt gebruikt voor het testen van nieuwe functies en kan fouten bevatten. Als je per ongeluk geabonneerd bent op de bèta, kun je naar de stabiele versie overstappen.</value>
+    <value>현재 {0}의 베타 버전을 사용하고 있습니다. 베타 버전은 새 기능을 실험하는 버전으로, 오류가 있을 수 있습니다. 만약 실수로 구독했거나 위 사항을 모른다면 Stable 버전을 사용하세요.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Dit is een BETA versie, er kunnen fouten optreden en de stabiliteit is niet gegarandeerd!</value>
+    <value>현재 베타 버전을 사용하고 있습니다. 오류가 있을 수 있으며 안전성이 보장되지 않습니다!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>De Linux versie van Cities Skylines heeft niet alle benodigde bibliotheken om de mod correct te laten werken. Het is noodzakelijk dat u de "Mono Develop" pakket op uw systeem installeert. Wanneer alles werkt zonder crashes, dan kunt u dit bericht negeren.</value>
+    <value>시티즈: 스카이라인 리눅스 버전은 모드가 정상 작동하기 위한 몇몇 필수 라이브러리기 없기 때문에 "Mono Develop" 패키지를 다운받아서 사용해야 합니다. 아무 문제가 없다면 이 메세지를 무시하셔도 좋아요.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Mod is geladen met errors.
-Het is niet aanbevolen om de mod te gebruiken in de huidige staat omdat het tot onvoorspelbaar gedrag kan leiden.
-Herstart het spel.</value>
+    <value>모드가 오류와 함께 로드됨.
+예기치 않은 동작으로 이어질 수 있으므로 이 상태로 모드를 사용하지 않는 것을 권장합니다.
+게임을 재시작하세요.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Gebruik zelfde taal als spel</value>
+    <value>게임 언어</value>
   </data>
   <data name="Mod_Locale_cs" xml:space="preserve">
-    <value>Tsjechisch</value>
+    <value>체코어</value>
   </data>
   <data name="Mod_Locale_da" xml:space="preserve">
-    <value>Deens</value>
+    <value>덴마크어</value>
   </data>
   <data name="Mod_Locale_de" xml:space="preserve">
-    <value>Duits</value>
+    <value>독일어</value>
   </data>
   <data name="Mod_Locale_en" xml:space="preserve">
-    <value>Engels VS</value>
+    <value>영어, 미국</value>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
-    <value>Engels VK</value>
+    <value>영어, 영국</value>
   </data>
   <data name="Mod_Locale_es" xml:space="preserve">
-    <value>Spaans</value>
+    <value>스페인어</value>
   </data>
   <data name="Mod_Locale_fi" xml:space="preserve">
-    <value>Fins</value>
+    <value>핀란드어</value>
   </data>
   <data name="Mod_Locale_fr" xml:space="preserve">
-    <value>Frans</value>
+    <value>프랑스어</value>
   </data>
   <data name="Mod_Locale_hu" xml:space="preserve">
-    <value>Hungaars</value>
+    <value>헝가리어</value>
   </data>
   <data name="Mod_Locale_id" xml:space="preserve">
-    <value>Indonesisch</value>
+    <value>인도네시아어</value>
   </data>
   <data name="Mod_Locale_it" xml:space="preserve">
-    <value>Italiaans</value>
+    <value>이탈리아어</value>
   </data>
   <data name="Mod_Locale_ja" xml:space="preserve">
-    <value>Japans</value>
+    <value>일본어</value>
   </data>
   <data name="Mod_Locale_ko" xml:space="preserve">
-    <value>Koreaans</value>
+    <value>한국어</value>
   </data>
   <data name="Mod_Locale_mr" xml:space="preserve">
-    <value>Malays</value>
+    <value>말레이시아어</value>
   </data>
   <data name="Mod_Locale_nl" xml:space="preserve">
-    <value>Nederlands</value>
+    <value>네덜란드어</value>
   </data>
   <data name="Mod_Locale_pl" xml:space="preserve">
-    <value>Pools</value>
+    <value>폴란드어</value>
   </data>
   <data name="Mod_Locale_pt" xml:space="preserve">
-    <value>Portugees</value>
+    <value>포르투갈어</value>
   </data>
   <data name="Mod_Locale_ro" xml:space="preserve">
-    <value>Roemeens</value>
+    <value>루마니아어</value>
   </data>
   <data name="Mod_Locale_ru" xml:space="preserve">
-    <value>Russisch</value>
+    <value>러시아어</value>
   </data>
   <data name="Mod_Locale_tr" xml:space="preserve">
-    <value>Turks</value>
+    <value>터키어</value>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
-    <value>Chinees vereenvoudigd</value>
+    <value>중국어, 간체</value>
   </data>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
-    <value>Traditioneel Chinees</value>
+    <value>중국어, 번체</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">
-    <value>Status: {0}</value>
+    <value>상태: {0}</value>
   </data>
   <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
-    <value>De spelversie is verouderd</value>
+    <value>게임 버전이 오래됨</value>
   </data>
   <data name="Mod_Status_LoadingError" xml:space="preserve">
-    <value>Fout bij het laden</value>
+    <value>불러오기 오류</value>
   </data>
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
-    <value>De versie van de mod is verouderd</value>
+    <value>모드 버전이 오래됨</value>
   </data>
   <data name="Mod_Status_OperateNormally" xml:space="preserve">
-    <value>Functioneert normaal</value>
+    <value>정상 작동 중</value>
   </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
-    <value>Onbekend</value>
+    <value>알 수 없음</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>지원</value>
   </data>
-  <data name="Mod_Version" xml:space="preserve">
-    <value>Versie: {0}</value>
-  </data>
+  
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
-    <value>De versie van het spel is verouderd.
+    <value>게임 버전이 오래되었습니다.
 
-De mod vereist versie: {0}
-Huidige spelversie: {1}
+모드에서 요구하는 버전: {0}
+현재 게임 버전: {1}
 
-Update het spel naar de laatste versie, anders is de correcte werking van de mod niet gegarandeerd en dit kan onvoorspelbare fouten veroorzaken.</value>
+게임을 최신 버전으로 업데이트하십시오. 오래된 버전을 쓰는 경우 모드가 올바르게 동작하지 않을 수 있으며 예상치 못한 오류를 일으킬 수 있습니다.</value>
   </data>
   <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
-    <value>De versie van de mod is verouderd.
+    <value>모드 버전이 오래되었습니다.
 
-De mod is gemaakt voor versie: {0}
-Huidige spelversie: {1}
+현재 모드의 대상 게임 버전: {0}
+현재 게임 버전: {1}
 
-Update de mod naar de laatste versie, anders is de correcte werking van de mod niet gegarandeerd en dit kan onvoorspelbare fouten veroorzaken.</value>
+모드를 최신 버전으로 업데이트하십시오. 오래된 버전을 쓰는 경우 모드가 올바르게 동작하지 않을 수 있으며 예상치 못한 오류를 일으킬 수 있습니다.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Wat is er nieuw in {0}</value>
+    <value>{0}의 새로운 기능</value>
   </data>
-  <data name="Mod_WhatsNewMessageBeta" xml:space="preserve">
-    <value>Bekijk de actuele bèta change log op Discord</value>
-  </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Versie {0}</value>
+    <value>버전 {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Extra</value>
+    <value>추가 옵션</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Annuleer</value>
+    <value>취소</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Wijzigingenlogboek</value>
+    <value>변경 사항</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>Voor Linuxgebruikers</value>
+    <value>리눅스 유저 여러분께</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Algemeen</value>
+    <value>일반</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Algemeen</value>
+    <value>일반</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Taal</value>
+    <value>언어</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Meldingen</value>
+    <value>알림</value>
   </data>
   <data name="Settings_PressAnyKey" xml:space="preserve">
-    <value>Druk op een toets</value>
+    <value>아무 키나 누르세요</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Tool activeren</value>
+    <value>도구 활성화</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Snelkoppelingen</value>
+    <value>단축키</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Selectie overslaan</value>
+    <value>선택 건너뛰기</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Alleen meldingen over grote updates</value>
+    <value>주요 업데이트만 안내하기</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Tooltips weergeven</value>
+    <value>툴팁 보이기</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Toon wat nieuw is</value>
+    <value>새 기능 보기</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Los de crash op Linux op</value>
+    <value>리눅스에서 크래시 해결하기</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>지원</value>
   </data>
   <data name="Settings_ToolButton" xml:space="preserve">
-    <value>Gereedschap knop / Functie knop</value>
+    <value>도구 버튼</value>
   </data>
   <data name="Settings_ToolButtonBoth" xml:space="preserve">
-    <value>Tonen op beide plaatsen</value>
+    <value>모든 장소에서 표시</value>
   </data>
   <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
-    <value>Alleen tonen op de werkbalk</value>
+    <value>툴바에만 표시하기</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Alleen tonen op de UUI</value>
+    <value>UUI에만 표시하기</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Probleemoplossing</value>
+    <value>문제 해결</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Als je {0} leuk vindt, dan kan je de auteur steunen</value>
+    <value>{0}가 마음에 들으셨다면 제작자를 후원해 주세요</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Druk op {0} om de selectie over te slaan</value>
+    <value>{0} 을 눌러
+선택 건너뛰기</value>
   </data>
   <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>OPGELOST</value>
+    <value>수정</value>
   </data>
   <data name="WhatsNew_NEW" xml:space="preserve">
-    <value>NIEUW</value>
+    <value>신규</value>
   </data>
   <data name="WhatsNew_REMOVED" xml:space="preserve">
-    <value>VERWIJDERD</value>
+    <value>제거</value>
   </data>
   <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>HERSTELD</value>
+    <value>되돌림</value>
   </data>
   <data name="WhatsNew_TRANSLATION" xml:space="preserve">
-    <value>VERTALING</value>
+    <value>번역</value>
   </data>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
-    <value>BIJGEWERKT</value>
+    <value>업데이트</value>
   </data>
   <data name="WhatsNew_WARNING" xml:space="preserve">
-    <value>WAARSCHUWING</value>
+    <value>경고</value>
   </data>
 </root>
