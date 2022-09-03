@@ -309,6 +309,9 @@ Restart the game.</value>
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>
   </data>
+  <data name="Mod_Version" xml:space="preserve">
+    <value>Version: {0}</value>
+  </data>
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
     <value>The game version is out of date.
 

@@ -289,7 +289,7 @@ Redémarrez le jeu.</value>
     <value>Chinois traditionnel</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">
-    <value>Statut du mod : {0}</value>
+    <value>Statut : {0}</value>
   </data>
   <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
     <value>La version du jeu est obsolète</value>
@@ -300,12 +300,17 @@ Redémarrez le jeu.</value>
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
     <value>La version du mod est obsolète</value>
   </data>
-  
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Fonctionne normalement</value>
+  </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
     <value>Inconnu</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Support</value>
+  </data>
+  <data name="Mod_Version" xml:space="preserve">
+    <value>Version : {0}</value>
   </data>
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
     <value>La version du jeu est obsolète.

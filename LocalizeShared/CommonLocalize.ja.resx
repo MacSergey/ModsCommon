@@ -312,6 +312,9 @@
   <data name="Mod_Support" xml:space="preserve">
     <value>サポート</value>
   </data>
+  <data name="Mod_Version" xml:space="preserve">
+    <value>バージョン: {0}</value>
+  </data>
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
     <value>ゲームバージョンが古いです！
 

@@ -309,6 +309,7 @@ Reinicia el juego.</value>
   <data name="Mod_Support" xml:space="preserve">
     <value>Apoyo</value>
   </data>
+  
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
     <value>La versión del juego está desactualizada.
 

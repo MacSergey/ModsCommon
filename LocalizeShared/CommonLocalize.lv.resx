@@ -299,6 +299,7 @@ Shift X10, Ctrl X0.1</value>
   </data>
   
   
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Kas ir jauna šeit: {0}</value>
   </data>

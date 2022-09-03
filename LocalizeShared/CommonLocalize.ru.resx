@@ -309,6 +309,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Support" xml:space="preserve">
     <value>Поддержка</value>
   </data>
+  <data name="Mod_Version" xml:space="preserve">
+    <value>Версия: {0}</value>
+  </data>
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
     <value>Устаревшая версия игры.
 

@@ -309,6 +309,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Mod_Support" xml:space="preserve">
     <value>지원</value>
   </data>
+  
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
     <value>게임 버전이 오래되었습니다.
 
