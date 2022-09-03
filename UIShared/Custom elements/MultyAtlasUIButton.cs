@@ -109,7 +109,7 @@ namespace ModsCommon.UI
             get => _focusedFgColor ?? color;
             set
             {
-                _focusedBgColor = value;
+                _focusedFgColor = value;
                 Invalidate();
             }
         }
@@ -139,6 +139,25 @@ namespace ModsCommon.UI
                 _disabledFgColor = value;
                 Invalidate();
             }
+        }
+
+        [Obsolete]
+        public new Color32 hoveredColor
+        {
+            get => hoveredBgColor;
+            set => hoveredBgColor = value;
+        }
+        [Obsolete]
+        public new Color32 pressedColor
+        {
+            get => pressedBgColor;
+            set => pressedBgColor = value;
+        }
+        [Obsolete]
+        public new Color32 focusedColor
+        {
+            get => focusedBgColor;
+            set => focusedBgColor = value;
         }
 
         protected UIRenderData BgRenderData { get; set; }

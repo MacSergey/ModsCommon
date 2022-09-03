@@ -102,9 +102,9 @@ namespace ModsCommon.UI
         }
         private void SetButtonColors(HeaderButton button)
         {
-            button.hoveredColor = ButtonHoveredColor;
-            button.pressedColor = ButtonPressedColor;
-            button.focusedColor = ButtonPressedColor;
+            button.hoveredBgColor = ButtonHoveredColor;
+            button.pressedBgColor = ButtonPressedColor;
+            button.focusedBgColor = ButtonPressedColor;
 
             button.normalFgColor = IconNormalColor;
             button.hoveredFgColor = IconHoverColor;
@@ -113,9 +113,9 @@ namespace ModsCommon.UI
         }
         private void SetAdditionalButtonColors(HeaderButton button)
         {
-            button.hoveredColor = AdditionalButtonHoveredColor;
-            button.pressedColor = AdditionalButtonPressedColor;
-            button.focusedColor = AdditionalButtonPressedColor;
+            button.hoveredBgColor = AdditionalButtonHoveredColor;
+            button.pressedBgColor = AdditionalButtonPressedColor;
+            button.focusedBgColor = AdditionalButtonPressedColor;
 
             button.normalFgColor = IconNormalColor;
             button.hoveredFgColor = IconHoverColor;

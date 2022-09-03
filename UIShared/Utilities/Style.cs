@@ -34,50 +34,44 @@ namespace ModsCommon.UI
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
         }
 
-        public static void DefaultStyle(this UIDropDown dropDown, Vector2? size = null)
+        public static void DefaultStyle(this CustomUIDropDown dropDown, Vector2? size = null)
         {
-            dropDown.atlas = CommonTextures.Atlas;
-            dropDown.listBackground = CommonTextures.FieldHovered;
-            dropDown.itemHeight = 20;
-            dropDown.itemHover = CommonTextures.FieldNormal;
-            dropDown.itemHighlight = CommonTextures.FieldFocused;
+            dropDown.atlasBackground = CommonTextures.Atlas;
             dropDown.normalBgSprite = CommonTextures.FieldNormal;
             dropDown.hoveredBgSprite = CommonTextures.FieldHovered;
             dropDown.disabledBgSprite = CommonTextures.FieldDisabled;
+
+            dropDown.atlasForeground = TextureHelper.InGameAtlas;
+            dropDown.normalFgSprite = "IconDownArrow";
+            dropDown.hoveredFgSprite = "IconDownArrowHovered";
+            //dropDown.pressedFgSprite = "IconDownArrowPressed";
+            dropDown.focusedFgSprite = "IconDownArrow";
+            dropDown.disabledFgSprite = "IconDownArrowDisabled";
+
+            dropDown.atlas = CommonTextures.Atlas;
+            dropDown.listBackground = CommonTextures.FieldHovered;
+            dropDown.itemHover = CommonTextures.FieldNormal;
+            dropDown.itemHighlight = CommonTextures.FieldFocused;
+
+            dropDown.itemHeight = 20;
             dropDown.listHeight = 700;
             dropDown.listPosition = PopupListPosition.Below;
             dropDown.clampListToScreen = true;
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
-            dropDown.textScale = 0.7f;
-            dropDown.textFieldPadding = new RectOffset(8, 0, 6, 0);
-            dropDown.popupColor = Color.white;
-            dropDown.popupTextColor = Color.black;
-            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
             dropDown.itemPadding = new RectOffset(14, 0, 5, 0);
 
-            var button = dropDown.Find<CustomUIButton>("Trigger");
-            if(button == null)
-            {
-                button = dropDown.AddUIComponent<CustomUIButton>();
-                button.name = "Trigger";
-            }
-            button.atlas = TextureHelper.InGameAtlas;
-            button.text = string.Empty;
-            button.relativePosition = new Vector3(0f, 0f);
-            button.textVerticalAlignment = UIVerticalAlignment.Middle;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-            button.normalFgSprite = "IconDownArrow";
-            button.hoveredFgSprite = "IconDownArrowHovered";
-            button.pressedFgSprite = "IconDownArrowPressed";
-            button.focusedFgSprite = "IconDownArrow";
-            button.disabledFgSprite = "IconDownArrowDisabled";
-            button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            button.horizontalAlignment = UIHorizontalAlignment.Right;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
-            button.textScale = 0.8f;
+            dropDown.popupColor = Color.white;
+            dropDown.popupTextColor = Color.black;
 
-            dropDown.triggerButton = button;
+            dropDown.textScale = 0.7f;
+            dropDown.textFieldPadding = new RectOffset(8, 0, 6, 0);
+            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
+            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
+            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+
+            dropDown.triggerButton = dropDown;
 
             dropDown.size = size ?? new Vector2(230, 20);
         }
