@@ -68,62 +68,11 @@ namespace ModsCommon
         protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalTabs => new KeyValuePair<string, string>[0];
         protected virtual void FillSettings()
         {
-            var infoGroup = GeneralTab.AddGroup(out var title, SingletonMod<TypeMod>.Instance.NameRaw);
-            title.textScale = 2f;
-
-            AddLabel(infoGroup, string.Format("Version: {0}", SingletonMod<TypeMod>.Instance.VersionString));
-
-            if (InfoCallback != null)
-            {
-                SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
-                InfoCallback = null;
-            }
-
-            var infoLabel = AddLabel(infoGroup, GetStatusText());
-            infoLabel.processMarkup = true;
-
-            InfoCallback = () =>
-            {
-                try
-                {
-                    infoLabel.text = GetStatusText();
-                }
-                catch
-                {
-                    if (InfoCallback != null)
-                    {
-                        SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
-                        InfoCallback = null;
-                    }
-                }
-            };
-            SingletonMod<TypeMod>.Instance.OnStatusChanged += InfoCallback;
-
+            AddInfo(GeneralTab);
             AddSupport(SupportTab);
 #if DEBUG
             AddDebug(DebugTab);
 #endif
-        }
-        private string GetStatusText()
-        {
-            var statusText = string.Empty;
-            var status = SingletonMod<TypeMod>.Instance.Status;
-            if (status == ModStatus.Unknown)
-                statusText = ModStatus.Unknown.Description<ModStatus, TypeMod>().AddColor(Color.yellow);
-            else if (status == ModStatus.Normal)
-                statusText = ModStatus.Normal.Description<ModStatus, TypeMod>().AddColor(Color.green);
-            else
-            {
-                status &= ModStatus.WithErrors;
-                var errors = status.GetEnumValues().Select(s => s.Description<ModStatus, TypeMod>()).ToArray();
-                statusText = string.Join(" | ", errors).AddColor(Color.red);
-            }
-
-            return string.Format(CommonLocalize.Mod_Status, statusText);
-        }
-        private void SetStatusText()
-        {
-
         }
 
         protected void CreateTabStrip()
@@ -183,6 +132,64 @@ namespace ModsCommon
             return helper;
         }
         protected UIAdvancedHelper GetTab(string label) => Tabs[label];
+
+        #region INFO
+
+        private void AddInfo(UIAdvancedHelper helper)
+        {
+            var group = helper.AddGroup(out var title, SingletonMod<TypeMod>.Instance.NameRaw);
+            title.textScale = 2f;
+
+            AddLabel(group, string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
+
+            if (InfoCallback != null)
+            {
+                SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
+                InfoCallback = null;
+            }
+
+            var infoLabel = AddLabel(group, GetStatusText());
+            infoLabel.processMarkup = true;
+
+            InfoCallback = () =>
+            {
+                try
+                {
+                    infoLabel.text = GetStatusText();
+                }
+                catch
+                {
+                    if (InfoCallback != null)
+                    {
+                        SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
+                        InfoCallback = null;
+                    }
+                }
+            };
+            SingletonMod<TypeMod>.Instance.OnStatusChanged += InfoCallback;
+            group.AddSpace(10);
+            AddButton(group, CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
+        }
+
+        private string GetStatusText()
+        {
+            var statusText = string.Empty;
+            var status = SingletonMod<TypeMod>.Instance.Status;
+            if (status == ModStatus.Unknown)
+                statusText = ModStatus.Unknown.Description<ModStatus, TypeMod>().AddColor(new Color32(255, 215, 81, 255));
+            else if (status == ModStatus.Normal)
+                statusText = ModStatus.Normal.Description<ModStatus, TypeMod>().AddColor(new Color32(65, 229, 107, 255));
+            else
+            {
+                status &= ModStatus.WithErrors;
+                var errors = status.GetEnumValues().Select(s => s.Description<ModStatus, TypeMod>()).ToArray();
+                statusText = string.Join(" | ", errors).AddColor(new Color32(255, 68, 68, 255));
+            }
+
+            return string.Format(CommonLocalize.Mod_Status, statusText);
+        }
+
+        #endregion
 
         #region LANGUAGE
 
@@ -260,7 +267,6 @@ namespace ModsCommon
 
             AddButton(group, CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
             AddButton(group, "Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
-            AddButton(group, CommonLocalize.Settings_ChangeLog, ShowChangeLog);
 #if DEBUG
             if (SingletonMod<TypeMod>.Instance.NeedMonoDevelopDebug)
 #else
@@ -488,12 +494,16 @@ namespace ModsCommon
             optionsPanel.autoLayoutPadding = new RectOffset(padding, 0, 0, 5);
             return optionsPanel;
         }
-        public static UIButton AddButton(UIHelper group, string text, OnButtonClicked click, float width = 400)
+        public static UIButton AddButton(UIHelper group, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
         {
             var button = group.AddButton(text, click) as UIButton;
+            if (textScale != null)
+                button.textScale = textScale.Value;
             button.autoSize = false;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
-            button.width = width;
+            if (width != null)
+                button.width = width.Value;
+
+            button.CustomStyle();
 
             return button;
         }
@@ -514,7 +524,7 @@ namespace ModsCommon
             if (component is UIPanel panel)
                 label.width = panel.width - panel.padding.left;
 
-            //text should be set after everything, otherwise it cause game crash on chenise logalization
+            //text should be set after everything, otherwise it cause game crash on chenise localization
             label.text = text;
 
             return label;
@@ -556,7 +566,7 @@ namespace ModsCommon
     {
         public LanguageDropDown()
         {
-            SetSettingsStyle(new Vector2(300, 31));
+            ComponentStyle.CustomSettingsStyle(this, new Vector2(300, 31));
         }
     }
 }

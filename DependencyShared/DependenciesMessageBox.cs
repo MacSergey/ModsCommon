@@ -125,7 +125,7 @@ namespace ModsCommon.Utilities
         private void AddButton()
         {
             Button = AddUIComponent<CustomUIButton>();
-            Button.SetMenuStyle();
+            Button.CustomStyle();
             Button.size = new Vector2(150f, 30f);
             Button.eventClick += ButtonClick;
         }

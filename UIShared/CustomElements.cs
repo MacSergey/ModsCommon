@@ -72,15 +72,6 @@ namespace ModsCommon.UI
                 relativePosition = positionBefore;
         }
 
-        public void SetMenuStyle()
-        {
-            normalBgSprite = "ButtonMenu";
-            hoveredTextColor = new Color32(7, 132, 255, 255);
-            pressedTextColor = new Color32(30, 30, 44, 255);
-            disabledTextColor = new Color32(7, 7, 7, 255);
-            horizontalAlignment = UIHorizontalAlignment.Center;
-            verticalAlignment = UIVerticalAlignment.Middle;
-        }
         private UIFontRenderer ObtainTextRenderer()
         {
             var uIFontRenderer = font.ObtainRenderer();

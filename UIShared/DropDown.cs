@@ -3,12 +3,14 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static ColossalFramework.UI.UIButton;
 
 namespace ModsCommon.UI
 {
     public abstract class UIDropDown<ValueType> : CustomUIDropDown, IUIOnceSelector<ValueType>
     {
         public event Action<ValueType> OnSelectObjectChanged;
+        public event PropertyChangedEventHandler<ButtonState> eventButtonStateChanged;
 
         bool IReusable.InCache { get; set; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
@@ -26,10 +28,71 @@ namespace ModsCommon.UI
         }
         public bool UseScrollBar { get; set; }
 
-        static UIDropDown()
+        protected ButtonState m_State;
+        public ButtonState state
         {
-
+            get => m_State;
+            set
+            {
+                if (value != m_State)
+                {
+                    OnButtonStateChanged(value);
+                    Invalidate();
+                }
+            }
         }
+
+        Color32? _bgColor;
+        Color32? _bgFocusedColor;
+        Color32? _bgHoveredColor;
+        Color32? _bgPressedColor;
+        Color32? _bgDisabledColor;
+        public Color32 BgColor
+        {
+            get => _bgColor ?? color;
+            set
+            {
+                _bgColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 BgFocusedColor
+        {
+            get => _bgFocusedColor ?? color;
+            set
+            {
+                _bgFocusedColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 BgHoveredColor
+        {
+            get => _bgHoveredColor ?? color;
+            set
+            {
+                _bgHoveredColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 BgPressedColor
+        {
+            get => _bgPressedColor ?? color;
+            set
+            {
+                _bgPressedColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 BgDisabledColor
+        {
+            get => _bgDisabledColor ?? disabledColor;
+            set
+            {
+                _bgDisabledColor = value;
+                Invalidate();
+            }
+        }
+
         public UIDropDown()
         {
             eventSelectedIndexChanged += IndexChanged;
@@ -53,8 +116,176 @@ namespace ModsCommon.UI
             base.OnMouseMove(p);
             CanWheel = true;
         }
+
+        public void StopLayout() { }
+        public void StartLayout(bool layoutNow = true) { }
+
+        void IReusable.DeInit()
+        {
+            Clear();
+            UseWheel = false;
+            WheelTip = false;
+            UseScrollBar = false;
+        }
+
+        public void SetDefaultStyle(Vector2? size = null)
+        {
+            ComponentStyle.DefaultStyle(this, size);
+
+            if (UseScrollBar)
+                listScrollbar = UIHelper.ScrollBar;
+        }
+        public void SetSettingsStyle(Vector2? size = null)
+        {
+            ComponentStyle.DefaultSettingsStyle(this, size);
+
+            if (UseScrollBar)
+                listScrollbar = UIHelper.ScrollBar;
+        }
+
+        protected override void OnRebuildRenderData()
+        {
+            if (atlas != null && font != null && font.isValid)
+            {
+                if (textRenderData != null)
+                    textRenderData.Clear();
+                else
+                {
+                    UIRenderData item = UIRenderData.Obtain();
+                    m_RenderData.Add(item);
+                }
+
+                renderData.material = base.atlas.material;
+                textRenderData.material = base.atlas.material;
+                RenderBackground();
+                RenderText();
+            }
+        }
+
+        protected override void RenderBackground()
+        {
+            if (GetBackgroundSprite() is UITextureAtlas.SpriteInfo backgroundSprite)
+            {
+                var color = ApplyOpacity(GetBackgroundColor());
+                RenderOptions renderOptions = new RenderOptions()
+                {
+                    _atlas = atlas,
+                    _color = color,
+                    _fillAmount = 1f,
+                    _flip = UISpriteFlip.None,
+                    _offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
+                    _pixelsToUnits = PixelsToUnits(),
+                    _size = size,
+                    _spriteInfo = backgroundSprite,
+                };
+
+                if (backgroundSprite.isSliced)
+                    Render.RenderSlicedSprite(renderData, renderOptions);
+                else
+                    Render.RenderSprite(renderData, renderOptions);
+            }
+        }
+        private void RenderText()
+        {
+            if (selectedIndex < 0 || selectedIndex >= items.Length)
+                return;
+
+            var text = items[selectedIndex];
+            var num = PixelsToUnits();
+            var maxSize = new Vector2(size.x - textFieldPadding.horizontal, size.y - textFieldPadding.vertical);
+            var vector = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
+            var vectorOffset = new Vector3(vector.x + textFieldPadding.left, vector.y - textFieldPadding.top, 0f) * num;
+            var defaultColor = isEnabled ? textColor : disabledColor;
+            using UIFontRenderer uIFontRenderer = font.ObtainRenderer();
+            uIFontRenderer.wordWrap = false;
+            uIFontRenderer.maxSize = maxSize;
+            uIFontRenderer.pixelRatio = num;
+            uIFontRenderer.textScale = textScale;
+            uIFontRenderer.characterSpacing = characterSpacing;
+            uIFontRenderer.vectorOffset = vectorOffset;
+            uIFontRenderer.multiLine = false;
+            uIFontRenderer.textAlign = UIHorizontalAlignment.Left;
+            uIFontRenderer.processMarkup = processMarkup;
+            uIFontRenderer.colorizeSprites = colorizeSprites;
+            uIFontRenderer.defaultColor = defaultColor;
+            uIFontRenderer.bottomColor = useGradient ? new Color32?(bottomColor) : null;
+            uIFontRenderer.overrideMarkupColors = false;
+            uIFontRenderer.opacity = CalculateOpacity();
+            uIFontRenderer.outline = useOutline;
+            uIFontRenderer.outlineSize = outlineSize;
+            uIFontRenderer.outlineColor = outlineColor;
+            uIFontRenderer.shadow = useDropShadow;
+            uIFontRenderer.shadowColor = dropShadowColor;
+            uIFontRenderer.shadowOffset = dropShadowOffset;
+            if (uIFontRenderer is UIDynamicFont.DynamicFontRenderer dynamicFontRenderer)
+            {
+                dynamicFontRenderer.spriteAtlas = atlas;
+                dynamicFontRenderer.spriteBuffer = renderData;
+            }
+            uIFontRenderer.Render(text, textRenderData);
+        }
+
+        protected virtual void OnButtonStateChanged(ButtonState value)
+        {
+            if (isEnabled || value == ButtonState.Disabled)
+            {
+                m_State = value;
+                if (eventButtonStateChanged != null)
+                    eventButtonStateChanged(this, value);
+
+                Invoke("OnButtonStateChanged", value);
+                Invalidate();
+            }
+        }
+        protected override void OnEnterFocus(UIFocusEventParameter p)
+        {
+            if (state != ButtonState.Pressed)
+                state = ButtonState.Focused;
+
+            base.OnEnterFocus(p);
+        }
+        protected override void OnLeaveFocus(UIFocusEventParameter p)
+        {
+            state = containsMouse ? ButtonState.Hovered : ButtonState.Normal;
+            base.OnLeaveFocus(p);
+        }
+        protected override void OnMouseDown(UIMouseEventParameter p)
+        {
+            if (state != ButtonState.Focused)
+                state = ButtonState.Pressed;
+
+            base.OnMouseDown(p);
+        }
+        protected override void OnMouseUp(UIMouseEventParameter p)
+        {
+            if (m_IsMouseHovering)
+            {
+                if (containsFocus)
+                    state = ButtonState.Focused;
+                else
+                    state = ButtonState.Hovered;
+            }
+            else if (hasFocus)
+                state = ButtonState.Focused;
+            else
+                state = ButtonState.Normal;
+
+            base.OnMouseUp(p);
+        }
+        protected override void OnMouseEnter(UIMouseEventParameter p)
+        {
+            if (state != ButtonState.Focused)
+                state = ButtonState.Hovered;
+
+            base.OnMouseEnter(p);
+        }
         protected override void OnMouseLeave(UIMouseEventParameter p)
         {
+            if (containsFocus)
+                state = ButtonState.Focused;
+            else
+                state = ButtonState.Normal;
+
             base.OnMouseLeave(p);
             CanWheel = false;
         }
@@ -81,100 +312,39 @@ namespace ModsCommon.UI
             if (triggerButton is UIComponent button && button != this)
                 button.size = size;
         }
-
-        public void SetDefaultStyle(Vector2? size = null)
+        protected override void OnIsEnabledChanged()
         {
-            atlas = CommonTextures.Atlas;
-            listBackground = CommonTextures.FieldHovered;
-            itemHeight = 20;
-            itemHover = CommonTextures.FieldNormal;
-            itemHighlight = CommonTextures.FieldFocused;
-            normalBgSprite = CommonTextures.FieldNormal;
-            hoveredBgSprite = CommonTextures.FieldHovered;
-            disabledBgSprite = CommonTextures.FieldDisabled;
-            listHeight = 700;
-            listPosition = PopupListPosition.Below;
-            clampListToScreen = true;
-            foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
-            popupColor = new Color32(45, 52, 61, 255);
-            popupTextColor = new Color32(170, 170, 170, 255);
-            textScale = 0.7f;
-            textFieldPadding = new RectOffset(8, 0, 6, 0);
-            popupColor = Color.white;
-            popupTextColor = Color.black;
-            verticalAlignment = UIVerticalAlignment.Middle;
-            horizontalAlignment = UIHorizontalAlignment.Left;
-            itemPadding = new RectOffset(14, 0, 5, 0);
+            if (!isEnabled)
+                state = ButtonState.Disabled;
+            else
+                state = ButtonState.Normal;
 
-            if(UseScrollBar)
-            {
-                listScrollbar = UIHelper.ScrollBar;
-            }
-
-            var button = AddUIComponent<CustomUIButton>();
-            button.atlas = TextureHelper.InGameAtlas;
-            button.text = string.Empty;
-            button.relativePosition = new Vector3(0f, 0f);
-            button.textVerticalAlignment = UIVerticalAlignment.Middle;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-            button.normalFgSprite = "IconDownArrow";
-            button.hoveredFgSprite = "IconDownArrowHovered";
-            button.pressedFgSprite = "IconDownArrowPressed";
-            button.focusedFgSprite = "IconDownArrow";
-            button.disabledFgSprite = "IconDownArrowDisabled";
-            button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            button.horizontalAlignment = UIHorizontalAlignment.Right;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
-            button.textScale = 0.8f;
-
-            triggerButton = button;
-
-            this.size = size ?? new Vector2(230, 20);
+            base.OnIsEnabledChanged();
         }
 
-        public void SetSettingsStyle(Vector2? size = null)
+        private Color32 GetBackgroundColor()
         {
-            atlas = TextureHelper.InGameAtlas;
-            listBackground = "OptionsDropboxListbox";
-            itemHeight = 24;
-            itemHover = "ListItemHover";
-            itemHighlight = "ListItemHighlight";
-            normalBgSprite = "OptionsDropbox";
-            hoveredBgSprite = "OptionsDropboxHovered";
-            focusedBgSprite = "OptionsDropboxFocused";
-            autoListWidth = true;
-            listHeight = 700;
-            listPosition = PopupListPosition.Below;
-            clampListToScreen = false;
-            foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
-            popupColor = Color.white;
-            popupTextColor = new Color32(170, 170, 170, 255);
-            textScale = 1f;
-            textFieldPadding = new RectOffset(14, 40, 7, 0);
-            popupColor = Color.white;
-            popupTextColor = new Color32(170, 170, 170, 255);
-            verticalAlignment = UIVerticalAlignment.Middle;
-            horizontalAlignment = UIHorizontalAlignment.Left;
-            itemPadding = new RectOffset(14, 14, 4, 0);
-            triggerButton = this;
-
-            if (UseScrollBar)
+            return state switch
             {
-                listScrollbar = UIHelper.ScrollBar;
-            }
-
-            this.size = size ?? new Vector2(400, 31);
+                ButtonState.Focused => BgFocusedColor,
+                ButtonState.Hovered => BgHoveredColor,
+                ButtonState.Pressed => BgPressedColor,
+                ButtonState.Disabled => BgDisabledColor,
+                _ => BgColor,
+            };
         }
-
-        public void StopLayout() { }
-        public void StartLayout(bool layoutNow = true) { }
-
-        void IReusable.DeInit()
+        protected override UITextureAtlas.SpriteInfo GetBackgroundSprite()
         {
-            Clear();
-            UseWheel = false;
-            WheelTip = false;
-            UseScrollBar = false;
+            var spriteInfo = state switch
+            {
+                ButtonState.Normal => atlas[normalBgSprite],
+                ButtonState.Focused => atlas[focusedBgSprite],
+                ButtonState.Hovered => atlas[hoveredBgSprite],
+                //ButtonState.Pressed => atlas[pressedBgSprite],
+                ButtonState.Disabled => atlas[disabledBgSprite],
+            };
+
+            return spriteInfo ?? atlas[normalBgSprite];
         }
     }
 }

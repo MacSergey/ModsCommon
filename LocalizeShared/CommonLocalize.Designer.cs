@@ -631,6 +631,15 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Version: {0}.
+        /// </summary>
+        public static string Mod_Version {
+            get {
+                return ResourceManager.GetString("Mod_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на The game version is out of date.
         ///
         ///The mod requires version: {0}

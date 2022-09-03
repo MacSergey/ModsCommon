@@ -11,13 +11,17 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CommonTextures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComponentPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomElements.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DonatePanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MultyAtlasUIButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SizeChanger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Style.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TabPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextureHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UIExtension.cs" />
