@@ -106,10 +106,10 @@ namespace ModsCommon.UI
             button.pressedColor = ButtonPressedColor;
             button.focusedColor = ButtonPressedColor;
 
-            button.FgColor = IconNormalColor;
-            button.FgHoveredColor = IconHoverColor;
-            button.FgPressedColor = IconPressedColor;
-            button.FgDisabledColor = IconDisabledColor;
+            button.normalFgColor = IconNormalColor;
+            button.hoveredFgColor = IconHoverColor;
+            button.pressedFgColor = IconPressedColor;
+            button.disabledFgColor = IconDisabledColor;
         }
         private void SetAdditionalButtonColors(HeaderButton button)
         {
@@ -117,10 +117,10 @@ namespace ModsCommon.UI
             button.pressedColor = AdditionalButtonPressedColor;
             button.focusedColor = AdditionalButtonPressedColor;
 
-            button.FgColor = IconNormalColor;
-            button.FgHoveredColor = IconHoverColor;
-            button.FgPressedColor = IconPressedColor;
-            button.FgDisabledColor = IconDisabledColor;
+            button.normalFgColor = IconNormalColor;
+            button.hoveredFgColor = IconHoverColor;
+            button.pressedFgColor = IconPressedColor;
+            button.disabledFgColor = IconDisabledColor;
         }
     }
     public class HeaderContent : BaseHeaderContent

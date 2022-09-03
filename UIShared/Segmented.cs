@@ -75,7 +75,7 @@ namespace ModsCommon.UI
 
             if(iconAtlas != null && !string.IsNullOrEmpty(iconSprite))
             {
-                button.FgAtlas = iconAtlas;
+                button.atlasForeground = iconAtlas;
                 button.normalFgSprite = iconSprite;
                 button.tooltip = label ?? item.ToString();
                 button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;

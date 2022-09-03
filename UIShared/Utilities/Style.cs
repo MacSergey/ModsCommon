@@ -109,15 +109,23 @@ namespace ModsCommon.UI
             dropDown.size = size ?? new Vector2(400, 31);
         }
 
-        public static void CustomSettingsStyle(this UIDropDown dropDown, Vector2? size = null)
+        public static void CustomSettingsStyle(this CustomUIDropDown dropDown, Vector2? size = null)
         {
+            dropDown.atlasBackground = CommonTextures.Atlas;
+            dropDown.normalBgSprite = CommonTextures.FieldNormal;
+            dropDown.hoveredBgSprite = CommonTextures.FieldNormal;
+
+            dropDown.atlasForeground = TextureHelper.InGameAtlas;
+            dropDown.normalFgSprite = "IconDownArrow";
+            dropDown.hoveredFgSprite = "IconDownArrowHovered";
+            //dropDown.pressedFgSprite = "IconDownArrowPressed";
+            dropDown.focusedFgSprite = "IconDownArrow";
+            dropDown.disabledFgSprite = "IconDownArrowDisabled";
+
             dropDown.atlas = CommonTextures.Atlas;
             dropDown.listBackground = CommonTextures.FieldHovered;
             dropDown.itemHover = CommonTextures.FieldNormal;
             dropDown.itemHighlight = CommonTextures.FieldFocused;
-            dropDown.normalBgSprite = CommonTextures.FieldNormal;
-            //dropDown.hoveredBgSprite = CommonTextures.FieldHovered;
-            //dropDown.disabledBgSprite = CommonTextures.FieldDisabled;
 
             dropDown.itemHeight = 24;
             dropDown.listHeight = 700;
@@ -128,6 +136,9 @@ namespace ModsCommon.UI
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
 
             dropDown.color = new Color32(101, 101, 101, 255);
+            dropDown.hoveredBgColor = new Color32(172, 172, 172, 255);
+            dropDown.normalFgColor = Color.black;
+            dropDown.hoveredFgColor = new Color32(64, 64, 64, 255);
             dropDown.popupColor = new Color32(101, 101, 101, 255);
             dropDown.popupTextColor = Color.white;
 
@@ -135,35 +146,21 @@ namespace ModsCommon.UI
             dropDown.textFieldPadding = new RectOffset(14, 40, 7, 0);
             dropDown.verticalAlignment = UIVerticalAlignment.Middle;
             dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
+            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
+            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
 
-            var button = dropDown.Find<CustomUIButton>("Trigger");
-            if (button == null)
-            {
-                button = dropDown.AddUIComponent<CustomUIButton>();
-                button.name = "Trigger";
-            }
-            button.atlas = TextureHelper.InGameAtlas;
-            button.text = string.Empty;
-            button.relativePosition = new Vector3(0f, 0f);
-            button.textVerticalAlignment = UIVerticalAlignment.Middle;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-            button.normalFgSprite = "IconDownArrow";
-            button.hoveredFgSprite = "IconDownArrowHovered";
-            button.pressedFgSprite = "IconDownArrowPressed";
-            button.focusedFgSprite = "IconDownArrow";
-            button.disabledFgSprite = "IconDownArrowDisabled";
-            button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            button.horizontalAlignment = UIHorizontalAlignment.Right;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
-            button.textScale = 0.8f;
-
-            button.color = Color.black;
-            button.hoveredColor = new Color32(64, 64, 64, 255);
-            button.pressedColor = new Color32(64, 64, 64, 255);
-
-            dropDown.triggerButton = button;
+            dropDown.triggerButton = dropDown;
 
             dropDown.size = size ?? new Vector2(230, 20);
+        }
+
+        public static void CustomSettingsStyle(this UITextField textField)
+        {
+            textField.atlas = CommonTextures.Atlas;
+            textField.normalBgSprite = CommonTextures.FieldNormal;
+            textField.selectionSprite = CommonTextures.Empty;
+            textField.color = new Color32(101, 101, 101, 255);
         }
     }
 }

@@ -9,142 +9,134 @@ namespace ModsCommon.UI
 {
     public class MultyAtlasUIButton : CustomUIButton
     {
-        UITextureAtlas _fgAtlas;
-        UITextureAtlas _bgAtlas;
+        UITextureAtlas _atlasForeground;
+        UITextureAtlas _atlasBackground;
 
-        public UITextureAtlas FgAtlas
+        public UITextureAtlas atlasForeground
         {
-            get => _fgAtlas ?? atlas;
+            get => _atlasForeground ?? atlas;
             set
             {
-                if (!Equals(value, _fgAtlas))
+                if (!Equals(value, _atlasForeground))
                 {
-                    _fgAtlas = value;
+                    _atlasForeground = value;
                     Invalidate();
                 }
             }
         }
-        public UITextureAtlas BgAtlas
+        public UITextureAtlas atlasBackground
         {
-            get => _bgAtlas ?? atlas;
+            get => _atlasBackground ?? atlas;
             set
             {
-                if (!Equals(value, _bgAtlas))
+                if (!Equals(value, _atlasBackground))
                 {
-                    _bgAtlas = value;
+                    _atlasBackground = value;
                     Invalidate();
                 }
             }
         }
-        public UITextureAtlas Atlas
+
+        Color32? _normalBgColor;
+        Color32? _focusedBgColor;
+        Color32? _hoveredBgColor;
+        Color32? _pressedBgColor;
+        Color32? _disabledBgColor;
+
+        Color32? _normalFgColor;
+        Color32? _focusedFgColor;
+        Color32? _hoveredFgColor;
+        Color32? _pressedFgColor;
+        Color32? _disabledFgColor;
+
+        public Color32 normalBgColor
         {
+            get => _normalBgColor ?? color;
             set
             {
-                _fgAtlas = value;
-                _bgAtlas = value;
-                atlas = value;
+                _normalBgColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 focusedBgColor
+        {
+            get => _focusedBgColor ?? color;
+            set
+            {
+                _focusedBgColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 hoveredBgColor
+        {
+            get => _hoveredBgColor ?? color;
+            set
+            {
+                _hoveredBgColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 pressedBgColor
+        {
+            get => _pressedBgColor ?? color;
+            set
+            {
+                _pressedBgColor = value;
+                Invalidate();
+            }
+        }
+        public Color32 disabledBgColor
+        {
+            get => _disabledBgColor ?? disabledColor;
+            set
+            {
+                _disabledBgColor = value;
+                Invalidate();
             }
         }
 
-        Color32? _bgColor;
-        Color32? _bgFocusedColor;
-        Color32? _bgHoveredColor;
-        Color32? _bgPressedColor;
-        Color32? _bgDisabledColor;
-
-        Color32? _fgColor;
-        Color32? _fgFocusedColor;
-        Color32? _fgHoveredColor;
-        Color32? _fgPressedColor;
-        Color32? _fgDisabledColor;
-
-        public Color32 BgColor
+        public Color32 normalFgColor
         {
-            get => _bgColor ?? color;
+            get => _normalFgColor ?? color;
             set
             {
-                _bgColor = value;
+                _normalFgColor = value;
                 Invalidate();
             }
         }
-        public Color32 BgFocusedColor
+        public Color32 focusedFgColor
         {
-            get => _bgFocusedColor ?? focusedColor;
+            get => _focusedFgColor ?? color;
             set
             {
-                _bgFocusedColor = value;
+                _focusedBgColor = value;
                 Invalidate();
             }
         }
-        public Color32 BgHoveredColor
+        public Color32 hoveredFgColor
         {
-            get => _bgHoveredColor ?? hoveredColor;
+            get => _hoveredFgColor ?? color;
             set
             {
-                _bgHoveredColor = value;
+                _hoveredFgColor = value;
                 Invalidate();
             }
         }
-        public Color32 BgPressedColor
+        public Color32 pressedFgColor
         {
-            get => _bgPressedColor ?? pressedColor;
+            get => _pressedFgColor ?? color;
             set
             {
-                _bgPressedColor = value;
+                _pressedFgColor = value;
                 Invalidate();
             }
         }
-        public Color32 BgDisabledColor
+        public Color32 disabledFgColor
         {
-            get => _bgDisabledColor ?? disabledColor;
+            get => _disabledFgColor ?? disabledColor;
             set
             {
-                _bgDisabledColor = value;
-                Invalidate();
-            }
-        }
-        public Color32 FgColor
-        {
-            get => _fgColor ?? color;
-            set
-            {
-                _fgColor = value;
-                Invalidate();
-            }
-        }
-        public Color32 FgFocusedColor
-        {
-            get => _fgFocusedColor ?? focusedColor;
-            set
-            {
-                _bgFocusedColor = value;
-                Invalidate();
-            }
-        }
-        public Color32 FgHoveredColor
-        {
-            get => _fgHoveredColor ?? hoveredColor;
-            set
-            {
-                _fgHoveredColor = value;
-                Invalidate();
-            }
-        }
-        public Color32 FgPressedColor
-        {
-            get => _fgPressedColor ?? pressedColor;
-            set
-            {
-                _fgPressedColor = value;
-                Invalidate();
-            }
-        }
-        public Color32 FgDisabledColor
-        {
-            get => _fgDisabledColor ?? disabledColor;
-            set
-            {
-                _fgDisabledColor = value;
+                _disabledFgColor = value;
                 Invalidate();
             }
         }
@@ -186,10 +178,11 @@ namespace ModsCommon.UI
             else
                 TextRenderData.Clear();
 
-            if (BgAtlas is UITextureAtlas bgAtlas && FgAtlas is UITextureAtlas fgAtlas)
+            if (atlasBackground is UITextureAtlas bgAtlas && atlasForeground is UITextureAtlas fgAtlas)
             {
                 BgRenderData.material = bgAtlas.material;
                 FgRenderData.material = fgAtlas.material;
+                TextRenderData.material = bgAtlas.material;
 
                 RenderBackground();
                 RenderForeground();
@@ -201,11 +194,10 @@ namespace ModsCommon.UI
             if (m_Font == null || !m_Font.isValid)
                 return;
 
-            TextRenderData.material = BgAtlas.material;
             using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
             if (uIFontRenderer is UIDynamicFont.DynamicFontRenderer dynamicFontRenderer)
             {
-                dynamicFontRenderer.spriteAtlas = BgAtlas;
+                dynamicFontRenderer.spriteAtlas = atlasBackground;
                 dynamicFontRenderer.spriteBuffer = BgRenderData;
             }
             uIFontRenderer.Render(m_Text, TextRenderData);
@@ -217,7 +209,7 @@ namespace ModsCommon.UI
             var ratio = PixelsToUnits();
             var vectorOffset = (pivot.TransformToUpperLeft(size, arbitraryPivotOffset) + new Vector3(textPadding.left, -textPadding.top)) * ratio;
             GetTextScaleMultiplier();
-            var defaultColor = ApplyOpacity(GetTextColorForState());
+
             var renderer = font.ObtainRenderer();
             renderer.wordWrap = wordWrap;
             renderer.multiLine = true;
@@ -227,7 +219,7 @@ namespace ModsCommon.UI
             renderer.vectorOffset = vectorOffset;
             renderer.textAlign = textHorizontalAlignment;
             renderer.processMarkup = processMarkup;
-            renderer.defaultColor = defaultColor;
+            renderer.defaultColor = ApplyOpacity(GetTextColorForState());
             renderer.bottomColor = null;
             renderer.overrideMarkupColors = false;
             renderer.opacity = CalculateOpacity();
@@ -263,22 +255,22 @@ namespace ModsCommon.UI
         {
             return state switch
             {
-                ButtonState.Focused => BgFocusedColor,
-                ButtonState.Hovered => BgHoveredColor,
-                ButtonState.Pressed => BgPressedColor,
-                ButtonState.Disabled => BgDisabledColor,
-                _ => BgColor,
+                ButtonState.Focused => focusedBgColor,
+                ButtonState.Hovered => hoveredBgColor,
+                ButtonState.Pressed => pressedBgColor,
+                ButtonState.Disabled => disabledBgColor,
+                _ => normalBgColor,
             };
         }
         private Color32 GetForegroundColor()
         {
             return state switch
             {
-                ButtonState.Focused => FgFocusedColor,
-                ButtonState.Hovered => FgHoveredColor,
-                ButtonState.Pressed => FgPressedColor,
-                ButtonState.Disabled => FgDisabledColor,
-                _ => FgColor,
+                ButtonState.Focused => focusedFgColor,
+                ButtonState.Hovered => hoveredFgColor,
+                ButtonState.Pressed => pressedFgColor,
+                ButtonState.Disabled => disabledFgColor,
+                _ => normalFgColor,
             };
         }
         private Vector3 GetVertAlignOffset(UIFontRenderer fontRenderer)
@@ -304,7 +296,7 @@ namespace ModsCommon.UI
 
         protected override UITextureAtlas.SpriteInfo GetBackgroundSprite()
         {
-            if (BgAtlas is not UITextureAtlas atlas)
+            if (atlasBackground is not UITextureAtlas atlas)
                 return null;
 
             var spriteInfo = state switch
@@ -314,13 +306,14 @@ namespace ModsCommon.UI
                 ButtonState.Hovered => atlas[hoveredBgSprite],
                 ButtonState.Pressed => atlas[pressedBgSprite],
                 ButtonState.Disabled => atlas[disabledBgSprite],
+                _ => null,
             };
 
             return spriteInfo ?? atlas[normalBgSprite];
         }
         protected override UITextureAtlas.SpriteInfo GetForegroundSprite()
         {
-            if (FgAtlas is not UITextureAtlas atlas)
+            if (atlasForeground is not UITextureAtlas atlas)
                 return null;
 
             var spriteInfo = state switch
@@ -330,6 +323,7 @@ namespace ModsCommon.UI
                 ButtonState.Hovered => atlas[hoveredFgSprite],
                 ButtonState.Pressed => atlas[pressedFgSprite],
                 ButtonState.Disabled => atlas[disabledFgSprite],
+                _ => null,
             };
 
             return spriteInfo ?? atlas[normalFgSprite];
@@ -343,7 +337,7 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    _atlas = BgAtlas,
+                    _atlas = atlasBackground,
                     _color = color,
                     _fillAmount = 1f,
                     _flip = UISpriteFlip.None,
@@ -369,7 +363,7 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    _atlas = FgAtlas,
+                    _atlas = atlasForeground,
                     _color = color,
                     _fillAmount = 1f,
                     _flip = UISpriteFlip.None,

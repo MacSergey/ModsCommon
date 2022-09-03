@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.UI;
 using UnityEngine;
+using static ColossalFramework.UI.UIButton;
 
 namespace ModsCommon.UI
 {
@@ -96,6 +97,7 @@ namespace ModsCommon.UI
     public class CustomUIDragHandle : UIDragHandle
     {
         private Vector3 positionBefore;
+
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -103,16 +105,7 @@ namespace ModsCommon.UI
                 relativePosition = positionBefore;
         }
     }
-    public class CustomUIDropDown : UIDropDown
-    {
-        private Vector3 positionBefore;
-        public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout()
-        {
-            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
-                relativePosition = positionBefore;
-        }
-    }
+
     public class CustomUIScrollbar : UIScrollbar
     {
         private Vector3 positionBefore;
@@ -124,16 +117,6 @@ namespace ModsCommon.UI
         }
     }
     public class CustomUIProgressBar : UIProgressBar
-    {
-        private Vector3 positionBefore;
-        public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout()
-        {
-            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
-                relativePosition = positionBefore;
-        }
-    }
-    public class CustomUIListBox : UIListBox
     {
         private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;

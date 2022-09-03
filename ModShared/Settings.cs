@@ -207,8 +207,9 @@ namespace ModsCommon
             foreach (var locale in GetSupportLanguages())
             {
                 var localizeString = $"Mod_Locale_{locale}";
-                var localeText = CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(locale));
-                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale)
+                var regionLocale = ClassesExtension.GetRegionLocale(locale);
+                var localeText = CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(regionLocale));
+                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != regionLocale)
                     localeText += $" ({CommonLocalize.ResourceManager.GetString(localizeString, CommonLocalize.Culture)})";
 
                 dropDown.AddItem(locale, localeText);
@@ -338,6 +339,8 @@ namespace ModsCommon
         {
             UITextField field = null;
             field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+            field.CustomSettingsStyle();
+            field.width = 100f;
             var panel = field.parent as UIPanel;
             panel.padding.left = padding;
             return panel;
@@ -365,6 +368,8 @@ namespace ModsCommon
         {
             UITextField field = null;
             field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+            field.CustomSettingsStyle();
+            field.width = 100f;
             var panel = field.parent as UIPanel;
             panel.padding.left = padding;
             return panel;
@@ -392,6 +397,7 @@ namespace ModsCommon
         {
             UITextField field = null;
             field = group.AddTextfield(label, saved.ToString(), OnChanged, OnSubmitted) as UITextField;
+            field.CustomSettingsStyle();
             var panel = field.parent as UIPanel;
             panel.padding.left = padding;
             return panel;
