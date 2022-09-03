@@ -190,30 +190,7 @@ namespace ModsCommon
                     locale = new SavedString(Settings.localeID, Settings.gameSettingsFile, DefaultSettings.localeID).value;
             }
 
-            switch (locale)
-            {
-                case "cs": locale = "cs-cz"; break;
-                case "da": locale = "da-dk"; break;
-                case "de": locale = "de-de"; break;
-                case "en": locale = "en-us"; break;
-                case "es": locale = "es-es"; break;
-                case "fi": locale = "fi-fi"; break;
-                case "fr": locale = "fr-fr"; break;
-                case "hu": locale = "hu-hu"; break;
-                case "id": locale = "id-id"; break;
-                case "it": locale = "it-it"; break;
-                case "ja": locale = "ja-jp"; break;
-                case "ko": locale = "ko-kr"; break;
-                case "mr": locale = "mr-in"; break;
-                case "nl": locale = "nl-nl"; break;
-                case "pl": locale = "pl-pl"; break;
-                case "pt": locale = "pt-pt"; break;
-                case "ro": locale = "ro-ro"; break;
-                case "ru": locale = "ru-ru"; break;
-                case "tr": locale = "tr-tr"; break;
-                case "zh": locale = "zh-cn"; break;
-            }
-
+            locale = ClassesExtension.GetRegionLocale(locale);
             Culture = new CultureInfo(locale);
             Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
         }

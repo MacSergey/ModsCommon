@@ -62,7 +62,7 @@ namespace ModsCommon.UI
 
         public static int DefaultWidth => 573;
         public static int DefaultHeight => 200;
-        public static int ButtonHeight => 47;
+        public static int ButtonHeight => 35;
         protected static int ButtonsSpace => 25;
         public static int Padding => 16;
         public Vector2 MaxContentSize
@@ -184,7 +184,7 @@ namespace ModsCommon.UI
         protected CustomUIButton AddButton(Action action, uint ratio = 1)
         {
             var button = ButtonPanel.AddUIComponent<CustomUIButton>();
-            button.SetMenuStyle();
+            button.CustomStyle();
             button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => action?.Invoke();
 
             ButtonsRatio.Add(Math.Max(ratio, 1));

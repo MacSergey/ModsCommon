@@ -102,25 +102,25 @@ namespace ModsCommon.UI
         }
         private void SetButtonColors(HeaderButton button)
         {
-            button.hoveredColor = ButtonHoveredColor;
-            button.pressedColor = ButtonPressedColor;
-            button.focusedColor = ButtonPressedColor;
+            button.hoveredBgColor = ButtonHoveredColor;
+            button.pressedBgColor = ButtonPressedColor;
+            button.focusedBgColor = ButtonPressedColor;
 
-            button.FgColor = IconNormalColor;
-            button.FgHoveredColor = IconHoverColor;
-            button.FgPressedColor = IconPressedColor;
-            button.FgDisabledColor = IconDisabledColor;
+            button.normalFgColor = IconNormalColor;
+            button.hoveredFgColor = IconHoverColor;
+            button.pressedFgColor = IconPressedColor;
+            button.disabledFgColor = IconDisabledColor;
         }
         private void SetAdditionalButtonColors(HeaderButton button)
         {
-            button.hoveredColor = AdditionalButtonHoveredColor;
-            button.pressedColor = AdditionalButtonPressedColor;
-            button.focusedColor = AdditionalButtonPressedColor;
+            button.hoveredBgColor = AdditionalButtonHoveredColor;
+            button.pressedBgColor = AdditionalButtonPressedColor;
+            button.focusedBgColor = AdditionalButtonPressedColor;
 
-            button.FgColor = IconNormalColor;
-            button.FgHoveredColor = IconHoverColor;
-            button.FgPressedColor = IconPressedColor;
-            button.FgDisabledColor = IconDisabledColor;
+            button.normalFgColor = IconNormalColor;
+            button.hoveredFgColor = IconHoverColor;
+            button.pressedFgColor = IconPressedColor;
+            button.disabledFgColor = IconDisabledColor;
         }
     }
     public class HeaderContent : BaseHeaderContent

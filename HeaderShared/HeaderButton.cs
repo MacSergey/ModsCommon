@@ -17,7 +17,7 @@ namespace ModsCommon.UI
 
         public HeaderButton()
         {
-            BgAtlas = CommonTextures.Atlas;
+            atlasBackground = CommonTextures.Atlas;
             hoveredBgSprite = pressedBgSprite = focusedBgSprite = CommonTextures.HeaderHover;
             size = new Vector2(Size, Size);
             clipChildren = true;
@@ -29,7 +29,7 @@ namespace ModsCommon.UI
         }
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            FgAtlas = atlas ?? TextureHelper.InGameAtlas;
+            atlasForeground = atlas ?? TextureHelper.InGameAtlas;
             normalFgSprite = sprite;
             hoveredFgSprite = sprite;
             pressedFgSprite = sprite;

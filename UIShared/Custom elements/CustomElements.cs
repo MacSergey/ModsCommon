@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.UI;
 using UnityEngine;
+using static ColossalFramework.UI.UIButton;
 
 namespace ModsCommon.UI
 {
@@ -72,15 +73,6 @@ namespace ModsCommon.UI
                 relativePosition = positionBefore;
         }
 
-        public void SetMenuStyle()
-        {
-            normalBgSprite = "ButtonMenu";
-            hoveredTextColor = new Color32(7, 132, 255, 255);
-            pressedTextColor = new Color32(30, 30, 44, 255);
-            disabledTextColor = new Color32(7, 7, 7, 255);
-            horizontalAlignment = UIHorizontalAlignment.Center;
-            verticalAlignment = UIVerticalAlignment.Middle;
-        }
         private UIFontRenderer ObtainTextRenderer()
         {
             var uIFontRenderer = font.ObtainRenderer();
@@ -105,6 +97,7 @@ namespace ModsCommon.UI
     public class CustomUIDragHandle : UIDragHandle
     {
         private Vector3 positionBefore;
+
         public override void ResetLayout() => positionBefore = relativePosition;
         public override void PerformLayout()
         {
@@ -112,16 +105,7 @@ namespace ModsCommon.UI
                 relativePosition = positionBefore;
         }
     }
-    public class CustomUIDropDown : UIDropDown
-    {
-        private Vector3 positionBefore;
-        public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout()
-        {
-            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
-                relativePosition = positionBefore;
-        }
-    }
+
     public class CustomUIScrollbar : UIScrollbar
     {
         private Vector3 positionBefore;
@@ -133,16 +117,6 @@ namespace ModsCommon.UI
         }
     }
     public class CustomUIProgressBar : UIProgressBar
-    {
-        private Vector3 positionBefore;
-        public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout()
-        {
-            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
-                relativePosition = positionBefore;
-        }
-    }
-    public class CustomUIListBox : UIListBox
     {
         private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;

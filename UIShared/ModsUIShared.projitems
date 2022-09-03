@@ -9,19 +9,25 @@
     <Import_RootNamespace>ModsUIShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CommonTextures.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ComponentPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIListbox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\CommonTextures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ComponentPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomElements.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DonatePanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\MultyAtlasUIButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Render.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SizeChanger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Style.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TabPanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TextureHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UIExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UIHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\UIExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\UIHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueField.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +52,7 @@
     <Folder Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\" />
     <Folder Include="$(MSBuildThisFileDirectory)Resources\CloseButton\" />
     <Folder Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Utilities\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabled.png" />
