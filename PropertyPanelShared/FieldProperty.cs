@@ -46,6 +46,7 @@ namespace ModsCommon.UI
             Field.OnValueChanged += ValueChanged;
         }
 
+        public void SimulateEnterValue(ValueType value) => Field.SimulateEnterValue(value);
         private void ValueChanged(ValueType value) => OnValueChanged?.Invoke(value);
 
         public override void DeInit()

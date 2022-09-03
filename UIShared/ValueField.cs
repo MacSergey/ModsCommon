@@ -36,6 +36,7 @@ namespace ModsCommon.UI
                 RefreshText();
             }
         }
+        public void SimulateEnterValue(TypeValue value) => ValueChanged(value, true);
 
         protected virtual void ValueChanged(TypeValue value, bool callEvent = true)
         {
