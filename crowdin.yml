@@ -1,4 +1,4 @@
 files:
-  - source: /LocalizeShared/en/CommonLocalize.resx
+  - source: /LocalizeShared/CommonLocalize.resx
     translation: /LocalizeShared/%two_letters_code%/CommonLocalize.%two_letters_code%.resx
     update_option: update_as_unapproved
