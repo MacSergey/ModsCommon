@@ -1,10 +1,4 @@
 files:
   - source: /LocalizeShared/CommonLocalize.resx
-    translation: /LocalizeShared/CommonLocalize.%two_letters_code%.resx
+    translation: /LocalizeShared/%two_letters_code%/CommonLocalize.%two_letters_code%.resx
     update_option: update_as_unapproved
-    languages_mapping:
-      two_letters_code:
-        "zh-CN": "zh-CN"
-        "zh-TW": "zh-TW"
-        "en-GB": "en-GB"
-        "ms" : "mr"

@@ -9,15 +9,10 @@
     <Import_RootNamespace>LocalizeShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.resx" ManifestResourceName="ModsCommon.CommonLocalize">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>CommonLocalize.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>ModsCommon</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CommonLocalize.Designer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LocalizeExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.resx" />
   </ItemGroup>
 </Project>
