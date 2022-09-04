@@ -37,21 +37,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CommonLocalize.resx">
-      <CustomToolNamespace>ModsCommon</CustomToolNamespace>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommonLocalize.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CommonLocalize.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommonLocalize.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CommonLocalize.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
