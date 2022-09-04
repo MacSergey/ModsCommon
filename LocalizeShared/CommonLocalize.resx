@@ -406,9 +406,6 @@ Update the mod to the newest version, otherwise the correct working of the mod i
   <data name="Setting_Donate" xml:space="preserve">
     <value>If you like {0}, you can support author</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>a</value>
-  </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Press {0} to
 selection step over</value>
