@@ -75,12 +75,12 @@ namespace ModsCommon.Utilities
 
         public ushort Node
         {
-            get => (Id & NodeType) == 0 ? 0 : (ushort)(Id & DataMask);
+            get => (Id & NodeType) == 0 ? (ushort)0 : (ushort)(Id & DataMask);
             set => Id = NodeType | value;
         }
         public ushort Segment
         {
-            get => (Id & SegmentType) == 0 ? 0 : (ushort)(Id & DataMask);
+            get => (Id & SegmentType) == 0 ? (ushort)0 : (ushort)(Id & DataMask);
             set => Id = SegmentType | value;
         }
 
