@@ -13,6 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)LocalizeExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.resx" ManifestResourceName="ModsCommon.CommonLocalize" />
   </ItemGroup>
 </Project>
