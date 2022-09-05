@@ -288,16 +288,30 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>繁體中文</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>狀態: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>遊戲版本太舊</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>載入發生錯誤</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>模組版本太舊</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>正常運作</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>不明</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>支援</value>
   </data>
-  
+  <data name="Mod_Version" xml:space="preserve">
+    <value>版本: {0}</value>
+  </data>
   
   
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
