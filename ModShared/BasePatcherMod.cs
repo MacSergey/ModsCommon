@@ -101,7 +101,7 @@ namespace ModsCommon
                 return;
             else if (PatchResult == PatchResult.Failed)
             {
-                var message = MessageBox.Show<ErrorPatchMessageBox>();
+                var message = MessageBox.Show<ErrorLoadMessageBox>();
                 message.Init<TypeMod>();
 
                 shown = true;

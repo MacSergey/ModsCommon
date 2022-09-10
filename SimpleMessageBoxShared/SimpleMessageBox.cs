@@ -110,25 +110,24 @@ namespace ModsCommon.UI
             Button1Text = CommonLocalize.MessageBox_OK;
         }
     }
-    public class ErrorSupportMessageBox : ErrorMessageBox
+    public class ErrorLoadMessageBox : ThreeButtonMessageBox
     {
-        public override void Init<TypeMod>()
+        public virtual void Init<TypeMod>() where TypeMod : BaseMod<TypeMod>
         {
-            base.Init<TypeMod>();
-
-            Button2Text = CommonLocalize.Mod_Support;
-            OnButton2Click = SingletonMod<TypeMod>.Instance.OpenSupport;
-        }
-    }
-    public class ErrorPatchMessageBox : ErrorMessageBox
-    {
-        public override void Init<TypeMod>()
-        {
-            base.Init<TypeMod>();
+            CaptionText = SingletonMod<TypeMod>.Instance.NameRaw;
+            Button1Text = CommonLocalize.MessageBox_OK;
 
             MessageText = CommonLocalize.Mod_LoadedWithErrors;
-            Button2Text = CommonLocalize.Mod_Support;
-            OnButton2Click = SingletonMod<TypeMod>.Instance.OpenSupport;
+            Button2Text = CommonLocalize.Dependency_Disable;
+            OnButton2Click = () =>
+            {
+                if (SingletonMod<TypeMod>.Instance.ThisSearcher.GetPlugin() is ColossalFramework.Plugins.PluginManager.PluginInfo plugin)
+                    plugin.SetState(false);
+
+                return true;
+            };
+            Button3Text = CommonLocalize.Mod_Support;
+            OnButton3Click = SingletonMod<TypeMod>.Instance.OpenSupport;
         }
     }
 }
