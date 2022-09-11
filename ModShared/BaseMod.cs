@@ -39,7 +39,7 @@ namespace ModsCommon
         }
 
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
-        public string VersionString => !IsBeta ? Version.ToString() : $"{Version} {BETA}";
+        public string VersionString => !IsBeta ? Version.GetString() : $"{Version.GetString()} {BETA}";
         protected abstract Version RequiredGameVersion { get; }
         protected Version CurrentGameVersion => new Version(
             (int)(uint)typeof(BuildConfig).GetField(nameof(BuildConfig.APPLICATION_VERSION_A)).GetValue(null),
