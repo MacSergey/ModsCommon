@@ -368,7 +368,7 @@ Uruchom ponownie grę.</value>
     <value>Pokazuj tylko na pasku narzędzi</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Pokazuj tylko w UUI</value>
+    <value>Pokazuj tylko w UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Rozwiązywanie problemów</value>

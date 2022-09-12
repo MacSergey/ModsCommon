@@ -396,7 +396,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
     <value>툴바에만 표시하기</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>UUI에만 표시하기</value>
+    <value>UnifiedUI에만 표시하기</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>문제 해결</value>

@@ -396,7 +396,7 @@ Kemas kini mod ke versi terbaru, jika tidak keberfungsian mod yang betul tidak d
     <value>Tunjukkan di bar alatan sahaja</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Tunjukkan di UUI sahaja</value>
+    <value>Tunjukkan di UnifiedUI sahaja</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Menyelesaikan masalah</value>

@@ -398,7 +398,7 @@ Update de mod naar de laatste versie, anders is de correcte werking van de mod n
     <value>Alleen tonen op de werkbalk</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Alleen tonen op de UUI</value>
+    <value>Alleen tonen op de UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Probleemoplossing</value>

@@ -396,7 +396,7 @@ Actualizează modul la cea mai recentă versiune, altfel nu este garantată func
     <value>Afișează doar in bara de instrumente</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Afișează doar în UUI</value>
+    <value>Afișează doar în UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Depanare</value>

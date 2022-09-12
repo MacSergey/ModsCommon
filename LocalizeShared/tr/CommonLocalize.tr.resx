@@ -365,7 +365,7 @@ Lütfen oyunu tekrar başlatın.</value>
     <value>Yalnızca araç çubuğunda göster</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Sadece UnifiedUI (UUI) kullanıcı arayüzünde göster</value>
+    <value>Sadece UnifiedUI kullanıcı arayüzünde göster</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Sorun Giderme</value>

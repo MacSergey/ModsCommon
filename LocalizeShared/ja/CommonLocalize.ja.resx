@@ -399,7 +399,7 @@ MODを最新バージョンに更新してください！ 更新をしないとM
     <value>ツールボタンだけ表示</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>UUI MODでのみ表示</value>
+    <value>UnifiedUIでのみ表示</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>トラブルシューティング</value>

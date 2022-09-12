@@ -368,7 +368,7 @@ Restartujte hru.</value>
     <value>Zobrazovat pouze v liště</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Zobrazovat pouze v jednotném UI (UUI)</value>
+    <value>Zobrazovat pouze v UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Řešení problémů</value>

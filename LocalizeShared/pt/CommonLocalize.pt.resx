@@ -393,7 +393,7 @@ Atualize o jogo para a versão mais recente, caso contrário, o funcionamento co
     <value>Mostrar apenas na barra de ferramentas</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Mostrar apenas na UUI</value>
+    <value>Mostrar apenas na UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolução de problemas</value>

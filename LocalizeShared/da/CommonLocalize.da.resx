@@ -366,7 +366,7 @@ Genstart spillet.</value>
     <value>Vis kun i værktøjslinjen</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Vis kun i UUI</value>
+    <value>Vis kun i UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Fejlfinding</value>

@@ -398,7 +398,7 @@ Aktualisiere die Mod auf die neueste Version, andernfalls ist das korrekte Funkt
     <value>Nur in der Funktionsleiste anzeigen</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Nur in UUI anzeigen</value>
+    <value>Nur in UnifiedUI anzeigen</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Hilfe</value>

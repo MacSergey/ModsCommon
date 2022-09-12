@@ -396,7 +396,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Показывать только в панели инструментов</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Показывать только в UUI</value>
+    <value>Показывать только в UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Устранение неполадок</value>

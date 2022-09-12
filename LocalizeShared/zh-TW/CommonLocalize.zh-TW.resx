@@ -382,7 +382,7 @@ Shift X10, Ctrl X0.1</value>
     <value>只在工具列顯示</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>只在 UUI 顯示</value>
+    <value>只在 UnifiedUI 顯示</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>疑難排解</value>

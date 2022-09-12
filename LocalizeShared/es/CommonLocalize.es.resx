@@ -398,7 +398,7 @@ Actualizar el mod a la versión más reciente, de lo contrario el funcionamiento
     <value>Mostrar solo en barra de herramientas</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Mostrar solo en UUI</value>
+    <value>Mostrar solo en UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolución de problemas</value>

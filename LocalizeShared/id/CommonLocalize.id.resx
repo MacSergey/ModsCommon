@@ -368,7 +368,7 @@ Mohon restart game ini.</value>
     <value>Tampilkan hanya di toolbar</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Tampilkan hanya di UUI</value>
+    <value>Tampilkan hanya di UnifiedUI</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Pemecahan masalah</value>
