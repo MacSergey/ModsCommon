@@ -31,6 +31,7 @@ namespace ModsCommon
         public void ShowLinuxTip();
         public bool OpenDiscord();
         public bool OpenSupport();
+        public bool OpenTranslationProject();
 
         public string GetLocalizedString(string key, CultureInfo culture = null);
     }

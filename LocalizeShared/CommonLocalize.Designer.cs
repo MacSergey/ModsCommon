@@ -893,6 +893,34 @@ namespace ModsCommon {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на You can help improve the mod translation
+        ///or translate the mod into your language.
+        /// </summary>
+        public static string Settings_TranslationDescription {
+            get {
+                return ResourceManager.GetString("Settings_TranslationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Improve translation.
+        /// </summary>
+        public static string Settings_TranslationImprove {
+            get {
+                return ResourceManager.GetString("Settings_TranslationImprove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add new language.
+        /// </summary>
+        public static string Settings_TranslationNew {
+            get {
+                return ResourceManager.GetString("Settings_TranslationNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Troubleshooting.
         /// </summary>
         public static string Settings_Troubleshooting {

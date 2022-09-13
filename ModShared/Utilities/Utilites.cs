@@ -13,7 +13,9 @@ namespace ModsCommon.Utilities
     {
         public static void OpenUrl(this string url)
         {
-            if (PlatformService.IsOverlayEnabled())
+            if (string.IsNullOrEmpty(url))
+                return;
+            else if (PlatformService.IsOverlayEnabled())
                 PlatformService.ActivateGameOverlayToWebPage(url);
             else
                 Process.Start(url);

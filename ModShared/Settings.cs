@@ -197,6 +197,10 @@ namespace ModsCommon
         {
             var group = helper.AddGroup(CommonLocalize.Settings_Language);
             AddLanguageList(group);
+            group.AddSpace(10);
+            AddLabel(group, CommonLocalize.Settings_TranslationDescription, 0.8f);
+            AddButton(group, CommonLocalize.Settings_TranslationImprove, () => SingletonMod<TypeMod>.Instance.OpenTranslationProject(), 250f, 1f);
+            AddButton(group, CommonLocalize.Settings_TranslationNew, () => "https://crowdin.com/messages/create/14337258/".OpenUrl(), 250f, 1f);
         }
 
         private void AddLanguageList(UIHelper group)
@@ -572,7 +576,7 @@ namespace ModsCommon
     {
         public LanguageDropDown()
         {
-            ComponentStyle.CustomSettingsStyle(this, new Vector2(300, 31));
+            ComponentStyle.CustomSettingsStyle(this, new Vector2(250, 31));
         }
     }
 }
