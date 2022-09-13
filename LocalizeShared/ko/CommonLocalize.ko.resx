@@ -398,9 +398,15 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>UnifiedUI에만 표시하기</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>모드의 번역을 돕거나 모드를 새로운 언어로 번역할 수 있습니다.</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>번역 참가하기</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>새 언어 추가하기</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>문제 해결</value>
   </data>

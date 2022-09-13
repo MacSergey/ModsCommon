@@ -401,9 +401,16 @@ MODを最新バージョンに更新してください！ 更新をしないとM
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>UnifiedUIでのみ表示</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>MODの翻訳に参加して改善が出来ます。
+または、あなたの使用言語に翻訳も可能です。</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>翻訳の改善</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>新しい言語を追加</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>トラブルシューティング</value>
   </data>

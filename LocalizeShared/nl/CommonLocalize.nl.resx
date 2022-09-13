@@ -400,9 +400,16 @@ Update de mod naar de laatste versie, anders is de correcte werking van de mod n
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Alleen tonen op de UnifiedUI</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Je kan helpen met het verbeteren van de mod vertaling
+of de mod in jouw taal vertalen</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Vertaling verbeteren</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Nieuwe taal toevoegen</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Probleemoplossing</value>
   </data>

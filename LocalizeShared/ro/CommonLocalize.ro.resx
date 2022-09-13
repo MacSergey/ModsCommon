@@ -398,9 +398,16 @@ Actualizează modul la cea mai recentă versiune, altfel nu este garantată func
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Afișează doar în UnifiedUI</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Poți să ajuți la îmbunătățirea traducerii modului
+sau să traduci modul în limba ta</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Îmbunătățește traducerea</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Adaugă o nouă limba</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Depanare</value>
   </data>

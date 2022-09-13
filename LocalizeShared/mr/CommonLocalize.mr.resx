@@ -398,9 +398,16 @@ Kemas kini mod ke versi terbaru, jika tidak keberfungsian mod yang betul tidak d
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Tunjukkan di UnifiedUI sahaja</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Anda boleh bantu menambah baik terjemahan mod
+atau bantu terjemah mod ke dalam bahasa anda</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Tambah baik terjemahan</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Tambah bahasa baharu</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Menyelesaikan masalah</value>
   </data>

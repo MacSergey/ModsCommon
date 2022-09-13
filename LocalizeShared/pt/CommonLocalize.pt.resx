@@ -395,9 +395,16 @@ Atualize o jogo para a versão mais recente, caso contrário, o funcionamento co
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Mostrar apenas na UnifiedUI</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Você pode ajudar a melhorar a tradução do mod
+ou traduzir o mod para o seu idioma</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Melhorar tradução</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Adicionar novo idioma</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolução de problemas</value>
   </data>
