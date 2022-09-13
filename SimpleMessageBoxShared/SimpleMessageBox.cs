@@ -110,6 +110,16 @@ namespace ModsCommon.UI
             Button1Text = CommonLocalize.MessageBox_OK;
         }
     }
+    public class ErrorSupportMessageBox : ErrorMessageBox
+    {
+        public override void Init<TypeMod>()
+        {
+            base.Init<TypeMod>();
+
+            Button2Text = CommonLocalize.Mod_Support;
+            OnButton2Click = SingletonMod<TypeMod>.Instance.OpenSupport;
+        }
+    }
     public class ErrorLoadMessageBox : ThreeButtonMessageBox
     {
         public virtual void Init<TypeMod>() where TypeMod : BaseMod<TypeMod>
