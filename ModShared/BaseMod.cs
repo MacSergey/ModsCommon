@@ -61,6 +61,8 @@ namespace ModsCommon
 
         protected virtual string ModSupportUrl => string.Empty;
         public string SupportUrl => !string.IsNullOrEmpty(ModSupportUrl) ? ModSupportUrl : WorkshopId.GetWorkshopUrl();
+        public virtual string CrowdinUrl => string.Empty;
+
         public abstract List<ModVersion> Versions { get; }
         protected abstract string IdRaw { get; }
         public string Id => !IsBeta ? IdRaw : $"{IdRaw} BETA";
@@ -409,6 +411,11 @@ namespace ModsCommon
         public bool OpenDiscord()
         {
             DiscordURL.OpenUrl();
+            return true;
+        }
+        public bool OpenTranslationProject()
+        {
+            CrowdinUrl.OpenUrl();
             return true;
         }
     }
