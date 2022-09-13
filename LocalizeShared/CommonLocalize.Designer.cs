@@ -884,7 +884,7 @@ namespace ModsCommon {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Show only in UUI.
+        ///   Ищет локализованную строку, похожую на Show only in UnifiedUI.
         /// </summary>
         public static string Settings_ToolButtonOnlyUUI {
             get {
