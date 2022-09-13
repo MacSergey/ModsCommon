@@ -370,6 +370,9 @@ Restartujte hru.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Zobrazovat pouze v UnifiedUI</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Řešení problémů</value>
   </data>

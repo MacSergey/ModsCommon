@@ -400,6 +400,9 @@ Mettrez à jour le mod vers la version la plus récente, sinon le bon fonctionne
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Afficher uniquement dans UnifiedUI</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Dépannage</value>
   </data>

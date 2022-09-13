@@ -367,6 +367,9 @@ Lütfen oyunu tekrar başlatın.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Sadece UnifiedUI kullanıcı arayüzünde göster</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Sorun Giderme</value>
   </data>

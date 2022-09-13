@@ -370,6 +370,9 @@ Uruchom ponownie grę.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Pokazuj tylko w UnifiedUI</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Rozwiązywanie problemów</value>
   </data>

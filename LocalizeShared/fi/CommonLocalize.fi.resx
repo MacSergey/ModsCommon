@@ -368,6 +368,9 @@ Käynnistä peli uudelleen.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Näytä vain UnifiedUI:ssa</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Vianmääritys</value>
   </data>

@@ -368,6 +368,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>仅在 UnifiedUI 中显示</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>故障排除</value>
   </data>

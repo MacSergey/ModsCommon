@@ -368,6 +368,9 @@ Genstart spillet.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Vis kun i UnifiedUI</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Fejlfinding</value>
   </data>

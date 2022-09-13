@@ -398,6 +398,16 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Показывать только в UnifiedUI</value>
   </data>
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Вы можете помочь улучшить перевод мода
+или перевести мод на свой язык</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Улучшить перевод</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Добавить новый язык</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Устранение неполадок</value>
   </data>
