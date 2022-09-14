@@ -400,9 +400,16 @@ Actualizar el mod a la versión más reciente, de lo contrario el funcionamiento
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Mostrar solo en UnifiedUI</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Puedes ayudar a mejorar la traducción del mod
+or traducir el mod a tu idioma</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Mejorar traducción</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Agregado nuevo idioma</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolución de problemas</value>
   </data>
