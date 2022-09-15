@@ -19,8 +19,12 @@ namespace ModsCommon.Utilities
             var plugins = PluginManager.instance.GetPluginsInfo().ToArray();
             foreach (var plugin in plugins)
             {
-                if (searcher.IsMatch(plugin))
-                    yield return plugin;
+                try
+                {
+                    if (searcher.IsMatch(plugin))
+                        yield return plugin;
+                }
+                finally { }
             }
         }
 
@@ -39,6 +43,9 @@ namespace ModsCommon.Utilities
 
         public static void SetState(this PluginInfo plugin, bool enable)
         {
+            if (plugin == null)
+                return;
+
             if (plugin.isEnabled == enable)
                 return;
 

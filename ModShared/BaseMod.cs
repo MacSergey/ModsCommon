@@ -150,7 +150,19 @@ namespace ModsCommon
                 var requiredVersion = RequiredGameVersion;
 
                 if (gameVersion != requiredVersion)
-                    Status |= gameVersion < requiredVersion ? ModStatus.GameOutOfDate : ModStatus.ModOutOfDate;
+                {
+                    if(gameVersion < requiredVersion)
+                    {
+                        Status |= ModStatus.GameOutOfDate;
+                        Logger.Debug($"Mod is out of date. Required game version: {RequiredGameVersion.GetStringGameFormat()}\tCurent game version: {CurrentGameVersion.GetStringGameFormat()}");
+                    }
+                    else
+                    {
+                        Status |= ModStatus.ModOutOfDate;
+                        Logger.Debug($"Game is out of date. Required game version: {RequiredGameVersion.GetStringGameFormat()}\tCurent game version: {CurrentGameVersion.GetStringGameFormat()}");
+                    }
+                }
+
 
                 DependencyWatcher.SetState(true);
                 if (DependencyWatcher.IsValid)
@@ -356,8 +368,7 @@ namespace ModsCommon
         {
             var message = MessageBox.Show<TwoButtonMessageBox>();
             message.CaptionText = NameRaw;
-            var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
-            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_GameOutOfDate, requiredString, BuildConfig.applicationVersion);
+            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_GameOutOfDate, RequiredGameVersion.GetStringGameFormat(), CurrentGameVersion.GetStringGameFormat());
             message.Button1Text = CommonLocalize.MessageBox_OK;
             message.Button2Text = CommonLocalize.Dependency_Disable;
             message.OnButton2Click = OnDisable;

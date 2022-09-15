@@ -29,5 +29,11 @@ namespace ModsCommon.Utilities
             else
                 return version.ToString(2);
         }
+
+        public static string GetStringGameFormat(this Version version, BuildConfig.ReleaseType releaseType = BuildConfig.ReleaseType.Final)
+        {
+            var versionString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)version.Major, (uint)version.Minor, (uint)version.Build, releaseType, (uint)version.Revision, BuildConfig.BuildType.Unknown), false);
+            return versionString;
+        }
     }
 }
