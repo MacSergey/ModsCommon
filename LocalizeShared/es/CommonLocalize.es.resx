@@ -326,7 +326,7 @@ Actualiza el juego a la versión más reciente, de lo contrario el funcionamient
 El mod es para la versión: {0}
 Versión actual del juego: {1}
 
-Actualizar el mod a la versión más reciente, de lo contrario el funcionamiento correcto del mod no está garantizado y puede llevar a errores impredecibles.</value>
+Actualiza el mod a la versión más reciente, de lo contrario el funcionamiento correcto del mod no está garantizado y puede llevar a errores inesperados.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Novedades de {0}</value>

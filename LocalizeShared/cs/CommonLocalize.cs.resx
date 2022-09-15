@@ -288,18 +288,46 @@ Restartujte hru.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Čínština tradiční</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Stav {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>Verze hry je neaktuální</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Chyba načítání</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>Verze módu je neaktuální</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Pracuje normálně</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Neznámý</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Podpora</value>
   </data>
-  
-  
-  
+  <data name="Mod_Version" xml:space="preserve">
+    <value>Verze: {0}</value>
+  </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>Verze hry je zastaralá.
+
+Mód vyžaduje verzi: {0}
+Aktuální verze hry: {1}
+
+Aktualizujte hru na nejnovější verzi, jinak není zaručeno správné fungování módu a použití může vést k nepředvídatelným chybám.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>Verze modu je zastaralá.
+
+Mód byl vytvořen pro verzi: {0}
+Aktuální verze hry: {1}
+
+Aktualizujte mód na nejnovější verzi, jinak není zaručeno správné fungování módu a použití může vést k nepředvídatelným chybám.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Co je nového v {0}</value>
   </data>
@@ -370,9 +398,16 @@ Restartujte hru.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Zobrazovat pouze v UnifiedUI</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Můžete pomoci zlepšit překlad módu
+nebo přeložit mód do vašeho jazyka</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Vylepšit překlad</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Přidat nový jazyk</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Řešení problémů</value>
   </data>
@@ -383,11 +418,25 @@ Restartujte hru.</value>
     <value>Stiskněte {0} pro
 výběr překrývané křižovatky</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>OPRAVENÉ</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>NOVÝ</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>ODSTRANĚNO</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>VRÁCENO</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>PŘEKLAD</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>AKTUALIZOVANÉ</value>
+  </data>
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>VAROVÁNÍ</value>
+  </data>
 </root>
