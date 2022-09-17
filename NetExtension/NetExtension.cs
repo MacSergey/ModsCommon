@@ -93,7 +93,7 @@ namespace ModsCommon.Utilities
                 laneId = GetLane(laneId).m_nextLane;
             }
         }
-        public static bool GetCommon(ushort firstId, ushort secondId, out ushort segmentId)
+        public static bool GetCommonSegment(ushort firstId, ushort secondId, out ushort segmentId)
         {
             var firstSegmentIds = firstId.GetNode().SegmentIds().ToArray();
             var secondSegmentIds = secondId.GetNode().SegmentIds().ToArray();
@@ -109,6 +109,37 @@ namespace ModsCommon.Utilities
 
             segmentId = 0;
             return false;
+        }
+        public static bool GetCommonNode(ushort firstId, ushort secondId, out ushort nodeId)
+        {
+            ref var first = ref firstId.GetSegment();
+            ref var second = ref secondId.GetSegment();
+
+            if(first.m_startNode == second.m_startNode)
+            {
+                nodeId = first.m_startNode;
+                return true;
+            }
+            else if (first.m_startNode == second.m_endNode)
+            {
+                nodeId = first.m_startNode;
+                return true;
+            }
+            else if (first.m_endNode == second.m_startNode)
+            {
+                nodeId = first.m_endNode;
+                return true;
+            }
+            else if (first.m_endNode == second.m_endNode)
+            {
+                nodeId = first.m_endNode;
+                return true;
+            }
+            else
+            {
+                nodeId = 0;
+                return false;
+            }
         }
         public static bool IsCommon(ushort firstId, ushort secondId)
         {
