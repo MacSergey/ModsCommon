@@ -155,6 +155,49 @@ namespace ModsCommon
 
             return AddPatchProcess(action);
         }
+
+        protected bool AddPrefix(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPatch(PatcherType.Prefix, patchType, patchMethod, propertyType, type, property);
+        protected bool AddPostfix(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPatch(PatcherType.Postfix, patchType, patchMethod, propertyType, type, property);
+        protected bool AddTranspiler(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPatch(PatcherType.Transpiler, patchType, patchMethod, propertyType, type, property);
+
+        private bool AddPatch(PatcherType patcher, Type patchType, string patchMethod, PropertyType propertyType, Type type, string property)
+        {
+            void action()
+            {
+                Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchMethod}] to [{type?.FullName}.{property}.{propertyType}]");
+
+                MethodInfo original = null;
+                if (AccessTools.Property(type, property) is not PropertyInfo propertyInfo)
+                    throw new PatchExeption("Can't find original property");
+                else if (propertyType == PropertyType.Getter)
+                {
+                    if (!propertyInfo.CanRead)
+                        throw new PatchExeption("Property does not have getter");
+                    else
+                        original = propertyInfo.GetGetMethod();
+                }
+                else if (propertyType == PropertyType.Setter)
+                {
+                    if (!propertyInfo.CanWrite)
+                        throw new PatchExeption("Property does not have setter");
+                    else
+                        original = propertyInfo.GetSetMethod();
+                }
+                else
+                    throw new PatchExeption("Unexpected state");
+
+                if (AccessTools.Method(patchType, patchMethod) is not MethodInfo patch)
+                    throw new PatchExeption("Can't find patch method");
+
+                AddPatch(patcher, patch, original);
+
+                Logger.Debug("Success patched!");
+            }
+
+            return AddPatchProcess(action);
+        }
+
+
         private bool AddPatchProcess(Action action)
         {
             try
@@ -196,6 +239,13 @@ namespace ModsCommon
             Postfix,
             Transpiler
         }
+
+        protected enum PropertyType
+        {
+            Getter,
+            Setter,
+        }
+
         private class PatchExeption : Exception
         {
             public PatchExeption(string message) : base(message) { }
