@@ -12,7 +12,8 @@ namespace ModsCommon.Utilities
 {
     public static class PluginUtilities
     {
-        public static string GetName(this PluginInfo plugin) => (plugin.userModInstance as IUserMod)?.Name ?? string.Empty;
+        private static FieldInfo ModInstanceField { get; } = typeof(PluginInfo).GetField("m_UserModInstance", BindingFlags.Instance | BindingFlags.NonPublic);
+        public static string GetName(this PluginInfo plugin) => plugin.GetModInstance()?.Name ?? string.Empty;
         public static PluginInfo GetPlugin(this PluginSearcher searcher) => searcher.GetPlugins().FirstOrDefault();
         public static IEnumerable<PluginInfo> GetPlugins(this PluginSearcher searcher)
         {
@@ -60,6 +61,17 @@ namespace ModsCommon.Utilities
                 }
             }
         }
+
+        public static IUserMod GetModInstance(this PluginInfo plugin)
+        {
+            if (plugin != null && ModInstanceField is FieldInfo modInstanceField)
+            {
+                var instance = modInstanceField.GetValue(plugin);
+                return instance as IUserMod;
+            }
+            else
+                return null;
+        }
     }
 
     public abstract class PluginSearcher
@@ -81,11 +93,7 @@ namespace ModsCommon.Utilities
             Id = id;
         }
 
-        public override bool IsMatch(PluginInfo plugin)
-        {
-            try { return plugin.publishedFileID.AsUInt64 == Id; }
-            catch { return false; }
-        }
+        public override bool IsMatch(PluginInfo plugin) => plugin?.publishedFileID.AsUInt64 == Id;
     }
     public abstract class BaseMatchSearcher : PluginSearcher
     {
@@ -109,6 +117,9 @@ namespace ModsCommon.Utilities
         }
         public override bool IsMatch(PluginInfo plugin)
         {
+            if (plugin == null)
+                return false;
+
             if (GetMatch(plugin) is not string toMatch)
                 return false;
 
@@ -146,21 +157,12 @@ namespace ModsCommon.Utilities
     public abstract class BaseUserModSearcher : BaseMatchSearcher
     {
         public BaseUserModSearcher(string toSearch, Option options) : base(toSearch, options) { }
-        public override bool IsMatch(PluginInfo plugin)
-        {
-            try
-            {
-                if (plugin.userModInstance is not IUserMod)
-                    return false;
-            }
-            catch { return false; }
-
-            return base.IsMatch(plugin);
-        }
         protected sealed override string GetMatch(PluginInfo plugin)
         {
-            try { return GetMatch(plugin.userModInstance as IUserMod); }
-            catch { return null; }
+            if (plugin.GetModInstance() is IUserMod userModInstance)
+                return GetMatch(userModInstance);
+            else
+                return null;
         }
         protected abstract string GetMatch(IUserMod mod);
 
@@ -197,11 +199,7 @@ namespace ModsCommon.Utilities
             Instance = instance;
         }
 
-        public override bool IsMatch(PluginInfo plugin)
-        {
-            try { return plugin.userModInstance == Instance; }
-            catch { return false; }
-        }
+        public override bool IsMatch(PluginInfo plugin) => plugin?.GetModInstance() == Instance;
     }
     public class AssemblySearcher : PluginSearcher
     {
@@ -211,11 +209,7 @@ namespace ModsCommon.Utilities
             Assembly = assembly;
         }
 
-        public override bool IsMatch(PluginInfo plugin)
-        {
-            try { return plugin.userModInstance?.GetType().Assembly == Assembly; }
-            catch { return false; }
-        }
+        public override bool IsMatch(PluginInfo plugin) => plugin?.GetModInstance()?.GetType().Assembly == Assembly;
     }
     public class VersionSearcher : PluginSearcher
     {
@@ -231,25 +225,19 @@ namespace ModsCommon.Utilities
 
         public override bool IsMatch(PluginInfo plugin)
         {
-            try
+            if (plugin?.GetModInstance() is IUserMod userModInstance)
             {
-                if (plugin.userModInstance is not IUserMod userModInstance)
-                    return false;
-
                 var userModVersion = userModInstance.GetType().Assembly.GetName().Version;
                 return Predicat(userModVersion, Version);
             }
-            catch { return false; }
+            else
+                return false;
         }
     }
     public class PluginNameSearcher : BaseMatchSearcher
     {
         public PluginNameSearcher(string toSearch, Option options) : base(toSearch, options) { }
-        protected override string GetMatch(PluginInfo plugin)
-        {
-            try { return plugin.name; }
-            catch { return null; }
-        }
+        protected override string GetMatch(PluginInfo plugin) => plugin.name;
     }
 
     public abstract class BaseCombineSearcher : PluginSearcher
