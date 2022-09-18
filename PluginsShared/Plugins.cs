@@ -19,12 +19,8 @@ namespace ModsCommon.Utilities
             var plugins = PluginManager.instance.GetPluginsInfo().ToArray();
             foreach (var plugin in plugins)
             {
-                try
-                {
-                    if (searcher.IsMatch(plugin))
-                        yield return plugin;
-                }
-                finally { }
+                if (searcher.IsMatch(plugin))
+                    yield return plugin;
             }
         }
 
@@ -36,7 +32,7 @@ namespace ModsCommon.Utilities
                 return localSearcher;
             else
             {
-                var idSearcher = ids.Length == 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());;
+                var idSearcher = ids.Length == 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray()); ;
                 return idSearcher | localSearcher;
             }
         }
@@ -85,7 +81,11 @@ namespace ModsCommon.Utilities
             Id = id;
         }
 
-        public override bool IsMatch(PluginInfo plugin) => plugin.publishedFileID.AsUInt64 == Id;
+        public override bool IsMatch(PluginInfo plugin)
+        {
+            try { return plugin.publishedFileID.AsUInt64 == Id; }
+            catch { return false; }
+        }
     }
     public abstract class BaseMatchSearcher : PluginSearcher
     {
@@ -148,8 +148,12 @@ namespace ModsCommon.Utilities
         public BaseUserModSearcher(string toSearch, Option options) : base(toSearch, options) { }
         public override bool IsMatch(PluginInfo plugin)
         {
-            if (plugin.userModInstance is not IUserMod)
-                return false;
+            try
+            {
+                if (plugin.userModInstance is not IUserMod)
+                    return false;
+            }
+            catch { return false; }
 
             return base.IsMatch(plugin);
         }
@@ -193,7 +197,11 @@ namespace ModsCommon.Utilities
             Instance = instance;
         }
 
-        public override bool IsMatch(PluginInfo plugin) => plugin.userModInstance == Instance;
+        public override bool IsMatch(PluginInfo plugin)
+        {
+            try { return plugin.userModInstance == Instance; }
+            catch { return false; }
+        }
     }
     public class AssemblySearcher : PluginSearcher
     {
@@ -203,7 +211,11 @@ namespace ModsCommon.Utilities
             Assembly = assembly;
         }
 
-        public override bool IsMatch(PluginInfo plugin) => plugin.userModInstance?.GetType().Assembly == Assembly;
+        public override bool IsMatch(PluginInfo plugin)
+        {
+            try { return plugin.userModInstance?.GetType().Assembly == Assembly; }
+            catch { return false; }
+        }
     }
     public class VersionSearcher : PluginSearcher
     {
@@ -219,17 +231,25 @@ namespace ModsCommon.Utilities
 
         public override bool IsMatch(PluginInfo plugin)
         {
-            if (plugin.userModInstance is not IUserMod userModInstance)
-                return false;
+            try
+            {
+                if (plugin.userModInstance is not IUserMod userModInstance)
+                    return false;
 
-            var userModVersion = userModInstance.GetType().Assembly.GetName().Version;
-            return Predicat(userModVersion, Version);
+                var userModVersion = userModInstance.GetType().Assembly.GetName().Version;
+                return Predicat(userModVersion, Version);
+            }
+            catch { return false; }
         }
     }
     public class PluginNameSearcher : BaseMatchSearcher
     {
         public PluginNameSearcher(string toSearch, Option options) : base(toSearch, options) { }
-        protected override string GetMatch(PluginInfo plugin) => plugin.name;
+        protected override string GetMatch(PluginInfo plugin)
+        {
+            try { return plugin.name; }
+            catch { return null; }
+        }
     }
 
     public abstract class BaseCombineSearcher : PluginSearcher
