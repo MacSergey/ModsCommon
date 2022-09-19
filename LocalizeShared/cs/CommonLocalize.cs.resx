@@ -164,7 +164,7 @@ Shift ×10, Ctrl ×0.1</value>
     <value>Alt</value>
   </data>
   <data name="Key_Control" xml:space="preserve">
-    <value>Control</value>
+    <value>Ctrl</value>
   </data>
   <data name="Key_Enter" xml:space="preserve">
     <value>Enter</value>
@@ -176,7 +176,7 @@ Shift ×10, Ctrl ×0.1</value>
     <value>Tab</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Použijte kolečko myši pro změnu hodnoty</value>
+    <value>Rolujte kolečkem myši pro změnu hodnoty</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
     <value>Zrušit</value>
@@ -212,7 +212,7 @@ Shift ×10, Ctrl ×0.1</value>
     <value>Toto je BETA verze, mohou se zde vyskytovat chyby a stabilita není zaručena!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux verze Cities Skylines nemá všechny potřebné knihovny pro správnou funkcionalitu modu. Je potřeba do systému nainstalovat balíček "Mono Develop". Pokud při používání nástroje neregistrujete žádné pády hry, můžete tuto zprávu ignorovat.</value>
+    <value>Linux verze Cities Skylines nemá všechny potřebné knihovny pro správnou funkčnost módu. Je potřeba do systému nainstalovat balíček "Mono Develop". Pokud při používání nástroje neregistrujete žádné pády hry, můžete tuto zprávu ignorovat.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
     <value>Načitání modu neproběhlo v pořádku.
@@ -321,10 +321,10 @@ Aktuální verze hry: {1}
 Aktualizujte hru na nejnovější verzi, jinak není zaručeno správné fungování módu a použití může vést k nepředvídatelným chybám.</value>
   </data>
   <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
-    <value>Verze modu je zastaralá.
+    <value>Verze módu je zastaralá.
 
 Mód byl vytvořen pro verzi: {0}
-Aktuální verze hry: {1}
+Současná verze hry: {1}
 
 Aktualizujte mód na nejnovější verzi, jinak není zaručeno správné fungování módu a použití může vést k nepředvídatelným chybám.</value>
   </data>
@@ -387,7 +387,7 @@ Aktualizujte mód na nejnovější verzi, jinak není zaručeno správné fungov
     <value>Podpora</value>
   </data>
   <data name="Settings_ToolButton" xml:space="preserve">
-    <value>Tlačítko nástrojů</value>
+    <value>Tlačítko nástroje</value>
   </data>
   <data name="Settings_ToolButtonBoth" xml:space="preserve">
     <value>Zobrazovat na obou místech</value>
@@ -416,13 +416,13 @@ nebo přeložit mód do vašeho jazyka</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Stiskněte {0} pro
-výběr překrývané křižovatky</value>
+výběr další křižovatky v překrytí</value>
   </data>
   <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>OPRAVENÉ</value>
+    <value>OPRAVENO</value>
   </data>
   <data name="WhatsNew_NEW" xml:space="preserve">
-    <value>NOVÝ</value>
+    <value>NOVÉ</value>
   </data>
   <data name="WhatsNew_REMOVED" xml:space="preserve">
     <value>ODSTRANĚNO</value>
@@ -434,7 +434,7 @@ výběr překrývané křižovatky</value>
     <value>PŘEKLAD</value>
   </data>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
-    <value>AKTUALIZOVANÉ</value>
+    <value>AKTUALIZOVÁNO</value>
   </data>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>VAROVÁNÍ</value>

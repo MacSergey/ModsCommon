@@ -374,7 +374,7 @@ Actualiza el mod a la versión más reciente, de lo contrario el funcionamiento 
     <value>Selección de objetos superpuestos</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Notificación solo sobre actualizaciones importantes</value>
+    <value>Notificar únicamente actualizaciones importantes</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
     <value>Mostrar las herramientas</value>
@@ -408,7 +408,7 @@ or traducir el mod a tu idioma</value>
     <value>Mejorar traducción</value>
   </data>
   <data name="Settings_TranslationNew" xml:space="preserve">
-    <value>Agregado nuevo idioma</value>
+    <value>Agregar nuevo idioma</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Resolución de problemas</value>
