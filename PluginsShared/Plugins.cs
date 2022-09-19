@@ -12,19 +12,16 @@ namespace ModsCommon.Utilities
 {
     public static class PluginUtilities
     {
-        public static string GetName(this PluginInfo plugin) => (plugin.userModInstance as IUserMod)?.Name ?? string.Empty;
+        private static FieldInfo ModInstanceField { get; } = typeof(PluginInfo).GetField("m_UserModInstance", BindingFlags.Instance | BindingFlags.NonPublic);
+        public static string GetName(this PluginInfo plugin) => plugin.GetModInstance()?.Name ?? string.Empty;
         public static PluginInfo GetPlugin(this PluginSearcher searcher) => searcher.GetPlugins().FirstOrDefault();
         public static IEnumerable<PluginInfo> GetPlugins(this PluginSearcher searcher)
         {
             var plugins = PluginManager.instance.GetPluginsInfo().ToArray();
             foreach (var plugin in plugins)
             {
-                try
-                {
-                    if (searcher.IsMatch(plugin))
-                        yield return plugin;
-                }
-                finally { }
+                if (searcher.IsMatch(plugin))
+                    yield return plugin;
             }
         }
 
@@ -36,7 +33,7 @@ namespace ModsCommon.Utilities
                 return localSearcher;
             else
             {
-                var idSearcher = ids.Length == 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray());;
+                var idSearcher = ids.Length == 1 ? (PluginSearcher)new IdSearcher(ids[0]) : new AnySearcher(ids.Select(id => new IdSearcher(id)).ToArray()); ;
                 return idSearcher | localSearcher;
             }
         }
@@ -64,6 +61,17 @@ namespace ModsCommon.Utilities
                 }
             }
         }
+
+        public static IUserMod GetModInstance(this PluginInfo plugin)
+        {
+            if (plugin != null && ModInstanceField is FieldInfo modInstanceField)
+            {
+                var instance = modInstanceField.GetValue(plugin);
+                return instance as IUserMod;
+            }
+            else
+                return null;
+        }
     }
 
     public abstract class PluginSearcher
@@ -85,7 +93,7 @@ namespace ModsCommon.Utilities
             Id = id;
         }
 
-        public override bool IsMatch(PluginInfo plugin) => plugin.publishedFileID.AsUInt64 == Id;
+        public override bool IsMatch(PluginInfo plugin) => plugin?.publishedFileID.AsUInt64 == Id;
     }
     public abstract class BaseMatchSearcher : PluginSearcher
     {
@@ -109,6 +117,9 @@ namespace ModsCommon.Utilities
         }
         public override bool IsMatch(PluginInfo plugin)
         {
+            if (plugin == null)
+                return false;
+
             if (GetMatch(plugin) is not string toMatch)
                 return false;
 
@@ -146,17 +157,12 @@ namespace ModsCommon.Utilities
     public abstract class BaseUserModSearcher : BaseMatchSearcher
     {
         public BaseUserModSearcher(string toSearch, Option options) : base(toSearch, options) { }
-        public override bool IsMatch(PluginInfo plugin)
-        {
-            if (plugin.userModInstance is not IUserMod)
-                return false;
-
-            return base.IsMatch(plugin);
-        }
         protected sealed override string GetMatch(PluginInfo plugin)
         {
-            try { return GetMatch(plugin.userModInstance as IUserMod); }
-            catch { return null; }
+            if (plugin.GetModInstance() is IUserMod userModInstance)
+                return GetMatch(userModInstance);
+            else
+                return null;
         }
         protected abstract string GetMatch(IUserMod mod);
 
@@ -193,7 +199,7 @@ namespace ModsCommon.Utilities
             Instance = instance;
         }
 
-        public override bool IsMatch(PluginInfo plugin) => plugin.userModInstance == Instance;
+        public override bool IsMatch(PluginInfo plugin) => plugin?.GetModInstance() == Instance;
     }
     public class AssemblySearcher : PluginSearcher
     {
@@ -203,7 +209,7 @@ namespace ModsCommon.Utilities
             Assembly = assembly;
         }
 
-        public override bool IsMatch(PluginInfo plugin) => plugin.userModInstance?.GetType().Assembly == Assembly;
+        public override bool IsMatch(PluginInfo plugin) => plugin?.GetModInstance()?.GetType().Assembly == Assembly;
     }
     public class VersionSearcher : PluginSearcher
     {
@@ -219,11 +225,13 @@ namespace ModsCommon.Utilities
 
         public override bool IsMatch(PluginInfo plugin)
         {
-            if (plugin.userModInstance is not IUserMod userModInstance)
+            if (plugin?.GetModInstance() is IUserMod userModInstance)
+            {
+                var userModVersion = userModInstance.GetType().Assembly.GetName().Version;
+                return Predicat(userModVersion, Version);
+            }
+            else
                 return false;
-
-            var userModVersion = userModInstance.GetType().Assembly.GetName().Version;
-            return Predicat(userModVersion, Version);
         }
     }
     public class PluginNameSearcher : BaseMatchSearcher
