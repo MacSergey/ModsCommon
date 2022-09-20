@@ -414,9 +414,10 @@ namespace ModsCommon
             }
         }
 
-        public static void AddCheckBox(UIHelper group, string label, SavedBool saved, Action onChanged = null)
+        public static UICheckBox AddCheckBox(UIHelper group, string label, SavedBool saved, Action onChanged = null)
         {
-            group.AddCheckbox(label, saved, OnValueChanged);
+            var checkbox = group.AddCheckbox(label, saved, OnValueChanged) as UICheckBox;
+            return checkbox;
 
             void OnValueChanged(bool value)
             {
