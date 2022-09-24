@@ -289,7 +289,7 @@ Restartujte hru.</value>
     <value>Čínština tradiční</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">
-    <value>Stav {0}</value>
+    <value>Stav: {0}</value>
   </data>
   <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
     <value>Verze hry je neaktuální</value>
