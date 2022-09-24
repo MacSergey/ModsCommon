@@ -14,7 +14,7 @@ namespace ModsCommon.Utilities
         public delegate UITextureAtlas.SpriteInfo[] SpriteParamsGetter(int texWidth, int texHeight, Rect rect);
         public static UITextureAtlas InGameAtlas { get; } = GetAtlas("Ingame");
 
-        private static UITextureAtlas GetAtlas(string name)
+        public static UITextureAtlas GetAtlas(string name)
         {
             UITextureAtlas[] atlases = Resources.FindObjectsOfTypeAll(typeof(UITextureAtlas)) as UITextureAtlas[];
             for (int i = 0; i < atlases.Length; i++)
