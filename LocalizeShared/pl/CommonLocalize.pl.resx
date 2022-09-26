@@ -288,18 +288,46 @@ Uruchom ponownie grę.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Chiński tradycyjny</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Status: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>Wersja gry jest nieaktualna</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Błąd ładowania</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>Wersja modyfikacji jest nieaktualna</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Działaj normalnie</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Nieznany</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Wsparcie</value>
   </data>
-  
-  
-  
+  <data name="Mod_Version" xml:space="preserve">
+    <value>Wersja: {0}</value>
+  </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>Wersja gry jest nieaktualna.
+
+Modyfikacja wymaga wersji: {0}
+Aktualna wersja gry: {1}
+
+Zaktualizuj grę do najnowszej wersji, w przeciwnym razie prawidłowe działanie moda nie jest zagwarantowane i może prowadzić do nieprzewidywalnych błędów.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>Wersja gry jest nieaktualna.
+
+Modyfikacja wymaga wersji: {0}
+Aktualna wersja gry: {1}
+
+Zaktualizuj grę do najnowszej wersji, w przeciwnym razie prawidłowe działanie moda nie jest zagwarantowane i może prowadzić do nieprzewidywalnych błędów.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Co nowego w {0}</value>
   </data>
@@ -370,9 +398,16 @@ Uruchom ponownie grę.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Pokazuj tylko w UnifiedUI</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Możesz pomóc ulepszyć tłumaczenie modyfikacji
+lub przetłumaczyć modyfikację na swój język</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Udoskonal tłumaczenie</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Dodaj nowy język</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Rozwiązywanie problemów</value>
   </data>
