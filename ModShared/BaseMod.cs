@@ -205,6 +205,13 @@ namespace ModsCommon
             }
 
             locale = ClassesExtension.GetRegionLocale(locale);
+
+            if (!CultureInfo.GetCultures(CultureTypes.AllCultures).Any(c => c.Name == locale))
+            {
+                Logger.Debug($"locale {locale} is not supported");
+                locale = ClassesExtension.GetRegionLocale(DefaultSettings.localeID);
+            }
+
             Culture = new CultureInfo(locale);
             Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
         }
