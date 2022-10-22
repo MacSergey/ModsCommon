@@ -244,6 +244,13 @@ namespace ModsCommon.UI
             IsEqualDelegate = (x, y) => x == y;
         }
     }
+    public class IntSegmented : UIOnceSegmented<int>
+    {
+        public IntSegmented()
+        {
+            IsEqualDelegate = (x, y) => x == y;
+        }
+    }
 
     public abstract class UIMultySegmented<ValueType> : UISegmented<ValueType>, IUIMultySelector<ValueType>, IValueChanger<List<ValueType>>
     {

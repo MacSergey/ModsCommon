@@ -1,5 +1,4 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace NodeMarkup.UI
+namespace ModsCommon.UI
 {
     public abstract class Popup<ObjectType, EntityPanel> : CustomUIPanel, IReusable
         where EntityPanel : PopupEntity<ObjectType>
