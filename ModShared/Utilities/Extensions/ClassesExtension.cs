@@ -50,29 +50,29 @@ namespace ModsCommon.Utilities
         private static Plus<Vector3> VectorPlus = (Plus<Vector3>)Delegate.CreateDelegate(typeof(Plus<Vector3>), typeof(Vector3).GetMethod("op_Addition", BindingFlags.Public | BindingFlags.Static));
         private static Div<Vector3> VectorDiv = (Div<Vector3>)Delegate.CreateDelegate(typeof(Div<Vector3>), typeof(Vector3).GetMethod("op_Division", BindingFlags.Public | BindingFlags.Static));
 
-        public static string GetRegionLocale(string locale) => locale switch
+        public static string GetRegionLocale(string locale) => locale.Substring(0,2).ToLower() switch
         {
-            "cs" => "cs-cz",
-            "da" => "da-dk",
-            "de" => "de-de",
-            "en" => "en-us",
-            "es" => "es-es",
-            "fi" => "fi-fi",
-            "fr" => "fr-fr",
-            "hu" => "hu-hu",
-            "id" => "id-id",
-            "it" => "it-it",
-            "ja" => "ja-jp",
-            "ko" => "ko-kr",
-            "mr" => "mr-in",
-            "nl" => "nl-nl",
-            "pl" => "pl-pl",
-            "pt" => "pt-pt",
-            "ro" => "ro-ro",
-            "ru" => "ru-ru",
-            "tr" => "tr-tr",
-            "zh" => "zh-cn",
-            _ => locale,
+            "cs" => "cs-CZ",
+            "da" => "da-DK",
+            "de" => "de-DE",
+            "en" => "en-US",
+            "es" => "es-ES",
+            "fi" => "fi-FI",
+            "fr" => "fr-FR",
+            "hu" => "hu-HU",
+            "id" => "id-ID",
+            "it" => "it-IT",
+            "ja" => "ja-JP",
+            "ko" => "ko-KR",
+            "mr" => "mr-IN",
+            "nl" => "nl-NL",
+            "pl" => "pl-PL",
+            "pt" => "pt-PT",
+            "ro" => "ro-RO",
+            "ru" => "ru-RU",
+            "tr" => "tr-TR",
+            "zh" => "zh-CN",
+            _ => locale.Length == 2 ? $"{locale}-{locale.ToLower()}" : locale,
         };
     }
 }
