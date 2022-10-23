@@ -17,36 +17,29 @@ namespace ModsCommon.UI
         private static Dictionary<Type, Queue<UIComponent>> Pool { get; } = new Dictionary<Type, Queue<UIComponent>>();
         private static Dictionary<Type, FieldInfo[]> EventFields { get; } = new Dictionary<Type, FieldInfo[]>();
 
-        public static Component GetAfter<Component>(UIComponent parent, string beforeName, string name = null)
-            where Component : UIComponent, IReusable
-        => Get<Component>(parent, beforeName, 1, name);
-        public static Component GetBefore<Component>(UIComponent parent, string afterName, string name = null)
-            where Component : UIComponent, IReusable
-        => Get<Component>(parent, afterName, 0, name);
-
-        private static Component Get<Component>(UIComponent parent, string otherName, int delta, string name = null)
-                where Component : UIComponent, IReusable
+        private static ComponentType Get<ComponentType>(UIComponent parent, string otherName, int delta, string name = null)
+            where ComponentType : UIComponent, IReusable
         {
             if (parent.Find(otherName) is UIComponent before)
-                return Get<Component>(parent, name, before.zOrder + delta);
+                return Get<ComponentType>(parent, name, before.zOrder + delta);
             else
-                return Get<Component>(parent, name: name);
+                return Get<ComponentType>(parent, name: name);
 
         }
 
-        public static Component Get<Component>(UIComponent parent, string name = null, int zOrder = -1)
-            where Component : UIComponent, IReusable
+        public static ComponentType Get<ComponentType>(UIComponent parent, string name = null, int zOrder = -1)
+            where ComponentType : UIComponent, IReusable
         {
-            Component component;
+            ComponentType component;
 
-            var queue = GetQueue(typeof(Component));
+            var queue = GetQueue(typeof(ComponentType));
             if (queue.Count != 0)
             {
-                component = queue.Dequeue() as Component;
+                component = queue.Dequeue() as ComponentType;
                 parent.AttachUIComponent(component.gameObject);
             }
             else
-                component = parent.AddUIComponent<Component>();
+                component = parent.AddUIComponent<ComponentType>();
 
             component.InCache = false;
 
@@ -58,8 +51,15 @@ namespace ModsCommon.UI
             return component;
         }
 
-        public static void Free<Component>(Component component)
-            where Component : UIComponent
+        public static ComponentType GetAfter<ComponentType>(UIComponent parent, string beforeName, string name = null)
+            where ComponentType : UIComponent, IReusable
+        => Get<ComponentType>(parent, beforeName, 1, name);
+        public static ComponentType GetBefore<ComponentType>(UIComponent parent, string afterName, string name = null)
+            where ComponentType : UIComponent, IReusable
+        => Get<ComponentType>(parent, afterName, 0, name);
+
+        public static void Free<ComponentType>(ComponentType component)
+            where ComponentType : UIComponent
         {
             if (component is IReusable reusable)
             {
@@ -70,7 +70,7 @@ namespace ModsCommon.UI
                     component.cachedName = string.Empty;
                     component.isVisible = true;
                     component.isEnabled = true;
-                
+
                     reusable.DeInit();
 
                     var type = component.GetType();
