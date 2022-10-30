@@ -189,14 +189,8 @@ namespace ModsCommon.Utilities
         public override bool Equals(object obj) => obj is BezierTrajectory trajectory && Equals(trajectory);
         public bool Equals(BezierTrajectory other) => Trajectory.a == other.Trajectory.a && Trajectory.b == other.Trajectory.b && Trajectory.c == other.Trajectory.c && Trajectory.d == other.Trajectory.d;
 
-        public static bool operator ==(BezierTrajectory first, BezierTrajectory second)
-        {
-            if (first.IsZero)
-                return second.IsZero;
-            else
-                return first.Equals(second);
-        }
-        public static bool operator !=(BezierTrajectory first, BezierTrajectory second) => !(first == second);
+        public static bool operator ==(BezierTrajectory first, BezierTrajectory second) => first.Equals(second);
+        public static bool operator !=(BezierTrajectory first, BezierTrajectory second) => !first.Equals(second);
 
         public override int GetHashCode() => Trajectory.GetHashCode();
     }
@@ -284,14 +278,8 @@ namespace ModsCommon.Utilities
         public override bool Equals(object obj) => obj is StraightTrajectory trajectory && Equals(trajectory);
         public bool Equals(StraightTrajectory other) => Trajectory.a == other.Trajectory.a && Trajectory.b == other.Trajectory.b;
 
-        public static bool operator ==(StraightTrajectory first, StraightTrajectory second)
-        {
-            if (first.IsZero)
-                return second.IsZero;
-            else
-                return first.Equals(second);
-        }
-        public static bool operator !=(StraightTrajectory first, StraightTrajectory second) => !(first == second);
+        public static bool operator ==(StraightTrajectory first, StraightTrajectory second) => first.Equals(second);
+        public static bool operator !=(StraightTrajectory first, StraightTrajectory second) => !first.Equals(second);
 
         public override int GetHashCode() => Trajectory.GetHashCode();
     }
@@ -563,6 +551,26 @@ namespace ModsCommon.Utilities
             foreach (var trajectory in Trajectories)
                 trajectory.Render(data);
         }
+
+        public override bool Equals(object obj) => obj is CombinedTrajectory trajectory && Equals(trajectory);
+        public bool Equals(CombinedTrajectory other)
+        {
+            if (Count != other.Count)
+                return false;
+
+            for(int i = 0; i < Count; i += 1)
+            {
+                if (!this[i].Equals(other[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool operator ==(CombinedTrajectory first, CombinedTrajectory second) => first.Equals(second);
+        public static bool operator !=(CombinedTrajectory first, CombinedTrajectory second) => !first.Equals(second);
+        public override int GetHashCode() => Trajectories.GetHashCode();
+
         public override string ToString() => string.Join("\n", Trajectories.Select(t => t.ToString()).ToArray());
     }
     public class TrajectoryBound : IOverlay
