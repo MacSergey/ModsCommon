@@ -312,12 +312,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Version" xml:space="preserve">
     <value>版本: {0}</value>
   </data>
-  
-  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 更新內容</value>
   </data>
-  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>版本 {0}</value>
   </data>
@@ -384,9 +381,6 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>只在 UnifiedUI 顯示</value>
   </data>
-  
-  
-  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>疑難排解</value>
   </data>

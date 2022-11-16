@@ -273,7 +273,6 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_pt" xml:space="preserve">
     <value>葡萄牙语</value>
   </data>
-  
   <data name="Mod_Locale_ru" xml:space="preserve">
     <value>俄语</value>
   </data>
@@ -286,22 +285,12 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>繁体中文</value>
   </data>
-  
-  
-  
-  
-  
-  
   <data name="Mod_Support" xml:space="preserve">
     <value>支持服务</value>
   </data>
-  
-  
-  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 版本的新功能</value>
   </data>
-  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>版本{0}</value>
   </data>
@@ -368,9 +357,6 @@ Shift x10，Ctrl x0.1</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>仅在 UnifiedUI 中显示</value>
   </data>
-  
-  
-  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>故障排除</value>
   </data>
@@ -381,11 +367,4 @@ Shift x10，Ctrl x0.1</value>
     <value>按下 {0} 
 来选择其它被遮挡到的节点</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
 </root>
