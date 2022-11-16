@@ -4,13 +4,37 @@ using UnityEngine;
 
 namespace ModsCommon.Utilities
 {
-    public abstract class PropertyValue<T>
+    public abstract class BasePropertyValue<T>
     {
         private Action OnChanged { get; }
 
+        public abstract T Value { get; set; }
+        public string Label { get; }
+
+        public BasePropertyValue(Action onChanged) : this(string.Empty, onChanged) { }
+        public BasePropertyValue(string label, Action onChanged)
+        {
+            Label = label;
+            OnChanged = onChanged;
+        }
+
+        protected void OnValueChanged() => OnChanged?.Invoke();
+
+        protected abstract bool Equals(T x, T y);
+
+        public virtual void ToXml(XElement element) => element.Add(ToXml());
+        protected virtual XAttribute ToXml() => new XAttribute(Label, Value);
+        public void FromXml(XElement config) => FromXml(config, Value);
+        public virtual void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue);
+
+        public override string ToString() => Value.ToString();
+        public static implicit operator T(BasePropertyValue<T> property) => property.Value;
+    }
+    public abstract class PropertyValue<T> : BasePropertyValue<T>
+    {
         private T _value;
 
-        public virtual T Value
+        public override T Value
         {
             get => _value;
             set
@@ -18,29 +42,19 @@ namespace ModsCommon.Utilities
                 if (!Equals(value, _value))
                 {
                     _value = value;
-                    OnChanged();
+                    OnValueChanged();
                 }
             }
         }
-        public string Label { get; }
 
-        public PropertyValue(Action onChanged, T value = default) : this(string.Empty, onChanged, value) { }
-        public PropertyValue(string label, Action onChanged, T value = default)
+        public PropertyValue(Action onChanged, T value = default) : base(onChanged)
         {
-            Label = label;
-            OnChanged = onChanged;
             _value = value;
         }
-
-        protected abstract bool Equals(T x, T y);
-
-        public virtual void ToXml(XElement element) => element.Add(ToXml());
-        protected virtual XAttribute ToXml() => new XAttribute(Label, Value);
-        public virtual void FromXml(XElement config) => FromXml(config, Value);
-        public virtual void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue);
-
-        public override string ToString() => Value.ToString();
-        public static implicit operator T(PropertyValue<T> property) => property.Value;
+        public PropertyValue(string label, Action onChanged, T value = default) : base(label, onChanged)
+        {
+            _value = value;
+        }
     }
     public class PropertyClassValue<T> : PropertyValue<T>
         where T : class
@@ -57,6 +71,80 @@ namespace ModsCommon.Utilities
         public PropertyStructValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
 
         protected override bool Equals(T x, T y) => x.Equals(y);
+    }
+    public class PropertyNullableStructValue<T, PT> : BasePropertyValue<T?>
+        where T : struct
+        where PT : PropertyStructValue<T>
+    {
+        private bool _hasValue;
+        public override T? Value
+        {
+            get
+            {
+                if (HasValue)
+                    return StructProperty.Value;
+                else
+                    return null;
+            }
+            set
+            {
+                if (!Equals(value, Value))
+                {
+                    SetValue(value);
+                    OnValueChanged();
+                }
+            }
+        }
+        public bool HasValue => _hasValue;
+        private PT StructProperty { get; set; }
+
+        public PropertyNullableStructValue(PT structProperty, Action onChanged, T? value = default) : base(onChanged)
+        {
+            StructProperty = structProperty;
+            SetValue(value);
+        }
+        public PropertyNullableStructValue(PT structProperty, string label, Action onChanged, T? value = default) : base(label, onChanged)
+        {
+            StructProperty = structProperty;
+            SetValue(value);
+        }
+
+        private void SetValue(T? value)
+        {
+            if (value.HasValue)
+            {
+                _hasValue = true;
+                StructProperty.Value = value.Value;
+            }
+            else
+            {
+                _hasValue = false;
+                StructProperty.Value = default;
+            }
+        }
+
+        public override void ToXml(XElement element)
+        {
+            if (HasValue)
+                StructProperty.ToXml(element);
+            else
+                element.Add(ToXml());
+        }
+        protected override XAttribute ToXml() => new XAttribute(Label, string.Empty);
+        public override void FromXml(XElement config, T? defaultValue)
+        {
+            if (config.TryGetAttrValue<string>(Label, out var stringValue) && stringValue == string.Empty)
+                SetValue(null);
+            else
+            {
+                _hasValue = true;
+                StructProperty.FromXml(config);
+            }
+        }
+
+        protected override bool Equals(T? x, T? y) => x.Equals(y);
+
+        public static implicit operator T?(PropertyNullableStructValue<T, PT> property) => property.HasValue ? property.Value : null;
     }
 
     public class PropertyEnumValue<T> : PropertyStructValue<T>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
+using static UnityEngine.ParticleSystem;
 
 namespace ModsCommon.Utilities
 {
@@ -33,7 +34,8 @@ namespace ModsCommon.Utilities
         float Travel(float start, float distance);
         float Distance(float from = 0f, float to = 1f);
         ITrajectory Invert();
-        ITrajectory Copy();
+
+        public bool IsZero { get; }
 
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position);
 
@@ -42,12 +44,12 @@ namespace ModsCommon.Utilities
         public void GetClosestPositionAndDirection(Vector3 hitPos, out Vector3 position, out Vector3 direction, out float closestT);
         public float GetLength(float minAngleDelta = 10, int depth = 5);
     }
-    public class BezierTrajectory : ITrajectory
+    public struct BezierTrajectory : ITrajectory
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Bezier;
         public Bezier3 Trajectory { get; }
 
-        private float? _length = null;
+        private float? _length;
         public float Length => _length ??= Trajectory.Length();
         public float Magnitude { get; }
         public float DeltaAngle { get; }
@@ -56,9 +58,23 @@ namespace ModsCommon.Utilities
         public Vector3 EndDirection { get; }
         public Vector3 StartPosition => Trajectory.a;
         public Vector3 EndPosition => Trajectory.d;
+        public bool IsZero => Trajectory.Max() == Trajectory.Min();
+
+        private BezierTrajectory(Bezier3 trajectory, float? length, float magnitude, float deltaAngle, Vector3 direction, Vector3 startDirection, Vector3 endDirection)
+        {
+            Trajectory = trajectory;
+            _length = length;
+
+            Magnitude = magnitude;
+            DeltaAngle = deltaAngle;
+            Direction = direction;
+            StartDirection = startDirection;
+            EndDirection = endDirection;
+        }
         public BezierTrajectory(Bezier3 trajectory)
         {
             Trajectory = trajectory;
+            _length = null;
 
             Magnitude = (Trajectory.d - Trajectory.a).magnitude;
             DeltaAngle = Trajectory.DeltaAngle();
@@ -147,10 +163,8 @@ namespace ModsCommon.Utilities
         public float Travel(float distance) => Trajectory.Travel(distance);
         public float Travel(float start, float distance) => start + Trajectory.Cut(start, 1f).Travel(distance) * (1f - start);
         public float Distance(float from = 0f, float to = 1f) => Trajectory.Cut(from, to).Length();
-        public BezierTrajectory Invert() => new BezierTrajectory(Trajectory.Invert());
+        public BezierTrajectory Invert() => new BezierTrajectory(Trajectory.Invert(), _length, Magnitude, DeltaAngle, -Direction, EndDirection, StartDirection);
         ITrajectory ITrajectory.Invert() => Invert();
-        public BezierTrajectory Copy() => new BezierTrajectory(Trajectory);
-        ITrajectory ITrajectory.Copy() => Copy();
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
         {
@@ -172,28 +186,15 @@ namespace ModsCommon.Utilities
         public static implicit operator Bezier3(BezierTrajectory trajectory) => trajectory.Trajectory;
         public static explicit operator BezierTrajectory(Bezier3 bezier) => new BezierTrajectory(bezier);
 
-        public override bool Equals(object obj) => Equals(obj as BezierTrajectory);
-        public bool Equals(BezierTrajectory other)
-        {
-            if (other is null)
-                return false;
-            else if (ReferenceEquals(this, other))
-                return true;
-            else
-                return Equal(Trajectory, other.Trajectory);
-        }
-        private static bool Equal(Bezier3 first, Bezier3 second) => first.a == second.a && first.b == second.b && first.c == second.c && first.d == second.d;
+        public override bool Equals(object obj) => obj is BezierTrajectory trajectory && Equals(trajectory);
+        public bool Equals(BezierTrajectory other) => Trajectory.a == other.Trajectory.a && Trajectory.b == other.Trajectory.b && Trajectory.c == other.Trajectory.c && Trajectory.d == other.Trajectory.d;
 
-        public static bool operator ==(BezierTrajectory first, BezierTrajectory second)
-        {
-            if (first is null)
-                return second is null;
-            else
-                return first.Equals(second);
-        }
-        public static bool operator !=(BezierTrajectory first, BezierTrajectory second) => !(first == second);
+        public static bool operator ==(BezierTrajectory first, BezierTrajectory second) => first.Equals(second);
+        public static bool operator !=(BezierTrajectory first, BezierTrajectory second) => !first.Equals(second);
+
+        public override int GetHashCode() => Trajectory.GetHashCode();
     }
-    public class StraightTrajectory : ITrajectory
+    public struct StraightTrajectory : ITrajectory
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Line;
         public Line3 Trajectory { get; }
@@ -208,6 +209,17 @@ namespace ModsCommon.Utilities
         public Vector3 EndDirection => -Direction;
         public Vector3 StartPosition => Trajectory.a;
         public Vector3 EndPosition => Trajectory.b;
+        public bool IsZero => Trajectory.a == Trajectory.b;
+
+        private StraightTrajectory(Line3 trajectory, bool startLimited, bool endLimited, float length, Vector3 direction)
+        {
+            Trajectory = trajectory;
+            StartLimited = startLimited;
+            EndLimited = endLimited;
+
+            Length = length;
+            Direction = direction;
+        }
         public StraightTrajectory(Line3 trajectory, bool startLimited, bool endLimited)
         {
             Trajectory = trajectory;
@@ -240,10 +252,9 @@ namespace ModsCommon.Utilities
         public float Travel(float distance) => distance / Length;
         public float Travel(float start, float distance) => start + Travel(distance);
         public float Distance(float from = 0f, float to = 1f) => Length * (to - from);
-        public StraightTrajectory Invert() => new StraightTrajectory(Trajectory.b, Trajectory.a, EndLimited, StartLimited);
+        public StraightTrajectory Invert() => new StraightTrajectory(new Line3(Trajectory.b, Trajectory.a), EndLimited, StartLimited, Length, -Direction);
         ITrajectory ITrajectory.Invert() => Invert();
-        public StraightTrajectory Copy() => new StraightTrajectory(Trajectory, StartLimited, EndLimited);
-        ITrajectory ITrajectory.Copy() => Copy();
+
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
         {
@@ -264,36 +275,23 @@ namespace ModsCommon.Utilities
         public static implicit operator Line3(StraightTrajectory trajectory) => trajectory.Trajectory;
         public static explicit operator StraightTrajectory(Line3 line) => new StraightTrajectory(line);
 
-        public override bool Equals(object obj) => Equals(obj as StraightTrajectory);
-        public bool Equals(StraightTrajectory other)
-        {
-            if (other is null)
-                return false;
-            else if (ReferenceEquals(this, other))
-                return true;
-            else
-                return Equal(Trajectory, other.Trajectory);
-        }
-        private static bool Equal(Line3 first, Line3 second) => first.a == second.a && first.b == second.b;
+        public override bool Equals(object obj) => obj is StraightTrajectory trajectory && Equals(trajectory);
+        public bool Equals(StraightTrajectory other) => Trajectory.a == other.Trajectory.a && Trajectory.b == other.Trajectory.b;
 
-        public static bool operator ==(StraightTrajectory first, StraightTrajectory second)
-        {
-            if (first is null)
-                return second is null;
-            else
-                return first.Equals(second);
-        }
-        public static bool operator !=(StraightTrajectory first, StraightTrajectory second) => !(first == second);
+        public static bool operator ==(StraightTrajectory first, StraightTrajectory second) => first.Equals(second);
+        public static bool operator !=(StraightTrajectory first, StraightTrajectory second) => !first.Equals(second);
+
+        public override int GetHashCode() => Trajectory.GetHashCode();
     }
-    public class CombinedTrajectory : ITrajectory, IEnumerable<ITrajectory>
+    public struct CombinedTrajectory : ITrajectory, IEnumerable<ITrajectory>
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Combined;
-        private List<ITrajectory> Trajectories { get; }
+        private ITrajectory[] Trajectories { get; }
 
-        private float? _length = null;
+        private float? _length;
         private float[] _parts;
 
-        public int Count => Trajectories.Count;
+        public int Count => Trajectories.Length;
         public float Length => _length ??= Trajectories.Sum(t => t.Length);
         public float[] Parts
         {
@@ -303,14 +301,14 @@ namespace ModsCommon.Utilities
 
                 if (parts == null)
                 {
-                    var totalLenght = Length;
-                    parts = new float[Trajectories.Count];
+                    var totalLength = Length;
+                    parts = new float[Trajectories.Length];
 
                     var sum = 0f;
                     for (var i = 0; i < parts.Length; i += 1)
                     {
                         parts[i] = sum;
-                        sum += Trajectories[i].Length / totalLenght;
+                        sum += Trajectories[i].Length / totalLength;
                     }
 
                     _parts = parts;
@@ -328,29 +326,56 @@ namespace ModsCommon.Utilities
         public Vector3 EndDirection { get; }
         public Vector3 StartPosition => Trajectories.First().StartPosition;
         public Vector3 EndPosition => Trajectories.Last().EndPosition;
+        public bool IsZero => Trajectories.All(t => t.IsZero);
 
-        public CombinedTrajectory(params ITrajectory[] trajectories) : this((IEnumerable<ITrajectory>)trajectories) { }
-        public CombinedTrajectory(IEnumerable<ITrajectory> trajectories)
+        private CombinedTrajectory(ITrajectory[] trajectories, float? length, float[] parts, float magnitude, float deltaAngle, Vector3 direction, Vector3 startDirection, Vector3 endDirection)
         {
-            Trajectories = new List<ITrajectory>(trajectories);
+            Trajectories = trajectories;
 
-            var first = trajectories.First();
-            var last = trajectories.Last();
+            _length = length;
+            _parts = parts;
+
+            Magnitude = magnitude;
+            DeltaAngle = deltaAngle;
+            Direction = direction;
+            StartDirection = startDirection;
+            EndDirection = endDirection;
+        }
+        public CombinedTrajectory(params ITrajectory[] trajectories)
+        {
+            Trajectories = trajectories;
+
+            if (Trajectories.Length == 0)
+                throw new ArgumentException("Trajectories are empty", nameof(trajectories));
+
+            for (int i = 1; i < Trajectories.Length; i += 1)
+            {
+                if (Trajectories[i - 1].EndPosition != Trajectories[i].StartPosition)
+                    throw new ArgumentException($"Trajectories should connect each other. trajectories {i - 1} and {i} are not connected", nameof(trajectories));
+            }
+
+            _length = null;
+            _parts = null;
+
+            var first = Trajectories[0];
+            var last = Trajectories[Trajectories.Length - 1];
             Magnitude = (last.EndPosition - first.StartPosition).magnitude;
             DeltaAngle = 180 - Vector3.Angle(first.StartDirection, last.EndDirection);
             Direction = (last.EndPosition - first.StartPosition).normalized;
             StartDirection = first.StartDirection;
             EndDirection = last.EndDirection;
         }
+        public CombinedTrajectory(IEnumerable<ITrajectory> trajectories) : this(trajectories.ToArray()) { }
 
-        public IEnumerator<ITrajectory> GetEnumerator() => Trajectories.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IEnumerator<ITrajectory> GetEnumerator() => ((IEnumerable<ITrajectory>)Trajectories).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => Trajectories.GetEnumerator();
 
         private int GetIndex(float t)
         {
+            var parts = Parts;
             for (var i = Count - 1; i >= 0; i -= 1)
             {
-                if (t >= Parts[i])
+                if (t >= parts[i])
                     return i;
             }
 
@@ -378,9 +403,6 @@ namespace ModsCommon.Utilities
             t = Mathf.Clamp01(t * GetRelativeLength(i) + Parts[i]);
             return t;
         }
-
-        public CombinedTrajectory Copy() => new CombinedTrajectory(Trajectories.Select(t => t.Copy()));
-        ITrajectory ITrajectory.Copy() => Copy();
 
         public ITrajectory Cut(float t0, float t1)
         {
@@ -437,9 +459,9 @@ namespace ModsCommon.Utilities
                 GetBounds(i, out var t0, out var t1);
 
                 if (t1 <= 0.5f)
-                    firstHalf.Add(Trajectories[i].Copy());
+                    firstHalf.Add(Trajectories[i]);
                 else if (t0 >= 0.5f)
-                    secondHalf.Add(Trajectories[i].Copy());
+                    secondHalf.Add(Trajectories[i]);
                 else
                 {
                     var t = (0.5f - t0) / GetRelativeLength(i);
@@ -448,11 +470,11 @@ namespace ModsCommon.Utilities
                 }
             }
 
-            trajectory1 = firstHalf.Count == 1 ? firstHalf[1] : new CombinedTrajectory(firstHalf);
-            trajectory2 = secondHalf.Count == 1 ? secondHalf[1] : new CombinedTrajectory(secondHalf);
+            trajectory1 = firstHalf.Count == 1 ? firstHalf[0] : new CombinedTrajectory(firstHalf);
+            trajectory2 = secondHalf.Count == 1 ? secondHalf[0] : new CombinedTrajectory(secondHalf);
         }
 
-        public CombinedTrajectory Invert() => new CombinedTrajectory(Trajectories.Select(t => t.Invert()).Reverse());
+        public CombinedTrajectory Invert() => new CombinedTrajectory(Trajectories.Select(t => t.Invert()).Reverse().ToArray(), _length, _parts == null ? null : _parts.Reverse().ToArray(), Magnitude, DeltaAngle, -Direction, EndDirection, StartDirection);
         ITrajectory ITrajectory.Invert() => Invert();
 
         public Vector3 Position(float t)
@@ -498,7 +520,7 @@ namespace ModsCommon.Utilities
             {
                 var thisResult = Trajectories[i].GetHitPosition(ray, out var thisRayT, out var thisTrajectoryT, out var thisPosition);
                 var thisDelta = (thisResult - thisPosition).magnitude;
-                if(thisDelta < delta)
+                if (thisDelta < delta)
                 {
                     delta = thisDelta;
                     result = thisResult;
@@ -529,6 +551,26 @@ namespace ModsCommon.Utilities
             foreach (var trajectory in Trajectories)
                 trajectory.Render(data);
         }
+
+        public override bool Equals(object obj) => obj is CombinedTrajectory trajectory && Equals(trajectory);
+        public bool Equals(CombinedTrajectory other)
+        {
+            if (Count != other.Count)
+                return false;
+
+            for(int i = 0; i < Count; i += 1)
+            {
+                if (!this[i].Equals(other[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool operator ==(CombinedTrajectory first, CombinedTrajectory second) => first.Equals(second);
+        public static bool operator !=(CombinedTrajectory first, CombinedTrajectory second) => !first.Equals(second);
+        public override int GetHashCode() => Trajectories.GetHashCode();
+
         public override string ToString() => string.Join("\n", Trajectories.Select(t => t.ToString()).ToArray());
     }
     public class TrajectoryBound : IOverlay

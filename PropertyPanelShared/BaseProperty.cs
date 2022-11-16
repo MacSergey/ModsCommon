@@ -1,11 +1,14 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
+using System;
 using UnityEngine;
 
 namespace ModsCommon.UI
 {
     public abstract class EditorItem : CustomUIPanel
     {
+        public event Action<VisibleState> OnVisibleStateChanged;
+
         protected virtual float DefaultHeight => 30;
         protected virtual int ItemsPadding => 5;
 
@@ -17,6 +20,58 @@ namespace ModsCommon.UI
         {
             get => Even.isVisible;
             set => Even.isVisible = value;
+        }
+
+        private bool _canCollapse = true;
+        public bool CanCollapse
+        {
+            get => _canCollapse;
+            set
+            {
+                if(value != _canCollapse)
+                {
+                    _canCollapse = value;
+                    if (!_canCollapse)
+                        IsCollapsed = false;
+                }
+            }
+        }
+
+        private VisibleState _visibleState = VisibleState.Visible;
+        private VisibleState VisibleState
+        {
+            get => _visibleState;
+            set
+            {
+                if (value != _visibleState)
+                {
+                    _visibleState = value;
+                    isVisible = _visibleState == VisibleState.Visible;
+                    OnVisibleStateChanged?.Invoke(_visibleState);
+                }
+            }
+        }
+        public bool IsCollapsed
+        {
+            get => (VisibleState & VisibleState.Collapsed) != 0;
+            set
+            {
+                if (CanCollapse && value)
+                    VisibleState |= VisibleState.Collapsed;
+                else
+                    VisibleState &= ~VisibleState.Collapsed;
+            }
+        }
+        public bool IsHidden
+        {
+            get => (VisibleState & VisibleState.Hidden) != 0;
+            set
+            {
+                if (value)
+                    VisibleState |= VisibleState.Hidden;
+                else
+                    VisibleState &= ~VisibleState.Hidden;
+            }
         }
 
         public EditorItem()
@@ -32,6 +87,8 @@ namespace ModsCommon.UI
         {
             IsEven = false;
             EnableControl = true;
+            _visibleState = VisibleState.Visible;
+            _canCollapse = true;
         }
         public virtual void Init() => Init(null);
         protected virtual void Init(float? height)
@@ -158,5 +215,12 @@ namespace ModsCommon.UI
                     item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
             }
         }
+    }
+
+    public enum VisibleState
+    {
+        Visible = 0,
+        Collapsed = 1,
+        Hidden = 2,
     }
 }
