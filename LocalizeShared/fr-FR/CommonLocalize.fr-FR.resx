@@ -222,22 +222,22 @@ Redémarrez le jeu.</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Langue du jeu</value>
   </data>
-  <data name="Mod_Locale_cs-cz" xml:space="preserve">
+  <data name="Mod_Locale_cs-CZ" xml:space="preserve">
     <value>Tchèque</value>
     <comment>Mod_Locale_cs-cz
 </comment>
   </data>
-  <data name="Mod_Locale_da-dk" xml:space="preserve">
+  <data name="Mod_Locale_da-DK" xml:space="preserve">
     <value>Danois</value>
     <comment>Mod_Locale_da-dk
 </comment>
   </data>
-  <data name="Mod_Locale_de-de" xml:space="preserve">
+  <data name="Mod_Locale_de-DE" xml:space="preserve">
     <value>Allemand</value>
     <comment>Mod_Locale_de-de
 </comment>
   </data>
-  <data name="Mod_Locale_en-us" xml:space="preserve">
+  <data name="Mod_Locale_en-US" xml:space="preserve">
     <value>Anglais États-Unis</value>
     <comment>Mod_Locale_en-us
 </comment>
@@ -287,7 +287,7 @@ Redémarrez le jeu.</value>
   </data>
   <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>Malaisien</value>
-    <comment>Mod_Locale_mr-mr
+    <comment>Mod_Locale_ms-MY
 </comment>
   </data>
   <data name="Mod_Locale_nl-nl" xml:space="preserve">

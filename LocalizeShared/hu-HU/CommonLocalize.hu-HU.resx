@@ -212,18 +212,18 @@ Indítsd újra a játékot!</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Játék nyelve</value>
   </data>
-  <data name="Mod_Locale_cs-cz" xml:space="preserve">
+  <data name="Mod_Locale_cs-CZ" xml:space="preserve">
     <value>Cseh</value>
     <comment>Mod_Locale_cs-cz
 </comment>
   </data>
   
-  <data name="Mod_Locale_de-de" xml:space="preserve">
+  <data name="Mod_Locale_de-DE" xml:space="preserve">
     <value>Német</value>
     <comment>Mod_Locale_de-de
 </comment>
   </data>
-  <data name="Mod_Locale_en-us" xml:space="preserve">
+  <data name="Mod_Locale_en-US" xml:space="preserve">
     <value>Angol US</value>
     <comment>Mod_Locale_en-us
 </comment>
@@ -273,7 +273,7 @@ Indítsd újra a játékot!</value>
   </data>
   <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>Maláj</value>
-    <comment>Mod_Locale_mr-mr
+    <comment>Mod_Locale_ms-MY
 </comment>
   </data>
   <data name="Mod_Locale_nl-nl" xml:space="preserve">

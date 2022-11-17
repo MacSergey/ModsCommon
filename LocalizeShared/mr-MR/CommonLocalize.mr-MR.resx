@@ -222,12 +222,12 @@ Mulakan semula permainan.</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Bahasa Permainan</value>
   </data>
-  <data name="Mod_Locale_cs-cz" xml:space="preserve">
+  <data name="Mod_Locale_cs-CZ" xml:space="preserve">
     <value>Czech</value>
     <comment>Mod_Locale_cs-cz
 </comment>
   </data>
-  <data name="Mod_Locale_da-dk" xml:space="preserve">
+  <data name="Mod_Locale_da-DK" xml:space="preserve">
     <value>Denmark</value>
     <comment>Mod_Locale_da-dk
 </comment>
@@ -287,7 +287,7 @@ Mulakan semula permainan.</value>
   </data>
   <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>Melayu</value>
-    <comment>Mod_Locale_mr-mr
+    <comment>Mod_Locale_ms-MY
 </comment>
   </data>
   <data name="Mod_Locale_nl-nl" xml:space="preserve">
@@ -477,5 +477,8 @@ pilihan pertindihan</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>AMARAN</value>
   </data>
-  
+  <data name="Mod_Locale_pt-br" xml:space="preserve">
+    <value>Brazil</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

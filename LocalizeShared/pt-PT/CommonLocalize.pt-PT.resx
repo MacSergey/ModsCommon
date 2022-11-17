@@ -221,17 +221,17 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Língua do jogo</value>
   </data>
-  <data name="Mod_Locale_cs-cz" xml:space="preserve">
+  <data name="Mod_Locale_cs-CZ" xml:space="preserve">
     <value>Checo</value>
     <comment>Mod_Locale_cs-cz
 </comment>
   </data>
-  <data name="Mod_Locale_da-dk" xml:space="preserve">
+  <data name="Mod_Locale_da-DK" xml:space="preserve">
     <value>Dinamarquês</value>
     <comment>Mod_Locale_da-dk
 </comment>
   </data>
-  <data name="Mod_Locale_de-de" xml:space="preserve">
+  <data name="Mod_Locale_de-DE" xml:space="preserve">
     <value>Alemão</value>
     <comment>Mod_Locale_de-de
 </comment>
@@ -286,7 +286,7 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   </data>
   <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>Malaio</value>
-    <comment>Mod_Locale_mr-mr
+    <comment>Mod_Locale_ms-MY
 </comment>
   </data>
   <data name="Mod_Locale_nl-nl" xml:space="preserve">

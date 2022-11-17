@@ -222,17 +222,17 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Язык игры</value>
   </data>
-  <data name="Mod_Locale_cs-cz" xml:space="preserve">
+  <data name="Mod_Locale_cs-CZ" xml:space="preserve">
     <value>Чешский</value>
     <comment>Mod_Locale_cs-cz
 </comment>
   </data>
-  <data name="Mod_Locale_da-dk" xml:space="preserve">
+  <data name="Mod_Locale_da-DK" xml:space="preserve">
     <value>Датский</value>
     <comment>Mod_Locale_da-dk
 </comment>
   </data>
-  <data name="Mod_Locale_de-de" xml:space="preserve">
+  <data name="Mod_Locale_de-DE" xml:space="preserve">
     <value>Немецкий</value>
     <comment>Mod_Locale_de-de
 </comment>
@@ -287,7 +287,7 @@ Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>Малайский</value>
-    <comment>Mod_Locale_mr-mr
+    <comment>Mod_Locale_ms-MY
 </comment>
   </data>
   <data name="Mod_Locale_nl-nl" xml:space="preserve">
