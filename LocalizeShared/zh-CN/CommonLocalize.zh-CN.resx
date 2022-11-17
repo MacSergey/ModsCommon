@@ -222,62 +222,103 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>游戏语言</value>
   </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
+  <data name="Mod_Locale_cs-cz" xml:space="preserve">
     <value>捷克语</value>
+    <comment>Mod_Locale_cs-cz
+</comment>
   </data>
-  <data name="Mod_Locale_da" xml:space="preserve">
+  <data name="Mod_Locale_da-dk" xml:space="preserve">
     <value>丹麦语</value>
+    <comment>Mod_Locale_da-dk
+</comment>
   </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
+  <data name="Mod_Locale_de-de" xml:space="preserve">
     <value>德语</value>
+    <comment>Mod_Locale_de-de
+</comment>
   </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
+  <data name="Mod_Locale_en-us" xml:space="preserve">
     <value>美式英语</value>
+    <comment>Mod_Locale_en-us
+</comment>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
     <value>英式英语</value>
   </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
+  <data name="Mod_Locale_es-es" xml:space="preserve">
     <value>西班牙语</value>
+    <comment>Mod_Locale_es-es
+</comment>
   </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
+  <data name="Mod_Locale_fi-fi" xml:space="preserve">
     <value>芬兰语</value>
+    <comment>Mod_Locale_fi-fi
+</comment>
   </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
+  <data name="Mod_Locale_fr-fr" xml:space="preserve">
     <value>法语</value>
+    <comment>Mod_Locale_fr-fr
+</comment>
   </data>
-  <data name="Mod_Locale_hu" xml:space="preserve">
+  <data name="Mod_Locale_hu-hu" xml:space="preserve">
     <value>匈牙利语</value>
+    <comment>Mod_Locale_hu-hu
+</comment>
   </data>
-  <data name="Mod_Locale_id" xml:space="preserve">
+  <data name="Mod_Locale_id-id" xml:space="preserve">
     <value>印尼语</value>
+    <comment>Mod_Locale_id-id
+</comment>
   </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
+  <data name="Mod_Locale_it-it" xml:space="preserve">
     <value>意大利语</value>
+    <comment>Mod_Locale_it-it
+</comment>
   </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
+  <data name="Mod_Locale_ja-jp" xml:space="preserve">
     <value>日语</value>
+    <comment>Mod_Locale_ja-jp
+</comment>
   </data>
-  <data name="Mod_Locale_ko" xml:space="preserve">
+  <data name="Mod_Locale_ko-kr" xml:space="preserve">
     <value>韩语</value>
+    <comment>Mod_Locale_ko-kr
+</comment>
   </data>
-  <data name="Mod_Locale_mr" xml:space="preserve">
+  <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>马来语</value>
+    <comment>Mod_Locale_mr-mr
+</comment>
   </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
+  <data name="Mod_Locale_nl-nl" xml:space="preserve">
     <value>荷兰语</value>
+    <comment>Mod_Locale_nl-nl
+</comment>
   </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
+  <data name="Mod_Locale_pl-pl" xml:space="preserve">
     <value>波兰语</value>
+    <comment>Mod_Locale_pl-pl
+</comment>
   </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
+  <data name="Mod_Locale_pt-pt" xml:space="preserve">
     <value>葡萄牙语</value>
+    <comment>Mod_Locale_pt-pt
+</comment>
   </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
+  <data name="Mod_Locale_ro-ro" xml:space="preserve">
+    <value>罗马尼亚语</value>
+    <comment>Mod_Locale_ro-ro
+</comment>
+  </data>
+  <data name="Mod_Locale_ru-ru" xml:space="preserve">
     <value>俄语</value>
+    <comment>Mod_Locale_ru-ru
+</comment>
   </data>
-  <data name="Mod_Locale_tr" xml:space="preserve">
+  <data name="Mod_Locale_tr-tr" xml:space="preserve">
     <value>土耳其语</value>
+    <comment>Mod_Locale_tr-tr
+</comment>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>简体中文</value>
@@ -285,12 +326,50 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>繁体中文</value>
   </data>
+  <data name="Mod_Status" xml:space="preserve">
+    <value>状态：{0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>游戏版本已经过时</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>载入错误</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>模组版本已经过时</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>正常运行</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>未知的</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>支持服务</value>
+  </data>
+  <data name="Mod_Version" xml:space="preserve">
+    <value>版本: {0}</value>
+  </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>游戏版本已经过时。
+
+模组需要的游戏版本： {0}
+当前游戏的版本： {1}
+
+请更新游戏到最新版本， 否则模组无法正常使用，并可能导致无法预测的错误。</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>模组版本已经过时。
+
+模组当前的版本： {0}
+游戏当前的版本： {1}
+
+请更新模组到最新版本， 否则模组无法正常使用，并可能导致无法预测的错误。</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 版本的新功能</value>
   </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>版本{0}</value>
   </data>
@@ -357,6 +436,16 @@ Shift x10，Ctrl x0.1</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>仅在 UnifiedUI 中显示</value>
   </data>
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>您可以帮助改进模组翻译
+或将模组翻译成您的语言</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>改进翻译</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>添加新的语言</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>故障排除</value>
   </data>
@@ -367,4 +456,26 @@ Shift x10，Ctrl x0.1</value>
     <value>按下 {0} 
 来选择其它被遮挡到的节点</value>
   </data>
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>修复:</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>已删除</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>已撤销</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>已更新</value>
+  </data>
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  
 </root>

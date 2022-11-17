@@ -222,65 +222,103 @@ Restartujte hru.</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Jazyk hry</value>
   </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
+  <data name="Mod_Locale_cs-cz" xml:space="preserve">
     <value>Čeština</value>
+    <comment>Mod_Locale_cs-cz
+</comment>
   </data>
-  <data name="Mod_Locale_da" xml:space="preserve">
+  <data name="Mod_Locale_da-dk" xml:space="preserve">
     <value>Dánština</value>
+    <comment>Mod_Locale_da-dk
+</comment>
   </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
+  <data name="Mod_Locale_de-de" xml:space="preserve">
     <value>Němčina</value>
+    <comment>Mod_Locale_de-de
+</comment>
   </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
+  <data name="Mod_Locale_en-us" xml:space="preserve">
     <value>Anglicky US</value>
+    <comment>Mod_Locale_en-us
+</comment>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
     <value>Anglicky UK</value>
   </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
+  <data name="Mod_Locale_es-es" xml:space="preserve">
     <value>Španělština</value>
+    <comment>Mod_Locale_es-es
+</comment>
   </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
+  <data name="Mod_Locale_fi-fi" xml:space="preserve">
     <value>Finština</value>
+    <comment>Mod_Locale_fi-fi
+</comment>
   </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
+  <data name="Mod_Locale_fr-fr" xml:space="preserve">
     <value>Francouzština</value>
+    <comment>Mod_Locale_fr-fr
+</comment>
   </data>
-  <data name="Mod_Locale_hu" xml:space="preserve">
+  <data name="Mod_Locale_hu-hu" xml:space="preserve">
     <value>Maďarština</value>
+    <comment>Mod_Locale_hu-hu
+</comment>
   </data>
-  <data name="Mod_Locale_id" xml:space="preserve">
+  <data name="Mod_Locale_id-id" xml:space="preserve">
     <value>Indonéština</value>
+    <comment>Mod_Locale_id-id
+</comment>
   </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
+  <data name="Mod_Locale_it-it" xml:space="preserve">
     <value>Italština</value>
+    <comment>Mod_Locale_it-it
+</comment>
   </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
+  <data name="Mod_Locale_ja-jp" xml:space="preserve">
     <value>Japonština</value>
+    <comment>Mod_Locale_ja-jp
+</comment>
   </data>
-  <data name="Mod_Locale_ko" xml:space="preserve">
+  <data name="Mod_Locale_ko-kr" xml:space="preserve">
     <value>Korejština</value>
+    <comment>Mod_Locale_ko-kr
+</comment>
   </data>
-  <data name="Mod_Locale_mr" xml:space="preserve">
+  <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>Malajština</value>
+    <comment>Mod_Locale_mr-mr
+</comment>
   </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
+  <data name="Mod_Locale_nl-nl" xml:space="preserve">
     <value>Holandština</value>
+    <comment>Mod_Locale_nl-nl
+</comment>
   </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
+  <data name="Mod_Locale_pl-pl" xml:space="preserve">
     <value>Polština</value>
+    <comment>Mod_Locale_pl-pl
+</comment>
   </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
+  <data name="Mod_Locale_pt-pt" xml:space="preserve">
     <value>Portugalština</value>
+    <comment>Mod_Locale_pt-pt
+</comment>
   </data>
-  <data name="Mod_Locale_ro" xml:space="preserve">
+  <data name="Mod_Locale_ro-ro" xml:space="preserve">
     <value>Rumunština</value>
+    <comment>Mod_Locale_ro-ro
+</comment>
   </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
+  <data name="Mod_Locale_ru-ru" xml:space="preserve">
     <value>Ruština</value>
+    <comment>Mod_Locale_ru-ru
+</comment>
   </data>
-  <data name="Mod_Locale_tr" xml:space="preserve">
+  <data name="Mod_Locale_tr-tr" xml:space="preserve">
     <value>Turečtina</value>
+    <comment>Mod_Locale_tr-tr
+</comment>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Zjednodušená čínština</value>
@@ -331,6 +369,7 @@ Aktualizujte mód na nejnovější verzi, jinak není zaručeno správné fungov
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Co je nového v {0}</value>
   </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Verze {0}</value>
   </data>
@@ -437,5 +476,9 @@ výběr další křižovatky v překrytí</value>
   </data>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>VAROVÁNÍ</value>
+  </data>
+  <data name="Mod_Locale_pt-br" xml:space="preserve">
+    <value>Brazilština</value>
+    <comment>Mod_Locale_pt-br</comment>
   </data>
 </root>

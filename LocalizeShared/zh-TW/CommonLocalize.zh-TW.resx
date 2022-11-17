@@ -222,65 +222,103 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>遊戲語言</value>
   </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
+  <data name="Mod_Locale_cs-cz" xml:space="preserve">
     <value>捷克文</value>
+    <comment>Mod_Locale_cs-cz
+</comment>
   </data>
-  <data name="Mod_Locale_da" xml:space="preserve">
+  <data name="Mod_Locale_da-dk" xml:space="preserve">
     <value>丹麥文</value>
+    <comment>Mod_Locale_da-dk
+</comment>
   </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
+  <data name="Mod_Locale_de-de" xml:space="preserve">
     <value>德文</value>
+    <comment>Mod_Locale_de-de
+</comment>
   </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
+  <data name="Mod_Locale_en-us" xml:space="preserve">
     <value>英文（美國）</value>
+    <comment>Mod_Locale_en-us
+</comment>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
     <value>英文（英國）</value>
   </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
+  <data name="Mod_Locale_es-es" xml:space="preserve">
     <value>西班牙文</value>
+    <comment>Mod_Locale_es-es
+</comment>
   </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
+  <data name="Mod_Locale_fi-fi" xml:space="preserve">
     <value>芬蘭文</value>
+    <comment>Mod_Locale_fi-fi
+</comment>
   </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
+  <data name="Mod_Locale_fr-fr" xml:space="preserve">
     <value>法文</value>
+    <comment>Mod_Locale_fr-fr
+</comment>
   </data>
-  <data name="Mod_Locale_hu" xml:space="preserve">
+  <data name="Mod_Locale_hu-hu" xml:space="preserve">
     <value>匈牙利文</value>
+    <comment>Mod_Locale_hu-hu
+</comment>
   </data>
-  <data name="Mod_Locale_id" xml:space="preserve">
+  <data name="Mod_Locale_id-id" xml:space="preserve">
     <value>印尼文</value>
+    <comment>Mod_Locale_id-id
+</comment>
   </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
+  <data name="Mod_Locale_it-it" xml:space="preserve">
     <value>義大利文</value>
+    <comment>Mod_Locale_it-it
+</comment>
   </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
+  <data name="Mod_Locale_ja-jp" xml:space="preserve">
     <value>日文</value>
+    <comment>Mod_Locale_ja-jp
+</comment>
   </data>
-  <data name="Mod_Locale_ko" xml:space="preserve">
+  <data name="Mod_Locale_ko-kr" xml:space="preserve">
     <value>韓文</value>
+    <comment>Mod_Locale_ko-kr
+</comment>
   </data>
-  <data name="Mod_Locale_mr" xml:space="preserve">
+  <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>馬來文</value>
+    <comment>Mod_Locale_mr-mr
+</comment>
   </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
+  <data name="Mod_Locale_nl-nl" xml:space="preserve">
     <value>荷蘭文</value>
+    <comment>Mod_Locale_nl-nl
+</comment>
   </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
+  <data name="Mod_Locale_pl-pl" xml:space="preserve">
     <value>波籣文</value>
+    <comment>Mod_Locale_pl-pl
+</comment>
   </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
+  <data name="Mod_Locale_pt-pt" xml:space="preserve">
     <value>葡萄牙文</value>
+    <comment>Mod_Locale_pt-pt
+</comment>
   </data>
-  <data name="Mod_Locale_ro" xml:space="preserve">
+  <data name="Mod_Locale_ro-ro" xml:space="preserve">
     <value>羅馬尼亞文</value>
+    <comment>Mod_Locale_ro-ro
+</comment>
   </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
+  <data name="Mod_Locale_ru-ru" xml:space="preserve">
     <value>俄文</value>
+    <comment>Mod_Locale_ru-ru
+</comment>
   </data>
-  <data name="Mod_Locale_tr" xml:space="preserve">
+  <data name="Mod_Locale_tr-tr" xml:space="preserve">
     <value>土耳其文</value>
+    <comment>Mod_Locale_tr-tr
+</comment>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>簡體中文</value>
@@ -312,9 +350,12 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Version" xml:space="preserve">
     <value>版本: {0}</value>
   </data>
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 更新內容</value>
   </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>版本 {0}</value>
   </data>
@@ -381,6 +422,9 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>只在 UnifiedUI 顯示</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>疑難排解</value>
   </data>
@@ -412,4 +456,5 @@ Shift X10, Ctrl X0.1</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>警告</value>
   </data>
+  
 </root>

@@ -225,65 +225,103 @@
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>ゲームの既定言語</value>
   </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
+  <data name="Mod_Locale_cs-cz" xml:space="preserve">
     <value>チェコ語</value>
+    <comment>Mod_Locale_cs-cz
+</comment>
   </data>
-  <data name="Mod_Locale_da" xml:space="preserve">
+  <data name="Mod_Locale_da-dk" xml:space="preserve">
     <value>デンマーク語</value>
+    <comment>Mod_Locale_da-dk
+</comment>
   </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
+  <data name="Mod_Locale_de-de" xml:space="preserve">
     <value>ドイツ語</value>
+    <comment>Mod_Locale_de-de
+</comment>
   </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
+  <data name="Mod_Locale_en-us" xml:space="preserve">
     <value>英語 - US</value>
+    <comment>Mod_Locale_en-us
+</comment>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
     <value>英語 - UK</value>
   </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
+  <data name="Mod_Locale_es-es" xml:space="preserve">
     <value>スペイン語</value>
+    <comment>Mod_Locale_es-es
+</comment>
   </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
+  <data name="Mod_Locale_fi-fi" xml:space="preserve">
     <value>フィンランド語</value>
+    <comment>Mod_Locale_fi-fi
+</comment>
   </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
+  <data name="Mod_Locale_fr-fr" xml:space="preserve">
     <value>フランス語</value>
+    <comment>Mod_Locale_fr-fr
+</comment>
   </data>
-  <data name="Mod_Locale_hu" xml:space="preserve">
+  <data name="Mod_Locale_hu-hu" xml:space="preserve">
     <value>ハンガリー語</value>
+    <comment>Mod_Locale_hu-hu
+</comment>
   </data>
-  <data name="Mod_Locale_id" xml:space="preserve">
+  <data name="Mod_Locale_id-id" xml:space="preserve">
     <value>インドネシア語</value>
+    <comment>Mod_Locale_id-id
+</comment>
   </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
+  <data name="Mod_Locale_it-it" xml:space="preserve">
     <value>イタリア語</value>
+    <comment>Mod_Locale_it-it
+</comment>
   </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
+  <data name="Mod_Locale_ja-jp" xml:space="preserve">
     <value>日本語</value>
+    <comment>Mod_Locale_ja-jp
+</comment>
   </data>
-  <data name="Mod_Locale_ko" xml:space="preserve">
+  <data name="Mod_Locale_ko-kr" xml:space="preserve">
     <value>韓国語</value>
+    <comment>Mod_Locale_ko-kr
+</comment>
   </data>
-  <data name="Mod_Locale_mr" xml:space="preserve">
+  <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>マレー語</value>
+    <comment>Mod_Locale_mr-mr
+</comment>
   </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
+  <data name="Mod_Locale_nl-nl" xml:space="preserve">
     <value>オランダ語</value>
+    <comment>Mod_Locale_nl-nl
+</comment>
   </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
+  <data name="Mod_Locale_pl-pl" xml:space="preserve">
     <value>ポーランド語</value>
+    <comment>Mod_Locale_pl-pl
+</comment>
   </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
+  <data name="Mod_Locale_pt-pt" xml:space="preserve">
     <value>ポルトガル語</value>
+    <comment>Mod_Locale_pt-pt
+</comment>
   </data>
-  <data name="Mod_Locale_ro" xml:space="preserve">
+  <data name="Mod_Locale_ro-ro" xml:space="preserve">
     <value>ルーマニア語</value>
+    <comment>Mod_Locale_ro-ro
+</comment>
   </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
+  <data name="Mod_Locale_ru-ru" xml:space="preserve">
     <value>ロシア語</value>
+    <comment>Mod_Locale_ru-ru
+</comment>
   </data>
-  <data name="Mod_Locale_tr" xml:space="preserve">
+  <data name="Mod_Locale_tr-tr" xml:space="preserve">
     <value>トルコ語</value>
+    <comment>Mod_Locale_tr-tr
+</comment>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>簡体中国語</value>
@@ -334,6 +372,7 @@ MODを最新バージョンに更新してください！ 更新をしないとM
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} の更新内容</value>
   </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Version {0}</value>
   </data>
@@ -440,5 +479,9 @@ MODを最新バージョンに更新してください！ 更新をしないとM
   </data>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>警告！</value>
+  </data>
+  <data name="Mod_Locale_pt-br" xml:space="preserve">
+    <value>ブラジル語</value>
+    <comment>Mod_Locale_pt-br</comment>
   </data>
 </root>

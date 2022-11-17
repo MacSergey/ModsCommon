@@ -222,65 +222,103 @@ Riavvia il gioco.</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Lingua del gioco</value>
   </data>
-  <data name="Mod_Locale_cs" xml:space="preserve">
+  <data name="Mod_Locale_cs-cz" xml:space="preserve">
     <value>Ceco</value>
+    <comment>Mod_Locale_cs-cz
+</comment>
   </data>
-  <data name="Mod_Locale_da" xml:space="preserve">
+  <data name="Mod_Locale_da-dk" xml:space="preserve">
     <value>Danese</value>
+    <comment>Mod_Locale_da-dk
+</comment>
   </data>
-  <data name="Mod_Locale_de" xml:space="preserve">
+  <data name="Mod_Locale_de-de" xml:space="preserve">
     <value>Tedesco</value>
+    <comment>Mod_Locale_de-de
+</comment>
   </data>
-  <data name="Mod_Locale_en" xml:space="preserve">
+  <data name="Mod_Locale_en-us" xml:space="preserve">
     <value>Inglese US</value>
+    <comment>Mod_Locale_en-us
+</comment>
   </data>
   <data name="Mod_Locale_en-gb" xml:space="preserve">
     <value>Inglese UK</value>
   </data>
-  <data name="Mod_Locale_es" xml:space="preserve">
+  <data name="Mod_Locale_es-es" xml:space="preserve">
     <value>Spagnolo</value>
+    <comment>Mod_Locale_es-es
+</comment>
   </data>
-  <data name="Mod_Locale_fi" xml:space="preserve">
+  <data name="Mod_Locale_fi-fi" xml:space="preserve">
     <value>Finlandese</value>
+    <comment>Mod_Locale_fi-fi
+</comment>
   </data>
-  <data name="Mod_Locale_fr" xml:space="preserve">
+  <data name="Mod_Locale_fr-fr" xml:space="preserve">
     <value>Francese</value>
+    <comment>Mod_Locale_fr-fr
+</comment>
   </data>
-  <data name="Mod_Locale_hu" xml:space="preserve">
+  <data name="Mod_Locale_hu-hu" xml:space="preserve">
     <value>Ungherese</value>
+    <comment>Mod_Locale_hu-hu
+</comment>
   </data>
-  <data name="Mod_Locale_id" xml:space="preserve">
+  <data name="Mod_Locale_id-id" xml:space="preserve">
     <value>Indonesiano</value>
+    <comment>Mod_Locale_id-id
+</comment>
   </data>
-  <data name="Mod_Locale_it" xml:space="preserve">
+  <data name="Mod_Locale_it-it" xml:space="preserve">
     <value>Italiano</value>
+    <comment>Mod_Locale_it-it
+</comment>
   </data>
-  <data name="Mod_Locale_ja" xml:space="preserve">
+  <data name="Mod_Locale_ja-jp" xml:space="preserve">
     <value>Giapponese</value>
+    <comment>Mod_Locale_ja-jp
+</comment>
   </data>
-  <data name="Mod_Locale_ko" xml:space="preserve">
+  <data name="Mod_Locale_ko-kr" xml:space="preserve">
     <value>Coreano</value>
+    <comment>Mod_Locale_ko-kr
+</comment>
   </data>
-  <data name="Mod_Locale_mr" xml:space="preserve">
+  <data name="Mod_Locale_mr-mr" xml:space="preserve">
     <value>Malese</value>
+    <comment>Mod_Locale_mr-mr
+</comment>
   </data>
-  <data name="Mod_Locale_nl" xml:space="preserve">
+  <data name="Mod_Locale_nl-nl" xml:space="preserve">
     <value>Olandese</value>
+    <comment>Mod_Locale_nl-nl
+</comment>
   </data>
-  <data name="Mod_Locale_pl" xml:space="preserve">
+  <data name="Mod_Locale_pl-pl" xml:space="preserve">
     <value>Polacco</value>
+    <comment>Mod_Locale_pl-pl
+</comment>
   </data>
-  <data name="Mod_Locale_pt" xml:space="preserve">
+  <data name="Mod_Locale_pt-pt" xml:space="preserve">
     <value>Portoghese</value>
+    <comment>Mod_Locale_pt-pt
+</comment>
   </data>
-  <data name="Mod_Locale_ro" xml:space="preserve">
+  <data name="Mod_Locale_ro-ro" xml:space="preserve">
     <value>Rumeno</value>
+    <comment>Mod_Locale_ro-ro
+</comment>
   </data>
-  <data name="Mod_Locale_ru" xml:space="preserve">
+  <data name="Mod_Locale_ru-ru" xml:space="preserve">
     <value>Russo</value>
+    <comment>Mod_Locale_ru-ru
+</comment>
   </data>
-  <data name="Mod_Locale_tr" xml:space="preserve">
+  <data name="Mod_Locale_tr-tr" xml:space="preserve">
     <value>Turco</value>
+    <comment>Mod_Locale_tr-tr
+</comment>
   </data>
   <data name="Mod_Locale_zh-cn" xml:space="preserve">
     <value>Cinese Semplificato</value>
@@ -288,12 +326,22 @@ Riavvia il gioco.</value>
   <data name="Mod_Locale_zh-tw" xml:space="preserve">
     <value>Cinese Tradizionale</value>
   </data>
+  
+  
+  
+  
+  
+  
   <data name="Mod_Support" xml:space="preserve">
     <value>Supporto</value>
   </data>
+  
+  
+  
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Cosa c'è di nuovo in {0}</value>
   </data>
+  
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
     <value>Versione {0}</value>
   </data>
@@ -360,6 +408,9 @@ Riavvia il gioco.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Mostra solo nella UnifiedUI</value>
   </data>
+  
+  
+  
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Risoluzione problemi</value>
   </data>
@@ -370,4 +421,12 @@ Riavvia il gioco.</value>
     <value>Premi {0} per
 selezionare il passaggio successivo</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
