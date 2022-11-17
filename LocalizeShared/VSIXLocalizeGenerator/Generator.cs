@@ -31,14 +31,15 @@ namespace LocalizeGeneratorVSIX
             try
             {
                 List<string> lines = new List<string>();
+                var className = Path.GetFileNameWithoutExtension(wszInputFilePath);
 
                 lines.Add($"namespace {wszDefaultNamespace}");
                 lines.Add("{");
-                lines.Add($"\tpublic class {Path.GetFileNameWithoutExtension(wszInputFilePath)}");
+                lines.Add($"\tpublic class {className}");
                 lines.Add("\t{");
 
                 lines.Add(GenerateCulture());
-                lines.Add(GenerateLocaleManager());
+                lines.Add(GenerateLocaleManager(className));
 
                 var reader = new ResxReader(wszInputFilePath);
                 foreach (var item in reader)
@@ -73,9 +74,9 @@ namespace LocalizeGeneratorVSIX
         {
             return $"\t\tpublic static {nameof(System)}.{nameof(System.Globalization)}.{nameof(System.Globalization.CultureInfo)} {Culture} {{get; set;}}";
         }
-        private string GenerateLocaleManager()
+        private string GenerateLocaleManager(string className)
         {
-            return $"\t\tpublic static {nameof(ModsCommon)}.{nameof(ModsCommon.LocaleManager)} {LocaleManager} {{get;}} = new {nameof(ModsCommon)}.{nameof(ModsCommon.LocaleManager)}();";
+            return $"\t\tpublic static {nameof(ModsCommon)}.{nameof(ModsCommon.LocalizeManager)} {LocaleManager} {{get;}} = new {nameof(ModsCommon)}.{nameof(ModsCommon.LocalizeManager)}(\"{className}\", typeof({className}).{nameof(Type.Assembly)});";
         }
 
         private string GenerateDescription(string text)
@@ -85,11 +86,9 @@ namespace LocalizeGeneratorVSIX
             else
             {
                 var parts = text.Split('\n');
+                var partText = parts[0].Length <= 100 ? parts[0] : parts[0].Substring(0, 100);
 
-                if (parts[0].Length <= 100)
-                    return $"\t\t//{parts[0]}";
-                else
-                    return $"\t\t//{parts[0].Substring(0, 100)}...";
+                return $"\t\t/// <summary>\n\t\t/// {partText}\n\t\t/// </summary>";
             }
         }
         private string GenerateMethod(string key)

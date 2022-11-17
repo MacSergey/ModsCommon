@@ -59,5 +59,38 @@ namespace ModsCommon
             _ => savedKey.Key.GetLocale(),
         };
         public static string GetLocale(this KeyCode key) => Locale.Exists("KEYNAME", key.ToString()) ? Locale.Get("KEYNAME", key.ToString()) : key.ToString();
+
+        public static string GetRegionLocale(string locale)
+        {
+            if (locale.Length == 2)
+            {
+                return locale switch
+                {
+                    "cs" => "cs-CZ",
+                    "da" => "da-DK",
+                    "de" => "de-DE",
+                    "en" => "en-US",
+                    "es" => "es-ES",
+                    "fi" => "fi-FI",
+                    "fr" => "fr-FR",
+                    "hu" => "hu-HU",
+                    "id" => "id-ID",
+                    "it" => "it-IT",
+                    "ja" => "ja-JP",
+                    "ko" => "ko-KR",
+                    "mr" => "mr-IN",
+                    "nl" => "nl-NL",
+                    "pl" => "pl-PL",
+                    "pt" => "pt-PT",
+                    "ro" => "ro-RO",
+                    "ru" => "ru-RU",
+                    "tr" => "tr-TR",
+                    "zh" => "zh-CN",
+                    _ => locale,
+                };
+            }
+            else
+                return locale;
+        }
     }
 }

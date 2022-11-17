@@ -21,10 +21,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CommonLocalize.resx">
+    <None Include="CommonLocalize.resx">
       <Generator>LocalizeGenerator</Generator>
       <LastGenOutput>CommonLocalize.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonLocalize.Designer.cs">

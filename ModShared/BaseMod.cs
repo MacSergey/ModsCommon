@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
@@ -104,7 +105,7 @@ namespace ModsCommon
                 SetCulture(value);
             }
         }
-        protected virtual System.Resources.ResourceManager LocalizeManager => null;
+        protected virtual LocalizeManager LocalizeManager => null;
 
         public BaseMod()
         {
@@ -192,6 +193,13 @@ namespace ModsCommon
         protected virtual void GetSettings(UIHelperBase helper) { }
         protected void StatusChanged() => OnStatusChanged?.Invoke();
 
+        public IEnumerable<string> GetSupportLocales()
+        {
+            if (LocalizeManager is LocalizeManager manager)
+                return manager.GetSupportLocales();
+            else
+                return new string[0];
+        }
         public void ChangeLocale()
         {
             var locale = BaseSettings<TypeMod>.Locale.value;
@@ -204,12 +212,12 @@ namespace ModsCommon
                     locale = new SavedString(Settings.localeID, Settings.gameSettingsFile, DefaultSettings.localeID).value;
             }
 
-            locale = ClassesExtension.GetRegionLocale(locale);
+            locale = LocalizeExtension.GetRegionLocale(locale);
 
             if (!CultureInfo.GetCultures(CultureTypes.AllCultures).Any(c => c.Name == locale))
             {
                 Logger.Debug($"locale {locale} is not supported");
-                locale = ClassesExtension.GetRegionLocale(DefaultSettings.localeID);
+                locale = LocalizeExtension.GetRegionLocale(DefaultSettings.localeID);
             }
 
             Culture = new CultureInfo(locale);
@@ -241,7 +249,12 @@ namespace ModsCommon
         public virtual string GetLocalizedString(string key, CultureInfo culture = null)
         {
             culture ??= Culture;
-            return LocalizeManager?.GetString(key, culture) ?? CommonLocalize.ResourceManager.GetString(key, culture);
+
+            var text = LocalizeManager?.GetString(key, culture);
+            if (text == key)
+                text = CommonLocalize.LocaleManager.GetString(key, culture);
+
+            return text;
         }
 
         protected virtual void OnLoadError(out bool shown) => shown = (Status & ModStatus.ErrorShown) != 0;
