@@ -26,10 +26,10 @@ namespace ModsCommon
 		//Detected missing dependencies.
 		public static string Dependency_Missing => LocaleManager.GetString("Dependency_Missing", Culture);
 
-		//Detected missing dependencies and сonflicting mods...
+		//Detected missing dependencies and сonflicting mods.
 		public static string Dependency_MissingAndConflict => LocaleManager.GetString("Dependency_MissingAndConflict", Culture);
 
-		//To continue using {0} need to fix these issues, ot...
+		//To continue using {0} need to fix these issues, otherwise the mod will be disabled.
 		public static string Dependency_NeedFix => LocaleManager.GetString("Dependency_NeedFix", Culture);
 
 		//All issues are fixed, {0} can be enabled.
@@ -92,13 +92,13 @@ namespace ModsCommon
 		//Get stable version
 		public static string Mod_BetaWarningGetStable => LocaleManager.GetString("Mod_BetaWarningGetStable", Culture);
 
-		//You are using the BETA version of {0}. It is for t...
+		//You are using the BETA version of {0}. It is for testing new features and may contain errors. If you...
 		public static string Mod_BetaWarningMessage => LocaleManager.GetString("Mod_BetaWarningMessage", Culture);
 
-		//This is a BETA version, errors may occur and stabi...
+		//This is a BETA version, errors may occur and stability is not guaranteed!
 		public static string Mod_DescriptionBeta => LocaleManager.GetString("Mod_DescriptionBeta", Culture);
 
-		//Linux version of Cities Skylines doesn't have all ...
+		//Linux version of Cities Skylines doesn't have all necessary libraries for the mod to work correctly....
 		public static string Mod_LinuxWarning => LocaleManager.GetString("Mod_LinuxWarning", Culture);
 
 		//Mod loaded with errors.
@@ -108,64 +108,64 @@ namespace ModsCommon
 		public static string Mod_LocaleGame => LocaleManager.GetString("Mod_LocaleGame", Culture);
 
 		//Czech
-		public static string Mod_Locale_cs => LocaleManager.GetString("Mod_Locale_cs", Culture);
+		public static string Mod_Locale_cs_cz => LocaleManager.GetString("Mod_Locale_cs-cz", Culture);
 
 		//Danish
-		public static string Mod_Locale_da => LocaleManager.GetString("Mod_Locale_da", Culture);
+		public static string Mod_Locale_da_dk => LocaleManager.GetString("Mod_Locale_da-dk", Culture);
 
 		//German
-		public static string Mod_Locale_de => LocaleManager.GetString("Mod_Locale_de", Culture);
+		public static string Mod_Locale_de_de => LocaleManager.GetString("Mod_Locale_de-de", Culture);
 
 		//English US
-		public static string Mod_Locale_en => LocaleManager.GetString("Mod_Locale_en", Culture);
+		public static string Mod_Locale_en_us => LocaleManager.GetString("Mod_Locale_en-us", Culture);
 
 		//English UK
 		public static string Mod_Locale_en_gb => LocaleManager.GetString("Mod_Locale_en-gb", Culture);
 
 		//Spanish
-		public static string Mod_Locale_es => LocaleManager.GetString("Mod_Locale_es", Culture);
+		public static string Mod_Locale_es_es => LocaleManager.GetString("Mod_Locale_es-es", Culture);
 
 		//Finnish
-		public static string Mod_Locale_fi => LocaleManager.GetString("Mod_Locale_fi", Culture);
+		public static string Mod_Locale_fi_fi => LocaleManager.GetString("Mod_Locale_fi-fi", Culture);
 
 		//French
-		public static string Mod_Locale_fr => LocaleManager.GetString("Mod_Locale_fr", Culture);
+		public static string Mod_Locale_fr_fr => LocaleManager.GetString("Mod_Locale_fr-fr", Culture);
 
 		//Hungarian
-		public static string Mod_Locale_hu => LocaleManager.GetString("Mod_Locale_hu", Culture);
+		public static string Mod_Locale_hu_hu => LocaleManager.GetString("Mod_Locale_hu-hu", Culture);
 
 		//Indonesian
-		public static string Mod_Locale_id => LocaleManager.GetString("Mod_Locale_id", Culture);
+		public static string Mod_Locale_id_id => LocaleManager.GetString("Mod_Locale_id-id", Culture);
 
 		//Italian
-		public static string Mod_Locale_it => LocaleManager.GetString("Mod_Locale_it", Culture);
+		public static string Mod_Locale_it_it => LocaleManager.GetString("Mod_Locale_it-it", Culture);
 
 		//Japanese
-		public static string Mod_Locale_ja => LocaleManager.GetString("Mod_Locale_ja", Culture);
+		public static string Mod_Locale_ja_jp => LocaleManager.GetString("Mod_Locale_ja-jp", Culture);
 
 		//Korean
-		public static string Mod_Locale_ko => LocaleManager.GetString("Mod_Locale_ko", Culture);
+		public static string Mod_Locale_ko_kr => LocaleManager.GetString("Mod_Locale_ko-kr", Culture);
 
 		//Malay
-		public static string Mod_Locale_mr => LocaleManager.GetString("Mod_Locale_mr", Culture);
+		public static string Mod_Locale_mr_mr => LocaleManager.GetString("Mod_Locale_mr-mr", Culture);
 
 		//Dutch
-		public static string Mod_Locale_nl => LocaleManager.GetString("Mod_Locale_nl", Culture);
+		public static string Mod_Locale_nl_nl => LocaleManager.GetString("Mod_Locale_nl-nl", Culture);
 
 		//Polish
-		public static string Mod_Locale_pl => LocaleManager.GetString("Mod_Locale_pl", Culture);
+		public static string Mod_Locale_pl_pl => LocaleManager.GetString("Mod_Locale_pl-pl", Culture);
 
 		//Portuguese
-		public static string Mod_Locale_pt => LocaleManager.GetString("Mod_Locale_pt", Culture);
+		public static string Mod_Locale_pt_pt => LocaleManager.GetString("Mod_Locale_pt-pt", Culture);
 
 		//Romanian
-		public static string Mod_Locale_ro => LocaleManager.GetString("Mod_Locale_ro", Culture);
+		public static string Mod_Locale_ro_ro => LocaleManager.GetString("Mod_Locale_ro-ro", Culture);
 
 		//Russian
-		public static string Mod_Locale_ru => LocaleManager.GetString("Mod_Locale_ru", Culture);
+		public static string Mod_Locale_ru_ru => LocaleManager.GetString("Mod_Locale_ru-ru", Culture);
 
 		//Turkish
-		public static string Mod_Locale_tr => LocaleManager.GetString("Mod_Locale_tr", Culture);
+		public static string Mod_Locale_tr_tr => LocaleManager.GetString("Mod_Locale_tr-tr", Culture);
 
 		//Chinese Simplified
 		public static string Mod_Locale_zh_cn => LocaleManager.GetString("Mod_Locale_zh-cn", Culture);
@@ -313,5 +313,8 @@ namespace ModsCommon
 
 		//WARNING
 		public static string WhatsNew_WARNING => LocaleManager.GetString("WhatsNew_WARNING", Culture);
+
+		//Brazilian
+		public static string Mod_Locale_pt_br => LocaleManager.GetString("Mod_Locale_pt-br", Culture);
 	}
 }

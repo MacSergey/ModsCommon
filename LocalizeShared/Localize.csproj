@@ -22,7 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CommonLocalize.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>LocalizeGenerator</Generator>
       <LastGenOutput>CommonLocalize.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
