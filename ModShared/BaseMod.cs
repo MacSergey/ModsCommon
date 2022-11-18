@@ -212,15 +212,13 @@ namespace ModsCommon
                     locale = new SavedString(Settings.localeID, Settings.gameSettingsFile, DefaultSettings.localeID).value;
             }
 
-            locale = LocalizeExtension.GetRegionLocale(locale);
-
-            if (!CultureInfo.GetCultures(CultureTypes.AllCultures).Any(c => c.Name == locale))
+            if (!LocalizeExtension.TryGetCulture(locale, out var culture))
             {
                 Logger.Debug($"locale {locale} is not supported");
-                locale = LocalizeExtension.GetRegionLocale(DefaultSettings.localeID);
+                culture = new CultureInfo(LocalizeExtension.GetRegionLocale(DefaultSettings.localeID));
             }
 
-            Culture = new CultureInfo(locale);
+            Culture = culture;
             Logger.Debug($"Current cultute - {Culture?.Name ?? "null"}");
         }
 

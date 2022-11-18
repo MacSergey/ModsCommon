@@ -211,9 +211,8 @@ namespace ModsCommon
             foreach (var locale in GetSupportLanguages())
             {
                 var localizeString = $"Mod_Locale_{locale.ToLower()}";
-                var regionLocale = LocalizeExtension.GetRegionLocale(locale);
-                var localeText = CommonLocalize.LocaleManager.GetString(localizeString, new CultureInfo(regionLocale));
-                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != regionLocale)
+                var localeText = LocalizeExtension.TryGetCulture(locale, out var culture) ? CommonLocalize.LocaleManager.GetString(localizeString, culture) : localizeString;
+                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale)
                     localeText += $" ({CommonLocalize.LocaleManager.GetString(localizeString, CommonLocalize.Culture)})";
 
                 dropDown.AddItem(locale, localeText);

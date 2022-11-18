@@ -2,8 +2,10 @@
 using ColossalFramework.Globalization;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
+using System.Linq;
 using UnityEngine;
+using System.Reflection;
 
 namespace ModsCommon
 {
@@ -78,7 +80,7 @@ namespace ModsCommon
                     "it" => "it-IT",
                     "ja" => "ja-JP",
                     "ko" => "ko-KR",
-                    "mr" => "mr-IN",
+                    "ms" => "ms-MY",
                     "nl" => "nl-NL",
                     "pl" => "pl-PL",
                     "pt" => "pt-PT",
@@ -91,6 +93,102 @@ namespace ModsCommon
             }
             else
                 return locale;
+        }
+
+        private static Dictionary<string, CultureInfo> Cultures { get; } = new Dictionary<string, CultureInfo>();
+        public static bool TryGetCulture(string locale, out CultureInfo culture)
+        {
+            locale = GetRegionLocale(locale);
+
+            if (!Cultures.TryGetValue(locale, out culture))
+            {
+                if (CultureInfo.GetCultures(CultureTypes.AllCultures).Any(c => c.Name == locale))
+                    culture = new CultureInfo(locale);
+                else
+                    culture = CreateCulture(locale);
+
+                Cultures[locale] = culture;
+            }
+
+            return culture != null;
+        }
+        private static CultureInfo CreateCulture(string locale)
+        {
+            var culture = new CultureInfo(string.Empty).Clone() as CultureInfo;
+            SetValue(culture, "m_name", locale);
+
+            switch (locale)
+            {
+                case "ms-MY":
+                    SetValue(culture, "nativename", "Melayu (Malaysia)");
+                    SetValue(culture, "englishname", "Malay (Malaysia)");
+                    SetValue(culture, "displayname", "Malay (Malaysia)");
+                    SetValue(culture, "iso2lang", "ms");
+                    SetValue(culture, "iso3lang", "msa");
+                    SetValue(culture, "win3lang", "MSL");
+                    culture.NumberFormat = new NumberFormatInfo()
+                    {
+                        CurrencyDecimalDigits = 2,
+                        CurrencyDecimalSeparator = ".",
+                        CurrencyGroupSeparator = ",",
+                        CurrencyGroupSizes = new int[] { 3 },
+                        CurrencyNegativePattern = 1,
+                        CurrencyPositivePattern = 0,
+                        CurrencySymbol = "RM",
+                        DigitSubstitution = DigitShapes.None,
+                        NaNSymbol = "NaN",
+                        NativeDigits = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" },
+                        NegativeInfinitySymbol = "-∞",
+                        NegativeSign = "-",
+                        NumberDecimalDigits = 2,
+                        NumberDecimalSeparator = ".",
+                        NumberGroupSeparator = ",",
+                        NumberGroupSizes = new int[] { 3 },
+                        NumberNegativePattern = 1,
+                        PerMilleSymbol = "‰",
+                        PercentDecimalDigits = 2,
+                        PercentDecimalSeparator = ".",
+                        PercentGroupSeparator = ",",
+                        PercentGroupSizes = new int[] { 3 },
+                        PercentNegativePattern = 1,
+                        PercentPositivePattern = 1,
+                        PercentSymbol = "%",
+                        PositiveInfinitySymbol = "∞",
+                        PositiveSign = "+",
+                    };
+                    culture.DateTimeFormat = new DateTimeFormatInfo()
+                    {
+                        AMDesignator = "PG",
+                        AbbreviatedDayNames = new string[] { "Ahd", "Isn", "Sel", "Rab", "Kha", "Jum", "Sab" },
+                        AbbreviatedMonthGenitiveNames = new string[] { "Jan", "Feb", "Mac", "Apr", "Mei", "Jun", "Jul", "Ogo", "Sep", "Okt", "Nov", "Dis", "" },
+                        AbbreviatedMonthNames = new string[] { "Jan", "Feb", "Mac", "Apr", "Mei", "Jun", "Jul", "Ogo", "Sep", "Okt", "Nov", "Dis", "" },
+                        Calendar = new GregorianCalendar(GregorianCalendarTypes.Localized),
+                        CalendarWeekRule = CalendarWeekRule.FirstDay,
+                        DateSeparator = "/",
+                        DayNames = new string[] { "Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu" },
+                        FirstDayOfWeek = DayOfWeek.Monday,
+                        FullDateTimePattern = "dddd, d MMMM yyyy h:mm:ss tt",
+                        LongDatePattern = "dddd, d MMMM yyyy",
+                        LongTimePattern = "h:mm:ss tt",
+                        MonthDayPattern = "d MMMM",
+                        MonthGenitiveNames = new string[] { "Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember", "" },
+                        MonthNames = new string[] { "Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember", "" },
+                        PMDesignator = "PTG",
+                        ShortDatePattern = "d/MM/yyyy",
+                        ShortTimePattern = "h:mm tt",
+                        ShortestDayNames = new string[] { "Ah", "Is", "Se", "Ra", "Kh", "Ju", "Sa" },
+                        TimeSeparator = ":",
+                        YearMonthPattern = "MMMM yyyy",
+                    };
+                    return culture;
+                default:
+                    return null;
+            }
+        }
+        private static void SetValue<T>(CultureInfo culture, string field, T value)
+        {
+            var nameField = typeof(CultureInfo).GetField(field, BindingFlags.NonPublic | BindingFlags.Instance);
+            nameField.SetValue(culture, value);
         }
     }
 }
