@@ -6,6 +6,8 @@
     <SharedGUID>fc982331-0698-47f0-bd83-c711bc8db98a</SharedGUID>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.zh-TW.resx" ManifestResourceName="ModsCommon.CommonLocalize.zh-TW" />
+    <None Include="$(MSBuildThisFileDirectory)CommonLocalize.zh-TW.resx" ManifestResourceName="ModsCommon.CommonLocalize.zh-TW">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
