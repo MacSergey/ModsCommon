@@ -34,6 +34,7 @@ namespace ModsCommon
         public bool OpenTranslationProject();
 
         public string GetLocalizedString(string key, CultureInfo culture = null);
+        public IEnumerable<string> GetSupportLocales();
     }
     public abstract class SingletonMod<T> : SingletonItem<T>
         where T : ICustomMod

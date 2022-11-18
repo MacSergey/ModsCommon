@@ -206,15 +206,14 @@ namespace ModsCommon
         private void AddLanguageList(UIHelper group)
         {
             var dropDown = (group.self as UIComponent).AddUIComponent<LanguageDropDown>();
-            dropDown.AddItem(string.Empty, CommonLocalize.ResourceManager.GetString("Mod_LocaleGame", CommonLocalize.Culture));
+            dropDown.AddItem(string.Empty, CommonLocalize.LocaleManager.GetString("Mod_LocaleGame", CommonLocalize.Culture));
 
             foreach (var locale in GetSupportLanguages())
             {
-                var localizeString = $"Mod_Locale_{locale}";
-                var regionLocale = ClassesExtension.GetRegionLocale(locale);
-                var localeText = CommonLocalize.ResourceManager.GetString(localizeString, new CultureInfo(regionLocale));
-                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != regionLocale)
-                    localeText += $" ({CommonLocalize.ResourceManager.GetString(localizeString, CommonLocalize.Culture)})";
+                var localizeString = $"Mod_Locale_{locale.ToLower()}";
+                var localeText = LocalizeExtension.TryGetCulture(locale, out var culture) ? CommonLocalize.LocaleManager.GetString(localizeString, culture) : localizeString;
+                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale)
+                    localeText += $" ({CommonLocalize.LocaleManager.GetString(localizeString, CommonLocalize.Culture)})";
 
                 dropDown.AddItem(locale, localeText);
             }
@@ -231,16 +230,8 @@ namespace ModsCommon
         }
         private string[] GetSupportLanguages()
         {
-            var languages = new HashSet<string> { "en" };
-
-            var resourceAssembly = $"{Assembly.GetExecutingAssembly().GetName().Name}.resources";
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                var assemblyName = assembly.GetName();
-                if (assemblyName.Name == resourceAssembly)
-                    languages.Add(assemblyName.CultureInfo.Name.ToLower());
-            }
+            var languages = new HashSet<string> { "en-US" };
+            languages.AddRange(SingletonMod<TypeMod>.Instance.GetSupportLocales());
 
             return languages.OrderBy(l => l).ToArray();
         }

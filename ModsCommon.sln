@@ -185,6 +185,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LocalizeShared\pl-PL\LocalizeShared.pl-PL.projitems*{0814bfcf-bb66-493c-8dd9-ca17ee904afa}*SharedItemsImports = 13
+		HeaderShared\HeaderShared.projitems*{0bf47c3f-c968-4759-8d99-d088b0d58fba}*SharedItemsImports = 13
+		ObjectMapShared\ObjectMapShared.projitems*{1c75a9e1-c20a-4d45-bbd9-1ffaa6b9ff57}*SharedItemsImports = 13
+		MathExtension\MathExtension.projitems*{1d245858-7544-4d78-aca0-275f110ad04b}*SharedItemsImports = 13
+		ModShared\ModsCommonShared.projitems*{24615a21-afa6-42c0-8b7a-4fb3329b056f}*SharedItemsImports = 13
+		DependencyShared\DependencyShared.projitems*{2873738f-aa2c-4c8a-be06-bc59acca56f0}*SharedItemsImports = 13
 		LocalizeShared\nl-NL\LocalizeShared.nl-NL.projitems*{29a10501-0675-4335-98b1-4c6e9bd80d53}*SharedItemsImports = 13
 		LocalizeShared\es-ES\LocalizeShared.es-ES.projitems*{2accf46a-2c39-455f-a4e9-0ca7b2b86a69}*SharedItemsImports = 13
 		LocalizeShared\id-ID\LocalizeShared.id-ID.projitems*{394407e5-b4db-4807-b4dc-34cd6585e0cf}*SharedItemsImports = 13
@@ -193,20 +198,34 @@ Global
 		LocalizeShared\ro-RO\LocalizeShared.ro-RO.projitems*{490a9496-ccfe-4944-b9cf-358f3b444aa0}*SharedItemsImports = 13
 		LocalizeShared\it-IT\LocalizeShared.it-IT.projitems*{584b2b88-0679-4b6d-bd78-ba9719671229}*SharedItemsImports = 13
 		LocalizeShared\tr-TR\LocalizeShared.tr-TR.projitems*{622bd7d2-4af0-4338-b138-e0c9129d278d}*SharedItemsImports = 13
+		NetExtension\NetExtension.projitems*{69f65522-1ccc-4c9f-8989-8155708c1832}*SharedItemsImports = 13
 		LocalizeShared\zh-CN\LocalizeShared.zh-CN.projitems*{6d76ce46-51a4-4596-8e5b-03261089bedd}*SharedItemsImports = 13
 		LocalizeShared\pt-PT\LocalizeShared.pt-PT.projitems*{7bb4ecd0-3aa5-4dfb-9c2a-37204213c1c5}*SharedItemsImports = 13
+		WhatsNewMessageBoxShared\WhatsNewMessageBoxShared.projitems*{8431fa6d-34a1-4700-8d4f-09c9e65346e3}*SharedItemsImports = 13
 		LocalizeShared\LocalizeManager\LocalizeManager.projitems*{8aba0259-a18b-4f71-a67b-91d3728fc749}*SharedItemsImports = 4
 		LocalizeShared\en-GB\LocalizeShared.en-GB.projitems*{92b146ad-f9d5-4c3b-8712-ebc5140a3f20}*SharedItemsImports = 13
 		LocalizeShared\da-DK\LocalizeShared.da-DK.projitems*{934265f0-623e-4667-9d8f-108162ea0422}*SharedItemsImports = 13
 		LocalizeShared\cs-CZ\LocalizeShared.cs-CZ.projitems*{93e25ce1-9093-40bc-88a2-7362ffa44174}*SharedItemsImports = 13
 		LocalizeShared\fr-FR\LocalizeShared.fr-FR.projitems*{9cb86de4-4cd4-4265-ac8b-b041707112d9}*SharedItemsImports = 13
 		LocalizeShared\hu-HU\LocalizeShared.hu-HU.projitems*{a1e3c011-4d61-49c6-84ce-1c6f74a96dd3}*SharedItemsImports = 13
+		SimpleMessageBoxShared\SimpleMessageBoxShared.projitems*{a3055caa-4807-4c49-973c-7b92610c25c8}*SharedItemsImports = 13
+		PropertyPanelShared\PropertyPanelShared.projitems*{abe0f508-441b-4871-a17f-3f345f5dc42b}*SharedItemsImports = 13
 		LocalizeShared\ja-JP\LocalizeShared.ja-JP.projitems*{b0c05991-7f01-40c4-8efb-9d765cc72534}*SharedItemsImports = 13
+		LoadExtensionShared\LoadExtensionShared.projitems*{b0dea36d-46fd-4d66-9285-57e85ab0bcdf}*SharedItemsImports = 13
 		LocalizeShared\LocalizeManager\LocalizeManager.projitems*{b21ab183-baef-4eaf-accb-83d6ae5f2ccb}*SharedItemsImports = 13
+		PluginsShared\PluginsShared.projitems*{b92e01e9-0dfc-455f-8164-f68a2a602fbc}*SharedItemsImports = 13
+		UIShared\ModsUIShared.projitems*{be979510-7832-4714-95a3-305065d9ded6}*SharedItemsImports = 13
+		MessageBoxShared\MessageBoxShared.projitems*{d5b649ec-0fec-48f3-8316-6e266169cdcc}*SharedItemsImports = 13
 		LocalizeShared\ko-KR\LocalizeShared.ko-KR.projitems*{d75d6301-bf72-4211-837a-0ca68fc63bd1}*SharedItemsImports = 13
+		PropertyValueShared\PropertyValueShared.projitems*{db4a0c1e-e3f4-4bb4-816f-1493bf7f2fbf}*SharedItemsImports = 13
 		LocalizeShared\de-DE\LocalizeShared.de-DE.projitems*{de7b8af4-65b6-421f-b439-27132becc459}*SharedItemsImports = 13
+		RenderExtension\RenderExtension.projitems*{e1394815-5550-4ba4-af65-cad097d335a6}*SharedItemsImports = 13
+		ToolShared\ModsToolShared.projitems*{ea585899-16c8-4ff0-ae8d-078f15a7a126}*SharedItemsImports = 13
 		LocalizeShared\LocalizeShared.projitems*{f135cd5d-4cab-4347-bf44-1c6d0794a19d}*SharedItemsImports = 13
+		XmlExtension\XmlExtension.projitems*{fada36db-c397-4128-9644-b477c4f50b26}*SharedItemsImports = 13
+		AutoLayoutPanelShared\AutoLayoutPanelShared.projitems*{fc5e6f74-8408-4fd8-a46a-a7f549e30454}*SharedItemsImports = 13
 		LocalizeShared\zh-TW\LocalizeShared.zh-TW.projitems*{fc982331-0698-47f0-bd83-c711bc8db98a}*SharedItemsImports = 13
 		LocalizeShared\fi-FI\LocalizeShared.fi-FI.projitems*{fe34c965-7f4a-4d52-b732-2b8a85762929}*SharedItemsImports = 13
+		TrajectoryShared\TrajectoryShared.projitems*{ffba673c-7990-421a-8dd3-87149c1f751b}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
