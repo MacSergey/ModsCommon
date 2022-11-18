@@ -443,5 +443,8 @@ parmi les nœuds proches</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>AVERTISSEMENT</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Brésilien</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

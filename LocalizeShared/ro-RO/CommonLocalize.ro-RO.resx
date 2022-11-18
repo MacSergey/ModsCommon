@@ -441,5 +441,8 @@ termina selecția</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>ATENȚIE</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Braziliană</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

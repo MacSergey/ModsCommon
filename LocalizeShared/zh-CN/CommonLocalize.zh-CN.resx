@@ -275,7 +275,9 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_pt-PT" xml:space="preserve">
     <value>葡萄牙语</value>
   </data>
-  
+  <data name="Mod_Locale_ro-RO" xml:space="preserve">
+    <value>罗马尼亚语</value>
+  </data>
   <data name="Mod_Locale_ru-RU" xml:space="preserve">
     <value>俄语</value>
   </data>
@@ -439,5 +441,8 @@ Shift x10，Ctrl x0.1</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>警告</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>巴西语</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

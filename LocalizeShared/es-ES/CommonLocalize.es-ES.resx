@@ -404,7 +404,7 @@ Actualiza el mod a la versión más reciente, de lo contrario el funcionamiento 
   </data>
   <data name="Settings_TranslationDescription" xml:space="preserve">
     <value>Puedes ayudar a mejorar la traducción del mod
-or traducir el mod a tu idioma</value>
+o traducir el mod a tu idioma</value>
   </data>
   <data name="Settings_TranslationImprove" xml:space="preserve">
     <value>Mejorar traducción</value>
@@ -416,7 +416,7 @@ or traducir el mod a tu idioma</value>
     <value>Resolución de problemas</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Si le gusta {0}, puede apoyar al autor</value>
+    <value>Si te gusta {0}, puedes apoyar al autor</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
     <value>Presiona la tecla {0} para seleccionar objetos superpuestos</value>
@@ -442,5 +442,8 @@ or traducir el mod a tu idioma</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>ADVERTENCIA</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Brasileño</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

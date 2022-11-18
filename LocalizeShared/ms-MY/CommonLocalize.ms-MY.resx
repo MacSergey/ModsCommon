@@ -222,28 +222,74 @@ Mulakan semula permainan.</value>
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>Bahasa Permainan</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Locale_cs-CZ" xml:space="preserve">
+    <value>Czech</value>
+  </data>
+  <data name="Mod_Locale_da-DK" xml:space="preserve">
+    <value>Denmark</value>
+  </data>
+  <data name="Mod_Locale_de-DE" xml:space="preserve">
+    <value>Jerman</value>
+  </data>
+  <data name="Mod_Locale_en-US" xml:space="preserve">
+    <value>Inggeris AS</value>
+  </data>
+  <data name="Mod_Locale_en-GB" xml:space="preserve">
+    <value>Inggeris UK</value>
+  </data>
+  <data name="Mod_Locale_es-ES" xml:space="preserve">
+    <value>Sepanyol</value>
+  </data>
+  <data name="Mod_Locale_fi-FI" xml:space="preserve">
+    <value>Finland</value>
+  </data>
+  <data name="Mod_Locale_fr-FR" xml:space="preserve">
+    <value>Perancis</value>
+  </data>
+  <data name="Mod_Locale_hu-HU" xml:space="preserve">
+    <value>Hungary</value>
+  </data>
+  <data name="Mod_Locale_id-ID" xml:space="preserve">
+    <value>Indonesia</value>
+  </data>
+  <data name="Mod_Locale_it-IT" xml:space="preserve">
+    <value>Itali</value>
+  </data>
+  <data name="Mod_Locale_ja-JP" xml:space="preserve">
+    <value>Jepun</value>
+  </data>
+  <data name="Mod_Locale_ko-KR" xml:space="preserve">
+    <value>Korea</value>
+  </data>
+  <data name="Mod_Locale_ms-MY" xml:space="preserve">
+    <value>Melayu</value>
+    <comment>Mod_Locale_ms
+</comment>
+  </data>
+  <data name="Mod_Locale_nl-NL" xml:space="preserve">
+    <value>Belanda</value>
+  </data>
+  <data name="Mod_Locale_pl-PL" xml:space="preserve">
+    <value>Poland</value>
+  </data>
+  <data name="Mod_Locale_pt-PT" xml:space="preserve">
+    <value>Portugis</value>
+  </data>
+  <data name="Mod_Locale_ro-RO" xml:space="preserve">
+    <value>Romania</value>
+  </data>
+  <data name="Mod_Locale_ru-RU" xml:space="preserve">
+    <value>Rusia</value>
+  </data>
+  <data name="Mod_Locale_tr-TR" xml:space="preserve">
+    <value>Turki</value>
+  </data>
+  <data name="Mod_Locale_zh-CN" xml:space="preserve">
+    <value>Cina Ringkas</value>
+  </data>
+  <data name="Mod_Locale_zh-TW" xml:space="preserve">
+    <value>Cina Tradisional</value>
+  </data>
   <data name="Mod_Status" xml:space="preserve">
     <value>Status: {0}</value>
   </data>
@@ -395,5 +441,8 @@ pilihan pertindihan</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>AMARAN</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Brazil</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

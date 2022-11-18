@@ -442,5 +442,8 @@ of de mod in jouw taal vertalen</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>WAARSCHUWING</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Braziliaans</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

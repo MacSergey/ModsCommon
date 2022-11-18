@@ -441,5 +441,8 @@ výběr další křižovatky v překrytí</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>VAROVÁNÍ</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Brazilština</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

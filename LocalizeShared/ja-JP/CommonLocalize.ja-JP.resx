@@ -444,5 +444,8 @@ MODを最新バージョンに更新してください！ 更新をしないとM
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>警告！</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>ブラジル語</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

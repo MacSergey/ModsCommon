@@ -440,5 +440,8 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>경고</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>브라질어</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

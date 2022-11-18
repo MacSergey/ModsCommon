@@ -386,9 +386,16 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>只在 UnifiedUI 顯示</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>您可以協助改善此模組的翻譯
+或將此模組翻譯成您的語言</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>改善翻譯</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>新增語言</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>疑難排解</value>
   </data>

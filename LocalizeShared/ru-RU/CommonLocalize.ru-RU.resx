@@ -441,5 +441,8 @@ Shift X10, Ctrl X0.1</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>ПРЕДУПРЕЖДЕНИЕ</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Бразильский</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>

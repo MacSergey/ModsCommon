@@ -443,5 +443,8 @@ helfen oder die Mod in deine Sprache übersetzen</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>WARNUNG</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Brasilianisch</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
 </root>
