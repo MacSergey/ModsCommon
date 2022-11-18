@@ -224,106 +224,70 @@ Herstart het spel.</value>
   </data>
   <data name="Mod_Locale_cs-CZ" xml:space="preserve">
     <value>Tsjechisch</value>
-    <comment>Mod_Locale_cs-cz
-</comment>
   </data>
   <data name="Mod_Locale_da-DK" xml:space="preserve">
     <value>Deens</value>
-    <comment>Mod_Locale_da-dk
-</comment>
   </data>
   <data name="Mod_Locale_de-DE" xml:space="preserve">
     <value>Duits</value>
-    <comment>Mod_Locale_de-de
-</comment>
   </data>
   <data name="Mod_Locale_en-US" xml:space="preserve">
     <value>Engels VS</value>
-    <comment>Mod_Locale_en-us
-</comment>
   </data>
-  <data name="Mod_Locale_en-gb" xml:space="preserve">
+  <data name="Mod_Locale_en-GB" xml:space="preserve">
     <value>Engels VK</value>
   </data>
-  <data name="Mod_Locale_es-es" xml:space="preserve">
+  <data name="Mod_Locale_es-ES" xml:space="preserve">
     <value>Spaans</value>
-    <comment>Mod_Locale_es-es
-</comment>
   </data>
-  <data name="Mod_Locale_fi-fi" xml:space="preserve">
+  <data name="Mod_Locale_fi-FI" xml:space="preserve">
     <value>Fins</value>
-    <comment>Mod_Locale_fi-fi
-</comment>
   </data>
-  <data name="Mod_Locale_fr-fr" xml:space="preserve">
+  <data name="Mod_Locale_fr-FR" xml:space="preserve">
     <value>Frans</value>
-    <comment>Mod_Locale_fr-fr
-</comment>
   </data>
-  <data name="Mod_Locale_hu-hu" xml:space="preserve">
+  <data name="Mod_Locale_hu-HU" xml:space="preserve">
     <value>Hungaars</value>
-    <comment>Mod_Locale_hu-hu
-</comment>
   </data>
-  <data name="Mod_Locale_id-id" xml:space="preserve">
+  <data name="Mod_Locale_id-ID" xml:space="preserve">
     <value>Indonesisch</value>
-    <comment>Mod_Locale_id-id
-</comment>
   </data>
-  <data name="Mod_Locale_it-it" xml:space="preserve">
+  <data name="Mod_Locale_it-IT" xml:space="preserve">
     <value>Italiaans</value>
-    <comment>Mod_Locale_it-it
-</comment>
   </data>
-  <data name="Mod_Locale_ja-jp" xml:space="preserve">
+  <data name="Mod_Locale_ja-JP" xml:space="preserve">
     <value>Japans</value>
-    <comment>Mod_Locale_ja-jp
-</comment>
   </data>
-  <data name="Mod_Locale_ko-kr" xml:space="preserve">
+  <data name="Mod_Locale_ko-KR" xml:space="preserve">
     <value>Koreaans</value>
-    <comment>Mod_Locale_ko-kr
-</comment>
   </data>
-  <data name="Mod_Locale_mr-mr" xml:space="preserve">
+  <data name="Mod_Locale_ms-MY" xml:space="preserve">
     <value>Malays</value>
-    <comment>Mod_Locale_ms-MY
+    <comment>Mod_Locale_ms
 </comment>
   </data>
-  <data name="Mod_Locale_nl-nl" xml:space="preserve">
+  <data name="Mod_Locale_nl-NL" xml:space="preserve">
     <value>Nederlands</value>
-    <comment>Mod_Locale_nl-nl
-</comment>
   </data>
-  <data name="Mod_Locale_pl-pl" xml:space="preserve">
+  <data name="Mod_Locale_pl-PL" xml:space="preserve">
     <value>Pools</value>
-    <comment>Mod_Locale_pl-pl
-</comment>
   </data>
-  <data name="Mod_Locale_pt-pt" xml:space="preserve">
+  <data name="Mod_Locale_pt-PT" xml:space="preserve">
     <value>Portugees</value>
-    <comment>Mod_Locale_pt-pt
-</comment>
   </data>
-  <data name="Mod_Locale_ro-ro" xml:space="preserve">
+  <data name="Mod_Locale_ro-RO" xml:space="preserve">
     <value>Roemeens</value>
-    <comment>Mod_Locale_ro-ro
-</comment>
   </data>
-  <data name="Mod_Locale_ru-ru" xml:space="preserve">
+  <data name="Mod_Locale_ru-RU" xml:space="preserve">
     <value>Russisch</value>
-    <comment>Mod_Locale_ru-ru
-</comment>
   </data>
-  <data name="Mod_Locale_tr-tr" xml:space="preserve">
+  <data name="Mod_Locale_tr-TR" xml:space="preserve">
     <value>Turks</value>
-    <comment>Mod_Locale_tr-tr
-</comment>
   </data>
-  <data name="Mod_Locale_zh-cn" xml:space="preserve">
+  <data name="Mod_Locale_zh-CN" xml:space="preserve">
     <value>Chinees vereenvoudigd</value>
   </data>
-  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+  <data name="Mod_Locale_zh-TW" xml:space="preserve">
     <value>Traditioneel Chinees</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">

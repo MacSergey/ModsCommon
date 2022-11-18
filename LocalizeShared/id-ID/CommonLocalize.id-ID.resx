@@ -224,102 +224,68 @@ Mohon restart game ini.</value>
   </data>
   <data name="Mod_Locale_cs-CZ" xml:space="preserve">
     <value>Ceko</value>
-    <comment>Mod_Locale_cs-cz
-</comment>
   </data>
   <data name="Mod_Locale_da-DK" xml:space="preserve">
     <value>Denmark</value>
-    <comment>Mod_Locale_da-dk
-</comment>
   </data>
-  <data name="Mod_Locale_de-de" xml:space="preserve">
+  <data name="Mod_Locale_de-DE" xml:space="preserve">
     <value>Jerman</value>
-    <comment>Mod_Locale_de-de
-</comment>
   </data>
-  <data name="Mod_Locale_en-us" xml:space="preserve">
+  <data name="Mod_Locale_en-US" xml:space="preserve">
     <value>Inggris Amerika</value>
-    <comment>Mod_Locale_en-us
-</comment>
   </data>
-  <data name="Mod_Locale_en-gb" xml:space="preserve">
+  <data name="Mod_Locale_en-GB" xml:space="preserve">
     <value>Inggris Britania Raya</value>
   </data>
-  <data name="Mod_Locale_es-es" xml:space="preserve">
+  <data name="Mod_Locale_es-ES" xml:space="preserve">
     <value>Spanyol</value>
-    <comment>Mod_Locale_es-es
-</comment>
   </data>
-  <data name="Mod_Locale_fi-fi" xml:space="preserve">
+  <data name="Mod_Locale_fi-FI" xml:space="preserve">
     <value>Finlandia</value>
-    <comment>Mod_Locale_fi-fi
-</comment>
   </data>
-  <data name="Mod_Locale_fr-fr" xml:space="preserve">
+  <data name="Mod_Locale_fr-FR" xml:space="preserve">
     <value>Perancis</value>
-    <comment>Mod_Locale_fr-fr
-</comment>
   </data>
-  <data name="Mod_Locale_hu-hu" xml:space="preserve">
+  <data name="Mod_Locale_hu-HU" xml:space="preserve">
     <value>Hungaria</value>
-    <comment>Mod_Locale_hu-hu
-</comment>
   </data>
-  <data name="Mod_Locale_id-id" xml:space="preserve">
+  <data name="Mod_Locale_id-ID" xml:space="preserve">
     <value>Indonesia</value>
-    <comment>Mod_Locale_id-id
-</comment>
   </data>
-  <data name="Mod_Locale_it-it" xml:space="preserve">
+  <data name="Mod_Locale_it-IT" xml:space="preserve">
     <value>Italia</value>
-    <comment>Mod_Locale_it-it
-</comment>
   </data>
-  <data name="Mod_Locale_ja-jp" xml:space="preserve">
+  <data name="Mod_Locale_ja-JP" xml:space="preserve">
     <value>Jepang</value>
-    <comment>Mod_Locale_ja-jp
-</comment>
   </data>
-  <data name="Mod_Locale_ko-kr" xml:space="preserve">
+  <data name="Mod_Locale_ko-KR" xml:space="preserve">
     <value>Korea</value>
-    <comment>Mod_Locale_ko-kr
-</comment>
   </data>
-  <data name="Mod_Locale_mr-mr" xml:space="preserve">
+  <data name="Mod_Locale_ms-MY" xml:space="preserve">
     <value>Melayu</value>
-    <comment>Mod_Locale_ms-MY
+    <comment>Mod_Locale_ms
 </comment>
   </data>
-  <data name="Mod_Locale_nl-nl" xml:space="preserve">
+  <data name="Mod_Locale_nl-NL" xml:space="preserve">
     <value>Belanda</value>
-    <comment>Mod_Locale_nl-nl
-</comment>
   </data>
-  <data name="Mod_Locale_pl-pl" xml:space="preserve">
+  <data name="Mod_Locale_pl-PL" xml:space="preserve">
     <value>Polandia</value>
-    <comment>Mod_Locale_pl-pl
-</comment>
   </data>
-  <data name="Mod_Locale_pt-pt" xml:space="preserve">
+  <data name="Mod_Locale_pt-PT" xml:space="preserve">
     <value>Portugis</value>
-    <comment>Mod_Locale_pt-pt
-</comment>
   </data>
   
-  <data name="Mod_Locale_ru-ru" xml:space="preserve">
+  <data name="Mod_Locale_ru-RU" xml:space="preserve">
     <value>Rusia</value>
-    <comment>Mod_Locale_ru-ru
-</comment>
   </data>
-  <data name="Mod_Locale_tr-tr" xml:space="preserve">
+  <data name="Mod_Locale_tr-TR" xml:space="preserve">
     <value>Turki</value>
-    <comment>Mod_Locale_tr-tr
-</comment>
   </data>
-  <data name="Mod_Locale_zh-cn" xml:space="preserve">
+  <data name="Mod_Locale_zh-CN" xml:space="preserve">
     <value>Mandarin Sederhana</value>
   </data>
-  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+  <data name="Mod_Locale_zh-TW" xml:space="preserve">
     <value>Mandarin Tradisional</value>
   </data>
   

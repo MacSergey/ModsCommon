@@ -223,102 +223,68 @@ Lütfen oyunu tekrar başlatın.</value>
   </data>
   <data name="Mod_Locale_cs-CZ" xml:space="preserve">
     <value>Çekçe</value>
-    <comment>Mod_Locale_cs-cz
-</comment>
   </data>
   <data name="Mod_Locale_da-DK" xml:space="preserve">
     <value>Danca</value>
-    <comment>Mod_Locale_da-dk
-</comment>
   </data>
   <data name="Mod_Locale_de-DE" xml:space="preserve">
     <value>Almanca</value>
-    <comment>Mod_Locale_de-de
-</comment>
   </data>
-  <data name="Mod_Locale_en-us" xml:space="preserve">
+  <data name="Mod_Locale_en-US" xml:space="preserve">
     <value>İngilizce ABD</value>
-    <comment>Mod_Locale_en-us
-</comment>
   </data>
-  <data name="Mod_Locale_en-gb" xml:space="preserve">
+  <data name="Mod_Locale_en-GB" xml:space="preserve">
     <value>İngilizce Birleşik Krallık</value>
   </data>
-  <data name="Mod_Locale_es-es" xml:space="preserve">
+  <data name="Mod_Locale_es-ES" xml:space="preserve">
     <value>İspanyolca</value>
-    <comment>Mod_Locale_es-es
-</comment>
   </data>
-  <data name="Mod_Locale_fi-fi" xml:space="preserve">
+  <data name="Mod_Locale_fi-FI" xml:space="preserve">
     <value>Fince</value>
-    <comment>Mod_Locale_fi-fi
-</comment>
   </data>
-  <data name="Mod_Locale_fr-fr" xml:space="preserve">
+  <data name="Mod_Locale_fr-FR" xml:space="preserve">
     <value>Fransızca</value>
-    <comment>Mod_Locale_fr-fr
-</comment>
   </data>
-  <data name="Mod_Locale_hu-hu" xml:space="preserve">
+  <data name="Mod_Locale_hu-HU" xml:space="preserve">
     <value>Macarca</value>
-    <comment>Mod_Locale_hu-hu
-</comment>
   </data>
-  <data name="Mod_Locale_id-id" xml:space="preserve">
+  <data name="Mod_Locale_id-ID" xml:space="preserve">
     <value>Endonezce</value>
-    <comment>Mod_Locale_id-id
-</comment>
   </data>
-  <data name="Mod_Locale_it-it" xml:space="preserve">
+  <data name="Mod_Locale_it-IT" xml:space="preserve">
     <value>İtalyanca</value>
-    <comment>Mod_Locale_it-it
-</comment>
   </data>
-  <data name="Mod_Locale_ja-jp" xml:space="preserve">
+  <data name="Mod_Locale_ja-JP" xml:space="preserve">
     <value>Japonca</value>
-    <comment>Mod_Locale_ja-jp
-</comment>
   </data>
-  <data name="Mod_Locale_ko-kr" xml:space="preserve">
+  <data name="Mod_Locale_ko-KR" xml:space="preserve">
     <value>Korece</value>
-    <comment>Mod_Locale_ko-kr
-</comment>
   </data>
-  <data name="Mod_Locale_mr-mr" xml:space="preserve">
+  <data name="Mod_Locale_ms-MY" xml:space="preserve">
     <value>Malayca</value>
-    <comment>Mod_Locale_ms-MY
+    <comment>Mod_Locale_ms
 </comment>
   </data>
-  <data name="Mod_Locale_nl-nl" xml:space="preserve">
+  <data name="Mod_Locale_nl-NL" xml:space="preserve">
     <value>Flemenkçe</value>
-    <comment>Mod_Locale_nl-nl
-</comment>
   </data>
-  <data name="Mod_Locale_pl-pl" xml:space="preserve">
+  <data name="Mod_Locale_pl-PL" xml:space="preserve">
     <value>Lehçe</value>
-    <comment>Mod_Locale_pl-pl
-</comment>
   </data>
-  <data name="Mod_Locale_pt-pt" xml:space="preserve">
+  <data name="Mod_Locale_pt-PT" xml:space="preserve">
     <value>Portekizce</value>
-    <comment>Mod_Locale_pt-pt
-</comment>
   </data>
   
-  <data name="Mod_Locale_ru-ru" xml:space="preserve">
+  <data name="Mod_Locale_ru-RU" xml:space="preserve">
     <value>Rusça</value>
-    <comment>Mod_Locale_ru-ru
-</comment>
   </data>
-  <data name="Mod_Locale_tr-tr" xml:space="preserve">
+  <data name="Mod_Locale_tr-TR" xml:space="preserve">
     <value>Türkçe</value>
-    <comment>Mod_Locale_tr-tr
-</comment>
   </data>
-  <data name="Mod_Locale_zh-cn" xml:space="preserve">
+  <data name="Mod_Locale_zh-CN" xml:space="preserve">
     <value>Basitleştirilmiş Çince</value>
   </data>
-  <data name="Mod_Locale_zh-tw" xml:space="preserve">
+  <data name="Mod_Locale_zh-TW" xml:space="preserve">
     <value>Geleneksel Çince</value>
   </data>
   
