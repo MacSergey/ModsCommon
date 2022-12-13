@@ -524,5 +524,10 @@ namespace ModsCommon
 		/// Brazilian
 		/// </summary>
 		public static string Mod_Locale_pt_BR => LocaleManager.GetString("Mod_Locale_pt-BR", Culture);
+
+		/// <summary>
+		/// Don't show again
+		/// </summary>
+		public static string Mod_VersionWarning_DontShow => LocaleManager.GetString("Mod_VersionWarning_DontShow", Culture);
 	}
 }

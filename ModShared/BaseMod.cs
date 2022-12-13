@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
+using ColossalFramework.UI;
 using ICities;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
@@ -259,7 +260,7 @@ namespace ModsCommon
 
         public void ShowWhatsNew()
         {
-            var fromVersion = new Version(BaseSettings<TypeMod>.WhatsNewVersion);
+            var fromVersion = BaseSettings<TypeMod>.WhatsNewVersion;
 
             if (!BaseSettings<TypeMod>.ShowWhatsNew || Version <= fromVersion)
                 return;
@@ -289,7 +290,7 @@ namespace ModsCommon
 
             static bool Confirm()
             {
-                BaseSettings<TypeMod>.WhatsNewVersion.value = SingletonMod<TypeMod>.Version.ToString();
+                BaseSettings<TypeMod>.WhatsNewVersion = SingletonMod<TypeMod>.Version;
                 return true;
             }
             static bool GetStable()
@@ -384,42 +385,50 @@ namespace ModsCommon
 
         public void ShowGameOutOfDate()
         {
-            var message = MessageBox.Show<TwoButtonMessageBox>();
-            message.CaptionText = NameRaw;
-            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_GameOutOfDate, RequiredGameVersion.GetStringGameFormat(), CurrentGameVersion.GetStringGameFormat());
-            message.Button1Text = CommonLocalize.MessageBox_OK;
-            message.Button2Text = CommonLocalize.Dependency_Disable;
-            message.OnButton2Click = OnDisable;
-
-            message.SetAutoButtonRatio();
-
-            bool OnDisable()
+            if (BaseSettings<TypeMod>.CompatibleCheckGameVersion != CurrentGameVersion || BaseSettings<TypeMod>.CompatibleCheckModVersion != Version)
             {
-                if (new UserModInstanceSearcher(this).GetPlugin() is PluginInfo plugin)
-                    plugin.SetState(false);
+                var message = MessageBox.Show<ThreeButtonMessageBox>();
+                message.CaptionText = NameRaw;
+                message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_GameOutOfDate, RequiredGameVersion.GetStringGameFormat(), CurrentGameVersion.GetStringGameFormat());
+                message.Button1Text = CommonLocalize.MessageBox_OK;
+                message.Button2Text = CommonLocalize.Mod_VersionWarning_DontShow;
+                message.Button3Text = CommonLocalize.Dependency_Disable;
+                message.OnButton2Click = OnDontShowAgain;
+                message.OnButton3Click = OnDisable;
 
-                return true;
+                message.SetAutoButtonRatio();
             }
         }
         public void ShowModOutOfDate()
         {
-            var message = MessageBox.Show<TwoButtonMessageBox>();
-            message.CaptionText = NameRaw;
-            var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
-            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_ModOutOfDate, requiredString, BuildConfig.applicationVersion);
-            message.Button1Text = CommonLocalize.MessageBox_OK;
-            message.Button2Text = CommonLocalize.Dependency_Disable;
-            message.OnButton2Click = OnDisable;
-
-            message.SetAutoButtonRatio();
-
-            bool OnDisable()
+            if (BaseSettings<TypeMod>.CompatibleCheckGameVersion != CurrentGameVersion || BaseSettings<TypeMod>.CompatibleCheckModVersion != Version)
             {
-                if (new UserModInstanceSearcher(this).GetPlugin() is PluginInfo plugin)
-                    plugin.SetState(false);
+                var message = MessageBox.Show<ThreeButtonMessageBox>();
+                message.CaptionText = NameRaw;
+                var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
+                message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_ModOutOfDate, requiredString, BuildConfig.applicationVersion);
+                message.Button1Text = CommonLocalize.MessageBox_OK;
+                message.Button2Text = CommonLocalize.Dependency_Disable;
+                message.Button3Text = CommonLocalize.Mod_VersionWarning_DontShow;
+                message.OnButton2Click = OnDisable;
+                message.OnButton3Click = OnDontShowAgain;
 
-                return true;
+                message.SetAutoButtonRatio();
             }
+        }
+        private bool OnDisable()
+        {
+            if (new UserModInstanceSearcher(this).GetPlugin() is PluginInfo plugin)
+                plugin.SetState(false);
+
+            return true;
+        }
+        private bool OnDontShowAgain()
+        {
+            BaseSettings<TypeMod>.CompatibleCheckGameVersion = CurrentGameVersion;
+            BaseSettings<TypeMod>.CompatibleCheckModVersion = Version;
+
+            return true;
         }
 
         public bool GetStable()

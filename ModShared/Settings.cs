@@ -22,12 +22,32 @@ namespace ModsCommon
     {
         public static string SettingsFile { get; } = $"{typeof(TypeMod).Namespace}{nameof(SettingsFile)}";
         public static SavedString Locale { get; } = new SavedString(nameof(Locale), SettingsFile, string.Empty, true);
-        public static SavedString WhatsNewVersion { get; } = new SavedString(nameof(WhatsNewVersion), SettingsFile, SingletonMod<TypeMod>.Instance.Version.PrevMinor(SingletonMod<TypeMod>.Instance.Versions.Select(v => v.Number).ToList()).ToString(), true);
         public static SavedBool ShowWhatsNew { get; } = new SavedBool(nameof(ShowWhatsNew), SettingsFile, true, true);
         public static SavedBool ShowOnlyMajor { get; } = new SavedBool(nameof(ShowOnlyMajor), SettingsFile, false, true);
         public static SavedBool BetaWarning { get; } = new SavedBool(nameof(BetaWarning), SettingsFile, true, true);
         public static SavedBool LinuxWarning { get; } = new SavedBool(nameof(LinuxWarning), SettingsFile, true, true);
         public static SavedBool AnyVersions { get; } = new SavedBool(nameof(AnyVersions), SettingsFile, false, true);
+
+
+        private static SavedString WhatsNewVersionValue { get; } = new SavedString(nameof(WhatsNewVersion), SettingsFile, SingletonMod<TypeMod>.Instance.Version.PrevMinor(SingletonMod<TypeMod>.Instance.Versions.Select(v => v.Number).ToList()).ToString(), true);
+        private static SavedString CompatibleCheckGameVersionValue { get; } = new SavedString(nameof(CompatibleCheckGameVersion), SettingsFile, new Version(0, 0).ToString(), true);
+        private static SavedString CompatibleCheckModVersionValue { get; } = new SavedString(nameof(CompatibleCheckModVersion), SettingsFile, new Version(0, 0).ToString(), true);
+
+        public static Version WhatsNewVersion
+        {
+            get => new Version(WhatsNewVersionValue);
+            set => WhatsNewVersionValue.value = value.ToString();
+        }
+        public static Version CompatibleCheckGameVersion
+        {
+            get => new Version(CompatibleCheckGameVersionValue);
+            set => CompatibleCheckGameVersionValue.value = value.ToString();
+        }
+        public static Version CompatibleCheckModVersion
+        {
+            get => new Version(CompatibleCheckModVersionValue);
+            set => CompatibleCheckModVersionValue.value = value.ToString();
+        }
 
         static BaseSettings()
         {
@@ -294,7 +314,9 @@ namespace ModsCommon
         {
             var group = helper.AddGroup("Base");
 
-            AddStringField(group, "Whats new version", WhatsNewVersion);
+            AddStringField(group, "Whats new version", WhatsNewVersionValue);
+            AddStringField(group, "Compatible check game version", CompatibleCheckGameVersionValue);
+            AddStringField(group, "Compatible check mod version", CompatibleCheckModVersionValue);
             AddCheckBox(group, "Show Beta warning", BetaWarning);
             AddCheckBox(group, "Show Linux warning", LinuxWarning);
             AddCheckBox(group, "Any versions", AnyVersions);
