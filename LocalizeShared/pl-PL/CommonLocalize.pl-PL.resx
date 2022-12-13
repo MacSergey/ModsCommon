@@ -440,5 +440,11 @@ lub przetłumaczyć modyfikację na swój język</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>OSTRZEŻENIE</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Brazylijski</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Nie pokazuj ponownie</value>
+  </data>
 </root>

@@ -445,4 +445,7 @@ pilihan pertindihan</value>
     <value>Brazil</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Jangan tunjukkan lagi</value>
+  </data>
 </root>

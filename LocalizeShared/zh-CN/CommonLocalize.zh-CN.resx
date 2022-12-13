@@ -445,4 +445,7 @@ Shift x10，Ctrl x0.1</value>
     <value>巴西语</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>不再提示</value>
+  </data>
 </root>

@@ -446,4 +446,7 @@ of de mod in jouw taal vertalen</value>
     <value>Braziliaans</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Niet meer weergeven</value>
+  </data>
 </root>

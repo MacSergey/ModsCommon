@@ -448,4 +448,7 @@ MODを最新バージョンに更新してください！ 更新をしないとM
     <value>ブラジル語</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>次回から非表示</value>
+  </data>
 </root>

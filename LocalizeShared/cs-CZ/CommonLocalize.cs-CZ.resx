@@ -445,4 +445,7 @@ výběr další křižovatky v překrytí</value>
     <value>Brazilština</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Znovu nezobrazovat</value>
+  </data>
 </root>

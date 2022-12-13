@@ -447,4 +447,7 @@ parmi les nœuds proches</value>
     <value>Brésilien</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Ne plus afficher</value>
+  </data>
 </root>

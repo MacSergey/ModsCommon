@@ -314,8 +314,22 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Version" xml:space="preserve">
     <value>版本: {0}</value>
   </data>
-  
-  
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>遊戲版本已經過期了。
+
+模組(Mod) 需要的遊戲版本： {0}
+當前遊戲的版本： {1}
+
+請更新遊戲到最新版本，否則不保證模組能夠正確工作，並可能導致不可預期的行為。</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>模組(Mod) 版本已經過期了。
+
+模組(Mod) 相容的遊戲版本： {0}
+當前遊戲的版本： {1}
+
+請更新模組到最新版本，否則不保證模組能夠正確工作，並可能導致不可預期的行為。</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 更新內容</value>
   </data>
@@ -427,5 +441,11 @@ Shift X10, Ctrl X0.1</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>警告</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>葡萄牙文 - 巴西</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>不再提示</value>
+  </data>
 </root>

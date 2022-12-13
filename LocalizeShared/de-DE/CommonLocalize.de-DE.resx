@@ -447,4 +447,7 @@ helfen oder die Mod in deine Sprache übersetzen</value>
     <value>Brasilianisch</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Nicht erneut anzeigen</value>
+  </data>
 </root>
