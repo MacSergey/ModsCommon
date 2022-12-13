@@ -7,6 +7,8 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" />
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonLocalize.hu-HU.resx" ManifestResourceName="ModsCommon.CommonLocalize.hu-HU" />
+    <None Include="$(MSBuildThisFileDirectory)CommonLocalize.hu-HU.resx" ManifestResourceName="ModsCommon.CommonLocalize.hu-HU">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

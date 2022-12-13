@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" />
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)CommonLocalize.mr-MR.resx" ManifestResourceName="ModsCommon.CommonLocalize.mr-MR">
+    <None Include="$(MSBuildThisFileDirectory)CommonLocalize.ms-MY.resx" ManifestResourceName="ModsCommon.CommonLocalize.ms-MY">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
