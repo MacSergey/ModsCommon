@@ -173,6 +173,21 @@ namespace ModsCommon.Utilities
             bezier.RenderBezier(data);
         }
 
+        public static void RenderArea(this Vector3[] points, int[] triangles, OverlayData overlayData)
+        {
+            for (int i = 2; i < triangles.Length; i += 3)
+            {
+                var quad = new Quad3()
+                {
+                    a = points[triangles[i]],
+                    b = points[triangles[i - 1]],
+                    c = (points[triangles[i - 2]] + points[triangles[i - 1]]) * 0.5f,
+                    d = points[triangles[i - 2]],
+                };
+                quad.RenderQuad(overlayData);
+            }
+        }
+
         private static void DrawBezier(RenderManager.CameraInfo cameraInfo, Color color, Bezier3 bezier, float size, float cutStart, float cutEnd, float minY, float maxY, bool renderLimits, bool alphaBlend)
         {
             var minVector = bezier.Min() - new Vector3(size * 0.5f, 0f, size * 0.5f);
