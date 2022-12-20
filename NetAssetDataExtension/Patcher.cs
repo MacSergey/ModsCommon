@@ -12,7 +12,7 @@ namespace ModsCommon
     public static partial class Patcher
     {
         public static IEnumerable<CodeInstruction> BuildingDecorationLoadPathsTranspiler<TypeExtension>(IEnumerable<CodeInstruction> instructions)
-            where TypeExtension : IBaseNetAssetDataExtension
+            where TypeExtension : IBaseBuildingAssetDataExtension
         {
             var segmentBufferField = AccessTools.DeclaredField(typeof(NetManager), nameof(NetManager.m_tempSegmentBuffer));
             var nodeBufferField = AccessTools.DeclaredField(typeof(NetManager), nameof(NetManager.m_tempNodeBuffer));
@@ -39,7 +39,7 @@ namespace ModsCommon
                     yield return new CodeInstruction(OpCodes.Ldfld, segmentBufferField);
                     yield return new CodeInstruction(OpCodes.Ldloc_0);
                     yield return new CodeInstruction(OpCodes.Ldfld, nodeBufferField);
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(TypeExtension), nameof(IBaseNetAssetDataExtension.OnPlaceAsset)));
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(TypeExtension), nameof(IBaseBuildingAssetDataExtension.OnPlaceAsset)));
                     inserted = true;
                 }
 

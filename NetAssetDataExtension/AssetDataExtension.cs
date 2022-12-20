@@ -11,20 +11,20 @@ using System.Xml.Linq;
 
 namespace ModsCommon.Utilities
 {
-    public interface IBaseNetAssetDataExtension
+    public interface IBaseBuildingAssetDataExtension
     {
         void OnPlaceAsset(BuildingInfo buildingInfo, FastList<ushort> segments, FastList<ushort> nodes);
     }
 
-    public abstract class BaseNetAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap> : BaseAssetDataExtension<TypeExtension, AssetData>, IBaseNetAssetDataExtension
+    public abstract class BaseBuildingAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap> : BaseBuildingDataExtension<TypeExtension, BuildingAssetData>, IBaseBuildingAssetDataExtension
         where TypeMod : ICustomMod
-        where TypeExtension : BaseAssetDataExtension<TypeExtension, AssetData>
+        where TypeExtension : BaseBuildingDataExtension<TypeExtension, BuildingAssetData>
         where TypeObjectMap : INetObjectsMap
     {
         protected abstract string DataId { get; }
         protected abstract string MapId { get; }
 
-        public override bool Load(BuildingInfo prefab, Dictionary<string, byte[]> userData, out AssetData data)
+        public override bool Load(BuildingInfo prefab, Dictionary<string, byte[]> userData, out BuildingAssetData data)
         {
             if (userData.TryGetValue(DataId, out byte[] rawData) && userData.TryGetValue(MapId, out byte[] map))
             {
@@ -35,7 +35,7 @@ namespace ModsCommon.Utilities
                     var config = XmlExtension.Parse(decompress);
 
                     SetMap(map, out var segments, out var nodes);
-                    data = new AssetData(config, segments, nodes);
+                    data = new BuildingAssetData(config, segments, nodes);
                     SingletonMod<TypeMod>.Logger.Debug($"Prefab data was loaded; Size = {rawData.Length} bytes");
                     return true;
                 }
@@ -129,25 +129,117 @@ namespace ModsCommon.Utilities
                 nodes[i * 2 + 1] = GetUShort(map[i * 6 + 4], map[i * 6 + 5]);
             }
         }
-        private void GetBytes(ushort n, out byte b1, out byte b2)
-        {
-            b1 = (byte)(n >> 8);
-            b2 = (byte)n;
-        }
-        private ushort GetUShort(byte b1, byte b2) => (ushort)((b1 << 8) + b2);
     }
 
-    public struct AssetData
+    public struct BuildingAssetData
     {
         public XElement Config { get; }
         public ushort[] Segments { get; }
         public ushort[] Nodes { get; }
 
-        public AssetData(XElement config, ushort[] segments, ushort[] nodes)
+        public BuildingAssetData(XElement config, ushort[] segments, ushort[] nodes)
         {
             Config = config;
             Segments = segments;
             Nodes = nodes;
+        }
+    }
+
+    public abstract class BaseNetworkAssetDataExtension<TypeMod, TypeExtension, TypeObjectMap> : BaseNetworkDataExtension<TypeExtension, NetworkAssetData>
+        where TypeMod : ICustomMod
+        where TypeExtension : BaseNetworkDataExtension<TypeExtension, NetworkAssetData>
+        where TypeObjectMap : INetObjectsMap
+    {
+        protected abstract string DataId { get; }
+        protected abstract string MapId { get; }
+
+        protected abstract XElement GetConfig(NetInfo prefab, out ushort segmentId, out ushort startNodeId, out ushort endNodeId);
+        protected abstract TypeObjectMap CreateMap(bool isSimple);
+        protected abstract void PlaceAsset(XElement config, TypeObjectMap map);
+
+        public override bool Load(NetInfo prefab, Dictionary<string, byte[]> userData, out NetworkAssetData data)
+        {
+            if (userData.TryGetValue(DataId, out byte[] rawData) && userData.TryGetValue(MapId, out byte[] map))
+            {
+                SingletonMod<TypeMod>.Logger.Debug($"Start load prefab data \"{prefab.name}\"");
+                try
+                {
+                    var decompress = Loader.Decompress(rawData);
+                    var config = XmlExtension.Parse(decompress);
+                    data = new NetworkAssetData(config, GetUShort(map[0], map[1]), GetUShort(map[2], map[3]), GetUShort(map[4], map[5]));
+
+                    SingletonMod<TypeMod>.Logger.Debug($"Prefab data was loaded; Size = {rawData.Length} bytes");
+                    return true;
+                }
+                catch (Exception error)
+                {
+                    SingletonMod<TypeMod>.Logger.Error("Could not load prefab data", error);
+                }
+            }
+
+            data = default;
+            return false;
+        }
+        public override void Save(NetInfo prefab, Dictionary<string, byte[]> userData)
+        {
+            SingletonMod<TypeMod>.Logger.Debug($"Start save prefab data \"{prefab.name}\"");
+            try
+            {
+                var config = GetConfig(prefab, out ushort segmentId, out ushort startNodeId, out ushort endNodeId);
+                if (config != null)
+                {
+                    var data = Loader.Compress(Loader.GetString(config));
+
+                    userData[DataId] = data;
+
+                    var map = new byte[6];
+                    GetBytes(segmentId, out map[0], out map[1]);
+                    GetBytes(startNodeId, out map[2], out map[3]);
+                    GetBytes(endNodeId, out map[4], out map[5]);
+                    userData[MapId] = map;
+
+
+                    SingletonMod<TypeMod>.Logger.Debug($"Prefab data was saved; Size = {data.Length} bytes");
+                }
+                else
+                    SingletonMod<TypeMod>.Logger.Debug($"Nothing to save");
+            }
+            catch (Exception error)
+            {
+                SingletonMod<TypeMod>.Logger.Error("Could not save prefab data", error);
+            }
+        }
+
+        public void OnPlaceAsset(NetInfo networkInfo, ushort segmentId, ushort startNodeId, ushort endNodeId)
+        {
+            if (AssetDatas.TryGetValue(networkInfo, out var assetData))
+            {
+                SingletonMod<TypeMod>.Logger.Debug($"Place asset {networkInfo.name}");
+
+                var map = CreateMap(true);
+                map.AddSegment(assetData.SegmentId, segmentId);
+                map.AddNode(assetData.StartNodeId, startNodeId);
+                map.AddNode(assetData.EndNodeId, endNodeId);
+
+                PlaceAsset(assetData.Config, map);
+            }
+        }
+    }
+
+    public struct NetworkAssetData
+    {
+        public XElement Config { get; }
+        public ushort SegmentId { get; }
+        public ushort StartNodeId { get; }
+        public ushort EndNodeId { get; }
+
+
+        public NetworkAssetData(XElement config, ushort segmentId, ushort startNodeId, ushort endNodeId)
+        {
+            Config = config;
+            SegmentId = segmentId;
+            StartNodeId = startNodeId;
+            EndNodeId = endNodeId;
         }
     }
 }
