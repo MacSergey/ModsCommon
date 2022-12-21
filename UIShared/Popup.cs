@@ -78,7 +78,7 @@ namespace ModsCommon.UI
             EntityHeight = DefaultEntityHeight;
         }
 
-        public void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector = null)
+        public virtual void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector = null)
         {
             Selector = selector;
             RawValues = values.ToList();
