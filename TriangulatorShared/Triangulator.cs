@@ -41,7 +41,7 @@ namespace ModsCommon.Utilities
             while (true)
             {
                 if (Ears.LastOrDefault() is not LinkedListNode<Vertex> vertex)
-                    return null;
+                    break;
 
                 var prev = vertex.GetPrevious();
                 var next = vertex.GetNext();
@@ -52,7 +52,7 @@ namespace ModsCommon.Utilities
                 Vertices.Remove(vertex);
 
                 if (Vertices.Count < 3)
-                    return Triangles.SelectMany(t => t.GetVertices(Direction)).ToArray();
+                    break;
 
                 SetConvex(prev);
                 SetConvex(next);
@@ -60,6 +60,8 @@ namespace ModsCommon.Utilities
                 SetEar(prev);
                 SetEar(next);
             }
+
+            return Triangles.SelectMany(t => t.GetVertices(Direction)).ToArray();
         }
         private int[] Triangulate()
         {
@@ -146,7 +148,8 @@ namespace ModsCommon.Utilities
         private IEnumerable<LinkedListNode<Vertex>> EnumerateVertex() => EnumerateVertex(Vertices.First);
         private IEnumerable<LinkedListNode<Vertex>> EnumerateVertex(LinkedListNode<Vertex> startFrom)
         {
-            yield return startFrom;
+            if (startFrom != null)
+                yield return startFrom;
 
             for (var vertex = startFrom.GetNext(); vertex != startFrom; vertex = vertex.GetNext())
                 yield return vertex;
