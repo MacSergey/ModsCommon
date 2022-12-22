@@ -24,6 +24,7 @@ namespace ModsCommon.Utilities
             instance.m_nodesUpdated = true;
         }
 
+        [Obsolete]
         public static IEnumerable<NetSegment> Segments(this NetNode node)
         {
             for (var i = 0; i < 8; i += 1)
@@ -42,6 +43,8 @@ namespace ModsCommon.Utilities
                     yield return segment;
             }
         }
+
+        [Obsolete]
         public static IEnumerable<NetNode> Nodes(this NetSegment segment)
         {
             yield return segment.m_startNode.GetNode();
@@ -52,6 +55,8 @@ namespace ModsCommon.Utilities
             yield return segment.m_startNode;
             yield return segment.m_endNode;
         }
+
+        [Obsolete]
         public static IEnumerable<NetLane> GetLanes(this NetSegment segment)
         {
             NetLane lane;
@@ -60,6 +65,15 @@ namespace ModsCommon.Utilities
                 lane = GetLane(laneId);
                 yield return lane;
             }
+        }
+        public static uint GetLaneId(this NetSegment segment, int index)
+        {
+            uint laneId = segment.m_lanes;
+            for (int i = 0; i < index && laneId != 0; i += 1)
+            {
+                laneId = laneId.GetLane().m_nextLane;
+            }
+            return laneId;
         }
         public static IEnumerable<uint> GetLaneIds(this NetSegment segment)
         {
