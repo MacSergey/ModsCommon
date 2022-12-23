@@ -18,10 +18,11 @@ namespace ModsCommon.UI
             base.Init(null);
             FillItems(selector);
         }
+        protected virtual IEnumerable<EnumType> GetValues() => EnumExtension.GetEnumValues<EnumType>();
         protected virtual void FillItems(Func<EnumType, bool> selector)
         {
             Selector.StopLayout();
-            foreach (var value in EnumExtension.GetEnumValues<EnumType>())
+            foreach (var value in GetValues())
             {
                 if (selector?.Invoke(value) != false)
                     Selector.AddItem(value, GetDescription(value));

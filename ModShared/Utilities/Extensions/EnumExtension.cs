@@ -16,7 +16,7 @@ namespace ModsCommon.Utilities
         public static IEnumerable<T> GetEnumValues<T>(Func<T, bool> selector = null)
             where T : Enum
         {
-            return Enum.GetValues(typeof(T)).OfType<T>().Where(selector ?? GetVisibleSelector<T>());
+            return Enum.GetValues(typeof(T)).OfType<T>().Where(selector ?? GetVisibleSelector<T>()).OrderBy(v => v.Order());
         }
         public static IEnumerable<T> GetEnumValues<T>(this T value) where T : Enum => GetEnumValues<T>().Where(v => (value.ToInt() & v.ToInt()) != 0);
         public static T GetEnum<T>(this List<T> values) where T : Enum => values.Aggregate(0, (r, v) => r | v.ToInt()).ToEnum<T>();
@@ -30,6 +30,7 @@ namespace ModsCommon.Utilities
 
         public static bool IsVisible<T>(this T value) where T : Enum => value.GetAttr<NotVisibleAttribute, T>() == null;
         public static bool IsItem<T>(this T value) where T : Enum => value.GetAttr<NotItemAttribute, T>() == null;
+        public static int Order<T>(this T value) where T : Enum => value.GetAttr<OrderAttribute, T>()?.Order ?? int.MaxValue;
 
         public static int ToInt<T>(this T value) where T : Enum => (int)(object)value;
         public static T ToEnum<T>(this int value) where T : Enum => (T)(object)value;
@@ -53,4 +54,12 @@ namespace ModsCommon.Utilities
 
     public class NotVisibleAttribute : Attribute { }
     public class NotItemAttribute : Attribute { }
+    public class OrderAttribute : Attribute
+    {
+        public int Order { get; }
+        public OrderAttribute(int order)
+        {
+            Order = order;
+        }
+    }
 }
