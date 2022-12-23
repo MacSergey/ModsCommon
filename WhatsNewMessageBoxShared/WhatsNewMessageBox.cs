@@ -71,7 +71,11 @@ namespace ModsCommon.UI
             {
                 autoLayoutDirection = LayoutDirection.Vertical;
                 autoFitChildrenVertically = true;
+                padding = new RectOffset(5, 5, 5, 5);
                 autoLayoutPadding = new RectOffset(0, 0, 0, 8);
+                backgroundSprite = "TextFieldPanel";
+                color = new Color32(64, 64, 64, 255);
+                verticalSpacing = 5;
 
                 AddTitle();
                 AddLinesContainer();
@@ -126,8 +130,6 @@ namespace ModsCommon.UI
                 Container.autoLayoutDirection = LayoutDirection.Vertical;
                 Container.autoFitChildrenVertically = true;
                 Container.autoLayoutPadding = new RectOffset(0, 0, 0, 6);
-                Container.backgroundSprite = "ContentManagerItemBackground";
-                Container.verticalSpacing = 15;
             }
 
             public void Init(ModVersion version, string message, CultureInfo culture)
@@ -135,7 +137,7 @@ namespace ModsCommon.UI
                 Container.StopLayout();
 
                 Title.text = version.Number.ToString();
-                if(version.IsBeta)
+                if (version.IsBeta)
                     SubTitle.text = "BETA";
                 else
                     SubTitle.text = version.Date.ToString("d MMM yyyy", culture);
