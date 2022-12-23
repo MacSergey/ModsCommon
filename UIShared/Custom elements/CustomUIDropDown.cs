@@ -137,7 +137,7 @@ namespace ModsCommon.UI
             get => _focusedFgColor ?? color;
             set
             {
-                _focusedBgColor = value;
+                _focusedFgColor = value;
                 Invalidate();
             }
         }
