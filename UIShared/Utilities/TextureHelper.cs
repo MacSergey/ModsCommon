@@ -122,9 +122,9 @@ namespace ModsCommon.Utilities
             return texture;
         }
 
-        public static Texture2D CreateTexture(int height, int width, Color color)
+        public static Texture2D CreateTexture(int width, int height, Color color)
         {
-            var texture = new Texture2D(height, width) { name = "Markup" };
+            var texture = new Texture2D(width, height) { name = "Markup" };
             for (var i = 0; i < width; i += 1)
             {
                 for (var j = 0; j < height; j += 1)
