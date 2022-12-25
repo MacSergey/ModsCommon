@@ -1,8 +1,10 @@
 ﻿using ColossalFramework.UI;
+using NodeMarkup.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static ModsCommon.UI.StringListPropertyPanel;
 
 namespace ModsCommon.UI
 {
@@ -130,5 +132,27 @@ namespace ModsCommon.UI
             base.DeInit();
         }
         public override string ToString() => $"{base.ToString()}: {string.Join(",", SelectedObjects.Select(i => i.ToString()).ToArray())}";
+    }
+
+    public class StringListPropertyPanel : ListOncePropertyPanel<string, StringDropDown>
+    {
+        protected override bool AllowNull => true;
+        protected override bool IsEqual(string first, string second) => first == second;
+
+        public override void Init() => Init(new string[0], new string[0]);
+        public void Init(string[] values, string[] labels = null)
+        {
+            base.Init(null);
+
+            Selector.StopLayout();
+            if (labels == null)
+                labels = values;
+            var count = Math.Min(values.Length, labels.Length);
+            for (int i = 0; i < count; i += 1)
+            {
+                Selector.AddItem(values[i], labels[i]);
+            }
+            Selector.StartLayout();
+        }
     }
 }

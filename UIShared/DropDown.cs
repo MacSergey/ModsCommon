@@ -25,14 +25,20 @@ namespace ModsCommon.UI
         {
             set => tooltip = value ? CommonLocalize.ListPanel_ScrollWheel : string.Empty;
         }
-        public bool UseScrollBar { get; set; }  
+        public bool UseScrollBar { get; set; }
 
         public UIDropDown()
         {
             eventSelectedIndexChanged += IndexChanged;
+            eventDropdownOpen += DropdownOpen;
         }
 
         protected virtual void IndexChanged(UIComponent component, int value) => OnSelectObjectChanged?.Invoke(SelectedObject);
+        private void DropdownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
+        {
+            var position = popup.selectedIndex * popup.itemHeight;
+            popup.scrollPosition = position;
+        }
 
         public void AddItem(ValueType item, string label = null)
         {
@@ -90,4 +96,6 @@ namespace ModsCommon.UI
                 listScrollbar = UIHelper.ScrollBar;
         }
     }
+
+    public class StringDropDown : UIDropDown<string> { }
 }
