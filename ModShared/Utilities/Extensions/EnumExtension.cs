@@ -31,6 +31,7 @@ namespace ModsCommon.Utilities
         public static bool IsVisible<T>(this T value) where T : Enum => value.GetAttr<NotVisibleAttribute, T>() == null;
         public static bool IsItem<T>(this T value) where T : Enum => value.GetAttr<NotItemAttribute, T>() == null;
         public static int Order<T>(this T value) where T : Enum => value.GetAttr<OrderAttribute, T>()?.Order ?? int.MaxValue;
+        public static string Sprite<T>(this T value) where T : Enum => value.GetAttr<SpriteAttribute, T>()?.Sprite ?? string.Empty;
 
         public static int ToInt<T>(this T value) where T : Enum => (int)(object)value;
         public static T ToEnum<T>(this int value) where T : Enum => (T)(object)value;
@@ -60,6 +61,14 @@ namespace ModsCommon.Utilities
         public OrderAttribute(int order)
         {
             Order = order;
+        }
+    }
+    public class SpriteAttribute : Attribute 
+    {
+        public string Sprite { get; }
+        public SpriteAttribute(string sprite)
+        {
+            Sprite = sprite;
         }
     }
 }
