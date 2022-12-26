@@ -7,6 +7,40 @@ namespace ModsCommon.Utilities
 {
     public class Triangulator
     {
+        public static int[] TriangulateSimple(IEnumerable<ITrajectory> trajectories, out Vector3[] points)
+        {
+            List<ITrajectory> split = new List<ITrajectory>();
+            foreach (var trajectory in trajectories)
+            {
+                SplitTrajectory(0, trajectory, trajectory.DeltaAngle, 10f, 1f, 50f, split);
+            }
+            var direction = trajectories.GetDirection();
+            points = split.Select(i => i.StartPosition).ToArray();
+            return TriangulateSimple(points, direction);
+        }
+        private static void SplitTrajectory(int depth, ITrajectory trajectory, float deltaAngle, float minAngle, float minLength, float maxLength, List<ITrajectory> result)
+        {
+            var length = trajectory.Magnitude;
+
+            var needDivide = (deltaAngle > minAngle && length >= minLength) || length > maxLength;
+            if (depth < 5 && (needDivide || depth == 0))
+            {
+                trajectory.Divide(out ITrajectory first, out ITrajectory second);
+                var firstDeltaAngle = first.DeltaAngle;
+                var secondDeltaAngle = second.DeltaAngle;
+
+                if (needDivide || deltaAngle > minAngle || (firstDeltaAngle + secondDeltaAngle) > minAngle)
+                {
+                    SplitTrajectory(depth + 1, first, firstDeltaAngle, minAngle, minLength, maxLength, result);
+                    SplitTrajectory(depth + 1, second, secondDeltaAngle, minAngle, minLength, maxLength, result);
+
+                    return;
+                }
+            }
+
+            result.Add(trajectory);
+        }
+
         public static int[] TriangulateSimple(IEnumerable<Vector3> points, TrajectoryHelper.Direction direction) => TriangulateSimple(points.Select(p => XZ(p)), direction);
         public static int[] TriangulateSimple(IEnumerable<Vector2> points, TrajectoryHelper.Direction direction)
         {
