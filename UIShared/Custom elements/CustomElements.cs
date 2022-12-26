@@ -1,6 +1,5 @@
 ﻿using ColossalFramework.UI;
 using UnityEngine;
-using static ColossalFramework.UI.UIButton;
 
 namespace ModsCommon.UI
 {
@@ -25,16 +24,6 @@ namespace ModsCommon.UI
         }
     }
     public class CustomUILabel : UILabel
-    {
-        private Vector3 positionBefore;
-        public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout()
-        {
-            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
-                relativePosition = positionBefore;
-        }
-    }
-    public class CustomUITextField : UITextField
     {
         private Vector3 positionBefore;
         public override void ResetLayout() => positionBefore = relativePosition;

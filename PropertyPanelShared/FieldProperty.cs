@@ -121,7 +121,43 @@ namespace ModsCommon.UI
     }
     public class FloatPropertyPanel : ComparableFieldPropertyPanel<float, FloatUITextField> { }
     public class IntPropertyPanel : ComparableFieldPropertyPanel<int, IntUITextField> { }
-    public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField> { }
+    public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField>
+    {
+        public bool Multyline
+        {
+            get => Field.multiline;
+            set => Field.multiline = value;
+        }
+        public float TextScale
+        {
+            get => Field.textScale;
+            set => Field.textScale = value;
+        }
+
+        public void Init(float height)
+        {
+            base.Init(height);
+            
+        }
+        public override void DeInit()
+        {
+            base.DeInit();
+
+            Multyline = false;
+            TextScale = StringUITextField.DefaultTextScale;
+            Field.height = 20;
+        }
+
+        protected override void OnSizeChanged()
+        {
+            if (Multyline)
+                Field.height = height - ItemsPadding * 2f;
+            else
+                Field.height = 20;
+
+            base.OnSizeChanged();
+        }
+    }
 
     public abstract class ComparableFieldRangePropertyPanel<ValueType, FieldType> : EditorPropertyPanel, IReusable
         where FieldType : ComparableUITextField<ValueType>
@@ -222,7 +258,7 @@ namespace ModsCommon.UI
             get => _allowInvert;
             set
             {
-                if(value != _allowInvert)
+                if (value != _allowInvert)
                 {
                     _allowInvert = value;
                     SetLimits();
@@ -308,7 +344,7 @@ namespace ModsCommon.UI
 
         private void SetLimits()
         {
-            if(!AllowInvert)
+            if (!AllowInvert)
             {
                 FieldA.MaxValue = FieldB.Value;
                 FieldA.CheckMax = true;

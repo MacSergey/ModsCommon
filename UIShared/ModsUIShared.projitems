@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIListbox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUITextField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\CommonTextures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ComponentPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomElements.cs" />

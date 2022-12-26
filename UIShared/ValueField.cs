@@ -14,7 +14,8 @@ namespace ModsCommon.UI
     }
     public abstract class UITextField<TypeValue> : CustomUITextField, IValueChanger<TypeValue>, IReusable
     {
-        static string DefaultFormat => "{0}";
+        private static string DefaultFormat => "{0}";
+        public static float DefaultTextScale => 0.7f;
 
         public event Action<TypeValue> OnValueChanged;
 
@@ -121,7 +122,7 @@ namespace ModsCommon.UI
             cursorBlinkTime = 0.45f;
             selectOnFocus = true;
 
-            textScale = 0.7f;
+            textScale = DefaultTextScale;
             verticalAlignment = UIVerticalAlignment.Middle;
             padding = new RectOffset(0, 0, 6, 0);
         }
