@@ -7,12 +7,12 @@ namespace ModsCommon.Utilities
 {
     public class Triangulator
     {
-        public static int[] TriangulateSimple(IEnumerable<ITrajectory> trajectories, out Vector3[] points)
+        public static int[] TriangulateSimple(IEnumerable<ITrajectory> trajectories, out Vector3[] points, float minAngle = 10f, float minLength = 1f, float maxLength = 50f)
         {
             List<ITrajectory> split = new List<ITrajectory>();
             foreach (var trajectory in trajectories)
             {
-                SplitTrajectory(0, trajectory, trajectory.DeltaAngle, 10f, 1f, 50f, split);
+                SplitTrajectory(0, trajectory, trajectory.DeltaAngle, minAngle, minLength, maxLength, split);
             }
             var direction = trajectories.GetDirection();
             points = split.Select(i => i.StartPosition).ToArray();
