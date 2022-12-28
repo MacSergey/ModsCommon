@@ -608,7 +608,7 @@ namespace ModsCommon.Utilities
 
         public void Render(OverlayData data) => Trajectory.Render(data);
     }
-    public class TrajectoryPoints
+    public struct TrajectoryPoints
     {
         ITrajectory[] Trajectories { get; }
         int[] Counts { get; }
