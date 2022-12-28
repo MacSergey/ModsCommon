@@ -34,11 +34,11 @@ namespace ModsCommon.Utilities
             new Color32(142, 71, 155, Alpha), //Purple
             new Color32(180, 212, 69, Alpha), //Lime
 
-            new Color32(0, 193, 243, Alpha), //SkyBlue
+            new Color32(53, 201, 159, Alpha), //Turquoise            
             new Color32(255, 198, 26, Alpha), //Yellow
             new Color32(230, 106, 192, Alpha), //Pink
 
-            new Color32(53, 201, 159, Alpha), //Turquoise
+            new Color32(0, 193, 243, Alpha), //SkyBlue
         };
         public enum Overlay
         {
@@ -48,10 +48,10 @@ namespace ModsCommon.Utilities
             Orange,
             Purple,
             Lime,
-            SkyBlue,
+            Turquoise,
             Yellow,
             Pink,
-            Turquoise,
+            SkyBlue,
         }
 
         public static Color32 GetOverlayColor(int index, byte alpha = Alpha, byte hue = 255)
