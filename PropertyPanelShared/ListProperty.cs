@@ -1,10 +1,8 @@
 ﻿using ColossalFramework.UI;
-using NodeMarkup.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static ModsCommon.UI.StringListPropertyPanel;
 
 namespace ModsCommon.UI
 {
