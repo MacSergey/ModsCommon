@@ -24,8 +24,9 @@ namespace ModsCommon.UI
         {
             button.normalBgSprite = "TextFieldPanel";
             button.color = new Color32(224, 224, 224, 255);
-            button.hoveredColor = new Color32(192, 192, 192, 255);
+            button.hoveredColor = new Color32(160, 160, 160, 255);
             button.pressedColor = new Color32(7, 132, 255, 255);
+            button.focusedColor = new Color32(128, 192, 255, 255);
             button.textColor = Color.white;
             button.hoveredTextColor = Color.white;
             button.pressedTextColor = Color.white;

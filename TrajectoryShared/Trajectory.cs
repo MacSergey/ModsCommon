@@ -82,8 +82,8 @@ namespace ModsCommon.Utilities
             StartDirection = (Trajectory.b - Trajectory.a).normalized;
             EndDirection = (Trajectory.c - Trajectory.d).normalized;
         }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true, bool forceSmooth = false) : this(GetBezier(startPos, startDir, endPos, endDir, normalize, forceSmooth)) { }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool forceSmooth = false) : this(GetBezier(startPos, startDir, endPos, forceSmooth)) { }
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true, bool smooth = false) : this(GetBezier(startPos, startDir, endPos, endDir, normalize, smooth)) { }
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool smooth = false) : this(GetBezier(startPos, startDir, endPos, smooth)) { }
 
         public BezierTrajectory(BezierTrajectory trajectory) : this(trajectory.Trajectory) { }
         public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
@@ -120,7 +120,7 @@ namespace ModsCommon.Utilities
 
             return bezier;
         }
-        private static void GetMiddlePoints(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool forceSmooth, out Vector3 middlePos1, out Vector3 middlePos2)
+        private static void GetMiddlePoints(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool smooth, out Vector3 middlePos1, out Vector3 middlePos2)
         {
             if (NetSegment.IsStraight(startPos, startDir, endPos, endDir, out var distance))
             {
@@ -131,7 +131,7 @@ namespace ModsCommon.Utilities
             var dot = startDir.x * endDir.x + startDir.z * endDir.z;
             if (dot >= -0.999f && Line2.Intersect(XZ(startPos), XZ(startPos + startDir), XZ(endPos), XZ(endPos + endDir), out var u, out var v))
             {
-                if (forceSmooth)
+                if (smooth)
                 {
                     u = Mathf.Abs(u);
                     v = Mathf.Abs(v);
@@ -144,7 +144,8 @@ namespace ModsCommon.Utilities
             }
             else
             {
-                distance *= forceSmooth ? 0.75f : 0.3f;
+                //distance *= smooth ? 0.75f : 0.3f;
+                distance *= 0.3f;
                 middlePos1 = startPos + startDir * distance;
                 middlePos2 = endPos + endDir * distance;
             }
