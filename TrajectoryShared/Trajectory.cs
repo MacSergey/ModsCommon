@@ -48,6 +48,7 @@ namespace ModsCommon.Utilities
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Bezier;
         public Bezier3 Trajectory { get; }
+        public bool? Smooth { get; }
 
         private float? _length;
         public float Length => _length ??= Trajectory.Length();
@@ -70,6 +71,7 @@ namespace ModsCommon.Utilities
             Direction = direction;
             StartDirection = startDirection;
             EndDirection = endDirection;
+            Smooth = null;
         }
         public BezierTrajectory(Bezier3 trajectory)
         {
@@ -81,26 +83,33 @@ namespace ModsCommon.Utilities
             Direction = (Trajectory.d - Trajectory.a).normalized;
             StartDirection = (Trajectory.b - Trajectory.a).normalized;
             EndDirection = (Trajectory.c - Trajectory.d).normalized;
+            Smooth = null;
         }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true, bool smooth = false) : this(GetBezier(startPos, startDir, endPos, endDir, normalize, smooth)) { }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool smooth = false) : this(GetBezier(startPos, startDir, endPos, smooth)) { }
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true, bool smooth = false) : this(GetBezier(startPos, startDir, endPos, endDir, normalize, smooth)) 
+        {
+            Smooth = smooth;
+        }
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool smooth = false) : this(GetBezier(startPos, startDir, endPos, smooth))
+        {
+            Smooth = smooth;
+        }
 
         public BezierTrajectory(BezierTrajectory trajectory) : this(trajectory.Trajectory) { }
         public BezierTrajectory(ITrajectory trajectory) : this(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection) { }
         public BezierTrajectory(ref NetSegment segment) : this(segment.m_startNode.GetNode().m_position, segment.m_startDirection, segment.m_endNode.GetNode().m_position, segment.m_endDirection) { }
         public BezierTrajectory(ushort segmentId) : this(ref segmentId.GetSegment()) { }
 
-        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize, bool forceSmooth)
+        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize, bool smooth)
         {
             var bezier = new Bezier3()
             {
                 a = startPos,
                 d = endPos,
             };
-            GetMiddlePoints(bezier.a, normalize ? startDir.normalized : startDir, bezier.d, normalize ? endDir.normalized : endDir, forceSmooth, out bezier.b, out bezier.c);
+            GetMiddlePoints(bezier.a, normalize ? startDir.normalized : startDir, bezier.d, normalize ? endDir.normalized : endDir, smooth, out bezier.b, out bezier.c);
             return bezier;
         }
-        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool forceSmooth)
+        private static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool smooth)
         {
             var startAngle = startDir.AbsoluteAngle();
             var dir = endPos - startPos;
@@ -114,9 +123,9 @@ namespace ModsCommon.Utilities
             };
 
             if (Vector3.Dot(startDir, dir) < 0)
-                GetMiddlePoints(bezier.a, dir, bezier.d, -dir, forceSmooth, out bezier.b, out bezier.c);
+                GetMiddlePoints(bezier.a, dir, bezier.d, -dir, smooth, out bezier.b, out bezier.c);
             else
-                GetMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), forceSmooth, out bezier.b, out bezier.c);
+                GetMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), smooth, out bezier.b, out bezier.c);
 
             return bezier;
         }
