@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,7 +85,29 @@ namespace ModsCommon.UI
 
         private List<uint> ButtonsRatio { get; } = new List<uint>();
         public string CaptionText { set => Caption.text = value; }
-        public int DefaultButton { get; set; } = 1;
+
+        private int _defaultButton = 0;
+        public int DefaultButton
+        {
+            get => _defaultButton;
+            set
+            {
+                if (value != _defaultButton)
+                {
+                    var buttons = Buttons.ToArray();
+                    if (value >= 0 && value < buttons.Length)
+                    {
+                        if (buttons[_defaultButton].state == UIButton.ButtonState.Focused)
+                            buttons[_defaultButton].state = UIButton.ButtonState.Normal;
+
+                        _defaultButton = value;
+
+                        if (buttons[_defaultButton].state == UIButton.ButtonState.Normal)
+                            buttons[_defaultButton].state = UIButton.ButtonState.Focused;
+                    }
+                }
+            }
+        }
 
         #region CONSTRUCTOR
 
@@ -181,6 +204,13 @@ namespace ModsCommon.UI
 
         #region BUTTONS
 
+        public override void Update()
+        {
+            base.Update();
+            if (Buttons.Skip(DefaultButton).FirstOrDefault() is CustomUIButton button && button.state == UIButton.ButtonState.Normal)
+                button.state = UIButton.ButtonState.Focused;
+        }
+
         protected CustomUIButton AddButton(Action action, uint ratio = 1)
         {
             var button = ButtonPanel.AddUIComponent<CustomUIButton>();
@@ -247,8 +277,18 @@ namespace ModsCommon.UI
                 else if (p.keycode == KeyCode.Return)
                 {
                     p.Use();
-                    if (ButtonPanel.components.OfType<CustomUIButton>().Skip(DefaultButton - 1).FirstOrDefault() is CustomUIButton button)
+                    if (Buttons.Skip(DefaultButton).FirstOrDefault() is CustomUIButton button)
                         button.SimulateClick();
+                }
+                else if (p.keycode == KeyCode.RightArrow)
+                {
+                    p.Use();
+                    DefaultButton += 1;
+                }
+                else if (p.keycode == KeyCode.LeftArrow)
+                {
+                    p.Use();
+                    DefaultButton -= 1;
                 }
             }
         }

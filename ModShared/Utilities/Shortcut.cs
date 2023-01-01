@@ -25,7 +25,7 @@ namespace ModsCommon.Utilities
                 var value = InputKey.value;
                 var keyCode = (KeyCode)(value & 0xFFFFFFF);
 
-                if (!DelayIsOut || (CanRepeat ? !Input.GetKey(keyCode) : !Input.GetKeyUp(keyCode)))
+                if (!DelayIsOut || !(CanRepeat ? Input.GetKey(keyCode) : Input.GetKeyDown(keyCode)))
                     return false;
 
                 if (!IgnoreModifiers)
@@ -53,7 +53,7 @@ namespace ModsCommon.Utilities
 
         public virtual bool Press(Event e)
         {
-            if ((CanRepeat ? e.type == EventType.keyDown : e.type == EventType.KeyUp) && IsPressed)
+            if (e.type == EventType.keyDown && IsPressed)
             {
                 Press();
                 e.Use();
@@ -61,7 +61,7 @@ namespace ModsCommon.Utilities
                 LastPressFrame = Time.frameCount;
                 return true;
             }
-            else
+            else 
                 return false;
         }
         public void Press() => Action?.Invoke();

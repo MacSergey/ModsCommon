@@ -88,6 +88,7 @@ namespace ModsCommon
         public Vector3 MousePositionScaled { get; private set; }
         public Vector3 MouseWorldPosition { get; private set; }
         public Vector3 CameraDirection { get; private set; }
+        public bool IsModal { get; private set; }
 
         #endregion
 
@@ -191,8 +192,6 @@ namespace ModsCommon
         #region UPDATE
         protected override void OnToolUpdate()
         {
-            //ProcessEnter(Event.current);
-
             if (!CheckInfoMode(Singleton<InfoManager>.instance.NextMode, Singleton<InfoManager>.instance.NextSubMode))
             {
                 Disable(false);
@@ -214,6 +213,8 @@ namespace ModsCommon
                 ExtraInfo(mode);
             }
 
+            IsModal = UIView.ModalInputCount() > 0;
+
             base.OnToolUpdate();
         }
 
@@ -222,7 +223,7 @@ namespace ModsCommon
         private float LastSecondary { get; set; }
         private void ProcessEnter(Event e)
         {
-            if (Mode is not IToolMode mode)
+            if (IsModal || Mode is not IToolMode mode)
                 return;
 
             switch (e.type)
