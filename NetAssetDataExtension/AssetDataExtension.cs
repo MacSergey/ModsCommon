@@ -24,9 +24,11 @@ namespace ModsCommon.Utilities
         protected abstract string DataId { get; }
         protected abstract string MapId { get; }
 
-        public override bool Load(BuildingInfo prefab, Dictionary<string, byte[]> userData, out BuildingAssetData data)
+        public override bool Load(BuildingInfo prefab, Dictionary<string, byte[]> userData, out BuildingAssetData data, string dataId = null, string mapId = null)
         {
-            if (userData.TryGetValue(DataId, out byte[] rawData) && userData.TryGetValue(MapId, out byte[] map))
+            dataId ??= DataId;
+            mapId ??= MapId;
+            if (userData.TryGetValue(dataId, out byte[] rawData) && userData.TryGetValue(mapId, out byte[] map))
             {
                 SingletonMod<TypeMod>.Logger.Debug($"Start load prefab data \"{prefab.name}\"");
                 try
@@ -48,7 +50,7 @@ namespace ModsCommon.Utilities
             data = default;
             return false;
         }
-        public override void Save(BuildingInfo prefab, Dictionary<string, byte[]> userData)
+        public override void Save(BuildingInfo prefab, Dictionary<string, byte[]> userData, string dataId = null, string mapId = null)
         {
             SingletonMod<TypeMod>.Logger.Debug($"Start save prefab data \"{prefab.name}\"");
             try
@@ -56,8 +58,10 @@ namespace ModsCommon.Utilities
                 var config = Loader.GetString(GetConfig());
                 var data = Loader.Compress(config);
 
-                userData[DataId] = data;
-                userData[MapId] = GetMap();
+                dataId ??= DataId;
+                mapId ??= MapId;
+                userData[dataId] = data;
+                userData[mapId] = GetMap();
 
                 SingletonMod<TypeMod>.Logger.Debug($"Prefab data was saved; Size = {data.Length} bytes");
             }
@@ -157,9 +161,11 @@ namespace ModsCommon.Utilities
         protected abstract TypeObjectMap CreateMap(bool isSimple);
         protected abstract void PlaceAsset(XElement config, TypeObjectMap map);
 
-        public override bool Load(NetInfo prefab, Dictionary<string, byte[]> userData, out NetworkAssetData data)
+        public override bool Load(NetInfo prefab, Dictionary<string, byte[]> userData, out NetworkAssetData data, string dataId = null, string mapId = null)
         {
-            if (userData.TryGetValue(DataId, out byte[] rawData) && userData.TryGetValue(MapId, out byte[] map))
+            dataId ??= DataId;
+            mapId ??= MapId;
+            if (userData.TryGetValue(dataId, out byte[] rawData) && userData.TryGetValue(mapId, out byte[] map))
             {
                 SingletonMod<TypeMod>.Logger.Debug($"Start load prefab data \"{prefab.name}\"");
                 try
@@ -180,7 +186,7 @@ namespace ModsCommon.Utilities
             data = default;
             return false;
         }
-        public override void Save(NetInfo prefab, Dictionary<string, byte[]> userData)
+        public override void Save(NetInfo prefab, Dictionary<string, byte[]> userData, string dataId = null, string mapId = null)
         {
             SingletonMod<TypeMod>.Logger.Debug($"Start save prefab data \"{prefab.name}\"");
             try
@@ -190,13 +196,15 @@ namespace ModsCommon.Utilities
                 {
                     var data = Loader.Compress(Loader.GetString(config));
 
-                    userData[DataId] = data;
+                    dataId ??= DataId;
+                    userData[dataId] = data;
 
                     var map = new byte[6];
                     GetBytes(segmentId, out map[0], out map[1]);
                     GetBytes(startNodeId, out map[2], out map[3]);
                     GetBytes(endNodeId, out map[4], out map[5]);
-                    userData[MapId] = map;
+                    mapId ??= MapId;
+                    userData[mapId] = map;
 
 
                     SingletonMod<TypeMod>.Logger.Debug($"Prefab data was saved; Size = {data.Length} bytes");

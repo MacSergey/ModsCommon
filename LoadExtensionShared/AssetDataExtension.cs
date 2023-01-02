@@ -1,13 +1,6 @@
-﻿using ColossalFramework;
-using ColossalFramework.UI;
-using HarmonyLib;
-using ICities;
-using System;
+﻿using ICities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Xml.Linq;
 
 namespace ModsCommon.Utilities
 {
@@ -29,8 +22,8 @@ namespace ModsCommon.Utilities
         }
         public override void OnReleased() => SingletonItem<TypeExtension>.Instance = null;
 
-        public abstract bool Load(PrefabType prefab, Dictionary<string, byte[]> userData, out TypeAssetData data);
-        public abstract void Save(PrefabType prefab, Dictionary<string, byte[]> userData);
+        public abstract bool Load(PrefabType prefab, Dictionary<string, byte[]> userData, out TypeAssetData data, string dataId = null, string mapId = null);
+        public abstract void Save(PrefabType prefab, Dictionary<string, byte[]> userData, string dataId = null, string mapId = null);
 
         protected void GetBytes(ushort n, out byte b1, out byte b2)
         {
