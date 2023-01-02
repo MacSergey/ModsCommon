@@ -48,7 +48,7 @@ namespace ModsCommon.Utilities
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Bezier;
         public Bezier3 Trajectory { get; }
-        public bool? Smooth { get; }
+        public bool? Smooth { get; private set; }
 
         private float? _length;
         public float Length => _length ??= Trajectory.Length();
@@ -61,7 +61,7 @@ namespace ModsCommon.Utilities
         public Vector3 EndPosition => Trajectory.d;
         public bool IsZero => Trajectory.Max() == Trajectory.Min();
 
-        private BezierTrajectory(Bezier3 trajectory, float? length, float magnitude, float deltaAngle, Vector3 direction, Vector3 startDirection, Vector3 endDirection)
+        private BezierTrajectory(Bezier3 trajectory, float? length, float magnitude, float deltaAngle, Vector3 direction, Vector3 startDirection, Vector3 endDirection, bool? smooth)
         {
             Trajectory = trajectory;
             _length = length;
@@ -71,9 +71,9 @@ namespace ModsCommon.Utilities
             Direction = direction;
             StartDirection = startDirection;
             EndDirection = endDirection;
-            Smooth = null;
+            Smooth = smooth;
         }
-        public BezierTrajectory(Bezier3 trajectory)
+        public BezierTrajectory(Bezier3 trajectory, bool? smooth = null)
         {
             Trajectory = trajectory;
             _length = null;
@@ -83,13 +83,13 @@ namespace ModsCommon.Utilities
             Direction = (Trajectory.d - Trajectory.a).normalized;
             StartDirection = (Trajectory.b - Trajectory.a).normalized;
             EndDirection = (Trajectory.c - Trajectory.d).normalized;
-            Smooth = null;
+            Smooth = smooth;
         }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true, bool smooth = false) : this(GetBezier(startPos, startDir, endPos, endDir, normalize, smooth)) 
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize = true, bool? smooth = null) : this(GetBezier(startPos, startDir, endPos, endDir, normalize, smooth == true)) 
         {
             Smooth = smooth;
         }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool smooth = false) : this(GetBezier(startPos, startDir, endPos, smooth))
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool? smooth = null) : this(GetBezier(startPos, startDir, endPos, smooth == true))
         {
             Smooth = smooth;
         }
@@ -160,21 +160,22 @@ namespace ModsCommon.Utilities
             }
         }
 
-        public BezierTrajectory Cut(float t0, float t1) => new BezierTrajectory(Trajectory.Cut(t0, t1));
+        public BezierTrajectory Cut(float t0, float t1) => new BezierTrajectory(Trajectory.Cut(t0, t1), Smooth);
         ITrajectory ITrajectory.Cut(float t0, float t1) => Cut(t0, t1);
         public void Divide(out ITrajectory trajectory1, out ITrajectory trajectory2)
         {
             Trajectory.Divide(out Bezier3 bezier1, out Bezier3 bezier2);
-            trajectory1 = new BezierTrajectory(bezier1);
-            trajectory2 = new BezierTrajectory(bezier2);
+            trajectory1 = new BezierTrajectory(bezier1, Smooth);
+            trajectory2 = new BezierTrajectory(bezier2, Smooth);
         }
         public Vector3 Tangent(float t) => Trajectory.Tangent(t);
         public Vector3 Position(float t) => Trajectory.Position(t);
         public float Travel(float distance) => Trajectory.Travel(distance);
         public float Travel(float start, float distance) => start + Trajectory.Cut(start, 1f).Travel(distance) * (1f - start);
         public float Distance(float from = 0f, float to = 1f) => Trajectory.Cut(from, to).Length();
-        public BezierTrajectory Invert() => new BezierTrajectory(Trajectory.Invert(), _length, Magnitude, DeltaAngle, -Direction, EndDirection, StartDirection);
-        ITrajectory ITrajectory.Invert() => Invert();
+        public BezierTrajectory Invert() => new BezierTrajectory(Trajectory.Invert(), _length, Magnitude, DeltaAngle, -Direction, EndDirection, StartDirection, Smooth);
+
+            ITrajectory ITrajectory.Invert() => Invert();
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
         {
@@ -194,7 +195,7 @@ namespace ModsCommon.Utilities
 
 
         public static implicit operator Bezier3(BezierTrajectory trajectory) => trajectory.Trajectory;
-        public static explicit operator BezierTrajectory(Bezier3 bezier) => new BezierTrajectory(bezier);
+        public static explicit operator BezierTrajectory(Bezier3 bezier) => new BezierTrajectory(bezier, null);
 
         public override bool Equals(object obj) => obj is BezierTrajectory trajectory && Equals(trajectory);
         public bool Equals(BezierTrajectory other) => Trajectory.a == other.Trajectory.a && Trajectory.b == other.Trajectory.b && Trajectory.c == other.Trajectory.c && Trajectory.d == other.Trajectory.d;
