@@ -218,7 +218,7 @@ namespace ModsCommon.Utilities
             }
         }
 
-        public void OnPlaceAsset(NetInfo networkInfo, ushort segmentId, ushort startNodeId, ushort endNodeId)
+        public virtual void OnPlaceAsset(NetInfo networkInfo, ushort segmentId, ushort startNodeId, ushort endNodeId)
         {
             if (AssetDatas.TryGetValue(networkInfo, out var assetData))
             {
