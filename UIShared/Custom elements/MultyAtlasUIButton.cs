@@ -51,7 +51,7 @@ namespace ModsCommon.UI
 
         public Color32 normalBgColor
         {
-            get => _normalBgColor ?? color;
+            get => _normalBgColor ?? base.color;
             set
             {
                 _normalBgColor = value;
@@ -60,7 +60,7 @@ namespace ModsCommon.UI
         }
         public Color32 focusedBgColor
         {
-            get => _focusedBgColor ?? color;
+            get => _focusedBgColor ?? base.focusedColor;
             set
             {
                 _focusedBgColor = value;
@@ -69,7 +69,7 @@ namespace ModsCommon.UI
         }
         public Color32 hoveredBgColor
         {
-            get => _hoveredBgColor ?? color;
+            get => _hoveredBgColor ?? base.hoveredColor;
             set
             {
                 _hoveredBgColor = value;
@@ -78,7 +78,7 @@ namespace ModsCommon.UI
         }
         public Color32 pressedBgColor
         {
-            get => _pressedBgColor ?? color;
+            get => _pressedBgColor ?? base.pressedColor;
             set
             {
                 _pressedBgColor = value;
@@ -87,7 +87,7 @@ namespace ModsCommon.UI
         }
         public Color32 disabledBgColor
         {
-            get => _disabledBgColor ?? disabledColor;
+            get => _disabledBgColor ?? base.disabledColor;
             set
             {
                 _disabledBgColor = value;
@@ -97,7 +97,7 @@ namespace ModsCommon.UI
 
         public Color32 normalFgColor
         {
-            get => _normalFgColor ?? color;
+            get => _normalFgColor ?? base.textColor;
             set
             {
                 _normalFgColor = value;
@@ -106,7 +106,7 @@ namespace ModsCommon.UI
         }
         public Color32 focusedFgColor
         {
-            get => _focusedFgColor ?? color;
+            get => _focusedFgColor ?? base.focusedTextColor;
             set
             {
                 _focusedFgColor = value;
@@ -115,7 +115,7 @@ namespace ModsCommon.UI
         }
         public Color32 hoveredFgColor
         {
-            get => _hoveredFgColor ?? color;
+            get => _hoveredFgColor ?? base.hoveredTextColor;
             set
             {
                 _hoveredFgColor = value;
@@ -124,7 +124,7 @@ namespace ModsCommon.UI
         }
         public Color32 pressedFgColor
         {
-            get => _pressedFgColor ?? color;
+            get => _pressedFgColor ?? base.pressedTextColor;
             set
             {
                 _pressedFgColor = value;
@@ -133,7 +133,7 @@ namespace ModsCommon.UI
         }
         public Color32 disabledFgColor
         {
-            get => _disabledFgColor ?? disabledColor;
+            get => _disabledFgColor ?? base.disabledTextColor;
             set
             {
                 _disabledFgColor = value;

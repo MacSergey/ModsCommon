@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NodeMarkup.Utilities;
+using System;
 using UnityEngine;
+using ColossalFramework.UI;
 
 namespace ModsCommon.UI
 {
@@ -11,7 +13,7 @@ namespace ModsCommon.UI
 
         public event Action<ValueType> OnValueChanged;
 
-        public float FieldWidth
+        public virtual float FieldWidth
         {
             get => Field.width;
             set => Field.width = value;
@@ -132,12 +134,6 @@ namespace ModsCommon.UI
         {
             get => Field.textScale;
             set => Field.textScale = value;
-        }
-
-        public void Init(float height)
-        {
-            base.Init(height);
-            
         }
         public override void DeInit()
         {
@@ -366,4 +362,55 @@ namespace ModsCommon.UI
     }
 
     public class FloatRangePropertyPanel : ComparableFieldRangePropertyPanel<float, FloatUITextField> { }
+
+
+    public abstract class InvertedFieldPropertyPanel<ValueType, FieldType> : ComparableFieldPropertyPanel<ValueType, FieldType>
+        where FieldType : ComparableUITextField<ValueType>
+        where ValueType : IComparable<ValueType>
+    {
+        protected MultyAtlasUIButton Invert { get; }
+
+        public override float FieldWidth
+        {
+            get => base.FieldWidth + Content.autoLayoutPadding.horizontal + Invert.width;
+            set => base.FieldWidth = value - Content.autoLayoutPadding.horizontal - Invert.width;
+        }
+
+        public InvertedFieldPropertyPanel()
+        {
+            Invert = Content.AddUIComponent<MultyAtlasUIButton>();
+            Invert.SetDefaultStyle();
+            Invert.width = 20;
+            Invert.atlasForeground = NodeMarkupTextures.Atlas;
+            Invert.normalFgSprite = NodeMarkupTextures.PlusMinusButtonIcons;
+            Invert.eventClick += InvertClick;
+        }
+
+        private void InvertClick(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            Field.SimulateEnterValue(InvertValue(Field.Value));
+        }
+        protected override void Init(float? height)
+        {
+            base.Init(height);
+            SetSize();
+        }
+
+        protected abstract ValueType InvertValue(ValueType value);
+
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+            SetSize();
+        }
+        protected virtual void SetSize()
+        {
+            if (Invert != null)
+                Invert.height = Content.height - ItemsPadding * 2;
+        }
+    }
+    public class FloatInvertedPropertyPanel : InvertedFieldPropertyPanel<float, FloatUITextField>
+    {
+        protected override float InvertValue(float value) => -value;
+    }
 }
