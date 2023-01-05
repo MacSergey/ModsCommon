@@ -33,6 +33,7 @@ namespace ModsCommon.Utilities
         float Travel(float start, float distance);
         float Distance(float from = 0f, float to = 1f);
         ITrajectory Invert();
+        ITrajectory Shift(float start, float end);
 
         public bool IsZero { get; }
 

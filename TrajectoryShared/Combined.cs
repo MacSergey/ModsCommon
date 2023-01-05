@@ -238,6 +238,19 @@ namespace ModsCommon.Utilities
 
         public CombinedTrajectory Invert() => new CombinedTrajectory(Trajectories.Select(t => t.Invert()).Reverse().ToArray(), _length, _parts == null ? null : _parts.Reverse().ToArray(), Magnitude, DeltaAngle, -Direction, EndDirection, StartDirection);
         ITrajectory ITrajectory.Invert() => Invert();
+        public CombinedTrajectory Shift(float start, float end)
+        {
+            var trajectories = new List<ITrajectory>();
+            var parts = Parts;
+            for(var i = 0; i < parts.Length; i += 1)
+            {
+                var startI = Mathf.Lerp(start, end, parts[i]);
+                var endI = Mathf.Lerp(start, end, i + 1 < parts.Length ? parts[i + 1] : 1f);
+                trajectories.Add(Trajectories[i].Shift(startI, endI));
+            }
+            return new CombinedTrajectory(trajectories);
+        }
+        ITrajectory ITrajectory.Shift(float start, float end) => Shift(start, end);
 
         public Vector3 Position(float t)
         {

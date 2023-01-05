@@ -203,8 +203,15 @@ namespace ModsCommon.Utilities
         public float Travel(float start, float distance) => start + Trajectory.Cut(start, 1f).Travel(distance) * (1f - start);
         public float Distance(float from = 0f, float to = 1f) => Trajectory.Cut(from, to).Length();
         public BezierTrajectory Invert() => new BezierTrajectory(Trajectory.Invert(), _length, Magnitude, DeltaAngle, -Direction, EndDirection, StartDirection, EndT, StartT);
-
         ITrajectory ITrajectory.Invert() => Invert();
+        public BezierTrajectory Shift(float start, float end)
+        {
+            var startNormal = StartDirection.MakeFlatNormalized().Turn90(true);
+            var endNormal = EndDirection.MakeFlatNormalized().Turn90(false);
+            return new BezierTrajectory(StartPosition + startNormal * start, StartDirection, EndPosition + endNormal * end, EndDirection, StartT, EndT);
+        }
+        ITrajectory ITrajectory.Shift(float start, float end) => Shift(start, end);
+
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
         {

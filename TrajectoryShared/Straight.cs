@@ -68,6 +68,13 @@ namespace ModsCommon.Utilities
         public float Distance(float from = 0f, float to = 1f) => Length * (to - from);
         public StraightTrajectory Invert() => new StraightTrajectory(new Line3(Trajectory.b, Trajectory.a), EndLimited, StartLimited, Length, -Direction);
         ITrajectory ITrajectory.Invert() => Invert();
+        public StraightTrajectory Shift(float start, float end)
+        {
+            var startNormal = StartDirection.MakeFlatNormalized().Turn90(true);
+            var endNormal = EndDirection.MakeFlatNormalized().Turn90(false);
+            return new StraightTrajectory(StartPosition + startNormal * start, EndPosition + endNormal * end);
+        }
+        ITrajectory ITrajectory.Shift(float start, float end) => Shift(start, end);
 
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
