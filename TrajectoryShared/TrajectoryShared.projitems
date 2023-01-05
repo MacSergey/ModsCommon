@@ -9,7 +9,13 @@
     <Import_RootNamespace>TrajectoryShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Bezier.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bound.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Combined.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ITrajectory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Intersects.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Trajectory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Points.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Straight.cs" />
   </ItemGroup>
 </Project>
