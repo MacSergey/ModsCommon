@@ -75,7 +75,7 @@ namespace ModsCommon.Utilities
 
             for (int i = 1; i < Trajectories.Length; i += 1)
             {
-                if ((Trajectories[i - 1].EndPosition - Trajectories[i].StartPosition).magnitude > Vector3.kEpsilon)
+                if ((Trajectories[i - 1].EndPosition - Trajectories[i].StartPosition).magnitude > 0.01f)
                     throw new ArgumentException($"Trajectories should connect each other. trajectories {i - 1} and {i} are not connected", nameof(trajectories));
             }
 
