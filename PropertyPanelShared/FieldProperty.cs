@@ -1,7 +1,7 @@
-﻿using NodeMarkup.Utilities;
-using System;
+﻿using System;
 using UnityEngine;
 using ColossalFramework.UI;
+using ModsCommon.Utilities;
 
 namespace ModsCommon.UI
 {
@@ -381,8 +381,8 @@ namespace ModsCommon.UI
             Invert = Content.AddUIComponent<MultyAtlasUIButton>();
             Invert.SetDefaultStyle();
             Invert.width = 20;
-            Invert.atlasForeground = NodeMarkupTextures.Atlas;
-            Invert.normalFgSprite = NodeMarkupTextures.PlusMinusButtonIcons;
+            Invert.atlasForeground = CommonTextures.Atlas;
+            Invert.normalFgSprite = CommonTextures.PlusMinusButton;
             Invert.eventClick += InvertClick;
         }
 

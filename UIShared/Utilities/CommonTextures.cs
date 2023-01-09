@@ -55,6 +55,8 @@ namespace ModsCommon.Utilities
 
         public static string HeaderAdditionalButton { get; } = nameof(HeaderAdditionalButton);
 
+        public static string PlusMinusButton { get; } = nameof(PlusMinusButton);
+
         static CommonTextures()
         {
             var spriteParams = new Dictionary<string, RectOffset>();
@@ -110,6 +112,7 @@ namespace ModsCommon.Utilities
 
             spriteParams[Empty] = new RectOffset();
             spriteParams[Resize] = new RectOffset();
+            spriteParams[PlusMinusButton] = new RectOffset();
 
             Atlas = TextureHelper.CreateAtlas(nameof(ModsCommon), spriteParams);
         }

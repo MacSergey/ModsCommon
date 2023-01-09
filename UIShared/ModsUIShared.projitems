@@ -34,6 +34,7 @@
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Empty.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\HeaderHover.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\PlusMinusButton.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Resize.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\HeaderAdditionalButton.png" />
   </ItemGroup>
