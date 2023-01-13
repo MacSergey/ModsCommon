@@ -187,6 +187,108 @@ namespace ModsCommon.UI
         }
     }
 
+    public abstract class SearchPopup<ObjectType, EntityPanel> : Popup<ObjectType, EntityPanel>
+        where EntityPanel : PopupEntity<ObjectType>
+        where ObjectType : class
+    {
+        private bool CanSubmit { get; set; } = true;
+        protected CustomUITextField Search { get; private set; }
+        private CustomUILabel NothingFound { get; set; }
+        private CustomUIButton ResetButton { get; set; }
+
+        public SearchPopup()
+        {
+            Search = AddUIComponent<CustomUITextField>();
+            Search.atlas = TextureHelper.InGameAtlas;
+            Search.selectionSprite = "EmptySprite";
+            Search.normalBgSprite = "TextFieldPanel";
+            Search.color = new Color32(10, 10, 10, 255);
+            Search.relativePosition = new Vector2(5f, 5f);
+            Search.height = 20f;
+            Search.builtinKeyNavigation = true;
+            Search.cursorWidth = 1;
+            Search.cursorBlinkTime = 0.45f;
+            Search.selectOnFocus = true;
+            Search.textScale = 0.7f;
+            Search.padding = new RectOffset(20, 30, 6, 0);
+            Search.horizontalAlignment = UIHorizontalAlignment.Left;
+            Search.eventTextChanged += SearchTextChanged;
+
+            var loop = Search.AddUIComponent<UISprite>();
+            loop.atlas = TextureHelper.InGameAtlas;
+            loop.spriteName = "ContentManagerSearch";
+            loop.size = new Vector2(10f, 10f);
+            loop.relativePosition = new Vector2(5f, 5f);
+
+            ResetButton = Search.AddUIComponent<CustomUIButton>();
+            ResetButton.atlas = TextureHelper.InGameAtlas;
+            ResetButton.normalFgSprite = "ContentManagerSearchReset";
+            ResetButton.size = new Vector2(10f, 10f);
+            ResetButton.hoveredColor = new Color32(127, 127, 127, 255);
+            ResetButton.isVisible = false;
+            ResetButton.eventClick += ResetClick;
+
+            NothingFound = AddUIComponent<CustomUILabel>();
+            NothingFound.text = NodeMarkup.Localize.AssetPopup_NothingFound;
+            NothingFound.autoSize = false;
+            NothingFound.autoHeight = false;
+            NothingFound.height = EntityHeight;
+            NothingFound.relativePosition = new Vector2(0, 30f);
+            NothingFound.verticalAlignment = UIVerticalAlignment.Middle;
+            NothingFound.textAlignment = UIHorizontalAlignment.Center;
+            NothingFound.isVisible = false;
+        }
+
+        public override void DeInit()
+        {
+            base.DeInit();
+            CanSubmit = false;
+            Search.text = string.Empty;
+        }
+
+        protected override bool Filter(ObjectType value)
+        {
+            if (base.Filter(value))
+            {
+                name = GetName(value);
+                if (name.ToUpper().Contains(Search.text.ToUpper()))
+                    return true;
+            }
+
+            return false;
+        }
+        protected abstract string GetName(ObjectType value);
+
+        private void SearchTextChanged(UIComponent component, string value)
+        {
+            if (CanSubmit)
+                Refresh();
+
+            ResetButton.isVisible = !string.IsNullOrEmpty(value);
+        }
+        private void ResetClick(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            Search.text = string.Empty;
+        }
+        protected override void RefreshItems()
+        {
+            base.RefreshItems();
+            Search.width = width - 10f;
+            NothingFound.size = new Vector2(width, EntityHeight);
+            NothingFound.isVisible = VisibleCount == 0;
+            ResetButton.relativePosition = new Vector2(Search.width - 15f, 5f);
+        }
+        protected override void OnGotFocus(UIFocusEventParameter p)
+        {
+            base.OnGotFocus(p);
+            Search.Focus();
+        }
+
+        protected override float GetHeight() => Math.Max(base.GetHeight(), EntityHeight) + 30f;
+        protected override Vector2 GetEntityPosition(int index) => base.GetEntityPosition(index) + new Vector2(0f, 30f);
+        protected override Vector2 GetScrollPosition() => base.GetScrollPosition() + new Vector2(0f, 30f);
+    }
+
     public abstract class PopupEntity<ObjectType> : CustomUIButton, IReusable
     {
         public event Action<ObjectType> OnSelected;
