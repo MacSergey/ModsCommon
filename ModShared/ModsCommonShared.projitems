@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BaseMod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BasePatcherMod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ResourceUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Manager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ClassesExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\EnumExtension.cs" />
