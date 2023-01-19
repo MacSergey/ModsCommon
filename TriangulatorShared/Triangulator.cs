@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ModsCommon.Utilities;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
@@ -45,26 +46,28 @@ namespace ModsCommon.Utilities
         public static int[] TriangulateSimple(IEnumerable<Vector2> points, TrajectoryHelper.Direction direction)
         {
             var triangulator = new Triangulator(points, direction);
-            return triangulator.TriangulateSimple();
+            var triangles = triangulator.TriangulateSimple();
+            return triangles.SelectMany(t => t.GetVertices(direction)).ToArray();
         }
         public static int[] Triangulate(IEnumerable<Vector3> points, TrajectoryHelper.Direction direction) => Triangulate(points.Select(p => XZ(p)), direction);
         public static int[] Triangulate(IEnumerable<Vector2> points, TrajectoryHelper.Direction direction)
         {
             var triangulator = new Triangulator(points, direction);
-            return triangulator.Triangulate();
+            var triangles = triangulator.Triangulate();
+            return triangles.SelectMany(t => t.GetVertices(direction)).ToArray();
         }
 
         private TrajectoryHelper.Direction Direction { get; }
-        private LinkedList<Vertex> Vertices { get; }
-        private HashSet<LinkedListNode<Vertex>> Ears { get; } = new HashSet<LinkedListNode<Vertex>>();
+        private LinkedList<Vertex2> Vertices { get; }
+        private HashSet<LinkedListNode<Vertex2>> Ears { get; } = new HashSet<LinkedListNode<Vertex2>>();
         private List<Triangle> Triangles { get; } = new List<Triangle>();
 
         private Triangulator(IEnumerable<Vector2> points, TrajectoryHelper.Direction direction)
         {
-            Vertices = new LinkedList<Vertex>(points.Select((p, i) => new Vertex(p, i)));
+            Vertices = new LinkedList<Vertex2>(points.Select((p, i) => new Vertex2(p, i)));
             Direction = direction;
         }
-        private int[] TriangulateSimple()
+        private List<Triangle> TriangulateSimple()
         {
             foreach (var vertex in EnumerateVertex())
             {
@@ -74,7 +77,7 @@ namespace ModsCommon.Utilities
 
             while (true)
             {
-                if (Ears.LastOrDefault() is not LinkedListNode<Vertex> vertex)
+                if (Ears.LastOrDefault() is not LinkedListNode<Vertex2> vertex)
                     break;
 
                 var prev = vertex.GetPrevious();
@@ -95,9 +98,9 @@ namespace ModsCommon.Utilities
                 SetEar(next);
             }
 
-            return Triangles.SelectMany(t => t.GetVertices(Direction)).ToArray();
+            return Triangles;
         }
-        private int[] Triangulate()
+        private List<Triangle> Triangulate()
         {
             foreach (var vertex in EnumerateVertex())
             {
@@ -110,7 +113,7 @@ namespace ModsCommon.Utilities
                 if (Ears.Count == 0)
                     return null;
 
-                var vertex = default(LinkedListNode<Vertex>);
+                var vertex = default(LinkedListNode<Vertex2>);
                 var min = float.MaxValue;
                 foreach (var current in Ears)
                 {
@@ -146,7 +149,7 @@ namespace ModsCommon.Utilities
                     Vertices.Remove(vertex);
 
                     if (Vertices.Count < 3)
-                        return Triangles.SelectMany(t => t.GetVertices(Direction)).ToArray();
+                        return Triangles;
 
                     SetConvex(prev);
                     SetConvex(next);
@@ -157,13 +160,13 @@ namespace ModsCommon.Utilities
             }
         }
 
-        private void SetConvex(LinkedListNode<Vertex> vertex)
+        private void SetConvex(LinkedListNode<Vertex2> vertex)
         {
             if (!vertex.Value.IsConvex)
                 vertex.Value.SetConvex(vertex.GetPrevious().Value, vertex.GetNext().Value, Direction);
         }
 
-        private void SetEar(LinkedListNode<Vertex> vertex)
+        private void SetEar(LinkedListNode<Vertex2> vertex)
         {
             if (vertex.Value.IsConvex)
             {
@@ -179,8 +182,8 @@ namespace ModsCommon.Utilities
             Ears.Remove(vertex);
         }
 
-        private IEnumerable<LinkedListNode<Vertex>> EnumerateVertex() => EnumerateVertex(Vertices.First);
-        private IEnumerable<LinkedListNode<Vertex>> EnumerateVertex(LinkedListNode<Vertex> startFrom)
+        private IEnumerable<LinkedListNode<Vertex2>> EnumerateVertex() => EnumerateVertex(Vertices.First);
+        private IEnumerable<LinkedListNode<Vertex2>> EnumerateVertex(LinkedListNode<Vertex2> startFrom)
         {
             if (startFrom != null)
                 yield return startFrom;
@@ -188,7 +191,7 @@ namespace ModsCommon.Utilities
             for (var vertex = startFrom.GetNext(); vertex != startFrom; vertex = vertex.GetNext())
                 yield return vertex;
         }
-        private IEnumerable<LinkedListNode<Vertex>> EnumerateVertex(LinkedListNode<Vertex> from, LinkedListNode<Vertex> to)
+        private IEnumerable<LinkedListNode<Vertex2>> EnumerateVertex(LinkedListNode<Vertex2> from, LinkedListNode<Vertex2> to)
         {
             for (var vertex = from.GetNext(); vertex != to; vertex = vertex.GetNext())
                 yield return vertex;
@@ -204,60 +207,6 @@ namespace ModsCommon.Utilities
 
         }
     }
-
-    internal class Vertex
-    {
-        public Vector2 Position { get; }
-        public int Index { get; }
-        public bool IsConvex { get; private set; }
-
-        public Vertex(Vector2 position, int index)
-        {
-            Position = position;
-            Index = index;
-        }
-
-        public void SetConvex(Vertex prev, Vertex next, TrajectoryHelper.Direction direction)
-        {
-            var a = Position - prev.Position;
-            var b = next.Position - Position;
-
-            var sign = (int)Mathf.Sign(a.x * b.y - a.y * b.x);
-            IsConvex = sign >= 0 ^ direction == TrajectoryHelper.Direction.ClockWise;
-        }
-
-        public override string ToString() => $"{Index}:{Position} ({(IsConvex ? "Conver" : "Reflex")})";
-    }
-
-    internal class Triangle
-    {
-        private int A { get; }
-        private int B { get; }
-        private int C { get; }
-
-        public Triangle(int a, int b, int c)
-        {
-            A = a;
-            B = b;
-            C = c;
-        }
-
-        public IEnumerable<int> GetVertices(TrajectoryHelper.Direction direction)
-        {
-            if (direction == TrajectoryHelper.Direction.ClockWise)
-            {
-                yield return C;
-                yield return B;
-                yield return A;
-            }
-            else
-            {
-                yield return A;
-                yield return B;
-                yield return C;
-            }
-        }
-
-        public override string ToString() => $"{A}-{B}-{C}";
-    }
 }
+
+
