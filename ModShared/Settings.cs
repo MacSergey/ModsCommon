@@ -1,6 +1,5 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
-using ColossalFramework.IO;
 using ColossalFramework.UI;
 using ICities;
 using ModsCommon.UI;
@@ -8,19 +7,25 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using UnityEngine;
 using static ModsCommon.SettingsHelper;
 
 namespace ModsCommon
 {
+    [AttributeUsage(AttributeTargets.Class)]
+    public class SettingFileAttribute : Attribute
+    {
+        public string Name { get; }
+        public SettingFileAttribute(string name)
+        {
+            Name = name;
+        }
+    }
     public abstract partial class BaseSettings<TypeMod>
         where TypeMod : ICustomMod
     {
-        public static string SettingsFile { get; } = $"{typeof(TypeMod).Namespace}{nameof(SettingsFile)}";
+        public static string SettingsFile { get; } = $"{typeof(TypeMod).GetCustomAttributes(false).OfType<SettingFileAttribute>().FirstOrDefault()?.Name ?? typeof(TypeMod).Namespace}{nameof(SettingsFile)}";
         public static SavedString Locale { get; } = new SavedString(nameof(Locale), SettingsFile, string.Empty, true);
         public static SavedBool ShowWhatsNew { get; } = new SavedBool(nameof(ShowWhatsNew), SettingsFile, true, true);
         public static SavedBool ShowOnlyMajor { get; } = new SavedBool(nameof(ShowOnlyMajor), SettingsFile, false, true);

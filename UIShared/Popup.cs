@@ -229,7 +229,7 @@ namespace ModsCommon.UI
             ResetButton.eventClick += ResetClick;
 
             NothingFound = AddUIComponent<CustomUILabel>();
-            NothingFound.text = NodeMarkup.Localize.AssetPopup_NothingFound;
+            NothingFound.text = IMT.Localize.AssetPopup_NothingFound;
             NothingFound.autoSize = false;
             NothingFound.autoHeight = false;
             NothingFound.height = EntityHeight;

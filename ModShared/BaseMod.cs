@@ -1,6 +1,5 @@
 ﻿using ColossalFramework;
 using ColossalFramework.Globalization;
-using ColossalFramework.UI;
 using ICities;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
@@ -11,7 +10,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon
