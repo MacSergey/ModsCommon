@@ -1,8 +1,5 @@
-﻿using ModsCommon.UI;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -139,7 +136,7 @@ namespace ModsCommon.UI
             get => _fieldsWidth;
             set
             {
-                if(value != _fieldsWidth && value > 0)
+                if (value != _fieldsWidth && value > 0)
                 {
                     _fieldsWidth = value;
                     foreach (var field in Fields)
@@ -270,7 +267,7 @@ namespace ModsCommon.UI
 
         public void Init(params int[] indexes)
         {
-            for(var i = 0; i < indexes.Length; i += 1)
+            for (var i = 0; i < indexes.Length; i += 1)
             {
                 if (indexes[i] < Dimension)
                 {
@@ -308,7 +305,7 @@ namespace ModsCommon.UI
         protected abstract float Get(ref TypeVector vector, int index);
         protected abstract void Set(ref TypeVector vector, int index, float value);
 
-        protected void AddField(int index,  out CustomUILabel label, out FloatUITextField field)
+        protected void AddField(int index, out CustomUILabel label, out FloatUITextField field)
         {
             label = Content.AddUIComponent<CustomUILabel>();
             label.isVisible = false;

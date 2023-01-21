@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using UnityEngine;
-using static DistrictPolicies;
-using static EconomyPanel;
 
 namespace ModsCommon.Utilities
 {
@@ -111,12 +108,12 @@ namespace ModsCommon.Utilities
 
                     var max = Math.Max(max1.y, max2.y);
                     var min = Math.Min(min1.y, min2.y);
-                    if(max - min > maxDeltaH)
+                    if (max - min > maxDeltaH)
                         continue;
 
                     if (!IsConnected(i, j, out int side1Start, out int side1End, out int side2Start, out int side2End))
                         continue;
-                    
+
                     Connect(i, j, side1Start, side1End, side2Start, side2End);
                     i -= 1;
                     break;

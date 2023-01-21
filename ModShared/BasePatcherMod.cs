@@ -1,11 +1,8 @@
-﻿using CitiesHarmony.API;
-using ColossalFramework.UI;
-using HarmonyLib;
+﻿using HarmonyLib;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace ModsCommon
@@ -15,10 +12,10 @@ namespace ModsCommon
     {
         #region PROPERTIES
 
-        public override ModStatus Status 
+        public override ModStatus Status
         {
             get => base.Status | (PatchResult == PatchResult.Failed ? ModStatus.LoadingError : ModStatus.Unknown);
-            protected set => base.Status = value; 
+            protected set => base.Status = value;
         }
 
         private PatchResult _patchResult;
@@ -27,7 +24,7 @@ namespace ModsCommon
             get => _patchResult;
             set
             {
-                if(value != _patchResult)
+                if (value != _patchResult)
                 {
                     _patchResult = value;
                     StatusChanged();
@@ -42,8 +39,8 @@ namespace ModsCommon
             {
                 var infos = base.DependencyInfos;
 
-                var nameSearcher = IdSearcher.Invalid & 
-                    new UserModNameSearcher("Harmony 2", BaseMatchSearcher.Option.AllOptions | BaseMatchSearcher.Option.StartsWidth) & 
+                var nameSearcher = IdSearcher.Invalid &
+                    new UserModNameSearcher("Harmony 2", BaseMatchSearcher.Option.AllOptions | BaseMatchSearcher.Option.StartsWidth) &
                     new UserModDescriptionSearcher("Mod Dependency", BaseMatchSearcher.Option.AllOptions);
                 var idSearcher = new IdSearcher(2040656402ul) | new IdSearcher(2399204842ul);
                 infos.Add(new NeedDependencyInfo(DependencyState.Subscribe, nameSearcher | idSearcher, "Harmony", 2040656402ul));

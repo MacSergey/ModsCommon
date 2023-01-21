@@ -3,7 +3,6 @@ using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

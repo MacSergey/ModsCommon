@@ -165,7 +165,7 @@ namespace ModsCommon.UI
         public bool AutoSize
         {
             get => Button.autoSize;
-            set=> Button.autoSize = value;
+            set => Button.autoSize = value;
         }
 
         public override bool EnableControl

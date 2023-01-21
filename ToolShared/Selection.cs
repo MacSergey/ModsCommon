@@ -87,7 +87,7 @@ namespace ModsCommon.Utilities
                 var data = DataLines.GetEnumerator();
                 var between = BetweenDataLines.GetEnumerator();
 
-                while(data.MoveNext() && between.MoveNext())
+                while (data.MoveNext() && between.MoveNext())
                 {
                     yield return data.Current;
                     yield return between.Current;

@@ -49,7 +49,7 @@ namespace ModsCommon.UI
             get => _textScale;
             set
             {
-                if(value != _textScale)
+                if (value != _textScale)
                 {
                     _textScale = value;
                     SetButtonsWidth();
@@ -73,7 +73,7 @@ namespace ModsCommon.UI
             button.atlas = CommonTextures.Atlas;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
 
-            if(iconAtlas != null && !string.IsNullOrEmpty(iconSprite))
+            if (iconAtlas != null && !string.IsNullOrEmpty(iconSprite))
             {
                 button.atlasForeground = iconAtlas;
                 button.normalFgSprite = iconSprite;
@@ -132,7 +132,7 @@ namespace ModsCommon.UI
                 button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldFocused}{suffix}";
                 button.disabledColor = new Color32(192, 192, 192, 255);
             }
-            else if(!Clickable[button])
+            else if (!Clickable[button])
             {
                 button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldDisabled}{suffix}";
                 button.disabledColor = Color.white;
@@ -237,7 +237,7 @@ namespace ModsCommon.UI
         protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => SetSelected(Buttons.FindIndex(b => b == component));
         protected override bool IsSelect(int index) => SelectedIndex == index;
     }
-    public class BoolSegmented : UIOnceSegmented<bool> 
+    public class BoolSegmented : UIOnceSegmented<bool>
     {
         public BoolSegmented()
         {

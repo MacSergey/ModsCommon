@@ -3,7 +3,6 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -17,7 +16,7 @@ namespace ModsCommon.UI
         bool IReusable.InCache { get; set; }
 
         protected virtual float DefaultEntityHeight => 20f;
-        
+
         private CustomUIScrollbar ScrollBar { get; set; }
 
         private List<ObjectType> RawValues { get; set; } = null;
@@ -31,7 +30,7 @@ namespace ModsCommon.UI
             get => _selectedObject;
             set
             {
-                if(value != _selectedObject)
+                if (value != _selectedObject)
                 {
                     _selectedObject = value;
                     var index = Values.IndexOf(_selectedObject);
@@ -50,7 +49,7 @@ namespace ModsCommon.UI
             get => _startIndex;
             set
             {
-                if(value != _startIndex)
+                if (value != _startIndex)
                 {
                     _startIndex = Mathf.Clamp(value, 0, Values.Count - VisibleCount);
                     SetValues();
@@ -105,7 +104,7 @@ namespace ModsCommon.UI
 
             if (Entities.Count < visibleCount)
             {
-                for(int i = Entities.Count; i < visibleCount; i += 1)
+                for (int i = Entities.Count; i < visibleCount; i += 1)
                 {
                     var newEntery = AddUIComponent<EntityPanel>();
                     newEntery.atlas = atlas;
@@ -115,7 +114,7 @@ namespace ModsCommon.UI
                     Entities.Add(newEntery);
                 }
             }
-            else if(Entities.Count > visibleCount)
+            else if (Entities.Count > visibleCount)
             {
                 for (int i = visibleCount; i < Entities.Count; i += 1)
                 {
@@ -140,7 +139,7 @@ namespace ModsCommon.UI
 
         protected virtual void SetValues()
         {
-            for(int i = 0; i < Entities.Count; i += 1)
+            for (int i = 0; i < Entities.Count; i += 1)
             {
                 if (StartIndex + i < Values.Count)
                 {
@@ -152,7 +151,7 @@ namespace ModsCommon.UI
                 {
                     Entities[i].SetObject(null);
                     Entities[i].Selected = false;
-                }    
+                }
             }
 
             ScrollBar.value = StartIndex;
@@ -195,6 +194,7 @@ namespace ModsCommon.UI
         protected CustomUITextField Search { get; private set; }
         private CustomUILabel NothingFound { get; set; }
         private CustomUIButton ResetButton { get; set; }
+        protected abstract string NotFoundText { get; }
 
         public SearchPopup()
         {
@@ -229,7 +229,7 @@ namespace ModsCommon.UI
             ResetButton.eventClick += ResetClick;
 
             NothingFound = AddUIComponent<CustomUILabel>();
-            NothingFound.text = IMT.Localize.AssetPopup_NothingFound;
+            NothingFound.text = NotFoundText;
             NothingFound.autoSize = false;
             NothingFound.autoHeight = false;
             NothingFound.height = EntityHeight;
@@ -315,7 +315,7 @@ namespace ModsCommon.UI
             Selected = false;
         }
 
-        public virtual void SetObject(ObjectType value) 
+        public virtual void SetObject(ObjectType value)
         {
             Object = value;
         }

@@ -1,7 +1,5 @@
 ﻿using ColossalFramework.Globalization;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;

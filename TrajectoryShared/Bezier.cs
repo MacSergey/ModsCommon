@@ -1,8 +1,4 @@
 ﻿using ColossalFramework.Math;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
 
@@ -102,11 +98,11 @@ namespace ModsCommon.Utilities
             this = new BezierTrajectory(bezier, startT, endT);
         }
 
-        public BezierTrajectory(BezierTrajectory trajectory) 
+        public BezierTrajectory(BezierTrajectory trajectory)
         {
             this = new BezierTrajectory(trajectory.Trajectory, trajectory.StartT, trajectory.EndT);
         }
-        public BezierTrajectory(ITrajectory trajectory) 
+        public BezierTrajectory(ITrajectory trajectory)
         {
             this = new BezierTrajectory(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection, true, true, true);
         }

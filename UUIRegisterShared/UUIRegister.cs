@@ -3,9 +3,7 @@ using ColossalFramework.UI;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnifiedUI.Helpers;
 using static ModsCommon.SettingsHelper;
 
@@ -50,7 +48,7 @@ namespace ModsCommon
                         PressedSprite = UUIPressedSprite,
                         DisabledSprite = UUIDisabledSprite,
                     };
-                    var hotkeys = new UUIHotKeys(){ActivationKey = tool.Activation.InputKey,};
+                    var hotkeys = new UUIHotKeys() { ActivationKey = tool.Activation.InputKey, };
                     foreach (var inToolKey in tool.Shortcuts.Select(s => s.InputKey))
                         hotkeys.AddInToolKey(inToolKey);
 

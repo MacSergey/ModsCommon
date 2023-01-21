@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ModsCommon
+﻿namespace ModsCommon
 {
     public interface IManager { }
     public static class SingletonManager<T>

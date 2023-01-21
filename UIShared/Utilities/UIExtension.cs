@@ -1,5 +1,4 @@
 ﻿using ColossalFramework.UI;
-using ICities;
 using UnityEngine;
 
 namespace ModsCommon.Utilities
@@ -14,7 +13,7 @@ namespace ModsCommon.Utilities
         public static bool IsHover(this UIComponent component, Vector3 mousePosition) => new Rect(component.absolutePosition, component.size).Contains(mousePosition);
         public static bool IsHoverAllParents(this UIComponent component, Vector3 mousePosition)
         {
-            while(component != null)
+            while (component != null)
             {
                 if (component.IsHover(mousePosition))
                     return true;

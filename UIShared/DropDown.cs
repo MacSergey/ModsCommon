@@ -1,9 +1,7 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static ColossalFramework.UI.UIButton;
 
 namespace ModsCommon.UI
 {

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ModsCommon.Utilities
 {
@@ -48,7 +46,7 @@ namespace ModsCommon.Utilities
         public static long TypeMask = DataMask << 32;
 
         protected long Id;
-       
+
         public long Type => Id & TypeMask;
 
         public override bool Equals(object obj) => Equals(obj as ObjectId);

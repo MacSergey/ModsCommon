@@ -1,13 +1,7 @@
-﻿using ColossalFramework.PlatformServices;
-using ColossalFramework.Plugins;
-using ColossalFramework.UI;
-using ICities;
+﻿using ColossalFramework.UI;
 using ModsCommon.UI;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.Utilities

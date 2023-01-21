@@ -28,7 +28,7 @@ namespace ModsCommon.UI
             get => _canCollapse;
             set
             {
-                if(value != _canCollapse)
+                if (value != _canCollapse)
                 {
                     _canCollapse = value;
                     if (!_canCollapse)

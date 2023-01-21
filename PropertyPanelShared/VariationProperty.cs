@@ -1,9 +1,4 @@
 ﻿using ColossalFramework.UI;
-using ICities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 
 namespace ModsCommon.UI
 {

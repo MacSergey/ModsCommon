@@ -5,8 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Xml.Linq;
 
 namespace ModsCommon
 {
@@ -75,12 +73,12 @@ namespace ModsCommon
 
         public IEnumerable<string> GetSupportLocales()
         {
-            if(!string.IsNullOrEmpty(AssemblyPatch))
+            if (!string.IsNullOrEmpty(AssemblyPatch))
             {
                 var localeFolder = Path.Combine(AssemblyPatch, "Localize");
-                if(Directory.Exists(localeFolder))
+                if (Directory.Exists(localeFolder))
                 {
-                    foreach(var file in Directory.GetFiles(localeFolder, $"{Name}.*.resx"))
+                    foreach (var file in Directory.GetFiles(localeFolder, $"{Name}.*.resx"))
                     {
                         var locale = Path.GetFileNameWithoutExtension(file).Split('.').Last();
                         yield return locale;

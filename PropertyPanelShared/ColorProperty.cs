@@ -67,7 +67,7 @@ namespace ModsCommon.UI
 
             ValueChanged(color, action: OnChangedSelected);
         }
-        private void OpacityChanged(UIComponent component, float value) 
+        private void OpacityChanged(UIComponent component, float value)
         {
             var color = Value;
             color.a = (byte)value;

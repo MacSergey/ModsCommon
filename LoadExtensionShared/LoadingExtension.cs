@@ -1,8 +1,5 @@
 ﻿using ICities;
 using ModsCommon.UI;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ModsCommon.Utilities
 {
@@ -31,7 +28,7 @@ namespace ModsCommon.Utilities
             ComponentPool.Clear();
             OnUnload();
         }
-        protected virtual void OnLoad() 
+        protected virtual void OnLoad()
         {
             SingletonMod<TypeMod>.Instance.ShowWhatsNew();
             SingletonMod<TypeMod>.Instance.ShowBetaWarning();

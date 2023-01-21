@@ -190,7 +190,7 @@ namespace ModsCommon.UI
         {
             base.OnTooltipEnter(p);
 
-            if(!isEnabled)
+            if (!isEnabled)
                 m_TooltipShowing = true;
         }
 

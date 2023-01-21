@@ -1,11 +1,4 @@
-﻿using ColossalFramework.UI;
-using ModsCommon.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-
-namespace ModsCommon.UI
+﻿namespace ModsCommon.UI
 {
     //public class DonatePanel : CustomUIPanel
     //{

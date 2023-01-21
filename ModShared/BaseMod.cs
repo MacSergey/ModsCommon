@@ -25,12 +25,12 @@ namespace ModsCommon
         public bool IsEnable { get; private set; }
 
         private ModStatus _status;
-        public virtual ModStatus Status 
+        public virtual ModStatus Status
         {
             get => _status;
             protected set
             {
-                if(value != _status)
+                if (value != _status)
                 {
                     _status = value;
                     StatusChanged();
@@ -151,7 +151,7 @@ namespace ModsCommon
 
                 if (gameVersion != requiredVersion)
                 {
-                    if(gameVersion < requiredVersion)
+                    if (gameVersion < requiredVersion)
                     {
                         Status |= ModStatus.GameOutOfDate;
                         Logger.Debug($"Mod is out of date. Required game version: {RequiredGameVersion.GetStringGameFormat()}\tCurent game version: {CurrentGameVersion.GetStringGameFormat()}");

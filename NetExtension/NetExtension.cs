@@ -1,10 +1,7 @@
 ﻿using ColossalFramework;
-using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using UnityEngine;
 
 namespace ModsCommon.Utilities
@@ -112,9 +109,9 @@ namespace ModsCommon.Utilities
             var firstSegmentIds = firstId.GetNode().SegmentIds().ToArray();
             var secondSegmentIds = secondId.GetNode().SegmentIds().ToArray();
 
-            foreach(var firstSegmentId in firstSegmentIds)
+            foreach (var firstSegmentId in firstSegmentIds)
             {
-                if(secondSegmentIds.Contains(firstSegmentId))
+                if (secondSegmentIds.Contains(firstSegmentId))
                 {
                     segmentId = firstSegmentId;
                     return true;
@@ -129,7 +126,7 @@ namespace ModsCommon.Utilities
             ref var first = ref firstId.GetSegment();
             ref var second = ref secondId.GetSegment();
 
-            if(first.m_startNode == second.m_startNode)
+            if (first.m_startNode == second.m_startNode)
             {
                 nodeId = first.m_startNode;
                 return true;
@@ -164,7 +161,7 @@ namespace ModsCommon.Utilities
         }
 
         public static bool Contains(ref this NetNode node, ushort segmentId) => node.SegmentIds().Contains(segmentId);
-        public static bool Contains(ref this NetSegment segment, ushort nodeId) => segment.NodeIds().Contains(nodeId); 
+        public static bool Contains(ref this NetSegment segment, ushort nodeId) => segment.NodeIds().Contains(nodeId);
 
         public static bool IsInvert(ref this NetSegment segment) => (segment.m_flags & NetSegment.Flags.Invert) != 0;
 

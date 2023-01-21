@@ -3,7 +3,6 @@ using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static NetInfo;
 
 namespace ModsCommon.UI
 {

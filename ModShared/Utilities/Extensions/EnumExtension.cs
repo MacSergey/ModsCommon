@@ -63,7 +63,7 @@ namespace ModsCommon.Utilities
             Order = order;
         }
     }
-    public class SpriteAttribute : Attribute 
+    public class SpriteAttribute : Attribute
     {
         public string Sprite { get; }
         public SpriteAttribute(string sprite)

@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static ColossalFramework.Math.VectorUtils;
 
 namespace ModsCommon.Utilities
 {
@@ -149,36 +148,36 @@ namespace ModsCommon.Utilities
                 {
                     var start = Trajectories[startI].Cut(minT, 1f);
                     //if (start.Magnitude >= 0.01f)
-                        trajectories.Add(start);
+                    trajectories.Add(start);
 
                     for (var i = startI + 1; i < endI; i += 1)
                     {
                         //if (Trajectories[i].Magnitude >= 0.01f)
-                            trajectories.Add(Trajectories[i]);
+                        trajectories.Add(Trajectories[i]);
                     }
 
                     var end = Trajectories[endI].Cut(0f, maxT);
                     //if (end.Magnitude >= 0.01f)
-                        trajectories.Add(end);
+                    trajectories.Add(end);
 
-                    if(trajectories.Count == 0)
+                    if (trajectories.Count == 0)
                         trajectories.Add(start);
                 }
                 else
                 {
                     var start = Trajectories[endI].Cut(maxT, 0f);
                     //if (start.Magnitude >= 0.01f)
-                        trajectories.Add(start);
+                    trajectories.Add(start);
 
                     for (var i = endI - 1; i > startI; i -= 1)
                     {
                         //if (Trajectories[i].Magnitude >= 0.01f)
-                            trajectories.Add(Trajectories[i].Invert());
+                        trajectories.Add(Trajectories[i].Invert());
                     }
 
                     var end = Trajectories[startI].Cut(1f, minT);
                     //if (end.Magnitude >= 0.01f)
-                        trajectories.Add(end);
+                    trajectories.Add(end);
 
                     if (trajectories.Count == 0)
                         trajectories.Add(start);
@@ -242,7 +241,7 @@ namespace ModsCommon.Utilities
         {
             var trajectories = new List<ITrajectory>();
             var parts = Parts;
-            for(var i = 0; i < parts.Length; i += 1)
+            for (var i = 0; i < parts.Length; i += 1)
             {
                 var startI = Mathf.Lerp(start, end, parts[i]);
                 var endI = Mathf.Lerp(start, end, i + 1 < parts.Length ? parts[i + 1] : 1f);

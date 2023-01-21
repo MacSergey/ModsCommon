@@ -81,7 +81,7 @@ namespace ModsCommon
 
         public override void OnToolUpdate()
         {
-            if(NeedClear)
+            if (NeedClear)
                 ClearSelectionBuffer();
 
             if (SingletonTool<TypeTool>.Instance.MouseMoved)

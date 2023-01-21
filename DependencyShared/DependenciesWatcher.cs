@@ -1,13 +1,9 @@
 ﻿using ColossalFramework.PlatformServices;
 using ColossalFramework.Plugins;
-using ICities;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon.Utilities

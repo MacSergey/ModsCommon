@@ -1,9 +1,7 @@
 ﻿using ColossalFramework;
-using ColossalFramework.Globalization;
 using ColossalFramework.UI;
 using ModsCommon.Utilities;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace ModsCommon.UI

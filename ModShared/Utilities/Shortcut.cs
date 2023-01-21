@@ -61,13 +61,13 @@ namespace ModsCommon.Utilities
                 LastPressFrame = Time.frameCount;
                 return true;
             }
-            else 
+            else
                 return false;
         }
         public void Press() => Action?.Invoke();
 
         public override string ToString() => InputKey.GetLocale();
-        public static implicit operator string (Shortcut shortcut) => shortcut.ToString();
+        public static implicit operator string(Shortcut shortcut) => shortcut.ToString();
     }
 
     public abstract class ModShortcut<TypeMod> : Shortcut
