@@ -293,5 +293,15 @@ namespace ModsCommon.UI
             _ => step,
         };
     }
-    public class StringUITextField : UITextField<string> { }
+    public class StringUITextField : UITextField<string> 
+    {
+        public Func<string, string> CheckValue { private get; set; }
+        protected override void ValueChanged(string value, bool callEvent = true)
+        {
+            if (CheckValue != null)
+                value = CheckValue(value);
+
+            base.ValueChanged(value, callEvent);
+        }
+    }
 }
