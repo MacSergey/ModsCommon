@@ -53,12 +53,12 @@ namespace ModsCommon.UI
 
         public ColorPropertyPanel()
         {
+            AddColorSample();
+
             RProperty = AddField(Content, "R", PropertyChanged);
             GProperty = AddField(Content, "G", PropertyChanged);
             BProperty = AddField(Content, "B", PropertyChanged);
             AProperty = AddField(Content, "A", PropertyChanged);
-
-            AddColorSample();
         }
         protected void ValueChanged(Color32 color, bool callEvent = true, Action<Color32> action = null)
         {
@@ -262,7 +262,7 @@ namespace ModsCommon.UI
 
             Popup = popup;
 
-            Popup.component.size += new Vector2(31, 81);
+            Popup.component.size += new Vector2(31, 66);
             Popup.component.relativePosition -= new Vector3(dropdown.width + 31, Math.Max(Popup.component.absolutePosition.y - dropdown.absolutePosition.y, 0));
 
             if (Popup.component is UIPanel panel)
@@ -352,7 +352,7 @@ namespace ModsCommon.UI
         private void AddHEXPanel(UIComponent parent)
         {
             var hexPanel = parent.AddUIComponent<CustomUIPanel>();
-            hexPanel.relativePosition = new Vector2(10, 248);
+            hexPanel.relativePosition = new Vector2(10, 253);
             hexPanel.autoLayoutDirection = LayoutDirection.Horizontal;
             hexPanel.autoLayoutPadding = new RectOffset(5, 0, 0, 0);
             hexPanel.autoFitChildrenHorizontally = true;
@@ -367,7 +367,7 @@ namespace ModsCommon.UI
             HEXPicker.SetDefaultStyle();
             HEXPicker.Format = "#{0}";
             HEXPicker.horizontalAlignment = UIHorizontalAlignment.Left;
-            HEXPicker.width = 100f;
+            HEXPicker.width = 70f;
             HEXPicker.padding.left = 5;
             HEXPicker.CheckValue = CheckHEXValue;
             HEXPicker.OnValueChanged += PickerHEXChanged;
