@@ -19,12 +19,13 @@ namespace ModsCommon.Utilities
         public ITrajectory First { get; private set; }
         public ITrajectory Second { get; private set; }
 
-        public float FirstT { get; private set; }
-        public float SecondT { get; private set; }
+        public readonly float firstT;
+        public readonly float secondT;
+
         public bool IsIntersect { get; private set; }
         public bool Inverted { get; private set; }
 
-        public Intersection Reverse => new Intersection(SecondT, FirstT) 
+        public Intersection Reverse => !IsIntersect ? this : new Intersection(secondT, firstT) 
         { 
             Inverted = !Inverted,
             First = Second,
@@ -34,8 +35,8 @@ namespace ModsCommon.Utilities
         public Intersection(float firstT, float secondT)
         {
             IsIntersect = true;
-            FirstT = firstT;
-            SecondT = secondT;
+            this.firstT = firstT;
+            this.secondT = secondT;
             First = default;
             Second = default;
             Inverted = false;
@@ -50,8 +51,8 @@ namespace ModsCommon.Utilities
         {
             if (Calculate(firstTrajectory, secondTrajectory).FirstOrDefault() is Intersection intersection)
             {
-                firstT = intersection.FirstT;
-                secondT = intersection.SecondT;
+                firstT = intersection.firstT;
+                secondT = intersection.secondT;
                 return true;
             }
             else
@@ -329,22 +330,22 @@ namespace ModsCommon.Utilities
         public override string ToString()
         {
             if (IsIntersect)
-                return $"{FirstT:0.###} - {SecondT:0.###}";
+                return $"{firstT:0.###} - {secondT:0.###}";
             else
                 return "Not intersect";
         }
 
-        public static bool operator ==(Intersection a, Intersection b) => a.FirstT == b.FirstT && a.SecondT == b.SecondT;
-        public static bool operator !=(Intersection a, Intersection b) => a.FirstT != b.FirstT || a.SecondT != b.SecondT;
+        public static bool operator ==(Intersection a, Intersection b) => a.firstT == b.firstT && a.secondT == b.secondT;
+        public static bool operator !=(Intersection a, Intersection b) => a.firstT != b.firstT || a.secondT != b.secondT;
 
         public class Comparer : IComparer<Intersection>
         {
-            private readonly bool _isFirst;
+            private readonly bool isFirst;
             public Comparer(bool isFirst = true)
             {
-                _isFirst = isFirst;
+                this.isFirst = isFirst;
             }
-            public int Compare(Intersection x, Intersection y) => _isFirst ? x.FirstT.CompareTo(y.FirstT) : x.SecondT.CompareTo(y.SecondT);
+            public int Compare(Intersection x, Intersection y) => isFirst ? x.firstT.CompareTo(y.firstT) : x.secondT.CompareTo(y.secondT);
         }
     }
     public struct IntersectionPair
@@ -374,6 +375,6 @@ namespace ModsCommon.Utilities
                 return Intersection.NotIntersect;
         }
 
-        public override string ToString() => $"{from.SecondT:0.###} - [{from.FirstT:0.###} - {to.FirstT:0.###}] - {to.SecondT:0.###}";
+        public override string ToString() => $"{from.secondT:0.###} - [{from.firstT:0.###} - {to.firstT:0.###}] - {to.secondT:0.###}";
     }
 }
