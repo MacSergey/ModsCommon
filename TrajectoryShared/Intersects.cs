@@ -7,34 +7,45 @@ using static ColossalFramework.Math.VectorUtils;
 
 namespace ModsCommon.Utilities
 {
-    public class Intersection
+    public struct Intersection
     {
         public static float DeltaAngle = 5f;
         public static float MaxLength = 1f;
         public static float MinLength = 0.5f;
         public static Comparer FirstComparer { get; } = new Comparer(true);
         public static Comparer SecondComparer { get; } = new Comparer(false);
-        public static Intersection NotIntersect => new Intersection();
+        public static Intersection NotIntersect => new Intersection() { IsIntersect = false};
 
-        public ITrajectory First { get; protected set; }
-        public ITrajectory Second { get; protected set; }
+        public ITrajectory First { get; private set; }
+        public ITrajectory Second { get; private set; }
 
-        public float FirstT { get; protected set; }
-        public float SecondT { get; protected set; }
-        public bool IsIntersect { get; }
+        public float FirstT { get; private set; }
+        public float SecondT { get; private set; }
+        public bool IsIntersect { get; private set; }
+        public bool Inverted { get; private set; }
+
+        public Intersection Reverse => new Intersection(SecondT, FirstT) 
+        { 
+            Inverted = !Inverted,
+            First = Second,
+            Second = First,
+        };
 
         public Intersection(float firstT, float secondT)
         {
             IsIntersect = true;
             FirstT = firstT;
             SecondT = secondT;
-        }
-        protected Intersection()
-        {
-            IsIntersect = false;
+            First = default;
+            Second = default;
+            Inverted = false;
         }
 
-        public static Intersection CalculateSingle(ITrajectory firstTrajectory, ITrajectory secondTrajectory) => Calculate(firstTrajectory, secondTrajectory).FirstOrDefault() ?? NotIntersect;
+        public static Intersection CalculateSingle(ITrajectory firstTrajectory, ITrajectory secondTrajectory)
+        {
+            var result = Calculate(firstTrajectory, secondTrajectory);
+            return result.Count > 0 ? result[0] : NotIntersect;
+        }
         public static bool CalculateSingle(ITrajectory firstTrajectory, ITrajectory secondTrajectory, out float firstT, out float secondT)
         {
             if (Calculate(firstTrajectory, secondTrajectory).FirstOrDefault() is Intersection intersection)
@@ -83,10 +94,12 @@ namespace ModsCommon.Utilities
                     IntersectITrajectoryWithITrajectory(result, firstCombined, secondCombined);
             }
 
-            foreach (var item in result)
+            for(int i = 0; i < result.Count; i += 1)
             {
+                var item = result[i];
                 item.First = firstTrajectory;
                 item.Second = secondTrajectory;
+                result[i] = item;
             }
 
             return result;
@@ -270,7 +283,7 @@ namespace ModsCommon.Utilities
             return Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && IsCorrectT(line, p) && IsCorrectT(q);
         }
 
-        protected static void CalcBezierParts(Bezier3 bezier, out int parts, out float[] points, out Vector3[] positons)
+        private static void CalcBezierParts(Bezier3 bezier, out int parts, out float[] points, out Vector3[] positons)
         {
             bezier.Divide(out Bezier3 b1, out Bezier3 b2);
             var length = Mathf.Max((b1.d - b1.a).magnitude + (b2.d - b2.a).magnitude, 0f);
@@ -290,7 +303,7 @@ namespace ModsCommon.Utilities
                 positons[i] = bezier.Position(points[i]);
             }
         }
-        protected static void CalcTrajectoryParts(ITrajectory trajectory, out int parts, out float[] points, out Vector3[] positons)
+        private static void CalcTrajectoryParts(ITrajectory trajectory, out int parts, out float[] points, out Vector3[] positons)
         {
             trajectory.Divide(out ITrajectory b1, out ITrajectory b2);
             var length = Mathf.Max(b1.Magnitude + b2.Magnitude, 0f);
@@ -313,8 +326,16 @@ namespace ModsCommon.Utilities
         public static bool IsCorrectT(float t) => 0f <= t && t <= 1f;
         public static bool IsCorrectT(StraightTrajectory line, float t) => (line.StartLimited ? 0f : float.MinValue) <= t && t <= (line.EndLimited ? 1f : float.MaxValue);
 
-        public override string ToString() => $"{IsIntersect}:{FirstT};{SecondT}";
+        public override string ToString()
+        {
+            if (IsIntersect)
+                return $"{FirstT:0.###} - {SecondT:0.###}";
+            else
+                return "Not intersect";
+        }
 
+        public static bool operator ==(Intersection a, Intersection b) => a.FirstT == b.FirstT && a.SecondT == b.SecondT;
+        public static bool operator !=(Intersection a, Intersection b) => a.FirstT != b.FirstT || a.SecondT != b.SecondT;
 
         public class Comparer : IComparer<Intersection>
         {
@@ -325,5 +346,34 @@ namespace ModsCommon.Utilities
             }
             public int Compare(Intersection x, Intersection y) => _isFirst ? x.FirstT.CompareTo(y.FirstT) : x.SecondT.CompareTo(y.SecondT);
         }
+    }
+    public struct IntersectionPair
+    {
+        public Intersection from;
+        public Intersection to;
+
+        public bool Inverted { get; private set; }
+        public IntersectionPair Reverse => new IntersectionPair(to, from) { Inverted = !Inverted };
+
+        public IntersectionPair(Intersection from, Intersection to)
+        {
+            this.from = from;
+            this.to = to;
+            Inverted = false;
+        }
+
+        public bool Contain(Intersection intersection) => from == intersection || to == intersection;
+
+        public Intersection GetOther(Intersection intersection)
+        {
+            if (intersection == from)
+                return to;
+            else if (intersection == to)
+                return from;
+            else
+                return Intersection.NotIntersect;
+        }
+
+        public override string ToString() => $"{from.SecondT:0.###} - [{from.FirstT:0.###} - {to.FirstT:0.###}] - {to.SecondT:0.###}";
     }
 }
