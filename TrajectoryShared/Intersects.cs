@@ -25,13 +25,6 @@ namespace ModsCommon.Utilities
         public bool IsIntersect { get; private set; }
         public bool Inverted { get; private set; }
 
-        public Intersection Reverse => !IsIntersect ? this : new Intersection(secondT, firstT) 
-        { 
-            Inverted = !Inverted,
-            First = Second,
-            Second = First,
-        };
-
         public Intersection(float firstT, float secondT)
         {
             IsIntersect = true;
@@ -41,6 +34,13 @@ namespace ModsCommon.Utilities
             Second = default;
             Inverted = false;
         }
+
+        public Intersection GetReverse() => !IsIntersect ? this : new Intersection(secondT, firstT)
+        {
+            Inverted = !Inverted,
+            First = Second,
+            Second = First,
+        };
 
         public static Intersection CalculateSingle(ITrajectory firstTrajectory, ITrajectory secondTrajectory)
         {
@@ -330,7 +330,7 @@ namespace ModsCommon.Utilities
         public override string ToString()
         {
             if (IsIntersect)
-                return $"{firstT:0.###} - {secondT:0.###}";
+                return $"{firstT:0.###} ÷ {secondT:0.###}";
             else
                 return "Not intersect";
         }
@@ -375,6 +375,6 @@ namespace ModsCommon.Utilities
                 return Intersection.NotIntersect;
         }
 
-        public override string ToString() => $"{from.secondT:0.###} - [{from.firstT:0.###} - {to.firstT:0.###}] - {to.secondT:0.###}";
+        public override string ToString() => $"{from.secondT:0.###} ÷ [{from.firstT:0.###} ÷ {to.firstT:0.###}] ÷ {to.secondT:0.###}";
     }
 }
