@@ -7,40 +7,44 @@ using static ColossalFramework.Math.VectorUtils;
 
 namespace ModsCommon.Utilities
 {
-    public struct Intersection
+    public readonly struct Intersection
     {
         public static float DeltaAngle = 5f;
         public static float MaxLength = 1f;
         public static float MinLength = 0.5f;
         public static Comparer FirstComparer { get; } = new Comparer(true);
         public static Comparer SecondComparer { get; } = new Comparer(false);
-        public static Intersection NotIntersect => new Intersection() { IsIntersect = false};
+        public static Intersection NotIntersect => new Intersection(false, default, default);
 
-        public ITrajectory First { get; private set; }
-        public ITrajectory Second { get; private set; }
+        public readonly ITrajectory first;
+        public readonly ITrajectory second;
 
         public readonly float firstT;
         public readonly float secondT;
 
-        public bool IsIntersect { get; private set; }
-        public bool Inverted { get; private set; }
+        public readonly bool isIntersect;
+        public readonly bool inverted;
 
-        public Intersection(float firstT, float secondT)
+        private Intersection(bool isIntersect, float firstT, float secondT, ITrajectory first = default, ITrajectory second = default, bool inverted = false)
         {
-            IsIntersect = true;
+            this.isIntersect = isIntersect;
             this.firstT = firstT;
             this.secondT = secondT;
-            First = default;
-            Second = default;
-            Inverted = false;
+            this.first = first;
+            this.second = second;
+            this.inverted = inverted;
+        }
+        public Intersection(float firstT, float secondT, ITrajectory first = default, ITrajectory second = default)
+        {
+            this.isIntersect = true;
+            this.firstT = firstT;
+            this.secondT = secondT;
+            this.first = first;
+            this.second = second;
+            this.inverted = false;
         }
 
-        public Intersection GetReverse() => !IsIntersect ? this : new Intersection(secondT, firstT)
-        {
-            Inverted = !Inverted,
-            First = Second,
-            Second = First,
-        };
+        public Intersection GetReverse() => !isIntersect ? this : new Intersection(isIntersect, secondT, firstT, second, first, inverted: !inverted);
 
         public static Intersection CalculateSingle(ITrajectory firstTrajectory, ITrajectory secondTrajectory)
         {
@@ -67,46 +71,63 @@ namespace ModsCommon.Utilities
         public static List<Intersection> Calculate(ITrajectory firstTrajectory, ITrajectory secondTrajectory)
         {
             var result = new List<Intersection>();
-            if (firstTrajectory is BezierTrajectory firstBezier)
+            if (firstTrajectory.TrajectoryType == TrajectoryType.Bezier)
             {
-                if (secondTrajectory is BezierTrajectory secondBezier)
+                var firstBezier = (BezierTrajectory)firstTrajectory;
+
+                if (secondTrajectory.TrajectoryType == TrajectoryType.Bezier)
+                {
+                    var secondBezier = (BezierTrajectory)secondTrajectory;
                     IntersectBezierWithBezier(result, firstBezier.Trajectory, secondBezier.Trajectory);
-                else if (secondTrajectory is StraightTrajectory secondStraight)
-                    IntersectBezierWithStraight(result, secondStraight, firstBezier, true);
-                else if (secondTrajectory is CombinedTrajectory secondCombined)
-                    IntersectITrajectoryWithITrajectory(result, firstBezier, secondCombined);
+                }
+                else if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
+                {
+                    var secondStraight = (StraightTrajectory)secondTrajectory;
+                    IntersectBezierWithStraight(result, in secondStraight, firstBezier, true);
+                }
+                else if (secondTrajectory.TrajectoryType == TrajectoryType.Combined)
+                    IntersectITrajectoryWithITrajectory(result, in firstTrajectory, in secondTrajectory);
             }
-            else if (firstTrajectory is StraightTrajectory firstStraight)
+            else if (firstTrajectory.TrajectoryType == TrajectoryType.Line)
             {
-                if (secondTrajectory is BezierTrajectory secondBezier)
-                    IntersectBezierWithStraight(result, firstStraight, secondBezier, false);
-                else if (secondTrajectory is StraightTrajectory secondStraight)
-                    IntersectStraightWithStraight(result, firstStraight, secondStraight);
-                else if (secondTrajectory is CombinedTrajectory secondCombined)
-                    IntersectITrajectoryWithStraight(result, firstStraight, secondCombined, false);
+                var firstStraight = (StraightTrajectory)firstTrajectory;
+
+                if (secondTrajectory.TrajectoryType == TrajectoryType.Bezier)
+                {
+                    var secondBezier = (BezierTrajectory)secondTrajectory;
+                    IntersectBezierWithStraight(result, in firstStraight, secondBezier, false);
+                }
+                else if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
+                {
+                    var secondStraight = (StraightTrajectory)secondTrajectory;
+                    IntersectStraightWithStraight(result, in firstStraight, in secondStraight);
+                }
+                else if (secondTrajectory.TrajectoryType == TrajectoryType.Combined)
+                    IntersectITrajectoryWithStraight(result, in firstStraight, in secondTrajectory, false);
             }
-            else if (firstTrajectory is CombinedTrajectory firstCombined)
+            else if (firstTrajectory.TrajectoryType == TrajectoryType.Combined)
             {
-                if (secondTrajectory is BezierTrajectory secondBezier)
-                    IntersectITrajectoryWithITrajectory(result, firstCombined, secondBezier);
-                else if (secondTrajectory is StraightTrajectory secondStraight)
-                    IntersectITrajectoryWithStraight(result, secondStraight, firstCombined, true);
-                else if (secondTrajectory is CombinedTrajectory secondCombined)
-                    IntersectITrajectoryWithITrajectory(result, firstCombined, secondCombined);
+                if (secondTrajectory is BezierTrajectory)
+                    IntersectITrajectoryWithITrajectory(result, in firstTrajectory, in secondTrajectory);
+                else if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
+                {
+                    var secondStraight = (StraightTrajectory)secondTrajectory;
+                    IntersectITrajectoryWithStraight(result, in secondStraight, in secondTrajectory, true);
+                }
+                else if (secondTrajectory is CombinedTrajectory)
+                    IntersectITrajectoryWithITrajectory(result, in firstTrajectory, in secondTrajectory);
             }
 
-            for(int i = 0; i < result.Count; i += 1)
+            for (int i = 0; i < result.Count; i += 1)
             {
                 var item = result[i];
-                item.First = firstTrajectory;
-                item.Second = secondTrajectory;
-                result[i] = item;
+                result[i] = new Intersection(true, item.firstT, item.secondT, firstTrajectory, secondTrajectory);
             }
 
             return result;
         }
         public static List<Intersection> Calculate(ITrajectory trajectory, IEnumerable<ITrajectory> otherTrajectories, bool onlyIntersect = false)
-            => otherTrajectories.SelectMany(t => Calculate(trajectory, t)).Where(i => !onlyIntersect || i.IsIntersect).ToList();
+            => otherTrajectories.SelectMany(t => Calculate(trajectory, t)).Where(i => !onlyIntersect || i.isIntersect).ToList();
 
         #region BEZIER - BEZIER
         private static bool IntersectBezierWithBezier(List<Intersection> results, Bezier3 first, Bezier3 second, int fIdx = 0, int fOf = 1, int sIdx = 0, int sOf = 1)
@@ -156,7 +177,7 @@ namespace ModsCommon.Utilities
 
         #region BEZIER - STRAIGHT
 
-        private static void IntersectBezierWithStraight(List<Intersection> results, StraightTrajectory line, BezierTrajectory bezier, bool invert, int idx = 0, int of = 1)
+        private static void IntersectBezierWithStraight(List<Intersection> results, in StraightTrajectory line, BezierTrajectory bezier, bool invert, int idx = 0, int of = 1)
         {
             CalcBezierParts(bezier, out int parts, out float[] points, out Vector3[] pos);
 
@@ -164,14 +185,14 @@ namespace ModsCommon.Utilities
             {
                 for (var i = 0; i < parts; i += 1)
                 {
-                    if (IntersectSectionAndRay(line, pos[i], pos[i + 1], out _, out _))
+                    if (IntersectSectionAndRay(in line, pos[i], pos[i + 1], out _, out _))
                     {
                         var cut = bezier.Cut(points[i], points[i + 1]);
-                        IntersectBezierWithStraight(results, line, cut, invert, idx * parts + i, of * parts);
+                        IntersectBezierWithStraight(results, in line, cut, invert, idx * parts + i, of * parts);
                     }
                 }
             }
-            else if (IntersectSectionAndRay(line, bezier.StartPosition, bezier.EndPosition, out float p, out float q))
+            else if (IntersectSectionAndRay(in line, bezier.StartPosition, bezier.EndPosition, out float p, out float q))
             {
                 q = 1f / of * (idx + q);
                 var result = new Intersection(invert ? q : p, invert ? p : q);
@@ -182,21 +203,21 @@ namespace ModsCommon.Utilities
         #endregion
 
         #region STRAIGHT - STRAIGHT
-        public static void IntersectStraightWithStraight(List<Intersection> results, StraightTrajectory firstStraight, StraightTrajectory secondStraight)
+        public static void IntersectStraightWithStraight(List<Intersection> results, in StraightTrajectory firstStraight, in StraightTrajectory secondStraight)
         {
             var trajectory1 = firstStraight.Trajectory;
             var trajectory2 = secondStraight.Trajectory;
-            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && IsCorrectT(firstStraight, p) && IsCorrectT(secondStraight, q))
+            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && IsCorrectT(in firstStraight, p) && IsCorrectT(in secondStraight, q))
             {
                 var intersect = new Intersection(p, q);
                 results.Add(intersect);
             }
         }
-        public static Intersection GetIntersection(StraightTrajectory firstStraight, StraightTrajectory secondStraight)
+        public static Intersection GetIntersection(in StraightTrajectory firstStraight, in StraightTrajectory secondStraight)
         {
             var trajectory1 = firstStraight.Trajectory;
             var trajectory2 = secondStraight.Trajectory;
-            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && IsCorrectT(firstStraight, p) && IsCorrectT(secondStraight, q))
+            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && IsCorrectT(in firstStraight, p) && IsCorrectT(secondStraight, q))
                 return new Intersection(p, q);
             else
                 return NotIntersect;
@@ -204,10 +225,10 @@ namespace ModsCommon.Utilities
         #endregion
 
         #region ITRAJECTORY - ITRAJECTORY
-        private static bool IntersectITrajectoryWithITrajectory(List<Intersection> results, ITrajectory first, ITrajectory second, int fIdx = 0, int fOf = 1, int sIdx = 0, int sOf = 1)
+        private static bool IntersectITrajectoryWithITrajectory(List<Intersection> results, in ITrajectory first, in ITrajectory second, int fIdx = 0, int fOf = 1, int sIdx = 0, int sOf = 1)
         {
-            CalcTrajectoryParts(first, out int fParts, out float[] fPoints, out Vector3[] fPos);
-            CalcTrajectoryParts(second, out int sParts, out float[] sPoints, out Vector3[] sPos);
+            CalcTrajectoryParts(in first, out int fParts, out float[] fPoints, out Vector3[] fPos);
+            CalcTrajectoryParts(in second, out int sParts, out float[] sPoints, out Vector3[] sPos);
 
             if (fParts == 1 && sParts == 1)
             {
@@ -236,7 +257,7 @@ namespace ModsCommon.Utilities
                                 var firstCut = first.Cut(fPoints[ii], fPoints[ii + 1]);
                                 var secondCut = second.Cut(sPoints[jj], sPoints[jj + 1]);
 
-                                if (IntersectITrajectoryWithITrajectory(results, firstCut, secondCut, fIdx * fParts + ii, fOf * fParts, sIdx * sParts + jj, sOf * sParts))
+                                if (IntersectITrajectoryWithITrajectory(results, in firstCut, in secondCut, fIdx * fParts + ii, fOf * fParts, sIdx * sParts + jj, sOf * sParts))
                                     return true;
                             }
                         }
@@ -250,22 +271,22 @@ namespace ModsCommon.Utilities
 
         #region ITRAJECTORY - STRAIGHT
 
-        private static void IntersectITrajectoryWithStraight(List<Intersection> results, StraightTrajectory line, ITrajectory trajectory, bool invert, int idx = 0, int of = 1)
+        private static void IntersectITrajectoryWithStraight(List<Intersection> results, in StraightTrajectory line, in ITrajectory trajectory, bool invert, int idx = 0, int of = 1)
         {
-            CalcTrajectoryParts(trajectory, out int parts, out float[] points, out Vector3[] pos);
+            CalcTrajectoryParts(in trajectory, out int parts, out float[] points, out Vector3[] pos);
 
             if (parts > 1)
             {
                 for (var i = 0; i < parts; i += 1)
                 {
-                    if (IntersectSectionAndRay(line, pos[i], pos[i + 1], out _, out _))
+                    if (IntersectSectionAndRay(in line, pos[i], pos[i + 1], out _, out _))
                     {
                         var cut = trajectory.Cut(points[i], points[i + 1]);
-                        IntersectITrajectoryWithStraight(results, line, cut, invert, idx * parts + i, of * parts);
+                        IntersectITrajectoryWithStraight(results, in line, in cut, invert, idx * parts + i, of * parts);
                     }
                 }
             }
-            else if (IntersectSectionAndRay(line, trajectory.StartPosition, trajectory.EndPosition, out float p, out float q))
+            else if (IntersectSectionAndRay(in line, trajectory.StartPosition, trajectory.EndPosition, out float p, out float q))
             {
                 q = 1f / of * (idx + q);
                 var result = new Intersection(invert ? q : p, invert ? p : q);
@@ -288,9 +309,9 @@ namespace ModsCommon.Utilities
             else
                 return new int[] { i };
         }
-        private static bool IntersectSectionAndRay(StraightTrajectory line, Vector3 start, Vector3 end, out float p, out float q)
+        private static bool IntersectSectionAndRay(in StraightTrajectory line, Vector3 start, Vector3 end, out float p, out float q)
         {
-            return Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && IsCorrectT(line, p) && IsCorrectT(q);
+            return Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && IsCorrectT(in line, p) && IsCorrectT(q);
         }
 
         private static void CalcBezierParts(Bezier3 bezier, out int parts, out float[] points, out Vector3[] positons)
@@ -313,7 +334,7 @@ namespace ModsCommon.Utilities
                 positons[i] = bezier.Position(points[i]);
             }
         }
-        private static void CalcTrajectoryParts(ITrajectory trajectory, out int parts, out float[] points, out Vector3[] positons)
+        private static void CalcTrajectoryParts(in ITrajectory trajectory, out int parts, out float[] points, out Vector3[] positons)
         {
             trajectory.Divide(out ITrajectory b1, out ITrajectory b2);
             var length = Mathf.Max(b1.Magnitude + b2.Magnitude, 0f);
@@ -334,11 +355,69 @@ namespace ModsCommon.Utilities
             }
         }
         public static bool IsCorrectT(float t) => 0f <= t && t <= 1f;
-        public static bool IsCorrectT(StraightTrajectory line, float t) => (line.StartLimited ? 0f : float.MinValue) <= t && t <= (line.EndLimited ? 1f : float.MaxValue);
+        public static bool IsCorrectT(in StraightTrajectory line, float t) => (line.StartLimited ? 0f : float.MinValue) <= t && t <= (line.EndLimited ? 1f : float.MaxValue);
+
+        public static bool CanIntersect(Rect limits, in StraightTrajectory line, out Side side)
+        {
+            var dir = line.Direction.Turn90(true);
+            var pos = line.StartPosition;
+
+            side = GetSide(pos.x, pos.z, dir.x, dir.z, limits.xMin, limits.yMin);
+
+            if (GetSide(pos.x, pos.z, dir.x, dir.z, limits.xMin, limits.yMax) != side)
+                return true;
+            else if (GetSide(pos.x, pos.z, dir.x, dir.z, limits.xMax, limits.yMin) != side)
+                return true;
+            else if (GetSide(pos.x, pos.z, dir.x, dir.z, limits.xMax, limits.yMax) != side)
+                return true;
+            else
+                return false;
+        }
+        public static bool CanIntersect(Vector3[] points, in StraightTrajectory line, out Side side)
+        {
+            var dir = line.Direction.Turn90(true);
+            var pos = line.StartPosition;
+
+            if (points.Length == 0)
+            {
+                side = default;
+                return false;
+            }
+
+            side = GetSide(pos.x, pos.z, dir.x, dir.z, points[0].x, points[0].z);
+            for (var i = 1; i < points.Length; i += 1)
+            {
+                if (GetSide(pos.x, pos.z, dir.x, dir.z, points[i].x, points[i].z) != side)
+                    return true;
+            }
+            return false;
+        }
+        public static bool CanIntersect(BezierTrajectory bezier, in StraightTrajectory line, out Side side)
+        {
+            var dir = line.Direction.Turn90(true);
+            var pos = line.StartPosition;
+            var trajectory = bezier.Trajectory;
+
+            side = GetSide(pos.x, pos.z, dir.x, dir.z, trajectory.a.x, trajectory.a.z);
+
+            if (GetSide(pos.x, pos.z, dir.x, dir.z, trajectory.b.x, trajectory.b.z) != side)
+                return true;
+            else if (GetSide(pos.x, pos.z, dir.x, dir.z, trajectory.c.x, trajectory.c.z) != side)
+                return true;
+            else if (GetSide(pos.x, pos.z, dir.x, dir.z, trajectory.d.x, trajectory.d.z) != side)
+                return true;
+            else
+                return false;
+        }
+
+        public static Side GetSide(float posX, float posZ, float dirX, float dirZ, float pointX, float pointZ)
+        {
+            return dirX * (pointX - posX) + dirZ * (pointZ - posZ) >= 0 ? Side.Right : Side.Left;
+        }
 
         public override string ToString()
         {
-            if (IsIntersect)
+            if (isIntersect)
                 return $"{firstT:0.###} ÷ {secondT:0.###}";
             else
                 return "Not intersect";
@@ -347,6 +426,11 @@ namespace ModsCommon.Utilities
         public static bool operator ==(Intersection a, Intersection b) => a.firstT == b.firstT && a.secondT == b.secondT;
         public static bool operator !=(Intersection a, Intersection b) => a.firstT != b.firstT || a.secondT != b.secondT;
 
+        public enum Side
+        {
+            Left,
+            Right
+        }
         public class Comparer : IComparer<Intersection>
         {
             private readonly bool isFirst;

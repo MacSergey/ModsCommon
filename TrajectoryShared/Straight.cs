@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ModsCommon.Utilities
 {
-    public struct StraightTrajectory : ITrajectory
+    public readonly struct StraightTrajectory : ITrajectory
     {
         public TrajectoryType TrajectoryType => TrajectoryType.Line;
         public Line3 Trajectory { get; }

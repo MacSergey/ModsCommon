@@ -153,7 +153,7 @@ namespace ModsCommon.Utilities
             {
                 foreach (var intersect in Intersection.Calculate(line, border))
                 {
-                    if (intersect.IsIntersect)
+                    if (intersect.isIntersect)
                         count += 1;
                 }
             }
