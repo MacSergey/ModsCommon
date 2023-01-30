@@ -182,7 +182,7 @@ namespace ModsCommon.Utilities
         #endregion
 
         #region STRAIGHT - STRAIGHT
-        private static void IntersectStraightWithStraight(List<Intersection> results, StraightTrajectory firstStraight, StraightTrajectory secondStraight)
+        public static void IntersectStraightWithStraight(List<Intersection> results, StraightTrajectory firstStraight, StraightTrajectory secondStraight)
         {
             var trajectory1 = firstStraight.Trajectory;
             var trajectory2 = secondStraight.Trajectory;
@@ -191,6 +191,15 @@ namespace ModsCommon.Utilities
                 var intersect = new Intersection(p, q);
                 results.Add(intersect);
             }
+        }
+        public static Intersection GetIntersection(StraightTrajectory firstStraight, StraightTrajectory secondStraight)
+        {
+            var trajectory1 = firstStraight.Trajectory;
+            var trajectory2 = secondStraight.Trajectory;
+            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && IsCorrectT(firstStraight, p) && IsCorrectT(secondStraight, q))
+                return new Intersection(p, q);
+            else
+                return NotIntersect;
         }
         #endregion
 
