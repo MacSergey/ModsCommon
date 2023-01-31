@@ -414,6 +414,10 @@ namespace ModsCommon.Utilities
         {
             return dirX * (pointX - posX) + dirZ * (pointZ - posZ) >= 0 ? Side.Right : Side.Left;
         }
+        public static Side GetSide(Vector3 direction, Vector3 toCheck)
+        {
+            return direction.z * toCheck.x - direction.x * toCheck.z >= 0 ? Side.Right : Side.Left;
+        }
 
         public override string ToString()
         {
