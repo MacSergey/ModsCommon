@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
@@ -59,7 +60,6 @@ namespace ModsCommon.Utilities
         private TrajectoryHelper.Direction Direction { get; }
         private LinkedList<Vertex2> Vertices { get; }
         private HashSet<LinkedListNode<Vertex2>> Ears { get; } = new HashSet<LinkedListNode<Vertex2>>();
-        private List<Triangle> Triangles { get; } = new List<Triangle>();
 
         private Triangulator(IEnumerable<Vector2> points, TrajectoryHelper.Direction direction)
         {
@@ -74,16 +74,18 @@ namespace ModsCommon.Utilities
                 SetEar(vertex);
             }
 
+            var triangles = new List<Triangle>();
+            var iter = 0;
             while (true)
             {
-                if (Ears.LastOrDefault() is not LinkedListNode<Vertex2> vertex)
+                if ((iter % 2 == 0 ? Ears.FirstOrDefault() : Ears.LastOrDefault()) is not LinkedListNode<Vertex2> vertex)
                     break;
 
                 var prev = vertex.GetPrevious();
                 var next = vertex.GetNext();
 
-                var triangle = new Triangle(next.Value.Index, vertex.Value.Index, prev.Value.Index);
-                Triangles.Add(triangle);
+                var triangle = new Triangle(next.Value.index, vertex.Value.index, prev.Value.index);
+                triangles.Add(triangle);
                 Ears.Remove(vertex);
                 Vertices.Remove(vertex);
 
@@ -95,9 +97,10 @@ namespace ModsCommon.Utilities
 
                 SetEar(prev);
                 SetEar(next);
+                iter += 1;
             }
 
-            return Triangles;
+            return triangles;
         }
         private List<Triangle> Triangulate()
         {
@@ -107,6 +110,7 @@ namespace ModsCommon.Utilities
                 SetEar(vertex);
             }
 
+            var triangles = new List<Triangle>();
             while (true)
             {
                 if (Ears.Count == 0)
@@ -119,9 +123,9 @@ namespace ModsCommon.Utilities
                     var prev = current.GetPrevious();
                     var next = current.GetNext();
 
-                    var dist12 = (prev.Value.Position - current.Value.Position).magnitude;
-                    var dist23 = (current.Value.Position - next.Value.Position).magnitude;
-                    var dist31 = (next.Value.Position - prev.Value.Position).magnitude;
+                    var dist12 = (prev.Value.position - current.Value.position).magnitude;
+                    var dist23 = (current.Value.position - next.Value.position).magnitude;
+                    var dist31 = (next.Value.position - prev.Value.position).magnitude;
 
                     var avg = (dist12 + dist23 + dist31) / 3f;
 
@@ -142,13 +146,13 @@ namespace ModsCommon.Utilities
                     var prev = vertex.GetPrevious();
                     var next = vertex.GetNext();
 
-                    var triangle = new Triangle(next.Value.Index, vertex.Value.Index, prev.Value.Index);
-                    Triangles.Add(triangle);
+                    var triangle = new Triangle(next.Value.index, vertex.Value.index, prev.Value.index);
+                    triangles.Add(triangle);
                     Ears.Remove(vertex);
                     Vertices.Remove(vertex);
 
                     if (Vertices.Count < 3)
-                        return Triangles;
+                        return triangles;
 
                     SetConvex(prev);
                     SetConvex(next);
@@ -158,20 +162,19 @@ namespace ModsCommon.Utilities
                 }
             }
         }
-
         private void SetConvex(LinkedListNode<Vertex2> vertex)
         {
-            if (!vertex.Value.IsConvex)
-                vertex.Value.SetConvex(vertex.GetPrevious().Value, vertex.GetNext().Value, Direction);
+            if (!vertex.Value.isConvex)
+                vertex.Value = vertex.Value.SetConvex(vertex.GetPrevious().Value, vertex.GetNext().Value, Direction);
         }
 
         private void SetEar(LinkedListNode<Vertex2> vertex)
         {
-            if (vertex.Value.IsConvex)
+            if (vertex.Value.isConvex)
             {
                 var prev = vertex.GetPrevious();
                 var next = vertex.GetNext();
-                if (!EnumerateVertex(next, prev).Any(p => PointInTriangle(prev.Value.Position, vertex.Value.Position, next.Value.Position, p.Value.Position)))
+                if (!EnumerateVertex(next, prev).Any(p => PointInTriangle(prev.Value.position, vertex.Value.position, next.Value.position, p.Value.position)))
                 {
                     Ears.Add(vertex);
                     return;

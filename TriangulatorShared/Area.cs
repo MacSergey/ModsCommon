@@ -6,59 +6,63 @@ using UnityEngine;
 
 namespace ModsCommon.Utilities
 {
-    public class Vertex2
+    public readonly struct Vertex2
     {
-        public Vector2 Position { get; }
-        public int Index { get; }
-        public bool IsConvex { get; private set; }
+        public readonly Vector2 position;
+        public readonly int index;
+        public readonly bool isConvex;
 
-        public Vertex2(Vector2 position, int index)
+        private Vertex2(Vector2 position, int index, bool isConvex)
         {
-            Position = position;
-            Index = index;
+            this.position = position;
+            this.index = index;
+            this.isConvex = isConvex;
         }
+        public Vertex2(Vector2 position, int index) : this(position, index, default) { }
 
-        public void SetConvex(Vertex2 prev, Vertex2 next, TrajectoryHelper.Direction direction)
+        public Vertex2 SetConvex(Vertex2 prev, Vertex2 next, TrajectoryHelper.Direction direction)
         {
-            var a = Position - prev.Position;
-            var b = next.Position - Position;
+            var a = position - prev.position;
+            var b = next.position - position;
 
             var sign = (int)Mathf.Sign(a.x * b.y - a.y * b.x);
-            IsConvex = sign >= 0 ^ direction == TrajectoryHelper.Direction.ClockWise;
+            var isConvex = sign >= 0 ^ direction == TrajectoryHelper.Direction.ClockWise;
+
+            return new Vertex2(position, index, isConvex);
         }
 
-        public override string ToString() => $"{Index}:{Position} ({(IsConvex ? "Conver" : "Reflex")})";
+        public override string ToString() => $"{index}:{position} ({(isConvex ? "Conver" : "Reflex")})";
     }
-    public class Triangle
+    public readonly struct Triangle
     {
-        public int A { get; }
-        public int B { get; }
-        public int C { get; }
+        public readonly int a;
+        public readonly int b;
+        public readonly int c;
 
         public Triangle(int a, int b, int c)
         {
-            A = a;
-            B = b;
-            C = c;
+            this.a = a;
+            this.b = b;
+            this.c = c;
         }
 
         public IEnumerable<int> GetVertices(TrajectoryHelper.Direction direction)
         {
             if (direction == TrajectoryHelper.Direction.ClockWise)
             {
-                yield return C;
-                yield return B;
-                yield return A;
+                yield return c;
+                yield return b;
+                yield return a;
             }
             else
             {
-                yield return A;
-                yield return B;
-                yield return C;
+                yield return a;
+                yield return b;
+                yield return c;
             }
         }
 
-        public override string ToString() => $"{A}-{B}-{C}";
+        public override string ToString() => $"{a}-{b}-{c}";
     }
 
     public class Polygon : IEnumerable<Area>
@@ -253,7 +257,7 @@ namespace ModsCommon.Utilities
                 new Side(polygon, index, 2, c, a),
             };
         }
-        public Area(Polygon polygon, int index, Triangle triangle) : this(polygon, index, triangle.A, triangle.B, triangle.C)
+        public Area(Polygon polygon, int index, Triangle triangle) : this(polygon, index, triangle.a, triangle.b, triangle.c)
         {
 
         }
