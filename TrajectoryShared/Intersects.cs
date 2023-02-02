@@ -71,57 +71,27 @@ namespace ModsCommon.Utilities
         public static List<Intersection> Calculate(ITrajectory firstTrajectory, ITrajectory secondTrajectory)
         {
             var result = new List<Intersection>();
-            if (firstTrajectory.TrajectoryType == TrajectoryType.Bezier)
-            {
-                var firstBezier = (BezierTrajectory)firstTrajectory;
-
-                if (secondTrajectory.TrajectoryType == TrajectoryType.Bezier)
-                {
-                    var secondBezier = (BezierTrajectory)secondTrajectory;
-                    IntersectBezierWithBezier(result, firstBezier.Trajectory, secondBezier.Trajectory);
-                }
-                else if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
-                {
-                    var secondStraight = (StraightTrajectory)secondTrajectory;
-                    IntersectBezierWithStraight(result, in secondStraight, firstBezier, true);
-                }
-                else if (secondTrajectory.TrajectoryType == TrajectoryType.Combined)
-                    IntersectITrajectoryWithITrajectory(result, in firstTrajectory, in secondTrajectory);
-            }
-            else if (firstTrajectory.TrajectoryType == TrajectoryType.Line)
+            if (firstTrajectory.TrajectoryType == TrajectoryType.Line)
             {
                 var firstStraight = (StraightTrajectory)firstTrajectory;
 
-                if (secondTrajectory.TrajectoryType == TrajectoryType.Bezier)
-                {
-                    var secondBezier = (BezierTrajectory)secondTrajectory;
-                    IntersectBezierWithStraight(result, in firstStraight, secondBezier, false);
-                }
-                else if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
+                if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
                 {
                     var secondStraight = (StraightTrajectory)secondTrajectory;
                     IntersectStraightWithStraight(result, in firstStraight, in secondStraight);
                 }
-                else if (secondTrajectory.TrajectoryType == TrajectoryType.Combined)
-                    IntersectITrajectoryWithStraight(result, in firstStraight, in secondTrajectory, false);
+                else
+                    IntersectITrajectoryWithStraight(result, in firstStraight, secondTrajectory, false);
             }
-            else if (firstTrajectory.TrajectoryType == TrajectoryType.Combined)
+            else
             {
-                if (secondTrajectory is BezierTrajectory)
-                    IntersectITrajectoryWithITrajectory(result, in firstTrajectory, in secondTrajectory);
-                else if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
+                if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
                 {
                     var secondStraight = (StraightTrajectory)secondTrajectory;
-                    IntersectITrajectoryWithStraight(result, in secondStraight, in secondTrajectory, true);
+                    IntersectITrajectoryWithStraight(result, in secondStraight, firstTrajectory, true);
                 }
-                else if (secondTrajectory is CombinedTrajectory)
-                    IntersectITrajectoryWithITrajectory(result, in firstTrajectory, in secondTrajectory);
-            }
-
-            for (int i = 0; i < result.Count; i += 1)
-            {
-                var item = result[i];
-                result[i] = new Intersection(true, item.firstT, item.secondT, firstTrajectory, secondTrajectory);
+                else
+                    IntersectITrajectoryWithITrajectory(result, firstTrajectory, secondTrajectory);
             }
 
             return result;
@@ -129,124 +99,55 @@ namespace ModsCommon.Utilities
         public static List<Intersection> Calculate(ITrajectory trajectory, IEnumerable<ITrajectory> otherTrajectories, bool onlyIntersect = false)
             => otherTrajectories.SelectMany(t => Calculate(trajectory, t)).Where(i => !onlyIntersect || i.isIntersect).ToList();
 
-        #region BEZIER - BEZIER
-        private static bool IntersectBezierWithBezier(List<Intersection> results, Bezier3 first, Bezier3 second, int fIdx = 0, int fOf = 1, int sIdx = 0, int sOf = 1)
-        {
-            CalcBezierParts(first, out int fParts, out float[] fPoints, out Vector3[] fPos);
-            CalcBezierParts(second, out int sParts, out float[] sPoints, out Vector3[] sPos);
-
-            if (fParts == 1 && sParts == 1)
-            {
-                IntersectSections(first.a, first.d, second.a, second.d, out float firstT, out float secondT);
-                firstT = 1f / fOf * (fIdx + firstT);
-                secondT = 1f / sOf * (sIdx + secondT);
-                results.Add(new Intersection(firstT, secondT));
-                return true;
-            }
-
-            for (var i = 0; i < fParts; i += 1)
-            {
-                for (var j = 0; j < sParts; j += 1)
-                {
-                    if (IntersectSections(fPos[i], fPos[i + 1], sPos[j], sPos[j + 1], out float p, out float q))
-                    {
-                        var needTryI = NeedTryParts(i, fParts, p);
-                        var needTryJ = NeedTryParts(j, sParts, q);
-                        for (int tryI = 0; tryI < needTryI.Length; tryI += 1)
-                        {
-                            var ii = needTryI[tryI];
-                            for (int tryJ = 0; tryJ < needTryJ.Length; tryJ += 1)
-                            {
-                                var jj = needTryJ[tryJ];
-
-                                var firstCut = first.Cut(fPoints[ii], fPoints[ii + 1]);
-                                var secondCut = second.Cut(sPoints[jj], sPoints[jj + 1]);
-
-                                if (IntersectBezierWithBezier(results, firstCut, secondCut, fIdx * fParts + ii, fOf * fParts, sIdx * sParts + jj, sOf * sParts))
-                                    return true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        #endregion
-
-        #region BEZIER - STRAIGHT
-
-        private static void IntersectBezierWithStraight(List<Intersection> results, in StraightTrajectory line, BezierTrajectory bezier, bool invert, int idx = 0, int of = 1)
-        {
-            CalcBezierParts(bezier, out int parts, out float[] points, out Vector3[] pos);
-
-            if (parts > 1)
-            {
-                for (var i = 0; i < parts; i += 1)
-                {
-                    if (IntersectSectionAndRay(in line, pos[i], pos[i + 1], out _, out _))
-                    {
-                        var cut = bezier.Cut(points[i], points[i + 1]);
-                        IntersectBezierWithStraight(results, in line, cut, invert, idx * parts + i, of * parts);
-                    }
-                }
-            }
-            else if (IntersectSectionAndRay(in line, bezier.StartPosition, bezier.EndPosition, out float p, out float q))
-            {
-                q = 1f / of * (idx + q);
-                var result = new Intersection(invert ? q : p, invert ? p : q);
-                results.Add(result);
-            }
-        }
-
-        #endregion
-
         #region STRAIGHT - STRAIGHT
-        public static void IntersectStraightWithStraight(List<Intersection> results, in StraightTrajectory firstStraight, in StraightTrajectory secondStraight)
+        public static void IntersectStraightWithStraight(List<Intersection> results, in StraightTrajectory first, in StraightTrajectory second)
         {
-            var trajectory1 = firstStraight.Trajectory;
-            var trajectory2 = secondStraight.Trajectory;
-            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && IsCorrectT(in firstStraight, p) && IsCorrectT(in secondStraight, q))
+            if (Line2.Intersect(XZ(first.StartPosition), XZ(first.EndPosition), XZ(second.StartPosition), XZ(second.EndPosition), out float firstT, out float secondT))
             {
-                var intersect = new Intersection(p, q);
-                results.Add(intersect);
+                if (IsCorrectT(in first, firstT) && IsCorrectT(in second, secondT))
+                {
+                    var intersect = new Intersection(firstT, secondT, first, second);
+                    results.Add(intersect);
+                }
             }
         }
-        public static Intersection GetIntersection(in StraightTrajectory firstStraight, in StraightTrajectory secondStraight)
+        public static Intersection GetIntersection(in StraightTrajectory first, in StraightTrajectory second)
         {
-            var trajectory1 = firstStraight.Trajectory;
-            var trajectory2 = secondStraight.Trajectory;
-            if (Line2.Intersect(XZ(trajectory1.a), XZ(trajectory1.b), XZ(trajectory2.a), XZ(trajectory2.b), out float p, out float q) && IsCorrectT(in firstStraight, p) && IsCorrectT(secondStraight, q))
-                return new Intersection(p, q);
+            if (Line2.Intersect(XZ(first.StartPosition), XZ(first.EndPosition), XZ(second.StartPosition), XZ(second.EndPosition), out float firstT, out float secondT))
+            {
+                if (IsCorrectT(in first, firstT) && IsCorrectT(second, secondT))
+                    return new Intersection(firstT, secondT, first, second);
+                else
+                    return NotIntersect;
+            }
             else
                 return NotIntersect;
         }
         #endregion
 
         #region ITRAJECTORY - ITRAJECTORY
-        private static bool IntersectITrajectoryWithITrajectory(List<Intersection> results, in ITrajectory first, in ITrajectory second, int fIdx = 0, int fOf = 1, int sIdx = 0, int sOf = 1)
+        private static bool IntersectITrajectoryWithITrajectory(List<Intersection> results, ITrajectory first, ITrajectory second, int firstIndex = 0, int firstTotal = 1, int secondIndex = 0, int secondTotal = 1)
         {
-            CalcTrajectoryParts(in first, out int fParts, out float[] fPoints, out Vector3[] fPos);
-            CalcTrajectoryParts(in second, out int sParts, out float[] sPoints, out Vector3[] sPos);
+            var firstPoints = CalcTrajectoryParts(first, firstIndex, firstTotal, out int firstParts);
+            var secondPoints = CalcTrajectoryParts(second, secondIndex, secondTotal, out int secondParts);
 
-            if (fParts == 1 && sParts == 1)
+            if (firstParts == 1 && secondParts == 1)
             {
-                IntersectSections(first.StartPosition, first.EndPosition, second.StartPosition, second.EndPosition, out float firstT, out float secondT);
-                firstT = 1f / fOf * (fIdx + firstT);
-                secondT = 1f / sOf * (sIdx + secondT);
-                results.Add(new Intersection(firstT, secondT));
+                IntersectSections(firstPoints[0].pos, firstPoints[1].pos, secondPoints[0].pos, secondPoints[1].pos, out float firstT, out float secondT);
+                firstT = 1f / firstTotal * (firstIndex + firstT);
+                secondT = 1f / secondTotal * (secondIndex + secondT);
+                results.Add(new Intersection(firstT, secondT, first, second));
                 return true;
             }
 
-            for (var i = 0; i < fParts; i += 1)
+            for (var i = 0; i < firstParts; i += 1)
             {
-                for (var j = 0; j < sParts; j += 1)
+                for (var j = 0; j < secondParts; j += 1)
                 {
-                    if (IntersectSections(fPos[i], fPos[i + 1], sPos[j], sPos[j + 1], out float p, out float q))
+                    if (IntersectSections(firstPoints[i].pos, firstPoints[i + 1].pos, secondPoints[j].pos, secondPoints[j + 1].pos, out float firstT, out float secondT))
                     {
-                        var needTryI = NeedTryParts(i, fParts, p);
-                        var needTryJ = NeedTryParts(j, sParts, q);
+                        var needTryI = NeedTryParts(i, firstParts, firstT);
+                        var needTryJ = NeedTryParts(j, secondParts, secondT);
                         for (int tryI = 0; tryI < needTryI.Length; tryI += 1)
                         {
                             var ii = needTryI[tryI];
@@ -254,10 +155,7 @@ namespace ModsCommon.Utilities
                             {
                                 var jj = needTryJ[tryJ];
 
-                                var firstCut = first.Cut(fPoints[ii], fPoints[ii + 1]);
-                                var secondCut = second.Cut(sPoints[jj], sPoints[jj + 1]);
-
-                                if (IntersectITrajectoryWithITrajectory(results, in firstCut, in secondCut, fIdx * fParts + ii, fOf * fParts, sIdx * sParts + jj, sOf * sParts))
+                                if (IntersectITrajectoryWithITrajectory(results, first, second, firstIndex * firstParts + ii, firstTotal * firstParts, secondIndex * secondParts + jj, secondTotal * secondParts))
                                     return true;
                             }
                         }
@@ -271,26 +169,34 @@ namespace ModsCommon.Utilities
 
         #region ITRAJECTORY - STRAIGHT
 
-        private static void IntersectITrajectoryWithStraight(List<Intersection> results, in StraightTrajectory line, in ITrajectory trajectory, bool invert, int idx = 0, int of = 1)
+        private static void IntersectITrajectoryWithStraight(List<Intersection> results, in StraightTrajectory line, ITrajectory trajectory, bool invert, int index = 0, int total = 1)
         {
-            CalcTrajectoryParts(in trajectory, out int parts, out float[] points, out Vector3[] pos);
+            var points = CalcTrajectoryParts(trajectory, index, total, out int parts);
 
             if (parts > 1)
             {
                 for (var i = 0; i < parts; i += 1)
                 {
-                    if (IntersectSectionAndRay(in line, pos[i], pos[i + 1], out _, out _))
+                    if (IntersectSectionAndRay(in line, points[i].pos, points[i + 1].pos, out _, out _))
                     {
-                        var cut = trajectory.Cut(points[i], points[i + 1]);
-                        IntersectITrajectoryWithStraight(results, in line, in cut, invert, idx * parts + i, of * parts);
+                        IntersectITrajectoryWithStraight(results, in line, trajectory, invert, index * parts + i, total * parts);
                     }
                 }
             }
-            else if (IntersectSectionAndRay(in line, trajectory.StartPosition, trajectory.EndPosition, out float p, out float q))
+            else if (parts == 1 && IntersectSectionAndRay(in line, points[0].pos, points[1].pos, out float firstT, out float secondT))
             {
-                q = 1f / of * (idx + q);
-                var result = new Intersection(invert ? q : p, invert ? p : q);
-                results.Add(result);
+                secondT = 1f / total * (index + secondT);
+                if (!invert)
+                {
+                    var result = new Intersection(firstT, secondT, line, trajectory);
+                    results.Add(result);
+                }
+                else
+                {
+                    var result = new Intersection(secondT, firstT, trajectory, line);
+                    results.Add(result);
+                }
+
             }
         }
 
@@ -314,45 +220,29 @@ namespace ModsCommon.Utilities
             return Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && IsCorrectT(in line, p) && IsCorrectT(q);
         }
 
-        private static void CalcBezierParts(Bezier3 bezier, out int parts, out float[] points, out Vector3[] positons)
+        private static TrajectoryPoint[] CalcTrajectoryParts(ITrajectory trajectory, int index, int total, out int parts)
         {
-            bezier.Divide(out Bezier3 b1, out Bezier3 b2);
-            var length = Mathf.Max((b1.d - b1.a).magnitude + (b2.d - b2.a).magnitude, 0f);
+            var startT = 1f / total * index;
+            var endT = 1f / total * (index + 1);
+
+            var start = trajectory.Position(startT);
+            var end = trajectory.Position(endT);
+            var middle = trajectory.Position((startT + endT) * 0.5f);
+
+            var length = Mathf.Max((middle - start).magnitude + (end - middle).magnitude, 0f);
             parts = Math.Min((int)Math.Ceiling(length / MinLength), 10);
 
-            points = new float[parts + 1];
-            points[0] = 0f;
-            points[parts] = 1f;
-
-            positons = new Vector3[parts + 1];
-            positons[0] = bezier.a;
-            positons[parts] = bezier.d;
+            var points = new TrajectoryPoint[parts + 1];
+            points[0] = new TrajectoryPoint(start, startT);
+            points[parts] = new TrajectoryPoint(end, endT);
 
             for (var i = 1; i < parts; i += 1)
             {
-                points[i] = (1f / parts) * i;
-                positons[i] = bezier.Position(points[i]);
+                var t = startT + 1f / (total * parts) * i;
+                points[i] = new TrajectoryPoint(trajectory.Position(t), t);
             }
-        }
-        private static void CalcTrajectoryParts(in ITrajectory trajectory, out int parts, out float[] points, out Vector3[] positons)
-        {
-            trajectory.Divide(out ITrajectory b1, out ITrajectory b2);
-            var length = Mathf.Max(b1.Magnitude + b2.Magnitude, 0f);
-            parts = Math.Min((int)Math.Ceiling(length / MinLength), 10);
 
-            points = new float[parts + 1];
-            points[0] = 0f;
-            points[parts] = 1f;
-
-            positons = new Vector3[parts + 1];
-            positons[0] = trajectory.StartPosition;
-            positons[parts] = trajectory.EndPosition;
-
-            for (var i = 1; i < parts; i += 1)
-            {
-                points[i] = (1f / parts) * i;
-                positons[i] = trajectory.Position(points[i]);
-            }
+            return points;
         }
         public static bool IsCorrectT(float t) => 0f <= t && t <= 1f;
         public static bool IsCorrectT(in StraightTrajectory line, float t) => (line.StartLimited ? 0f : float.MinValue) <= t && t <= (line.EndLimited ? 1f : float.MaxValue);
@@ -443,6 +333,20 @@ namespace ModsCommon.Utilities
                 this.isFirst = isFirst;
             }
             public int Compare(Intersection x, Intersection y) => isFirst ? x.firstT.CompareTo(y.firstT) : x.secondT.CompareTo(y.secondT);
+        }
+
+        private readonly struct TrajectoryPoint
+        {
+            public readonly Vector3 pos;
+            public readonly float t;
+
+            public TrajectoryPoint(Vector3 pos, float t)
+            {
+                this.pos = pos;
+                this.t = t;
+            }
+
+            public override string ToString() => $"{t:0.###}: {pos}";
         }
     }
     public struct IntersectionPair
