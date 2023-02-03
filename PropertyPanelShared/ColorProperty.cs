@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using IMT.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Globalization;
@@ -262,7 +263,7 @@ namespace ModsCommon.UI
 
             Popup = popup;
 
-            Popup.component.size += new Vector2(31, 66);
+            Popup.component.size += new Vector2(31, 36);
             Popup.component.relativePosition -= new Vector3(dropdown.width + 31, Math.Max(Popup.component.absolutePosition.y - dropdown.absolutePosition.y, 0));
 
             if (Popup.component is UIPanel panel)
@@ -273,8 +274,7 @@ namespace ModsCommon.UI
             }
 
             Opacity = AddOpacitySlider(popup.component);
-            AddRGBPanel(popup.component);
-            AddHEXPanel(popup.component);
+            AddColorValuePanel(popup.component);
 
             SetOpacity(Value);
         }
@@ -328,12 +328,12 @@ namespace ModsCommon.UI
 
             return opacitySlider;
         }
-        private void AddRGBPanel(UIComponent parent)
+        private void AddColorValuePanel(UIComponent parent)
         {
             var rgbPanel = parent.AddUIComponent<CustomUIPanel>();
             rgbPanel.relativePosition = new Vector2(10, 223);
             rgbPanel.autoLayoutDirection = LayoutDirection.Horizontal;
-            rgbPanel.autoLayoutPadding = new RectOffset(5, 0, 0, 0);
+            rgbPanel.autoLayoutPadding = new RectOffset(4, 0, 0, 0);
             rgbPanel.autoFitChildrenHorizontally = true;
             rgbPanel.autoFitChildrenVertically = true;
 
@@ -342,6 +342,14 @@ namespace ModsCommon.UI
             BPicker = AddField(rgbPanel, "B", PickerRGBChanged);
             APicker = AddField(rgbPanel, "A", PickerRGBChanged);
 
+            HEXPicker = rgbPanel.AddUIComponent<StringUITextField>();
+            HEXPicker.SetDefaultStyle();
+            HEXPicker.Format = "#{0}";
+            HEXPicker.horizontalAlignment = UIHorizontalAlignment.Center;
+            HEXPicker.width = 72f;
+            HEXPicker.CheckValue = CheckHEXValue;
+            HEXPicker.OnValueChanged += PickerHEXChanged;
+
             rgbPanel.autoLayout = true;
             rgbPanel.autoLayout = false;
 
@@ -349,35 +357,6 @@ namespace ModsCommon.UI
                 item.relativePosition = new Vector2(item.relativePosition.x, (rgbPanel.height - item.height) / 2);
         }
 
-        private void AddHEXPanel(UIComponent parent)
-        {
-            var hexPanel = parent.AddUIComponent<CustomUIPanel>();
-            hexPanel.relativePosition = new Vector2(10, 253);
-            hexPanel.autoLayoutDirection = LayoutDirection.Horizontal;
-            hexPanel.autoLayoutPadding = new RectOffset(5, 0, 0, 0);
-            hexPanel.autoFitChildrenHorizontally = true;
-            hexPanel.autoFitChildrenVertically = true;
-
-            var label = hexPanel.AddUIComponent<CustomUILabel>();
-            label.text = "HEX";
-            label.textScale = 0.7f;
-            label.padding = new RectOffset(0, 0, 2, 0);
-
-            HEXPicker = hexPanel.AddUIComponent<StringUITextField>();
-            HEXPicker.SetDefaultStyle();
-            HEXPicker.Format = "#{0}";
-            HEXPicker.horizontalAlignment = UIHorizontalAlignment.Left;
-            HEXPicker.width = 70f;
-            HEXPicker.padding.left = 5;
-            HEXPicker.CheckValue = CheckHEXValue;
-            HEXPicker.OnValueChanged += PickerHEXChanged;
-
-            hexPanel.autoLayout = true;
-            hexPanel.autoLayout = false;
-
-            foreach (var item in hexPanel.components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (hexPanel.height - item.height) / 2);
-        }
         private string CheckHEXValue(string value)
         {
             byte r = 0;
