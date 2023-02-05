@@ -6,7 +6,7 @@ namespace ModsCommon.Utilities
 {
     public class TrajectoryBound : IOverlay
     {
-        private static float Coef { get; } = Mathf.Sin(45 * Mathf.Deg2Rad);
+        private static float Ratio { get; } = Mathf.Sin(45 * Mathf.Deg2Rad);
         public ITrajectory Trajectory { get; }
         public float Size { get; }
         private List<Bounds> BoundsList { get; } = new List<Bounds>();
@@ -23,7 +23,7 @@ namespace ModsCommon.Utilities
             if (Trajectory == null)
                 return;
 
-            var size = Size * Coef;
+            var size = Size * Ratio;
             var t = 0f;
             while (t < 1f)
             {
