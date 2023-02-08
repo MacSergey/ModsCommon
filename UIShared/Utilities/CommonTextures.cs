@@ -109,7 +109,7 @@ namespace ModsCommon.Utilities
             spriteParams[HeaderAdditionalButton] = new RectOffset();
             spriteParams[HeaderHover] = new RectOffset(4, 4, 4, 4);
 
-            spriteParams[Empty] = new RectOffset();
+            spriteParams[Empty] = new RectOffset(2, 2, 2, 2);
             spriteParams[Resize] = new RectOffset();
             spriteParams[PlusMinusButton] = new RectOffset();
 

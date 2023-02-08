@@ -78,6 +78,16 @@ namespace ModsCommon.UI
             autoLayout = false;
             FitChildrenHorizontally();
 
+            SetSize();
+        }
+
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+            SetSize();
+        }
+        protected virtual void SetSize()
+        {
             foreach (var item in components)
                 item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
         }

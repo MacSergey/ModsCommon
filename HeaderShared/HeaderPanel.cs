@@ -32,6 +32,17 @@ namespace ModsCommon.UI
         {
             Content.Refresh();
         }
+
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+            SetSize();
+        }
+        protected virtual void SetSize()
+        {
+            Content.size = new Vector2(width - ItemsPadding, height);
+            Content.relativePosition = new Vector2(ItemsPadding, 0f);
+        }
     }
     public abstract class BaseDeletableHeaderPanel<TypeContent> : BaseHeaderPanel<TypeContent>
         where TypeContent : BaseHeaderContent
@@ -56,12 +67,7 @@ namespace ModsCommon.UI
             base.DeInit();
             OnDelete = null;
         }
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
-            SetSize();
-        }
-        private void SetSize()
+        protected override void SetSize()
         {
             Content.size = new Vector2((DeleteButton.isVisible ? width - DeleteButton.width - 10 : width) - ItemsPadding, height);
             Content.relativePosition = new Vector2(ItemsPadding, 0f);
