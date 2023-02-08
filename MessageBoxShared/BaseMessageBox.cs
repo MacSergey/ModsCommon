@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -146,11 +147,12 @@ namespace ModsCommon.UI
             Caption.eventTextChanged += (component, text) => Caption.CenterToParent();
 
             var cancel = Header.AddUIComponent<CustomUIButton>();
-            cancel.normalBgSprite = "buttonclose";
-            cancel.hoveredBgSprite = "buttonclosehover";
-            cancel.pressedBgSprite = "buttonclosepressed";
-            cancel.size = new Vector2(32, 32);
-            cancel.relativePosition = new Vector2(527, 4);
+            cancel.atlas = CommonTextures.Atlas;
+            cancel.normalBgSprite = CommonTextures.CloseButtonNormal;
+            cancel.hoveredBgSprite = CommonTextures.CloseButtonHovered;
+            cancel.pressedBgSprite = CommonTextures.CloseButtonPressed;
+            cancel.size = new Vector2(24, 24);
+            cancel.relativePosition = new Vector2(540, 9);
             cancel.eventClick += CloseClick;
         }
         private void AddContent()

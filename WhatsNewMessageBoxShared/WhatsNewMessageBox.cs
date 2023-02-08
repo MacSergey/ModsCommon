@@ -2,6 +2,7 @@
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -83,6 +84,7 @@ namespace ModsCommon.UI
             private void AddTitle()
             {
                 var titlePanel = AddUIComponent<UIAutoLayoutPanel>();
+                titlePanel.name = "TitlePanel";
                 titlePanel.autoLayoutDirection = LayoutDirection.Horizontal;
                 titlePanel.autoFitChildrenVertically = true;
                 titlePanel.autoFitChildrenHorizontally = true;
@@ -90,6 +92,7 @@ namespace ModsCommon.UI
                 titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsMinimize = !IsMinimize;
 
                 var versionPanel = titlePanel.AddUIComponent<UIAutoLayoutPanel>();
+                versionPanel.name = "VersionPanel";
                 versionPanel.autoLayoutDirection = LayoutDirection.Vertical;
                 versionPanel.autoFitChildrenVertically = true;
                 versionPanel.autoFitChildrenHorizontally = true;
@@ -98,6 +101,7 @@ namespace ModsCommon.UI
                 versionPanel.color = new Color32(180, 180, 180, 255);
 
                 Title = versionPanel.AddUIComponent<CustomUILabel>();
+                Title.name = "Title";
                 Title.autoSize = false;
                 Title.width = 100f;
                 Title.height = 30f;
@@ -107,6 +111,7 @@ namespace ModsCommon.UI
                 Title.padding = new RectOffset(0, 0, 4, 0);
 
                 SubTitle = versionPanel.AddUIComponent<CustomUILabel>();
+                SubTitle.name = "SubTitle";
                 SubTitle.autoSize = false;
                 SubTitle.width = 100f;
                 SubTitle.height = 20f;
@@ -127,6 +132,7 @@ namespace ModsCommon.UI
             private void AddLinesContainer()
             {
                 Container = AddUIComponent<UIAutoLayoutPanel>();
+                Container.name = "Container";
                 Container.autoLayoutDirection = LayoutDirection.Vertical;
                 Container.autoFitChildrenVertically = true;
                 Container.autoLayoutPadding = new RectOffset(0, 0, 0, 6);
@@ -187,11 +193,11 @@ namespace ModsCommon.UI
                 base.OnSizeChanged();
 
                 if (Button != null)
-                    Button.width = width;
+                    Button.width = width - padding.horizontal;
                 if (Container != null)
-                    Container.width = width;
+                    Container.width = width - padding.horizontal;
                 foreach (var line in Lines)
-                    line.width = width;
+                    line.width = width - padding.horizontal;
             }
         }
         public class UpdateMessage : UIAutoLayoutPanel

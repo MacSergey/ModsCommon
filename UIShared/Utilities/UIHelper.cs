@@ -39,7 +39,8 @@ namespace ModsCommon.UI
             thumbSprite.fillDirection = UIFillDirection.Vertical;
             thumbSprite.autoSize = true;
             thumbSprite.width = thumbSprite.parent.width;
-            thumbSprite.spriteName = "ScrollbarThumb";
+            thumbSprite.atlas = CommonTextures.Atlas;
+            thumbSprite.spriteName = CommonTextures.FieldNormal;
             ScrollBar.thumbObject = thumbSprite;
         }
 
