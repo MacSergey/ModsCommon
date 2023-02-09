@@ -9,7 +9,7 @@ namespace ModsCommon.UI
         where TypeContent : BaseHeaderContent
     {
         bool IReusable.InCache { get; set; }
-        protected override float DefaultHeight => HeaderButton.Size + 10;
+        protected override float DefaultHeight => BaseHeaderContent.DefaultSize + 10;
 
         protected TypeContent Content { get; set; }
 

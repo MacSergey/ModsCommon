@@ -18,8 +18,12 @@ namespace ModsCommon.UI
         public virtual bool SupportEven => false;
         public bool IsEven
         {
-            get => Even.isVisible;
-            set => Even.isVisible = value;
+            get => SupportEven && Even.isVisible;
+            set
+            {
+                if (SupportEven)
+                    Even.isVisible = value;
+            }
         }
 
         private bool _canCollapse = true;
@@ -76,11 +80,14 @@ namespace ModsCommon.UI
 
         public EditorItem()
         {
-            Even = AddUIComponent<CustomUIPanel>();
-            Even.atlas = CommonTextures.Atlas;
-            Even.backgroundSprite = CommonTextures.Empty;
-            Even.color = new Color32(0, 0, 0, 48);
-            IsEven = false;
+            if (SupportEven)
+            {
+                Even = AddUIComponent<CustomUIPanel>();
+                Even.atlas = CommonTextures.Atlas;
+                Even.backgroundSprite = CommonTextures.Empty;
+                Even.color = new Color32(0, 0, 0, 48);
+                IsEven = false;
+            }
         }
 
         public virtual void DeInit()

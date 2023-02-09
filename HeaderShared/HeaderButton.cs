@@ -9,21 +9,26 @@ namespace ModsCommon.UI
     {
         bool IReusable.InCache { get; set; }
 
-        public static int Size => IconSize + 2 * IconPadding;
-        public static int IconSize => 25;
-        public static int IconPadding => 2;
-
         public HeaderButton()
         {
             atlasBackground = CommonTextures.Atlas;
             hoveredBgSprite = pressedBgSprite = focusedBgSprite = CommonTextures.HeaderHover;
-            size = new Vector2(Size, Size);
             clipChildren = true;
-            textPadding = new RectOffset(IconSize + 5, 5, 5, 0);
             textScale = 0.8f;
             textHorizontalAlignment = UIHorizontalAlignment.Left;
-            minimumSize = size;
             foregroundSpriteMode = UIForegroundSpriteMode.Fill;
+        }
+
+        public void Init(UITextureAtlas atlas, string sprite, int size, int iconSize)
+        {
+            SetIcon(atlas, sprite);
+            SetSize(size, iconSize);
+        }
+        public void SetSize(int buttonSize, int iconSize)
+        {
+            size = new Vector2(buttonSize, buttonSize);
+            minimumSize = size;
+            textPadding = new RectOffset(iconSize + 5, 5, 5, 0);
         }
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
@@ -44,6 +49,12 @@ namespace ModsCommon.UI
         {
             SetIcon(null, string.Empty);
         }
+
+        protected override void OnClick(UIMouseEventParameter p)
+        {
+            p.Use();
+            base.OnClick(p);
+        }
     }
     [Flags]
     public enum HeaderButtonState
@@ -58,7 +69,7 @@ namespace ModsCommon.UI
 
         public HeaderButton Button { get; }
 
-        public void AddButton(UIComponent parent, bool showText);
+        public void AddButton(UIComponent parent, bool showText, int size, int iconSize);
         public void RemoveButton();
         public HeaderButtonState State { get; }
         public bool Visible { get; set; }
@@ -76,7 +87,8 @@ namespace ModsCommon.UI
         public TypeButton Button { get; }
 
         public HeaderButtonState State { get; }
-        public Func<string> TextGetter { get; }
+        public string Text { get; set; }
+        public Shortcut Shortcut { get; set; }
         private Action OnClick { get; }
 
         public bool Visible { get; set; } = true;
@@ -85,28 +97,35 @@ namespace ModsCommon.UI
             get => Button.isEnabled;
             set => Button.isEnabled = value;
         }
-        private HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, Func<string> textGetter, Action onClick)
+        private HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, Action onClick)
         {
             State = state;
-            TextGetter = textGetter;
             OnClick = onClick;
 
             Button = new GameObject(typeof(TypeButton).Name).AddComponent<TypeButton>();
             Button.SetIcon(atlas, sprite);
             Button.eventClicked += ButtonClicked;
         }
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null) : this(state, atlas, sprite, () => text, onClick) { }
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(state, atlas, sprite, () => GetText(text, shortcut), shortcut.Press) { }
+        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null) : this(state, atlas, sprite, onClick) 
+        {
+            Text = text;
+        }
+        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(state, atlas, sprite, shortcut.Press)
+        {
+            Text = text;
+            Shortcut = shortcut;
+        }
 
-        public void AddButton(UIComponent parent, bool showText)
+        public void AddButton(UIComponent parent, bool showText, int size, int iconSize)
         {
             RemoveButton();
 
             parent.AttachUIComponent(Button.gameObject);
             Button.transform.parent = parent.cachedTransform;
 
-            Button.text = showText ? TextGetter() : string.Empty;
-            Button.tooltip = showText ? string.Empty : TextGetter();
+            Button.text = showText ? GetText() : string.Empty;
+            Button.tooltip = showText ? string.Empty : GetText();
+            Button.SetSize(size, iconSize);
         }
         public void RemoveButton()
         {
@@ -116,6 +135,12 @@ namespace ModsCommon.UI
 
         private void ButtonClicked(UIComponent component, UIMouseEventParameter eventParam) => OnClick?.Invoke();
 
-        protected static string GetText(string text, Shortcut shortcut) => shortcut.NotSet ? text : $"{text} ({shortcut})";
+        private string GetText()
+        {
+            if (Shortcut == null || Shortcut.NotSet)
+                return Text;
+            else
+                return $"{Text} ({Shortcut})";
+        }
     }
 }

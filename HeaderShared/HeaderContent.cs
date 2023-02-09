@@ -18,6 +18,20 @@ namespace ModsCommon.UI
         protected abstract Color32 IconPressedColor { get; }
         protected abstract Color32 IconDisabledColor { get; }
 
+        public static int DefaultSize => DefaultIconSize + 2 * DefaultIconPadding;
+        public static int DefaultIconSize => 25;
+        public static int DefaultIconPadding => 2;
+
+        protected virtual int MainIconSize { get; } = DefaultIconSize;
+        protected virtual int MainIconPadding { get; } = DefaultIconPadding;
+        protected virtual int MainButtonSize => MainIconSize + 2 * MainIconPadding;
+        protected virtual int AdditionalIconSize { get; } = DefaultIconSize;
+        protected virtual int AdditionalIconPadding { get; } = DefaultIconPadding;
+        protected virtual int AdditionalButtonSize => AdditionalIconSize + 2 * AdditionalIconPadding;
+
+        protected virtual UITextureAtlas AdditionalButtonAtlas => CommonTextures.Atlas;
+        protected virtual string AdditionalButtonSprite => CommonTextures.HeaderAdditionalButton;
+
         private List<IHeaderButtonInfo> Infos { get; } = new List<IHeaderButtonInfo>();
         private List<IHeaderButtonInfo> MainInfos { get; set; }
         private List<IHeaderButtonInfo> AdditionalInfos { get; set; }
@@ -32,7 +46,7 @@ namespace ModsCommon.UI
 
             Additional = AddUIComponent<AdditionalHeaderButton>();
             Additional.tooltip = CommonLocalize.Panel_Additional;
-            Additional.SetIcon(CommonTextures.Atlas, CommonTextures.HeaderAdditionalButton);
+            Additional.Init(AdditionalButtonAtlas, AdditionalButtonSprite, MainButtonSize, MainIconSize);
             Additional.PopupOpenedEvent += OnPopupOpened;
             Additional.PopupCloseEvent += OnPopupClose;
             SetButtonColors(Additional);
@@ -50,7 +64,7 @@ namespace ModsCommon.UI
         {
             foreach (var info in AdditionalInfos)
             {
-                info.AddButton(popup.Content, true);
+                info.AddButton(popup.Content, true, AdditionalButtonSize, AdditionalIconSize);
                 info.Button.autoSize = true;
                 info.Button.autoSize = false;
                 info.ClickedEvent += PopupClicked;
@@ -102,7 +116,7 @@ namespace ModsCommon.UI
 
             foreach (var info in MainInfos)
             {
-                info.AddButton(this, false);
+                info.AddButton(this, false, MainButtonSize, MainIconSize);
                 SetButtonColors(info.Button);
             }
 
