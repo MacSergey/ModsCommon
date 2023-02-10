@@ -24,16 +24,16 @@ namespace ModsCommon.UI
         private List<EntityPanel> Entities { get; set; } = new List<EntityPanel>();
         private Func<ObjectType, bool> Selector { get; set; } = null;
 
-        private ObjectType _selectedObject;
+        private ObjectType selectedObject;
         public ObjectType SelectedObject
         {
-            get => _selectedObject;
+            get => selectedObject;
             set
             {
-                if (value != _selectedObject)
+                if (value != selectedObject)
                 {
-                    _selectedObject = value;
-                    var index = Values.IndexOf(_selectedObject);
+                    selectedObject = value;
+                    var index = Values.IndexOf(selectedObject);
                     if (index >= 0)
                     {
                         StartIndex = index;
@@ -43,15 +43,15 @@ namespace ModsCommon.UI
             }
         }
 
-        private int _startIndex;
+        private int startIndex;
         private int StartIndex
         {
-            get => _startIndex;
+            get => startIndex;
             set
             {
-                if (value != _startIndex)
+                if (value != startIndex)
                 {
-                    _startIndex = Mathf.Clamp(value, 0, Values.Count - VisibleCount);
+                    startIndex = Mathf.Clamp(value, 0, Values.Count - VisibleCount);
                     SetValues();
                 }
             }
@@ -90,7 +90,7 @@ namespace ModsCommon.UI
             RawValues = null;
             Values = null;
             Selector = null;
-            _startIndex = 0;
+            startIndex = 0;
             EntityHeight = DefaultEntityHeight;
         }
 
@@ -133,7 +133,7 @@ namespace ModsCommon.UI
 
         private void ObjectSelected(ObjectType value)
         {
-            _selectedObject = value;
+            selectedObject = value;
             OnSelectedChanged?.Invoke(value);
         }
 
@@ -244,6 +244,7 @@ namespace ModsCommon.UI
             base.DeInit();
             CanSubmit = false;
             Search.text = string.Empty;
+            Search.Unfocus();
         }
 
         protected override bool Filter(ObjectType value)
