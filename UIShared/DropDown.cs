@@ -64,7 +64,7 @@ namespace ModsCommon.UI
             m_TooltipShowing = true;
             tooltipBox.Hide();
 
-            if (UseWheel && (CanWheel || Time.realtimeSinceStartup - m_HoveringStartTime >= 1f))
+            if (UseWheel && (CanWheel || Time.realtimeSinceStartup - m_HoveringStartTime >= UIHelper.PropertyScrollTimeout))
             {
                 if (p.wheelDelta > 0 && selectedIndex > 0)
                     selectedIndex -= 1;

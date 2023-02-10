@@ -9,6 +9,7 @@ namespace ModsCommon.UI
 {
     public static class UIHelper
     {
+        public static float PropertyScrollTimeout => 3f;
         private static UIView UIRoot { get; set; } = null;
         public static CustomUIScrollbar ScrollBar { get; private set; }
 
