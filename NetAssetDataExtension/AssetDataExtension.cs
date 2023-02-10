@@ -153,7 +153,7 @@ namespace ModsCommon.Utilities
 
         protected abstract XElement GetConfig(NetInfo prefab, out ushort segmentId, out ushort startNodeId, out ushort endNodeId);
         protected abstract TypeObjectMap CreateMap(bool isSimple);
-        protected abstract void PlaceAsset(XElement config, TypeObjectMap map);
+        protected abstract bool PlaceAsset(XElement config, TypeObjectMap map);
 
         public override bool Load(NetInfo prefab, Dictionary<string, byte[]> userData, out NetworkAssetData data, string dataId = null, string mapId = null)
         {
@@ -212,7 +212,7 @@ namespace ModsCommon.Utilities
             }
         }
 
-        public virtual void OnPlaceAsset(NetInfo networkInfo, ushort segmentId, ushort startNodeId, ushort endNodeId)
+        public virtual bool OnPlaceAsset(NetInfo networkInfo, ushort segmentId, ushort startNodeId, ushort endNodeId)
         {
             if (AssetDatas.TryGetValue(networkInfo, out var assetData))
             {
@@ -223,8 +223,10 @@ namespace ModsCommon.Utilities
                 map.AddNode(assetData.StartNodeId, startNodeId);
                 map.AddNode(assetData.EndNodeId, endNodeId);
 
-                PlaceAsset(assetData.Config, map);
+                return PlaceAsset(assetData.Config, map);
             }
+            else
+                return false;
         }
     }
 
