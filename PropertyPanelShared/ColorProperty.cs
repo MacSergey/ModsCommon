@@ -225,8 +225,24 @@ namespace ModsCommon.UI
             field.WheelStep = 10;
             field.width = 30;
             field.OnValueChanged += onChanged;
+            field.eventGotFocus += FieldGotFocus;
+            field.eventLostFocus += FieldLostFocus;
 
             return field;
+        }
+
+        private void FieldGotFocus(UIComponent component, UIFocusEventParameter eventParam)
+        {
+            if(Popup != null)
+                Popup.component.isInteractive = false;
+        }
+        private void FieldLostFocus(UIComponent component, UIFocusEventParameter eventParam)
+        {
+            if (Popup != null)
+            {
+                Popup.component.isInteractive = true;
+                Popup.component.Focus();
+            }
         }
 
         private void AddColorSample()
@@ -349,6 +365,8 @@ namespace ModsCommon.UI
             HEXPicker.width = 72f;
             HEXPicker.CheckValue = CheckHEXValue;
             HEXPicker.OnValueChanged += PickerHEXChanged;
+            HEXPicker.eventGotFocus += FieldGotFocus;
+            HEXPicker.eventLostFocus += FieldLostFocus;
 
             rgbPanel.autoLayout = true;
             rgbPanel.autoLayout = false;
