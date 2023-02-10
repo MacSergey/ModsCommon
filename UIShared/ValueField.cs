@@ -19,21 +19,21 @@ namespace ModsCommon.UI
 
         public event Action<TypeValue> OnValueChanged;
 
-        private TypeValue _value;
-        private string _format;
+        private TypeValue value;
+        private string format;
         bool IReusable.InCache { get; set; }
         private bool InProcess { get; set; } = false;
         public TypeValue Value
         {
-            get => _value;
+            get => value;
             set => ValueChanged(value, false);
         }
         public string Format
         {
-            private get => !string.IsNullOrEmpty(_format) ? _format : DefaultFormat;
+            private get => !string.IsNullOrEmpty(format) ? format : DefaultFormat;
             set
             {
-                _format = value;
+                format = value;
                 RefreshText();
             }
         }
@@ -45,9 +45,9 @@ namespace ModsCommon.UI
             {
                 InProcess = true;
 
-                _value = value;
+                this.value = value;
                 if (callEvent)
-                    OnValueChanged?.Invoke(_value);
+                    OnValueChanged?.Invoke(this.value);
 
                 RefreshText();
 
@@ -60,8 +60,8 @@ namespace ModsCommon.UI
         {
             OnValueChanged = null;
             Unfocus();
-            _value = default;
-            _format = null;
+            value = default;
+            format = null;
             m_Text = string.Empty;
         }
         protected string FormatString(TypeValue value) => string.Format(Format, GetString(value));

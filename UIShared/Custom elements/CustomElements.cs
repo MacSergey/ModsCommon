@@ -95,6 +95,17 @@ namespace ModsCommon.UI
         }
     }
 
+    public class CustomUISlider : UISlider
+    {
+        private Vector3 positionBefore;
+        public override void ResetLayout() => positionBefore = relativePosition;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
+    }
+
     public class CustomUIScrollbar : UIScrollbar
     {
         private Vector3 positionBefore;

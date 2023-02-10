@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)GroupPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ListProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SliderProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariationProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VectorProperty.cs" />

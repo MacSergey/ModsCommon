@@ -30,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\UIExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\UIHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ValueField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ValueSlider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Empty.png" />
