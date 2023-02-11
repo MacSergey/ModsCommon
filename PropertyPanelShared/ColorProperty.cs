@@ -1,5 +1,4 @@
 ﻿using ColossalFramework.UI;
-using IMT.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Globalization;
