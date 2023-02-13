@@ -6,33 +6,6 @@ using UnityEngine;
 
 namespace ModsCommon.Utilities
 {
-    public readonly struct Vertex2
-    {
-        public readonly Vector2 position;
-        public readonly int index;
-        public readonly bool isConvex;
-
-        private Vertex2(Vector2 position, int index, bool isConvex)
-        {
-            this.position = position;
-            this.index = index;
-            this.isConvex = isConvex;
-        }
-        public Vertex2(Vector2 position, int index) : this(position, index, default) { }
-
-        public Vertex2 SetConvex(Vertex2 prev, Vertex2 next, TrajectoryHelper.Direction direction)
-        {
-            var a = position - prev.position;
-            var b = next.position - position;
-
-            var sign = (int)Mathf.Sign(a.x * b.y - a.y * b.x);
-            var isConvex = sign >= 0 ^ direction == TrajectoryHelper.Direction.ClockWise;
-
-            return new Vertex2(position, index, isConvex);
-        }
-
-        public override string ToString() => $"{index}:{position} ({(isConvex ? "Conver" : "Reflex")})";
-    }
     public readonly struct Triangle
     {
         public readonly int a;
@@ -95,7 +68,7 @@ namespace ModsCommon.Utilities
 
         public Vector3 GetPosition(int index) => Vertices[index];
 
-        public void Arange(int maxCount, float maxDeltaH)
+        public void Arrange(int maxCount, float maxDeltaH)
         {
             for (var i = 0; i < Count - 1; i += 1)
             {
