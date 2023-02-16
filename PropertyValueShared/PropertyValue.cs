@@ -22,8 +22,20 @@ namespace ModsCommon.Utilities
 
         protected abstract bool Equals(T x, T y);
 
-        public virtual void ToXml(XElement element) => element.Add(ToXml());
-        protected virtual XAttribute ToXml() => new XAttribute(Label, Value);
+        public virtual void ToXml(XElement element, bool replaceValue = false)
+        {
+            ToXml(out var label, out var value);
+            if (element.Attribute(label) is not XAttribute attribute)
+                element.AddAttr(label, value);
+            else if (replaceValue)
+                attribute.Value = value.ToString();
+        }
+
+        protected virtual void ToXml(out string label, out object value)
+        {
+            label = Label;
+            value = Value;
+        }
         public void FromXml(XElement config) => FromXml(config, Value);
         public virtual void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue);
 
@@ -123,14 +135,24 @@ namespace ModsCommon.Utilities
             }
         }
 
-        public override void ToXml(XElement element)
+        public override void ToXml(XElement element, bool replaceValue = false)
         {
             if (HasValue)
-                StructProperty.ToXml(element);
+                StructProperty.ToXml(element, replaceValue);
             else
-                element.Add(ToXml());
+            {
+                ToXml(out var label, out var value);
+                if (element.Attribute(label) is not XAttribute attribute)
+                    element.AddAttr(label, value);
+                else if (replaceValue)
+                    attribute.Value = value.ToString();
+            }
         }
-        protected override XAttribute ToXml() => new XAttribute(Label, string.Empty);
+        protected override void ToXml(out string label, out object value)
+        {
+            label = Label;
+            value = string.Empty;
+        }
         public override void FromXml(XElement config, T? defaultValue)
         {
             if (config.TryGetAttrValue<string>(Label, out var stringValue) && stringValue == string.Empty)
@@ -154,7 +176,11 @@ namespace ModsCommon.Utilities
         public PropertyEnumValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
 
         protected override bool Equals(T x, T y) => x.ToInt() == y.ToInt();
-        protected override XAttribute ToXml() => new XAttribute(Label, Value.ToInt());
+        protected override void ToXml(out string label, out object value)
+        {
+            label = Label;
+            value = Value.ToInt();
+        }
         public override void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue.ToInt()).ToEnum<T>();
     }
     public class PropertyLongEnumValue<T> : PropertyStructValue<T>
@@ -164,7 +190,11 @@ namespace ModsCommon.Utilities
         public PropertyLongEnumValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
 
         protected override bool Equals(T x, T y) => x.ToLong() == y.ToLong();
-        protected override XAttribute ToXml() => new XAttribute(Label, Value.ToLong());
+        protected override void ToXml(out string label, out object value)
+        {
+            label = Label;
+            value = Value.ToLong();
+        }
         public override void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue.ToLong()).ToEnum<T>();
     }
     public class PropertyULongEnumValue<T> : PropertyStructValue<T>
@@ -174,7 +204,11 @@ namespace ModsCommon.Utilities
         public PropertyULongEnumValue(string label, Action onChanged, T value = default) : base(label, onChanged, value) { }
 
         protected override bool Equals(T x, T y) => x.ToULong() == y.ToULong();
-        protected override XAttribute ToXml() => new XAttribute(Label, Value.ToULong());
+        protected override void ToXml(out string label, out object value)
+        {
+            label = Label;
+            value = Value.ToULong();
+        }
         public override void FromXml(XElement config, T defaultValue) => Value = config.GetAttrValue(Label, defaultValue.ToULong()).ToEnum<T>();
     }
     public class PropertyBoolValue : PropertyStructValue<bool>
@@ -182,7 +216,11 @@ namespace ModsCommon.Utilities
         public PropertyBoolValue(Action onChanged, bool value = default) : base(onChanged, value) { }
         public PropertyBoolValue(string label, Action onChanged, bool value = default) : base(label, onChanged, value) { }
 
-        protected override XAttribute ToXml() => new XAttribute(Label, Value ? 1 : 0);
+        protected override void ToXml(out string label, out object value)
+        {
+            label = Label;
+            value = Value ? 1 : 0;
+        }
         public override void FromXml(XElement config, bool defaultValue) => Value = config.GetAttrValue(Label, defaultValue ? 1 : 0) == 1;
     }
     public class PropertyColorValue : PropertyStructValue<Color32>
@@ -191,7 +229,11 @@ namespace ModsCommon.Utilities
         public PropertyColorValue(string label, Action onChanged, Color32 value = default) : base(label, onChanged, value) { }
 
         protected override bool Equals(Color32 x, Color32 y) => x.r == y.r && x.g == y.g && x.b == y.b && x.a == y.a;
-        protected override XAttribute ToXml() => new XAttribute(Label, (Value.r << 24) + (Value.g << 16) + (Value.b << 8) + Value.a);
+        protected override void ToXml(out string label, out object value)
+        {
+            label = Label;
+            value = (Value.r << 24) + (Value.g << 16) + (Value.b << 8) + Value.a;
+        }
         public override void FromXml(XElement config, Color32 defaultValue)
         {
             var color = config.GetAttrValue(Label, 0);
@@ -212,11 +254,16 @@ namespace ModsCommon.Utilities
         protected abstract float Get(ref T vector, int index);
         protected abstract void Set(ref T vector, int index, float value);
 
-        public override void ToXml(XElement element)
+        public override void ToXml(XElement element, bool replaceValue = false)
         {
             var value = Value;
             for (var i = 0; i < Dimension; i += 1)
-                element.AddAttr(Labels[i], Get(ref value, i));
+            {
+                if (element.Attribute(Labels[i]) is not XAttribute attribute)
+                    element.AddAttr(Labels[i], Get(ref value, i));
+                else if (replaceValue)
+                    attribute.Value = Get(ref value, i).ToString();
+            }
         }
         public override void FromXml(XElement config, T defaultValue)
         {
@@ -259,7 +306,11 @@ namespace ModsCommon.Utilities
         public PropertyStringValue(string label, Action onChanged, string value = default) : base(label, onChanged, value) { }
 
         protected override bool Equals(string x, string y) => x == y;
-        protected override XAttribute ToXml() => new XAttribute(Label, Value);
+        protected override void ToXml(out string label, out object value)
+        {
+            label = Label;
+            value = Value;
+        }
         public override void FromXml(XElement config, string defaultValue) => Value = config.GetAttrValue(Label, defaultValue);
     }
 
@@ -272,9 +323,10 @@ namespace ModsCommon.Utilities
         public PropertyPrefabValue(Action onChanged, string name) : this(onChanged, PrefabCollection<PrefabType>.FindLoaded(name)) { }
         public PropertyPrefabValue(string label, Action onChanged, string name) : this(label, onChanged, PrefabCollection<PrefabType>.FindLoaded(name)) { }
 
-        public override void ToXml(XElement element)
+        protected override void ToXml(out string label, out object value)
         {
-            element.AddAttr(Label, Value?.name ?? string.Empty);
+            label = Label;
+            value = Value?.name ?? string.Empty;
         }
         public override void FromXml(XElement config, PrefabType defaultValue)
         {

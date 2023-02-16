@@ -210,7 +210,7 @@ namespace ModsCommon.Utilities
         {
             if (p < 0.1f && i != 0)
                 return new int[] { i, i - 1 };
-            else if (0.9f < p && i + 1 < count)
+            else if (p > 0.9f && i + 1 < count)
                 return new int[] { i, i + 1 };
             else
                 return new int[] { i };
