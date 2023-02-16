@@ -24,6 +24,9 @@ namespace ModsCommon.Utilities
         public Vector3 StartPosition => Trajectory.a;
         public Vector3 EndPosition => Trajectory.d;
         public bool IsZero => Trajectory.Max() == Trajectory.Min();
+#if DEBUG
+        public string Table => $"{Trajectory.a.x};{Trajectory.a.z}\n{Trajectory.b.x};{Trajectory.b.z}\n{Trajectory.c.x};{Trajectory.c.z}\n{Trajectory.d.x};{Trajectory.d.z}";
+#endif
 
         private BezierTrajectory(Bezier3 trajectory, float? length, float magnitude, float deltaAngle, Vector3 direction, Vector3 startDirection, Vector3 endDirection, float? startT, float? endT)
         {

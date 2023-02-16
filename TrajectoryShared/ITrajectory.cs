@@ -38,5 +38,8 @@ namespace ModsCommon.Utilities
         public Vector3 GetDirectionPosition(Vector3 hitPos, out float closestT);
         public void GetClosestPositionAndDirection(Vector3 hitPos, out Vector3 position, out Vector3 direction, out float closestT);
         public float GetLength(float minAngleDelta = 10, int depth = 5);
+#if DEBUG
+        public string Table { get; }
+#endif
     }
 }

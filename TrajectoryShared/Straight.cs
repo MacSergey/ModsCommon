@@ -19,6 +19,9 @@ namespace ModsCommon.Utilities
         public Vector3 StartPosition => Trajectory.a;
         public Vector3 EndPosition => Trajectory.b;
         public bool IsZero => Trajectory.a == Trajectory.b;
+#if DEBUG
+        public string Table => $"{Trajectory.a.x};{Trajectory.a.z}\n{Trajectory.b.x};{Trajectory.b.z}";
+#endif
 
         private StraightTrajectory(Line3 trajectory, bool startLimited, bool endLimited, float length, Vector3 direction)
         {

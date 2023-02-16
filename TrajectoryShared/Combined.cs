@@ -51,6 +51,9 @@ namespace ModsCommon.Utilities
         public Vector3 StartPosition => Trajectories.First().StartPosition;
         public Vector3 EndPosition => Trajectories.Last().EndPosition;
         public bool IsZero => Trajectories.All(t => t.IsZero);
+#if DEBUG
+        public string Table => string.Join("\n\n", Trajectories.Select(t => t.Table).ToArray());
+#endif
 
         private CombinedTrajectory(ITrajectory[] trajectories, float? length, float[] parts, float magnitude, float deltaAngle, Vector3 direction, Vector3 startDirection, Vector3 endDirection)
         {
