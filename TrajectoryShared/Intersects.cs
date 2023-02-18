@@ -81,17 +81,17 @@ namespace ModsCommon.Utilities
                     IntersectStraightWithStraight(result, in firstStraight, in secondStraight);
                 }
                 else
-                    IntersectITrajectoryWithStraight(result, in firstStraight, secondTrajectory, false);
+                    IntersectITrajectoryWithStraight(result, in firstStraight, secondTrajectory, false, SplitData.Default);
             }
             else
             {
                 if (secondTrajectory.TrajectoryType == TrajectoryType.Line)
                 {
                     var secondStraight = (StraightTrajectory)secondTrajectory;
-                    IntersectITrajectoryWithStraight(result, in secondStraight, firstTrajectory, true);
+                    IntersectITrajectoryWithStraight(result, in secondStraight, firstTrajectory, true, SplitData.Default);
                 }
                 else
-                    IntersectITrajectoryWithITrajectory(result, firstTrajectory, secondTrajectory);
+                    IntersectITrajectoryWithITrajectory(result, firstTrajectory, secondTrajectory, SplitData.Default, SplitData.Default);
             }
 
             return result;
@@ -126,52 +126,85 @@ namespace ModsCommon.Utilities
         #endregion
 
         #region ITRAJECTORY - ITRAJECTORY
-        private static bool IntersectITrajectoryWithITrajectory(List<Intersection> results, ITrajectory first, ITrajectory second, int firstIndex = 0, int firstTotal = 1, int secondIndex = 0, int secondTotal = 1)
+        private static void IntersectITrajectoryWithITrajectory(List<Intersection> results, ITrajectory first, ITrajectory second, SplitData firstData, SplitData secondData)
         {
-            var firstPoints = CalcTrajectoryParts(first, firstIndex, firstTotal, out int firstParts);
-            var secondPoints = CalcTrajectoryParts(second, secondIndex, secondTotal, out int secondParts);
+            var firstPoints = CalcTrajectoryParts(first, firstData, out int firstParts);
+            var secondPoints = CalcTrajectoryParts(second, secondData, out int secondParts);
 
             if (firstParts == 1 && secondParts == 1)
             {
-                IntersectSections(firstPoints[0].pos, firstPoints[1].pos, secondPoints[0].pos, secondPoints[1].pos, out float firstT, out float secondT);
-                firstT = 1f / firstTotal * (firstIndex + firstT);
-                secondT = 1f / secondTotal * (secondIndex + secondT);
-                results.Add(new Intersection(firstT, secondT, first, second));
-                return true;
-            }
-
-            for (var i = 0; i < firstParts; i += 1)
-            {
-                for (var j = 0; j < secondParts; j += 1)
+                if (IntersectSections(firstPoints[0].pos, firstPoints[1].pos, secondPoints[0].pos, secondPoints[1].pos, out float firstT, out float secondT))
                 {
-                    if (IntersectSections(firstPoints[i].pos, firstPoints[i + 1].pos, secondPoints[j].pos, secondPoints[j + 1].pos, out float firstT, out float secondT))
+                    firstT = (1f / firstData.total) * (firstData.index + firstData.merge * firstT);
+                    secondT = (1f / secondData.total) * (secondData.index + secondData.merge * secondT);
+                    results.Add(new Intersection(firstT, secondT, first, second));
+                }
+            }
+            else
+            {
+                for (var i = 0; i < firstParts; i += 1)
+                {
+                    for (var j = 0; j < secondParts; j += 1)
                     {
-                        var needTryI = NeedTryParts(i, firstParts, firstT);
-                        var needTryJ = NeedTryParts(j, secondParts, secondT);
-                        for (int tryI = 0; tryI < needTryI.Length; tryI += 1)
+                        if (IntersectSections(firstPoints[i].pos, firstPoints[i + 1].pos, secondPoints[j].pos, secondPoints[j + 1].pos, out float firstT, out float secondT))
                         {
-                            var ii = needTryI[tryI];
-                            for (int tryJ = 0; tryJ < needTryJ.Length; tryJ += 1)
-                            {
-                                var jj = needTryJ[tryJ];
+                            var nextFirstData = GetNext(firstData, i, firstParts, firstT);
+                            var nextSecondData = GetNext(secondData, j, secondParts, secondT);
 
-                                if (IntersectITrajectoryWithITrajectory(results, first, second, firstIndex * firstParts + ii, firstTotal * firstParts, secondIndex * secondParts + jj, secondTotal * secondParts))
-                                    return true;
-                            }
+                            IntersectITrajectoryWithITrajectory(results, first, second, nextFirstData, nextSecondData);
                         }
                     }
                 }
             }
 
-            return false;
+            static SplitData GetNext(SplitData data, int i, int count, float t)
+            {
+                if(count == 1)
+                {
+                    return data;
+                }
+                if (t < 0.1f && i != 0)
+                {
+                    return new SplitData((data.index * count / data.merge + i) * 2 - 1, (data.total * count / data.merge) * 2, 2);
+                }
+                else if (t > 0.9f && i + 1 != count - 1)
+                {
+                    return new SplitData((data.index * count / data.merge + i) * 2 + 1, (data.total * count / data.merge) * 2, 2);
+                }
+                else
+                {
+                    return new SplitData(data.index * count / data.merge + i, data.total * count / data.merge, 1);
+                }
+            }
+            static bool IntersectSections(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out float p, out float q)
+            {
+                return Line2.Intersect(XZ(a), XZ(b), XZ(c), XZ(d), out p, out q) && IsCorrectT(p) && IsCorrectT(q);
+            }
+        }
+        private readonly struct SplitData
+        {
+            public static SplitData Default = new SplitData(0, 1, 1);
+
+            public readonly int index;
+            public readonly int total;
+            public readonly int merge;
+
+            public SplitData(int index, int total, int merge = 1)
+            {
+                this.index = index;
+                this.total = total;
+                this.merge = merge;
+            }
+
+            public override string ToString() => merge <= 1 ? $"{index}/{total}" : $"{index}-{index + merge}/{total}";
         }
         #endregion
 
         #region ITRAJECTORY - STRAIGHT
 
-        private static void IntersectITrajectoryWithStraight(List<Intersection> results, in StraightTrajectory line, ITrajectory trajectory, bool invert, int index = 0, int total = 1)
+        private static void IntersectITrajectoryWithStraight(List<Intersection> results, in StraightTrajectory line, ITrajectory trajectory, bool invert, SplitData data)
         {
-            var points = CalcTrajectoryParts(trajectory, index, total, out int parts);
+            var points = CalcTrajectoryParts(trajectory, data, out int parts);
 
             if (parts > 1)
             {
@@ -179,13 +212,14 @@ namespace ModsCommon.Utilities
                 {
                     if (IntersectSectionAndRay(in line, points[i].pos, points[i + 1].pos, out _, out _))
                     {
-                        IntersectITrajectoryWithStraight(results, in line, trajectory, invert, index * parts + i, total * parts);
+                        var nextData = new SplitData(data.index * parts + i, data.total * parts);
+                        IntersectITrajectoryWithStraight(results, in line, trajectory, invert, nextData);
                     }
                 }
             }
             else if (parts == 1 && IntersectSectionAndRay(in line, points[0].pos, points[1].pos, out float firstT, out float secondT))
             {
-                secondT = 1f / total * (index + secondT);
+                secondT = 1f / data.total * (data.index + secondT);
                 if (!invert)
                 {
                     var result = new Intersection(firstT, secondT, line, trajectory);
@@ -198,48 +232,54 @@ namespace ModsCommon.Utilities
                 }
 
             }
+
+            static bool IntersectSectionAndRay(in StraightTrajectory line, Vector3 start, Vector3 end, out float p, out float q)
+            {
+                return Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && IsCorrectT(in line, p) && IsCorrectT(q);
+            }
         }
 
         #endregion
 
-        private static bool IntersectSections(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out float p, out float q)
+        private static TrajectoryPoint[] CalcTrajectoryParts(ITrajectory trajectory, SplitData data, out int parts)
         {
-            return Line2.Intersect(XZ(a), XZ(b), XZ(c), XZ(d), out p, out q) && IsCorrectT(p) && IsCorrectT(q);
-        }
-        private static int[] NeedTryParts(int i, int count, float p)
-        {
-            if (p < 0.1f && i != 0)
-                return new int[] { i, i - 1 };
-            else if (p > 0.9f && i + 1 < count)
-                return new int[] { i, i + 1 };
-            else
-                return new int[] { i };
-        }
-        private static bool IntersectSectionAndRay(in StraightTrajectory line, Vector3 start, Vector3 end, out float p, out float q)
-        {
-            return Line2.Intersect(XZ(line.StartPosition), XZ(line.EndPosition), XZ(start), XZ(end), out p, out q) && IsCorrectT(in line, p) && IsCorrectT(q);
-        }
-
-        private static TrajectoryPoint[] CalcTrajectoryParts(ITrajectory trajectory, int index, int total, out int parts)
-        {
-            var startT = 1f / total * index;
-            var endT = 1f / total * (index + 1);
+            var startT = 1f / data.total * data.index;
+            var endT = 1f / data.total * (data.index + data.merge);
 
             var start = trajectory.Position(startT);
             var end = trajectory.Position(endT);
             var middle = trajectory.Position((startT + endT) * 0.5f);
 
             var length = Mathf.Max((middle - start).magnitude + (end - middle).magnitude, 0f);
-            parts = Math.Min((int)Math.Ceiling(length / MinLength), 10);
+            parts = Math.Min(Mathf.CeilToInt(length / MinLength), 10);
+            if (parts > data.merge)
+                parts = parts / data.merge * data.merge;
 
             var points = new TrajectoryPoint[parts + 1];
+#if DEBUG
+            if (parts == 1)
+            {
+                points[0] = new TrajectoryPoint(start, startT, data.index, data.total);
+                points[parts] = new TrajectoryPoint(end, endT, data.index + data.merge, data.total);
+            }
+            else
+            {
+                points[0] = new TrajectoryPoint(start, startT, parts * data.index / data.merge, parts * data.total / data.merge);
+                points[parts] = new TrajectoryPoint(end, endT, parts * data.index / data.merge + parts, parts * data.total / data.merge);
+            }
+#else
             points[0] = new TrajectoryPoint(start, startT);
             points[parts] = new TrajectoryPoint(end, endT);
+#endif
 
             for (var i = 1; i < parts; i += 1)
             {
-                var t = startT + 1f / (total * parts) * i;
+                var t = startT + 1f / (parts * data.total / data.merge) * i;
+#if DEBUG
+                points[i] = new TrajectoryPoint(trajectory.Position(t), t, data.index * parts / data.merge + i, parts * data.total / data.merge);
+#else
                 points[i] = new TrajectoryPoint(trajectory.Position(t), t);
+#endif
             }
 
             return points;
@@ -339,7 +379,22 @@ namespace ModsCommon.Utilities
         {
             public readonly Vector3 pos;
             public readonly float t;
+#if DEBUG
+            public readonly int index;
+            public readonly int total;
+#endif
 
+#if DEBUG
+            public TrajectoryPoint(Vector3 pos, float t, int index, int total)
+            {
+                this.pos = pos;
+                this.t = t;
+                this.index = index;
+                this.total = total;
+            }
+
+            public override string ToString() => $"{t:0.###}: {pos} ({index}/{total})";
+#else
             public TrajectoryPoint(Vector3 pos, float t)
             {
                 this.pos = pos;
@@ -347,6 +402,7 @@ namespace ModsCommon.Utilities
             }
 
             public override string ToString() => $"{t:0.###}: {pos}";
+#endif
         }
     }
     public struct IntersectionPair
