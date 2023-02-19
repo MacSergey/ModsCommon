@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace ModsCommon.UI
                 Close();
         }
 
-        public virtual void Init(Dictionary<ModVersion, string> messages, string modName = null, bool maximizeFirst = true, CultureInfo culture = null)
+        public virtual void Init(Dictionary<ModVersion, string> messages, string modName = null, bool expandFirst = true, CultureInfo culture = null)
         {
             StopLayout();
 
@@ -46,40 +47,66 @@ namespace ModsCommon.UI
                 if (first == null)
                     first = versionMessage;
             }
-            if (maximizeFirst)
-                first.IsMinimize = false;
+            if (expandFirst)
+                first.IsExpand = true;
 
             StartLayout();
         }
 
         public class VersionMessage : UIAutoLayoutPanel
         {
-            public bool IsMinimize
+            public bool IsExpand
             {
-                get => !Container.isVisible;
+                get => Container.isVisible;
                 set
                 {
-                    Container.isVisible = !value;
-                    Button.text = value ? "►" : "▼";
+                    Container.isVisible = value;
+                    Button.text = value ? "▼" : "►";
+
+                    Container.StopLayout();
+                    {
+                        if (value)
+                        {
+                            foreach (var message in Messages)
+                            {
+                                var line = ComponentPool.Get<UpdateMessage>(Container);
+                                line.relativePosition = new Vector3(17, 7);
+                                line.Init(message);
+                            }
+                        }
+                        else
+                        {
+                            var components = Container.components.ToArray();
+                            foreach (var component in components)
+                            {
+                                ComponentPool.Free(component);
+                            }
+                        }
+                    }
+                    Container.StartLayout();
                 }
             }
             private CustomUILabel Title { get; set; }
             private CustomUILabel SubTitle { get; set; }
             private CustomUIButton Button { get; set; }
             private UIAutoLayoutPanel Container { get; set; }
-            private List<UpdateMessage> Lines { get; } = new List<UpdateMessage>();
+            private List<MessageText> Messages { get; } = new List<MessageText>();
+
             public VersionMessage()
             {
-                autoLayoutDirection = LayoutDirection.Vertical;
-                autoFitChildrenVertically = true;
-                padding = new RectOffset(5, 5, 5, 5);
-                autoLayoutPadding = new RectOffset(0, 0, 0, 8);
-                backgroundSprite = "TextFieldPanel";
-                color = new Color32(64, 64, 64, 255);
-                verticalSpacing = 5;
-
-                AddTitle();
-                AddLinesContainer();
+                StopLayout();
+                {
+                    autoLayoutDirection = LayoutDirection.Vertical;
+                    autoFitChildrenVertically = true;
+                    padding = new RectOffset(5, 5, 5, 5);
+                    autoLayoutPadding = new RectOffset(0, 0, 0, 8);
+                    backgroundSprite = "TextFieldPanel";
+                    color = new Color32(64, 64, 64, 255);
+                    verticalSpacing = 5;
+                    AddTitle();
+                    AddLinesContainer();
+                }
+                StartLayout();
             }
             private void AddTitle()
             {
@@ -89,7 +116,7 @@ namespace ModsCommon.UI
                 titlePanel.autoFitChildrenVertically = true;
                 titlePanel.autoFitChildrenHorizontally = true;
                 titlePanel.autoLayoutPadding = new RectOffset(0, 10, 0, 0);
-                titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsMinimize = !IsMinimize;
+                titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsExpand = !IsExpand;
 
                 var versionPanel = titlePanel.AddUIComponent<UIAutoLayoutPanel>();
                 versionPanel.name = "VersionPanel";
@@ -140,52 +167,30 @@ namespace ModsCommon.UI
 
             public void Init(ModVersion version, string message, CultureInfo culture)
             {
-                Container.StopLayout();
-
+                IsExpand = false;
                 Title.text = version.Number.ToString();
                 if (version.IsBeta)
                     SubTitle.text = "BETA";
                 else
                     SubTitle.text = version.Date.ToString("d MMM yyyy", culture);
-                SetMessage(message);
-                IsMinimize = true;
 
-                Container.StartLayout();
+                GetMessages(message);
             }
-            private void SetMessage(string message)
+            private void GetMessages(string message)
             {
                 message = message.Replace("\r\n", "\n").Replace($"\n---", "---");
                 var lines = message.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                var max = Math.Max(lines.Length, Lines.Count);
 
-                for (var i = 0; i < max; i += 1)
+                for (var i = 0; i < lines.Length; i += 1)
                 {
-                    if (i < lines.Length)
-                    {
-                        lines[i] = lines[i].Replace("---", $"\n\t");
-                        var match = Regex.Match(lines[i], @"(\[(?<label>.+)\])?(?<text>(\n|.)+)");
-                        var label = match.Groups["label"];
-                        var text = match.Groups["text"];
+                    lines[i] = lines[i].Replace("---", $"\n\t");
+                    var match = Regex.Match(lines[i], @"(\[(?<tag>.+)\])?(?<text>(\n|.)+)");
+                    var tag = match.Groups["tag"];
+                    var text = match.Groups["text"];
 
-                        if (text.Success)
-                        {
-                            if (i >= Lines.Count)
-                                AddLine();
-                            Lines[i].isVisible = true;
-                            Lines[i].Init(label.Success ? label.Value : null, text.Value);
-                        }
-                        else
-                            Lines[i].isVisible = false;
-                    }
-                    else
-                        Lines[i].isVisible = false;
+                    if (text.Success)
+                        Messages.Add(new MessageText(tag.Success ? tag.Value : null, text.Value));
                 }
-            }
-            private void AddLine()
-            {
-                var line = Container.AddUIComponent<UpdateMessage>();
-                line.relativePosition = new Vector3(17, 7);
-                Lines.Add(line);
             }
 
             protected override void OnSizeChanged()
@@ -196,13 +201,26 @@ namespace ModsCommon.UI
                     Button.width = width - padding.horizontal;
                 if (Container != null)
                     Container.width = width - padding.horizontal;
-                foreach (var line in Lines)
+                foreach (var line in Container.components)
                     line.width = width - padding.horizontal;
             }
         }
-        public class UpdateMessage : UIAutoLayoutPanel
+        public readonly struct MessageText
         {
-            private CustomUILabel Label { get; set; }
+            public readonly string tag;
+            public readonly string text;
+
+            public MessageText(string tag, string text)
+            {
+                this.tag = tag;
+                this.text = text;
+            }
+        }
+        public class UpdateMessage : UIAutoLayoutPanel, IReusable
+        {
+            bool IReusable.InCache { get; set; }
+
+            private CustomUILabel Tag { get; set; }
             private CustomUILabel Text { get; set; }
 
             public UpdateMessage()
@@ -212,16 +230,16 @@ namespace ModsCommon.UI
                 autoLayoutPadding = new RectOffset(0, 0, 0, 0);
                 autoLayoutPadding = new RectOffset(0, 10, 0, 0);
 
-                Label = AddUIComponent<CustomUILabel>();
-                Label.autoSize = false;
-                Label.height = 20f;
-                Label.width = 100f;
-                Label.atlas = TextureHelper.InGameAtlas;
-                Label.backgroundSprite = "TextFieldPanel";
-                Label.textAlignment = UIHorizontalAlignment.Center;
-                Label.verticalAlignment = UIVerticalAlignment.Middle;
-                Label.textScale = 0.7f;
-                Label.padding = new RectOffset(0, 0, 4, 0);
+                Tag = AddUIComponent<CustomUILabel>();
+                Tag.autoSize = false;
+                Tag.height = 20f;
+                Tag.width = 100f;
+                Tag.atlas = TextureHelper.InGameAtlas;
+                Tag.backgroundSprite = "TextFieldPanel";
+                Tag.textAlignment = UIHorizontalAlignment.Center;
+                Tag.verticalAlignment = UIVerticalAlignment.Middle;
+                Tag.textScale = 0.7f;
+                Tag.padding = new RectOffset(0, 0, 4, 0);
 
                 Text = AddUIComponent<CustomUILabel>();
                 Text.textAlignment = UIHorizontalAlignment.Left;
@@ -234,51 +252,51 @@ namespace ModsCommon.UI
                 Text.minimumSize = new Vector2(100, 20);
                 Text.padding = new RectOffset(0, 0, 4, 0);
             }
-            public void Init(string label, string text)
+            public void Init(MessageText message)
             {
-                if (!string.IsNullOrEmpty(label))
+                if (!string.IsNullOrEmpty(message.text))
                 {
-                    Label.isVisible = true;
-                    switch (label.Trim().ToUpper())
+                    Tag.isVisible = true;
+                    switch (message.tag.Trim().ToUpper())
                     {
                         case "NEW":
-                            Label.text = CommonLocalize.WhatsNew_NEW;
-                            Label.color = new Color32(40, 178, 72, 255);
+                            Tag.text = CommonLocalize.WhatsNew_NEW;
+                            Tag.color = new Color32(40, 178, 72, 255);
                             break;
                         case "FIXED":
-                            Label.text = CommonLocalize.WhatsNew_FIXED;
-                            Label.color = new Color32(255, 160, 0, 255);
+                            Tag.text = CommonLocalize.WhatsNew_FIXED;
+                            Tag.color = new Color32(255, 160, 0, 255);
                             break;
                         case "UPDATED":
-                            Label.text = CommonLocalize.WhatsNew_UPDATED;
-                            Label.color = new Color32(75, 228, 238, 255);
+                            Tag.text = CommonLocalize.WhatsNew_UPDATED;
+                            Tag.color = new Color32(75, 228, 238, 255);
                             break;
                         case "REMOVED":
-                            Label.text = CommonLocalize.WhatsNew_REMOVED;
-                            Label.color = new Color32(225, 56, 225, 255);
+                            Tag.text = CommonLocalize.WhatsNew_REMOVED;
+                            Tag.color = new Color32(225, 56, 225, 255);
                             break;
                         case "REVERTED":
-                            Label.text = CommonLocalize.WhatsNew_REVERTED;
-                            Label.color = new Color32(225, 56, 225, 255);
+                            Tag.text = CommonLocalize.WhatsNew_REVERTED;
+                            Tag.color = new Color32(225, 56, 225, 255);
                             break;
                         case "TRANSLATION":
-                            Label.text = CommonLocalize.WhatsNew_TRANSLATION;
-                            Label.color = new Color32(0, 120, 255, 255);
+                            Tag.text = CommonLocalize.WhatsNew_TRANSLATION;
+                            Tag.color = new Color32(0, 120, 255, 255);
                             break;
                         case "WARNING":
-                            Label.text = CommonLocalize.WhatsNew_WARNING;
-                            Label.color = new Color32(255, 34, 45, 255);
+                            Tag.text = CommonLocalize.WhatsNew_WARNING;
+                            Tag.color = new Color32(255, 34, 45, 255);
                             break;
                         default:
-                            Label.text = label.ToUpper();
+                            Tag.text = message.tag.ToUpper();
                             break;
                     }
                 }
                 else
-                    Label.isVisible = false;
+                    Tag.isVisible = false;
 
-                Text.text = text.Trim();
-                Label.textScale = Label.text.Length <= 11 ? 0.7f : 0.5f;
+                Text.text = message.text.Trim();
+                Tag.textScale = Tag.text.Length <= 11 ? 0.7f : 0.5f;
                 Fit();
             }
             protected override void OnSizeChanged()
@@ -294,7 +312,14 @@ namespace ModsCommon.UI
             private void Fit()
             {
                 if (Text != null)
-                    Text.width = width - (Label?.isVisible == true ? 100f + autoLayoutPadding.horizontal : 0f);
+                    Text.width = width - (Tag?.isVisible == true ? 100f + autoLayoutPadding.horizontal : 0f);
+            }
+
+            void IReusable.DeInit()
+            {
+                Tag.text = string.Empty;
+                Tag.color = Color.white;
+                Text.text = string.Empty;
             }
         }
     }

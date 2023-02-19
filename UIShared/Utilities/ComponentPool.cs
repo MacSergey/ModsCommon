@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ModsCommon.UI
 {
@@ -16,6 +17,12 @@ namespace ModsCommon.UI
     {
         private static Dictionary<Type, Queue<UIComponent>> Pool { get; } = new Dictionary<Type, Queue<UIComponent>>();
         private static Dictionary<Type, FieldInfo[]> EventFields { get; } = new Dictionary<Type, FieldInfo[]>();
+
+
+        static ComponentPool()
+        {
+            SceneManager.activeSceneChanged += (_, _) => Clear();
+        }
 
         private static ComponentType Get<ComponentType>(UIComponent parent, string otherName, int delta, string name = null)
             where ComponentType : UIComponent, IReusable
@@ -112,7 +119,7 @@ namespace ModsCommon.UI
             }
         }
 
-        public static void Clear()
+        private static void Clear()
         {
             foreach (var type in Pool.Values)
             {
