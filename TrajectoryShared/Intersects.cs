@@ -12,8 +12,12 @@ namespace ModsCommon.Utilities
         public static float DeltaAngle = 5f;
         public static float MaxLength = 1f;
         public static float MinLength = 0.5f;
-        public static Comparer FirstComparer { get; } = new Comparer(true);
-        public static Comparer SecondComparer { get; } = new Comparer(false);
+        public static ComponentComparer FirstComparer { get; } = new ComponentComparer(true, true);
+        public static ComponentComparer SecondComparer { get; } = new ComponentComparer(false, true);
+
+        public static ComponentComparer FirstApproxComparer { get; } = new ComponentComparer(true, false);
+        public static ComponentComparer SecondApproxComparer { get; } = new ComponentComparer(false, false);
+
         public static Intersection NotIntersect => new Intersection(false, default, default);
 
         public readonly ITrajectory first;
@@ -126,10 +130,11 @@ namespace ModsCommon.Utilities
         #endregion
 
         #region ITRAJECTORY - ITRAJECTORY
-        private static void IntersectITrajectoryWithITrajectory(List<Intersection> results, ITrajectory first, ITrajectory second, SplitData firstData, SplitData secondData)
+        private static IntersectResult IntersectITrajectoryWithITrajectory(List<Intersection> results, ITrajectory first, ITrajectory second, SplitData firstData, SplitData secondData)
         {
             var firstPoints = CalcTrajectoryParts(first, firstData, out int firstParts);
             var secondPoints = CalcTrajectoryParts(second, secondData, out int secondParts);
+            var result = new IntersectResult();
 
             if (firstParts == 1 && secondParts == 1)
             {
@@ -138,7 +143,10 @@ namespace ModsCommon.Utilities
                     firstT = (1f / firstData.total) * (firstData.index + firstData.merge * firstT);
                     secondT = (1f / secondData.total) * (secondData.index + secondData.merge * secondT);
                     results.Add(new Intersection(firstT, secondT, first, second));
+                    return IntersectResult.Positive;
                 }
+
+                result.Add(firstT, secondT);
             }
             else
             {
@@ -151,23 +159,41 @@ namespace ModsCommon.Utilities
                             var nextFirstData = GetNext(firstData, i, firstParts, firstT);
                             var nextSecondData = GetNext(secondData, j, secondParts, secondT);
 
-                            IntersectITrajectoryWithITrajectory(results, first, second, nextFirstData, nextSecondData);
+                            var nextResult = IntersectITrajectoryWithITrajectory(results, first, second, nextFirstData, nextSecondData);
+                            if (nextResult.Intersect)
+                                return IntersectResult.Positive;
+
+                            var needI = NeedCheck(nextResult.firstDir, i, firstParts, out var nextI);
+                            var needJ = NeedCheck(nextResult.secondDir, j, secondParts, out var nextJ);
+                            if (!needI && !needJ)
+                                continue;
+
+                            nextFirstData = GetNext(firstData, nextI, firstParts, firstT);
+                            nextSecondData = GetNext(secondData, nextJ, secondParts, secondT);
+
+                            nextResult = IntersectITrajectoryWithITrajectory(results, first, second, nextFirstData, nextSecondData);
+                            if (nextResult.Intersect)
+                                return IntersectResult.Positive;
                         }
+
+                        result.Add(firstT, secondT);
                     }
                 }
             }
 
+            return result;
+
             static SplitData GetNext(SplitData data, int i, int count, float t)
             {
-                if(count == 1)
+                if (count == 1)
                 {
                     return data;
                 }
-                if (t < 0.1f && i != 0)
+                if (t < 0.1f && i > 0)
                 {
                     return new SplitData((data.index * count / data.merge + i) * 2 - 1, (data.total * count / data.merge) * 2, 2);
                 }
-                else if (t > 0.9f && i + 1 != count - 1)
+                else if (t > 0.9f && i < count - 1)
                 {
                     return new SplitData((data.index * count / data.merge + i) * 2 + 1, (data.total * count / data.merge) * 2, 2);
                 }
@@ -178,7 +204,35 @@ namespace ModsCommon.Utilities
             }
             static bool IntersectSections(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out float p, out float q)
             {
-                return Line2.Intersect(XZ(a), XZ(b), XZ(c), XZ(d), out p, out q) && IsCorrectT(p) && IsCorrectT(q);
+                if(Line2.Intersect(XZ(a), XZ(b), XZ(c), XZ(d), out p, out q))
+                {
+                    if(IsCorrectT(p) && IsCorrectT(q))
+                    {
+                        var dot = Vector2.Dot((XZ(b) - XZ(a)).normalized, (XZ(d) - XZ(c)).normalized);
+                        if (!Mathf.Approximately(Mathf.Abs(dot), 1f))
+                            return true;
+                    }
+                }
+
+                return false;
+            }
+            static bool NeedCheck(IntersectionDirection dir, int i, int count, out int nextI)
+            {
+                if (dir == IntersectionDirection.Before && i > 0)
+                {
+                    nextI = i - 1;
+                    return true;
+                }
+                else if (dir == IntersectionDirection.After && i < count - 1)
+                {
+                    nextI = i + 1;
+                    return true;
+                }
+                else
+                {
+                    nextI = i;
+                    return false;
+                }
             }
         }
         private readonly struct SplitData
@@ -198,6 +252,43 @@ namespace ModsCommon.Utilities
 
             public override string ToString() => merge <= 1 ? $"{index}/{total}" : $"{index}-{index + merge}/{total}";
         }
+        private struct IntersectResult
+        {
+            public static IntersectResult Positive = new IntersectResult()
+            {
+                firstDir = IntersectionDirection.Middle,
+                secondDir = IntersectionDirection.Middle
+            };
+
+            public IntersectionDirection firstDir;
+            public IntersectionDirection secondDir;
+
+            public bool Intersect => firstDir == IntersectionDirection.Middle && secondDir == IntersectionDirection.Middle;
+
+            public void Add(float firstT, float secondT)
+            {
+                firstDir |= GetDirection(firstT);
+                secondDir |= GetDirection(secondT);
+            }
+            private IntersectionDirection GetDirection(float t)
+            {
+                if (t < 0f)
+                    return IntersectionDirection.Before;
+                else if (t > 1f)
+                    return IntersectionDirection.After;
+                else
+                    return IntersectionDirection.Middle;
+            }
+        }
+        [Flags]
+        private enum IntersectionDirection
+        {
+            None = 0,
+            Before = 1,
+            Middle = 2,
+            After = 4,
+        }
+
         #endregion
 
         #region ITRAJECTORY - STRAIGHT
@@ -365,14 +456,26 @@ namespace ModsCommon.Utilities
             Left,
             Right
         }
-        public class Comparer : IComparer<Intersection>
+        public class ComponentComparer : IComparer<Intersection>
         {
             private readonly bool isFirst;
-            public Comparer(bool isFirst = true)
+            private readonly bool strict;
+            public ComponentComparer(bool isFirst, bool strict)
             {
                 this.isFirst = isFirst;
+                this.strict = strict;
             }
-            public int Compare(Intersection x, Intersection y) => isFirst ? x.firstT.CompareTo(y.firstT) : x.secondT.CompareTo(y.secondT);
+            public int Compare(Intersection x, Intersection y)
+            {
+                if(isFirst)
+                    return !strict && Approximately(x.firstT, y.firstT) ? 0 : x.firstT.CompareTo(y.firstT);
+                else
+                    return !strict && Approximately(x.secondT, y.secondT) ? 0 : x.secondT.CompareTo(y.secondT);
+            }
+            private bool Approximately(float a, float b)
+            {
+                return Mathf.Abs(b - a) < 0.001f * Mathf.Max(Mathf.Abs(a), Mathf.Abs(b));
+            }
         }
 
         private readonly struct TrajectoryPoint
