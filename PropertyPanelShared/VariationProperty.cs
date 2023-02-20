@@ -41,7 +41,7 @@ namespace ModsCommon.UI
         }
 
         protected abstract void AddSelectorItems();
-        protected void AddItem(ItemType item, string label, UITextureAtlas atlas, string sprite) => Selector.AddItem(item, label: label, iconAtlas: atlas, iconSprite: sprite);
+        protected void AddItem(ItemType item, OptionData data) => Selector.AddItem(item, data);
 
         private void SelectorChanged(ItemType selctedItem)
         {

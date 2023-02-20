@@ -8,7 +8,7 @@ namespace ModsCommon.UI
     {
         Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
 
-        void AddItem(ValueType item, string label = null);
+        void AddItem(ValueType item, OptionData optionData);
         void Clear();
         void SetDefaultStyle(Vector2? size = null);
     }

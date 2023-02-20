@@ -7,6 +7,19 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
+    public readonly struct OptionData
+    {
+        public readonly string label;
+        public readonly UITextureAtlas atlas;
+        public readonly string sprite;
+
+        public OptionData(string label = null, UITextureAtlas atlas = null, string sprite = null)
+        {
+            this.label = label;
+            this.atlas = atlas;
+            this.sprite = sprite;
+        }
+    }
     public abstract class UISegmented<ValueType> : UIAutoLayoutPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
@@ -14,44 +27,44 @@ namespace ModsCommon.UI
         protected List<ValueType> Objects { get; } = new List<ValueType>();
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
         protected Dictionary<CustomUIButton, bool> Clickable { get; } = new Dictionary<CustomUIButton, bool>();
-        protected virtual int TextPadding => AutoButtonSize ? 8 : (int)Mathf.Clamp((_buttonWidth - 20f) / 2f, 0, 8);
+        protected virtual int TextPadding => AutoButtonSize ? 8 : (int)Mathf.Clamp((buttonWidth - 20f) / 2f, 0, 8);
 
-        private bool _autoButtonSize = true;
-        private float _buttonWidth = 50f;
+        private bool autoButtonSize = true;
+        private float buttonWidth = 50f;
         public bool AutoButtonSize
         {
-            get => _autoButtonSize;
+            get => autoButtonSize;
             set
             {
-                if (value != _autoButtonSize)
+                if (value != autoButtonSize)
                 {
-                    _autoButtonSize = value;
+                    autoButtonSize = value;
                     SetButtonsWidth();
                 }
             }
         }
         public float ButtonWidth
         {
-            get => _buttonWidth;
+            get => buttonWidth;
             set
             {
-                if (value != _buttonWidth)
+                if (value != buttonWidth)
                 {
-                    _buttonWidth = value;
+                    buttonWidth = value;
                     SetButtonsWidth();
                 }
             }
         }
 
-        private float _textScale = 0.8f;
+        private float textScale = 0.8f;
         public float TextScale
         {
-            get => _textScale;
+            get => textScale;
             set
             {
-                if (value != _textScale)
+                if (value != textScale)
                 {
-                    _textScale = value;
+                    textScale = value;
                     SetButtonsWidth();
                 }
             }
@@ -64,8 +77,8 @@ namespace ModsCommon.UI
             autoFitChildrenVertically = true;
         }
 
-        public void AddItem(ValueType item, string label = null) => AddItem(item, label, null, null, true, null);
-        public void AddItem(ValueType item, string label = null, UITextureAtlas iconAtlas = null, string iconSprite = null, bool clickable = true, float? width = null)
+        public void AddItem(ValueType item, OptionData optionData) => AddItem(item, optionData, true, null);
+        public void AddItem(ValueType item, OptionData optionData, bool clickable = true, float? width = null)
         {
             Objects.Add(item);
 
@@ -73,15 +86,15 @@ namespace ModsCommon.UI
             button.atlas = CommonTextures.Atlas;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
 
-            if (iconAtlas != null && !string.IsNullOrEmpty(iconSprite))
+            if (optionData.atlas != null && !string.IsNullOrEmpty(optionData.sprite))
             {
-                button.atlasForeground = iconAtlas;
-                button.normalFgSprite = iconSprite;
-                button.tooltip = label ?? item.ToString();
+                button.atlasForeground = optionData.atlas;
+                button.normalFgSprite = optionData.sprite;
+                button.tooltip = optionData.label ?? item.ToString();
                 button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
             }
             else
-                button.text = label ?? item.ToString();
+                button.text = optionData.label ?? item.ToString();
 
             UpdateButton(button, width);
             if (clickable)
@@ -105,7 +118,7 @@ namespace ModsCommon.UI
 
             StartLayout();
         }
-        private void UpdateButton(CustomUIButton button, float? width = null)
+        private void UpdateButton(CustomUIButton button = null, float? width = null)
         {
             button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
             button.textScale = TextScale;
@@ -153,16 +166,16 @@ namespace ModsCommon.UI
                 return index == Buttons.Count - 1 ? "Right" : "Middle";
         }
 
-        protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam);
+        protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null);
         protected abstract bool IsSelect(int index);
 
         public virtual void DeInit()
         {
             Clear();
 
-            _autoButtonSize = true;
-            _buttonWidth = 50f;
-            _textScale = 0.8f;
+            autoButtonSize = true;
+            buttonWidth = 50f;
+            textScale = 0.8f;
         }
         public virtual void Clear()
         {
@@ -234,7 +247,7 @@ namespace ModsCommon.UI
             SelectedIndex = -1;
             base.Clear();
         }
-        protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => SetSelected(Buttons.FindIndex(b => b == component));
+        protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null) => SetSelected(Buttons.FindIndex(b => b == component));
         protected override bool IsSelect(int index) => SelectedIndex == index;
     }
     public class BoolSegmented : UIOnceSegmented<bool>
@@ -285,7 +298,7 @@ namespace ModsCommon.UI
         }
         string IValueChanger<List<ValueType>>.Format { set { } }
 
-        private void SetSelected(HashSet<int> indices, bool callEvent = true)
+        private void SetSelected(HashSet<int> indices = null, bool callEvent = true)
         {
             foreach (var index in SelectedIndices)
             {
@@ -315,7 +328,7 @@ namespace ModsCommon.UI
             SelectedIndices.Clear();
             base.Clear();
         }
-        protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam)
+        protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null)
         {
             var indices = new HashSet<int>(SelectedIndices);
             var index = Buttons.FindIndex(b => b == component);

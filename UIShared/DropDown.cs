@@ -38,10 +38,10 @@ namespace ModsCommon.UI
             popup.scrollPosition = position;
         }
 
-        public void AddItem(ValueType item, string label = null)
+        public void AddItem(ValueType item, OptionData data)
         {
             Objects.Add(item);
-            AddItem(label ?? item.ToString());
+            AddItem(data.label ?? item.ToString());
         }
         public void Clear()
         {

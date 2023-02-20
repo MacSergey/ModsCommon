@@ -25,7 +25,7 @@ namespace ModsCommon.UI
             foreach (var value in GetValues())
             {
                 if (selector?.Invoke(value) != false)
-                    Selector.AddItem(value, GetDescription(value));
+                    Selector.AddItem(value, new OptionData(GetDescription(value)));
             }
             Selector.StartLayout();
         }
@@ -62,7 +62,7 @@ namespace ModsCommon.UI
             foreach (var value in EnumExtension.GetEnumValues<EnumType>())
             {
                 if (selector?.Invoke(value) != false)
-                    Selector.AddItem(value, GetDescription(value));
+                    Selector.AddItem(value, new OptionData(GetDescription(value)));
             }
             Selector.StartLayout();
         }
@@ -94,13 +94,13 @@ namespace ModsCommon.UI
             Selector.StopLayout();
             if (invert)
             {
-                Selector.AddItem(true, trueLabel);
-                Selector.AddItem(false, falseLabel);
+                Selector.AddItem(true, new OptionData(trueLabel));
+                Selector.AddItem(false, new OptionData(falseLabel));
             }
             else
             {
-                Selector.AddItem(false, falseLabel);
-                Selector.AddItem(true, trueLabel);
+                Selector.AddItem(false, new OptionData(falseLabel));
+                Selector.AddItem(true, new OptionData(trueLabel));
             }
             Selector.StartLayout();
         }
@@ -119,7 +119,7 @@ namespace ModsCommon.UI
 
             Selector.StopLayout();
             for (var i = 1; i <= count; i += 1)
-                Selector.AddItem(i, i.ToString());
+                Selector.AddItem(i, new OptionData(i.ToString()));
             Selector.StartLayout();
         }
 

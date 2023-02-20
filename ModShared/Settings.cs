@@ -231,7 +231,7 @@ namespace ModsCommon
         private void AddLanguageList(UIHelper group)
         {
             var dropDown = (group.self as UIComponent).AddUIComponent<LanguageDropDown>();
-            dropDown.AddItem(string.Empty, CommonLocalize.LocaleManager.GetString("Mod_LocaleGame", CommonLocalize.Culture));
+            dropDown.AddItem(string.Empty, new OptionData(CommonLocalize.LocaleManager.GetString("Mod_LocaleGame", CommonLocalize.Culture)));
 
             foreach (var locale in GetSupportLanguages())
             {
@@ -240,7 +240,7 @@ namespace ModsCommon
                 if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale.ToLower())
                     localeText += $" ({CommonLocalize.LocaleManager.GetString(localizeString, CommonLocalize.Culture)})";
 
-                dropDown.AddItem(locale, localeText);
+                dropDown.AddItem(locale, new OptionData(localeText));
             }
 
             dropDown.SelectedObject = Locale.value;

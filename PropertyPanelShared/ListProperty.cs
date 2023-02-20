@@ -54,7 +54,7 @@ namespace ModsCommon.UI
             Selector.Clear();
 
             if (AllowNull)
-                Selector.AddItem(default, NullText ?? string.Empty);
+                Selector.AddItem(default, new OptionData(NullText ?? string.Empty));
         }
         public override void DeInit()
         {
@@ -62,11 +62,11 @@ namespace ModsCommon.UI
             OnDropDownStateChange = null;
             Selector.Clear();
         }
-        public void Add(Type item) => Selector.AddItem(item);
+        public void Add(Type item) => Selector.AddItem(item, new OptionData());
         public void AddRange(IEnumerable<Type> items)
         {
             foreach (var item in items)
-                Selector.AddItem(item);
+                Selector.AddItem(item, new OptionData());
         }
         protected abstract bool IsEqual(Type first, Type second);
     }
@@ -148,7 +148,7 @@ namespace ModsCommon.UI
             var count = Math.Min(values.Length, labels.Length);
             for (int i = 0; i < count; i += 1)
             {
-                Selector.AddItem(values[i], labels[i]);
+                Selector.AddItem(values[i], new OptionData(labels[i]));
             }
             Selector.StartLayout();
         }
