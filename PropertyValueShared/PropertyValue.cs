@@ -317,6 +317,8 @@ namespace ModsCommon.Utilities
     public class PropertyPrefabValue<PrefabType> : PropertyClassValue<PrefabType>
         where PrefabType : PrefabInfo
     {
+        public string RawName { get; private set; }
+        public bool HasName => !string.IsNullOrEmpty(RawName);
         public PropertyPrefabValue(Action onChanged, PrefabType value = default) : base(onChanged, value) { }
         public PropertyPrefabValue(string label, Action onChanged, PrefabType value = default) : base(label, onChanged, value) { }
 
@@ -326,12 +328,12 @@ namespace ModsCommon.Utilities
         protected override void ToXml(out string label, out object value)
         {
             label = Label;
-            value = Value?.name ?? string.Empty;
+            value = Value?.name ?? RawName;
         }
         public override void FromXml(XElement config, PrefabType defaultValue)
         {
-            var name = config.GetAttrValue(Label, string.Empty);
-            Value = PrefabCollection<PrefabType>.FindLoaded(name) ?? defaultValue;
+            RawName = config.GetAttrValue(Label, string.Empty);
+            Value = PrefabCollection<PrefabType>.FindLoaded(RawName) ?? defaultValue;
         }
     }
 }
