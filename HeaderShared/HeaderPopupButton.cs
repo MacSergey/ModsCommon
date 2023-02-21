@@ -15,17 +15,17 @@ namespace ModsCommon.UI
         public event Action PopupClosedEvent;
         public PopupType Popup { get; private set; }
 
+        public override void Update()
+        {
+            base.Update();
+            CheckPopup();
+        }
+
         protected override void OnClick(UIMouseEventParameter p)
         {
             if (Popup == null)
                 OpenPopup();
             else
-                ClosePopup();
-        }
-        protected override void OnVisibilityChanged()
-        {
-            base.OnVisibilityChanged();
-            if (!isVisible)
                 ClosePopup();
         }
 
@@ -35,7 +35,7 @@ namespace ModsCommon.UI
 
             var root = GetRootContainer();
             Popup = root.AddUIComponent<PopupType>();
-            Popup.eventLostFocus += OnPopupLostFocus;
+            Popup.eventLeaveFocus += OnPopupLeaveFocus;
             Popup.eventKeyDown += OnPopupKeyDown;
             Popup.Focus();
 
@@ -50,7 +50,7 @@ namespace ModsCommon.UI
             {
                 OnPopupClose();
 
-                Popup.eventLostFocus -= OnPopupLostFocus;
+                Popup.eventLeaveFocus -= OnPopupLeaveFocus;
                 Popup.eventKeyDown -= OnPopupKeyDown;
 
                 foreach (var items in Popup.components.ToArray())
@@ -62,22 +62,35 @@ namespace ModsCommon.UI
                 OnPopupClosed();
             }
         }
+        private void CheckPopup()
+        {
+            if (Popup == null)
+                return;
+
+            if (!Popup.containsFocus && !containsFocus)
+            {
+                ClosePopup();
+                return;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                var ray = GetCamera().ScreenPointToRay(Input.mousePosition);
+                if (!Popup.Raycast(ray) && !Raycast(ray))
+                {
+                    ClosePopup();
+                    return;
+                }
+            }
+        }
+
         protected virtual void OnPopupOpen() => PopupOpenEvent?.Invoke();
         protected virtual void OnPopupOpened() => PopupOpenedEvent?.Invoke(Popup);
         protected virtual void OnPopupClose() => PopupCloseEvent?.Invoke(Popup);
         protected virtual void OnPopupClosed() => PopupClosedEvent?.Invoke();
 
-        private void OnPopupLostFocus(UIComponent component, UIFocusEventParameter eventParam)
-        {
-            var uiView = Popup.GetUIView();
-            var mouse = uiView.ScreenPointToGUI(Input.mousePosition / uiView.inputScale);
-            var popupRect = new Rect(Popup.absolutePosition, Popup.size);
-            var buttonRect = new Rect(absolutePosition, size);
-            if (!popupRect.Contains(mouse) && !buttonRect.Contains(mouse))
-                ClosePopup();
-            else
-                Popup.Focus();
-        }
+        private void OnPopupLeaveFocus(UIComponent component, UIFocusEventParameter eventParam) => CheckPopup();
+
         private void OnPopupKeyDown(UIComponent component, UIKeyEventParameter p)
         {
             if (p.keycode == KeyCode.Escape)

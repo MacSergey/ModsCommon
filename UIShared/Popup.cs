@@ -199,6 +199,7 @@ namespace ModsCommon.UI
         public SearchPopup()
         {
             Search = AddUIComponent<CustomUITextField>();
+            Search.name = nameof(Search);
             Search.atlas = TextureHelper.InGameAtlas;
             Search.selectionSprite = "EmptySprite";
             Search.normalBgSprite = "TextFieldPanel";
@@ -213,6 +214,8 @@ namespace ModsCommon.UI
             Search.padding = new RectOffset(20, 30, 6, 0);
             Search.horizontalAlignment = UIHorizontalAlignment.Left;
             Search.eventTextChanged += SearchTextChanged;
+            Search.eventGotFocus += SearchGotFocus;
+            Search.eventLostFocus += SearchLostFocus;
 
             var loop = Search.AddUIComponent<UISprite>();
             loop.atlas = TextureHelper.InGameAtlas;
@@ -221,6 +224,7 @@ namespace ModsCommon.UI
             loop.relativePosition = new Vector2(5f, 5f);
 
             ResetButton = Search.AddUIComponent<CustomUIButton>();
+            ResetButton.name = nameof(ResetButton);
             ResetButton.atlas = TextureHelper.InGameAtlas;
             ResetButton.normalFgSprite = "ContentManagerSearchReset";
             ResetButton.size = new Vector2(10f, 10f);
@@ -229,6 +233,7 @@ namespace ModsCommon.UI
             ResetButton.eventClick += ResetClick;
 
             NothingFound = AddUIComponent<CustomUILabel>();
+            NothingFound.name = nameof(NothingFound);
             NothingFound.text = NotFoundText;
             NothingFound.autoSize = false;
             NothingFound.autoHeight = false;
@@ -238,6 +243,7 @@ namespace ModsCommon.UI
             NothingFound.textAlignment = UIHorizontalAlignment.Center;
             NothingFound.isVisible = false;
         }
+
 
         public override void DeInit()
         {
@@ -267,9 +273,11 @@ namespace ModsCommon.UI
 
             ResetButton.isVisible = !string.IsNullOrEmpty(value);
         }
+
         private void ResetClick(UIComponent component, UIMouseEventParameter eventParam)
         {
             Search.text = string.Empty;
+            Focus();
         }
         protected override void RefreshItems()
         {
@@ -279,10 +287,29 @@ namespace ModsCommon.UI
             NothingFound.isVisible = VisibleCount == 0;
             ResetButton.relativePosition = new Vector2(Search.width - 15f, 5f);
         }
-        protected override void OnGotFocus(UIFocusEventParameter p)
+        private void SearchGotFocus(UIComponent component, UIFocusEventParameter p)
         {
-            base.OnGotFocus(p);
-            Search.Focus();
+            isInteractive = false;
+        }
+        private void SearchLostFocus(UIComponent component, UIFocusEventParameter p)
+        {
+            isInteractive = true;
+            if(p.gotFocus == null)
+                Focus();
+        }
+        protected override void OnEnterFocus(UIFocusEventParameter p)
+        {
+            if (isInteractive && p.gotFocus == this)
+                Search.Focus();
+            else
+                base.OnEnterFocus(p);
+        }
+        protected override void OnLeaveFocus(UIFocusEventParameter p)
+        {
+            if (isInteractive && p.gotFocus == null && p.lostFocus != null && p.lostFocus != this && p.lostFocus.transform.IsChildOf(transform))
+                Focus();
+            else
+                base.OnLeaveFocus(p);
         }
 
         protected override float GetHeight() => Math.Max(base.GetHeight(), EntityHeight) + 30f;
