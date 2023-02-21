@@ -106,7 +106,7 @@ namespace ModsCommon.UI
             {
                 for (int i = Entities.Count; i < visibleCount; i += 1)
                 {
-                    var newEntery = AddUIComponent<EntityPanel>();
+                    var newEntery = ComponentPool.Get<EntityPanel>(this);
                     newEntery.atlas = atlas;
                     newEntery.hoveredBgSprite = ItemHover;
                     newEntery.focusedBgSprite = ItemSelected;
