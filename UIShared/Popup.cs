@@ -144,17 +144,20 @@ namespace ModsCommon.UI
                 if (StartIndex + i < Values.Count)
                 {
                     var value = Values[StartIndex + i];
-                    Entities[i].SetObject(value);
-                    Entities[i].Selected = (value == SelectedObject);
+                    SetEntityValue(Entities[i], value, value == SelectedObject);
                 }
                 else
                 {
-                    Entities[i].SetObject(null);
-                    Entities[i].Selected = false;
+                    SetEntityValue(Entities[i], null, false);
                 }
             }
 
             ScrollBar.value = StartIndex;
+        }
+        protected virtual void SetEntityValue(EntityPanel entity, ObjectType value, bool selected)
+        {
+            entity.SetObject(value);
+            entity.Selected = selected;
         }
         protected virtual void RefreshItems()
         {
