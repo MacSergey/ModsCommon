@@ -19,10 +19,21 @@ namespace ModsCommon.Utilities
         protected virtual void OnLoadFailed() { }
         protected virtual void OnSaveFailed(string config) { }
 
-        public override void OnCreated(ISerializableData serializableData)
+        protected virtual void OnCreate() { }
+        protected virtual void OnRelease() { }
+
+        public sealed override void OnCreated(ISerializableData serializableData)
         {
+            SingletonMod<TypeMod>.Instance.Logger.Debug($"On create serialize data extension");
             base.OnCreated(serializableData);
             SingletonItem<TypeExtension>.Instance = (TypeExtension)this;
+            OnCreate();
+        }
+        public sealed override void OnReleased()
+        {
+            SingletonMod<TypeMod>.Instance.Logger.Debug($"On release serialize data extension");
+            base.OnReleased();
+            OnRelease();
         }
 
         public override void OnLoadData()
@@ -54,7 +65,7 @@ namespace ModsCommon.Utilities
                 }
             }
             else
-                SingletonMod<TypeMod>.Logger.Debug($"Saved map data not founded");
+                SingletonMod<TypeMod>.Logger.Debug($"Saved map data is not found");
         }
         public override void OnSaveData()
         {

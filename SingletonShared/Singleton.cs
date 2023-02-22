@@ -8,6 +8,7 @@ namespace ModsCommon
     public abstract class SingletonItem<T>
     {
         public static T Instance { get; set; }
+        public static bool Exist => Instance != null;
     }
 
     public interface ICustomMod : IUserMod

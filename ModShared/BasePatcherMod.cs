@@ -107,11 +107,11 @@ namespace ModsCommon
 
         protected abstract bool PatchProcess();
 
-        protected bool AddPrefix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Prefix, patchType, patchMethod, type, method, parameters);
-        protected bool AddPostfix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Postfix, patchType, patchMethod, type, method, parameters);
-        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Transpiler, patchType, patchMethod, type, method, parameters);
+        protected bool AddPrefix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Prefix, patchType, patchMethod, type, method, parameters);
+        protected bool AddPostfix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Postfix, patchType, patchMethod, type, method, parameters);
+        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Transpiler, patchType, patchMethod, type, method, parameters);
 
-        private bool AddPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, string method, Type[] parameters = null)
+        private bool AddMethodPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, string method, Type[] parameters = null)
         {
             void action()
             {
@@ -130,11 +130,11 @@ namespace ModsCommon
             return AddPatchProcess(action);
         }
 
-        protected bool AddPrefix(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Prefix, patch, type, method, parameters);
-        protected bool AddPostfix(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Postfix, patch, type, method, parameters);
-        protected bool AddTranspiler(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddPatch(PatcherType.Transpiler, patch, type, method, parameters);
+        protected bool AddPrefix(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Prefix, patch, type, method, parameters);
+        protected bool AddPostfix(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Postfix, patch, type, method, parameters);
+        protected bool AddTranspiler(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Transpiler, patch, type, method, parameters);
 
-        private bool AddPatch(PatcherType patcher, MethodInfo patch, Type type, string method, Type[] parameters = null)
+        private bool AddMethodPatch(PatcherType patcher, MethodInfo patch, Type type, string method, Type[] parameters = null)
         {
             void action()
             {
@@ -153,11 +153,35 @@ namespace ModsCommon
             return AddPatchProcess(action);
         }
 
-        protected bool AddPrefix(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPatch(PatcherType.Prefix, patchType, patchMethod, propertyType, type, property);
-        protected bool AddPostfix(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPatch(PatcherType.Postfix, patchType, patchMethod, propertyType, type, property);
-        protected bool AddTranspiler(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPatch(PatcherType.Transpiler, patchType, patchMethod, propertyType, type, property);
+        protected bool AddPrefix(Type patchType, string patchMethod, Type type, Type[] parameters = null) => AddConstructorPatch(PatcherType.Prefix, patchType, patchMethod, type, parameters);
+        protected bool AddPostfix(Type patchType, string patchMethod, Type type, Type[] parameters = null) => AddConstructorPatch(PatcherType.Postfix, patchType, patchMethod, type, parameters);
+        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, Type[] parameters = null) => AddConstructorPatch(PatcherType.Transpiler, patchType, patchMethod, type, parameters);
 
-        private bool AddPatch(PatcherType patcher, Type patchType, string patchMethod, PropertyType propertyType, Type type, string property)
+        private bool AddConstructorPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, Type[] parameters = null)
+        {
+            void action()
+            {
+                Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchMethod}] to [{type?.FullName}..ctor]");
+
+                if (AccessTools.Constructor(type, parameters) is not ConstructorInfo original)
+                    throw new PatchExeption("Can't find original constructor");
+                if (AccessTools.Method(patchType, patchMethod) is not MethodInfo patch)
+                    throw new PatchExeption("Can't find patch method");
+
+                AddPatch(patcher, patch, original);
+
+                Logger.Debug("Success patched!");
+            }
+
+            return AddPatchProcess(action);
+        }
+
+
+        protected bool AddPrefix(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPropertyPatch(PatcherType.Prefix, patchType, patchMethod, propertyType, type, property);
+        protected bool AddPostfix(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPropertyPatch(PatcherType.Postfix, patchType, patchMethod, propertyType, type, property);
+        protected bool AddTranspiler(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPropertyPatch(PatcherType.Transpiler, patchType, patchMethod, propertyType, type, property);
+
+        private bool AddPropertyPatch(PatcherType patcher, Type patchType, string patchMethod, PropertyType propertyType, Type type, string property)
         {
             void action()
             {
@@ -213,7 +237,7 @@ namespace ModsCommon
                 return false;
             }
         }
-        private void AddPatch(PatcherType patcher, MethodInfo patch, MethodInfo original)
+        private void AddPatch(PatcherType patcher, MethodInfo patch, MethodBase original)
         {
             var harmony = Harmony as Harmony;
             var harmonyMethod = new HarmonyMethod(patch);
