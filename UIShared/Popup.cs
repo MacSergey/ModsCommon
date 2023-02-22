@@ -297,7 +297,7 @@ namespace ModsCommon.UI
         private void SearchLostFocus(UIComponent component, UIFocusEventParameter p)
         {
             isInteractive = true;
-            if(p.gotFocus == null)
+            if (p.gotFocus == null)
                 Focus();
         }
         protected override void OnEnterFocus(UIFocusEventParameter p)
@@ -355,7 +355,8 @@ namespace ModsCommon.UI
         protected override void OnClick(UIMouseEventParameter p)
         {
             base.OnClick(p);
-            Select();
+            if (!p.used)
+                Select();
         }
     }
 }
