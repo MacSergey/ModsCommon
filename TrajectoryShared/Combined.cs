@@ -254,6 +254,12 @@ namespace ModsCommon.Utilities
         }
         ITrajectory ITrajectory.Shift(float start, float end) => Shift(start, end);
 
+        public CombinedTrajectory Elevate(float height)
+        {
+            return new CombinedTrajectory(Trajectories.Select(t => t.Elevate(height)));
+        }
+        ITrajectory ITrajectory.Elevate(float height) => Elevate(height);
+
         public Vector3 Position(float t)
         {
             t = ToPartT(t, out var i);

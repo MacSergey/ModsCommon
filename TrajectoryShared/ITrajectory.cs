@@ -29,6 +29,7 @@ namespace ModsCommon.Utilities
         float Distance(float from = 0f, float to = 1f);
         ITrajectory Invert();
         ITrajectory Shift(float start, float end);
+        ITrajectory Elevate(float height);
 
         public bool IsZero { get; }
 

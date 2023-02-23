@@ -74,6 +74,12 @@ namespace ModsCommon.Utilities
         }
         ITrajectory ITrajectory.Shift(float start, float end) => Shift(start, end);
 
+        public StraightTrajectory Elevate(float height)
+        {
+            return new StraightTrajectory(StartPosition + Vector3.up * height, EndPosition + Vector3.up * height);
+        }
+        ITrajectory ITrajectory.Elevate(float height) => Elevate(height);
+
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
         {

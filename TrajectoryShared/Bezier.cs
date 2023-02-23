@@ -211,6 +211,17 @@ namespace ModsCommon.Utilities
         }
         ITrajectory ITrajectory.Shift(float start, float end) => Shift(start, end);
 
+        public BezierTrajectory Elevate(float height)
+        {
+            var trajectory = Trajectory;
+            trajectory.a += Vector3.up * height;
+            trajectory.b += Vector3.up * height;
+            trajectory.c += Vector3.up * height;
+            trajectory.d += Vector3.up * height;
+            return new BezierTrajectory(trajectory, StartT, EndT);
+        }
+        ITrajectory ITrajectory.Elevate(float height) => Elevate(height);
+
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)
         {
