@@ -318,8 +318,18 @@ namespace ModsCommon.Utilities
     public class PropertyPrefabValue<PrefabType> : PropertyClassValue<PrefabType>
         where PrefabType : PrefabInfo
     {
-        public string RawName { get; private set; }
+        public string RawName { get; private set; } = string.Empty;
         public bool HasName => !string.IsNullOrEmpty(RawName);
+
+        public override PrefabType Value
+        {
+            set
+            {
+                base.Value = value;
+                RawName = value?.name ?? string.Empty;
+            }
+        }
+
         public PropertyPrefabValue(Action onChanged, PrefabType value = default) : base(onChanged, value) { }
         public PropertyPrefabValue(string label, Action onChanged, PrefabType value = default) : base(label, onChanged, value) { }
 
@@ -340,8 +350,17 @@ namespace ModsCommon.Utilities
 
     public class PropertyThemeValue : PropertyClassValue<ThemeHelper.IThemeData>
     {
-        public string RawName { get; private set; }
+        public string RawName { get; private set; } = string.Empty;
         public bool HasName => !string.IsNullOrEmpty(RawName);
+
+        public override ThemeHelper.IThemeData Value 
+        {
+            set
+            {
+                base.Value = value;
+                RawName = value?.Id ?? string.Empty;
+            }
+        }
 
         public PropertyThemeValue(Action onChanged, ThemeHelper.IThemeData value = default) : base(onChanged, value) { }
         public PropertyThemeValue(string label, Action onChanged, ThemeHelper.IThemeData value = default) : base(label, onChanged, value) { }
