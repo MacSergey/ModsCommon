@@ -55,10 +55,10 @@ namespace ModsCommon.UI
         {
             AddColorSample();
 
-            RProperty = AddField(Content, "R", PropertyChanged);
-            GProperty = AddField(Content, "G", PropertyChanged);
-            BProperty = AddField(Content, "B", PropertyChanged);
-            AProperty = AddField(Content, "A", PropertyChanged);
+            RProperty = AddField(Content, "R", PropertyChangedRGB);
+            GProperty = AddField(Content, "G", PropertyChangedRGB);
+            BProperty = AddField(Content, "B", PropertyChangedRGB);
+            AProperty = AddField(Content, "A", PropertyChangedA);
         }
         protected void ValueChanged(Color32 color, bool callEvent = true, Action<Color32> action = null)
         {
@@ -74,7 +74,18 @@ namespace ModsCommon.UI
             }
         }
 
-        private void PropertyChanged(byte value)
+        private void PropertyChangedRGB(byte value)
+        {
+            if(Utility.AltIsPressed)
+            {
+                RProperty.Value = value;
+                GProperty.Value = value;
+                BProperty.Value = value;
+            }
+            if (!InProcess)
+                ValueChanged(Value, action: OnChangedProperty);
+        }
+        private void PropertyChangedA(byte value)
         {
             if (!InProcess)
                 ValueChanged(Value, action: OnChangedProperty);
@@ -100,6 +111,17 @@ namespace ModsCommon.UI
             }
         }
         private void PickerRGBChanged(byte value)
+        {
+            if (Utility.AltIsPressed)
+            {
+                RPicker.Value = value;
+                GPicker.Value = value;
+                BPicker.Value = value;
+            }
+            if (!InProcess)
+                ValueChanged(PickerValue, action: OnChangedPickerRGB);
+        }
+        private void PickerAChanged(byte value)
         {
             if (!InProcess)
                 ValueChanged(PickerValue, action: OnChangedPickerRGB);
@@ -355,7 +377,7 @@ namespace ModsCommon.UI
             RPicker = AddField(rgbPanel, "R", PickerRGBChanged);
             GPicker = AddField(rgbPanel, "G", PickerRGBChanged);
             BPicker = AddField(rgbPanel, "B", PickerRGBChanged);
-            APicker = AddField(rgbPanel, "A", PickerRGBChanged);
+            APicker = AddField(rgbPanel, "A", PickerAChanged);
 
             HEXPicker = rgbPanel.AddUIComponent<StringUITextField>();
             HEXPicker.SetDefaultStyle();
