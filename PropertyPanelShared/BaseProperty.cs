@@ -14,7 +14,7 @@ namespace ModsCommon.UI
 
         public virtual bool EnableControl { get; set; } = true;
 
-        private CustomUIPanel Even { get; }
+        private CustomUISprite Even { get; }
         public virtual bool SupportEven => false;
         public bool IsEven
         {
@@ -82,9 +82,9 @@ namespace ModsCommon.UI
         {
             if (SupportEven)
             {
-                Even = AddUIComponent<CustomUIPanel>();
+                Even = AddUIComponent<CustomUISprite>();
                 Even.atlas = CommonTextures.Atlas;
-                Even.backgroundSprite = CommonTextures.Empty;
+                Even.spriteName = CommonTextures.Empty;
                 Even.color = new Color32(0, 0, 0, 48);
                 IsEven = false;
             }
