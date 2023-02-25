@@ -129,13 +129,13 @@ namespace ModsCommon.UI
     }
     public abstract class EditorPropertyPanel : EditorItem
     {
-        private CustomUILabel Label { get; set; }
+        private CustomUILabel LabelItem { get; set; }
         protected ContentPanel Content { get; set; }
 
-        public string Text
+        public string Label
         {
-            get => Label.text;
-            set => Label.text = value;
+            get => LabelItem.text;
+            set => LabelItem.text = value;
         }
         public override bool EnableControl
         {
@@ -146,15 +146,15 @@ namespace ModsCommon.UI
 
         public EditorPropertyPanel()
         {
-            Label = AddUIComponent<CustomUILabel>();
-            Label.textScale = 0.75f;
-            Label.autoSize = false;
-            Label.autoHeight = true;
-            Label.wordWrap = true;
-            Label.padding = new RectOffset(0, 0, 2, 0);
-            Label.disabledTextColor = new Color32(160, 160, 160, 255);
-            Label.name = nameof(Label);
-            Label.eventTextChanged += (_, _) => SetLabel();
+            LabelItem = AddUIComponent<CustomUILabel>();
+            LabelItem.textScale = 0.75f;
+            LabelItem.autoSize = false;
+            LabelItem.autoHeight = true;
+            LabelItem.wordWrap = true;
+            LabelItem.padding = new RectOffset(0, 0, 2, 0);
+            LabelItem.disabledTextColor = new Color32(160, 160, 160, 255);
+            LabelItem.name = nameof(LabelItem);
+            LabelItem.eventTextChanged += (_, _) => SetLabel();
 
             Content = AddUIComponent<ContentPanel>();
         }
@@ -167,7 +167,7 @@ namespace ModsCommon.UI
         public override void DeInit()
         {
             base.DeInit();
-            Text = string.Empty;
+            Label = string.Empty;
         }
         protected override void OnSizeChanged()
         {
@@ -186,9 +186,9 @@ namespace ModsCommon.UI
         }
         private void SetLabel()
         {
-            Label.width = width - Content.width - ItemsPadding * 2;
-            Label.MakePixelPerfect(false);
-            Label.relativePosition = new Vector2(5, (height - Label.height) / 2);
+            LabelItem.width = width - Content.width - ItemsPadding * 2;
+            LabelItem.MakePixelPerfect(false);
+            LabelItem.relativePosition = new Vector2(5, (height - LabelItem.height) / 2);
         }
         protected override void OnVisibilityChanged()
         {
