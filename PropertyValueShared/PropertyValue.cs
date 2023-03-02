@@ -89,7 +89,7 @@ namespace ModsCommon.Utilities
         where T : struct
         where PT : PropertyStructValue<T>
     {
-        private bool _hasValue;
+        private bool hasValue;
         public override T? Value
         {
             get
@@ -108,7 +108,7 @@ namespace ModsCommon.Utilities
                 }
             }
         }
-        public bool HasValue => _hasValue;
+        public bool HasValue => hasValue;
         private PT StructProperty { get; set; }
 
         public PropertyNullableStructValue(PT structProperty, Action onChanged, T? value = default) : base(onChanged)
@@ -126,12 +126,12 @@ namespace ModsCommon.Utilities
         {
             if (value.HasValue)
             {
-                _hasValue = true;
+                hasValue = true;
                 StructProperty.Value = value.Value;
             }
             else
             {
-                _hasValue = false;
+                hasValue = false;
                 StructProperty.Value = default;
             }
         }
@@ -160,7 +160,7 @@ namespace ModsCommon.Utilities
                 SetValue(null);
             else
             {
-                _hasValue = true;
+                hasValue = true;
                 StructProperty.FromXml(config);
             }
         }

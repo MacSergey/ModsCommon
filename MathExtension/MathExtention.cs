@@ -243,6 +243,123 @@ namespace ModsCommon.Utilities
         public static float CrossXZ(Vector3 a, Vector3 b) => a.z * b.x - a.x * b.z;
         public static float NormalizeCrossXZ(Vector3 a, Vector3 b) => CrossXZ(NormalizeXZ(a), NormalizeXZ(b));
         public static float NormalizeDotXZ(Vector3 a, Vector3 b) => DotXZ(NormalizeXZ(a), NormalizeXZ(b));
+
+
+        public static Vector2 XX(this Vector3 vector) => new Vector2(vector.x, vector.x);
+        public static Vector2 XY(this Vector3 vector) => new Vector2(vector.x, vector.y);
+        public static Vector2 XZ(this Vector3 vector) => new Vector2(vector.x, vector.z);
+
+        public static Vector2 YX(this Vector3 vector) => new Vector2(vector.y, vector.x);
+        public static Vector2 YY(this Vector3 vector) => new Vector2(vector.y, vector.y);
+        public static Vector2 YZ(this Vector3 vector) => new Vector2(vector.y, vector.z);
+
+        public static Vector2 ZX(this Vector3 vector) => new Vector2(vector.z, vector.x);
+        public static Vector2 ZY(this Vector3 vector) => new Vector2(vector.z, vector.y);
+        public static Vector2 ZZ(this Vector3 vector) => new Vector2(vector.z, vector.z);
+
+
+
+        public static Vector2 XX(this Vector4 vector) => new Vector2(vector.x, vector.x);
+        public static Vector2 XY(this Vector4 vector) => new Vector2(vector.x, vector.y);
+        public static Vector2 XZ(this Vector4 vector) => new Vector2(vector.x, vector.z);
+        public static Vector2 XW(this Vector4 vector) => new Vector2(vector.x, vector.w);
+
+        public static Vector2 YX(this Vector4 vector) => new Vector2(vector.y, vector.x);
+        public static Vector2 YY(this Vector4 vector) => new Vector2(vector.y, vector.y);
+        public static Vector2 YZ(this Vector4 vector) => new Vector2(vector.y, vector.z);
+        public static Vector2 YW(this Vector4 vector) => new Vector2(vector.y, vector.w);
+
+        public static Vector2 ZX(this Vector4 vector) => new Vector2(vector.z, vector.x);
+        public static Vector2 ZY(this Vector4 vector) => new Vector2(vector.z, vector.y);
+        public static Vector2 ZZ(this Vector4 vector) => new Vector2(vector.z, vector.z);
+        public static Vector2 ZW(this Vector4 vector) => new Vector2(vector.z, vector.w);
+
+        public static Vector2 WX(this Vector4 vector) => new Vector2(vector.w, vector.x);
+        public static Vector2 WY(this Vector4 vector) => new Vector2(vector.w, vector.y);
+        public static Vector2 WZ(this Vector4 vector) => new Vector2(vector.w, vector.z);
+        public static Vector2 WW(this Vector4 vector) => new Vector2(vector.w, vector.w);
+
+
+
+        public static Vector3 XXX(this Vector4 vector) => new Vector3(vector.x, vector.x, vector.x);
+        public static Vector3 XXY(this Vector4 vector) => new Vector3(vector.x, vector.x, vector.y);
+        public static Vector3 XXZ(this Vector4 vector) => new Vector3(vector.x, vector.x, vector.z);
+        public static Vector3 XXW(this Vector4 vector) => new Vector3(vector.x, vector.x, vector.w);
+
+        public static Vector3 XYX(this Vector4 vector) => new Vector3(vector.x, vector.y, vector.x);
+        public static Vector3 XYY(this Vector4 vector) => new Vector3(vector.x, vector.y, vector.y);
+        public static Vector3 XYZ(this Vector4 vector) => new Vector3(vector.x, vector.y, vector.z);
+        public static Vector3 XYW(this Vector4 vector) => new Vector3(vector.x, vector.y, vector.w);
+
+        public static Vector3 XZX(this Vector4 vector) => new Vector3(vector.x, vector.z, vector.x);
+        public static Vector3 XZY(this Vector4 vector) => new Vector3(vector.x, vector.z, vector.y);
+        public static Vector3 XZZ(this Vector4 vector) => new Vector3(vector.x, vector.z, vector.z);
+        public static Vector3 XZW(this Vector4 vector) => new Vector3(vector.x, vector.z, vector.w);
+
+        public static Vector3 XWX(this Vector4 vector) => new Vector3(vector.x, vector.w, vector.x);
+        public static Vector3 XWY(this Vector4 vector) => new Vector3(vector.x, vector.w, vector.y);
+        public static Vector3 XWZ(this Vector4 vector) => new Vector3(vector.x, vector.w, vector.z);
+        public static Vector3 XWW(this Vector4 vector) => new Vector3(vector.x, vector.w, vector.w);
+
+        public static Vector3 YXX(this Vector4 vector) => new Vector3(vector.y, vector.x, vector.x);
+        public static Vector3 YXY(this Vector4 vector) => new Vector3(vector.y, vector.x, vector.y);
+        public static Vector3 YXZ(this Vector4 vector) => new Vector3(vector.y, vector.x, vector.z);
+        public static Vector3 YXW(this Vector4 vector) => new Vector3(vector.y, vector.x, vector.w);
+
+        public static Vector3 YYX(this Vector4 vector) => new Vector3(vector.y, vector.y, vector.x);
+        public static Vector3 YYY(this Vector4 vector) => new Vector3(vector.y, vector.y, vector.y);
+        public static Vector3 YYZ(this Vector4 vector) => new Vector3(vector.y, vector.y, vector.z);
+        public static Vector3 YYW(this Vector4 vector) => new Vector3(vector.y, vector.y, vector.w);
+
+        public static Vector3 YZX(this Vector4 vector) => new Vector3(vector.y, vector.z, vector.x);
+        public static Vector3 YZY(this Vector4 vector) => new Vector3(vector.y, vector.z, vector.y);
+        public static Vector3 YZZ(this Vector4 vector) => new Vector3(vector.y, vector.z, vector.z);
+        public static Vector3 YZW(this Vector4 vector) => new Vector3(vector.y, vector.z, vector.w);
+
+        public static Vector3 YWX(this Vector4 vector) => new Vector3(vector.y, vector.w, vector.x);
+        public static Vector3 YWY(this Vector4 vector) => new Vector3(vector.y, vector.w, vector.y);
+        public static Vector3 YWZ(this Vector4 vector) => new Vector3(vector.y, vector.w, vector.z);
+        public static Vector3 YWW(this Vector4 vector) => new Vector3(vector.y, vector.w, vector.w);
+
+        public static Vector3 ZXX(this Vector4 vector) => new Vector3(vector.z, vector.x, vector.x);
+        public static Vector3 ZXY(this Vector4 vector) => new Vector3(vector.z, vector.x, vector.y);
+        public static Vector3 ZXZ(this Vector4 vector) => new Vector3(vector.z, vector.x, vector.z);
+        public static Vector3 ZXW(this Vector4 vector) => new Vector3(vector.z, vector.x, vector.w);
+
+        public static Vector3 ZYX(this Vector4 vector) => new Vector3(vector.z, vector.y, vector.x);
+        public static Vector3 ZYY(this Vector4 vector) => new Vector3(vector.z, vector.y, vector.y);
+        public static Vector3 ZYZ(this Vector4 vector) => new Vector3(vector.z, vector.y, vector.z);
+        public static Vector3 ZYW(this Vector4 vector) => new Vector3(vector.z, vector.y, vector.w);
+
+        public static Vector3 ZZX(this Vector4 vector) => new Vector3(vector.z, vector.z, vector.x);
+        public static Vector3 ZZY(this Vector4 vector) => new Vector3(vector.z, vector.z, vector.y);
+        public static Vector3 ZZZ(this Vector4 vector) => new Vector3(vector.z, vector.z, vector.z);
+        public static Vector3 ZZW(this Vector4 vector) => new Vector3(vector.z, vector.z, vector.w);
+
+        public static Vector3 ZWX(this Vector4 vector) => new Vector3(vector.z, vector.w, vector.x);
+        public static Vector3 ZWY(this Vector4 vector) => new Vector3(vector.z, vector.w, vector.y);
+        public static Vector3 ZWZ(this Vector4 vector) => new Vector3(vector.z, vector.w, vector.z);
+        public static Vector3 ZWW(this Vector4 vector) => new Vector3(vector.z, vector.w, vector.w);
+
+        public static Vector3 WXX(this Vector4 vector) => new Vector3(vector.w, vector.x, vector.x);
+        public static Vector3 WXY(this Vector4 vector) => new Vector3(vector.w, vector.x, vector.y);
+        public static Vector3 WXZ(this Vector4 vector) => new Vector3(vector.w, vector.x, vector.z);
+        public static Vector3 WXW(this Vector4 vector) => new Vector3(vector.w, vector.x, vector.w);
+
+        public static Vector3 WYX(this Vector4 vector) => new Vector3(vector.w, vector.y, vector.x);
+        public static Vector3 WYY(this Vector4 vector) => new Vector3(vector.w, vector.y, vector.y);
+        public static Vector3 WYZ(this Vector4 vector) => new Vector3(vector.w, vector.y, vector.z);
+        public static Vector3 WYW(this Vector4 vector) => new Vector3(vector.w, vector.y, vector.w);
+
+        public static Vector3 WZX(this Vector4 vector) => new Vector3(vector.w, vector.z, vector.x);
+        public static Vector3 WZY(this Vector4 vector) => new Vector3(vector.w, vector.z, vector.y);
+        public static Vector3 WZZ(this Vector4 vector) => new Vector3(vector.w, vector.z, vector.z);
+        public static Vector3 WZW(this Vector4 vector) => new Vector3(vector.w, vector.z, vector.w);
+
+        public static Vector3 WWX(this Vector4 vector) => new Vector3(vector.w, vector.w, vector.x);
+        public static Vector3 WWY(this Vector4 vector) => new Vector3(vector.w, vector.w, vector.y);
+        public static Vector3 WWZ(this Vector4 vector) => new Vector3(vector.w, vector.w, vector.z);
+        public static Vector3 WWW(this Vector4 vector) => new Vector3(vector.w, vector.w, vector.w);
     }
     public struct BezierPoint
     {
