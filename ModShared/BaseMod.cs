@@ -154,12 +154,12 @@ namespace ModsCommon
                     if (gameVersion < requiredVersion)
                     {
                         Status |= ModStatus.GameOutOfDate;
-                        Logger.Debug($"Mod is out of date. Required game version: {RequiredGameVersion.GetStringGameFormat()}\tCurent game version: {CurrentGameVersion.GetStringGameFormat()}");
+                        Logger.Debug($"Mod is out of date. Required game version: {RequiredGameVersion.GetStringGameFormat()}\tCurrent game version: {CurrentGameVersion.GetStringGameFormat()}");
                     }
                     else
                     {
                         Status |= ModStatus.ModOutOfDate;
-                        Logger.Debug($"Game is out of date. Required game version: {RequiredGameVersion.GetStringGameFormat()}\tCurent game version: {CurrentGameVersion.GetStringGameFormat()}");
+                        Logger.Debug($"Game is out of date. Required game version: {RequiredGameVersion.GetStringGameFormat()}\tCurrent game version: {CurrentGameVersion.GetStringGameFormat()}");
                     }
                 }
 

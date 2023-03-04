@@ -20,15 +20,11 @@ namespace ModsCommon
 
             foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
             {
-                try
+                if(plugin != null && plugin.ContainsAssembly(assembly))
                 {
-                    foreach (Assembly pluginAssembly in plugin.GetAssemblies())
-                    {
-                        if (pluginAssembly == assembly)
-                            AssemblyPatch = plugin.modPath;
-                    }
+                    AssemblyPatch = plugin.modPath;
+                    break;
                 }
-                catch (Exception e) { }
             }
         }
 
