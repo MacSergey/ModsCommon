@@ -57,10 +57,11 @@ namespace ModsCommon.Utilities
         }
         public static bool CalculateSingle(ITrajectory firstTrajectory, ITrajectory secondTrajectory, out float firstT, out float secondT)
         {
-            if (Calculate(firstTrajectory, secondTrajectory).FirstOrDefault() is Intersection intersection)
+            var result = Calculate(firstTrajectory, secondTrajectory);
+            if (result.Count > 0)
             {
-                firstT = intersection.firstT;
-                secondT = intersection.secondT;
+                firstT = result[0].firstT;
+                secondT = result[0].secondT;
                 return true;
             }
             else
