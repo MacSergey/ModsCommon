@@ -162,6 +162,11 @@ namespace ModsCommon.UI
             get => Button.wordWrap;
             set => Button.wordWrap = value;
         }
+        public UIHorizontalAlignment TextAlignment
+        {
+            get => Button.textHorizontalAlignment;
+            set => Button.textHorizontalAlignment = value;
+        }
         public bool AutoSize
         {
             get => Button.autoSize;
@@ -182,6 +187,7 @@ namespace ModsCommon.UI
             Button = AddButton(Content);
             Button.textScale = 0.8f;
             Button.textPadding = new RectOffset(0, 0, 3, 0);
+            Button.textHorizontalAlignment = UIHorizontalAlignment.Center;
             Button.isEnabled = EnableControl;
             Button.eventClick += ButtonClick;
         }
