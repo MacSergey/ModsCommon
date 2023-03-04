@@ -39,12 +39,12 @@ namespace ModsCommon.UI
 
         private void DropDownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
-            dropdown.triggerButton.isInteractive = false;
+            //dropdown.triggerButton.isInteractive = false;
             OnDropDownStateChange?.Invoke(true);
         }
         private void DropDownClose(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
-            dropdown.triggerButton.isInteractive = true;
+            //dropdown.triggerButton.isInteractive = true;
             OnDropDownStateChange?.Invoke(false);
         }
 

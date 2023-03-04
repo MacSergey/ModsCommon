@@ -29,13 +29,22 @@ namespace ModsCommon.UI
         {
             eventSelectedIndexChanged += IndexChanged;
             eventDropdownOpen += DropdownOpen;
+            eventDropdownClose += DropDownClose;
         }
 
         protected virtual void IndexChanged(UIComponent component, int value) => OnSelectObjectChanged?.Invoke(SelectedObject);
         private void DropdownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
+            if (triggerButton != null)
+                triggerButton.isInteractive = false;
+
             var position = popup.selectedIndex * popup.itemHeight;
             popup.scrollPosition = position;
+        }
+        private void DropDownClose(UIDropDown dropdown, UIListBox popup, ref bool overridden)
+        {
+            if (triggerButton != null)
+                triggerButton.isInteractive = true;
         }
 
         public void AddItem(ValueType item, OptionData data)

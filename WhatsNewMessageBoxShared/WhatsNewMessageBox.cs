@@ -257,7 +257,8 @@ namespace ModsCommon.UI
                 if (!string.IsNullOrEmpty(message.text))
                 {
                     Tag.isVisible = true;
-                    switch (message.tag.Trim().ToUpper())
+                    var tag = string.IsNullOrEmpty(message.tag) ? string.Empty : message.tag.Trim().ToUpper();
+                    switch (tag)
                     {
                         case "NEW":
                             Tag.text = CommonLocalize.WhatsNew_NEW;
@@ -288,7 +289,7 @@ namespace ModsCommon.UI
                             Tag.color = new Color32(255, 34, 45, 255);
                             break;
                         default:
-                            Tag.text = message.tag.ToUpper();
+                            Tag.text = tag.ToUpper();
                             break;
                     }
                 }

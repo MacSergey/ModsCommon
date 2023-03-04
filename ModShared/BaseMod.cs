@@ -247,11 +247,23 @@ namespace ModsCommon
         {
             culture ??= Culture;
 
-            var text = LocalizeManager?.GetString(key, culture);
-            if (text == key)
-                text = CommonLocalize.LocaleManager.GetString(key, culture);
+            if (LocalizeManager != null && LocalizeManager.TryGetString(key, culture, out var str))
+                return str;
+            else if (CommonLocalize.LocaleManager.TryGetString(key, culture, out str))
+                return str;
+            else
+                return key;
+        }
+        public bool TryGetLocalizedString(string key, out string str, CultureInfo culture = null)
+        {
+            culture ??= Culture;
 
-            return text;
+            if (LocalizeManager != null && LocalizeManager.TryGetString(key, culture, out str))
+                return true;
+            else if (CommonLocalize.LocaleManager.TryGetString(key, culture, out str))
+                return true;
+            else
+                return false;
         }
 
         protected virtual void OnLoadError(out bool shown) => shown = (Status & ModStatus.ErrorShown) != 0;
@@ -317,13 +329,13 @@ namespace ModsCommon
                 if (BaseSettings<TypeMod>.ShowOnlyMajor && !version.Number.IsMinor())
                     continue;
 
-                if (GetLocalizedString($"Mod_WhatsNewMessage{version.Number.ToString().Replace('.', '_')}") is string message && !string.IsNullOrEmpty(message))
+                var key = $"Mod_WhatsNewMessage{version.Number.ToString().Replace('.', '_')}";
+                if (TryGetLocalizedString(key, out var message) && !string.IsNullOrEmpty(message))
                     messages[version] = message;
             }
 
             return messages;
         }
-        public string GetVersionString(ModVersion version) => string.Format(CommonLocalize.Mod_WhatsNewVersion, version.Number == Version ? VersionString : version.ToString());
 
         public void ShowBetaWarning()
         {

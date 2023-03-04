@@ -20,7 +20,7 @@ namespace ModsCommon
 
             foreach (PluginManager.PluginInfo plugin in PluginManager.instance.GetPluginsInfo())
             {
-                if(plugin != null && plugin.ContainsAssembly(assembly))
+                if (plugin != null && plugin.ContainsAssembly(assembly))
                 {
                     AssemblyPatch = plugin.modPath;
                     break;
@@ -28,7 +28,8 @@ namespace ModsCommon
             }
         }
 
-        public string GetString(string key, CultureInfo culture)
+        public string GetString(string key, CultureInfo culture) => TryGetString(key, culture, out var str) ? str : key;
+        public bool TryGetString(string key, CultureInfo culture, out string str)
         {
             if (culture != null)
             {
@@ -37,8 +38,8 @@ namespace ModsCommon
 
                 while (culture != null)
                 {
-                    if (Languages.TryGetValue(culture.Name, out var language) && language.TryGetString(key, out var str))
-                        return str;
+                    if (Languages.TryGetValue(culture.Name, out var language) && language.TryGetString(key, out str))
+                        return true;
                     else if (string.IsNullOrEmpty(culture.Name))
                         break;
                     else
@@ -46,7 +47,8 @@ namespace ModsCommon
                 }
             }
 
-            return key;
+            str = null;
+            return false;
         }
 
         private void Load(CultureInfo culture)
