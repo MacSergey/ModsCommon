@@ -395,6 +395,31 @@ namespace ModsCommon.UI
                     Render.RenderSprite(FgRenderData, renderOptions);
             }
         }
+        protected override Vector2 GetForegroundRenderSize(UITextureAtlas.SpriteInfo spriteInfo)
+        {
+            if (spriteInfo == null)
+                return Vector2.zero;
+
+            if (m_ForegroundSpriteMode == UIForegroundSpriteMode.Stretch)
+            {
+                return size * m_ScaleFactor;
+            }
+            else if (m_ForegroundSpriteMode == UIForegroundSpriteMode.Fill)
+            {
+                return spriteInfo.pixelSize;
+            }
+            else if (m_ForegroundSpriteMode == UIForegroundSpriteMode.Scale)
+            {
+                var widthRatio = Mathf.Max(width - spritePadding.horizontal, 0f) / spriteInfo.width;
+                var heightRatio = Mathf.Max(height - spritePadding.vertical, 0f) / spriteInfo.height;
+                var ratio = Mathf.Min(widthRatio, heightRatio);
+                return new Vector2(ratio * spriteInfo.width, ratio * spriteInfo.height) * m_ScaleFactor;
+            }
+            else
+            {
+                return Vector2.zero;
+            }
+        }
 
         public void AutoWidth()
         {

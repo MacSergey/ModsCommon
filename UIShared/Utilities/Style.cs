@@ -163,6 +163,11 @@ namespace ModsCommon.UI
             dropDown.disabledFgSprite = "IconDownArrowDisabled";
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
 
+            dropDown.color = new Color32(101, 101, 101, 255);
+            dropDown.hoveredBgColor = new Color32(172, 172, 172, 255);
+            dropDown.normalFgColor = Color.black;
+            dropDown.hoveredFgColor = new Color32(64, 64, 64, 255);
+
             dropDown.textVerticalAlignment = UIVerticalAlignment.Middle;
             dropDown.textHorizontalAlignment = UIHorizontalAlignment.Left;
 
@@ -177,7 +182,11 @@ namespace ModsCommon.UI
             popup.atlas = CommonTextures.Atlas;
             popup.backgroundSprite = CommonTextures.FieldHovered;
             popup.ItemHover = CommonTextures.FieldNormal;
-            popup.ItemSelected = CommonTextures.FieldFocused;
+            popup.ItemSelected = CommonTextures.FieldNormal;
+
+            popup.color = new Color32(101, 101, 101, 255);
+            popup.ColorHover = new Color32(128, 192, 255, 255);
+
             popup.EntityHeight = entityHeight ?? 20f;
             popup.MaximumSize = new Vector2(230f, 700f);
         }

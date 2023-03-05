@@ -97,7 +97,7 @@ namespace ModsCommon.UI
             get => minimumSize;
             set
             {
-                if(value != minimumSize)
+                if (value != minimumSize)
                 {
                     minimumSize = value;
                     StartIndex = StartIndex;
@@ -135,6 +135,9 @@ namespace ModsCommon.UI
 
         public string ItemHover { get; set; }
         public string ItemSelected { get; set; }
+
+        public Color32 ColorHover { get; set; } = new Color32(255, 255, 255, 255);
+        public Color32 ColorSelected { get; set; } = new Color32(255, 255, 255, 255);
 
         public Popup()
         {
@@ -234,6 +237,10 @@ namespace ModsCommon.UI
                         entity.atlas = atlas;
                         entity.hoveredBgSprite = ItemHover;
                         entity.focusedBgSprite = ItemSelected;
+
+                        entity.hoveredBgColor = ColorHover;
+                        entity.focusedBgColor = ColorSelected;
+
                         entity.OnSelected += ObjectSelected;
                         Entities.Add(entity);
                     }

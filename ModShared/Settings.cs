@@ -666,14 +666,12 @@ namespace ModsCommon
 
                 protected override void OnSizeChanged()
                 {
-                    spritePadding = new RectOffset(6, 6, 6, 6);
-                    scaleFactor = (height - spritePadding.vertical) / height;
-                    textPadding = new RectOffset(Mathf.CeilToInt(height) + spritePadding.right, 8, 3, 0);
+                    textPadding = new RectOffset(Mathf.CeilToInt(height) + 4, 8, 3, 0);
                 }
             }
             public class LanguagePopup : Popup<Language, LanguageEntity>
             {
-                protected override float DefaultEntityHeight => 32f;
+                protected override float DefaultEntityHeight => 34f;
             }
         }
     }
