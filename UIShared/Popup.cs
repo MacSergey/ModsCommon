@@ -21,10 +21,8 @@ namespace ModsCommon.UI
         public Func<ObjectType, ObjectType, bool> IsEqualDelegate { protected get; set; }
         private Func<ObjectType, bool> Selector { get; set; } = null;
 
-        public float EntityHeight { get; set; }
-
-        private List<ObjectType> RawValues { get; set; } = null;
-        private List<ObjectType> Values { get; set; } = null;
+        private List<ObjectType> RawValues { get; set; } = new List<ObjectType>();
+        private List<ObjectType> Values { get; set; } = new List<ObjectType>();
 
 
         private ObjectType selectedObject;
@@ -47,16 +45,89 @@ namespace ModsCommon.UI
             get => startIndex;
             set
             {
-                if (value != startIndex)
+                startIndex = Mathf.Clamp(value, 0, Values.Count - VisibleCount);
+                RefreshEntities();
+            }
+        }
+
+        private float entityHeight = 20f;
+        public float EntityHeight
+        {
+            get => entityHeight;
+            set
+            {
+                if (entityHeight != value)
                 {
-                    startIndex = Mathf.Clamp(value, 0, Values.Count - VisibleCount);
-                    RefreshEntities();
+                    entityHeight = value;
+                    StartIndex = StartIndex;
+                }
+            }
+        }
+        public float EntityWidth => width - (ShowScroll ? ScrollBar.width : 0f);
+
+        private int maxVisibleItems = 0;
+        public int MaxVisibleItems
+        {
+            get => maxVisibleItems;
+            set
+            {
+                if (value != maxVisibleItems)
+                {
+                    maxVisibleItems = value;
+                    StartIndex = StartIndex;
+                }
+            }
+        }
+        private new Vector2 maximumSize;
+        public Vector2 MaximumSize
+        {
+            get => maximumSize;
+            set
+            {
+                if (value != maximumSize)
+                {
+                    maximumSize = value;
+                    StartIndex = StartIndex;
+                }
+            }
+        }
+        private new Vector2 minimumSize;
+        public Vector2 MinimumSize
+        {
+            get => minimumSize;
+            set
+            {
+                if(value != minimumSize)
+                {
+                    minimumSize = value;
+                    StartIndex = StartIndex;
                 }
             }
         }
 
-        public int MaxVisibleItems { get; set; }
-        protected virtual int VisibleCount => Mathf.Min(Values.Count, MaxVisibleItems, Mathf.FloorToInt(maximumSize.y / EntityHeight));
+        private bool autoWidth;
+        public bool AutoWidth
+        {
+            get => autoWidth && VisibleCount == Values.Count;
+            set
+            {
+                if (value != autoWidth)
+                {
+                    autoWidth = value;
+                    StartIndex = StartIndex;
+                }
+            }
+        }
+
+        protected virtual int VisibleCount
+        {
+            get
+            {
+                var visibleCount = MaxVisibleItems > 0 ? MaxVisibleItems : int.MaxValue;
+                var fitCount = Mathf.FloorToInt(MaximumSize.y / EntityHeight);
+                return Mathf.Min(Values.Count, visibleCount, fitCount);
+            }
+        }
         protected virtual float PopupHeight => VisibleCount * EntityHeight;
         protected bool ShowScroll => Values.Count > VisibleCount;
         protected virtual float ScrollHeight => VisibleCount * EntityHeight;
@@ -72,26 +143,32 @@ namespace ModsCommon.UI
             var gameObject = Instantiate(UIHelper.ScrollBar.gameObject);
             AttachUIComponent(gameObject);
             ScrollBar = gameObject.GetComponent<CustomUIScrollbar>();
-            ScrollBar.thumbObject.minimumSize = new Vector2(0f, 20f);
             ScrollBar.eventValueChanged += ScrollBarValueChanged;
 
-            EntityHeight = DefaultEntityHeight;
+            MaximumSize = new Vector2(200f, 700f);
+            entityHeight = DefaultEntityHeight;
         }
 
         public virtual void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector = null)
         {
             Selector = selector;
-            RawValues = values.ToList();
+            RawValues.Clear();
+            RawValues.AddRange(values);
             RefreshValues();
         }
         public virtual void DeInit()
         {
             OnSelectedChanged = null;
-            RawValues = null;
-            Values = null;
+
+            RawValues.Clear();
+            Values.Clear();
             Selector = null;
+
             startIndex = 0;
-            EntityHeight = DefaultEntityHeight;
+            entityHeight = DefaultEntityHeight;
+            maxVisibleItems = 0;
+            autoWidth = false;
+            refreshEnable = true;
         }
         protected bool Equal(ObjectType value1, ObjectType value2)
         {
@@ -111,31 +188,45 @@ namespace ModsCommon.UI
             OnSelectedChanged?.Invoke(value);
         }
 
+
+        private bool refreshEnable = true;
+        public void StopRefresh()
+        {
+            refreshEnable = false;
+        }
+        public void StartRefresh()
+        {
+            refreshEnable = true;
+            RefreshEntities();
+        }
         protected virtual bool Filter(ObjectType value) => Selector == null || Selector(value);
         protected virtual void RefreshValues()
         {
-            Values = RawValues == null ? new List<ObjectType>() : RawValues.Where(Filter).ToList();
+            Values.Clear();
+            Values.AddRange(RawValues.Where(Filter));
+            StartIndex = 0;
 
             ScrollBar.minValue = 0;
-            ScrollBar.maxValue = Values.Count - VisibleCount + 1;
-
-            RefreshEntities();
+            ScrollBar.maxValue = Values.Count - VisibleCount/* + 1*/;
         }
         protected virtual void RefreshEntities()
         {
+            if (!refreshEnable)
+                return;
+
             var visibleCount = VisibleCount;
             height = PopupHeight;
 
             var count = Math.Max(visibleCount, Entities.Count);
 
-            for(var i = 0; i < count; i += 1)
+            for (var i = 0; i < count; i += 1)
             {
                 var index = StartIndex + i;
 
                 if (i < visibleCount)
                 {
                     EntityType entity;
-                    if(i < Entities.Count)
+                    if (i < Entities.Count)
                         entity = Entities[i];
                     else
                     {
@@ -146,9 +237,6 @@ namespace ModsCommon.UI
                         entity.OnSelected += ObjectSelected;
                         Entities.Add(entity);
                     }
-
-                    entity.size = GetEntitySize(i);
-                    entity.relativePosition = GetEntityPosition(i);
 
                     var value = Values[index];
                     SetEntityValue(Entities[i], index, value, Equal(value, SelectedObject));
@@ -161,6 +249,33 @@ namespace ModsCommon.UI
             }
             Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
 
+            if (AutoWidth)
+            {
+                var entitySize = new Vector2(0f, EntityHeight);
+                foreach (var entity in Entities)
+                {
+                    entity.PerformWidth();
+                    entitySize.x = Mathf.Max(entitySize.x, entity.width);
+                }
+
+                for (var i = 0; i < count; i += 1)
+                {
+                    Entities[i].size = entitySize;
+                    Entities[i].relativePosition = GetEntityPosition(i);
+                }
+
+                width = entitySize.x;
+            }
+            else
+            {
+                var entitySize = new Vector2(EntityWidth, EntityHeight);
+                for (var i = 0; i < count; i += 1)
+                {
+                    Entities[i].size = entitySize;
+                    Entities[i].relativePosition = GetEntityPosition(i);
+                }
+            }
+
             ScrollBar.height = ScrollHeight;
             ScrollBar.relativePosition = ScrollPosition;
             ScrollBar.value = StartIndex;
@@ -171,9 +286,13 @@ namespace ModsCommon.UI
             entity.SetObject(index, value, selected);
         }
 
-        protected virtual Vector2 GetEntitySize(int index) => new Vector2(width - (ShowScroll ? ScrollBar.width : 0f), EntityHeight);
         protected virtual Vector2 GetEntityPosition(int index) => new Vector2(0, EntityHeight * index);
 
+        //protected override void OnSizeChanged()
+        //{
+        //    base.OnSizeChanged();
+        //    RefreshEntities();
+        //}
         protected override void OnMouseWheel(UIMouseEventParameter p)
         {
             p.Use();
@@ -181,7 +300,7 @@ namespace ModsCommon.UI
         }
         private void ScrollBarValueChanged(UIComponent component, float value)
         {
-            StartIndex = (int)value;
+            StartIndex = Mathf.RoundToInt(value);
         }
     }
 
@@ -316,7 +435,7 @@ namespace ModsCommon.UI
         protected override Vector2 GetEntityPosition(int index) => base.GetEntityPosition(index) + new Vector2(0f, 30f);
     }
 
-    public abstract class PopupEntity<ObjectType> : CustomUIButton, IReusable
+    public abstract class PopupEntity<ObjectType> : MultyAtlasUIButton, IReusable
     {
         public event Action<int, ObjectType> OnSelected;
         bool IReusable.InCache { get; set; }
@@ -351,6 +470,10 @@ namespace ModsCommon.UI
             Selected = selected;
         }
         protected void Select() => OnSelected?.Invoke(Index, Object);
+        public virtual void PerformWidth()
+        {
+            AutoWidth();
+        }
 
         protected override void OnClick(UIMouseEventParameter p)
         {

@@ -42,6 +42,7 @@ namespace ModsCommon.UI
             thumbSprite.width = thumbSprite.parent.width;
             thumbSprite.atlas = CommonTextures.Atlas;
             thumbSprite.spriteName = CommonTextures.FieldNormal;
+            thumbSprite.minimumSize = new Vector2(0f, 20f);
             ScrollBar.thumbObject = thumbSprite;
         }
 

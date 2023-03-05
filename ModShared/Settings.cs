@@ -231,25 +231,17 @@ namespace ModsCommon
         private void AddLanguageList(UIHelper group)
         {
             var dropDown = (group.self as UIComponent).AddUIComponent<LanguageDropDown>();
-            dropDown.AddItem(string.Empty, new OptionData(CommonLocalize.LocaleManager.GetString("Mod_LocaleGame", CommonLocalize.Culture)));
+            dropDown.AddItem(GetLocaleItem(string.Empty));
 
             foreach (var locale in GetSupportLanguages())
+                dropDown.AddItem(GetLocaleItem(locale));
+
+            dropDown.SelectedObject = GetLocaleItem(Locale.value);
+            dropDown.OnValueChanged += LanguageChanged;
+
+            static void LanguageChanged(LanguageDropDown.Language language)
             {
-                var localizeString = $"Mod_Locale_{locale}";
-                var localeText = LocalizeExtension.TryGetCulture(locale, out var culture) ? CommonLocalize.LocaleManager.GetString(localizeString, culture) : localizeString;
-                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale.ToLower())
-                    localeText += $" ({CommonLocalize.LocaleManager.GetString(localizeString, CommonLocalize.Culture)})";
-
-                dropDown.AddItem(locale, new OptionData(localeText));
-            }
-
-            dropDown.SelectedObject = Locale.value;
-            dropDown.eventSelectedIndexChanged += IndexChanged;
-
-            void IndexChanged(UIComponent component, int value)
-            {
-                var locale = dropDown.SelectedObject;
-                Locale.value = locale;
+                Locale.value = language.locale;
                 LocaleManager.ForceReload();
             }
         }
@@ -259,6 +251,23 @@ namespace ModsCommon
             languages.AddRange(SingletonMod<TypeMod>.Instance.GetSupportLocales());
 
             return languages.OrderBy(l => l).ToArray();
+        }
+        private LanguageDropDown.Language GetLocaleItem(string locale)
+        {
+            if (string.IsNullOrEmpty(locale))
+            {
+                var label = CommonLocalize.LocaleManager.GetString("Mod_LocaleGame", CommonLocalize.Culture);
+                return new LanguageDropDown.Language(locale, label, LocalizeExtension.GetRegionLocale(LocaleManager.instance.language));
+            }
+            else
+            {
+                var key = $"Mod_Locale_{locale}";
+                var label = LocalizeExtension.TryGetCulture(locale, out var culture) ? CommonLocalize.LocaleManager.GetString(key, culture) : key;
+                if (SingletonMod<TypeMod>.Instance.Culture.Name.ToLower() != locale.ToLower())
+                    label += $" ({CommonLocalize.LocaleManager.GetString(key, CommonLocalize.Culture)})";
+
+                return new LanguageDropDown.Language(locale, label, locale);
+            }
         }
 
         #endregion
@@ -589,13 +598,83 @@ namespace ModsCommon
             public CustomUIPanel panel;
             public UICheckBox[] checkBoxes;
         }
-    }
 
-    public class LanguageDropDown : UIDropDown<string>
-    {
-        public LanguageDropDown()
+        public class LanguageDropDown : AdvancedDropDown<LanguageDropDown.Language, LanguageDropDown.LanguagePopup, LanguageDropDown.LanguageEntity>
         {
-            ComponentStyle.CustomSettingsStyle(this, new Vector2(250, 31));
+            public readonly struct Language
+            {
+                public readonly string locale;
+                public readonly string label;
+                public readonly string sprite;
+
+                public Language(string locale, string label, string sprite)
+                {
+                    this.locale = locale;
+                    this.label = label;
+                    this.sprite = sprite;
+                }
+
+                public override bool Equals(object obj)
+                {
+                    if (obj is Language language)
+                        return language.locale == locale;
+                    else
+                        return false;
+                }
+                public override int GetHashCode() => locale.GetHashCode();
+            }
+            public LanguageDropDown()
+            {
+                ComponentStyle.CustomSettingsStyle(this, new Vector2(250f, 34f));
+            }
+            protected override void PopupOpening()
+            {
+                base.PopupOpening();
+                Popup.CustomSettingsStyle(34f);
+                Popup.AutoWidth = true;
+            }
+
+            public class LanguageEntity : PopupEntity<Language>
+            {
+                public LanguageEntity()
+                {
+                    atlas = CommonTextures.Atlas;
+                    foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+
+                    horizontalAlignment = UIHorizontalAlignment.Left;
+                    verticalAlignment = UIVerticalAlignment.Middle;
+
+                    textVerticalAlignment = UIVerticalAlignment.Middle;
+                    textHorizontalAlignment = UIHorizontalAlignment.Left;
+                    textScale = 0.9f;
+                }
+
+                public override void SetObject(int index, Language language, bool selected)
+                {
+                    base.SetObject(index, language, selected);
+
+                    text = language.label;
+                    normalFgSprite = language.sprite;
+                }
+                public override void DeInit()
+                {
+                    base.DeInit();
+
+                    text = string.Empty;
+                    normalFgSprite = string.Empty;
+                }
+
+                protected override void OnSizeChanged()
+                {
+                    spritePadding = new RectOffset(6, 6, 6, 6);
+                    scaleFactor = (height - spritePadding.vertical) / height;
+                    textPadding = new RectOffset(Mathf.CeilToInt(height) + spritePadding.right, 8, 3, 0);
+                }
+            }
+            public class LanguagePopup : Popup<Language, LanguageEntity>
+            {
+                protected override float DefaultEntityHeight => 32f;
+            }
         }
     }
 }

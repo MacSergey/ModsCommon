@@ -147,6 +147,41 @@ namespace ModsCommon.UI
             dropDown.size = size ?? new Vector2(230, 20);
         }
 
+        public static void CustomSettingsStyle<ObjectType, PopupType, EntityType>(this AdvancedDropDown<ObjectType, PopupType, EntityType> dropDown, Vector2? size = null)
+            where PopupType : Popup<ObjectType, EntityType>
+            where EntityType : PopupEntity<ObjectType>
+        {
+            dropDown.atlasBackground = CommonTextures.Atlas;
+            dropDown.normalBgSprite = CommonTextures.FieldNormal;
+            dropDown.hoveredBgSprite = CommonTextures.FieldNormal;
+
+            dropDown.atlasForeground = TextureHelper.InGameAtlas;
+            dropDown.normalFgSprite = "IconDownArrow";
+            dropDown.hoveredFgSprite = "IconDownArrowHovered";
+            dropDown.pressedFgSprite = "IconDownArrowPressed";
+            dropDown.focusedFgSprite = "IconDownArrow";
+            dropDown.disabledFgSprite = "IconDownArrowDisabled";
+            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+
+            dropDown.textVerticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.textHorizontalAlignment = UIHorizontalAlignment.Left;
+
+            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
+            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+
+            dropDown.size = size ?? new Vector2(230, 20);
+        }
+        public static void CustomSettingsStyle<ObjectType, EntityType>(this Popup<ObjectType, EntityType> popup, float? entityHeight = null)
+            where EntityType : PopupEntity<ObjectType>
+        {
+            popup.atlas = CommonTextures.Atlas;
+            popup.backgroundSprite = CommonTextures.FieldHovered;
+            popup.ItemHover = CommonTextures.FieldNormal;
+            popup.ItemSelected = CommonTextures.FieldFocused;
+            popup.EntityHeight = entityHeight ?? 20f;
+            popup.MaximumSize = new Vector2(230f, 700f);
+        }
+
         public static void CustomSettingsStyle(this UITextField textField)
         {
             textField.atlas = CommonTextures.Atlas;

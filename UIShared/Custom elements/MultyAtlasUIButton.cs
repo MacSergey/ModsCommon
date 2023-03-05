@@ -353,14 +353,14 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    _atlas = atlasBackground,
-                    _color = color,
-                    _fillAmount = 1f,
-                    _flip = UISpriteFlip.None,
-                    _offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
-                    _pixelsToUnits = PixelsToUnits(),
-                    _size = size,
-                    _spriteInfo = backgroundSprite,
+                    atlas = atlasBackground,
+                    color = color,
+                    fillAmount = 1f,
+                    flip = UISpriteFlip.None,
+                    offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
+                    pixelsToUnits = PixelsToUnits(),
+                    size = size,
+                    spriteInfo = backgroundSprite,
                 };
 
                 if (backgroundSprite.isSliced)
@@ -379,20 +379,38 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    _atlas = atlasForeground,
-                    _color = color,
-                    _fillAmount = 1f,
-                    _flip = UISpriteFlip.None,
-                    _offset = foregroundRenderOffset,
-                    _pixelsToUnits = PixelsToUnits(),
-                    _size = foregroundRenderSize,
-                    _spriteInfo = foregroundSprite,
+                    atlas = atlasForeground,
+                    color = color,
+                    fillAmount = 1f,
+                    flip = UISpriteFlip.None,
+                    offset = foregroundRenderOffset,
+                    pixelsToUnits = PixelsToUnits(),
+                    size = foregroundRenderSize,
+                    spriteInfo = foregroundSprite,
                 };
 
                 if (foregroundSprite.isSliced)
                     Render.RenderSlicedSprite(FgRenderData, renderOptions);
                 else
                     Render.RenderSprite(FgRenderData, renderOptions);
+            }
+        }
+
+        public void AutoWidth()
+        {
+            if (m_Font != null && m_Font.isValid && !string.IsNullOrEmpty(m_Text))
+            {
+                var minSize = minimumSize;
+
+                using (UIFontRenderer uIFontRenderer = ObtainTextRenderer())
+                {
+                    var textSize = uIFontRenderer.MeasureString(m_Text);
+                    minSize.x = textSize.x + textPadding.horizontal;
+                }
+
+                var sprite = GetForegroundSprite();
+                var spriteSize = GetForegroundRenderSize(sprite);
+                width = Mathf.Max(spriteSize.x, minSize.x);
             }
         }
     }

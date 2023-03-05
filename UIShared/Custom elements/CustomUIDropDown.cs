@@ -261,14 +261,14 @@ namespace ModsCommon.UI
                 var color = ApplyOpacity(GetBackgroundColor());
                 RenderOptions renderOptions = new RenderOptions()
                 {
-                    _atlas = atlasBackground,
-                    _color = color,
-                    _fillAmount = 1f,
-                    _flip = UISpriteFlip.None,
-                    _offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
-                    _pixelsToUnits = PixelsToUnits(),
-                    _size = size,
-                    _spriteInfo = backgroundSprite,
+                    atlas = atlasBackground,
+                    color = color,
+                    fillAmount = 1f,
+                    flip = UISpriteFlip.None,
+                    offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
+                    pixelsToUnits = PixelsToUnits(),
+                    size = size,
+                    spriteInfo = backgroundSprite,
                 };
 
                 if (backgroundSprite.isSliced)
@@ -287,14 +287,14 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    _atlas = atlasForeground,
-                    _color = color,
-                    _fillAmount = 1f,
-                    _flip = UISpriteFlip.None,
-                    _offset = foregroundRenderOffset,
-                    _pixelsToUnits = PixelsToUnits(),
-                    _size = foregroundRenderSize,
-                    _spriteInfo = foregroundSprite,
+                    atlas = atlasForeground,
+                    color = color,
+                    fillAmount = 1f,
+                    flip = UISpriteFlip.None,
+                    offset = foregroundRenderOffset,
+                    pixelsToUnits = PixelsToUnits(),
+                    size = foregroundRenderSize,
+                    spriteInfo = foregroundSprite,
                 };
 
                 if (foregroundSprite.isSliced)

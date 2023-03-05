@@ -115,6 +115,30 @@ namespace ModsCommon.Utilities
             spriteParams[Resize] = new RectOffset();
             spriteParams[PlusMinusButton] = new RectOffset();
 
+            spriteParams["cs-CZ"] = new RectOffset();
+            spriteParams["da-DK"] = new RectOffset();
+            spriteParams["de-DE"] = new RectOffset();
+            spriteParams["en-GB"] = new RectOffset();
+            spriteParams["en-US"] = new RectOffset();
+            spriteParams["es-ES"] = new RectOffset();
+            spriteParams["fi-FI"] = new RectOffset();
+            spriteParams["fr-FR"] = new RectOffset();
+            spriteParams["hu-HU"] = new RectOffset();
+            spriteParams["id-ID"] = new RectOffset();
+            spriteParams["it-IT"] = new RectOffset();
+            spriteParams["ja-JP"] = new RectOffset();
+            spriteParams["ko-KR"] = new RectOffset();
+            spriteParams["ms-MY"] = new RectOffset();
+            spriteParams["nl-NL"] = new RectOffset();
+            spriteParams["pl-PL"] = new RectOffset();
+            spriteParams["pt-BR"] = new RectOffset();
+            spriteParams["pt-PT"] = new RectOffset();
+            spriteParams["ro-RO"] = new RectOffset();
+            spriteParams["ru-RU"] = new RectOffset();
+            spriteParams["tr-TR"] = new RectOffset();
+            spriteParams["zh-CN"] = new RectOffset();
+            spriteParams["zh-TW"] = new RectOffset();
+
             Atlas = TextureHelper.CreateAtlas(nameof(ModsCommon), spriteParams);
         }
     }

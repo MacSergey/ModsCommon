@@ -6,17 +6,17 @@ namespace ModsCommon.UI
 {
     public struct RenderOptions
     {
-        public UITextureAtlas _atlas;
-        public UITextureAtlas.SpriteInfo _spriteInfo;
-        public Color32 _color;
-        public float _pixelsToUnits;
-        public Vector2 _size;
-        public UISpriteFlip _flip;
-        public bool _invertFill;
-        public UIFillDirection _fillDirection;
-        public float _fillAmount;
-        public Vector3 _offset;
-        public int _baseIndex;
+        public UITextureAtlas atlas;
+        public UITextureAtlas.SpriteInfo spriteInfo;
+        public Color32 color;
+        public float pixelsToUnits;
+        public Vector2 size;
+        public UISpriteFlip flip;
+        public bool invertFill;
+        public UIFillDirection fillDirection;
+        public float fillAmount;
+        public Vector3 offset;
+        public int baseIndex;
     }
 
     public static class Render
@@ -47,23 +47,23 @@ namespace ModsCommon.UI
             new int[4] { 14, 13, 6, 5 }
         };
 
-        private static Vector3[] _Vertices = new Vector3[16];
-        private static Vector2[] _UV = new Vector2[16];
+        private static Vector3[] vertices = new Vector3[16];
+        private static Vector2[] uv = new Vector2[16];
         private static readonly int[][] kFillIndices = new int[][] { new int[4], new int[4], new int[4], new int[4] };
 
         public static void RenderSlicedSprite(UIRenderData renderData, RenderOptions options)
         {
-            options._baseIndex = renderData.vertices.Count;
+            options.baseIndex = renderData.vertices.Count;
             RebuildSlicedTriangles(renderData, options);
             RebuildSlicedVertices(renderData, options);
             RebuildSlicedUV(renderData, options);
             RebuildSlicedColors(renderData, options);
-            if (options._fillAmount < 1f)
+            if (options.fillAmount < 1f)
                 DoSlicedFill(renderData, options);
         }
         private static void RebuildSlicedTriangles(UIRenderData renderData, RenderOptions options)
         {
-            var baseIndex = options._baseIndex;
+            var baseIndex = options.baseIndex;
             var triangles = renderData.triangles;
             for (int i = 0; i < kSlicedTriangleIndices.Length; i++)
             {
@@ -74,61 +74,61 @@ namespace ModsCommon.UI
         {
             var x = 0f;
             var y = 0f;
-            var sizeX = Mathf.Ceil(options._size.x);
-            var sizeY = Mathf.Ceil(0f - options._size.y);
-            var spriteInfo = options._spriteInfo;
+            var sizeX = Mathf.Ceil(options.size.x);
+            var sizeY = Mathf.Ceil(0f - options.size.y);
+            var spriteInfo = options.spriteInfo;
             var left = spriteInfo.border.left;
             var top = spriteInfo.border.top;
             var right = spriteInfo.border.right;
             var bottom = spriteInfo.border.bottom;
-            if (options._flip.IsFlagSet(UISpriteFlip.FlipHorizontal))
+            if (options.flip.IsFlagSet(UISpriteFlip.FlipHorizontal))
             {
                 var num7 = right;
                 right = left;
                 left = num7;
             }
-            if (options._flip.IsFlagSet(UISpriteFlip.FlipVertical))
+            if (options.flip.IsFlagSet(UISpriteFlip.FlipVertical))
             {
                 var temp = bottom;
                 bottom = top;
                 top = temp;
             }
 
-            var vertices = _Vertices;
-            vertices[0] = new Vector3(x, y, 0f) + options._offset;
+            var vertices = Render.vertices;
+            vertices[0] = new Vector3(x, y, 0f) + options.offset;
             vertices[1] = vertices[0] + new Vector3(left, 0f, 0f);
             vertices[2] = vertices[0] + new Vector3(left, 0f - top, 0f);
             vertices[3] = vertices[0] + new Vector3(0f, 0f - top, 0f);
-            vertices[4] = new Vector3(sizeX - right, y, 0f) + options._offset;
+            vertices[4] = new Vector3(sizeX - right, y, 0f) + options.offset;
             vertices[5] = vertices[4] + new Vector3(right, 0f, 0f);
             vertices[6] = vertices[4] + new Vector3(right, 0f - top, 0f);
             vertices[7] = vertices[4] + new Vector3(0f, 0f - top, 0f);
-            vertices[8] = new Vector3(x, sizeY + bottom, 0f) + options._offset;
+            vertices[8] = new Vector3(x, sizeY + bottom, 0f) + options.offset;
             vertices[9] = vertices[8] + new Vector3(left, 0f, 0f);
             vertices[10] = vertices[8] + new Vector3(left, 0f - bottom, 0f);
             vertices[11] = vertices[8] + new Vector3(0f, 0f - bottom, 0f);
-            vertices[12] = new Vector3(sizeX - right, sizeY + bottom, 0f) + options._offset;
+            vertices[12] = new Vector3(sizeX - right, sizeY + bottom, 0f) + options.offset;
             vertices[13] = vertices[12] + new Vector3(right, 0f, 0f);
             vertices[14] = vertices[12] + new Vector3(right, 0f - bottom, 0f);
             vertices[15] = vertices[12] + new Vector3(0f, 0f - bottom, 0f);
 
             for (int i = 0; i < vertices.Length; i++)
             {
-                renderData.vertices.Add((vertices[i] * options._pixelsToUnits).Quantize(options._pixelsToUnits));
+                renderData.vertices.Add((vertices[i] * options.pixelsToUnits).Quantize(options.pixelsToUnits));
             }
         }
         private static void RebuildSlicedUV(UIRenderData renderData, RenderOptions options)
         {
-            var atlas = options._atlas;
+            var atlas = options.atlas;
             var size = new Vector2(atlas.texture.width, atlas.texture.height);
-            var spriteInfo = options._spriteInfo;
-            var top = (float)spriteInfo.border.top / size.y;
-            var bottom = (float)spriteInfo.border.bottom / size.y;
-            var left = (float)spriteInfo.border.left / size.x;
-            var right = (float)spriteInfo.border.right / size.x;
+            var spriteInfo = options.spriteInfo;
+            var top = spriteInfo.border.top / size.y;
+            var bottom = spriteInfo.border.bottom / size.y;
+            var left = spriteInfo.border.left / size.x;
+            var right = spriteInfo.border.right / size.x;
             var region = spriteInfo.region;
 
-            var uv = _UV;
+            var uv = Render.uv;
             uv[0] = new Vector2(region.x, region.yMax);
             uv[1] = new Vector2(region.x + left, region.yMax);
             uv[2] = new Vector2(region.x + left, region.yMax - top);
@@ -147,12 +147,12 @@ namespace ModsCommon.UI
             uv[15] = new Vector2(region.xMax - right, region.y);
 
 
-            if (options._flip != 0)
+            if (options.flip != 0)
             {
                 for (int i = 0; i < uv.Length; i += 4)
                 {
                     var zero = Vector2.zero;
-                    if (options._flip.IsFlagSet(UISpriteFlip.FlipHorizontal))
+                    if (options.flip.IsFlagSet(UISpriteFlip.FlipHorizontal))
                     {
                         zero = uv[i];
                         uv[i] = uv[i + 1];
@@ -161,7 +161,7 @@ namespace ModsCommon.UI
                         uv[i + 2] = uv[i + 3];
                         uv[i + 3] = zero;
                     }
-                    if (options._flip.IsFlagSet(UISpriteFlip.FlipVertical))
+                    if (options.flip.IsFlagSet(UISpriteFlip.FlipVertical))
                     {
                         zero = uv[i];
                         uv[i] = uv[i + 3];
@@ -171,7 +171,7 @@ namespace ModsCommon.UI
                         uv[i + 2] = zero;
                     }
                 }
-                if (options._flip.IsFlagSet(UISpriteFlip.FlipHorizontal))
+                if (options.flip.IsFlagSet(UISpriteFlip.FlipHorizontal))
                 {
                     var array = new Vector2[uv.Length];
                     Array.Copy(uv, array, uv.Length);
@@ -180,7 +180,7 @@ namespace ModsCommon.UI
                     Array.Copy(uv, 8, uv, 12, 4);
                     Array.Copy(array, 12, uv, 8, 4);
                 }
-                if (options._flip.IsFlagSet(UISpriteFlip.FlipVertical))
+                if (options.flip.IsFlagSet(UISpriteFlip.FlipVertical))
                 {
                     var array2 = new Vector2[uv.Length];
                     Array.Copy(uv, array2, uv.Length);
@@ -197,7 +197,7 @@ namespace ModsCommon.UI
         }
         private static void RebuildSlicedColors(UIRenderData renderData, RenderOptions options)
         {
-            var color = ((Color)options._color).linear;
+            var color = ((Color)options.color).linear;
             for (int i = 0; i < 16; i++)
             {
                 renderData.colors.Add(color);
@@ -205,23 +205,23 @@ namespace ModsCommon.UI
         }
         private static void DoSlicedFill(UIRenderData renderData, RenderOptions options)
         {
-            var baseIndex = options._baseIndex;
+            var baseIndex = options.baseIndex;
             var vertices = renderData.vertices;
             var uvs = renderData.uvs;
-            var fillIndices = GetFillIndices(options._fillDirection, baseIndex);
-            var invert = options._invertFill;
-            if (options._invertFill)
+            var fillIndices = GetFillIndices(options.fillDirection, baseIndex);
+            var invert = options.invertFill;
+            if (options.invertFill)
             {
                 for (int i = 0; i < fillIndices.Length; i++)
                 {
                     Array.Reverse(fillIndices[i]);
                 }
             }
-            var index = ((options._fillDirection != 0) ? 1 : 0);
+            var index = ((options.fillDirection != 0) ? 1 : 0);
             var index1 = vertices[fillIndices[0][invert ? 3 : 0]][index];
             var index2 = vertices[fillIndices[0][(!invert) ? 3 : 0]][index];
             var index3 = Mathf.Abs(index2 - index1);
-            var index4 = invert ? (index2 - options._fillAmount * index3) : (index1 + options._fillAmount * index3);
+            var index4 = invert ? (index2 - options.fillAmount * index3) : (index1 + options.fillAmount * index3);
 
             for (int i = 0; i < fillIndices.Length; i += 1)
             {
@@ -292,17 +292,17 @@ namespace ModsCommon.UI
 
         public static void RenderSprite(UIRenderData data, RenderOptions options)
         {
-            options._baseIndex = data.vertices.Count;
+            options.baseIndex = data.vertices.Count;
             RebuildTriangles(data, options);
             RebuildVertices(data, options);
             RebuildUV(data, options);
             RebuildColors(data, options);
-            if (options._fillAmount < 1f)
+            if (options.fillAmount < 1f)
                 DoFill(data, options);
         }
         private static void RebuildTriangles(UIRenderData renderData, RenderOptions options)
         {
-            var baseIndex = options._baseIndex;
+            var baseIndex = options.baseIndex;
             var triangles = renderData.triangles;
             triangles.EnsureCapacity(triangles.Count + kTriangleIndices.Length);
             for (int i = 0; i < kTriangleIndices.Length; i++)
@@ -313,31 +313,31 @@ namespace ModsCommon.UI
         private static void RebuildVertices(UIRenderData renderData, RenderOptions options)
         {
             var vertices = renderData.vertices;
-            var baseIndex = options._baseIndex;
+            var baseIndex = options.baseIndex;
             var x = 0f;
             var y = 0f;
-            var sizeX = Mathf.Ceil(options._size.x);
-            var sizeY = Mathf.Ceil(0f - options._size.y);
-            vertices.Add(new Vector3(x, y, 0f) * options._pixelsToUnits);
-            vertices.Add(new Vector3(sizeX, y, 0f) * options._pixelsToUnits);
-            vertices.Add(new Vector3(sizeX, sizeY, 0f) * options._pixelsToUnits);
-            vertices.Add(new Vector3(x, sizeY, 0f) * options._pixelsToUnits);
-            var vector = options._offset.RoundToInt() * options._pixelsToUnits;
+            var sizeX = Mathf.Ceil(options.size.x);
+            var sizeY = Mathf.Ceil(0f - options.size.y);
+            vertices.Add(new Vector3(x, y, 0f) * options.pixelsToUnits);
+            vertices.Add(new Vector3(sizeX, y, 0f) * options.pixelsToUnits);
+            vertices.Add(new Vector3(sizeX, sizeY, 0f) * options.pixelsToUnits);
+            vertices.Add(new Vector3(x, sizeY, 0f) * options.pixelsToUnits);
+            var vector = options.offset.RoundToInt() * options.pixelsToUnits;
             for (int i = 0; i < 4; i++)
             {
-                vertices[baseIndex + i] = (vertices[baseIndex + i] + vector).Quantize(options._pixelsToUnits);
+                vertices[baseIndex + i] = (vertices[baseIndex + i] + vector).Quantize(options.pixelsToUnits);
             }
         }
         private static void RebuildUV(UIRenderData renderData, RenderOptions options)
         {
-            var region = options._spriteInfo.region;
+            var region = options.spriteInfo.region;
             var uvs = renderData.uvs;
             uvs.Add(new Vector2(region.x, region.yMax));
             uvs.Add(new Vector2(region.xMax, region.yMax));
             uvs.Add(new Vector2(region.xMax, region.y));
             uvs.Add(new Vector2(region.x, region.y));
             var zero = Vector2.zero;
-            if (options._flip.IsFlagSet(UISpriteFlip.FlipHorizontal))
+            if (options.flip.IsFlagSet(UISpriteFlip.FlipHorizontal))
             {
                 zero = uvs[1];
                 uvs[1] = uvs[0];
@@ -346,7 +346,7 @@ namespace ModsCommon.UI
                 uvs[3] = uvs[2];
                 uvs[2] = zero;
             }
-            if (options._flip.IsFlagSet(UISpriteFlip.FlipVertical))
+            if (options.flip.IsFlagSet(UISpriteFlip.FlipVertical))
             {
                 zero = uvs[0];
                 uvs[0] = uvs[3];
@@ -358,7 +358,7 @@ namespace ModsCommon.UI
         }
         private static void RebuildColors(UIRenderData renderData, RenderOptions options)
         {
-            var color = ((Color)options._color).linear;
+            var color = ((Color)options.color).linear;
             var colors = renderData.colors;
             for (int i = 0; i < 4; i++)
             {
@@ -367,16 +367,16 @@ namespace ModsCommon.UI
         }
         private static void DoFill(UIRenderData renderData, RenderOptions options)
         {
-            var baseIndex = options._baseIndex;
+            var baseIndex = options.baseIndex;
             var vertices = renderData.vertices;
             var uvs = renderData.uvs;
             var index1 = baseIndex + 3;
             var index2 = baseIndex + 2;
             var index3 = baseIndex;
             var index4 = baseIndex + 1;
-            if (options._invertFill)
+            if (options.invertFill)
             {
-                if (options._fillDirection == UIFillDirection.Horizontal)
+                if (options.fillDirection == UIFillDirection.Horizontal)
                 {
                     index1 = baseIndex + 1;
                     index2 = baseIndex;
@@ -391,19 +391,19 @@ namespace ModsCommon.UI
                     index4 = baseIndex + 2;
                 }
             }
-            if (options._fillDirection == UIFillDirection.Horizontal)
+            if (options.fillDirection == UIFillDirection.Horizontal)
             {
-                vertices[index2] = Vector3.Lerp(vertices[index2], vertices[index1], 1f - options._fillAmount);
-                vertices[index4] = Vector3.Lerp(vertices[index4], vertices[index3], 1f - options._fillAmount);
-                uvs[index2] = Vector2.Lerp(uvs[index2], uvs[index1], 1f - options._fillAmount);
-                uvs[index4] = Vector2.Lerp(uvs[index4], uvs[index3], 1f - options._fillAmount);
+                vertices[index2] = Vector3.Lerp(vertices[index2], vertices[index1], 1f - options.fillAmount);
+                vertices[index4] = Vector3.Lerp(vertices[index4], vertices[index3], 1f - options.fillAmount);
+                uvs[index2] = Vector2.Lerp(uvs[index2], uvs[index1], 1f - options.fillAmount);
+                uvs[index4] = Vector2.Lerp(uvs[index4], uvs[index3], 1f - options.fillAmount);
             }
             else
             {
-                vertices[index3] = Vector3.Lerp(vertices[index3], vertices[index1], 1f - options._fillAmount);
-                vertices[index4] = Vector3.Lerp(vertices[index4], vertices[index2], 1f - options._fillAmount);
-                uvs[index3] = Vector2.Lerp(uvs[index3], uvs[index1], 1f - options._fillAmount);
-                uvs[index4] = Vector2.Lerp(uvs[index4], uvs[index2], 1f - options._fillAmount);
+                vertices[index3] = Vector3.Lerp(vertices[index3], vertices[index1], 1f - options.fillAmount);
+                vertices[index4] = Vector3.Lerp(vertices[index4], vertices[index2], 1f - options.fillAmount);
+                uvs[index3] = Vector2.Lerp(uvs[index3], uvs[index1], 1f - options.fillAmount);
+                uvs[index4] = Vector2.Lerp(uvs[index4], uvs[index2], 1f - options.fillAmount);
             }
         }
     }
