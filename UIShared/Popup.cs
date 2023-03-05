@@ -7,22 +7,25 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class Popup<ObjectType, EntityPanel> : CustomUIPanel, IReusable
-        where EntityPanel : PopupEntity<ObjectType>
-        where ObjectType : class
+    public abstract class Popup<ObjectType, EntityType> : CustomUIPanel, IReusable
+        where EntityType : PopupEntity<ObjectType>
     {
-        public event Action<ObjectType> OnSelectedChanged;
-
         bool IReusable.InCache { get; set; }
 
+        public event Action<ObjectType> OnSelectedChanged;
         protected virtual float DefaultEntityHeight => 20f;
 
         private CustomUIScrollbar ScrollBar { get; set; }
+        private List<EntityType> Entities { get; set; } = new List<EntityType>();
+
+        public Func<ObjectType, ObjectType, bool> IsEqualDelegate { protected get; set; }
+        private Func<ObjectType, bool> Selector { get; set; } = null;
+
+        public float EntityHeight { get; set; }
 
         private List<ObjectType> RawValues { get; set; } = null;
         private List<ObjectType> Values { get; set; } = null;
-        private List<EntityPanel> Entities { get; set; } = new List<EntityPanel>();
-        private Func<ObjectType, bool> Selector { get; set; } = null;
+
 
         private ObjectType selectedObject;
         public ObjectType SelectedObject
@@ -30,15 +33,10 @@ namespace ModsCommon.UI
             get => selectedObject;
             set
             {
-                if (value != selectedObject)
+                if (!Equal(value, selectedObject))
                 {
                     selectedObject = value;
-                    var index = Values.IndexOf(selectedObject);
-                    if (index >= 0)
-                    {
-                        StartIndex = index;
-                        SetValues();
-                    }
+                    StartIndex = Values.IndexOf(selectedObject);
                 }
             }
         }
@@ -52,15 +50,17 @@ namespace ModsCommon.UI
                 if (value != startIndex)
                 {
                     startIndex = Mathf.Clamp(value, 0, Values.Count - VisibleCount);
-                    SetValues();
+                    RefreshEntities();
                 }
             }
         }
-        protected virtual int VisibleCount => Mathf.Min(Values.Count, MaxVisibleItems, Mathf.FloorToInt(maximumSize.y / EntityHeight));
-        protected bool ShowScroll => Values.Count > Entities.Count;
 
-        public float EntityHeight { get; set; }
         public int MaxVisibleItems { get; set; }
+        protected virtual int VisibleCount => Mathf.Min(Values.Count, MaxVisibleItems, Mathf.FloorToInt(maximumSize.y / EntityHeight));
+        protected virtual float PopupHeight => VisibleCount * EntityHeight;
+        protected bool ShowScroll => Values.Count > VisibleCount;
+        protected virtual float ScrollHeight => VisibleCount * EntityHeight;
+        protected virtual Vector2 ScrollPosition => new Vector2(width - ScrollBar.width, 0f);
 
         public string ItemHover { get; set; }
         public string ItemSelected { get; set; }
@@ -69,9 +69,10 @@ namespace ModsCommon.UI
         {
             clipChildren = true;
 
-            var gameObject = GameObject.Instantiate(ModsCommon.UI.UIHelper.ScrollBar.gameObject);
+            var gameObject = Instantiate(UIHelper.ScrollBar.gameObject);
             AttachUIComponent(gameObject);
             ScrollBar = gameObject.GetComponent<CustomUIScrollbar>();
+            ScrollBar.thumbObject.minimumSize = new Vector2(0f, 20f);
             ScrollBar.eventValueChanged += ScrollBarValueChanged;
 
             EntityHeight = DefaultEntityHeight;
@@ -81,9 +82,8 @@ namespace ModsCommon.UI
         {
             Selector = selector;
             RawValues = values.ToList();
-            Refresh();
+            RefreshValues();
         }
-
         public virtual void DeInit()
         {
             OnSelectedChanged = null;
@@ -93,95 +93,91 @@ namespace ModsCommon.UI
             startIndex = 0;
             EntityHeight = DefaultEntityHeight;
         }
-
-        protected virtual bool Filter(ObjectType value) => Selector == null || Selector(value);
-        protected virtual void Refresh()
+        protected bool Equal(ObjectType value1, ObjectType value2)
         {
-            Values = RawValues == null ? new List<ObjectType>() : RawValues.Where(Filter).ToList();
-
-            var visibleCount = VisibleCount;
-            height = GetHeight();
-
-            if (Entities.Count < visibleCount)
-            {
-                for (int i = Entities.Count; i < visibleCount; i += 1)
-                {
-                    var newEntery = ComponentPool.Get<EntityPanel>(this);
-                    newEntery.atlas = atlas;
-                    newEntery.hoveredBgSprite = ItemHover;
-                    newEntery.focusedBgSprite = ItemSelected;
-                    newEntery.OnSelected += ObjectSelected;
-                    Entities.Add(newEntery);
-                }
-            }
-            else if (Entities.Count > visibleCount)
-            {
-                for (int i = visibleCount; i < Entities.Count; i += 1)
-                {
-                    Entities[i].OnSelected -= ObjectSelected;
-                    ComponentPool.Free(Entities[i]);
-                }
-                Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
-            }
-
-            ScrollBar.minValue = 0;
-            ScrollBar.maxValue = Values.Count - visibleCount;
-
-            RefreshItems();
-            SetValues();
+            if (IsEqualDelegate != null)
+                return IsEqualDelegate(value1, value2);
+            else if (value1 != null)
+                return value1.Equals(value2);
+            else if (value2 != null)
+                return value2.Equals(value1);
+            else
+                return ReferenceEquals(value1, value2);
         }
 
-        private void ObjectSelected(ObjectType value)
+        private void ObjectSelected(int index, ObjectType value)
         {
             selectedObject = value;
             OnSelectedChanged?.Invoke(value);
         }
 
-        protected virtual void SetValues()
+        protected virtual bool Filter(ObjectType value) => Selector == null || Selector(value);
+        protected virtual void RefreshValues()
         {
-            for (int i = 0; i < Entities.Count; i += 1)
+            Values = RawValues == null ? new List<ObjectType>() : RawValues.Where(Filter).ToList();
+
+            ScrollBar.minValue = 0;
+            ScrollBar.maxValue = Values.Count - VisibleCount + 1;
+
+            RefreshEntities();
+        }
+        protected virtual void RefreshEntities()
+        {
+            var visibleCount = VisibleCount;
+            height = PopupHeight;
+
+            var count = Math.Max(visibleCount, Entities.Count);
+
+            for(var i = 0; i < count; i += 1)
             {
-                if (StartIndex + i < Values.Count)
+                var index = StartIndex + i;
+
+                if (i < visibleCount)
                 {
-                    var value = Values[StartIndex + i];
-                    SetEntityValue(Entities[i], value, value == SelectedObject);
+                    EntityType entity;
+                    if(i < Entities.Count)
+                        entity = Entities[i];
+                    else
+                    {
+                        entity = ComponentPool.Get<EntityType>(this);
+                        entity.atlas = atlas;
+                        entity.hoveredBgSprite = ItemHover;
+                        entity.focusedBgSprite = ItemSelected;
+                        entity.OnSelected += ObjectSelected;
+                        Entities.Add(entity);
+                    }
+
+                    entity.size = GetEntitySize(i);
+                    entity.relativePosition = GetEntityPosition(i);
+
+                    var value = Values[index];
+                    SetEntityValue(Entities[i], index, value, Equal(value, SelectedObject));
                 }
                 else
                 {
-                    SetEntityValue(Entities[i], null, false);
+                    Entities[i].OnSelected -= ObjectSelected;
+                    ComponentPool.Free(Entities[i]);
                 }
             }
+            Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
 
+            ScrollBar.height = ScrollHeight;
+            ScrollBar.relativePosition = ScrollPosition;
             ScrollBar.value = StartIndex;
-        }
-        protected virtual void SetEntityValue(EntityPanel entity, ObjectType value, bool selected)
-        {
-            entity.SetObject(value);
-            entity.Selected = selected;
-        }
-        protected virtual void RefreshItems()
-        {
-            for (int i = 0; i < Entities.Count; i += 1)
-            {
-                var entity = Entities[i];
-                entity.size = GetEntitySize(i);
-                entity.relativePosition = GetEntityPosition(i);
-            }
-
             ScrollBar.isVisible = ShowScroll;
-            ScrollBar.height = GetScrollHeight();
-            ScrollBar.relativePosition = GetScrollPosition();
         }
-        protected virtual float GetHeight() => VisibleCount * EntityHeight;
+        protected virtual void SetEntityValue(EntityType entity, int index, ObjectType value, bool selected)
+        {
+            entity.SetObject(index, value, selected);
+        }
+
         protected virtual Vector2 GetEntitySize(int index) => new Vector2(width - (ShowScroll ? ScrollBar.width : 0f), EntityHeight);
         protected virtual Vector2 GetEntityPosition(int index) => new Vector2(0, EntityHeight * index);
-        protected virtual float GetScrollHeight() => VisibleCount * EntityHeight;
-        protected virtual Vector2 GetScrollPosition() => new Vector2(width - ScrollBar.width, 0f);
 
         protected override void OnMouseWheel(UIMouseEventParameter p)
         {
             p.Use();
-            StartIndex = StartIndex + (p.wheelDelta > 0 ? -1 : 1) * (Utility.OnlyShiftIsPressed ? 10 : 1);
+            StartIndex += (p.wheelDelta > 0 ? -1 : 1) * (Utility.OnlyShiftIsPressed ? 10 : 1);
         }
         private void ScrollBarValueChanged(UIComponent component, float value)
         {
@@ -189,8 +185,8 @@ namespace ModsCommon.UI
         }
     }
 
-    public abstract class SearchPopup<ObjectType, EntityPanel> : Popup<ObjectType, EntityPanel>
-        where EntityPanel : PopupEntity<ObjectType>
+    public abstract class SearchPopup<ObjectType, EntityType> : Popup<ObjectType, EntityType>
+        where EntityType : PopupEntity<ObjectType>
         where ObjectType : class
     {
         private bool CanSubmit { get; set; } = true;
@@ -272,7 +268,7 @@ namespace ModsCommon.UI
         private void SearchTextChanged(UIComponent component, string value)
         {
             if (CanSubmit)
-                Refresh();
+                RefreshValues();
 
             ResetButton.isVisible = !string.IsNullOrEmpty(value);
         }
@@ -282,9 +278,9 @@ namespace ModsCommon.UI
             Search.text = string.Empty;
             Focus();
         }
-        protected override void RefreshItems()
+        protected override void RefreshValues()
         {
-            base.RefreshItems();
+            base.RefreshValues();
             Search.width = width - 10f;
             NothingFound.size = new Vector2(width, EntityHeight);
             NothingFound.isVisible = VisibleCount == 0;
@@ -315,18 +311,19 @@ namespace ModsCommon.UI
                 base.OnLeaveFocus(p);
         }
 
-        protected override float GetHeight() => Math.Max(base.GetHeight(), EntityHeight) + 30f;
+        protected override float PopupHeight => Math.Max(base.PopupHeight, EntityHeight) + 30f;
+        protected override Vector2 ScrollPosition => base.ScrollPosition + new Vector2(0f, 30f);
         protected override Vector2 GetEntityPosition(int index) => base.GetEntityPosition(index) + new Vector2(0f, 30f);
-        protected override Vector2 GetScrollPosition() => base.GetScrollPosition() + new Vector2(0f, 30f);
     }
 
     public abstract class PopupEntity<ObjectType> : CustomUIButton, IReusable
     {
-        public event Action<ObjectType> OnSelected;
+        public event Action<int, ObjectType> OnSelected;
         bool IReusable.InCache { get; set; }
 
         public virtual ObjectType Object { get; protected set; }
         public bool Selected { get; set; }
+        public int Index { get; set; }
 
         public override void Update()
         {
@@ -344,13 +341,16 @@ namespace ModsCommon.UI
         {
             OnSelected = null;
             Selected = false;
+            Index = -1;
         }
 
-        public virtual void SetObject(ObjectType value)
+        public virtual void SetObject(int index, ObjectType value, bool selected)
         {
+            Index = index;
             Object = value;
+            Selected = selected;
         }
-        protected void Select() => OnSelected?.Invoke(Object);
+        protected void Select() => OnSelected?.Invoke(Index, Object);
 
         protected override void OnClick(UIMouseEventParameter p)
         {
