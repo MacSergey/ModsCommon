@@ -60,9 +60,13 @@ namespace ModsCommon.UI
         {
             OnValueChanged = null;
             Unfocus();
+            SetDefault();
+        }
+        public virtual void SetDefault()
+        {
+            m_Text = string.Empty;
             value = default;
             format = null;
-            m_Text = string.Empty;
         }
         protected string FormatString(TypeValue value) => string.Format(Format, GetString(value));
         protected virtual string GetString(TypeValue value) => value?.ToString() ?? string.Empty;
@@ -199,8 +203,10 @@ namespace ModsCommon.UI
 
         public ComparableUITextField() => SetDefault();
 
-        public void SetDefault()
+        public override void SetDefault()
         {
+            base.SetDefault();
+
             MinValue = default;
             MaxValue = default;
             CheckMin = false;

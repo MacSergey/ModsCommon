@@ -627,11 +627,11 @@ namespace ModsCommon
             {
                 ComponentStyle.CustomSettingsStyle(this, new Vector2(250f, 34f));
             }
-            protected override void PopupOpening()
+            protected override void InitPopup()
             {
-                base.PopupOpening();
                 Popup.CustomSettingsStyle(34f);
                 Popup.AutoWidth = true;
+                base.InitPopup();
             }
 
             public class LanguageEntity : PopupEntity<Language>

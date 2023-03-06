@@ -36,8 +36,11 @@ namespace ModsCommon.UI
         public AdvancedDropDown()
         {
             Entity = AddUIComponent<EntityType>();
-            Entity.relativePosition = new Vector3(0f, 0f);
+            Entity.relativePosition = Vector3.zero;
+
             Entity.isInteractive = false;
+            foreach (var item in Entity.GetComponentsInChildren<UIComponent>())
+                item.isInteractive = false;
         }
 
         public virtual void AddItem(ObjectType item)
@@ -75,11 +78,11 @@ namespace ModsCommon.UI
 
             var root = GetRootContainer();
             Popup = root.AddUIComponent<PopupType>();
+            Popup.canFocus = true;
 
             Popup.StopRefresh();
             {
-                Popup.canFocus = true;
-                Popup.Init(Objects);
+                InitPopup();
                 Popup.SelectedObject = SelectedObject;
 
                 Popup.eventKeyDown += OnPopupKeyDown;
@@ -96,6 +99,7 @@ namespace ModsCommon.UI
             }
             Popup.StartRefresh();
         }
+        protected virtual void InitPopup() => Popup.Init(Objects, null, null);
         protected virtual void PopupOpening() { }
 
         public virtual void ClosePopup()

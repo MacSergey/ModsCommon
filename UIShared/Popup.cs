@@ -20,6 +20,7 @@ namespace ModsCommon.UI
 
         public Func<ObjectType, ObjectType, bool> IsEqualDelegate { protected get; set; }
         private Func<ObjectType, bool> Selector { get; set; } = null;
+        private Func<ObjectType, ObjectType, int> Sorter { get; set; } = null;
 
         private List<ObjectType> RawValues { get; set; } = new List<ObjectType>();
         private List<ObjectType> Values { get; set; } = new List<ObjectType>();
@@ -152,9 +153,10 @@ namespace ModsCommon.UI
             entityHeight = DefaultEntityHeight;
         }
 
-        public virtual void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector = null)
+        public virtual void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector, Func<ObjectType, ObjectType, int> sorter)
         {
             Selector = selector;
+            Sorter = sorter;
             RawValues.Clear();
             RawValues.AddRange(values);
             RefreshValues();
@@ -166,6 +168,7 @@ namespace ModsCommon.UI
             RawValues.Clear();
             Values.Clear();
             Selector = null;
+            Sorter = null;
 
             startIndex = 0;
             entityHeight = DefaultEntityHeight;
@@ -202,15 +205,17 @@ namespace ModsCommon.UI
             refreshEnable = true;
             RefreshEntities();
         }
-        protected virtual bool Filter(ObjectType value) => Selector == null || Selector(value);
+        protected virtual bool FilterObjects(ObjectType value) => Selector == null || Selector(value);
+        protected virtual int SortObjects(ObjectType objA, ObjectType objB) => Sorter != null ? Sorter(objA, objB) : 0;
         protected virtual void RefreshValues()
         {
             Values.Clear();
-            Values.AddRange(RawValues.Where(Filter));
+            Values.AddRange(RawValues.Where(FilterObjects));
+            Values.Sort(SortObjects);
             StartIndex = 0;
 
             ScrollBar.minValue = 0;
-            ScrollBar.maxValue = Values.Count - VisibleCount/* + 1*/;
+            ScrollBar.maxValue = Values.Count - VisibleCount + 1;
         }
         protected virtual void RefreshEntities()
         {
@@ -259,13 +264,13 @@ namespace ModsCommon.UI
             if (AutoWidth)
             {
                 var entitySize = new Vector2(0f, EntityHeight);
-                foreach (var entity in Entities)
+                for (var i = 0; i < visibleCount; i += 1)
                 {
-                    entity.PerformWidth();
-                    entitySize.x = Mathf.Max(entitySize.x, entity.width);
+                    Entities[i].PerformWidth();
+                    entitySize.x = Mathf.Max(entitySize.x, Entities[i].width);
                 }
 
-                for (var i = 0; i < count; i += 1)
+                for (var i = 0; i < visibleCount; i += 1)
                 {
                     Entities[i].size = entitySize;
                     Entities[i].relativePosition = GetEntityPosition(i);
@@ -276,7 +281,7 @@ namespace ModsCommon.UI
             else
             {
                 var entitySize = new Vector2(EntityWidth, EntityHeight);
-                for (var i = 0; i < count; i += 1)
+                for (var i = 0; i < visibleCount; i += 1)
                 {
                     Entities[i].size = entitySize;
                     Entities[i].relativePosition = GetEntityPosition(i);
@@ -378,9 +383,9 @@ namespace ModsCommon.UI
             Search.Unfocus();
         }
 
-        protected override bool Filter(ObjectType value)
+        protected override bool FilterObjects(ObjectType value)
         {
-            if (base.Filter(value))
+            if (base.FilterObjects(value))
             {
                 name = GetName(value);
                 if (name.ToUpper().Contains(Search.text.ToUpper()))
@@ -450,6 +455,7 @@ namespace ModsCommon.UI
         public virtual ObjectType Object { get; protected set; }
         public bool Selected { get; set; }
         public int Index { get; set; }
+        public RectOffset Padding { get; set; } = new RectOffset();
 
         public override void Update()
         {
@@ -468,6 +474,7 @@ namespace ModsCommon.UI
             OnSelected = null;
             Selected = false;
             Index = -1;
+            Padding = new RectOffset();
         }
 
         public virtual void SetObject(int index, ObjectType value, bool selected)

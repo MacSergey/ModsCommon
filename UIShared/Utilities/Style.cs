@@ -74,32 +74,41 @@ namespace ModsCommon.UI
             dropDown.size = size ?? new Vector2(230, 20);
         }
 
-        public static void DefaultSettingsStyle(this UIDropDown dropDown, Vector2? size = null)
+        public static void DefaultStyle<ObjectType, PopupType, EntityType>(this AdvancedDropDown<ObjectType, PopupType, EntityType> dropDown, Vector2? size = null)
+            where PopupType : Popup<ObjectType, EntityType>
+            where EntityType : PopupEntity<ObjectType>
         {
-            dropDown.atlas = TextureHelper.InGameAtlas;
-            dropDown.listBackground = "OptionsDropboxListbox";
-            dropDown.itemHeight = 24;
-            dropDown.itemHover = "ListItemHover";
-            dropDown.itemHighlight = "ListItemHighlight";
-            dropDown.normalBgSprite = "OptionsDropbox";
-            dropDown.hoveredBgSprite = "OptionsDropboxHovered";
-            dropDown.focusedBgSprite = "OptionsDropboxFocused";
-            dropDown.autoListWidth = true;
-            dropDown.listHeight = 700;
-            dropDown.listPosition = PopupListPosition.Below;
-            dropDown.clampListToScreen = false;
-            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
-            dropDown.popupColor = Color.white;
-            dropDown.popupTextColor = new Color32(170, 170, 170, 255);
-            dropDown.textScale = 1f;
-            dropDown.textFieldPadding = new RectOffset(14, 40, 7, 0);
-            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
-            dropDown.itemPadding = new RectOffset(14, 14, 4, 0);
-            dropDown.triggerButton = dropDown;
+            dropDown.atlasBackground = CommonTextures.Atlas;
+            dropDown.normalBgSprite = CommonTextures.FieldNormal;
+            dropDown.hoveredBgSprite = CommonTextures.FieldHovered;
+            dropDown.disabledBgSprite = CommonTextures.FieldDisabled;
 
-            dropDown.size = size ?? new Vector2(400, 31);
+            dropDown.atlasForeground = TextureHelper.InGameAtlas;
+            dropDown.normalFgSprite = "IconDownArrow";
+            dropDown.hoveredFgSprite = "IconDownArrowHovered";
+            dropDown.focusedFgSprite = "IconDownArrow";
+            dropDown.disabledFgSprite = "IconDownArrowDisabled";
+            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
+            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.spritePadding = new RectOffset(0, 5, 0, 0);
+
+            dropDown.Entity.Padding = new RectOffset(0, 40, 0, 0);
+
+            dropDown.size = size ?? new Vector2(230, 20);
         }
+        public static void DefaultStyle<ObjectType, EntityType>(this Popup<ObjectType, EntityType> popup, float? entityHeight = null)
+            where EntityType : PopupEntity<ObjectType>
+        {
+            popup.atlas = CommonTextures.Atlas;
+            popup.backgroundSprite = CommonTextures.FieldHovered;
+            popup.ItemHover = CommonTextures.FieldNormal;
+            popup.ItemSelected = CommonTextures.FieldFocused;
+
+            popup.EntityHeight = entityHeight ?? 20f;
+            popup.MaximumSize = new Vector2(230f, 700f);
+        }
+
 
         public static void CustomSettingsStyle(this CustomUIDropDown dropDown, Vector2? size = null)
         {
