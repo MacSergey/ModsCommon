@@ -75,9 +75,9 @@ namespace ModsCommon
 
             return item;
         }
-        public static KeymappingSettingItem AddKeyMappingButton(UIHelper group, Shortcut shortcut)
+        public static KeymappingSettingsItem AddKeyMappingButton(UIHelper group, Shortcut shortcut)
         {
-            var item = (group.self as UIPanel).AddUIComponent<KeymappingSettingItem>();
+            var item = (group.self as UIPanel).AddUIComponent<KeymappingSettingsItem>();
             item.Shortcut = shortcut;
 
             return item;

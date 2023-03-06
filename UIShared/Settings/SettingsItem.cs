@@ -17,7 +17,7 @@ namespace ModsCommon.UI
             autoLayout = false;
         }
     }
-    public abstract class ContentSettingItem : SettingsItem
+    public abstract class ContentSettingsItem : SettingsItem
     {
         protected virtual int ItemsPadding => 5;
 
@@ -30,7 +30,7 @@ namespace ModsCommon.UI
             set => Label.text = value;
         }
 
-        public ContentSettingItem()
+        public ContentSettingsItem()
         {
             Label = AddUIComponent<CustomUILabel>();
             Label.autoSize = false;

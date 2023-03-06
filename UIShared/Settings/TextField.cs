@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class FieldSettingsItem<ValueType, FieldType> : ContentSettingItem
+    public abstract class FieldSettingsItem<ValueType, FieldType> : ContentSettingsItem
         where FieldType : UITextField<ValueType>
     {
         public FieldType Field { get; }

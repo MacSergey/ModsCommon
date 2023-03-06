@@ -1,14 +1,12 @@
 ﻿using ModsCommon.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using ColossalFramework.UI;
 using UnityEngine;
 using ColossalFramework;
 
 namespace ModsCommon.UI
 {
-    public class KeymappingSettingItem : ContentSettingItem
+    public class KeymappingSettingsItem : ContentSettingsItem
     {
         public event Action<Shortcut> BindingChanged;
 
@@ -29,11 +27,11 @@ namespace ModsCommon.UI
         private CustomUIButton Button { get; }
         private bool InProgress { get; set; }
 
-        public KeymappingSettingItem()
+        public KeymappingSettingsItem()
         {
             Button = Content.AddUIComponent<CustomUIButton>();
             Button.CustomStyle();
-            Button.size = new Vector2(250f, 31f);
+            Button.size = new Vector2(278f, 31f);
 
             Button.eventKeyDown += OnBindingKeyDown;
             Button.eventMouseDown += OnBindingMouseDown;
