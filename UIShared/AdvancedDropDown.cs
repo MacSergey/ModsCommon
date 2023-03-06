@@ -85,6 +85,7 @@ namespace ModsCommon.UI
                 InitPopup();
                 Popup.SelectedObject = SelectedObject;
 
+                Popup.eventSizeChanged += OnPopupSizeChanged;
                 Popup.eventKeyDown += OnPopupKeyDown;
                 Popup.eventLeaveFocus += OnPopupLeaveFocus;
                 Popup.OnSelectedChanged += OnSelectedChanged;
@@ -99,6 +100,7 @@ namespace ModsCommon.UI
             }
             Popup.StartRefresh();
         }
+
         protected virtual void InitPopup() => Popup.Init(Objects, null, null);
         protected virtual void PopupOpening() { }
 
@@ -152,6 +154,8 @@ namespace ModsCommon.UI
                 p.Use();
             }
         }
+        private void OnPopupSizeChanged(UIComponent component, Vector2 value) => SetPopupPosition();
+
         private void SetPopupPosition(UIComponent component = null, Vector2 value = default)
         {
             if (Popup != null)

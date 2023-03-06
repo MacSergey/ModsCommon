@@ -206,7 +206,7 @@ namespace ModsCommon.UI
             RefreshEntities();
         }
         protected virtual bool FilterObjects(ObjectType value) => Selector == null || Selector(value);
-        protected virtual int SortObjects(ObjectType objA, ObjectType objB) => Sorter != null ? Sorter(objA, objB) : 0;
+        protected virtual int SortObjects(ObjectType objA, ObjectType objB) => Sorter != null ? Sorter(objA, objB) : -1;
         protected virtual void RefreshValues()
         {
             Values.Clear();

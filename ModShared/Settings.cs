@@ -622,6 +622,7 @@ namespace ModsCommon
                         return false;
                 }
                 public override int GetHashCode() => locale.GetHashCode();
+                public override string ToString() => $"{locale}: {label}";
             }
             public LanguageDropDown()
             {
@@ -667,6 +668,8 @@ namespace ModsCommon
                 protected override void OnSizeChanged()
                 {
                     textPadding = new RectOffset(Mathf.CeilToInt(height) + 4, 8, 3, 0);
+                    spritePadding = new RectOffset(5, 0, 0, 0);
+                    scaleFactor = 24f / height;
                 }
             }
             public class LanguagePopup : Popup<Language, LanguageEntity>
