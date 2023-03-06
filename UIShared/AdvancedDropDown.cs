@@ -20,14 +20,14 @@ namespace ModsCommon.UI
 
         protected List<ObjectType> Objects { get; } = new List<ObjectType>();
 
-        private ObjectType selectedObject;
-        public ObjectType SelectedObject 
+        private int selectedIndex;
+        public ObjectType SelectedObject
         {
-            get => selectedObject;
+            get => selectedIndex >= 0 ? Objects[selectedIndex] : default;
             set
             {
-                selectedObject = value;
-                Entity.SetObject(0, value, false);
+                selectedIndex = Objects.FindIndex(o => ReferenceEquals(o, value) || (o != null && o.Equals(value)));
+                Entity.SetObject(-1, SelectedObject, false);
             }
         }
 
@@ -50,10 +50,10 @@ namespace ModsCommon.UI
         public virtual void Clear()
         {
             Objects.Clear();
-            SelectedObject = default;
+            selectedIndex = -1;
         }
 
-        protected void ValueChanged(ObjectType value) => OnValueChanged?.Invoke(value);
+        protected virtual void ValueChanged(ObjectType value) => OnValueChanged?.Invoke(value);
 
         #region POPUP
 
@@ -181,40 +181,65 @@ namespace ModsCommon.UI
         #endregion
     }
 
-    public abstract class SimpleDropDown<ValueType> : AdvancedDropDown<SimpleDropDown<ValueType>.Item, SimpleDropDown<ValueType>.SimplePopup, SimpleDropDown<ValueType>.SimpleEntity>
+    public abstract class SimpleDropDown<ValueType, EntityType, PopupType> : AdvancedDropDown<DropDownItem<ValueType>, PopupType, EntityType>
+        where EntityType : SimpleEntity<ValueType>
+        where PopupType : SimplePopup<ValueType, EntityType>
     {
-        public class SimpleEntity : PopupEntity<Item>
+        public new event Action<ValueType> OnValueChanged; 
+        public new ValueType SelectedObject
         {
-            private CustomUILabel Label { get; set; }
-
-            public SimpleEntity()
-            {
-                Label = AddUIComponent<CustomUILabel>();
-            }
-
-            public override void SetObject(int index, Item value, bool selected)
-            {
-                base.SetObject(index, value, selected);
-                Label.text = value.label;
-            }
-        }
-        public class SimplePopup : Popup<Item, SimpleEntity>
-        {
-
-        }
-        public readonly struct Item
-        {
-            public readonly ValueType value;
-            public readonly string label;
-
-            public Item(ValueType value, string label)
-            {
-                this.value = value;
-                this.label = label;
-            }
+            get => base.SelectedObject.value;
+            set => base.SelectedObject = new DropDownItem<ValueType>(value, value.ToString());
         }
 
-        public virtual void AddItem(ValueType item) => AddItem(new Item(item, item.ToString()));
-        public virtual void AddItem(ValueType item, string label) => AddItem(new Item(item, label));
+        public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, item.ToString()));
+        public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, label));
+        protected override void ValueChanged(DropDownItem<ValueType> item) => OnValueChanged?.Invoke(item.value);
+        protected override void InitPopup()
+        {
+            Popup.MaximumSize = new Vector2(width, 700f);
+            Popup.width = width;
+            Popup.MaxVisibleItems = 0;
+            Popup.Init(Objects, null, null);
+        }
+    }
+    public abstract class SimpleEntity<ValueType> : PopupEntity<DropDownItem<ValueType>>
+    {
+        public SimpleEntity()
+        {
+            textHorizontalAlignment = UIHorizontalAlignment.Left;
+            textPadding = new RectOffset(14, 40, 3, 0);
+        }
+
+        public override void SetObject(int index, DropDownItem<ValueType> value, bool selected)
+        {
+            base.SetObject(index, value, selected);
+            text = value.label;
+        }
+    }
+    public abstract class SimplePopup<ValueType, EntityType> : Popup<DropDownItem<ValueType>, EntityType>
+        where EntityType : SimpleEntity<ValueType>
+    {
+
+    }
+    public readonly struct DropDownItem<ValueType>
+    {
+        public readonly ValueType value;
+        public readonly string label;
+
+        public DropDownItem(ValueType value, string label)
+        {
+            this.value = value;
+            this.label = label;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DropDownItem<ValueType> item)
+                return value.Equals(item.value);
+            else
+                return false;
+        }
+        public override int GetHashCode() => value.GetHashCode();
     }
 }

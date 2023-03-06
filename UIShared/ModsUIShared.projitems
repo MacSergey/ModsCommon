@@ -12,13 +12,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)AdvancedDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIListbox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUITextField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Keymapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\TextField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\CommonTextures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ComponentPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomElements.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DonatePanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\MultyAtlasUIButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Render.cs" />
@@ -108,5 +110,8 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\tr-TR.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\zh-CN.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\zh-TW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panel.png" />
   </ItemGroup>
 </Project>

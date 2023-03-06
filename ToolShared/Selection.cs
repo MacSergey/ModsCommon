@@ -21,7 +21,7 @@ namespace ModsCommon.Utilities
         public static void AddAlphaBlendOverlay(UIHelper group) => AddCheckBox(group, "Alpha blend overlay", AlphaBlendOverlay);
         public static void AddRenderOverlayCentre(UIHelper group) => AddCheckBox(group, "Render overlay center", RenderOverlayCentre);
         public static void AddRenderOverlayBorders(UIHelper group) => AddCheckBox(group, "Render overlay borders", RenderOverlayBorders);
-        public static void AddBorderOverlayWidth(UIHelper group) => AddFloatField(group, "Overlay width", OverlayWidth, 3f, 1f);
+        public static void AddBorderOverlayWidth(UIHelper group) => AddFloatField(group, "Overlay width", OverlayWidth, 1f);
 
         public static float BorderOverlayWidth => OverlayWidth;
 #else

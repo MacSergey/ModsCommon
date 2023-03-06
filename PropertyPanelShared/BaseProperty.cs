@@ -219,7 +219,7 @@ namespace ModsCommon.UI
                 autoLayout = false;
 
                 foreach (var item in components)
-                    item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
+                    item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) * 0.5f);
             }
         }
     }

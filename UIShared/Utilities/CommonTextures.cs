@@ -8,6 +8,8 @@ namespace ModsCommon.Utilities
     {
         public static UITextureAtlas Atlas;
 
+        public static string Panel => nameof(Panel);
+
         public static string FieldNormal => nameof(FieldNormal);
         public static string FieldHovered => nameof(FieldHovered);
         public static string FieldFocused => nameof(FieldFocused);
@@ -60,6 +62,8 @@ namespace ModsCommon.Utilities
         static CommonTextures()
         {
             var spriteParams = new Dictionary<string, RectOffset>();
+
+            spriteParams[Panel] = new RectOffset(4, 4, 4, 4);
 
             //UUIButton
             spriteParams[CloseButtonNormal] = new RectOffset();
