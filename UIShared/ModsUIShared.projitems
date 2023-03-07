@@ -12,9 +12,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)AdvancedDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIListbox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUITextField.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Settings\Keymapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\KeymappingItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsItem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Settings\TextField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\TextFieldItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\ToggleItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Toggle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\CommonTextures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ComponentPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomElements.cs" />
@@ -112,6 +114,17 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\zh-TW.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panel.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\PanelSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\PanelBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBackground.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\EmptyWithoutBorder.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SettingsItem.png" />
   </ItemGroup>
 </Project>

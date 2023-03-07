@@ -36,7 +36,7 @@ namespace ModsCommon.UI
             Button.eventKeyDown += OnBindingKeyDown;
             Button.eventMouseDown += OnBindingMouseDown;
 
-            height = Button.height + ItemsPadding * 2f;
+            SetHeightBasedOn(Button);
         }
 
         private void OnBindingKeyDown(UIComponent comp, UIKeyEventParameter p)

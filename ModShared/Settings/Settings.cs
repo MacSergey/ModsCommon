@@ -109,6 +109,7 @@ namespace ModsCommon
             TabStrip.SelectedTabChanged += OnSelectedTabChanged;
             TabStrip.SelectedTab = -1;
             TabStrip.width = MainPanel.width - MainPanel.autoLayoutPadding.horizontal;
+            TabStrip.CustomSettingsStyle();
             TabStrip.eventSizeChanged += (_, _) => TabStripSizeChanged();
         }
         private void OnSelectedTabChanged(int index)
@@ -133,15 +134,19 @@ namespace ModsCommon
 
         private void CreateTabs()
         {
-            CreateTab(nameof(GeneralTab), CommonLocalize.Settings_GeneralTab);
+            TabStrip.StopLayout();
+            {
+                CreateTab(nameof(GeneralTab), CommonLocalize.Settings_GeneralTab);
 
-            foreach (var tab in AdditionalTabs)
-                CreateTab(tab.Key, tab.Value);
+                foreach (var tab in AdditionalTabs)
+                    CreateTab(tab.Key, tab.Value);
 
-            CreateTab(nameof(SupportTab), CommonLocalize.Settings_SupportTab);
+                CreateTab(nameof(SupportTab), CommonLocalize.Settings_SupportTab);
 #if DEBUG
-            CreateTab(nameof(DebugTab), "Debug");
+                CreateTab(nameof(DebugTab), "Debug");
 #endif
+            }
+            TabStrip.StartLayout();
         }
         private UIAdvancedHelper CreateTab(string name, string label)
         {
@@ -277,15 +282,15 @@ namespace ModsCommon
 
         protected void AddNotifications(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup(CommonLocalize.Settings_Notifications);
-            var panel = default(CustomUIPanel);
-            AddCheckBox(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew, OnChange);
-            panel = AddPanel(group);
-            AddCheckBox(new UIHelper(panel), CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
+            var group = helper.AddOptionsGroup(CommonLocalize.Settings_Notifications);
+ 
+            var showToggle = AddToggle(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
+            var onlyMajorToggle = AddToggle(group, CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
 
-            OnChange();
+            showToggle.Toggle.OnStateChanged += OnChange;
+            OnChange(ShowWhatsNew);
 
-            void OnChange() => panel.isVisible = ShowWhatsNew;
+            void OnChange(bool show) => onlyMajorToggle.isVisible = show;
         }
 
         #endregion
@@ -327,88 +332,16 @@ namespace ModsCommon
 
         private void AddDebug(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup("Base");
+            var group = helper.AddOptionsGroup("Base");
 
             AddStringField(group, "Whats new version", WhatsNewVersionValue);
             AddStringField(group, "Compatible check game version", CompatibleCheckGameVersionValue);
             AddStringField(group, "Compatible check mod version", CompatibleCheckModVersionValue);
-            AddCheckBox(group, "Show Beta warning", BetaWarning);
-            AddCheckBox(group, "Show Linux warning", LinuxWarning);
-            AddCheckBox(group, "Any versions", AnyVersions);
+            AddToggle(group, "Show Beta warning", BetaWarning);
+            AddToggle(group, "Show Linux warning", LinuxWarning);
+            AddToggle(group, "Any versions", AnyVersions);
         }
 
         #endregion
-    }
-    public class UIAdvancedHelper : UIHelper, IEnumerable<UIHelper>
-    {
-        private static UIDynamicFont SemiBoldFont { get; }
-        private List<UIHelper> Groups { get; } = new List<UIHelper>();
-        public UIAutoLayoutScrollablePanel Content => self as UIAutoLayoutScrollablePanel;
-        public UIAdvancedHelper(UIAutoLayoutScrollablePanel panel) : base(panel) { }
-
-        static UIAdvancedHelper()
-        {
-            var panel = UITemplateManager.Get<UIPanel>("OptionsGroupTemplate");
-            SemiBoldFont = panel.Find<UILabel>("Label").font as UIDynamicFont;
-            panel.Destroy();
-        }
-
-        public new UIHelper AddGroup(string name = null) => AddGroup(out _, name);
-        public UIHelper AddGroup(out UILabel label, string name = null)
-        {
-            var panel = Content.AddUIComponent<CustomUIPanel>();
-            panel.width = 738f;
-            panel.autoLayout = true;
-            panel.autoFitChildrenVertically = true;
-            panel.autoLayoutDirection = LayoutDirection.Vertical;
-            panel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
-
-            panel.atlas = CommonTextures.Atlas;
-            panel.backgroundSprite = CommonTextures.Panel;
-            panel.color = new Color32(20, 25, 38, 255);
-
-            label = panel.AddUIComponent<CustomUILabel>();
-            label.font = SemiBoldFont;
-            label.textScale = 1.125f;
-            label.padding = new RectOffset(8, 0, 8, 0);
-            if (!string.IsNullOrEmpty(name))
-                label.text = name;
-            else
-                label.isVisible = false;
-
-            var content = panel.AddUIComponent<CustomUIPanel>();
-            content.name = "Content";
-            content.autoLayout = true;
-            content.autoFitChildrenVertically = true;
-            content.autoLayoutDirection = LayoutDirection.Vertical;
-            content.autoLayoutPadding = new RectOffset(0, 0, 0, 5);
-            content.padding = new RectOffset(14, 14, 0, 0);
-            content.verticalSpacing = 10;
-            content.width = 738f;
-            content.eventComponentAdded += ComponentAdded;
-            content.eventSizeChanged += SizeChanged;
-
-            var group = new UIHelper(content);
-            Groups.Add(group);
-
-            return group;
-
-            static void ComponentAdded(UIComponent container, UIComponent child)
-            {
-                if(child is SettingsItem item)
-                    item.width = container.width - (container as UIPanel).padding.horizontal;
-            }
-            static void SizeChanged(UIComponent component, Vector2 value)
-            {
-                foreach (var child in component.components)
-                {
-                    if (child is SettingsItem item)
-                        item.width = component.width - (component as UIPanel).padding.horizontal;
-                }
-            }
-        }
-
-        public IEnumerator<UIHelper> GetEnumerator() => Groups.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

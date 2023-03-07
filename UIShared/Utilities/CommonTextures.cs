@@ -8,7 +8,8 @@ namespace ModsCommon.Utilities
     {
         public static UITextureAtlas Atlas;
 
-        public static string Panel => nameof(Panel);
+        public static string PanelSmall => nameof(PanelSmall);
+        public static string PanelBig => nameof(PanelBig);
 
         public static string FieldNormal => nameof(FieldNormal);
         public static string FieldHovered => nameof(FieldHovered);
@@ -27,6 +28,8 @@ namespace ModsCommon.Utilities
         public static string FieldFocusedMiddle => nameof(FieldFocusedMiddle);
         public static string FieldDisabledMiddle => nameof(FieldDisabledMiddle);
 
+        public static string ToggleBackground { get; } = nameof(ToggleBackground);
+        public static string ToggleCircle { get; } = nameof(ToggleCircle);
         public static string Tab { get; } = nameof(Tab);
 
         public static string TabNormal { get; } = nameof(TabNormal);
@@ -36,7 +39,8 @@ namespace ModsCommon.Utilities
         public static string TabDisabled { get; } = nameof(TabDisabled);
 
         public static string Empty => nameof(Empty);
-        public static string EmptyWithotBorder => nameof(Empty);
+        public static string EmptyWithotBorder => nameof(EmptyWithotBorder);
+        public static string SettingsItem => nameof(SettingsItem);
 
         public static string OpacitySliderBoard { get; } = nameof(OpacitySliderBoard);
         public static string OpacitySliderColor { get; } = nameof(OpacitySliderColor);
@@ -63,7 +67,8 @@ namespace ModsCommon.Utilities
         {
             var spriteParams = new Dictionary<string, RectOffset>();
 
-            spriteParams[Panel] = new RectOffset(4, 4, 4, 4);
+            spriteParams[PanelSmall] = new RectOffset(4, 4, 4, 4);
+            spriteParams[PanelBig] = new RectOffset(6, 6, 6, 6);
 
             //UUIButton
             spriteParams[CloseButtonNormal] = new RectOffset();
@@ -98,6 +103,10 @@ namespace ModsCommon.Utilities
             spriteParams[FieldFocusedMiddle] = new RectOffset(4, 4, 4, 4);
             spriteParams[FieldDisabledMiddle] = new RectOffset(4, 4, 4, 4);
 
+            //Toggle
+            spriteParams[ToggleBackground] = new RectOffset(16, 16, 0, 0);
+            spriteParams[ToggleCircle] = new RectOffset();
+
             //Tab
             spriteParams[Tab] = new RectOffset(4, 4, 4, 4);
             spriteParams[TabNormal] = new RectOffset(4, 4, 4, 0);
@@ -114,8 +123,9 @@ namespace ModsCommon.Utilities
             spriteParams[HeaderAdditionalButton] = new RectOffset();
             spriteParams[HeaderHover] = new RectOffset(4, 4, 4, 4);
 
-            spriteParams[Empty] = new RectOffset(2, 2, 2, 2);
+            spriteParams[Empty] = new RectOffset(4, 4, 4, 4);
             spriteParams[EmptyWithotBorder] = new RectOffset();
+            spriteParams[SettingsItem] = new RectOffset(4, 4, 2, 2);
             spriteParams[Resize] = new RectOffset();
             spriteParams[PlusMinusButton] = new RectOffset();
 

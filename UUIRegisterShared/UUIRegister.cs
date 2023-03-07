@@ -104,14 +104,14 @@ namespace ModsCommon
             where TypeButton : UUINetToolButton<TypeMod, TypeTool>
         {
             if (BaseTool<TypeMod, TypeTool>.IsUUIEnabled)
-                AddCheckboxPanel(group, CommonLocalize.Settings_ToolButton, ToolButtonVisible, new string[] { CommonLocalize.Settings_ToolButtonOnlyToolbar, CommonLocalize.Settings_ToolButtonOnlyUUI, CommonLocalize.Settings_ToolButtonBoth }, OnButtonVisibleChanged);
+                AddTogglePanel(group, CommonLocalize.Settings_ToolButton, ToolButtonVisible, new string[] { CommonLocalize.Settings_ToolButtonOnlyToolbar, CommonLocalize.Settings_ToolButtonOnlyUUI, CommonLocalize.Settings_ToolButtonBoth }, OnButtonVisibleChanged);
 
             static void OnButtonVisibleChanged()
             {
                 foreach (var button in UIView.GetAView().GetComponentsInChildren<TypeButton>())
                     button.isVisible = IsToolbarButtonVisible<TypeTool>();
 
-                if (SingletonTool<TypeTool>.Instance.UUIRegistered)
+                if (SingletonTool<TypeTool>.Exist && SingletonTool<TypeTool>.Instance.UUIRegistered)
                     SingletonTool<TypeTool>.Instance.UUIButton.isVisible = IsUUIButtonVisible();
             }
         }

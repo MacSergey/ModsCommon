@@ -7,24 +7,195 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class TabStrip<TabType> : CustomUIPanel
+    public abstract class TabStrip<TabType> : CustomUIPanel, IAutoLayoutPanel
         where TabType : Tab
     {
         public Action<int> SelectedTabChanged;
-        private int _selectedTab;
-        public int SelectedTab
+
+        protected List<TabType> Tabs { get; } = new List<TabType>();
+
+        public int TabSpacingVertical
         {
-            get => _selectedTab;
+            get => padding.vertical;
             set
             {
-                if (value != _selectedTab)
+                value = Math.Max(value, 0);
+                padding.top = value;
+                padding.bottom = value;
+                ArrangeTabs();
+            }
+        }
+        public int TabSpacingHorizontal
+        {
+            get => padding.horizontal;
+            set
+            {
+                value = Math.Max(value, 0);
+                padding.left = value;
+                padding.right = value;
+                ArrangeTabs();
+            }
+        }
+
+        private int selectedTab;
+        public int SelectedTab
+        {
+            get => selectedTab;
+            set
+            {
+                if (value != selectedTab)
                 {
-                    _selectedTab = value;
-                    SelectedTabChanged?.Invoke(_selectedTab);
+                    selectedTab = value;
+                    SelectedTabChanged?.Invoke(selectedTab);
                 }
             }
         }
-        protected List<TabType> Tabs { get; } = new List<TabType>();
+
+        private UITextureAtlas tabAtlas;
+        public UITextureAtlas TabAtlas
+        {
+            get => tabAtlas;
+            set
+            {
+                if (value != tabAtlas)
+                {
+                    tabAtlas = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+
+        private string tabNormalSprite;
+        public string TabNormalSprite
+        {
+            get => tabNormalSprite;
+            set
+            {
+                if (value != tabNormalSprite)
+                {
+                    tabNormalSprite = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+        private string tabHoveredSprite;
+        public string TabHoveredSprite
+        {
+            get => tabHoveredSprite;
+            set
+            {
+                if (value != tabHoveredSprite)
+                {
+                    tabHoveredSprite = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+        private string tabPressedSprite;
+        public string TabPressedSprite
+        {
+            get => tabPressedSprite;
+            set
+            {
+                if (value != tabPressedSprite)
+                {
+                    tabPressedSprite = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+        private string tabFocusedSprite;
+        public string TabFocusedSprite
+        {
+            get => tabFocusedSprite;
+            set
+            {
+                if (value != tabFocusedSprite)
+                {
+                    tabFocusedSprite = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+        private string tabDisabledSprite;
+        public string TabDisabledSprite
+        {
+            get => tabDisabledSprite;
+            set
+            {
+                if (value != tabDisabledSprite)
+                {
+                    tabDisabledSprite = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+
+        private Color32 tabColor = Color.white;
+        public Color32 TabColor
+        {
+            get => tabColor;
+            set
+            {
+                if (!tabColor.Equals(value))
+                {
+                    tabColor = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+        private Color32 tabHoveredColor = Color.white;
+        public Color32 TabHoveredColor
+        {
+            get => tabHoveredColor;
+            set
+            {
+                if (!tabHoveredColor.Equals(value))
+                {
+                    tabHoveredColor = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+        private Color32 tabPressedColor = Color.white;
+        public Color32 TabPressedColor
+        {
+            get => tabPressedColor;
+            set
+            {
+                if (!tabPressedColor.Equals(value))
+                {
+                    tabPressedColor = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+        private Color32 tabFocusedColor = Color.white;
+        public Color32 TabFocusedColor
+        {
+            get => tabFocusedColor;
+            set
+            {
+                if (!tabFocusedColor.Equals(value))
+                {
+                    tabFocusedColor = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+        private Color32 tabDisabledColor = Color.white;
+        public Color32 TabDisabledColor
+        {
+            get => tabDisabledColor;
+            set
+            {
+                if (!tabDisabledColor.Equals(value))
+                {
+                    tabDisabledColor = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
 
         public TabStrip()
         {
@@ -63,6 +234,9 @@ namespace ModsCommon.UI
         private bool ArrangeInProgress { get; set; }
         public void ArrangeTabs()
         {
+            if (!tabLayout)
+                return;
+
             var tabs = Tabs.Where(t => t.isVisible).ToArray();
             if (!tabs.Any() || ArrangeInProgress)
                 return;
@@ -73,6 +247,7 @@ namespace ModsCommon.UI
             {
                 tab.autoSize = true;
                 tab.autoSize = false;
+                tab.MakePixelPerfect(false);
                 tab.textHorizontalAlignment = UIHorizontalAlignment.Center;
             }
 
@@ -80,13 +255,13 @@ namespace ModsCommon.UI
             ArrangeTabRows(tabRows);
             PlaceTabRows(tabRows);
 
-            FitChildrenVertically();
+            MakePixelPerfect();
 
             ArrangeInProgress = false;
         }
         private List<List<TabType>> FillTabRows(TabType[] tabs)
         {
-            var totalWidth = tabs.Sum(t => t.width);
+            var totalWidth = tabs.Sum(t => t.width) + tabs.Length * padding.left + padding.right;
             var rows = (int)(totalWidth / width) + 1;
             var tabInRow = tabs.Length / rows;
             var extraRows = tabs.Length - (tabInRow * rows);
@@ -109,10 +284,10 @@ namespace ModsCommon.UI
             for (var i = 0; i < tabRows.Count; i += 1)
             {
                 var tabRow = tabRows[i];
-                var totalRowWidth = 0f;
+                var totalRowWidth = (float)padding.right;
                 for (var j = 0; j < tabRow.Count; j += 1)
                 {
-                    if (totalRowWidth + tabRow[j].width > width)
+                    if (totalRowWidth + tabRow[j].width + padding.left > width)
                     {
                         var toMove = tabRow.Skip(j == 0 ? j + 1 : j).ToArray();
 
@@ -129,7 +304,7 @@ namespace ModsCommon.UI
                         break;
                     }
                     else
-                        totalRowWidth += tabRow[j].width;
+                        totalRowWidth += tabRow[j].width + padding.left;
                 }
             }
         }
@@ -138,28 +313,29 @@ namespace ModsCommon.UI
             var totalHeight = 0f;
             for (var i = 0; i < tabRows.Count; i += 1)
             {
+                totalHeight += padding.top;
                 var tabRow = tabRows[i];
 
-                var rowWidth = tabRow.Sum(t => t.width);
-                var rowHeight = tabRow.Max(t => t.height);
-                if (i < tabRows.Count - 1)
-                    rowHeight += 4;
+                var rowWidth = tabRow.Sum(t => t.width) + tabRow.Count * padding.left + padding.right;
+                var rowHeight = Mathf.Ceil(tabRow.Max(t => t.height));
 
-                var space = (width - rowWidth) / tabRow.Count;
-                var totalRowWidth = 0f;
+                var additional = Mathf.Floor((width - rowWidth) / tabRow.Count);
+                var totalRowWidth = (float)padding.right;
 
                 for (var j = 0; j < tabRow.Count; j += 1)
                 {
                     var tab = tabRow[j];
 
-                    tab.width = j < tabRow.Count - 1 ? Mathf.Floor(tab.width + space) : width - totalRowWidth;
+                    tab.width = j < tabRow.Count - 1 ? Mathf.Floor(tab.width + additional) : width - totalRowWidth - padding.right;
                     tab.height = rowHeight;
                     tab.relativePosition = new Vector2(totalRowWidth, totalHeight);
-                    totalRowWidth += tab.width;
+                    totalRowWidth += tab.width + padding.left;
                 }
 
-                totalHeight += rowHeight - 4;
+                totalHeight += rowHeight;
             }
+
+            height = totalHeight + padding.bottom;
         }
 
         protected override void OnComponentAdded(UIComponent child)
@@ -208,13 +384,38 @@ namespace ModsCommon.UI
         }
         private void TabButtonVisibilityChanged(UIComponent component, bool value) => ArrangeTabs();
 
+        private void UpdateTabStyle()
+        {
+            foreach (var tab in Tabs)
+                SetStyle(tab);
+        }
         protected virtual void SetStyle(TabType tabButton)
         {
-            tabButton.atlas = CommonTextures.Atlas;
+            tabButton.atlas = tabAtlas;
 
-            tabButton.normalBgSprite = CommonTextures.TabNormal;
-            tabButton.focusedBgSprite = CommonTextures.TabFocused;
-            tabButton.hoveredBgSprite = CommonTextures.TabHover;
+            tabButton.normalBgSprite = TabNormalSprite;
+            tabButton.hoveredBgSprite = TabHoveredSprite;
+            tabButton.pressedBgSprite = TabPressedSprite;
+            tabButton.disabledBgSprite = TabDisabledSprite;
+            tabButton.focusedBgSprite = TabFocusedSprite;
+
+            tabButton.color = TabColor;
+            tabButton.hoveredColor = TabHoveredColor;
+            tabButton.pressedColor = TabPressedColor;
+            tabButton.disabledColor = TabDisabledColor;
+            tabButton.focusedColor = TabFocusedColor;
+        }
+
+        private bool tabLayout = false;
+        public void StopLayout()
+        {
+            tabLayout = false;
+        }
+
+        public void StartLayout(bool layoutNow = true)
+        {
+            tabLayout = true;
+            ArrangeTabs();
         }
     }
     public class Tab : CustomUIButton

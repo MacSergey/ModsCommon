@@ -27,7 +27,7 @@ namespace ModsCommon.UI
             Field.padding = new RectOffset(0, 0, 6, 0);
             Field.builtinKeyNavigation = true;
 
-            height = Field.height + ItemsPadding * 2f;
+            SetHeightBasedOn(Field);
         }
     }
 

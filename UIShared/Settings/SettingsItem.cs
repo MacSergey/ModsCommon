@@ -12,14 +12,16 @@ namespace ModsCommon.UI
         public SettingsItem()
         {
             atlas = CommonTextures.Atlas;
-            backgroundSprite = CommonTextures.Panel;
-            color = new Color32(128, 0, 0, 255);
+            backgroundSprite = CommonTextures.SettingsItem;
+            color = new Color32(60, 75, 76, 255);
             autoLayout = false;
+            clipChildren = true;
         }
     }
     public abstract class ContentSettingsItem : SettingsItem
     {
-        protected virtual int ItemsPadding => 5;
+        protected virtual int ItemsVerticalPadding => 5;
+        protected virtual int ItemsHorizontalPadding => 20;
 
         private CustomUILabel Label { get; set; }
         protected CustomUIPanel Content { get; set; }
@@ -47,7 +49,12 @@ namespace ModsCommon.UI
             Content.name = nameof(Content);
             Content.eventSizeChanged += (_, _) => RefreshContent();
         }
-
+        protected void SetHeightBasedOn(UIComponent component) => SetHeight(component.height);
+        protected void SetHeight(float height)
+        {
+            this.height = height + 2f + ItemsVerticalPadding * 2f;
+            MakePixelPerfect(false);
+        }
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
@@ -58,8 +65,8 @@ namespace ModsCommon.UI
             if (refreshContent)
                 RefreshContent();
 
-            Content.height = height;
-            Content.relativePosition = new Vector2(width - Content.width - ItemsPadding, 0f);
+            Content.height = height - 2f;
+            Content.relativePosition = new Vector2(width - Content.width - ItemsHorizontalPadding, 2f);
 
             SetLabel();
         }
@@ -74,9 +81,9 @@ namespace ModsCommon.UI
 
         private void SetLabel()
         {
-            Label.width = width - Content.width - ItemsPadding * 2;
+            Label.width = width - Content.width - ItemsHorizontalPadding * 2;
             Label.MakePixelPerfect(false);
-            Label.relativePosition = new Vector2(5, (height - Label.height) * 0.5f);
+            Label.relativePosition = new Vector2(ItemsHorizontalPadding, (height - Label.height) * 0.5f + 2f);
         }
         protected override void OnVisibilityChanged()
         {
@@ -84,6 +91,13 @@ namespace ModsCommon.UI
 
             if (isVisible)
                 Refresh();
+        }
+    }
+    public class LabelSettingsItem : ContentSettingsItem 
+    {
+        public LabelSettingsItem()
+        {
+            height = 30f;
         }
     }
 }

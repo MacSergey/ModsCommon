@@ -7,26 +7,33 @@ namespace ModsCommon.UI
 {
     public static class ComponentStyle
     {
-        public static void DefaultStyle(this UIButton button)
-        {
-            button.normalBgSprite = "ButtonMenu";
-            button.hoveredTextColor = new Color32(7, 132, 255, 255);
-            button.pressedTextColor = new Color32(30, 30, 44, 255);
-            button.disabledTextColor = new Color32(7, 7, 7, 255);
-            button.horizontalAlignment = UIHorizontalAlignment.Center;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
-        }
+        public static Color32 PressedBlue => new Color32(7, 132, 255, 255);
+        public static Color32 FocusedBlue => new Color32(51, 153, 255, 255);
+
+        public static Color32 NormalGray => new Color32(129, 141, 145, 255);
+        public static Color32 HoveredGray => new Color32(104, 116, 120, 255);
+        public static Color32 PressedGray => new Color32(81, 90, 93, 255);
+
+
+        public static Color32 ButtonNormal => NormalGray;
+        public static Color32 ButtonHovered => HoveredGray;
+        public static Color32 ButtonPressed => PressedBlue;
+        public static Color32 ButtonFocused => FocusedBlue;
+
         public static void CustomStyle(this UIButton button)
         {
-            button.normalBgSprite = "TextFieldPanel";
-            button.color = new Color32(224, 224, 224, 255);
-            button.hoveredColor = new Color32(160, 160, 160, 255);
-            button.pressedColor = new Color32(7, 132, 255, 255);
-            button.focusedColor = new Color32(128, 192, 255, 255);
+            button.atlas = CommonTextures.Atlas;
+            button.normalBgSprite = CommonTextures.PanelBig;
+
+            button.color = NormalGray;
+            button.hoveredColor = HoveredGray;
+            button.pressedColor = PressedBlue;
+            button.focusedColor = FocusedBlue;
+
             button.textColor = Color.white;
             button.hoveredTextColor = Color.white;
             button.pressedTextColor = Color.white;
+
             button.horizontalAlignment = UIHorizontalAlignment.Center;
             button.verticalAlignment = UIVerticalAlignment.Middle;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
@@ -206,6 +213,45 @@ namespace ModsCommon.UI
             textField.normalBgSprite = CommonTextures.FieldNormal;
             textField.selectionSprite = CommonTextures.Empty;
             textField.color = new Color32(101, 101, 101, 255);
+        }
+
+        public static void CustomStyle<TabType>(this TabStrip<TabType> tabStrip)
+            where TabType : Tab
+        {
+            tabStrip.atlas = CommonTextures.Atlas;
+            tabStrip.backgroundSprite = CommonTextures.PanelBig;
+
+            tabStrip.TabSpacingHorizontal = 2;
+            tabStrip.TabSpacingVertical = 2;
+
+            tabStrip.TabAtlas = CommonTextures.Atlas;
+            tabStrip.TabNormalSprite = CommonTextures.PanelSmall;
+            tabStrip.TabHoveredSprite = CommonTextures.PanelSmall;
+            tabStrip.TabPressedSprite = CommonTextures.PanelSmall;
+            tabStrip.TabFocusedSprite = CommonTextures.PanelSmall;
+            tabStrip.TabDisabledSprite = CommonTextures.PanelSmall;
+        }
+        public static void CustomSettingsStyle<TabType>(this TabStrip<TabType> tabStrip)
+            where TabType : Tab
+        {
+            tabStrip.atlas = CommonTextures.Atlas;
+            tabStrip.backgroundSprite = CommonTextures.PanelBig;
+            tabStrip.color = new Color32(40, 50, 76, 255);
+
+            tabStrip.TabSpacingHorizontal = 4;
+            tabStrip.TabSpacingVertical = 4;
+
+            tabStrip.TabAtlas = CommonTextures.Atlas;
+            tabStrip.TabNormalSprite = CommonTextures.PanelSmall;
+            tabStrip.TabHoveredSprite = CommonTextures.PanelSmall;
+            tabStrip.TabPressedSprite = CommonTextures.PanelSmall;
+            tabStrip.TabFocusedSprite = CommonTextures.PanelSmall;
+            tabStrip.TabDisabledSprite = CommonTextures.PanelSmall;
+
+            tabStrip.TabColor = tabStrip.color;
+            tabStrip.TabHoveredColor = HoveredGray;
+            tabStrip.TabPressedColor = new Color32(120, 120, 120, 255);
+            tabStrip.TabFocusedColor = new Color32(0, 128, 255, 255);
         }
     }
 }
