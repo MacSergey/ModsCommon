@@ -61,6 +61,7 @@ namespace ModsCommon.UI
             Caption.zOrder = 0;
             Caption.autoSize = false;
             Caption.autoHeight = true;
+            Caption.padding.top = 5;
             Caption.textAlignment = UIHorizontalAlignment.Center;
             Caption.verticalAlignment = UIVerticalAlignment.Middle;
             Caption.eventSizeChanged += (_, _) => CaptionSizeChanged();

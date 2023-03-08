@@ -41,11 +41,35 @@ namespace ModsCommon.UI
         where TypeContent : UIAutoLayoutScrollablePanel
     {
         public TypeContent Content { get; private set; }
+
+        private bool showScroll = true;
+        public bool ShowScroll
+        {
+            get => showScroll;
+            set
+            {
+                if(value != showScroll) 
+                {
+                    showScroll = value;
+                    if(value)
+                    {
+                        Content.verticalScrollbar.autoHide = true;
+                    }
+                    else
+                    {
+                        Content.verticalScrollbar.autoHide = false;
+                        Content.verticalScrollbar.Hide();
+                    }
+                }
+            }
+        }
+
         public BaseAdvancedScrollablePanel()
         {
             clipChildren = true;
 
             Content = AddUIComponent<TypeContent>();
+            Content.name = nameof(Content);
 
             Content.autoLayoutDirection = LayoutDirection.Vertical;
             Content.scrollWheelDirection = UIOrientation.Vertical;
@@ -83,8 +107,8 @@ namespace ModsCommon.UI
         }
 
         private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width : 0, 0);
-        public void StopLayout() => Content.StopLayout();
-        public void StartLayout(bool layoutNow = true) => Content.StartLayout(layoutNow);
+        public virtual void StopLayout() => Content.StopLayout();
+        public virtual void StartLayout(bool layoutNow = true) => Content.StartLayout(layoutNow);
     }
 
     public class AdvancedScrollablePanel : BaseAdvancedScrollablePanel<UIAutoLayoutScrollablePanel> { }

@@ -5,15 +5,18 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class AdvancedDropDown<ObjectType, PopupType, EntityType> : MultyAtlasUIButton
+    public abstract class AdvancedDropDown<ObjectType, PopupType, EntityType> : CustomUIButton
         where PopupType : Popup<ObjectType, EntityType>
         where EntityType : PopupEntity<ObjectType>
     {
         #region PROPERTIES
 
+        public delegate void StyleDelegate(PopupType popup, ref bool overridden);
+
         public event Action<ObjectType> OnValueChanged;
         public event Action<PopupType> OnPopupOpen;
         public event Action<PopupType> OnPopupClose;
+        public event StyleDelegate OnSetPopupStyle;
 
         public EntityType Entity { get; private set; }
         public PopupType Popup { get; private set; }
@@ -82,6 +85,11 @@ namespace ModsCommon.UI
 
             Popup.StopRefresh();
             {
+                var overridden = false;
+                OnSetPopupStyle?.Invoke(Popup, ref overridden);
+                if(!overridden)
+                    SetPopupStyle();
+
                 InitPopup();
                 Popup.SelectedObject = SelectedObject;
 
@@ -101,6 +109,7 @@ namespace ModsCommon.UI
             Popup.StartRefresh();
         }
 
+        protected virtual void SetPopupStyle() { }
         protected virtual void InitPopup() => Popup.Init(Objects, null, null);
         protected virtual void PopupOpening() { }
 
@@ -185,7 +194,7 @@ namespace ModsCommon.UI
         where EntityType : SimpleEntity<ValueType>
         where PopupType : SimplePopup<ValueType, EntityType>
     {
-        public new event Action<ValueType> OnValueChanged; 
+        public new event Action<ValueType> OnValueChanged;
         public new ValueType SelectedObject
         {
             get => base.SelectedObject.value;
@@ -195,9 +204,11 @@ namespace ModsCommon.UI
         public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, item.ToString()));
         public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, label));
         protected override void ValueChanged(DropDownItem<ValueType> item) => OnValueChanged?.Invoke(item.value);
+        protected override void SetPopupStyle() => Popup.DefaultStyle();
         protected override void InitPopup()
         {
             Popup.MaximumSize = new Vector2(width, 700f);
+            Popup.EntityHeight = height;
             Popup.width = width;
             Popup.MaxVisibleItems = 0;
             Popup.Init(Objects, null, null);
@@ -241,5 +252,11 @@ namespace ModsCommon.UI
                 return false;
         }
         public override int GetHashCode() => value.GetHashCode();
+    }
+
+    public class StringSimpleDropDown : SimpleDropDown<string, StringSimpleDropDown.StringEntity, StringSimpleDropDown.StringPopup>
+    {
+        public class StringEntity : SimpleEntity<string> { }
+        public class StringPopup : SimplePopup<string, StringEntity> { }
     }
 }

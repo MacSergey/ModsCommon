@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
+    [Obsolete]
     public abstract class UIDropDown<ValueType> : CustomUIDropDown, IUIOnceSelector<ValueType>
     {
         public event Action<ValueType> OnSelectObjectChanged;
@@ -104,5 +105,6 @@ namespace ModsCommon.UI
         }
     }
 
+    [Obsolete]
     public class StringDropDown : UIDropDown<string> { }
 }

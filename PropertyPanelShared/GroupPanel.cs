@@ -11,14 +11,14 @@ namespace ModsCommon.UI
 
         bool IReusable.InCache { get; set; }
         protected virtual Color32 Color => NormalColor;
-        protected virtual string BackgroundSprite => "ButtonWhite";
-        protected virtual UITextureAtlas Atlas => TextureHelper.InGameAtlas;
+        protected virtual string BackgroundSprite => CommonTextures.PanelBig;
+        protected virtual UITextureAtlas Atlas => CommonTextures.Atlas;
 
         public PropertyGroupPanel()
         {
             atlas = Atlas;
             backgroundSprite = BackgroundSprite;
-            color = Color;
+            color = disabledColor = Color;
 
             autoLayoutDirection = LayoutDirection.Vertical;
             autoLayoutPadding = new RectOffset(0, 0, 0, 0);

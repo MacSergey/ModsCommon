@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class CustomUIToggle : MultyAtlasUIButton
+    public class CustomUIToggle : CustomUIButton
     {
         public event Action<bool> OnStateChanged;
 

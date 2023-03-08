@@ -16,7 +16,7 @@ namespace ModsCommon.UI
 
         public int TabSpacingVertical
         {
-            get => padding.vertical;
+            get => padding.vertical / 2;
             set
             {
                 value = Math.Max(value, 0);
@@ -27,7 +27,7 @@ namespace ModsCommon.UI
         }
         public int TabSpacingHorizontal
         {
-            get => padding.horizontal;
+            get => padding.horizontal / 2;
             set
             {
                 value = Math.Max(value, 0);
@@ -197,6 +197,20 @@ namespace ModsCommon.UI
             }
         }
 
+        private Color32 tabFocusedDisabledColor = Color.white;
+        public Color32 TabFocusedDisabledColor
+        {
+            get => tabFocusedDisabledColor;
+            set
+            {
+                if (!tabFocusedDisabledColor.Equals(value))
+                {
+                    tabFocusedDisabledColor = value;
+                    UpdateTabStyle();
+                }
+            }
+        }
+
         public TabStrip()
         {
             clipChildren = true;
@@ -207,12 +221,10 @@ namespace ModsCommon.UI
 
             for (var i = 0; i < Tabs.Count; i += 1)
             {
-                var tab = Tabs[i];
+                if (Tabs[i].state == UIButton.ButtonState.Focused)
+                    Tabs[i].state = UIButton.ButtonState.Normal;
 
-                if (i == SelectedTab)
-                    tab.state = UIButton.ButtonState.Focused;
-                else if (!tab.Hovered)
-                    tab.state = UIButton.ButtonState.Normal;
+                Tabs[i].isSelected = i == SelectedTab;
             }
         }
         public void AddTab(string name, float textScale = 0.85f) => AddTabImpl(name, textScale);
@@ -379,7 +391,7 @@ namespace ModsCommon.UI
             if (!component.isEnabled)
             {
                 var button = component as TabType;
-                button.disabledColor = button.state == UIButton.ButtonState.Focused ? button.focusedColor : button.color;
+                button.disabledColor = button.state == UIButton.ButtonState.Focused ? button.focusedBgColor : button.normalBgColor;
             }
         }
         private void TabButtonVisibilityChanged(UIComponent component, bool value) => ArrangeTabs();
@@ -392,21 +404,12 @@ namespace ModsCommon.UI
         protected virtual void SetStyle(TabType tabButton)
         {
             tabButton.atlas = tabAtlas;
-
-            tabButton.normalBgSprite = TabNormalSprite;
-            tabButton.hoveredBgSprite = TabHoveredSprite;
-            tabButton.pressedBgSprite = TabPressedSprite;
-            tabButton.disabledBgSprite = TabDisabledSprite;
-            tabButton.focusedBgSprite = TabFocusedSprite;
-
-            tabButton.color = TabColor;
-            tabButton.hoveredColor = TabHoveredColor;
-            tabButton.pressedColor = TabPressedColor;
-            tabButton.disabledColor = TabDisabledColor;
-            tabButton.focusedColor = TabFocusedColor;
+            tabButton.SetBgSprite(new SpriteSet(TabNormalSprite, TabHoveredSprite, TabPressedSprite, TabFocusedSprite, TabDisabledSprite));
+            tabButton.SetBgColor(new ColorSet(TabColor, TabHoveredColor, TabPressedColor, TabFocusedColor, TabDisabledColor));
+            tabButton.SetSelectedBgColor(new ColorSet(TabFocusedColor, TabFocusedColor, TabFocusedColor, TabFocusedColor, TabFocusedDisabledColor));
         }
 
-        private bool tabLayout = false;
+        private bool tabLayout = true;
         public void StopLayout()
         {
             tabLayout = false;

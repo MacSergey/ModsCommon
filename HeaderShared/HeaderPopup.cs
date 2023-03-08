@@ -33,7 +33,7 @@ namespace ModsCommon.UI
             isInteractive = true;
             color = Background;
             atlas = CommonTextures.Atlas;
-            backgroundSprite = CommonTextures.FieldHovered;
+            backgroundSprite = CommonTextures.FieldSingle;
 
             AddPanel();
         }

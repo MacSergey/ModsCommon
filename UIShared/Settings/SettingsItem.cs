@@ -12,7 +12,7 @@ namespace ModsCommon.UI
         public SettingsItem()
         {
             atlas = CommonTextures.Atlas;
-            backgroundSprite = CommonTextures.SettingsItem;
+            backgroundSprite = CommonTextures.BorderBottom;
             color = new Color32(60, 75, 76, 255);
             autoLayout = false;
             clipChildren = true;

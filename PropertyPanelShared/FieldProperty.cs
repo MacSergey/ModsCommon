@@ -368,7 +368,7 @@ namespace ModsCommon.UI
         where FieldType : ComparableUITextField<ValueType>
         where ValueType : IComparable<ValueType>
     {
-        protected MultyAtlasUIButton Invert { get; }
+        protected CustomUIButton Invert { get; }
 
         public override float FieldWidth
         {
@@ -378,7 +378,7 @@ namespace ModsCommon.UI
 
         public InvertedFieldPropertyPanel()
         {
-            Invert = Content.AddUIComponent<MultyAtlasUIButton>();
+            Invert = Content.AddUIComponent<CustomUIButton>();
             Invert.SetDefaultStyle();
             Invert.width = 20;
             Invert.atlasForeground = CommonTextures.Atlas;

@@ -82,7 +82,7 @@ namespace ModsCommon.UI
         {
             Objects.Add(item);
 
-            var button = AddUIComponent<MultyAtlasUIButton>();
+            var button = AddUIComponent<CustomUIButton>();
             button.atlas = CommonTextures.Atlas;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
 
@@ -138,32 +138,39 @@ namespace ModsCommon.UI
         protected void SetSprite(CustomUIButton button, bool isSelect)
         {
             var index = Buttons.IndexOf(button);
-            var suffix = Suffix(index);
+            button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.focusedBgSprite = button.disabledBgSprite = GetSprite(index);
 
             if (isSelect)
             {
-                button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldFocused}{suffix}";
-                button.disabledColor = new Color32(192, 192, 192, 255);
+                button.color = ComponentStyle.FieldFocusedColor;
+                button.hoveredBgColor = ComponentStyle.FieldFocusedColor;
+                button.pressedBgColor = ComponentStyle.FieldFocusedColor;
+                button.focusedBgColor = ComponentStyle.FieldFocusedColor;
+                button.disabledBgColor = ComponentStyle.FieldDisabledFocusedColor;
             }
             else if (!Clickable[button])
             {
-                button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldDisabled}{suffix}";
-                button.disabledColor = Color.white;
+                button.color = ComponentStyle.FieldDisabledColor;
+                button.hoveredBgColor = ComponentStyle.FieldDisabledColor;
+                button.pressedBgColor = ComponentStyle.FieldDisabledColor;
+                button.focusedBgColor = ComponentStyle.FieldDisabledColor;
+                button.disabledBgColor = ComponentStyle.FieldDisabledColor;
             }
             else
             {
-                button.normalBgSprite = $"{CommonTextures.FieldNormal}{suffix}";
-                button.hoveredBgSprite = button.pressedBgSprite = $"{CommonTextures.FieldHovered}{suffix}";
-                button.disabledBgSprite = $"{CommonTextures.FieldDisabled}{suffix}";
-                button.disabledColor = Color.white;
+                button.color = ComponentStyle.FieldNormalColor;
+                button.hoveredBgColor = ComponentStyle.FieldHoveredColor;
+                button.pressedBgColor = ComponentStyle.FieldHoveredColor;
+                button.focusedBgColor = ComponentStyle.FieldNormalColor;
+                button.disabledBgColor = ComponentStyle.FieldDisabledColor;
             }
         }
-        private string Suffix(int index)
+        private string GetSprite(int index)
         {
             if (index == 0)
-                return Buttons.Count == 1 ? string.Empty : "Left";
+                return Buttons.Count == 1 ? CommonTextures.FieldSingle : CommonTextures.FieldLeft;
             else
-                return index == Buttons.Count - 1 ? "Right" : "Middle";
+                return index == Buttons.Count - 1 ? CommonTextures.FieldRight : CommonTextures.FieldMiddle;
         }
 
         protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null);

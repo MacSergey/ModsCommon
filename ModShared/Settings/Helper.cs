@@ -18,15 +18,15 @@ namespace ModsCommon
             var item = (group.self as UIPanel).AddUIComponent<FloatSettingsItem>();
             item.Text = label;
 
-            if(min.HasValue)
+            if (min.HasValue)
             {
                 item.Field.CheckMin = true;
                 item.Field.MinValue = min.Value;
-            }    
-            if(max.HasValue)
+            }
+            if (max.HasValue)
             {
                 item.Field.CheckMax = true;
-                item.Field.MaxValue = max.Value;    
+                item.Field.MaxValue = max.Value;
             }
             item.Field.Value = saved;
             item.Field.OnValueChanged += OnValueChanged;
@@ -188,12 +188,16 @@ namespace ModsCommon
             optionsPanel.autoLayoutPadding = new RectOffset(padding, 0, 0, 0);
             return optionsPanel;
         }
-        public static UIButton AddButton(UIHelper group, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
+        public static CustomUIButton AddButton(UIHelper group, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
         {
-            var button = group.AddButton(text, click) as UIButton;
+            var button = (group.self as UIComponent).AddUIComponent<CustomUIButton>();
+            button.text = text;
+            if (click != null)
+                button.eventClick += (_, _) => click();
             if (textScale != null)
                 button.textScale = textScale.Value;
             button.autoSize = false;
+            button.height = 34f;
             if (width != null)
                 button.width = width.Value;
 
@@ -253,9 +257,9 @@ namespace ModsCommon
             {
                 ComponentStyle.CustomSettingsStyle(this, new Vector2(250f, 34f));
             }
+            protected override void SetPopupStyle() => Popup.CustomSettingsStyle(34f);
             protected override void InitPopup()
             {
-                Popup.CustomSettingsStyle(34f);
                 Popup.AutoWidth = true;
                 base.InitPopup();
             }

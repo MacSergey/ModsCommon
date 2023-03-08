@@ -358,7 +358,7 @@ namespace ModsCommon.UI
             ResetButton.atlas = TextureHelper.InGameAtlas;
             ResetButton.normalFgSprite = "ContentManagerSearchReset";
             ResetButton.size = new Vector2(10f, 10f);
-            ResetButton.hoveredColor = new Color32(127, 127, 127, 255);
+            ResetButton.hoveredBgColor = new Color32(127, 127, 127, 255);
             ResetButton.isVisible = false;
             ResetButton.eventClick += ResetClick;
 
@@ -447,7 +447,7 @@ namespace ModsCommon.UI
         protected override Vector2 GetEntityPosition(int index) => base.GetEntityPosition(index) + new Vector2(0f, 30f);
     }
 
-    public abstract class PopupEntity<ObjectType> : MultyAtlasUIButton, IReusable
+    public abstract class PopupEntity<ObjectType> : CustomUIButton, IReusable
     {
         public event Action<int, ObjectType> OnSelected;
         bool IReusable.InCache { get; set; }

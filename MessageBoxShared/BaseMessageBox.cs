@@ -86,27 +86,11 @@ namespace ModsCommon.UI
         private List<uint> ButtonsRatio { get; } = new List<uint>();
         public string CaptionText { set => Caption.text = value; }
 
-        private int _defaultButton = 0;
+        private int defaultButton = 0;
         public int DefaultButton
         {
-            get => _defaultButton;
-            set
-            {
-                if (value != _defaultButton)
-                {
-                    var buttons = Buttons.ToArray();
-                    if (value >= 0 && value < buttons.Length)
-                    {
-                        if (buttons[_defaultButton].state == UIButton.ButtonState.Focused)
-                            buttons[_defaultButton].state = UIButton.ButtonState.Normal;
-
-                        _defaultButton = value;
-
-                        if (buttons[_defaultButton].state == UIButton.ButtonState.Normal)
-                            buttons[_defaultButton].state = UIButton.ButtonState.Focused;
-                    }
-                }
-            }
+            get => defaultButton;
+            set => defaultButton = Mathf.Clamp(value, 0, Buttons.Count() - 1);
         }
 
         #region CONSTRUCTOR
@@ -208,8 +192,16 @@ namespace ModsCommon.UI
         public override void Update()
         {
             base.Update();
-            if (Buttons.Skip(DefaultButton).FirstOrDefault() is CustomUIButton button && button.state == UIButton.ButtonState.Normal)
-                button.state = UIButton.ButtonState.Focused;
+
+            var buttons = Buttons.ToArray();
+
+            for(var i = 0; i < buttons.Length; i += 1)
+            {
+                buttons[i].isSelected = (i == defaultButton);
+
+                if (buttons[i].state == UIButton.ButtonState.Focused)
+                    buttons[i].state = UIButton.ButtonState.Normal;
+            }
         }
 
         protected CustomUIButton AddButton(Action action, uint ratio = 1)
@@ -278,7 +270,7 @@ namespace ModsCommon.UI
                 else if (p.keycode == KeyCode.Return)
                 {
                     p.Use();
-                    if (Buttons.Skip(DefaultButton).FirstOrDefault() is CustomUIButton button)
+                    if (Buttons.Skip(defaultButton).FirstOrDefault() is CustomUIButton button)
                         button.SimulateClick();
                 }
                 else if (p.keycode == KeyCode.RightArrow)

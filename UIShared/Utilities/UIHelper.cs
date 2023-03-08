@@ -41,7 +41,8 @@ namespace ModsCommon.UI
             thumbSprite.autoSize = true;
             thumbSprite.width = thumbSprite.parent.width;
             thumbSprite.atlas = CommonTextures.Atlas;
-            thumbSprite.spriteName = CommonTextures.FieldNormal;
+            thumbSprite.spriteName = CommonTextures.FieldSingle;
+            thumbSprite.color = ComponentStyle.FieldNormalColor;
             thumbSprite.minimumSize = new Vector2(0f, 20f);
             ScrollBar.thumbObject = thumbSprite;
         }
@@ -180,6 +181,56 @@ namespace ModsCommon.UI
             button.disabledColor = ButtonFocused;
             button.textColor = button.hoveredTextColor = button.focusedTextColor = Color.black;
             button.pressedTextColor = button.disabledTextColor = Color.white;
+        }
+    }
+    public struct SpriteSet
+    {
+        public string normal;
+        public string hovered;
+        public string pressed;
+        public string focused;
+        public string disabled;
+
+        public SpriteSet(string normal, string hovered, string pressed, string focused, string disabled)
+        {
+            this.normal = normal;
+            this.hovered = hovered;
+            this.pressed = pressed;
+            this.focused = focused;
+            this.disabled = disabled;
+        }
+        public SpriteSet(string sprite)
+        {
+            this.normal = sprite;
+            this.hovered = sprite;
+            this.pressed = sprite;
+            this.focused = sprite;
+            this.disabled = sprite;
+        }
+    }
+    public struct ColorSet
+    {
+        public Color32? normal;
+        public Color32? hovered;
+        public Color32? pressed;
+        public Color32? focused;
+        public Color32? disabled;
+
+        public ColorSet(Color32? normal, Color32? hovered, Color32? pressed, Color32? focused, Color32? disabled)
+        {
+            this.normal = normal;
+            this.hovered = hovered;
+            this.pressed = pressed;
+            this.focused = focused;
+            this.disabled = disabled;
+        }
+        public ColorSet(Color32? color)
+        {
+            this.normal = color;
+            this.hovered = color;
+            this.pressed = color;
+            this.focused = color;
+            this.disabled = color;
         }
     }
 }

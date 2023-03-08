@@ -5,6 +5,91 @@ namespace ModsCommon.UI
 {
     public class CustomUITextField : UITextField
     {
+        private Vector3 positionBefore;
+        public override void ResetLayout() => positionBefore = relativePosition;
+        public override void PerformLayout()
+        {
+            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
+                relativePosition = positionBefore;
+        }
+
+        protected override void OnKeyDown(UIKeyEventParameter p)
+        {
+            if (builtinKeyNavigation && !readOnly && !p.used)
+            {
+                if (p.keycode == KeyCode.Return && multiline)
+                {
+                    if (!p.shift)
+                    {
+                        multiline = false;
+                        base.OnKeyDown(p);
+                        multiline = true;
+                        return;
+                    }
+                }
+            }
+
+            base.OnKeyDown(p);
+        }
+
+
+        private Color32? m_hoveredColor = null;
+        public Color32 hoveredColor
+        {
+            get => m_hoveredColor ?? color;
+            set
+            {
+                if (!m_hoveredColor.Equals(value))
+                {
+                    m_hoveredColor = value;
+                    OnColorChanged();
+                }
+            }
+        }
+
+        private Color32? m_focusedColor = null;
+        public Color32 focusedColor
+        {
+            get => m_focusedColor ?? color;
+            set
+            {
+                if (!m_focusedColor.Equals(value))
+                {
+                    m_focusedColor = value;
+                    OnColorChanged();
+                }
+            }
+        }
+
+        protected override Color32 GetActiveColor()
+        {
+            if (!isEnabled)
+            {
+                if (!string.IsNullOrEmpty(disabledBgSprite) && atlas != null && atlas[disabledBgSprite] != null)
+                    return disabledColor;
+                else
+                    return color;
+            }
+
+            if (hasFocus)
+            {
+                if (!string.IsNullOrEmpty(focusedBgSprite) && atlas != null && atlas[focusedBgSprite] != null)
+                    return focusedColor;
+                else
+                    return color;
+            }
+
+            if(m_IsMouseHovering)
+            {
+                if (!string.IsNullOrEmpty(hoveredBgSprite) && atlas != null && atlas[hoveredBgSprite] != null)
+                    return hoveredColor;
+                else
+                    return color;
+            }
+
+            return color;
+        }
+
         //static FieldRef<UIFont, int> lineHeightFieldGetter;
         //static FieldRef<UITextField, float[]> charWidthsFieldGetter;
         //static FieldRef<UITextField, List<int>> linesFieldGetter;
@@ -41,33 +126,6 @@ namespace ModsCommon.UI
 
         //    return lineGetter.Generate().CreateDelegate<FieldRef<T, F>>();
         //}
-
-        private Vector3 positionBefore;
-        public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout()
-        {
-            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
-                relativePosition = positionBefore;
-        }
-
-        protected override void OnKeyDown(UIKeyEventParameter p)
-        {
-            if (builtinKeyNavigation && !readOnly && !p.used)
-            {
-                if (p.keycode == KeyCode.Return && multiline)
-                {
-                    if (!p.shift)
-                    {
-                        multiline = false;
-                        base.OnKeyDown(p);
-                        multiline = true;
-                        return;
-                    }
-                }
-            }
-
-            base.OnKeyDown(p);
-        }
 
         //protected override void OnRebuildRenderData()
         //{

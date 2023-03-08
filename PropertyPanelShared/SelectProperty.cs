@@ -109,11 +109,18 @@ namespace ModsCommon.UI
         public SelectPropertyButton()
         {
             text = NotSet;
+
             atlas = CommonTextures.Atlas;
-            normalBgSprite = CommonTextures.FieldNormal;
-            hoveredBgSprite = CommonTextures.FieldHovered;
-            disabledBgSprite = CommonTextures.FieldDisabled;
-            focusedBgSprite = CommonTextures.FieldFocused;
+            normalBgSprite = CommonTextures.FieldSingle;
+            hoveredBgSprite = CommonTextures.FieldSingle;
+            disabledBgSprite = CommonTextures.FieldSingle;
+            focusedBgSprite = CommonTextures.FieldSingle;
+
+            color = ComponentStyle.FieldNormalColor;
+            hoveredBgColor = ComponentStyle.FieldHoveredColor;
+            disabledBgColor = ComponentStyle.FieldDisabledColor;
+            focusedBgColor = ComponentStyle.FieldFocusedColor;
+
             isInteractive = false;
             enabled = true;
             autoSize = false;

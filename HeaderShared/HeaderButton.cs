@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class HeaderButton : MultyAtlasUIButton, IReusable
+    public class HeaderButton : CustomUIButton, IReusable
     {
         bool IReusable.InCache { get; set; }
 

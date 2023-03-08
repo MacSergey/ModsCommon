@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AdvancedDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIListbox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUITextField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\KeymappingItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsItem.cs" />
@@ -23,7 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DonatePanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\MultyAtlasUIButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Popup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Render.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
@@ -114,10 +115,10 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\zh-TW.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\PanelSmall.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\PanelSmall.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\PanelBig.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\PanelBig.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBackground.png" />
@@ -125,6 +126,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Resources\EmptyWithoutBorder.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\SettingsItem.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBig.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBoth.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderSmall.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderTop.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldMiddle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldSingle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBottom.png" />
   </ItemGroup>
 </Project>

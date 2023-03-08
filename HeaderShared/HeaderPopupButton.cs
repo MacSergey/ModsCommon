@@ -125,6 +125,8 @@ namespace ModsCommon.UI
             Popup.Refresh();
         }
     }
+
+    [Obsolete]
     public abstract class BaseHeaderDropDown<TypeItem> : BaseHeaderPopupButton<CustomUIListBox>
     {
         public event Action<TypeItem> OnSelect;
@@ -147,6 +149,7 @@ namespace ModsCommon.UI
             Popup.itemHeight = 20;
             Popup.itemHover = CommonTextures.FieldNormal;
             Popup.itemHighlight = CommonTextures.FieldFocused;
+
             Popup.textScale = 0.7f;
             Popup.color = Color.white;
             Popup.itemTextColor = Color.black;

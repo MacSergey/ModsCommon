@@ -132,6 +132,7 @@ namespace ModsCommon.UI
         public override string ToString() => $"{base.ToString()}: {string.Join(",", SelectedObjects.Select(i => i.ToString()).ToArray())}";
     }
 
+    [Obsolete]
     public class StringListPropertyPanel : ListOncePropertyPanel<string, StringDropDown>
     {
         protected override bool AllowNull => true;
