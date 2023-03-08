@@ -30,7 +30,7 @@ namespace ModsCommon.UI
         public KeymappingSettingsItem()
         {
             Button = Content.AddUIComponent<CustomUIButton>();
-            Button.CustomStyle();
+            Button.CustomSettingsStyle();
             Button.size = new Vector2(278f, 31f);
 
             Button.eventKeyDown += OnBindingKeyDown;

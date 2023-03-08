@@ -17,6 +17,18 @@ namespace ModsCommon.UI
         public static Color32 PressedGray => new Color32(81, 90, 93, 255);
         public static Color32 DisabledGray => new Color32(35, 39, 41, 255);
 
+        public static Color32 NormalGreen => new Color32(98, 179, 45, 255);
+        public static Color32 HoveredGreen => new Color32(84, 153, 38, 255);
+        public static Color32 PressedGreen => new Color32(70, 128, 32, 255);
+
+        public static Color32 NormalSettingsGray => new Color32(48, 60, 74, 255);
+        public static Color32 HoveredSettingsGray => new Color32(85, 99, 115, 255);
+        public static Color32 HoveredSettingsGrayLight => new Color32(122, 138, 153, 255);
+        public static Color32 PressedSettingsGray => new Color32(100, 113, 128, 255);
+        public static Color32 DisabledSettingsGray => new Color32(29, 39, 51, 255);
+
+
+        #region BUTTON
 
         public static Color32 ButtonNormalColor => NormalGray;
         public static Color32 ButtonHoveredColor => HoveredGray;
@@ -29,21 +41,23 @@ namespace ModsCommon.UI
         public static Color32 ButtonSelectedFocusedColor => NormalBlue;
         public static Color32 ButtonSelectedDisabledColor => DisabledGray;
 
-
-        public static Color32 FieldNormalColor => new Color32(148, 161, 166, 255);
-        public static Color32 FieldHoveredColor => new Color32(177, 189, 193, 255);
-        public static Color32 FieldDisabledColor => new Color32(104, 110, 113, 255);
-        public static Color32 FieldFocusedColor => new Color32(151, 202, 222, 255);
-        public static Color32 FieldDisabledFocusedColor => new Color32(113, 151, 166, 255);
-
-        #region BUTTON
-
-        public static void CustomStyle(this CustomUIButton button)
+        public static void CustomMessageBoxStyle(this CustomUIButton button)
         {
             button.atlas = CommonTextures.Atlas;
             button.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
             button.SetBgColor(new ColorSet(ButtonNormalColor, ButtonHoveredColor, ButtonPressedColor, ButtonFocusedColor, ButtonDisabledColor));
             button.SetSelectedBgColor(new ColorSet(ButtonSelectedNormalColor, ButtonSelectedHoveredColor, ButtonSelectedPressedColor, ButtonSelectedFocusedColor, ButtonSelectedDisabledColor));
+            button.SetTextColor(new ColorSet(Color.white, Color.white, Color.white, null, null));
+
+            button.horizontalAlignment = UIHorizontalAlignment.Center;
+            button.verticalAlignment = UIVerticalAlignment.Middle;
+            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+        }
+        public static void CustomSettingsStyle(this CustomUIButton button)
+        {
+            button.atlas = CommonTextures.Atlas;
+            button.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
+            button.SetBgColor(new ColorSet(HoveredSettingsGrayLight, PressedSettingsGray, PressedSettingsGray, HoveredSettingsGrayLight, DisabledSettingsGray));
             button.SetTextColor(new ColorSet(Color.white, Color.white, Color.white, null, null));
 
             button.horizontalAlignment = UIHorizontalAlignment.Center;
@@ -105,19 +119,12 @@ namespace ModsCommon.UI
             where EntityType : PopupEntity<ObjectType>
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
-            dropDown.normalBgSprite = CommonTextures.FieldSingle;
-            dropDown.hoveredBgSprite = CommonTextures.FieldSingle;
-            dropDown.disabledBgSprite = CommonTextures.FieldSingle;
+            dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
+            dropDown.SetBgColor(new ColorSet(FieldNormalColor, FieldHoveredColor, FieldDisabledColor, FieldNormalColor, FieldDisabledColor));
 
-            dropDown.normalBgColor = FieldNormalColor;
-            dropDown.hoveredBgColor = FieldHoveredColor;
-            dropDown.disabledBgColor = FieldDisabledColor;
+            dropDown.atlasForeground = CommonTextures.Atlas;
+            dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
 
-            dropDown.atlasForeground = TextureHelper.InGameAtlas;
-            dropDown.normalFgSprite = "IconDownArrow";
-            dropDown.hoveredFgSprite = "IconDownArrowHovered";
-            dropDown.focusedFgSprite = "IconDownArrow";
-            dropDown.disabledFgSprite = "IconDownArrowDisabled";
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
             dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
             dropDown.verticalAlignment = UIVerticalAlignment.Middle;
@@ -144,27 +151,62 @@ namespace ModsCommon.UI
         }
 
 
+        public static void CustomMessageBoxStyle<ObjectType, PopupType, EntityType>(this AdvancedDropDown<ObjectType, PopupType, EntityType> dropDown, Vector2? size = null)
+            where PopupType : Popup<ObjectType, EntityType>
+            where EntityType : PopupEntity<ObjectType>
+        {
+            dropDown.atlasBackground = CommonTextures.Atlas;
+            dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
+            dropDown.SetBgColor(new ColorSet(NormalGray, PressedGray, PressedGray, HoveredGray, DisabledGray));
+
+            dropDown.atlasForeground = CommonTextures.Atlas;
+            dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
+            dropDown.normalFgColor = Color.black;
+            dropDown.hoveredFgColor = new Color32(64, 64, 64, 255);
+
+            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+
+            dropDown.textVerticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.textHorizontalAlignment = UIHorizontalAlignment.Left;
+
+            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
+            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+
+            dropDown.size = size ?? new Vector2(230, 20);
+        }
+        public static void CustomMessageBoxStyle<ObjectType, EntityType>(this Popup<ObjectType, EntityType> popup, float? entityHeight = null)
+            where EntityType : PopupEntity<ObjectType>
+        {
+            popup.atlas = CommonTextures.Atlas;
+            popup.backgroundSprite = CommonTextures.FieldSingle;
+            popup.ItemHover = CommonTextures.FieldSingle;
+            popup.ItemSelected = CommonTextures.FieldSingle;
+
+            popup.color = NormalGray;
+            popup.ColorHover = HoveredGray;
+            popup.ColorSelected = NormalBlue;
+
+            popup.EntityHeight = entityHeight ?? 20f;
+            popup.MaximumSize = new Vector2(230f, 700f);
+            popup.ItemsPadding = new RectOffset(4, 4, 4, 4);
+        }
+
+
         public static void CustomSettingsStyle<ObjectType, PopupType, EntityType>(this AdvancedDropDown<ObjectType, PopupType, EntityType> dropDown, Vector2? size = null)
             where PopupType : Popup<ObjectType, EntityType>
             where EntityType : PopupEntity<ObjectType>
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
-            dropDown.normalBgSprite = CommonTextures.FieldNormal;
-            dropDown.hoveredBgSprite = CommonTextures.FieldNormal;
+            dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
+            dropDown.SetBgColor(new ColorSet(HoveredSettingsGrayLight, PressedSettingsGray, PressedSettingsGray, HoveredSettingsGrayLight, DisabledSettingsGray));
 
-            dropDown.normalBgColor = new Color32(101, 101, 101, 255);
-            dropDown.hoveredBgColor = new Color32(172, 172, 172, 255);
+            dropDown.atlasForeground = CommonTextures.Atlas;
+            dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
+            dropDown.SetFgColor(new ColorSet(DisabledSettingsGray));
 
-            dropDown.atlasForeground = TextureHelper.InGameAtlas;
-            dropDown.normalFgSprite = "IconDownArrow";
-            dropDown.hoveredFgSprite = "IconDownArrowHovered";
-            dropDown.pressedFgSprite = "IconDownArrowPressed";
-            dropDown.focusedFgSprite = "IconDownArrow";
-            dropDown.disabledFgSprite = "IconDownArrowDisabled";
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-
-            dropDown.normalFgColor = Color.black;
-            dropDown.hoveredFgColor = new Color32(64, 64, 64, 255);
+            dropDown.scaleFactor = 0.7f;
+            dropDown.spritePadding.right = 5;
 
             dropDown.textVerticalAlignment = UIVerticalAlignment.Middle;
             dropDown.textHorizontalAlignment = UIHorizontalAlignment.Left;
@@ -179,20 +221,28 @@ namespace ModsCommon.UI
             where EntityType : PopupEntity<ObjectType>
         {
             popup.atlas = CommonTextures.Atlas;
-            popup.backgroundSprite = CommonTextures.FieldHovered;
-            popup.ItemHover = CommonTextures.FieldNormal;
-            popup.ItemSelected = CommonTextures.FieldNormal;
+            popup.backgroundSprite = CommonTextures.FieldSingle;
+            popup.ItemHover = CommonTextures.FieldSingle;
+            popup.ItemSelected = CommonTextures.FieldSingle;
 
-            popup.color = new Color32(101, 101, 101, 255);
-            popup.ColorHover = new Color32(128, 192, 255, 255);
+            popup.color = NormalSettingsGray;
+            popup.ColorHover = HoveredSettingsGray;
+            popup.ColorSelected = NormalBlue;
 
             popup.EntityHeight = entityHeight ?? 20f;
             popup.MaximumSize = new Vector2(230f, 700f);
+            popup.ItemsPadding = new RectOffset(4, 4, 4, 4);
         }
 
         #endregion
 
         #region TEXT FIELD
+
+        public static Color32 FieldNormalColor => new Color32(148, 161, 166, 255);
+        public static Color32 FieldHoveredColor => new Color32(177, 189, 193, 255);
+        public static Color32 FieldDisabledColor => new Color32(104, 110, 113, 255);
+        public static Color32 FieldFocusedColor => new Color32(151, 202, 222, 255);
+        public static Color32 FieldDisabledFocusedColor => new Color32(113, 151, 166, 255);
 
         public static void DefaultStyle(this CustomUITextField textField)
         {
@@ -220,12 +270,19 @@ namespace ModsCommon.UI
             textField.verticalAlignment = UIVerticalAlignment.Middle;
             textField.padding = new RectOffset(0, 0, 6, 0);
         }
-        public static void CustomSettingsStyle(this UITextField textField)
+        public static void CustomSettingsStyle(this CustomUITextField textField)
         {
             textField.atlas = CommonTextures.Atlas;
-            textField.normalBgSprite = CommonTextures.FieldNormal;
+            textField.normalBgSprite = CommonTextures.FieldSingle;
+            textField.hoveredBgSprite = CommonTextures.FieldSingle;
+            textField.focusedBgSprite = CommonTextures.FieldSingle;
+            textField.disabledBgSprite = CommonTextures.FieldSingle;
             textField.selectionSprite = CommonTextures.Empty;
-            textField.color = new Color32(101, 101, 101, 255);
+
+            textField.color = HoveredSettingsGrayLight;
+            textField.hoveredColor = PressedSettingsGray;
+            textField.focusedColor = NormalBlue;
+            textField.disabledColor = DisabledSettingsGray;
         }
 
         #endregion
@@ -253,7 +310,7 @@ namespace ModsCommon.UI
         {
             tabStrip.atlas = CommonTextures.Atlas;
             tabStrip.backgroundSprite = CommonTextures.PanelBig;
-            tabStrip.color = new Color32(40, 50, 76, 255);
+            tabStrip.color = NormalSettingsGray;
 
             tabStrip.TabSpacingHorizontal = 4;
             tabStrip.TabSpacingVertical = 4;
@@ -265,10 +322,49 @@ namespace ModsCommon.UI
             tabStrip.TabFocusedSprite = CommonTextures.PanelSmall;
             tabStrip.TabDisabledSprite = CommonTextures.PanelSmall;
 
-            tabStrip.TabColor = tabStrip.color;
-            tabStrip.TabHoveredColor = HoveredGray;
-            tabStrip.TabPressedColor = new Color32(120, 120, 120, 255);
-            tabStrip.TabFocusedColor = new Color32(0, 128, 255, 255);
+            tabStrip.TabColor = NormalSettingsGray;
+            tabStrip.TabHoveredColor = HoveredSettingsGray;
+            tabStrip.TabPressedColor = PressedSettingsGray;
+            tabStrip.TabFocusedColor = NormalBlue;
+        }
+
+        #endregion
+
+        #region TOGGLE
+
+        public static Color32 ToggleOnNormalColor => NormalGreen;
+        public static Color32 ToggleOnHoveredColor => HoveredGreen;
+        public static Color32 ToggleOnPressedColor => PressedGreen;
+
+        public static Color32 ToggleOffNormalColor => NormalGray;
+        public static Color32 ToggleOffHoveredColor => HoveredGray;
+        public static Color32 ToggleOffPressedColor => PressedGray;
+
+
+        public static void CustomStyle(this CustomUIToggle toggle)
+        {
+            toggle.OnColor = ToggleOnNormalColor;
+            toggle.OnHoverColor = ToggleOnHoveredColor;
+            toggle.OnPressedColor = ToggleOnHoveredColor;
+
+            toggle.OffColor = ToggleOffNormalColor;
+            toggle.OffHoverColor = ToggleOffHoveredColor;
+            toggle.OffPressedColor = ToggleOffHoveredColor;
+
+            toggle.ShowMark = true;
+        }
+
+        public static void CustomSettingsStyle(this CustomUIToggle toggle)
+        {
+            toggle.OnColor = ToggleOnNormalColor;
+            toggle.OnHoverColor = ToggleOnHoveredColor;
+            toggle.OnPressedColor = ToggleOnHoveredColor;
+
+            toggle.OffColor = HoveredSettingsGrayLight;
+            toggle.OffHoverColor = PressedSettingsGray;
+            toggle.OffPressedColor = PressedSettingsGray;
+
+            toggle.ShowMark = true;
         }
 
         #endregion

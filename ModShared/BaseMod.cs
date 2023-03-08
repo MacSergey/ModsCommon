@@ -313,6 +313,17 @@ namespace ModsCommon
         public Dictionary<ModVersion, string> GetWhatsNewMessages(Version whatNewVersion)
         {
             var messages = new Dictionary<ModVersion, string>(Versions.Count);
+#if DEBUG
+            messages[new ModVersion(new Version(1, 2, 3, 4), new DateTime(1994, 12, 27))] =
+                "[NEW] New\n" +
+                "[FIXED] Fixed\n" +
+                "[UPDATED] Updated\n" +
+                "[REMOVED] Removed\n" +
+                "[REVERTED] Reverted\n" +
+                "[TRANSLATION] Translation\n" +
+                "[WARNING] Warning\n" +
+                "Without tag";
+#endif
 #if BETA
             messages[new ModVersion(Version, isBeta: true)] = CommonLocalize.Mod_WhatsNewMessageBeta;
 #endif

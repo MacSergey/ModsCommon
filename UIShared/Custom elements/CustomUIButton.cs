@@ -47,6 +47,16 @@ namespace ModsCommon.UI
                 }
             }
         }
+        public new UITextureAtlas atlas
+        {
+            get => base.atlas;
+            set
+            {
+                _atlasForeground = null;
+                _atlasBackground = null;
+                base.atlas = value;
+            }
+        }
 
         public new Color32 color
         {

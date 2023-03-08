@@ -11,8 +11,8 @@ namespace ModsCommon.Utilities
         public static string PanelSmall => nameof(PanelSmall);
         public static string PanelBig => nameof(PanelBig);
 
-        public static string BorderTop => nameof(BorderTop);
         public static string BorderBottom => nameof(BorderBottom);
+        public static string BorderTop => nameof(BorderTop);
         public static string BorderBoth => nameof(BorderBoth);
         public static string BorderSmall => nameof(BorderSmall);
         public static string BorderBig => nameof(BorderBig);
@@ -45,6 +45,11 @@ namespace ModsCommon.Utilities
         public static string ToggleBackground { get; } = nameof(ToggleBackground);
         public static string ToggleCircle { get; } = nameof(ToggleCircle);
         public static string Tab { get; } = nameof(Tab);
+
+        public static string ArrowDown { get; } = nameof(ArrowDown);
+        public static string ArrowUp { get; } = nameof(ArrowUp);
+        public static string ArrowLeft { get; } = nameof(ArrowLeft);
+        public static string ArrowRight { get; } = nameof(ArrowRight);
 
         public static string TabNormal { get; } = nameof(TabNormal);
         public static string TabHover { get; } = nameof(TabHover);
@@ -83,8 +88,8 @@ namespace ModsCommon.Utilities
             spriteParams[PanelSmall] = new RectOffset(4, 4, 4, 4);
             spriteParams[PanelBig] = new RectOffset(6, 6, 6, 6);
 
-            spriteParams[BorderTop] = new RectOffset(4, 4, 2, 2);
             spriteParams[BorderBottom] = new RectOffset(4, 4, 2, 2);
+            spriteParams[BorderTop] = new RectOffset(4, 4, 2, 2);
             spriteParams[BorderBoth] = new RectOffset(4, 4, 2, 2);
             spriteParams[BorderSmall] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderBig] = new RectOffset(6, 6, 6, 6);
@@ -138,6 +143,12 @@ namespace ModsCommon.Utilities
             spriteParams[TabPressed] = new RectOffset(4, 4, 4, 0);
             spriteParams[TabFocused] = new RectOffset(4, 4, 4, 0);
             spriteParams[TabDisabled] = new RectOffset(4, 4, 4, 0);
+
+            //Arrows
+            spriteParams[ArrowDown] = new RectOffset();
+            spriteParams[ArrowLeft] = new RectOffset();
+            spriteParams[ArrowRight] = new RectOffset();
+            spriteParams[ArrowUp] = new RectOffset();
 
             //OpacitySlider
             spriteParams[OpacitySliderBoard] = new RectOffset();

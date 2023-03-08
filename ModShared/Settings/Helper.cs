@@ -201,7 +201,7 @@ namespace ModsCommon
             if (width != null)
                 button.width = width.Value;
 
-            button.CustomStyle();
+            button.CustomSettingsStyle();
 
             return button;
         }
@@ -222,7 +222,7 @@ namespace ModsCommon
             if (component is UIPanel panel)
                 label.width = panel.width - panel.padding.left;
 
-            //text should be set after everything, otherwise it cause game crash on chenise localization
+            //text should be set after everything, otherwise it causes game crash on chenise localization
             label.text = text;
 
             return label;
@@ -365,7 +365,7 @@ namespace ModsCommon
             var content = group.self as CustomUIPanel;
 
             content.autoLayoutPadding = new RectOffset(0, 0, 0, 0);
-            content.padding = new RectOffset(0, 0, 0, 0);
+            content.padding = new RectOffset(40, 0, 0, 0);
             content.eventComponentAdded += ComponentAdded;
             content.eventSizeChanged += SizeChanged;
 

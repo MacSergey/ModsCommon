@@ -64,7 +64,8 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public float EntityWidth => width - (ShowScroll ? ScrollBar.width : 0f);
+        public float EntityWidth => width - (ShowScroll ? ScrollBar.width : 0f) - itemsPadding.horizontal;
+
 
         private int maxVisibleItems = 0;
         public int MaxVisibleItems
@@ -119,19 +120,28 @@ namespace ModsCommon.UI
                 }
             }
         }
+        private RectOffset itemsPadding = new RectOffset(0, 0, 0, 0);
+        public RectOffset ItemsPadding
+        {
+            get => itemsPadding;
+            set
+            {
+                itemsPadding = value;
+                PlaceEntities();
+            }
+        }
 
         protected virtual int VisibleCount
         {
             get
             {
                 var visibleCount = MaxVisibleItems > 0 ? MaxVisibleItems : int.MaxValue;
-                var fitCount = Mathf.FloorToInt(MaximumSize.y / EntityHeight);
+                var fitCount = Mathf.FloorToInt(Mathf.Max(MaximumSize.y - ItemsPadding.vertical, 0f) / EntityHeight);
                 return Mathf.Min(Values.Count, visibleCount, fitCount);
             }
         }
-        protected virtual float PopupHeight => VisibleCount * EntityHeight;
+        protected virtual float PopupHeight => VisibleCount * EntityHeight + ItemsPadding.vertical;
         protected bool ShowScroll => Values.Count > VisibleCount;
-        protected virtual float ScrollHeight => VisibleCount * EntityHeight;
         protected virtual Vector2 ScrollPosition => new Vector2(width - ScrollBar.width, 0f);
 
         public string ItemHover { get; set; }
@@ -223,7 +233,6 @@ namespace ModsCommon.UI
                 return;
 
             var visibleCount = VisibleCount;
-            height = PopupHeight;
 
             var count = Math.Max(visibleCount, Entities.Count);
 
@@ -261,6 +270,16 @@ namespace ModsCommon.UI
             }
             Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
 
+            PlaceEntities();
+        }
+        protected virtual void SetEntityValue(EntityType entity, int index, ObjectType value, bool selected)
+        {
+            entity.SetObject(index, value, selected);
+        }
+        protected virtual void PlaceEntities()
+        {
+            var visibleCount = VisibleCount;
+
             if (AutoWidth)
             {
                 var entitySize = new Vector2(0f, EntityHeight);
@@ -276,7 +295,7 @@ namespace ModsCommon.UI
                     Entities[i].relativePosition = GetEntityPosition(i);
                 }
 
-                width = entitySize.x;
+                width = entitySize.x + ItemsPadding.horizontal;
             }
             else
             {
@@ -288,17 +307,14 @@ namespace ModsCommon.UI
                 }
             }
 
-            ScrollBar.height = ScrollHeight;
+            height = PopupHeight;
+            ScrollBar.height = height;
             ScrollBar.relativePosition = ScrollPosition;
             ScrollBar.value = StartIndex;
             ScrollBar.isVisible = ShowScroll;
         }
-        protected virtual void SetEntityValue(EntityType entity, int index, ObjectType value, bool selected)
-        {
-            entity.SetObject(index, value, selected);
-        }
 
-        protected virtual Vector2 GetEntityPosition(int index) => new Vector2(0, EntityHeight * index);
+        protected virtual Vector2 GetEntityPosition(int index) => new Vector2(ItemsPadding.left, EntityHeight * index + ItemsPadding.top);
 
         //protected override void OnSizeChanged()
         //{

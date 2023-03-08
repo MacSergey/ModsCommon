@@ -125,15 +125,19 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowDown.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowUp.png" />
     <Content Include="$(MSBuildThisFileDirectory)Resources\EmptyWithoutBorder.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBig.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBoth.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderSmall.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderTop.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBottom.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldLeft.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldMiddle.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldRight.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldSingle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBottom.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderTop.png" />
   </ItemGroup>
 </Project>

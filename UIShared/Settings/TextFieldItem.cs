@@ -10,6 +10,8 @@ namespace ModsCommon.UI
     public abstract class FieldSettingsItem<ValueType, FieldType> : ContentSettingsItem
         where FieldType : UITextField<ValueType>
     {
+        protected override RectOffset ItemsPadding => new RectOffset(10, 30, 7, 7);
+
         public FieldType Field { get; }
 
         public ValueType Value
@@ -22,7 +24,7 @@ namespace ModsCommon.UI
         {
             Field = Content.AddUIComponent<FieldType>();
             Field.CustomSettingsStyle();
-            Field.size = new Vector2(150f, 31f);
+            Field.size = new Vector2(150f, 28f);
             Field.textScale = 1.125f;
             Field.padding = new RectOffset(0, 0, 6, 0);
             Field.builtinKeyNavigation = true;

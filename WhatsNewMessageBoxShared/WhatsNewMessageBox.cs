@@ -61,7 +61,7 @@ namespace ModsCommon.UI
                 set
                 {
                     Container.isVisible = value;
-                    Button.text = value ? "▼" : "►";
+                    Button.SetFgSprite(new SpriteSet(value ? CommonTextures.ArrowDown : CommonTextures.ArrowRight));
 
                     Container.StopLayout();
                     {
@@ -100,8 +100,9 @@ namespace ModsCommon.UI
                     autoFitChildrenVertically = true;
                     padding = new RectOffset(5, 5, 5, 5);
                     autoLayoutPadding = new RectOffset(0, 0, 0, 8);
-                    backgroundSprite = "TextFieldPanel";
-                    color = new Color32(64, 64, 64, 255);
+                    atlas = CommonTextures.Atlas;
+                    backgroundSprite = CommonTextures.PanelBig;
+                    color = ComponentStyle.DisabledSettingsGray;
                     verticalSpacing = 5;
                     AddTitle();
                     AddLinesContainer();
@@ -123,9 +124,9 @@ namespace ModsCommon.UI
                 versionPanel.autoLayoutDirection = LayoutDirection.Vertical;
                 versionPanel.autoFitChildrenVertically = true;
                 versionPanel.autoFitChildrenHorizontally = true;
-                versionPanel.atlas = TextureHelper.InGameAtlas;
-                versionPanel.backgroundSprite = "TextFieldPanel";
-                versionPanel.color = new Color32(180, 180, 180, 255);
+                versionPanel.atlas = CommonTextures.Atlas;
+                versionPanel.backgroundSprite = CommonTextures.PanelBig;
+                versionPanel.color = new Color32(122, 138, 153, 255);
 
                 Title = versionPanel.AddUIComponent<CustomUILabel>();
                 Title.name = "Title";
@@ -147,6 +148,10 @@ namespace ModsCommon.UI
                 SubTitle.verticalAlignment = UIVerticalAlignment.Middle;
 
                 Button = titlePanel.AddUIComponent<CustomUIButton>();
+                Button.atlas = CommonTextures.Atlas;
+                Button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+                Button.scaleFactor = 0.5f;
+                Button.spritePadding.left = 10;
                 Button.autoSize = false;
                 Button.height = 50f;
                 Button.width = 50f;
@@ -234,8 +239,8 @@ namespace ModsCommon.UI
                 Tag.autoSize = false;
                 Tag.height = 20f;
                 Tag.width = 100f;
-                Tag.atlas = TextureHelper.InGameAtlas;
-                Tag.backgroundSprite = "TextFieldPanel";
+                Tag.atlas = CommonTextures.Atlas;
+                Tag.backgroundSprite = CommonTextures.PanelSmall;
                 Tag.textAlignment = UIHorizontalAlignment.Center;
                 Tag.verticalAlignment = UIVerticalAlignment.Middle;
                 Tag.textScale = 0.7f;
@@ -250,7 +255,10 @@ namespace ModsCommon.UI
                 Text.autoHeight = true;
                 Text.relativePosition = new Vector3(17, 7);
                 Text.minimumSize = new Vector2(100, 20);
-                Text.padding = new RectOffset(0, 0, 4, 0);
+                Text.padding = new RectOffset(10, 10, 8, 0);
+                Text.atlas = CommonTextures.Atlas;
+                Text.backgroundSprite = CommonTextures.BorderTop;
+                Text.color = ComponentStyle.NormalSettingsGray;
             }
             public void Init(MessageText message)
             {
@@ -262,34 +270,35 @@ namespace ModsCommon.UI
                     {
                         case "NEW":
                             Tag.text = CommonLocalize.WhatsNew_NEW;
-                            Tag.color = new Color32(40, 178, 72, 255);
+                            Tag.color = new Color32(49, 170, 77, 255);
                             break;
                         case "FIXED":
                             Tag.text = CommonLocalize.WhatsNew_FIXED;
-                            Tag.color = new Color32(255, 160, 0, 255);
+                            Tag.color = new Color32(255, 102, 0, 255);
                             break;
                         case "UPDATED":
                             Tag.text = CommonLocalize.WhatsNew_UPDATED;
-                            Tag.color = new Color32(75, 228, 238, 255);
+                            Tag.color = new Color32(57, 147, 249, 255);
                             break;
                         case "REMOVED":
                             Tag.text = CommonLocalize.WhatsNew_REMOVED;
-                            Tag.color = new Color32(225, 56, 225, 255);
+                            Tag.color = new Color32(251, 185, 4, 255);
                             break;
                         case "REVERTED":
                             Tag.text = CommonLocalize.WhatsNew_REVERTED;
-                            Tag.color = new Color32(225, 56, 225, 255);
+                            Tag.color = new Color32(251, 185, 4, 255);
                             break;
                         case "TRANSLATION":
                             Tag.text = CommonLocalize.WhatsNew_TRANSLATION;
-                            Tag.color = new Color32(0, 120, 255, 255);
+                            Tag.color = new Color32(0, 79, 153, 255);
                             break;
                         case "WARNING":
                             Tag.text = CommonLocalize.WhatsNew_WARNING;
-                            Tag.color = new Color32(255, 34, 45, 255);
+                            Tag.color = new Color32(217, 38, 38, 255);
                             break;
                         default:
                             Tag.text = tag.ToUpper();
+                            Tag.color = new Color32(192, 192, 192, 255);
                             break;
                     }
                 }

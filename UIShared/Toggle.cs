@@ -31,7 +31,7 @@ namespace ModsCommon.UI
             get => showMark;
             set
             {
-                if(value != showMark)
+                if (value != showMark)
                 {
                     showMark = value;
                     SetState();
@@ -69,6 +69,16 @@ namespace ModsCommon.UI
                 SetState();
             }
         }
+        private Color32 onDisabledColor;
+        public Color32 OnDisabledColor
+        {
+            get => onDisabledColor;
+            set
+            {
+                onDisabledColor = value;
+                SetState();
+            }
+        }
 
 
         private Color32 offColor;
@@ -101,13 +111,23 @@ namespace ModsCommon.UI
                 SetState();
             }
         }
+        private Color32 offDisabledColor;
+        public Color32 OffDisabledColor
+        {
+            get => offDisabledColor;
+            set
+            {
+                offDisabledColor = value;
+                SetState();
+            }
+        }
 
         public CustomUIToggle()
         {
             scaleFactor = 0.7f;
             canFocus = false;
             atlas = CommonTextures.Atlas;
-            normalBgSprite = CommonTextures.ToggleBackground;
+            normalBgSprite = hoveredBgSprite = pressedBgSprite = CommonTextures.ToggleBackground;
             normalFgSprite = CommonTextures.ToggleCircle;
             foregroundSpriteMode = UIForegroundSpriteMode.Scale;
             textPadding = new RectOffset(17, 13, 5, 0);
@@ -116,10 +136,12 @@ namespace ModsCommon.UI
 
         private void SetState()
         {
-            normalBgColor = state ? onColor : OffColor;
-            focusedBgColor = state? onColor : OffColor;
-            hoveredBgColor = state? OnHoverColor: OffHoverColor;
-            pressedBgColor = state ? OnPressedColor : offPressedColor;
+            normalBgColor = state ? OnColor : OffColor;
+            focusedBgColor = state ? OnColor : OffColor;
+            hoveredBgColor = state ? OnHoverColor : OffHoverColor;
+            pressedBgColor = state ? OnPressedColor : OffPressedColor;
+            disabledBgColor = state ? OnDisabledColor : OffDisabledColor;
+
             horizontalAlignment = state ? UIHorizontalAlignment.Right : UIHorizontalAlignment.Left;
             textHorizontalAlignment = state ? UIHorizontalAlignment.Left : UIHorizontalAlignment.Right;
             text = showMark ? (state ? "I" : "O") : string.Empty;

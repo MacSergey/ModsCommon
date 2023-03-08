@@ -101,8 +101,9 @@ namespace ModsCommon.UI
             canFocus = true;
             isInteractive = true;
             size = new Vector2(DefaultWidth, DefaultHeight);
-            color = new Color32(58, 88, 104, 255);
-            backgroundSprite = "MenuPanel";
+            atlas = CommonTextures.Atlas;
+            backgroundSprite = CommonTextures.PanelBig;
+            color = new Color32(17, 19, 22, 255);
             anchor = UIAnchorStyle.Left | UIAnchorStyle.Top | UIAnchorStyle.Proportional;
 
             AddHeader();
@@ -115,20 +116,19 @@ namespace ModsCommon.UI
         private void AddHeader()
         {
             Header = AddUIComponent<CustomUIDragHandle>();
-            Header.size = new Vector2(DefaultWidth, 42);
             Header.relativePosition = new Vector2(0, 0);
-            Header.eventSizeChanged += (component, size) =>
-            {
-                Caption.size = size;
-                Caption.CenterToParent();
-            };
+
+            var background = Header.AddUIComponent<CustomUISlicedSprite>();
+            background.atlas = CommonTextures.Atlas;
+            background.spriteName = CommonTextures.PanelBig;
+            background.color = new Color32(12, 12, 12, 255);
 
             Caption = Header.AddUIComponent<CustomUILabel>();
             Caption.textAlignment = UIHorizontalAlignment.Center;
             Caption.textScale = 1.3f;
             Caption.anchor = UIAnchorStyle.Top;
 
-            Caption.eventTextChanged += (component, text) => Caption.CenterToParent();
+            Caption.eventTextChanged += (_, _) => Caption.CenterToParent();
 
             var cancel = Header.AddUIComponent<CustomUIButton>();
             cancel.atlas = CommonTextures.Atlas;
@@ -138,6 +138,15 @@ namespace ModsCommon.UI
             cancel.size = new Vector2(24, 24);
             cancel.relativePosition = new Vector2(540, 9);
             cancel.eventClick += CloseClick;
+
+            Header.eventSizeChanged += (component, size) =>
+            {
+                Caption.size = size;
+                Caption.CenterToParent();
+
+                background.size = size;
+            };
+            Header.size = new Vector2(DefaultWidth, 42);
         }
         private void AddContent()
         {
@@ -195,7 +204,7 @@ namespace ModsCommon.UI
 
             var buttons = Buttons.ToArray();
 
-            for(var i = 0; i < buttons.Length; i += 1)
+            for (var i = 0; i < buttons.Length; i += 1)
             {
                 buttons[i].isSelected = (i == defaultButton);
 
@@ -207,7 +216,7 @@ namespace ModsCommon.UI
         protected CustomUIButton AddButton(Action action, uint ratio = 1)
         {
             var button = ButtonPanel.AddUIComponent<CustomUIButton>();
-            button.CustomStyle();
+            button.CustomMessageBoxStyle();
             button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => action?.Invoke();
 
             ButtonsRatio.Add(Math.Max(ratio, 1));
