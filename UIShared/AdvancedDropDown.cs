@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class AdvancedDropDown<ObjectType, PopupType, EntityType> : CustomUIButton
+    public abstract class AdvancedDropDown<ObjectType, PopupType, EntityType> : CustomUIButton 
         where PopupType : Popup<ObjectType, EntityType>
         where EntityType : PopupEntity<ObjectType>
     {
@@ -13,7 +13,7 @@ namespace ModsCommon.UI
 
         public delegate void StyleDelegate(PopupType popup, ref bool overridden);
 
-        public event Action<ObjectType> OnValueChanged;
+        public event Action<ObjectType> OnSelectedObjectChanged;
         public event Action<PopupType> OnPopupOpen;
         public event Action<PopupType> OnPopupClose;
         public event StyleDelegate OnSetPopupStyle;
@@ -21,6 +21,7 @@ namespace ModsCommon.UI
         public EntityType Entity { get; private set; }
         public PopupType Popup { get; private set; }
 
+        public Func<ObjectType, ObjectType, bool> IsEqualDelegate { get; set; }
         protected List<ObjectType> Objects { get; } = new List<ObjectType>();
 
         private int selectedIndex;
@@ -29,7 +30,7 @@ namespace ModsCommon.UI
             get => selectedIndex >= 0 ? Objects[selectedIndex] : default;
             set
             {
-                selectedIndex = Objects.FindIndex(o => ReferenceEquals(o, value) || (o != null && o.Equals(value)));
+                selectedIndex = Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || (o != null && o.Equals(value)));
                 Entity.SetObject(-1, SelectedObject, false);
             }
         }
@@ -56,7 +57,7 @@ namespace ModsCommon.UI
             selectedIndex = -1;
         }
 
-        protected virtual void ValueChanged(ObjectType value) => OnValueChanged?.Invoke(value);
+        protected virtual void SelectedObjectChanged(ObjectType value) => OnSelectedObjectChanged?.Invoke(value);
 
         #region POPUP
 
@@ -82,6 +83,7 @@ namespace ModsCommon.UI
             var root = GetRootContainer();
             Popup = root.AddUIComponent<PopupType>();
             Popup.canFocus = true;
+            Popup.IsEqualDelegate = IsEqualDelegate;
 
             Popup.StopRefresh();
             {
@@ -151,7 +153,7 @@ namespace ModsCommon.UI
         private void OnSelectedChanged(ObjectType value)
         {
             SelectedObject = value;
-            ValueChanged(value);
+            SelectedObjectChanged(value);
             ClosePopup();
         }
         private void OnPopupLeaveFocus(UIComponent component, UIFocusEventParameter eventParam) => CheckPopup();
@@ -190,20 +192,34 @@ namespace ModsCommon.UI
         #endregion
     }
 
-    public abstract class SimpleDropDown<ValueType, EntityType, PopupType> : AdvancedDropDown<DropDownItem<ValueType>, PopupType, EntityType>
+    public abstract class SimpleDropDown<ValueType, EntityType, PopupType> : AdvancedDropDown<DropDownItem<ValueType>, PopupType, EntityType>, IUIOnceSelector<ValueType>
         where EntityType : SimpleEntity<ValueType>
         where PopupType : SimplePopup<ValueType, EntityType>
     {
-        public new event Action<ValueType> OnValueChanged;
+        bool IReusable.InCache { get; set; }
+
+        public new event Action<ValueType> OnSelectedObjectChanged;
+
         public new ValueType SelectedObject
         {
             get => base.SelectedObject.value;
-            set => base.SelectedObject = new DropDownItem<ValueType>(value, value.ToString());
+            set => base.SelectedObject = new DropDownItem<ValueType>(value, default);
         }
 
-        public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, item.ToString()));
-        public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, label));
-        protected override void ValueChanged(DropDownItem<ValueType> item) => OnValueChanged?.Invoke(item.value);
+        public bool UseWheel { get; set; }
+        public bool WheelTip
+        {
+            set => tooltip = value ? CommonLocalize.ListPanel_ScrollWheel : string.Empty;
+        }
+        Func<ValueType, ValueType, bool> IUISelector<ValueType>.IsEqualDelegate 
+        { 
+            set => IsEqualDelegate = (x, y) => value(x.value, y.value);
+        }
+
+        public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, (OptionData)item.ToString()));
+        public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, (OptionData)label));
+        public virtual void AddItem(ValueType item, OptionData optionData) => AddItem(new DropDownItem<ValueType>(item, optionData));
+        protected override void SelectedObjectChanged(DropDownItem<ValueType> item) => OnSelectedObjectChanged?.Invoke(item.value);
         protected override void SetPopupStyle() => Popup.DefaultStyle();
         protected override void InitPopup()
         {
@@ -213,19 +229,34 @@ namespace ModsCommon.UI
             Popup.MaxVisibleItems = 0;
             Popup.Init(Objects, null, null);
         }
+        public void DeInit()
+        {
+            Clear();
+            UseWheel = false;
+            WheelTip = false;
+        }
+
+        public void SetDefaultStyle(Vector2? size = null)
+        {
+            this.DefaultStyle(size);
+        }
+
+        public void StopLayout() { }
+        public void StartLayout(bool layoutNow = true) { }
     }
     public abstract class SimpleEntity<ValueType> : PopupEntity<DropDownItem<ValueType>>
     {
         public SimpleEntity()
         {
             textHorizontalAlignment = UIHorizontalAlignment.Left;
-            textPadding = new RectOffset(14, 40, 3, 0);
+            textPadding = new RectOffset(8, 40, 3, 0);
+            textScale = 0.7f;
         }
 
         public override void SetObject(int index, DropDownItem<ValueType> value, bool selected)
         {
             base.SetObject(index, value, selected);
-            text = value.label;
+            text = value.optionData.label;
         }
     }
     public abstract class SimplePopup<ValueType, EntityType> : Popup<DropDownItem<ValueType>, EntityType>
@@ -236,12 +267,12 @@ namespace ModsCommon.UI
     public readonly struct DropDownItem<ValueType>
     {
         public readonly ValueType value;
-        public readonly string label;
+        public readonly OptionData optionData;
 
-        public DropDownItem(ValueType value, string label)
+        public DropDownItem(ValueType value, OptionData optionData)
         {
             this.value = value;
-            this.label = label;
+            this.optionData = optionData;
         }
 
         public override bool Equals(object obj)
@@ -254,7 +285,7 @@ namespace ModsCommon.UI
         public override int GetHashCode() => value.GetHashCode();
     }
 
-    public class StringSimpleDropDown : SimpleDropDown<string, StringSimpleDropDown.StringEntity, StringSimpleDropDown.StringPopup>
+    public class StringDropDown : SimpleDropDown<string, StringDropDown.StringEntity, StringDropDown.StringPopup>
     {
         public class StringEntity : SimpleEntity<string> { }
         public class StringPopup : SimplePopup<string, StringEntity> { }

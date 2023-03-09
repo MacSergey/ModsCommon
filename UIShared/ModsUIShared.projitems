@@ -30,7 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SizeChanger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Style.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ComponentStyle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TabPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\UIExtension.cs" />
@@ -125,6 +125,8 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\PanelShadow.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBackgroundSmall.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowDown.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowLeft.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowRight.png" />

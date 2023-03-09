@@ -358,9 +358,9 @@ namespace ModsCommon.UI
             betaMessage.autoHeight = true;
             betaMessage.textColor = new Color32(255, 160, 0, 255);
             betaMessage.text = betaText;
-            betaMessage.atlas = TextureHelper.InGameAtlas;
-            betaMessage.backgroundSprite = "TextFieldPanel";
-            betaMessage.color = new Color32(96, 96, 96, 255);
+            betaMessage.atlas = CommonTextures.Atlas;
+            betaMessage.backgroundSprite = CommonTextures.PanelBig;
+            betaMessage.color = ComponentStyle.DisabledSettingsGray;
             betaMessage.padding = new RectOffset(7, 7, 7, 7);
 
             StartLayout(false);

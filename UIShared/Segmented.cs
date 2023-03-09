@@ -19,6 +19,9 @@ namespace ModsCommon.UI
             this.atlas = atlas;
             this.sprite = sprite;
         }
+
+        public static explicit operator OptionData(string label) => new OptionData(label);
+        public static implicit operator string(OptionData data) => data.label;
     }
     public abstract class UISegmented<ValueType> : UIAutoLayoutPanel, IReusable
     {
@@ -200,11 +203,11 @@ namespace ModsCommon.UI
 
     public abstract class UIOnceSegmented<ValueType> : UISegmented<ValueType>, IUIOnceSelector<ValueType>, IValueChanger<ValueType>
     {
-        public event Action<ValueType> OnSelectObjectChanged;
+        public event Action<ValueType> OnSelectedObjectChanged;
         event Action<ValueType> IValueChanger<ValueType>.OnValueChanged
         {
-            add => OnSelectObjectChanged += value;
-            remove => OnSelectObjectChanged -= value;
+            add => OnSelectedObjectChanged += value;
+            remove => OnSelectedObjectChanged -= value;
         }
 
         private int SelectedIndex { get; set; } = -1;
@@ -240,13 +243,13 @@ namespace ModsCommon.UI
             {
                 SetSprite(Buttons[SelectedIndex], true);
                 if (callEvent)
-                    OnSelectObjectChanged?.Invoke(SelectedObject);
+                    OnSelectedObjectChanged?.Invoke(SelectedObject);
             }
         }
         public override void DeInit()
         {
             base.DeInit();
-            OnSelectObjectChanged = null;
+            OnSelectedObjectChanged = null;
             UseWheel = false;
         }
         public override void Clear()
@@ -274,11 +277,11 @@ namespace ModsCommon.UI
 
     public abstract class UIMultySegmented<ValueType> : UISegmented<ValueType>, IUIMultySelector<ValueType>, IValueChanger<List<ValueType>>
     {
-        public event Action<List<ValueType>> OnSelectObjectsChanged;
+        public event Action<List<ValueType>> OnSelectedObjectsChanged;
         event Action<List<ValueType>> IValueChanger<List<ValueType>>.OnValueChanged
         {
-            add => OnSelectObjectsChanged += value;
-            remove => OnSelectObjectsChanged -= value;
+            add => OnSelectedObjectsChanged += value;
+            remove => OnSelectedObjectsChanged -= value;
         }
 
         private HashSet<int> SelectedIndices { get; set; } = new HashSet<int>();
@@ -322,13 +325,13 @@ namespace ModsCommon.UI
             SelectedIndices = new HashSet<int>(indices);
 
             if (callEvent)
-                OnSelectObjectsChanged?.Invoke(SelectedObjects);
+                OnSelectedObjectsChanged?.Invoke(SelectedObjects);
         }
 
         public override void DeInit()
         {
             base.DeInit();
-            OnSelectObjectsChanged = null;
+            OnSelectedObjectsChanged = null;
         }
         public override void Clear()
         {

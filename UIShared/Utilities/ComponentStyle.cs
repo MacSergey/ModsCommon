@@ -27,6 +27,9 @@ namespace ModsCommon.UI
         public static Color32 PressedSettingsGray => new Color32(100, 113, 128, 255);
         public static Color32 DisabledSettingsGray => new Color32(29, 39, 51, 255);
 
+        public static Color32 PanelColorDark => new Color32(17, 19, 22, 255);
+        public static Color32 PanelColor => new Color32(34, 38, 44, 255);
+
 
         #region BUTTON
 
@@ -120,12 +123,14 @@ namespace ModsCommon.UI
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
             dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
-            dropDown.SetBgColor(new ColorSet(FieldNormalColor, FieldHoveredColor, FieldDisabledColor, FieldNormalColor, FieldDisabledColor));
+            dropDown.SetBgColor(new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldNormalColor, FieldDisabledColor));
 
             dropDown.atlasForeground = CommonTextures.Atlas;
             dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
+            dropDown.SetFgColor(new ColorSet(new Color32(0, 0, 0, 255)));
 
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.scaleFactor = 0.7f;
             dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
             dropDown.verticalAlignment = UIVerticalAlignment.Middle;
             dropDown.spritePadding = new RectOffset(0, 5, 0, 0);
@@ -257,6 +262,7 @@ namespace ModsCommon.UI
             textField.hoveredColor = FieldHoveredColor;
             textField.focusedColor = FieldFocusedColor;
             textField.disabledColor = FieldDisabledColor;
+            textField.selectionBackgroundColor = Color.black;
 
             textField.allowFloats = true;
             textField.isInteractive = true;
@@ -343,19 +349,33 @@ namespace ModsCommon.UI
 
         public static void CustomStyle(this CustomUIToggle toggle)
         {
-            toggle.OnColor = ToggleOnNormalColor;
-            toggle.OnHoverColor = ToggleOnHoveredColor;
-            toggle.OnPressedColor = ToggleOnHoveredColor;
+            toggle.atlas = CommonTextures.Atlas;
+            toggle.SetBgSprite(new SpriteSet(CommonTextures.ToggleBackgroundSmall));
+            toggle.SetFgSprite(new SpriteSet(CommonTextures.ToggleCircle));
 
-            toggle.OffColor = ToggleOffNormalColor;
-            toggle.OffHoverColor = ToggleOffHoveredColor;
-            toggle.OffPressedColor = ToggleOffHoveredColor;
+            toggle.OnColor = FieldFocusedColor;
+            toggle.OnHoverColor = FieldFocusedColor;
+            toggle.OnPressedColor = FieldFocusedColor;
+            toggle.OnDisabledColor = FieldDisabledFocusedColor;
 
+            toggle.OffColor = FieldNormalColor;
+            toggle.OffHoverColor = FieldHoveredColor;
+            toggle.OffPressedColor = FieldHoveredColor;
+            toggle.OffDisabledColor = FieldDisabledColor;
+
+            toggle.textScale = 0.8f;
+            toggle.CircleScale = 0.7f;
             toggle.ShowMark = true;
+            toggle.textPadding = new RectOffset(12, 6, 5, 0);
+            toggle.size = new Vector2(42f, 22f);
         }
 
         public static void CustomSettingsStyle(this CustomUIToggle toggle)
         {
+            toggle.atlas = CommonTextures.Atlas;
+            toggle.SetBgSprite(new SpriteSet(CommonTextures.ToggleBackground));
+            toggle.SetFgSprite(new SpriteSet(CommonTextures.ToggleCircle));
+
             toggle.OnColor = ToggleOnNormalColor;
             toggle.OnHoverColor = ToggleOnHoveredColor;
             toggle.OnPressedColor = ToggleOnHoveredColor;
@@ -364,7 +384,10 @@ namespace ModsCommon.UI
             toggle.OffHoverColor = PressedSettingsGray;
             toggle.OffPressedColor = PressedSettingsGray;
 
+            toggle.CircleScale = 0.7f;
             toggle.ShowMark = true;
+            toggle.textPadding = new RectOffset(17, 11, 5, 0);
+            toggle.size = new Vector2(60f, 30f);
         }
 
         #endregion

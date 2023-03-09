@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    [Obsolete]
-    public abstract class UIDropDown<ValueType> : CustomUIDropDown, IUIOnceSelector<ValueType>
+    [Obsolete("Use SimpleDropDown")]
+    public abstract class UIDropDown<ValueType> : CustomUIDropDown, IReusable
     {
-        public event Action<ValueType> OnSelectObjectChanged;
+        public event Action<ValueType> OnSelectedObjectChanged;
 
         bool IReusable.InCache { get; set; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
@@ -33,7 +33,7 @@ namespace ModsCommon.UI
             eventDropdownClose += DropDownClose;
         }
 
-        protected virtual void IndexChanged(UIComponent component, int value) => OnSelectObjectChanged?.Invoke(SelectedObject);
+        protected virtual void IndexChanged(UIComponent component, int value) => OnSelectedObjectChanged?.Invoke(SelectedObject);
         private void DropdownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
             if (triggerButton != null)
@@ -95,16 +95,5 @@ namespace ModsCommon.UI
             WheelTip = false;
             UseScrollBar = false;
         }
-
-        public void SetDefaultStyle(Vector2? size = null)
-        {
-            ComponentStyle.DefaultStyle(this, size);
-
-            if (UseScrollBar)
-                listScrollbar = UIHelper.ScrollBar;
-        }
     }
-
-    [Obsolete]
-    public class StringDropDown : UIDropDown<string> { }
 }

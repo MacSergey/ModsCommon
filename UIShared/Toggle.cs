@@ -121,17 +121,24 @@ namespace ModsCommon.UI
                 SetState();
             }
         }
+        private float circleScale = 1f;
+        public float CircleScale
+        {
+            get => circleScale;
+            set
+            {
+                if (value != circleScale)
+                {
+                    circleScale = value;
+                    SetCircle();
+                }
+            }
+        }
 
         public CustomUIToggle()
         {
-            scaleFactor = 0.7f;
             canFocus = false;
-            atlas = CommonTextures.Atlas;
-            normalBgSprite = hoveredBgSprite = pressedBgSprite = CommonTextures.ToggleBackground;
-            normalFgSprite = CommonTextures.ToggleCircle;
             foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            textPadding = new RectOffset(17, 13, 5, 0);
-            size = new Vector2(60f, 30f);
         }
 
         private void SetState()
@@ -146,10 +153,11 @@ namespace ModsCommon.UI
             textHorizontalAlignment = state ? UIHorizontalAlignment.Left : UIHorizontalAlignment.Right;
             text = showMark ? (state ? "I" : "O") : string.Empty;
         }
-        private void SetSize()
+        private void SetCircle()
         {
-            var padding = Mathf.CeilToInt(height * (1f - scaleFactor) * 0.5f);
+            var padding = Mathf.RoundToInt(height * (1f - CircleScale) * 0.5f);
             spritePadding = new RectOffset(padding, padding, 0, 0);
+            scaleFactor = 1f - spritePadding.horizontal / height;
         }
 
         protected override void OnClick(UIMouseEventParameter p)
@@ -160,7 +168,7 @@ namespace ModsCommon.UI
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            SetSize();
+            SetCircle();
         }
     }
 }

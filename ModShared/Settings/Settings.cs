@@ -243,7 +243,7 @@ namespace ModsCommon
                 dropDown.AddItem(GetLocaleItem(locale));
 
             dropDown.SelectedObject = Locale.value;
-            dropDown.OnValueChanged += LanguageChanged;
+            dropDown.OnSelectedObjectChanged += LanguageChanged;
 
             static void LanguageChanged(LanguageDropDown.Language language)
             {

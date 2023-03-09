@@ -168,6 +168,7 @@ namespace ModsCommon.UI
         public static Color32 ButtonHovered = new Color32(224, 224, 224, 255);
         public static Color32 ButtonPressed = new Color32(192, 192, 192, 255);
         public static Color32 ButtonFocused = new Color32(160, 160, 160, 255);
+        [Obsolete]
         public static void SetDefaultStyle(this UIButton button)
         {
             button.atlas = TextureHelper.InGameAtlas;

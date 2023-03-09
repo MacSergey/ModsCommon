@@ -93,7 +93,7 @@ namespace ModsCommon.UI
         protected override void AddSelector()
         {
             base.AddSelector();
-            Selector.OnSelectObjectChanged += SelectorValueChanged;
+            Selector.OnSelectedObjectChanged += SelectorValueChanged;
         }
         protected virtual void SelectorValueChanged(Type value) => OnSelectObjectChanged?.Invoke(value);
 
@@ -120,7 +120,7 @@ namespace ModsCommon.UI
         protected override void AddSelector()
         {
             base.AddSelector();
-            Selector.OnSelectObjectsChanged += SelectorValueChanged;
+            Selector.OnSelectedObjectsChanged += SelectorValueChanged;
         }
         protected virtual void SelectorValueChanged(List<Type> value) => OnSelectObjectsChanged?.Invoke(value);
 
@@ -132,26 +132,26 @@ namespace ModsCommon.UI
         public override string ToString() => $"{base.ToString()}: {string.Join(",", SelectedObjects.Select(i => i.ToString()).ToArray())}";
     }
 
-    [Obsolete]
-    public class StringListPropertyPanel : ListOncePropertyPanel<string, StringDropDown>
-    {
-        protected override bool AllowNull => true;
-        protected override bool IsEqual(string first, string second) => first == second;
+    //[Obsolete]
+    //public class StringListPropertyPanel : ListOncePropertyPanel<string, StringDropDown>
+    //{
+    //    protected override bool AllowNull => true;
+    //    protected override bool IsEqual(string first, string second) => first == second;
 
-        public override void Init() => Init(new string[0], new string[0]);
-        public void Init(string[] values, string[] labels = null)
-        {
-            base.Init(null);
+    //    public override void Init() => Init(new string[0], new string[0]);
+    //    public void Init(string[] values, string[] labels = null)
+    //    {
+    //        base.Init(null);
 
-            Selector.StopLayout();
-            if (labels == null)
-                labels = values;
-            var count = Math.Min(values.Length, labels.Length);
-            for (int i = 0; i < count; i += 1)
-            {
-                Selector.AddItem(values[i], new OptionData(labels[i]));
-            }
-            Selector.StartLayout();
-        }
-    }
+    //        Selector.StopLayout();
+    //        if (labels == null)
+    //            labels = values;
+    //        var count = Math.Min(values.Length, labels.Length);
+    //        for (int i = 0; i < count; i += 1)
+    //        {
+    //            Selector.AddItem(values[i], new OptionData(labels[i]));
+    //        }
+    //        Selector.StartLayout();
+    //    }
+    //}
 }

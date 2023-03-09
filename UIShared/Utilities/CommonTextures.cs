@@ -16,6 +16,7 @@ namespace ModsCommon.Utilities
         public static string BorderBoth => nameof(BorderBoth);
         public static string BorderSmall => nameof(BorderSmall);
         public static string BorderBig => nameof(BorderBig);
+        public static string PanelShadow => nameof(PanelShadow);
 
         public static string FieldSingle => nameof(FieldSingle);
         public static string FieldLeft => nameof(FieldLeft);
@@ -43,6 +44,7 @@ namespace ModsCommon.Utilities
         //public static string FieldDisabledMiddle => nameof(FieldDisabledMiddle);
 
         public static string ToggleBackground { get; } = nameof(ToggleBackground);
+        public static string ToggleBackgroundSmall { get; } = nameof(ToggleBackgroundSmall);
         public static string ToggleCircle { get; } = nameof(ToggleCircle);
         public static string Tab { get; } = nameof(Tab);
 
@@ -93,6 +95,7 @@ namespace ModsCommon.Utilities
             spriteParams[BorderBoth] = new RectOffset(4, 4, 2, 2);
             spriteParams[BorderSmall] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderBig] = new RectOffset(6, 6, 6, 6);
+            spriteParams[PanelShadow] = new RectOffset();
 
             //UUIButton
             spriteParams[CloseButtonNormal] = new RectOffset();
@@ -133,7 +136,8 @@ namespace ModsCommon.Utilities
             //spriteParams[FieldDisabledMiddle] = new RectOffset(4, 4, 4, 4);
 
             //Toggle
-            spriteParams[ToggleBackground] = new RectOffset(16, 16, 0, 0);
+            spriteParams[ToggleBackground] = new RectOffset(17, 17, 0, 0);
+            spriteParams[ToggleBackgroundSmall] = new RectOffset(11, 11, 0, 0);
             spriteParams[ToggleCircle] = new RectOffset();
 
             //Tab

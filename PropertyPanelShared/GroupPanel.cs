@@ -87,7 +87,7 @@ namespace ModsCommon.UI
                 return;
 
             var supportEven = components.OfType<EditorItem>().Where(c => c.SupportEven && c.isVisible).ToArray();
-            var even = supportEven.Length > 1;
+            var even = supportEven.Length > 1 || components.Count > 1;
 
             foreach (var item in supportEven)
             {

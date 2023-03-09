@@ -33,6 +33,20 @@ namespace ModsCommon.UI
         }
 
 
+        UITextureAtlas _atlasBackground;
+        public UITextureAtlas atlasBackground
+        {
+            get => _atlasBackground ?? atlas;
+            set
+            {
+                if (!Equals(value, _atlasBackground))
+                {
+                    _atlasBackground = value;
+                    Invalidate();
+                }
+            }
+        }
+
         private Color32? m_hoveredColor = null;
         public Color32 hoveredColor
         {
@@ -61,6 +75,13 @@ namespace ModsCommon.UI
             }
         }
 
+        protected override void OnRebuildRenderData()
+        {
+            base.OnRebuildRenderData();
+
+            if (renderData != null && atlasBackground is UITextureAtlas atlas)
+                renderData.material = atlas.material;
+        }
         protected override Color32 GetActiveColor()
         {
             if (!isEnabled)
@@ -79,7 +100,7 @@ namespace ModsCommon.UI
                     return color;
             }
 
-            if(m_IsMouseHovering)
+            if (m_IsMouseHovering)
             {
                 if (!string.IsNullOrEmpty(hoveredBgSprite) && atlas != null && atlas[hoveredBgSprite] != null)
                     return hoveredColor;
@@ -88,6 +109,61 @@ namespace ModsCommon.UI
             }
 
             return color;
+        }
+
+        protected override void RenderBackground()
+        {
+            if (atlasBackground is UITextureAtlas atlas)
+            {
+                var backgroundSprite = GetBackgroundSprite();
+                if (backgroundSprite != null)
+                {
+                    var renderOptions = new RenderOptions()
+                    {
+                        atlas = atlas,
+                        color = ApplyOpacity(GetActiveColor()),
+                        fillAmount = 1f,
+                        flip = UISpriteFlip.None,
+                        offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
+                        pixelsToUnits = PixelsToUnits(),
+                        size = size,
+                        spriteInfo = backgroundSprite,
+                    };
+
+                    if (backgroundSprite.isSliced)
+                        Render.RenderSlicedSprite(renderData, renderOptions);
+                    else
+                        Render.RenderSprite(renderData, renderOptions);
+                }
+            }
+        }
+        protected override UITextureAtlas.SpriteInfo GetBackgroundSprite()
+        {
+            if (atlasBackground is UITextureAtlas atlas)
+            {
+                if (!isEnabled)
+                    return atlas[disabledBgSprite];               
+                else if (hasFocus)
+                {
+                    var spriteInfo = atlas[focusedBgSprite];
+                    if (spriteInfo != null)
+                        return spriteInfo;
+                    else
+                        return atlas[normalBgSprite];
+                }
+                else if (m_IsMouseHovering)
+                {
+                    var spriteInfo2 = atlas[hoveredBgSprite];
+                    if (spriteInfo2 != null)
+                        return spriteInfo2;
+                    else
+                        return atlas[normalBgSprite];
+                }
+
+                return atlas[normalBgSprite];
+            }
+
+            return null;
         }
 
         //static FieldRef<UIFont, int> lineHeightFieldGetter;
