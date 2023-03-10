@@ -18,6 +18,29 @@ namespace ModsCommon.UI
         private bool fitVertically;
         private bool fitHorizontally;
 
+        public new bool autoFitChildrenVertically
+        {
+            get => level == 0 ? base.autoFitChildrenVertically : fitVertically;
+            set
+            {
+                if (level == 0)
+                    base.autoFitChildrenVertically = value;
+                else
+                    fitVertically = value;
+            }
+        }
+        public new bool autoFitChildrenHorizontally
+        {
+            get => level == 0 ? base.autoFitChildrenHorizontally : fitHorizontally;
+            set
+            {
+                if (level == 0)
+                    base.autoFitChildrenHorizontally = value;
+                else
+                    fitHorizontally = value;
+            }
+        }
+
         public int Level => level;
 
         public UIAutoLayoutPanel()
@@ -110,10 +133,10 @@ namespace ModsCommon.UI
             get => showScroll;
             set
             {
-                if(value != showScroll) 
+                if (value != showScroll)
                 {
                     showScroll = value;
-                    if(value)
+                    if (value)
                     {
                         Content.verticalScrollbar.autoHide = true;
                     }

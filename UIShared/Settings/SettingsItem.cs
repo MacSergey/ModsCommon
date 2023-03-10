@@ -7,7 +7,16 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class SettingsItem : UIAutoLayoutPanel
+    public abstract class BaseSettingItem : UIAutoLayoutPanel { }
+    public class EmptySpaceSettingsItem : BaseSettingItem
+    {
+        public EmptySpaceSettingsItem() 
+        {
+            autoLayout = false;
+            height = 15f;
+        }
+    }
+    public class SettingsContentItem : BaseSettingItem
     {
         protected virtual RectOffset ItemsPadding => new RectOffset(10, 40, 5, 5);
 
@@ -19,12 +28,9 @@ namespace ModsCommon.UI
             {
                 if (value != borders)
                 {
+                    var padding = this.padding;
                     borders = value;
-
-                    var top = ItemsPadding.top + ((borders & Border.Top) != 0 ? 2 : 0);
-                    var bottom = ItemsPadding.bottom + ((borders & Border.Bottom) != 0 ? 2 : 0);
-                    autoLayoutPadding = new RectOffset(ItemsPadding.left, ItemsPadding.right, top, bottom);
-                    verticalSpacing = autoLayoutPadding.bottom;
+                    this.padding = padding;
 
                     backgroundSprite = borders switch
                     {
@@ -36,10 +42,28 @@ namespace ModsCommon.UI
                 }
             }
         }
+        public new RectOffset padding
+        {
+            get
+            {
+                var padding = base.padding;
+                var top = Math.Max(padding.top - ((borders & Border.Top) != 0 ? 2 : 0), 0);
+                var bottom = Math.Max(padding.bottom - ((borders & Border.Bottom) != 0 ? 2 : 0), 0);
+                return new RectOffset(padding.left, padding.right, top, bottom);
+            }
+            set
+            {
+                var top = value.top + ((borders & Border.Top) != 0 ? 2 : 0);
+                var bottom = value.bottom + ((borders & Border.Bottom) != 0 ? 2 : 0);
+                var padding = new RectOffset(value.left, value.right, top, bottom);
+                base.padding = padding;
+                verticalSpacing = padding.bottom;
+            }
+        }
 
         public UIAutoLayoutPanel Content { get; private set; }
 
-        public SettingsItem()
+        public SettingsContentItem()
         {
             atlas = CommonTextures.Atlas;
             color = ComponentStyle.NormalSettingsGray;
@@ -59,13 +83,14 @@ namespace ModsCommon.UI
             autoLayoutDirection = LayoutDirection.Vertical;
             autoFitChildrenVertically = true;
             Borders = Border.Top;
+            padding = ItemsPadding;
         }
 
         protected virtual void InitContent() { }
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            Content.width = width - autoLayoutPadding.horizontal;
+            Content.width = width - base.padding.horizontal;
         }
         protected override void OnVisibilityChanged()
         {
@@ -87,7 +112,7 @@ namespace ModsCommon.UI
             Both = Top | Bottom,
         }
     }
-    public class LabelSettingsItem : SettingsItem
+    public class LabelSettingsItem : SettingsContentItem
     {
         public CustomUILabel LabelItem { get; private set; }
 
@@ -109,7 +134,7 @@ namespace ModsCommon.UI
         }
         protected override void RefreshItems()
         {
-            LabelItem.width = Content.height;
+            LabelItem.width = Content.width;
         }
     }
     public abstract class ControlSettingsItem<ControlType> : LabelSettingsItem

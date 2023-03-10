@@ -167,10 +167,12 @@ namespace ModsCommon
 
         private void AddInfo(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup(out var title, SingletonMod<TypeMod>.Instance.NameRaw);
+            var group = helper.AddOptionsGroup(out var title, SingletonMod<TypeMod>.Instance.NameRaw);
             title.textScale = 2f;
 
-            AddLabel(group, string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
+            var versionItem = AddLabel(group, string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
+            versionItem.padding = new RectOffset();
+            versionItem.Borders = SettingsContentItem.Border.None;
 
             if (InfoCallback != null)
             {
@@ -179,13 +181,15 @@ namespace ModsCommon
             }
 
             var infoLabel = AddLabel(group, GetStatusText());
-            infoLabel.processMarkup = true;
+            infoLabel.padding = new RectOffset();
+            infoLabel.Borders = SettingsContentItem.Border.None;
+            infoLabel.LabelItem.processMarkup = true;
 
             InfoCallback = () =>
             {
                 try
                 {
-                    infoLabel.text = GetStatusText();
+                    infoLabel.Label = GetStatusText();
                 }
                 catch
                 {
@@ -197,8 +201,11 @@ namespace ModsCommon
                 }
             };
             SingletonMod<TypeMod>.Instance.OnStatusChanged += InfoCallback;
-            group.AddSpace(10);
-            AddButton(group, CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
+
+            AddSpace(group, 15f);
+
+            var buttonPanel = AddButtonPanel(group, new RectOffset(0, 0, 5, 5), 0);
+            AddButton(buttonPanel, CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
         }
 
         private string GetStatusText()
@@ -225,17 +232,26 @@ namespace ModsCommon
 
         protected void AddLanguage(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup(CommonLocalize.Settings_Language);
+            var group = helper.AddOptionsGroup(CommonLocalize.Settings_Language);
             AddLanguageList(group);
-            group.AddSpace(10);
-            AddLabel(group, CommonLocalize.Settings_TranslationDescription, 0.8f);
-            AddButton(group, CommonLocalize.Settings_TranslationImprove, () => SingletonMod<TypeMod>.Instance.OpenTranslationProject(), 250f, 1f);
-            AddButton(group, CommonLocalize.Settings_TranslationNew, () => "https://crowdin.com/messages/create/14337258/".OpenUrl(), 250f, 1f);
+
+            AddSpace(group, 25f);
+
+            var labelItem = AddLabel(group, CommonLocalize.Settings_TranslationDescription, 0.8f);
+            labelItem.Borders = SettingsContentItem.Border.None;
+            labelItem.padding = new RectOffset(0, 0, 5, 5);
+
+            var buttonPanel = AddButtonPanel(group, new RectOffset(0, 0, 0, 10), 10);
+            AddButton(buttonPanel, CommonLocalize.Settings_TranslationImprove, () => SingletonMod<TypeMod>.Instance.OpenTranslationProject(), 250f, 1f);
+            AddButton(buttonPanel, CommonLocalize.Settings_TranslationNew, () => "https://crowdin.com/messages/create/14337258/".OpenUrl(), 250f, 1f);
         }
 
         private void AddLanguageList(UIHelper group)
         {
-            var dropDown = (group.self as UIComponent).AddUIComponent<LanguageDropDown>();
+            var item = AddHorizontalPanel(group, new RectOffset(0, 0, 5, 5), 0);
+            item.Borders = SettingsContentItem.Border.None;
+
+            var dropDown = item.Content.AddUIComponent<LanguageDropDown>();
             dropDown.AddItem(GetLocaleItem(string.Empty));
 
             foreach (var locale in GetSupportLanguages())
@@ -282,7 +298,7 @@ namespace ModsCommon
         protected void AddNotifications(UIAdvancedHelper helper)
         {
             var group = helper.AddOptionsGroup(CommonLocalize.Settings_Notifications);
- 
+
             var showToggle = AddToggle(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
             var onlyMajorToggle = AddToggle(group, CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
 
@@ -298,18 +314,18 @@ namespace ModsCommon
 
         private void AddSupport(UIAdvancedHelper helper)
         {
-            var group = helper.AddGroup();
+            var group = helper.AddOptionsGroup();
 
-            AddButton(group, CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
-            AddButton(group, "Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
+            AddButton(AddButtonPanel(group, new RectOffset(0, 0, 5, 5), 0), CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
+            AddButton(AddButtonPanel(group, new RectOffset(0, 0, 5, 5), 0), "Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
 #if DEBUG
             if (SingletonMod<TypeMod>.Instance.NeedMonoDevelopDebug)
 #else
             if (SingletonMod<TypeMod>.Instance.NeedMonoDevelop)
 #endif
             {
-                var linuxGroup = helper.AddGroup(CommonLocalize.Settings_ForLinuxUsers);
-                AddButton(linuxGroup, CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
+                var linuxGroup = helper.AddOptionsGroup(CommonLocalize.Settings_ForLinuxUsers);
+                AddButton(AddButtonPanel(linuxGroup, new RectOffset(0, 0, 5, 5), 0), CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
             }
         }
         private void ShowChangeLog()

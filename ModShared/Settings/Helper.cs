@@ -79,6 +79,16 @@ namespace ModsCommon
             return item;
         }
 
+        public static LabelSettingsItem AddLabel(UIHelper group, string label, float textScale = 1.125f, Color? color = null)
+        {
+            var item = (group.self as UIPanel).AddUIComponent<LabelSettingsItem>();
+            item.Label = label;
+            item.LabelItem.textScale = textScale;
+            item.LabelItem.textColor = color ?? Color.white;
+
+            return item;
+        }
+
         public static ToggleSettingsItem AddToggle(UIHelper group, string label, SavedBool saved)
         {
             var item = (group.self as UIPanel).AddUIComponent<ToggleSettingsItem>();
@@ -188,6 +198,13 @@ namespace ModsCommon
             optionsPanel.autoLayoutPadding = new RectOffset(padding, 0, 0, 0);
             return optionsPanel;
         }
+
+        public static UIHelper AddButtonPanel(UIHelper group, RectOffset padding, int itemSpacing)
+        {
+            var item = AddHorizontalPanel(group, padding, itemSpacing);
+            item.Borders = SettingsContentItem.Border.None;
+            return new UIHelper(item.Content);
+        }
         public static CustomUIButton AddButton(UIHelper group, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
         {
             var button = (group.self as UIComponent).AddUIComponent<CustomUIButton>();
@@ -205,43 +222,20 @@ namespace ModsCommon
 
             return button;
         }
-        public static UILabel AddLabel(UIHelper helper, string text, float size = 1.125f, Color? color = null, int padding = 0)
+
+        public static SettingsContentItem AddHorizontalPanel(UIHelper helper, RectOffset padding, int itemSpacing)
         {
-            var component = helper.self as UIComponent;
-
-            var temp = UITemplateManager.GetAsGameObject("OptionsCheckBoxTemplate").GetComponent<UIComponent>();
-            var label = temp.Find<UILabel>("Label");
-            component.AttachUIComponent(label.gameObject);
-            GameObject.Destroy(temp.gameObject);
-            label.textScale = size;
-            label.textColor = color ?? Color.white;
-            label.padding = new RectOffset(padding, 0, 0, 5);
-            label.wordWrap = true;
-            label.autoSize = false;
-            label.autoHeight = true;
-            if (component is UIPanel panel)
-                label.width = panel.width - panel.padding.left;
-
-            //text should be set after everything, otherwise it causes game crash on chenise localization
-            label.text = text;
-
-            return label;
-        }
-
-        public static SettingsItem AddHorizontalPanel(UIHelper helper, RectOffset padding)
-        {
-            var optionsPanel = (helper.self as UIComponent).AddUIComponent<SettingsItem>();
-            optionsPanel.Content.autoLayoutPadding = padding;
+            var optionsPanel = (helper.self as UIComponent).AddUIComponent<SettingsContentItem>();
+            optionsPanel.padding = padding;
+            optionsPanel.Content.autoLayoutPadding = new RectOffset(0, itemSpacing, 0, 0);
             return optionsPanel;
-            //var component = helper.self as UIComponent;
+        }
+        public static EmptySpaceSettingsItem AddSpace(UIHelper group, float height)
+        {
+            var item = (group.self as UIPanel).AddUIComponent<EmptySpaceSettingsItem>();
+            item.height = height;
 
-            //var panel = component.AddUIComponent<UIPanel>();
-            //panel.autoLayout = true;
-            //panel.autoLayoutDirection = LayoutDirection.Horizontal;
-            //panel.autoLayoutPadding = padding;
-            //panel.autoFitChildrenHorizontally = true;
-            //panel.autoFitChildrenVertically = true;
-            //return new UIHelper(panel);
+            return item;
         }
 
         public struct OptionPanelData
@@ -389,14 +383,14 @@ namespace ModsCommon
 
             static void ComponentAdded(UIComponent container, UIComponent child)
             {
-                if (child is SettingsItem item)
+                if (child is SettingsContentItem item)
                     item.width = container.width - (container as UIPanel).padding.horizontal;
             }
             static void SizeChanged(UIComponent component, Vector2 value)
             {
                 foreach (var child in component.components)
                 {
-                    if (child is SettingsItem item)
+                    if (child is SettingsContentItem item)
                         item.width = component.width - (component as UIPanel).padding.horizontal;
                 }
             }
@@ -430,6 +424,7 @@ namespace ModsCommon
             content.autoLayout = true;
             content.autoFitChildrenVertically = true;
             content.autoLayoutDirection = LayoutDirection.Vertical;
+            content.verticalSpacing = 5;
             content.width = 738f;
 
 
