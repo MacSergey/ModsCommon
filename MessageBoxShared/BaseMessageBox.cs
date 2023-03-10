@@ -10,7 +10,7 @@ namespace ModsCommon.UI
 {
     public static class MessageBox
     {
-        public static T Show<T>() where T : MessageBoxBase
+        public static T Show<T>() where T : UIComponent
         {
             var uiObject = new GameObject();
             uiObject.transform.parent = UIView.GetAView().transform;
@@ -33,7 +33,7 @@ namespace ModsCommon.UI
 
             return messageBox;
         }
-        public static void Hide(MessageBoxBase messageBox)
+        public static void Hide(UIComponent messageBox)
         {
             if (messageBox == null || UIView.GetModalComponent() != messageBox)
                 return;

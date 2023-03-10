@@ -10,6 +10,9 @@ namespace ModsCommon.UI
     {
         public event Action<Shortcut> BindingChanged;
 
+        private static WarningLabel Warning { get; set; }
+        private static bool InProgress => Warning != null;
+
         private Shortcut shortcut;
         public Shortcut Shortcut 
         {
@@ -24,7 +27,6 @@ namespace ModsCommon.UI
                 }
             }
         }
-        private bool InProgress { get; set; }
 
         protected override void InitControl()
         {
@@ -42,8 +44,8 @@ namespace ModsCommon.UI
             if (Shortcut is Shortcut shortcut && !IsModifierKey(p.keycode))
             {
                 p.Use();
-                InProgress = false;
-                UIView.PopModal();
+                MessageBox.Hide(Warning);
+                Warning = null;
 
                 if (p.keycode == KeyCode.Backspace)
                     shortcut.InputKey.value = SavedInputKey.Empty;
@@ -66,17 +68,16 @@ namespace ModsCommon.UI
             {
                 Control.buttonsMask = UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle | UIMouseButton.Special0 | UIMouseButton.Special1 | UIMouseButton.Special2 | UIMouseButton.Special3;
                 Control.text = CommonLocalize.Settings_PressAnyKey;
-                Control.Focus();
 
                 p.Use();
-                InProgress = true;
-                UIView.PushModal(Control);
+                Warning = MessageBox.Show<WarningLabel>();
+                Warning.Focus();
             }
             else if (!IsUnbindableMouseButton(p.buttons))
             {
                 p.Use();
-                InProgress = false;
-                UIView.PopModal();
+                MessageBox.Hide(Warning);
+                Warning = null;
 
                 if (Shortcut.IgnoreModifiers)
                     Shortcut.InputKey.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), false, false, false);
@@ -104,5 +105,22 @@ namespace ModsCommon.UI
 
         private bool IsModifierKey(KeyCode code) => code == KeyCode.LeftControl || code == KeyCode.RightControl || code == KeyCode.LeftShift || code == KeyCode.RightShift || code == KeyCode.LeftAlt || code == KeyCode.RightAlt;
         private bool IsUnbindableMouseButton(UIMouseButton code) => code == UIMouseButton.Left || code == UIMouseButton.Right;
+
+        private class WarningLabel : CustomUILabel
+        {
+            public WarningLabel()
+            {
+                text = CommonLocalize.Settings_PressAnyKey;
+                textScale = 7f;
+                padding = new RectOffset(50, 50, 10, 30);
+                autoHeight = true;
+                atlas = CommonTextures.Atlas;
+                backgroundSprite = CommonTextures.PanelBig;
+                color = ComponentStyle.NormalSettingsGray;
+
+                var res = GetUIView().GetScreenResolution();
+                relativePosition = new Vector3((res.x - width) * 0.5f, (res.y - height) * 0.5f);
+            }
+        }
     }
 }
