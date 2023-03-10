@@ -60,6 +60,42 @@ namespace ModsCommon.UI
                 verticalSpacing = padding.bottom;
             }
         }
+        public int paddingRight
+        {
+            get => padding.right;
+            set
+            {
+                var old = padding;
+                padding = new RectOffset(old.left, value, old.top, old.bottom);
+            }
+        }
+        public int paddingLeft
+        {
+            get => padding.left;
+            set
+            {
+                var old = padding;
+                padding = new RectOffset(value, old.right, old.top, old.bottom);
+            }
+        }
+        public int paddingTop
+        {
+            get => padding.top;
+            set
+            {
+                var old = padding;
+                padding = new RectOffset(old.left, old.right, value, old.bottom);
+            }
+        }
+        public int paddingButtom
+        {
+            get => padding.bottom;
+            set
+            {
+                var old = padding;
+                padding = new RectOffset(old.left, old.right, old.top, value);
+            }
+        }
 
         public UIAutoLayoutPanel Content { get; private set; }
 

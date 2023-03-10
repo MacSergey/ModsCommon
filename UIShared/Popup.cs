@@ -247,15 +247,7 @@ namespace ModsCommon.UI
                         entity = Entities[i];
                     else
                     {
-                        entity = ComponentPool.Get<EntityType>(this);
-                        entity.atlas = atlas;
-                        entity.hoveredBgSprite = ItemHover;
-                        entity.focusedBgSprite = ItemSelected;
-
-                        entity.hoveredBgColor = ColorHover;
-                        entity.focusedBgColor = ColorSelected;
-
-                        entity.OnSelected += ObjectSelected;
+                        entity = GetEntity();
                         Entities.Add(entity);
                     }
 
@@ -271,6 +263,21 @@ namespace ModsCommon.UI
             Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
 
             PlaceEntities();
+        }
+        protected virtual EntityType GetEntity()
+        {
+            var entity = ComponentPool.Get<EntityType>(this);
+
+            entity.atlas = atlas;
+            entity.hoveredBgSprite = ItemHover;
+            entity.focusedBgSprite = ItemSelected;
+
+            entity.hoveredBgColor = ColorHover;
+            entity.focusedBgColor = ColorSelected;
+
+            entity.OnSelected += ObjectSelected;
+
+            return entity;
         }
         protected virtual void SetEntityValue(EntityType entity, int index, ObjectType value, bool selected)
         {

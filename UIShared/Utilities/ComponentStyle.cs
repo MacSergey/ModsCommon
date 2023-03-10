@@ -166,10 +166,11 @@ namespace ModsCommon.UI
 
             dropDown.atlasForeground = CommonTextures.Atlas;
             dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
-            dropDown.normalFgColor = Color.black;
-            dropDown.hoveredFgColor = new Color32(64, 64, 64, 255);
+            dropDown.SetFgColor(new ColorSet(DisabledSettingsGray));
 
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.scaleFactor = 0.7f;
+            dropDown.spritePadding.right = 5;
 
             dropDown.textVerticalAlignment = UIVerticalAlignment.Middle;
             dropDown.textHorizontalAlignment = UIHorizontalAlignment.Left;

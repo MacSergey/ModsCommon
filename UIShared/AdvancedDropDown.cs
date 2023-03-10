@@ -211,6 +211,20 @@ namespace ModsCommon.UI
         {
             set => tooltip = value ? CommonLocalize.ListPanel_ScrollWheel : string.Empty;
         }
+
+        private float entityTextScale = 0.7f;
+        public float EntityTextScale
+        {
+            get => entityTextScale;
+            set
+            {
+                if(value != entityTextScale)
+                {
+                    entityTextScale = value;
+                    Entity.textScale = entityTextScale;
+                }
+            }
+        }
         Func<ValueType, ValueType, bool> IUISelector<ValueType>.IsEqualDelegate 
         { 
             set => IsEqualDelegate = (x, y) => value(x.value, y.value);
@@ -227,6 +241,7 @@ namespace ModsCommon.UI
             Popup.EntityHeight = height;
             Popup.width = width;
             Popup.MaxVisibleItems = 0;
+            Popup.EntityTextScale = EntityTextScale;
             Popup.Init(Objects, null, null);
         }
         public void DeInit()
@@ -234,6 +249,7 @@ namespace ModsCommon.UI
             Clear();
             UseWheel = false;
             WheelTip = false;
+            entityTextScale = 0.7f;
         }
 
         public void SetDefaultStyle(Vector2? size = null)
@@ -252,7 +268,6 @@ namespace ModsCommon.UI
         {
             textHorizontalAlignment = UIHorizontalAlignment.Left;
             textPadding = new RectOffset(8, 40, 3, 0);
-            textScale = 0.7f;
         }
 
         public override void SetObject(int index, DropDownItem<ValueType> value, bool selected)
@@ -264,7 +279,18 @@ namespace ModsCommon.UI
     public abstract class SimplePopup<ValueType, EntityType> : Popup<DropDownItem<ValueType>, EntityType>
         where EntityType : SimpleEntity<ValueType>
     {
-
+        public float EntityTextScale { get; set; } = 0.7f;
+        protected override EntityType GetEntity()
+        {
+            var entity = base.GetEntity();
+            entity.textScale = EntityTextScale;
+            return entity;
+        }
+        public override void DeInit()
+        {
+            base.DeInit();
+            EntityTextScale = 0.7f;
+        }
     }
     public readonly struct DropDownItem<ValueType>
     {
