@@ -8,7 +8,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnifiedUI.Helpers;
 using UnityEngine;
 using static ModsCommon.SettingsHelper;
 
@@ -287,7 +286,7 @@ namespace ModsCommon
             var showToggle = AddToggle(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
             var onlyMajorToggle = AddToggle(group, CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
 
-            showToggle.Toggle.OnStateChanged += OnChange;
+            showToggle.Control.OnStateChanged += OnChange;
             OnChange(ShowWhatsNew);
 
             void OnChange(bool show) => onlyMajorToggle.isVisible = show;

@@ -409,16 +409,37 @@ namespace ModsCommon.UI
             tabButton.SetSelectedBgColor(new ColorSet(TabFocusedColor, TabFocusedColor, TabFocusedColor, TabFocusedColor, TabFocusedDisabledColor));
         }
 
+
+
         private bool tabLayout = true;
+        private int level;
+        public int Level => level;
         public void StopLayout()
         {
-            tabLayout = false;
+            if (level == 0)
+                tabLayout = false;
+
+            level += 1;
         }
 
         public void StartLayout(bool layoutNow = true)
         {
-            tabLayout = true;
-            ArrangeTabs();
+            level = Mathf.Max(level - 1, 0);
+
+
+            if (level == 0)
+            {
+                tabLayout = true;
+                ArrangeTabs();
+            }
+        }
+        public void PauseLayout(Action action)
+        {
+            StopLayout();
+            {
+                action?.Invoke();
+            }
+            StartLayout();
         }
     }
     public class Tab : CustomUIButton

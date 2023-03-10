@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -6,40 +7,101 @@ namespace ModsCommon.UI
 {
     public interface IAutoLayoutPanel
     {
+        public int Level { get; }
         public void StopLayout();
         public void StartLayout(bool layoutNow = true);
+        public void PauseLayout(Action action);
     }
     public class UIAutoLayoutPanel : CustomUIPanel, IAutoLayoutPanel
     {
+        private int level;
+        private bool fitVertically;
+        private bool fitHorizontally;
+
+        public int Level => level;
+
         public UIAutoLayoutPanel()
         {
             m_AutoLayout = true;
         }
-        public virtual void StopLayout() => m_AutoLayout = false;
+        public virtual void StopLayout()
+        {
+            if (level == 0)
+            {
+                fitVertically = m_AutoFitChildrenVertically;
+                fitHorizontally = m_AutoFitChildrenHorizontally;
+
+                m_AutoLayout = false;
+                m_AutoFitChildrenVertically = false;
+                m_AutoFitChildrenHorizontally = false;
+            }
+
+            level += 1;
+        }
         public virtual void StartLayout(bool layoutNow = true)
         {
-            m_AutoLayout = true;
-            if (layoutNow)
-                Reset();
+            level = Mathf.Max(level - 1, 0);
+
+            if (level == 0)
+            {
+                m_AutoLayout = true;
+                m_AutoFitChildrenVertically = fitVertically;
+                m_AutoFitChildrenHorizontally = fitHorizontally;
+
+                if (layoutNow)
+                    Reset();
+            }
+        }
+        public void PauseLayout(Action action)
+        {
+            StopLayout();
+            {
+                action?.Invoke();
+            }
+            StartLayout();
         }
     }
     public class UIAutoLayoutScrollablePanel : CustomUIScrollablePanel, IAutoLayoutPanel
     {
+        private int level;
+        public int Level => level;
+
         public UIAutoLayoutScrollablePanel()
         {
             m_AutoLayout = true;
         }
-        public virtual void StopLayout() => m_AutoLayout = false;
+        public virtual void StopLayout()
+        {
+            if (level == 0)
+                m_AutoLayout = false;
+
+            level += 1;
+        }
         public virtual void StartLayout(bool layoutNow = true)
         {
-            m_AutoLayout = true;
-            if (layoutNow)
-                Reset();
+            level = Mathf.Max(level - 1, 0);
+
+            if (level == 0)
+            {
+                m_AutoLayout = true;
+                if (layoutNow)
+                    Reset();
+            }
+        }
+        public void PauseLayout(Action action)
+        {
+            StopLayout();
+            {
+                action?.Invoke();
+            }
+            StartLayout();
         }
     }
     public abstract class BaseAdvancedScrollablePanel<TypeContent> : CustomUIPanel, IAutoLayoutPanel
         where TypeContent : UIAutoLayoutScrollablePanel
     {
+        public int Level => Content.Level;
+
         public TypeContent Content { get; private set; }
 
         private bool showScroll = true;
@@ -109,6 +171,7 @@ namespace ModsCommon.UI
         private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width : 0, 0);
         public virtual void StopLayout() => Content.StopLayout();
         public virtual void StartLayout(bool layoutNow = true) => Content.StartLayout(layoutNow);
+        public void PauseLayout(Action action) => Content.PauseLayout(action);
     }
 
     public class AdvancedScrollablePanel : BaseAdvancedScrollablePanel<UIAutoLayoutScrollablePanel> { }

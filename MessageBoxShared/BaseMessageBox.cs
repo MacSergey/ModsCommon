@@ -307,7 +307,9 @@ namespace ModsCommon.UI
         }
 
 
+        public int Level => Panel.Level;
         public void StopLayout() => Panel.StopLayout();
         public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
+        public void PauseLayout(Action action) => Panel.PauseLayout(action);
     }
 }

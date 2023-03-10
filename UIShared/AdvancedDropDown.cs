@@ -241,8 +241,10 @@ namespace ModsCommon.UI
             this.DefaultStyle(size);
         }
 
+        public int Level => 0;
         public void StopLayout() { }
         public void StartLayout(bool layoutNow = true) { }
+        public void PauseLayout(Action action) => action?.Invoke();
     }
     public abstract class SimpleEntity<ValueType> : PopupEntity<DropDownItem<ValueType>>
     {

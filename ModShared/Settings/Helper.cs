@@ -16,20 +16,20 @@ namespace ModsCommon
         public static FloatSettingsItem AddFloatField(UIHelper group, string label, SavedFloat saved, float? min = null, float? max = null)
         {
             var item = (group.self as UIPanel).AddUIComponent<FloatSettingsItem>();
-            item.Text = label;
+            item.Label = label;
 
             if (min.HasValue)
             {
-                item.Field.CheckMin = true;
-                item.Field.MinValue = min.Value;
+                item.Control.CheckMin = true;
+                item.Control.MinValue = min.Value;
             }
             if (max.HasValue)
             {
-                item.Field.CheckMax = true;
-                item.Field.MaxValue = max.Value;
+                item.Control.CheckMax = true;
+                item.Control.MaxValue = max.Value;
             }
-            item.Field.Value = saved;
-            item.Field.OnValueChanged += OnValueChanged;
+            item.Control.Value = saved;
+            item.Control.OnValueChanged += OnValueChanged;
 
             void OnValueChanged(float value)
             {
@@ -41,20 +41,20 @@ namespace ModsCommon
         public static IntSettingsItem AddIntField(UIHelper group, string label, SavedInt saved, int? min = null, int? max = null)
         {
             var item = (group.self as UIPanel).AddUIComponent<IntSettingsItem>();
-            item.Text = label;
+            item.Label = label;
 
             if (min.HasValue)
             {
-                item.Field.CheckMin = true;
-                item.Field.MinValue = min.Value;
+                item.Control.CheckMin = true;
+                item.Control.MinValue = min.Value;
             }
             if (max.HasValue)
             {
-                item.Field.CheckMax = true;
-                item.Field.MaxValue = max.Value;
+                item.Control.CheckMax = true;
+                item.Control.MaxValue = max.Value;
             }
-            item.Field.Value = saved;
-            item.Field.OnValueChanged += OnValueChanged;
+            item.Control.Value = saved;
+            item.Control.OnValueChanged += OnValueChanged;
 
             void OnValueChanged(int value)
             {
@@ -66,10 +66,10 @@ namespace ModsCommon
         public static StringSettingsItem AddStringField(UIHelper group, string label, SavedString saved)
         {
             var item = (group.self as UIPanel).AddUIComponent<StringSettingsItem>();
-            item.Text = label;
+            item.Label = label;
 
-            item.Field.Value = saved;
-            item.Field.OnValueChanged += OnValueChanged;
+            item.Control.Value = saved;
+            item.Control.OnValueChanged += OnValueChanged;
 
             void OnValueChanged(string value)
             {
@@ -82,10 +82,10 @@ namespace ModsCommon
         public static ToggleSettingsItem AddToggle(UIHelper group, string label, SavedBool saved)
         {
             var item = (group.self as UIPanel).AddUIComponent<ToggleSettingsItem>();
-            item.Text = label;
+            item.Label = label;
 
-            item.Toggle.State = saved;
-            item.Toggle.OnStateChanged += OnStateChanged;
+            item.Control.State = saved;
+            item.Control.OnStateChanged += OnStateChanged;
 
             void OnStateChanged(bool value)
             {
@@ -97,7 +97,7 @@ namespace ModsCommon
         public static OptionPanelWithLabelData AddTogglePanel(UIHelper group, string mainLabel, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
             var item = (group.self as UIPanel).AddUIComponent<LabelSettingsItem>();
-            item.Text = mainLabel;
+            item.Label = mainLabel;
 
             var result = AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged);
 
@@ -111,14 +111,14 @@ namespace ModsCommon
         public static OptionPanelWithMainData AddTogglePanel(UIHelper group, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
             var item = (group.self as UIPanel).AddUIComponent<ToggleSettingsItem>();
-            item.Text = mainLabel;
+            item.Label = mainLabel;
 
-            item.Toggle.State = mainSaved;
+            item.Control.State = mainSaved;
 
             var result = AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged);
             var optionsPanel = result.panel;
 
-            item.Toggle.OnStateChanged += OnStateChanged;
+            item.Control.OnStateChanged += OnStateChanged;
             SetVisible(mainSaved);
 
             return new OptionPanelWithMainData()
@@ -226,6 +226,22 @@ namespace ModsCommon
             label.text = text;
 
             return label;
+        }
+
+        public static SettingsItem AddHorizontalPanel(UIHelper helper, RectOffset padding)
+        {
+            var optionsPanel = (helper.self as UIComponent).AddUIComponent<SettingsItem>();
+            optionsPanel.Content.autoLayoutPadding = padding;
+            return optionsPanel;
+            //var component = helper.self as UIComponent;
+
+            //var panel = component.AddUIComponent<UIPanel>();
+            //panel.autoLayout = true;
+            //panel.autoLayoutDirection = LayoutDirection.Horizontal;
+            //panel.autoLayoutPadding = padding;
+            //panel.autoFitChildrenHorizontally = true;
+            //panel.autoFitChildrenVertically = true;
+            //return new UIHelper(panel);
         }
 
         public struct OptionPanelData
@@ -400,6 +416,7 @@ namespace ModsCommon
             panel.color = new Color32(20, 25, 38, 255);
 
             label = panel.AddUIComponent<CustomUILabel>();
+            label.name = "Title";
             label.font = SemiBoldFont;
             label.textScale = 1.3f;
             label.padding = new RectOffset(12, 0, 12, 0);

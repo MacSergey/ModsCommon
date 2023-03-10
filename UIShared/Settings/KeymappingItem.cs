@@ -6,7 +6,7 @@ using ColossalFramework;
 
 namespace ModsCommon.UI
 {
-    public class KeymappingSettingsItem : ContentSettingsItem
+    public class KeymappingSettingsItem : ControlSettingsItem<CustomUIButton>
     {
         public event Action<Shortcut> BindingChanged;
 
@@ -19,24 +19,22 @@ namespace ModsCommon.UI
                 if(shortcut != value)
                 {
                     shortcut = value;
-                    Text = shortcut.Label;
-                    Button.text = shortcut.ToString();
+                    Label = shortcut.Label;
+                    Control.text = shortcut.ToString();
                 }
             }
         }
-        private CustomUIButton Button { get; }
         private bool InProgress { get; set; }
 
-        public KeymappingSettingsItem()
+        protected override void InitControl()
         {
-            Button = Content.AddUIComponent<CustomUIButton>();
-            Button.CustomSettingsStyle();
-            Button.size = new Vector2(278f, 31f);
+            base.InitControl();
 
-            Button.eventKeyDown += OnBindingKeyDown;
-            Button.eventMouseDown += OnBindingMouseDown;
+            Control.CustomSettingsStyle();
+            Control.size = new Vector2(278f, 31f);
 
-            SetHeightBasedOn(Button);
+            Control.eventKeyDown += OnBindingKeyDown;
+            Control.eventMouseDown += OnBindingMouseDown;
         }
 
         private void OnBindingKeyDown(UIComponent comp, UIKeyEventParameter p)
@@ -57,7 +55,7 @@ namespace ModsCommon.UI
                         shortcut.InputKey.value = SavedInputKey.Encode(p.keycode, p.control, p.shift, p.alt);
                 }
 
-                Button.text = shortcut.InputKey.GetLocale();
+                Control.text = shortcut.InputKey.GetLocale();
 
                 BindingChanged?.Invoke(Shortcut);
             }
@@ -66,13 +64,13 @@ namespace ModsCommon.UI
         {
             if (!InProgress)
             {
-                Button.buttonsMask = UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle | UIMouseButton.Special0 | UIMouseButton.Special1 | UIMouseButton.Special2 | UIMouseButton.Special3;
-                Button.text = CommonLocalize.Settings_PressAnyKey;
-                Button.Focus();
+                Control.buttonsMask = UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle | UIMouseButton.Special0 | UIMouseButton.Special1 | UIMouseButton.Special2 | UIMouseButton.Special3;
+                Control.text = CommonLocalize.Settings_PressAnyKey;
+                Control.Focus();
 
                 p.Use();
                 InProgress = true;
-                UIView.PushModal(Button);
+                UIView.PushModal(Control);
             }
             else if (!IsUnbindableMouseButton(p.buttons))
             {
@@ -85,8 +83,8 @@ namespace ModsCommon.UI
                 else
                     Shortcut.InputKey.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utility.CtrlIsPressed, Utility.ShiftIsPressed, Utility.AltIsPressed);
 
-                Button.text = Shortcut.InputKey.GetLocale();
-                Button.buttonsMask = UIMouseButton.Left;
+                Control.text = Shortcut.InputKey.GetLocale();
+                Control.buttonsMask = UIMouseButton.Left;
 
                 BindingChanged?.Invoke(Shortcut);
             }

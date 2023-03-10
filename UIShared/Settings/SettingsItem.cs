@@ -7,97 +7,131 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class SettingsItem : CustomUIPanel
+    public class SettingsItem : UIAutoLayoutPanel
     {
+        protected virtual RectOffset ItemsPadding => new RectOffset(10, 40, 5, 5);
+
+        private Border borders = Border.None;
+        public Border Borders
+        {
+            get => borders;
+            set
+            {
+                if (value != borders)
+                {
+                    borders = value;
+
+                    var top = ItemsPadding.top + ((borders & Border.Top) != 0 ? 2 : 0);
+                    var bottom = ItemsPadding.bottom + ((borders & Border.Bottom) != 0 ? 2 : 0);
+                    autoLayoutPadding = new RectOffset(ItemsPadding.left, ItemsPadding.right, top, bottom);
+                    verticalSpacing = autoLayoutPadding.bottom;
+
+                    backgroundSprite = borders switch
+                    {
+                        Border.Top => CommonTextures.BorderTop,
+                        Border.Bottom => CommonTextures.BorderBottom,
+                        Border.Both => CommonTextures.BorderBoth,
+                        _ => string.Empty
+                    };
+                }
+            }
+        }
+
+        public UIAutoLayoutPanel Content { get; private set; }
+
         public SettingsItem()
         {
             atlas = CommonTextures.Atlas;
-            backgroundSprite = CommonTextures.BorderTop;
             color = ComponentStyle.NormalSettingsGray;
-            autoLayout = false;
             clipChildren = true;
-        }
-    }
-    public abstract class ContentSettingsItem : SettingsItem
-    {
-        protected virtual RectOffset ItemsPadding => new RectOffset(10, 30, 5, 5);
 
-        private CustomUILabel Label { get; set; }
-        protected CustomUIPanel Content { get; set; }
+            PauseLayout(() =>
+            {
+                Content = AddUIComponent<UIAutoLayoutPanel>();
+                Content.name = nameof(Content);
 
-        public string Text
-        {
-            get => Label.text;
-            set => Label.text = value;
+                Content.PauseLayout(InitContent);
+
+                Content.autoFitChildrenVertically = true;
+                Content.eventSizeChanged += RefreshContent;
+            });
+
+            autoLayoutDirection = LayoutDirection.Vertical;
+            autoFitChildrenVertically = true;
+            Borders = Border.Top;
         }
 
-        public ContentSettingsItem()
-        {
-            Label = AddUIComponent<CustomUILabel>();
-            Label.name = nameof(Label);
-            Label.autoSize = false;
-            Label.autoHeight = true;
-            Label.wordWrap = true;
-            Label.padding = new RectOffset(0, 0, 2, 0);
-            Label.name = nameof(Label);
-            Label.eventTextChanged += (_, _) => SetLabel();
-
-            Content = AddUIComponent<CustomUIPanel>();
-            Content.name = nameof(Content);
-            Content.autoLayoutDirection = LayoutDirection.Horizontal;
-            Content.autoFitChildrenHorizontally = true;
-            Content.autoLayoutPadding = new RectOffset(5, 0, 0, 0);
-            Content.eventSizeChanged += (_, _) => RefreshContent();
-        }
-        protected void SetHeightBasedOn(UIComponent component) => SetHeight(component.height);
-        protected void SetHeight(float height)
-        {
-            this.height = height + 2f + ItemsPadding.vertical;
-            MakePixelPerfect(false);
-        }
+        protected virtual void InitContent() { }
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            Refresh(false);
-        }
-        protected void Refresh(bool refreshContent = true)
-        {
-            if (refreshContent)
-                RefreshContent();
-
-            Content.height = height - 2f;
-            Content.relativePosition = new Vector2(width - Content.width - ItemsPadding.right, 2f);
-
-            SetLabel();
-        }
-        private void RefreshContent()
-        {
-            Content.autoLayout = true;
-            Content.autoLayout = false;
-
-            foreach (var item in Content.components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (Content.height - item.height) * 0.5f);
-        }
-
-        private void SetLabel()
-        {
-            Label.width = width - Content.width - ItemsPadding.horizontal;
-            Label.MakePixelPerfect(false);
-            Label.relativePosition = new Vector2(ItemsPadding.left, (height - Label.height) * 0.5f + 2f);
+            Content.width = width - autoLayoutPadding.horizontal;
         }
         protected override void OnVisibilityChanged()
         {
             base.OnVisibilityChanged();
 
             if (isVisible)
-                Refresh();
+                RefreshContent(Content, Content.size);
+        }
+        private void RefreshContent(UIComponent component, Vector2 size) => Content.PauseLayout(RefreshItems);
+        protected virtual void RefreshItems() { }
+
+
+        [Flags]
+        public enum Border
+        {
+            None = 0,
+            Top = 1,
+            Bottom = 2,
+            Both = Top | Bottom,
         }
     }
-    public class LabelSettingsItem : ContentSettingsItem 
+    public class LabelSettingsItem : SettingsItem
     {
-        public LabelSettingsItem()
+        public CustomUILabel LabelItem { get; private set; }
+
+        public string Label
         {
-            height = 30f;
+            get => LabelItem.text;
+            set => LabelItem.text = value;
+        }
+
+        protected override void InitContent()
+        {
+            LabelItem = Content.AddUIComponent<CustomUILabel>();
+            LabelItem.name = nameof(Label);
+            LabelItem.autoSize = false;
+            LabelItem.autoHeight = true;
+            LabelItem.wordWrap = true;
+            LabelItem.verticalAlignment = UIVerticalAlignment.Middle;
+            LabelItem.padding = new RectOffset(0, 0, 2, 0);
+        }
+        protected override void RefreshItems()
+        {
+            LabelItem.width = Content.height;
+        }
+    }
+    public abstract class ControlSettingsItem<ControlType> : LabelSettingsItem
+        where ControlType : UIComponent
+    {
+        public ControlType Control { get; private set; }
+
+        protected sealed override void InitContent()
+        {
+            base.InitContent();
+
+            Control = Content.AddUIComponent<ControlType>();
+            Control.eventSizeChanged += (_, _) => RefreshItems();
+
+            InitControl();
+        }
+        protected virtual void InitControl() { }
+
+        protected override void RefreshItems()
+        {
+            LabelItem.minimumSize = new Vector2(0, Control.height);
+            LabelItem.width = Content.width - Control.width;
         }
     }
 }

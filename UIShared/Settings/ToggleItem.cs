@@ -7,23 +7,17 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class ToggleSettingsItem : ContentSettingsItem
+    public class ToggleSettingsItem : ControlSettingsItem<CustomUIToggle>
     {
-        public CustomUIToggle Toggle { get; }
-
         public bool State
         {
-            get => Toggle.State;
-            set => Toggle.State = value;
+            get => Control.State;
+            set => Control.State = value;
         }
 
-        public ToggleSettingsItem() : base()
+        protected override void InitControl()
         {
-            Toggle = Content.AddUIComponent<CustomUIToggle>();
-            Toggle.name = nameof(Toggle);
-            Toggle.CustomSettingsStyle();
-
-            SetHeightBasedOn(Toggle);
+            Control.CustomSettingsStyle();
         }
     }
 }

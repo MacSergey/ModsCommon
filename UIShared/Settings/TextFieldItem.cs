@@ -7,29 +7,24 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class FieldSettingsItem<ValueType, FieldType> : ContentSettingsItem
+    public abstract class FieldSettingsItem<ValueType, FieldType> : ControlSettingsItem<FieldType>
         where FieldType : UITextField<ValueType>
     {
-        protected override RectOffset ItemsPadding => new RectOffset(10, 30, 7, 7);
-
-        public FieldType Field { get; }
+        protected override RectOffset ItemsPadding => new RectOffset(10, 40, 7, 7);
 
         public ValueType Value
         {
-            get => Field.Value;
-            set => Field.Value = value;
+            get => Control.Value;
+            set => Control.Value = value;
         }
 
-        public FieldSettingsItem()
+        protected override void InitControl()
         {
-            Field = Content.AddUIComponent<FieldType>();
-            Field.CustomSettingsStyle();
-            Field.size = new Vector2(150f, 28f);
-            Field.textScale = 1.125f;
-            Field.padding = new RectOffset(0, 0, 6, 0);
-            Field.builtinKeyNavigation = true;
-
-            SetHeightBasedOn(Field);
+            Control.CustomSettingsStyle();
+            Control.size = new Vector2(150f, 28f);
+            Control.textScale = 1.125f;
+            Control.padding = new RectOffset(0, 0, 6, 0);
+            Control.builtinKeyNavigation = true;
         }
     }
 
