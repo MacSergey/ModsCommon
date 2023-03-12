@@ -123,27 +123,15 @@ namespace ModsCommon.UI
             Additional.isVisible = ShowAdditional;
             Additional.zOrder = int.MaxValue;
         }
-        private void SetButtonColors(HeaderButton button)
+        private void SetButtonColors(IHeaderButton button)
         {
-            button.hoveredBgColor = ButtonHoveredColor;
-            button.pressedBgColor = ButtonPressedColor;
-            button.focusedBgColor = ButtonPressedColor;
-
-            button.normalFgColor = IconNormalColor;
-            button.hoveredFgColor = IconHoverColor;
-            button.pressedFgColor = IconPressedColor;
-            button.disabledFgColor = IconDisabledColor;
+            button.SetBgColor(new ColorSet(Color.white, ButtonHoveredColor, ButtonPressedColor, ButtonPressedColor, Color.white));
+            button.SetFgColor(new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor));
         }
-        private void SetAdditionalButtonColors(HeaderButton button)
+        private void SetAdditionalButtonColors(IHeaderButton button)
         {
-            button.hoveredBgColor = AdditionalButtonHoveredColor;
-            button.pressedBgColor = AdditionalButtonPressedColor;
-            button.focusedBgColor = AdditionalButtonPressedColor;
-
-            button.normalFgColor = IconNormalColor;
-            button.hoveredFgColor = IconHoverColor;
-            button.pressedFgColor = IconPressedColor;
-            button.disabledFgColor = IconDisabledColor;
+            button.SetBgColor(new ColorSet(Color.white, AdditionalButtonHoveredColor, AdditionalButtonPressedColor, AdditionalButtonPressedColor, Color.white));
+            button.SetFgColor(new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor));
         }
     }
     public class HeaderContent : BaseHeaderContent

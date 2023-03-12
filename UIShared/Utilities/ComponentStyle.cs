@@ -44,7 +44,7 @@ namespace ModsCommon.UI
         public static Color32 ButtonSelectedFocusedColor => NormalBlue;
         public static Color32 ButtonSelectedDisabledColor => DisabledGray;
 
-        public static void CustomMessageBoxStyle(this CustomUIButton button)
+        public static void ButtonMessageBoxStyle(this CustomUIButton button)
         {
             button.atlas = CommonTextures.Atlas;
             button.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
@@ -56,7 +56,7 @@ namespace ModsCommon.UI
             button.verticalAlignment = UIVerticalAlignment.Middle;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
         }
-        public static void CustomSettingsStyle(this CustomUIButton button)
+        public static void ButtonSettingsStyle(this CustomUIButton button)
         {
             button.atlas = CommonTextures.Atlas;
             button.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
@@ -72,54 +72,54 @@ namespace ModsCommon.UI
 
         #region DROPDOWN
 
-        [Obsolete]
-        public static void DefaultStyle(this CustomUIDropDown dropDown, Vector2? size = null)
-        {
-            dropDown.atlasBackground = CommonTextures.Atlas;
-            dropDown.normalBgSprite = CommonTextures.FieldSingle;
-            dropDown.hoveredBgSprite = CommonTextures.FieldSingle;
-            dropDown.disabledBgSprite = CommonTextures.FieldSingle;
-            dropDown.color = FieldNormalColor;
-            dropDown.hoveredBgColor = FieldHoveredColor;
-            dropDown.disabledBgColor = FieldDisabledColor;
+        //[Obsolete]
+        //public static void DefaultStyle(this CustomUIDropDown dropDown, Vector2? size = null)
+        //{
+        //    dropDown.atlasBackground = CommonTextures.Atlas;
+        //    dropDown.normalBgSprite = CommonTextures.FieldSingle;
+        //    dropDown.hoveredBgSprite = CommonTextures.FieldSingle;
+        //    dropDown.disabledBgSprite = CommonTextures.FieldSingle;
+        //    dropDown.color = FieldNormalColor;
+        //    dropDown.hoveredBgColor = FieldHoveredColor;
+        //    dropDown.disabledBgColor = FieldDisabledColor;
 
-            dropDown.atlasForeground = TextureHelper.InGameAtlas;
-            dropDown.normalFgSprite = "IconDownArrow";
-            dropDown.hoveredFgSprite = "IconDownArrowHovered";
-            dropDown.focusedFgSprite = "IconDownArrow";
-            dropDown.disabledFgSprite = "IconDownArrowDisabled";
+        //    dropDown.atlasForeground = TextureHelper.InGameAtlas;
+        //    dropDown.normalFgSprite = "IconDownArrow";
+        //    dropDown.hoveredFgSprite = "IconDownArrowHovered";
+        //    dropDown.focusedFgSprite = "IconDownArrow";
+        //    dropDown.disabledFgSprite = "IconDownArrowDisabled";
 
-            dropDown.atlas = CommonTextures.Atlas;
-            dropDown.listBackground = CommonTextures.FieldHovered;
-            dropDown.itemHover = CommonTextures.FieldNormal;
-            dropDown.itemHighlight = CommonTextures.FieldFocused;
+        //    dropDown.atlas = CommonTextures.Atlas;
+        //    dropDown.listBackground = CommonTextures.FieldHovered;
+        //    dropDown.itemHover = CommonTextures.FieldNormal;
+        //    dropDown.itemHighlight = CommonTextures.FieldFocused;
 
-            dropDown.itemHeight = 20;
-            dropDown.listHeight = 700;
-            dropDown.listPosition = PopupListPosition.Below;
-            dropDown.clampListToScreen = true;
-            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
-            dropDown.itemPadding = new RectOffset(14, 0, 5, 0);
+        //    dropDown.itemHeight = 20;
+        //    dropDown.listHeight = 700;
+        //    dropDown.listPosition = PopupListPosition.Below;
+        //    dropDown.clampListToScreen = true;
+        //    dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
+        //    dropDown.itemPadding = new RectOffset(14, 0, 5, 0);
 
-            dropDown.popupColor = Color.white;
-            dropDown.popupTextColor = Color.black;
+        //    dropDown.popupColor = Color.white;
+        //    dropDown.popupTextColor = Color.black;
 
-            dropDown.textScale = 0.7f;
-            dropDown.textFieldPadding = new RectOffset(8, 0, 6, 0);
-            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
-            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
-            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+        //    dropDown.textScale = 0.7f;
+        //    dropDown.textFieldPadding = new RectOffset(8, 0, 6, 0);
+        //    dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+        //    dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
+        //    dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+        //    dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
+        //    dropDown.verticalAlignment = UIVerticalAlignment.Middle;
 
-            dropDown.triggerButton = dropDown;
+        //    dropDown.triggerButton = dropDown;
 
-            dropDown.size = size ?? new Vector2(230, 20);
-        }
+        //    dropDown.size = size ?? new Vector2(230, 20);
+        //}
 
-        public static void DefaultStyle<ObjectType, PopupType, EntityType>(this AdvancedDropDown<ObjectType, PopupType, EntityType> dropDown, Vector2? size = null)
-            where PopupType : Popup<ObjectType, EntityType>
-            where EntityType : PopupEntity<ObjectType>
+        public static void DropDownDefaultStyle<ObjectType, PopupType, EntityType>(this SelectItemDropDown<ObjectType, EntityType, PopupType> dropDown, Vector2? size = null)
+            where PopupType : CustomUIPanel, IPopup<ObjectType, EntityType>
+            where EntityType : CustomUIButton, IPopupEntity<ObjectType>
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
             dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
@@ -139,25 +139,30 @@ namespace ModsCommon.UI
 
             dropDown.size = size ?? new Vector2(230, 20);
         }
-        public static void DefaultStyle<ObjectType, EntityType>(this Popup<ObjectType, EntityType> popup, float? entityHeight = null)
-            where EntityType : PopupEntity<ObjectType>
+        public static void PopupDefaultStyle<ObjectType, EntityType>(this ObjectPopup<ObjectType, EntityType> popup, float? entityHeight = null)
+            where EntityType : CustomUIButton, IPopupEntity<ObjectType>, IReusable
         {
             popup.atlas = CommonTextures.Atlas;
             popup.backgroundSprite = CommonTextures.FieldSingle;
-            popup.ItemHover = CommonTextures.FieldSingle;
-            popup.ItemSelected = CommonTextures.FieldSingle;
-
             popup.color = FieldHoveredColor;
-            popup.ColorHover = FieldNormalColor;
-            popup.ColorSelected = FieldFocusedColor;
 
             popup.EntityHeight = entityHeight ?? 20f;
             popup.MaximumSize = new Vector2(230f, 700f);
         }
+        public static void EntityStyle<ObjectType, EntityType>(this EntityType entity)
+            where EntityType : CustomUIButton, IPopupEntity<ObjectType>
+        {
+            entity.atlas = CommonTextures.Atlas;
+            entity.hoveredBgSprite = CommonTextures.FieldSingle;
+            entity.focusedBgSprite = CommonTextures.FieldSingle;
+
+            entity.hoveredBgColor = FieldNormalColor;
+            entity.focusedBgColor = FieldFocusedColor;
+        }
 
 
-        public static void CustomMessageBoxStyle<ObjectType, PopupType, EntityType>(this AdvancedDropDown<ObjectType, PopupType, EntityType> dropDown, Vector2? size = null)
-            where PopupType : Popup<ObjectType, EntityType>
+        public static void DropDownMessageBoxStyle<ObjectType, PopupType, EntityType>(this SelectItemDropDown<ObjectType, EntityType, PopupType> dropDown, Vector2? size = null)
+            where PopupType : ObjectPopup<ObjectType, EntityType>
             where EntityType : PopupEntity<ObjectType>
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
@@ -180,26 +185,30 @@ namespace ModsCommon.UI
 
             dropDown.size = size ?? new Vector2(230, 20);
         }
-        public static void CustomMessageBoxStyle<ObjectType, EntityType>(this Popup<ObjectType, EntityType> popup, float? entityHeight = null)
+        public static void PopupMessageBoxStyle<ObjectType, EntityType>(this ObjectPopup<ObjectType, EntityType> popup, float? entityHeight = null)
             where EntityType : PopupEntity<ObjectType>
         {
             popup.atlas = CommonTextures.Atlas;
             popup.backgroundSprite = CommonTextures.FieldSingle;
-            popup.ItemHover = CommonTextures.FieldSingle;
-            popup.ItemSelected = CommonTextures.FieldSingle;
-
             popup.color = NormalGray;
-            popup.ColorHover = HoveredGray;
-            popup.ColorSelected = NormalBlue;
 
             popup.EntityHeight = entityHeight ?? 20f;
             popup.MaximumSize = new Vector2(230f, 700f);
             popup.ItemsPadding = new RectOffset(4, 4, 4, 4);
         }
+        public static void EntityMessageBoxStyle<ObjectType>(this PopupEntity<ObjectType> entity)
+        {
+            entity.atlas = CommonTextures.Atlas;
+            entity.hoveredBgSprite = CommonTextures.FieldSingle;
+            entity.focusedBgSprite = CommonTextures.FieldSingle;
+
+            entity.hoveredBgColor = HoveredGray;
+            entity.focusedBgColor = NormalBlue;
+        }
 
 
-        public static void CustomSettingsStyle<ObjectType, PopupType, EntityType>(this AdvancedDropDown<ObjectType, PopupType, EntityType> dropDown, Vector2? size = null)
-            where PopupType : Popup<ObjectType, EntityType>
+        public static void DropDownSettingsStyle<ObjectType, EntityType, PopupType>(this SelectItemDropDown<ObjectType, EntityType, PopupType> dropDown, Vector2? size = null)
+            where PopupType : ObjectPopup<ObjectType, EntityType>
             where EntityType : PopupEntity<ObjectType>
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
@@ -223,21 +232,27 @@ namespace ModsCommon.UI
             dropDown.size = size ?? new Vector2(230, 20);
         }
 
-        public static void CustomSettingsStyle<ObjectType, EntityType>(this Popup<ObjectType, EntityType> popup, float? entityHeight = null)
-            where EntityType : PopupEntity<ObjectType>
+        public static void PopupSettingsStyle<ObjectType, EntityType, PopupType>(this PopupType popup, float? entityHeight = null)
+            where PopupType : CustomUIPanel, IPopup<ObjectType, EntityType>
+            where EntityType : CustomUIButton, IPopupEntity<ObjectType>
         {
             popup.atlas = CommonTextures.Atlas;
             popup.backgroundSprite = CommonTextures.FieldSingle;
-            popup.ItemHover = CommonTextures.FieldSingle;
-            popup.ItemSelected = CommonTextures.FieldSingle;
-
             popup.color = NormalSettingsGray;
-            popup.ColorHover = HoveredSettingsGray;
-            popup.ColorSelected = NormalBlue;
 
             popup.EntityHeight = entityHeight ?? 20f;
             popup.MaximumSize = new Vector2(230f, 700f);
             popup.ItemsPadding = new RectOffset(4, 4, 4, 4);
+        }
+        public static void EntitySettingsStyle<ObjectType, EntityType>(this EntityType entity)
+            where EntityType : CustomUIButton, IPopupEntity<ObjectType>
+        {
+            entity.atlas = CommonTextures.Atlas;
+            entity.hoveredBgSprite = CommonTextures.FieldSingle;
+            entity.focusedBgSprite = CommonTextures.FieldSingle;
+
+            entity.hoveredBgColor = HoveredSettingsGray;
+            entity.focusedBgColor = NormalBlue;
         }
 
         #endregion
@@ -277,7 +292,7 @@ namespace ModsCommon.UI
             textField.verticalAlignment = UIVerticalAlignment.Middle;
             textField.padding = new RectOffset(0, 0, 6, 0);
         }
-        public static void CustomSettingsStyle(this CustomUITextField textField)
+        public static void SettingsStyle(this CustomUITextField textField)
         {
             textField.atlas = CommonTextures.Atlas;
             textField.normalBgSprite = CommonTextures.FieldSingle;
@@ -296,7 +311,7 @@ namespace ModsCommon.UI
 
         #region TAB STRIPE
 
-        public static void CustomStyle<TabType>(this TabStrip<TabType> tabStrip)
+        public static void DefaultStyle<TabType>(this TabStrip<TabType> tabStrip)
             where TabType : Tab
         {
             tabStrip.atlas = CommonTextures.Atlas;
@@ -312,7 +327,7 @@ namespace ModsCommon.UI
             tabStrip.TabFocusedSprite = CommonTextures.PanelSmall;
             tabStrip.TabDisabledSprite = CommonTextures.PanelSmall;
         }
-        public static void CustomSettingsStyle<TabType>(this TabStrip<TabType> tabStrip)
+        public static void SettingsStyle<TabType>(this TabStrip<TabType> tabStrip)
             where TabType : Tab
         {
             tabStrip.atlas = CommonTextures.Atlas;
@@ -348,7 +363,7 @@ namespace ModsCommon.UI
         public static Color32 ToggleOffPressedColor => PressedGray;
 
 
-        public static void CustomStyle(this CustomUIToggle toggle)
+        public static void DefaultStyle(this CustomUIToggle toggle)
         {
             toggle.atlas = CommonTextures.Atlas;
             toggle.SetBgSprite(new SpriteSet(CommonTextures.ToggleBackgroundSmall));
@@ -371,7 +386,7 @@ namespace ModsCommon.UI
             toggle.size = new Vector2(42f, 22f);
         }
 
-        public static void CustomSettingsStyle(this CustomUIToggle toggle)
+        public static void SettingsStyle(this CustomUIToggle toggle)
         {
             toggle.atlas = CommonTextures.Atlas;
             toggle.SetBgSprite(new SpriteSet(CommonTextures.ToggleBackground));

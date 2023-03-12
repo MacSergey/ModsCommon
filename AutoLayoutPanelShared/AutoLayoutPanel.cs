@@ -77,11 +77,12 @@ namespace ModsCommon.UI
         }
         public void PauseLayout(Action action)
         {
-            StopLayout();
+            if (action != null)
             {
-                action?.Invoke();
+                StopLayout();
+                action();
+                StartLayout();
             }
-            StartLayout();
         }
     }
     public class UIAutoLayoutScrollablePanel : CustomUIScrollablePanel, IAutoLayoutPanel

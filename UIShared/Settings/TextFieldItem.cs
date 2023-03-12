@@ -20,7 +20,7 @@ namespace ModsCommon.UI
 
         protected override void InitControl()
         {
-            Control.CustomSettingsStyle();
+            Control.SettingsStyle();
             Control.size = new Vector2(150f, 28f);
             Control.textScale = 1.125f;
             Control.padding = new RectOffset(0, 0, 6, 0);

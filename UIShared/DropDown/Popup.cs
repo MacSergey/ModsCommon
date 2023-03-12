@@ -7,12 +7,14 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class Popup<ObjectType, EntityType> : CustomUIPanel, IReusable
-        where EntityType : PopupEntity<ObjectType>
+    public abstract class ObjectPopup<ObjectType, EntityType> : CustomUIPanel, IPopup<ObjectType, EntityType>, IReusable
+        where EntityType : CustomUIButton, IPopupEntity<ObjectType>, IReusable
     {
         bool IReusable.InCache { get; set; }
 
-        public event Action<ObjectType> OnSelectedChanged;
+        public event Action<ObjectType> OnSelect;
+        public event EntityStyleDelegate<ObjectType, EntityType> OnSetEntityStyle;
+
         protected virtual float DefaultEntityHeight => 20f;
 
         private CustomUIScrollbar ScrollBar { get; set; }
@@ -120,6 +122,20 @@ namespace ModsCommon.UI
                 }
             }
         }
+        private bool autoHeight;
+        public bool AutoHeight
+        {
+            get => autoHeight && VisibleCount == Values.Count;
+            set
+            {
+                if (value != autoHeight)
+                {
+                    autoHeight = value;
+                    StartIndex = StartIndex;
+                }
+            }
+        }
+
         private RectOffset itemsPadding = new RectOffset(0, 0, 0, 0);
         public RectOffset ItemsPadding
         {
@@ -143,14 +159,9 @@ namespace ModsCommon.UI
         protected virtual float PopupHeight => VisibleCount * EntityHeight + ItemsPadding.vertical;
         protected bool ShowScroll => Values.Count > VisibleCount;
         protected virtual Vector2 ScrollPosition => new Vector2(width - ScrollBar.width, 0f);
+        protected virtual float ScrollHeight => height;
 
-        public string ItemHover { get; set; }
-        public string ItemSelected { get; set; }
-
-        public Color32 ColorHover { get; set; } = new Color32(255, 255, 255, 255);
-        public Color32 ColorSelected { get; set; } = new Color32(255, 255, 255, 255);
-
-        public Popup()
+        public ObjectPopup()
         {
             clipChildren = true;
 
@@ -173,7 +184,7 @@ namespace ModsCommon.UI
         }
         public virtual void DeInit()
         {
-            OnSelectedChanged = null;
+            OnSelect = null;
 
             RawValues.Clear();
             Values.Clear();
@@ -201,7 +212,7 @@ namespace ModsCommon.UI
         private void ObjectSelected(int index, ObjectType value)
         {
             selectedObject = value;
-            OnSelectedChanged?.Invoke(value);
+            OnSelect?.Invoke(value);
         }
 
 
@@ -247,7 +258,14 @@ namespace ModsCommon.UI
                         entity = Entities[i];
                     else
                     {
-                        entity = GetEntity();
+                        entity = ComponentPool.Get<EntityType>(this);
+                        entity.OnSelected += ObjectSelected;
+
+                        var overridden = false;
+                        OnSetEntityStyle?.Invoke(entity, ref overridden);
+                        if (!overridden)
+                            SetEntityStyle(entity);
+
                         Entities.Add(entity);
                     }
 
@@ -264,21 +282,7 @@ namespace ModsCommon.UI
 
             PlaceEntities();
         }
-        protected virtual EntityType GetEntity()
-        {
-            var entity = ComponentPool.Get<EntityType>(this);
-
-            entity.atlas = atlas;
-            entity.hoveredBgSprite = ItemHover;
-            entity.focusedBgSprite = ItemSelected;
-
-            entity.hoveredBgColor = ColorHover;
-            entity.focusedBgColor = ColorSelected;
-
-            entity.OnSelected += ObjectSelected;
-
-            return entity;
-        }
+        protected virtual void SetEntityStyle(EntityType entity) { }
         protected virtual void SetEntityValue(EntityType entity, int index, ObjectType value, bool selected)
         {
             entity.SetObject(index, value, selected);
@@ -315,7 +319,7 @@ namespace ModsCommon.UI
             }
 
             height = PopupHeight;
-            ScrollBar.height = height;
+            ScrollBar.height = ScrollHeight;
             ScrollBar.relativePosition = ScrollPosition;
             ScrollBar.value = StartIndex;
             ScrollBar.isVisible = ShowScroll;
@@ -323,11 +327,6 @@ namespace ModsCommon.UI
 
         protected virtual Vector2 GetEntityPosition(int index) => new Vector2(ItemsPadding.left, EntityHeight * index + ItemsPadding.top);
 
-        //protected override void OnSizeChanged()
-        //{
-        //    base.OnSizeChanged();
-        //    RefreshEntities();
-        //}
         protected override void OnMouseWheel(UIMouseEventParameter p)
         {
             p.Use();
@@ -339,8 +338,8 @@ namespace ModsCommon.UI
         }
     }
 
-    public abstract class SearchPopup<ObjectType, EntityType> : Popup<ObjectType, EntityType>
-        where EntityType : PopupEntity<ObjectType>
+    public abstract class SearchPopup<ObjectType, EntityType> : ObjectPopup<ObjectType, EntityType>
+        where EntityType : CustomUIButton, IPopupEntity<ObjectType>, IReusable
         where ObjectType : class
     {
         private bool CanSubmit { get; set; } = true;
@@ -468,15 +467,16 @@ namespace ModsCommon.UI
 
         protected override float PopupHeight => Math.Max(base.PopupHeight, EntityHeight) + 30f;
         protected override Vector2 ScrollPosition => base.ScrollPosition + new Vector2(0f, 30f);
+        protected override float ScrollHeight => height - 30f;
         protected override Vector2 GetEntityPosition(int index) => base.GetEntityPosition(index) + new Vector2(0f, 30f);
     }
 
-    public abstract class PopupEntity<ObjectType> : CustomUIButton, IReusable
+    public abstract class PopupEntity<ObjectType> : CustomUIButton, IPopupEntity<ObjectType>, IReusable
     {
         public event Action<int, ObjectType> OnSelected;
         bool IReusable.InCache { get; set; }
 
-        public virtual ObjectType Object { get; protected set; }
+        public virtual ObjectType EditObject { get; protected set; }
         public bool Selected { get; set; }
         public int Index { get; set; }
         public RectOffset Padding { get; set; } = new RectOffset();
@@ -504,10 +504,10 @@ namespace ModsCommon.UI
         public virtual void SetObject(int index, ObjectType value, bool selected)
         {
             Index = index;
-            Object = value;
+            EditObject = value;
             Selected = selected;
         }
-        protected void Select() => OnSelected?.Invoke(Index, Object);
+        protected void Select() => OnSelected?.Invoke(Index, EditObject);
         public virtual void PerformWidth()
         {
             AutoWidth();

@@ -216,7 +216,7 @@ namespace ModsCommon.UI
         protected CustomUIButton AddButton(Action action, uint ratio = 1)
         {
             var button = ButtonPanel.AddUIComponent<CustomUIButton>();
-            button.CustomMessageBoxStyle();
+            button.ButtonMessageBoxStyle();
             button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => action?.Invoke();
 
             ButtonsRatio.Add(Math.Max(ratio, 1));

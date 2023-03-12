@@ -17,7 +17,7 @@ namespace ModsCommon.UI
 
         protected override void InitControl()
         {
-            Control.CustomSettingsStyle();
+            Control.SettingsStyle();
         }
     }
 }

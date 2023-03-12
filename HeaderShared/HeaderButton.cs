@@ -5,7 +5,18 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class HeaderButton : CustomUIButton, IReusable
+    public interface IHeaderButton
+    {
+        void SetIcon(UITextureAtlas atlas, string sprite);
+        bool autoSize { get; set; }
+        float height { get; set; }
+        float width { get; set; }
+
+        void SetSize(int buttonSize, int iconSize);
+        void SetBgColor(ColorSet colors);
+        void SetFgColor(ColorSet colors);
+    }
+    public class HeaderButton : CustomUIButton, IHeaderButton, IReusable
     {
         bool IReusable.InCache { get; set; }
 
@@ -67,7 +78,7 @@ namespace ModsCommon.UI
     {
         public event MouseEventHandler ClickedEvent;
 
-        public HeaderButton Button { get; }
+        public IHeaderButton Button { get; }
 
         public void AddButton(UIComponent parent, bool showText, int size, int iconSize);
         public void RemoveButton();
@@ -75,7 +86,7 @@ namespace ModsCommon.UI
         public bool Visible { get; set; }
     }
     public class HeaderButtonInfo<TypeButton> : IHeaderButtonInfo
-        where TypeButton : HeaderButton
+        where TypeButton : CustomUIButton, IHeaderButton
     {
         public event MouseEventHandler ClickedEvent
         {
@@ -83,7 +94,7 @@ namespace ModsCommon.UI
             remove => Button.eventClicked -= value;
         }
 
-        HeaderButton IHeaderButtonInfo.Button => Button;
+        IHeaderButton IHeaderButtonInfo.Button => Button;
         public TypeButton Button { get; }
 
         public HeaderButtonState State { get; }

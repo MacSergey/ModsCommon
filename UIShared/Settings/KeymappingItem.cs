@@ -32,7 +32,7 @@ namespace ModsCommon.UI
         {
             base.InitControl();
 
-            Control.CustomSettingsStyle();
+            Control.ButtonSettingsStyle();
             Control.size = new Vector2(278f, 31f);
 
             Control.eventKeyDown += OnBindingKeyDown;

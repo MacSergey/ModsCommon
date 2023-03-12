@@ -29,7 +29,7 @@ namespace ModsCommon.UI
             Selector.StopLayout();
             AddSelectorItems();
             Selector.StartLayout();
-            Selector.OnSelectedObjectChanged += SelectorChanged;
+            Selector.OnSelectObject += SelectorChanged;
 
             base.Init();
         }

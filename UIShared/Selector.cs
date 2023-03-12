@@ -14,7 +14,7 @@ namespace ModsCommon.UI
     }
     public interface IUIOnceSelector<ValueType> : IUISelector<ValueType>
     {
-        event Action<ValueType> OnSelectedObjectChanged;
+        event Action<ValueType> OnSelectObject;
 
         ValueType SelectedObject { get; set; }
         bool UseWheel { get; set; }

@@ -93,7 +93,7 @@ namespace ModsCommon.UI
         protected override void AddSelector()
         {
             base.AddSelector();
-            Selector.OnSelectedObjectChanged += SelectorValueChanged;
+            Selector.OnSelectObject += SelectorValueChanged;
         }
         protected virtual void SelectorValueChanged(Type value) => OnSelectObjectChanged?.Invoke(value);
 

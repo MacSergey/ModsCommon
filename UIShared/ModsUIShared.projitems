@@ -9,11 +9,15 @@
     <Import_RootNamespace>ModsUIShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AdvancedDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\BaseDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\ObjectDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIListbox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUITextField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\SelectItemDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\SimpleDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\KeymappingItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\LanguageItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\TextFieldItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\ToggleItem.cs" />
@@ -23,9 +27,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomElements.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DonatePanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\DefaultDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Popup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\Popup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Render.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />

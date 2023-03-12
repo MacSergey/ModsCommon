@@ -299,7 +299,7 @@ namespace ModsCommon.Settings
             if (width != null)
                 button.width = width.Value;
 
-            button.CustomSettingsStyle();
+            button.ButtonSettingsStyle();
 
             return button;
         }
@@ -335,91 +335,6 @@ namespace ModsCommon.Settings
             public LabelSettingsItem label;
             public CustomUIPanel panel;
             public UICheckBox[] checkBoxes;
-        }
-
-        public class LanguageDropDown : AdvancedDropDown<LanguageDropDown.Language, LanguageDropDown.LanguagePopup, LanguageDropDown.LanguageEntity>
-        {
-            public new string SelectedObject
-            {
-                get => base.SelectedObject.locale;
-                set => base.SelectedObject = new Language(value, string.Empty, string.Empty);
-            }
-            public LanguageDropDown()
-            {
-                ComponentStyle.CustomSettingsStyle(this, new Vector2(250f, 34f));
-            }
-            protected override void SetPopupStyle() => Popup.CustomSettingsStyle(34f);
-            protected override void InitPopup()
-            {
-                Popup.AutoWidth = true;
-                base.InitPopup();
-            }
-
-            public readonly struct Language
-            {
-                public readonly string locale;
-                public readonly string label;
-                public readonly string sprite;
-
-                public Language(string locale, string label, string sprite)
-                {
-                    this.locale = locale;
-                    this.label = label;
-                    this.sprite = sprite;
-                }
-
-                public override bool Equals(object obj)
-                {
-                    if (obj is Language language)
-                        return language.locale == locale;
-                    else
-                        return false;
-                }
-                public override int GetHashCode() => locale.GetHashCode();
-                public override string ToString() => $"{locale}: {label}";
-            }
-
-            public class LanguageEntity : PopupEntity<Language>
-            {
-                public LanguageEntity()
-                {
-                    atlas = CommonTextures.Atlas;
-                    foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-
-                    horizontalAlignment = UIHorizontalAlignment.Left;
-                    verticalAlignment = UIVerticalAlignment.Middle;
-
-                    textVerticalAlignment = UIVerticalAlignment.Middle;
-                    textHorizontalAlignment = UIHorizontalAlignment.Left;
-                    textScale = 0.9f;
-                }
-
-                public override void SetObject(int index, Language language, bool selected)
-                {
-                    base.SetObject(index, language, selected);
-
-                    text = language.label;
-                    normalFgSprite = language.sprite;
-                }
-                public override void DeInit()
-                {
-                    base.DeInit();
-
-                    text = string.Empty;
-                    normalFgSprite = string.Empty;
-                }
-
-                protected override void OnSizeChanged()
-                {
-                    textPadding = new RectOffset(Mathf.CeilToInt(height) + 4, 8, 3, 0);
-                    spritePadding = new RectOffset(5, 0, 0, 0);
-                    scaleFactor = 24f / height;
-                }
-            }
-            public class LanguagePopup : Popup<Language, LanguageEntity>
-            {
-                protected override float DefaultEntityHeight => 34f;
-            }
         }
     }
 }

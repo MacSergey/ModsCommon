@@ -203,11 +203,11 @@ namespace ModsCommon.UI
 
     public abstract class UIOnceSegmented<ValueType> : UISegmented<ValueType>, IUIOnceSelector<ValueType>, IValueChanger<ValueType>
     {
-        public event Action<ValueType> OnSelectedObjectChanged;
+        public event Action<ValueType> OnSelectObject;
         event Action<ValueType> IValueChanger<ValueType>.OnValueChanged
         {
-            add => OnSelectedObjectChanged += value;
-            remove => OnSelectedObjectChanged -= value;
+            add => OnSelectObject += value;
+            remove => OnSelectObject -= value;
         }
 
         private int SelectedIndex { get; set; } = -1;
@@ -243,13 +243,13 @@ namespace ModsCommon.UI
             {
                 SetSprite(Buttons[SelectedIndex], true);
                 if (callEvent)
-                    OnSelectedObjectChanged?.Invoke(SelectedObject);
+                    OnSelectObject?.Invoke(SelectedObject);
             }
         }
         public override void DeInit()
         {
             base.DeInit();
-            OnSelectedObjectChanged = null;
+            OnSelectObject = null;
             UseWheel = false;
         }
         public override void Clear()

@@ -20,7 +20,7 @@ namespace ModsCommon.UI
         public BoolPropertyPanel()
         {
             Toggle = Content.AddUIComponent<CustomUIToggle>();
-            Toggle.CustomStyle();
+            Toggle.DefaultStyle();
             Toggle.OnStateChanged += ToggleStateChanged;
         }
         public override void DeInit()

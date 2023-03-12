@@ -108,7 +108,7 @@ namespace ModsCommon.Settings
             TabStrip.SelectedTabChanged += OnSelectedTabChanged;
             TabStrip.SelectedTab = -1;
             TabStrip.width = MainPanel.width - MainPanel.autoLayoutPadding.horizontal;
-            TabStrip.CustomSettingsStyle();
+            TabStrip.SettingsStyle();
             TabStrip.eventSizeChanged += (_, _) => TabStripSizeChanged();
         }
         private void OnSelectedTabChanged(int index)
@@ -275,17 +275,16 @@ namespace ModsCommon.Settings
 
         private void AddLanguageList(UIComponent tabContent)
         {
-            var item = tabContent.AddHorizontalPanel(new RectOffset(0, 0, 5, 5), 0);
+            var item = tabContent.AddUIComponent<LanguageSettingsItem>();
             item.Borders = SettingsContentItem.Border.None;
 
-            var dropDown = item.Content.AddUIComponent<LanguageDropDown>();
-            dropDown.AddItem(GetLocaleItem(string.Empty));
+            item.DropDown.AddItem(GetLocaleItem(string.Empty));
 
             foreach (var locale in GetSupportLanguages())
-                dropDown.AddItem(GetLocaleItem(locale));
+                item.DropDown.AddItem(GetLocaleItem(locale));
 
-            dropDown.SelectedObject = Locale.value;
-            dropDown.OnSelectedObjectChanged += LanguageChanged;
+            item.DropDown.SelectedObject = Locale.value;
+            item.DropDown.OnSelectObject += LanguageChanged;
 
             static void LanguageChanged(LanguageDropDown.Language language)
             {
