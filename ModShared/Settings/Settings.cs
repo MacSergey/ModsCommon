@@ -9,9 +9,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static ModsCommon.SettingsHelper;
+using static ModsCommon.Settings.Helper;
 
-namespace ModsCommon
+namespace ModsCommon.Settings
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class SettingFileAttribute : Attribute
@@ -63,11 +63,11 @@ namespace ModsCommon
         private UIPanel MainPanel { get; set; }
         protected TabStrip TabStrip { get; set; }
         protected List<CustomUIPanel> TabPanels { get; set; }
-        private Dictionary<string, UIAdvancedHelper> Tabs { get; } = new Dictionary<string, UIAdvancedHelper>();
-        protected UIAdvancedHelper GeneralTab => Tabs[nameof(GeneralTab)];
-        protected UIAdvancedHelper SupportTab => Tabs[nameof(SupportTab)];
+        private Dictionary<string, UIComponent> TabContent { get; } = new Dictionary<string, UIComponent>();
+        protected UIComponent GeneralTab => TabContent[nameof(GeneralTab)];
+        protected UIComponent SupportTab => TabContent[nameof(SupportTab)];
 #if DEBUG
-        protected UIAdvancedHelper DebugTab => Tabs[nameof(DebugTab)];
+        protected UIComponent DebugTab => TabContent[nameof(DebugTab)];
 #endif
         private static Action InfoCallback { get; set; }
 
@@ -147,7 +147,7 @@ namespace ModsCommon
             }
             TabStrip.StartLayout();
         }
-        private UIAdvancedHelper CreateTab(string name, string label)
+        private UIComponent CreateTab(string name, string label)
         {
             TabStrip.AddTab(label, 1.25f);
 
@@ -157,20 +157,49 @@ namespace ModsCommon
             tabPanel.isVisible = false;
             TabPanels.Add(tabPanel);
 
-            var helper = new UIAdvancedHelper(tabPanel.Content);
-            Tabs[name] = helper;
-            return helper;
+            TabContent[name] = tabPanel.Content;
+            return tabPanel.Content;
         }
-        protected UIAdvancedHelper GetTab(string label) => Tabs[label];
+        protected UIComponent GetTabContent(string label) => TabContent[label];
 
         #region INFO
 
-        private void AddInfo(UIAdvancedHelper helper)
+        private void AddInfo(UIComponent tabContent)
         {
-            var group = helper.AddOptionsGroup(out var title, SingletonMod<TypeMod>.Instance.NameRaw);
+            CustomUIPanel optionsGroup;
+            CustomUILabel title;
+            if (GetType().Assembly.LoadTextureFromAssembly("PreviewImage") is Texture2D preview)
+            {
+                var group = tabContent.AddGroup();
+                group.autoLayoutDirection = LayoutDirection.Horizontal;
+
+                var optionsContent = group.AddUIComponent<CustomUIPanel>();
+                optionsContent.autoLayout = true;
+                optionsContent.autoFitChildrenVertically = true;
+                optionsContent.autoLayoutDirection = LayoutDirection.Vertical;
+                optionsContent.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
+
+                var imagePanel = group.AddUIComponent<CustomUIPanel>();
+                imagePanel.size = new Vector2(200f, 200f);
+
+                var image = imagePanel.AddUIComponent<CustomUITextureSprite>();
+                image.texture = preview;
+                image.color = Color.white;
+                image.size = new Vector2(170f, 170f);
+                image.relativePosition = new Vector3((imagePanel.width - image.width) * 0.5f, (imagePanel.height - image.height) * 0.5f);
+
+                group.eventSizeChanged += (_, size) => SetSize();
+                SetSize();
+                void SetSize() => optionsContent.width = group.width - imagePanel.width;
+
+                optionsGroup = optionsContent.FillOptionsGroup(out title, SingletonMod<TypeMod>.Instance.NameRaw);
+            }
+            else
+                optionsGroup = tabContent.AddOptionsGroup(out title, SingletonMod<TypeMod>.Instance.NameRaw);
+
             title.textScale = 2f;
 
-            var versionItem = AddLabel(group, string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
+            var versionItem = optionsGroup.AddLabel(string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
             versionItem.padding = new RectOffset();
             versionItem.Borders = SettingsContentItem.Border.None;
 
@@ -180,7 +209,7 @@ namespace ModsCommon
                 InfoCallback = null;
             }
 
-            var infoLabel = AddLabel(group, GetStatusText());
+            var infoLabel = optionsGroup.AddLabel(GetStatusText());
             infoLabel.padding = new RectOffset();
             infoLabel.Borders = SettingsContentItem.Border.None;
             infoLabel.LabelItem.processMarkup = true;
@@ -202,10 +231,8 @@ namespace ModsCommon
             };
             SingletonMod<TypeMod>.Instance.OnStatusChanged += InfoCallback;
 
-            AddSpace(group, 15f);
-
-            var buttonPanel = AddButtonPanel(group, new RectOffset(0, 0, 5, 5), 0);
-            AddButton(buttonPanel, CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
+            optionsGroup.AddSpace(35f);
+            optionsGroup.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton(CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
         }
 
         private string GetStatusText()
@@ -230,25 +257,25 @@ namespace ModsCommon
 
         #region LANGUAGE
 
-        protected void AddLanguage(UIAdvancedHelper helper)
+        protected void AddLanguage(UIComponent tabContent)
         {
-            var group = helper.AddOptionsGroup(CommonLocalize.Settings_Language);
+            var group = tabContent.AddOptionsGroup(CommonLocalize.Settings_Language);
             AddLanguageList(group);
 
-            AddSpace(group, 25f);
+            group.AddSpace(25f);
 
-            var labelItem = AddLabel(group, CommonLocalize.Settings_TranslationDescription, 0.8f);
+            var labelItem = group.AddLabel(CommonLocalize.Settings_TranslationDescription, 0.8f);
             labelItem.Borders = SettingsContentItem.Border.None;
             labelItem.padding = new RectOffset(0, 0, 5, 5);
 
-            var buttonPanel = AddButtonPanel(group, new RectOffset(0, 0, 0, 10), 10);
-            AddButton(buttonPanel, CommonLocalize.Settings_TranslationImprove, () => SingletonMod<TypeMod>.Instance.OpenTranslationProject(), 250f, 1f);
-            AddButton(buttonPanel, CommonLocalize.Settings_TranslationNew, () => "https://crowdin.com/messages/create/14337258/".OpenUrl(), 250f, 1f);
+            var buttonPanel = group.AddButtonPanel(new RectOffset(0, 0, 0, 10), 10);
+            buttonPanel.AddButton(CommonLocalize.Settings_TranslationImprove, () => SingletonMod<TypeMod>.Instance.OpenTranslationProject(), 250f, 1f);
+            buttonPanel.AddButton(CommonLocalize.Settings_TranslationNew, () => "https://crowdin.com/messages/create/14337258/".OpenUrl(), 250f, 1f);
         }
 
-        private void AddLanguageList(UIHelper group)
+        private void AddLanguageList(UIComponent tabContent)
         {
-            var item = AddHorizontalPanel(group, new RectOffset(0, 0, 5, 5), 0);
+            var item = tabContent.AddHorizontalPanel(new RectOffset(0, 0, 5, 5), 0);
             item.Borders = SettingsContentItem.Border.None;
 
             var dropDown = item.Content.AddUIComponent<LanguageDropDown>();
@@ -295,12 +322,12 @@ namespace ModsCommon
 
         #region NOTIFICATIONS
 
-        protected void AddNotifications(UIAdvancedHelper helper)
+        protected void AddNotifications(UIComponent tabContent)
         {
-            var group = helper.AddOptionsGroup(CommonLocalize.Settings_Notifications);
+            var group = tabContent.AddOptionsGroup(CommonLocalize.Settings_Notifications);
 
-            var showToggle = AddToggle(group, CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
-            var onlyMajorToggle = AddToggle(group, CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
+            var showToggle = group.AddToggle(CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
+            var onlyMajorToggle = group.AddToggle(CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
 
             showToggle.Control.OnStateChanged += OnChange;
             OnChange(ShowWhatsNew);
@@ -312,20 +339,20 @@ namespace ModsCommon
 
         #region SUPPORT
 
-        private void AddSupport(UIAdvancedHelper helper)
+        private void AddSupport(UIComponent tabContent)
         {
-            var group = helper.AddOptionsGroup();
+            var group = tabContent.AddOptionsGroup();
 
-            AddButton(AddButtonPanel(group, new RectOffset(0, 0, 5, 5), 0), CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
-            AddButton(AddButtonPanel(group, new RectOffset(0, 0, 5, 5), 0), "Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
+            group.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton(CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
+            group.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton("Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
 #if DEBUG
             if (SingletonMod<TypeMod>.Instance.NeedMonoDevelopDebug)
 #else
             if (SingletonMod<TypeMod>.Instance.NeedMonoDevelop)
 #endif
             {
-                var linuxGroup = helper.AddOptionsGroup(CommonLocalize.Settings_ForLinuxUsers);
-                AddButton(AddButtonPanel(linuxGroup, new RectOffset(0, 0, 5, 5), 0), CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
+                var linuxGroup = tabContent.AddOptionsGroup(CommonLocalize.Settings_ForLinuxUsers);
+                linuxGroup.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton(CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
             }
         }
         private void ShowChangeLog()
@@ -345,16 +372,16 @@ namespace ModsCommon
 
         #region DEBUG
 
-        private void AddDebug(UIAdvancedHelper helper)
+        private void AddDebug(UIComponent tabContent)
         {
-            var group = helper.AddOptionsGroup("Base");
+            var group = tabContent.AddOptionsGroup("Base");
 
-            AddStringField(group, "Whats new version", WhatsNewVersionValue);
-            AddStringField(group, "Compatible check game version", CompatibleCheckGameVersionValue);
-            AddStringField(group, "Compatible check mod version", CompatibleCheckModVersionValue);
-            AddToggle(group, "Show Beta warning", BetaWarning);
-            AddToggle(group, "Show Linux warning", LinuxWarning);
-            AddToggle(group, "Any versions", AnyVersions);
+            group.AddStringField("Whats new version", WhatsNewVersionValue);
+            group.AddStringField("Compatible check game version", CompatibleCheckGameVersionValue);
+            group.AddStringField("Compatible check mod version", CompatibleCheckModVersionValue);
+            group.AddToggle("Show Beta warning", BetaWarning);
+            group.AddToggle("Show Linux warning", LinuxWarning);
+            group.AddToggle("Any versions", AnyVersions);
         }
 
         #endregion

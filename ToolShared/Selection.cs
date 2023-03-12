@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static ColossalFramework.Math.VectorUtils;
-using static ModsCommon.SettingsHelper;
+using static ModsCommon.Settings.Helper;
 
 namespace ModsCommon.Utilities
 {
@@ -18,10 +18,10 @@ namespace ModsCommon.Utilities
         public static SavedBool RenderOverlayCentre { get; } = new SavedBool(nameof(RenderOverlayCentre), string.Empty, false);
         public static SavedBool RenderOverlayBorders { get; } = new SavedBool(nameof(RenderOverlayBorders), string.Empty, false);
 
-        public static void AddAlphaBlendOverlay(UIHelper group) => AddToggle(group, "Alpha blend overlay", AlphaBlendOverlay);
-        public static void AddRenderOverlayCentre(UIHelper group) => AddToggle(group, "Render overlay center", RenderOverlayCentre);
-        public static void AddRenderOverlayBorders(UIHelper group) => AddToggle(group, "Render overlay borders", RenderOverlayBorders);
-        public static void AddBorderOverlayWidth(UIHelper group) => AddFloatField(group, "Overlay width", OverlayWidth, 1f);
+        public static void AddAlphaBlendOverlay(UIComponent group) => group.AddToggle("Alpha blend overlay", AlphaBlendOverlay);
+        public static void AddRenderOverlayCentre(UIComponent group) => group.AddToggle("Render overlay center", RenderOverlayCentre);
+        public static void AddRenderOverlayBorders(UIComponent group) => group.AddToggle("Render overlay borders", RenderOverlayBorders);
+        public static void AddBorderOverlayWidth(UIComponent group) => group.AddFloatField("Overlay width", OverlayWidth, 1f);
 
         public static float BorderOverlayWidth => OverlayWidth;
 #else

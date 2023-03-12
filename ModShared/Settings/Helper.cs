@@ -9,13 +9,94 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace ModsCommon
+namespace ModsCommon.Settings
 {
-    public static class SettingsHelper
+    public static partial class Helper
     {
-        public static FloatSettingsItem AddFloatField(UIHelper group, string label, SavedFloat saved, float? min = null, float? max = null)
+        private static UIDynamicFont SemiBoldFont { get; }
+
+        static Helper()
         {
-            var item = (group.self as UIPanel).AddUIComponent<FloatSettingsItem>();
+            var panel = UITemplateManager.Get<UIPanel>("OptionsGroupTemplate");
+            SemiBoldFont = panel.Find<UILabel>("Label").font as UIDynamicFont;
+            GameObject.Destroy(panel);
+        }
+
+
+        public static CustomUIPanel AddGroup(this UIComponent parent)
+        {
+            var panel = parent.AddUIComponent<CustomUIPanel>();
+
+            panel.width = 738f;
+            panel.autoLayout = true;
+            panel.autoFitChildrenVertically = true;
+            panel.autoLayoutDirection = LayoutDirection.Vertical;
+            panel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
+
+            panel.atlas = CommonTextures.Atlas;
+            panel.backgroundSprite = CommonTextures.PanelBig;
+            panel.color = new Color32(20, 25, 38, 255);
+
+            return panel;
+        }
+        public static CustomUIPanel AddOptionsGroup(this UIComponent parent, string name = null) => AddOptionsGroup(parent, out _, name);
+        public static CustomUIPanel AddOptionsGroup(this UIComponent parent, out CustomUILabel label, string name = null)
+        {
+            return parent.AddGroup().FillOptionsGroup(out label, name);
+        }
+        public static CustomUIPanel FillOptionsGroup(this CustomUIPanel parent, out CustomUILabel label, string name = null)
+        {
+            label = parent.AddUIComponent<CustomUILabel>();
+            label.name = "Title";
+            label.font = SemiBoldFont;
+            label.textScale = 1.3f;
+            label.padding = new RectOffset(12, 0, 12, 0);
+            if (!string.IsNullOrEmpty(name))
+                label.text = name;
+            else
+                label.isVisible = false;
+
+            var сontent = parent.AddUIComponent<CustomUIPanel>();
+            сontent.name = "Content";
+            сontent.autoLayout = true;
+            сontent.autoFitChildrenVertically = true;
+            сontent.autoLayoutDirection = LayoutDirection.Vertical;
+            сontent.verticalSpacing = 5;
+            сontent.width = parent.width;
+
+            сontent.autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            сontent.padding = new RectOffset(40, 0, 0, 0);
+            сontent.eventComponentAdded += ComponentAdded;
+            сontent.eventSizeChanged += SizeChanged;
+
+            parent.eventSizeChanged += ParentSizeChanged;
+
+            return сontent;
+
+            static void ComponentAdded(UIComponent container, UIComponent child)
+            {
+                if (child is BaseSettingItem item)
+                    item.width = container.width - (container as UIPanel).padding.horizontal;
+            }
+
+            static void SizeChanged(UIComponent component, Vector2 value)
+            {
+                foreach (var child in component.components)
+                {
+                    if (child is BaseSettingItem item)
+                        item.width = component.width - (component as UIPanel).padding.horizontal;
+                }
+            }
+
+            void ParentSizeChanged(UIComponent component, Vector2 value)
+            {
+                сontent.width = component.width;
+            }
+        }
+
+        public static FloatSettingsItem AddFloatField(this UIComponent parent, string label, SavedFloat saved, float? min = null, float? max = null)
+        {
+            var item = parent.AddUIComponent<FloatSettingsItem>();
             item.Label = label;
 
             if (min.HasValue)
@@ -38,9 +119,9 @@ namespace ModsCommon
 
             return item;
         }
-        public static IntSettingsItem AddIntField(UIHelper group, string label, SavedInt saved, int? min = null, int? max = null)
+        public static IntSettingsItem AddIntField(this UIComponent parent, string label, SavedInt saved, int? min = null, int? max = null)
         {
-            var item = (group.self as UIPanel).AddUIComponent<IntSettingsItem>();
+            var item = parent.AddUIComponent<IntSettingsItem>();
             item.Label = label;
 
             if (min.HasValue)
@@ -63,9 +144,9 @@ namespace ModsCommon
 
             return item;
         }
-        public static StringSettingsItem AddStringField(UIHelper group, string label, SavedString saved)
+        public static StringSettingsItem AddStringField(this UIComponent parent, string label, SavedString saved)
         {
-            var item = (group.self as UIPanel).AddUIComponent<StringSettingsItem>();
+            var item = parent.AddUIComponent<StringSettingsItem>();
             item.Label = label;
 
             item.Control.Value = saved;
@@ -79,9 +160,9 @@ namespace ModsCommon
             return item;
         }
 
-        public static LabelSettingsItem AddLabel(UIHelper group, string label, float textScale = 1.125f, Color? color = null)
+        public static LabelSettingsItem AddLabel(this UIComponent parent, string label, float textScale = 1.125f, Color? color = null)
         {
-            var item = (group.self as UIPanel).AddUIComponent<LabelSettingsItem>();
+            var item = parent.AddUIComponent<LabelSettingsItem>();
             item.Label = label;
             item.LabelItem.textScale = textScale;
             item.LabelItem.textColor = color ?? Color.white;
@@ -89,9 +170,9 @@ namespace ModsCommon
             return item;
         }
 
-        public static ToggleSettingsItem AddToggle(UIHelper group, string label, SavedBool saved)
+        public static ToggleSettingsItem AddToggle(this UIComponent parent, string label, SavedBool saved)
         {
-            var item = (group.self as UIPanel).AddUIComponent<ToggleSettingsItem>();
+            var item = parent.AddUIComponent<ToggleSettingsItem>();
             item.Label = label;
 
             item.Control.State = saved;
@@ -104,12 +185,12 @@ namespace ModsCommon
 
             return item;
         }
-        public static OptionPanelWithLabelData AddTogglePanel(UIHelper group, string mainLabel, SavedInt optionsSaved, string[] labels, Action onChanged = null)
+        public static OptionPanelWithLabelData AddTogglePanel(this UIComponent parent, string mainLabel, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
-            var item = (group.self as UIPanel).AddUIComponent<LabelSettingsItem>();
+            var item = parent.AddUIComponent<LabelSettingsItem>();
             item.Label = mainLabel;
 
-            var result = AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged);
+            var result = parent.AddCheckboxPanel(optionsSaved, labels, 0, onChanged);
 
             return new OptionPanelWithLabelData()
             {
@@ -118,14 +199,14 @@ namespace ModsCommon
                 checkBoxes = result.checkBoxes,
             };
         }
-        public static OptionPanelWithMainData AddTogglePanel(UIHelper group, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
+        public static OptionPanelWithMainData AddTogglePanel(this UIComponent parent, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
         {
-            var item = (group.self as UIPanel).AddUIComponent<ToggleSettingsItem>();
+            var item = parent.AddUIComponent<ToggleSettingsItem>();
             item.Label = mainLabel;
 
             item.Control.State = mainSaved;
 
-            var result = AddCheckboxPanel(group, optionsSaved, labels, 0, onChanged);
+            var result = parent.AddCheckboxPanel(optionsSaved, labels, 0, onChanged);
             var optionsPanel = result.panel;
 
             item.Control.OnStateChanged += OnStateChanged;
@@ -146,20 +227,20 @@ namespace ModsCommon
             void SetVisible(bool visible) => optionsPanel.isVisible = visible;
         }
 
-        public static KeymappingSettingsItem AddKeyMappingButton(UIHelper group, Shortcut shortcut)
+        public static KeymappingSettingsItem AddKeyMappingButton(this UIComponent parent, Shortcut shortcut)
         {
-            var item = (group.self as UIPanel).AddUIComponent<KeymappingSettingsItem>();
+            var item = parent.AddUIComponent<KeymappingSettingsItem>();
             item.Shortcut = shortcut;
 
             return item;
         }
 
-        private static OptionPanelData AddCheckboxPanel(UIHelper group, SavedInt optionsSaved, string[] labels, int padding, Action onChanged)
+        private static OptionPanelData AddCheckboxPanel(this UIComponent parent, SavedInt optionsSaved, string[] labels, int padding, Action onChanged)
         {
             var inProcess = false;
             var checkBoxes = new UICheckBox[labels.Length];
 
-            var optionsPanel = AddPanel(group, 25 + padding);
+            var optionsPanel = parent.AddPanel(25 + padding);
             var panelHelper = new UIHelper(optionsPanel);
 
             for (var i = 0; i < checkBoxes.Length; i += 1)
@@ -188,9 +269,9 @@ namespace ModsCommon
                 }
             }
         }
-        private static CustomUIPanel AddPanel(UIHelper group, int padding = 25)
+        private static CustomUIPanel AddPanel(this UIComponent parent, int padding = 25)
         {
-            var optionsPanel = (group.self as UIComponent).AddUIComponent<CustomUIPanel>();
+            var optionsPanel = parent.AddUIComponent<CustomUIPanel>();
             optionsPanel.autoLayout = true;
             optionsPanel.autoLayoutDirection = LayoutDirection.Vertical;
             optionsPanel.autoFitChildrenHorizontally = true;
@@ -199,15 +280,15 @@ namespace ModsCommon
             return optionsPanel;
         }
 
-        public static UIHelper AddButtonPanel(UIHelper group, RectOffset padding, int itemSpacing)
+        public static SettingsContentItem AddButtonPanel(this UIComponent parent, RectOffset padding = null, int itemSpacing = 10, SettingsContentItem.Border border = SettingsContentItem.Border.None)
         {
-            var item = AddHorizontalPanel(group, padding, itemSpacing);
-            item.Borders = SettingsContentItem.Border.None;
-            return new UIHelper(item.Content);
+            var item = parent.AddHorizontalPanel(padding ?? new RectOffset(0, 0, 5, 5), itemSpacing);
+            item.Borders = border;
+            return item;
         }
-        public static CustomUIButton AddButton(UIHelper group, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
+        public static CustomUIButton AddButton(this SettingsContentItem item, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
         {
-            var button = (group.self as UIComponent).AddUIComponent<CustomUIButton>();
+            var button = item.Content.AddUIComponent<CustomUIButton>();
             button.text = text;
             if (click != null)
                 button.eventClick += (_, _) => click();
@@ -223,16 +304,16 @@ namespace ModsCommon
             return button;
         }
 
-        public static SettingsContentItem AddHorizontalPanel(UIHelper helper, RectOffset padding, int itemSpacing)
+        public static SettingsContentItem AddHorizontalPanel(this UIComponent parent, RectOffset padding, int itemSpacing)
         {
-            var optionsPanel = (helper.self as UIComponent).AddUIComponent<SettingsContentItem>();
+            var optionsPanel = parent.AddUIComponent<SettingsContentItem>();
             optionsPanel.padding = padding;
             optionsPanel.Content.autoLayoutPadding = new RectOffset(0, itemSpacing, 0, 0);
             return optionsPanel;
         }
-        public static EmptySpaceSettingsItem AddSpace(UIHelper group, float height)
+        public static EmptySpaceSettingsItem AddSpace(this UIComponent parent, float height)
         {
-            var item = (group.self as UIPanel).AddUIComponent<EmptySpaceSettingsItem>();
+            var item = parent.AddUIComponent<EmptySpaceSettingsItem>();
             item.height = height;
 
             return item;
@@ -340,101 +421,5 @@ namespace ModsCommon
                 protected override float DefaultEntityHeight => 34f;
             }
         }
-    }
-    public class UIAdvancedHelper : UIHelper, IEnumerable<UIHelper>
-    {
-        private static UIDynamicFont SemiBoldFont { get; }
-        private List<UIHelper> Groups { get; } = new List<UIHelper>();
-        public UIAutoLayoutScrollablePanel Content => self as UIAutoLayoutScrollablePanel;
-        public UIAdvancedHelper(UIAutoLayoutScrollablePanel panel) : base(panel) { }
-
-        static UIAdvancedHelper()
-        {
-            var panel = UITemplateManager.Get<UIPanel>("OptionsGroupTemplate");
-            SemiBoldFont = panel.Find<UILabel>("Label").font as UIDynamicFont;
-            GameObject.Destroy(panel);
-        }
-
-        public new UIHelper AddGroup(string name = null) => AddGroup(out _, name);
-        public UIHelper AddGroup(out UILabel label, string name = null)
-        {
-            var group = AddGroupBase(out label, name);
-            var content = group.self as CustomUIPanel;
-
-            content.autoLayoutPadding = new RectOffset(0, 0, 0, 5);
-            content.padding = new RectOffset(14, 14, 0, 0);
-            content.verticalSpacing = 10;
-
-            return group;
-        }
-
-        public UIHelper AddOptionsGroup(string name = null) => AddOptionsGroup(out _, name);
-        public UIHelper AddOptionsGroup(out UILabel label, string name = null)
-        {
-            var group = AddGroupBase(out label, name);
-            var content = group.self as CustomUIPanel;
-
-            content.autoLayoutPadding = new RectOffset(0, 0, 0, 0);
-            content.padding = new RectOffset(40, 0, 0, 0);
-            content.eventComponentAdded += ComponentAdded;
-            content.eventSizeChanged += SizeChanged;
-
-            return group;
-
-            static void ComponentAdded(UIComponent container, UIComponent child)
-            {
-                if (child is SettingsContentItem item)
-                    item.width = container.width - (container as UIPanel).padding.horizontal;
-            }
-            static void SizeChanged(UIComponent component, Vector2 value)
-            {
-                foreach (var child in component.components)
-                {
-                    if (child is SettingsContentItem item)
-                        item.width = component.width - (component as UIPanel).padding.horizontal;
-                }
-            }
-        }
-
-        private UIHelper AddGroupBase(out UILabel label, string name = null)
-        {
-            var panel = Content.AddUIComponent<CustomUIPanel>();
-            panel.width = 738f;
-            panel.autoLayout = true;
-            panel.autoFitChildrenVertically = true;
-            panel.autoLayoutDirection = LayoutDirection.Vertical;
-            panel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
-
-            panel.atlas = CommonTextures.Atlas;
-            panel.backgroundSprite = CommonTextures.PanelBig;
-            panel.color = new Color32(20, 25, 38, 255);
-
-            label = panel.AddUIComponent<CustomUILabel>();
-            label.name = "Title";
-            label.font = SemiBoldFont;
-            label.textScale = 1.3f;
-            label.padding = new RectOffset(12, 0, 12, 0);
-            if (!string.IsNullOrEmpty(name))
-                label.text = name;
-            else
-                label.isVisible = false;
-
-            var content = panel.AddUIComponent<CustomUIPanel>();
-            content.name = "Content";
-            content.autoLayout = true;
-            content.autoFitChildrenVertically = true;
-            content.autoLayoutDirection = LayoutDirection.Vertical;
-            content.verticalSpacing = 5;
-            content.width = 738f;
-
-
-            var group = new UIHelper(content);
-            Groups.Add(group);
-
-            return group;
-        }
-
-        public IEnumerator<UIHelper> GetEnumerator() => Groups.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

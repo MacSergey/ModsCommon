@@ -5,7 +5,8 @@ using ModsCommon.Utilities;
 using System;
 using System.Linq;
 using UnifiedUI.Helpers;
-using static ModsCommon.SettingsHelper;
+using ModsCommon.Settings;
+using static ModsCommon.Settings.Helper;
 
 namespace ModsCommon
 {
@@ -91,6 +92,10 @@ namespace ModsCommon
             isVisible = BaseSettings<TypeMod>.IsToolbarButtonVisible<TypeTool>();
         }
     }
+}
+
+namespace ModsCommon.Settings
+{  
     public abstract partial class BaseSettings<TypeMod>
         where TypeMod : ICustomMod
     {
@@ -99,12 +104,12 @@ namespace ModsCommon
         public static bool IsToolbarButtonVisible<TypeTool>() where TypeTool : IUUITool
             => ToolButtonVisible != (int)ButtonVisible.OnlyUUI || !SingletonTool<TypeTool>.Instance.UUIRegistered;
 
-        public static void AddToolButton<TypeTool, TypeButton>(UIHelper group)
+        public static void AddToolButton<TypeTool, TypeButton>(UIComponent group)
             where TypeTool : ToolBase, IUUITool
             where TypeButton : UUINetToolButton<TypeMod, TypeTool>
         {
             if (BaseTool<TypeMod, TypeTool>.IsUUIEnabled)
-                AddTogglePanel(group, CommonLocalize.Settings_ToolButton, ToolButtonVisible, new string[] { CommonLocalize.Settings_ToolButtonOnlyToolbar, CommonLocalize.Settings_ToolButtonOnlyUUI, CommonLocalize.Settings_ToolButtonBoth }, OnButtonVisibleChanged);
+                group.AddTogglePanel(CommonLocalize.Settings_ToolButton, ToolButtonVisible, new string[] { CommonLocalize.Settings_ToolButtonOnlyToolbar, CommonLocalize.Settings_ToolButtonOnlyUUI, CommonLocalize.Settings_ToolButtonBoth }, OnButtonVisibleChanged);
 
             static void OnButtonVisibleChanged()
             {

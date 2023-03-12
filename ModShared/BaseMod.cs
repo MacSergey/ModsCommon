@@ -3,6 +3,7 @@ using ColossalFramework.Globalization;
 using ICities;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
+using ModsCommon.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -208,7 +209,7 @@ namespace ModsCommon
                 if (LocaleManager.exists)
                     locale = LocaleManager.instance.language;
                 else
-                    locale = new SavedString(Settings.localeID, Settings.gameSettingsFile, DefaultSettings.localeID).value;
+                    locale = new SavedString(global::Settings.localeID, global::Settings.gameSettingsFile, DefaultSettings.localeID).value;
             }
 
             if (!LocalizeExtension.TryGetCulture(locale, out var culture))

@@ -88,7 +88,7 @@ namespace ModsCommon
         public virtual void RenderOverlay(RenderManager.CameraInfo cameraInfo) { }
         public virtual void RenderGeometry(RenderManager.CameraInfo cameraInfo) { }
 
-        private SavedFloat LightIntensity = new SavedFloat(Settings.mouseLightIntensity, Settings.gameSettingsFile, DefaultSettings.mouseLightIntensity, autoUpdate: true);
+        private SavedFloat LightIntensity = new SavedFloat(global::Settings.mouseLightIntensity, global::Settings.gameSettingsFile, DefaultSettings.mouseLightIntensity, autoUpdate: true);
         protected void RenderLight(RenderManager.CameraInfo cameraInfo)
         {
             if (Singleton<InfoManager>.instance.CurrentMode == InfoManager.InfoMode.None && Tool.MouseRayValid)
