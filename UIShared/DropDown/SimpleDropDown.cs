@@ -49,7 +49,11 @@ namespace ModsCommon.UI
         public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, (OptionData)item.ToString()));
         public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, (OptionData)label));
         public virtual void AddItem(ValueType item, OptionData optionData) => AddItem(new DropDownItem<ValueType>(item, optionData));
-        protected override void SelectObject(DropDownItem<ValueType> item) => OnSelectObject?.Invoke(item.value);
+        protected override void SelectObject(DropDownItem<ValueType> item)
+        {
+            base.SelectObject(item);
+            OnSelectObject?.Invoke(item.value);
+        }
         protected override void SetPopupStyle() => Popup.PopupDefaultStyle();
         protected override void InitPopup()
         {

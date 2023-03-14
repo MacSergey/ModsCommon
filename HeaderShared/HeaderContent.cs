@@ -46,9 +46,11 @@ namespace ModsCommon.UI
 
             Additional = AddUIComponent<AdditionalHeaderButton>();
             Additional.tooltip = CommonLocalize.Panel_Additional;
-            Additional.Init(AdditionalButtonAtlas, AdditionalButtonSprite, MainButtonSize, MainIconSize);
-            Additional.PopupOpenedEvent += OnPopupOpened;
-            Additional.PopupCloseEvent += OnPopupClose;
+            Additional.SetIcon(AdditionalButtonAtlas, AdditionalButtonSprite);
+            Additional.SetSize(MainButtonSize, MainIconSize);
+
+            Additional.OnPopupOpening += PopupOpening;
+            Additional.OnBeforePopupClose += BeforePopupClose;
             SetButtonColors(Additional);
 
             Refresh();
@@ -60,7 +62,7 @@ namespace ModsCommon.UI
             if (refresh)
                 Refresh();
         }
-        private void OnPopupOpened(AdditionalHeaderButton.AdditionalPopup popup)
+        private void PopupOpening(AdditionalHeaderButton.AdditionalPopup popup)
         {
             foreach (var info in AdditionalInfos)
             {
@@ -72,9 +74,9 @@ namespace ModsCommon.UI
             }
 
             var maxwidth = AdditionalInfos.Max(i => i.Button.width);
-            popup.Width = maxwidth;
+            popup.PopupWidth = maxwidth;
         }
-        private void OnPopupClose(AdditionalHeaderButton.AdditionalPopup popup)
+        private void BeforePopupClose(AdditionalHeaderButton.AdditionalPopup popup)
         {
             foreach (var info in AdditionalInfos)
             {

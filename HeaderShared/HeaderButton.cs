@@ -7,11 +7,12 @@ namespace ModsCommon.UI
 {
     public interface IHeaderButton
     {
-        void SetIcon(UITextureAtlas atlas, string sprite);
         bool autoSize { get; set; }
         float height { get; set; }
         float width { get; set; }
 
+
+        void SetIcon(UITextureAtlas atlas, string sprite);
         void SetSize(int buttonSize, int iconSize);
         void SetBgColor(ColorSet colors);
         void SetFgColor(ColorSet colors);

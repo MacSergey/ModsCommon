@@ -2,7 +2,6 @@
 using ModsCommon.Utilities;
 using System;
 using UnityEngine;
-using static ColossalFramework.UI.UIDropDown;
 
 namespace ModsCommon.UI
 {
@@ -71,51 +70,6 @@ namespace ModsCommon.UI
         #endregion
 
         #region DROPDOWN
-
-        //[Obsolete]
-        //public static void DefaultStyle(this CustomUIDropDown dropDown, Vector2? size = null)
-        //{
-        //    dropDown.atlasBackground = CommonTextures.Atlas;
-        //    dropDown.normalBgSprite = CommonTextures.FieldSingle;
-        //    dropDown.hoveredBgSprite = CommonTextures.FieldSingle;
-        //    dropDown.disabledBgSprite = CommonTextures.FieldSingle;
-        //    dropDown.color = FieldNormalColor;
-        //    dropDown.hoveredBgColor = FieldHoveredColor;
-        //    dropDown.disabledBgColor = FieldDisabledColor;
-
-        //    dropDown.atlasForeground = TextureHelper.InGameAtlas;
-        //    dropDown.normalFgSprite = "IconDownArrow";
-        //    dropDown.hoveredFgSprite = "IconDownArrowHovered";
-        //    dropDown.focusedFgSprite = "IconDownArrow";
-        //    dropDown.disabledFgSprite = "IconDownArrowDisabled";
-
-        //    dropDown.atlas = CommonTextures.Atlas;
-        //    dropDown.listBackground = CommonTextures.FieldHovered;
-        //    dropDown.itemHover = CommonTextures.FieldNormal;
-        //    dropDown.itemHighlight = CommonTextures.FieldFocused;
-
-        //    dropDown.itemHeight = 20;
-        //    dropDown.listHeight = 700;
-        //    dropDown.listPosition = PopupListPosition.Below;
-        //    dropDown.clampListToScreen = true;
-        //    dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
-        //    dropDown.itemPadding = new RectOffset(14, 0, 5, 0);
-
-        //    dropDown.popupColor = Color.white;
-        //    dropDown.popupTextColor = Color.black;
-
-        //    dropDown.textScale = 0.7f;
-        //    dropDown.textFieldPadding = new RectOffset(8, 0, 6, 0);
-        //    dropDown.verticalAlignment = UIVerticalAlignment.Middle;
-        //    dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
-        //    dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-        //    dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
-        //    dropDown.verticalAlignment = UIVerticalAlignment.Middle;
-
-        //    dropDown.triggerButton = dropDown;
-
-        //    dropDown.size = size ?? new Vector2(230, 20);
-        //}
 
         public static void DropDownDefaultStyle<ObjectType, PopupType, EntityType>(this SelectItemDropDown<ObjectType, EntityType, PopupType> dropDown, Vector2? size = null)
             where PopupType : CustomUIPanel, IPopup<ObjectType, EntityType>

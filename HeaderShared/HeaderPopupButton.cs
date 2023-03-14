@@ -6,122 +6,59 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class BaseHeaderPopupButton<PopupType> : HeaderButton
+    public abstract class BaseHeaderPopupButton<PopupType> : BaseDropDown<PopupType>, IHeaderButton
         where PopupType : UIComponent
     {
-        public event Action PopupOpenEvent;
-        public event Action<PopupType> PopupOpenedEvent;
-        public event Action<PopupType> PopupCloseEvent;
-        public event Action PopupClosedEvent;
-        public PopupType Popup { get; private set; }
-
-        public override void Update()
+        public BaseHeaderPopupButton()
         {
-            base.Update();
-            CheckPopup();
+            atlasBackground = CommonTextures.Atlas;
+            SetBgSprite(new UI.SpriteSet(string.Empty, CommonTextures.HeaderHover, CommonTextures.HeaderHover, CommonTextures.HeaderHover, string.Empty));
+
+            clipChildren = true;
+            textScale = 0.8f;
+            textHorizontalAlignment = UIHorizontalAlignment.Left;
+            foregroundSpriteMode = UIForegroundSpriteMode.Fill;
         }
 
+        protected override void WhilePopupClosing()
+        {
+            foreach (var items in Popup.components.ToArray())
+                ComponentPool.Free(items);
+        }
+
+        public void SetIcon(UITextureAtlas atlas, string sprite)
+        {
+            atlasForeground = atlas ?? TextureHelper.InGameAtlas;
+            SetFgSprite(new UI.SpriteSet(sprite));
+        }
+
+        public void SetSize(int buttonSize, int iconSize)
+        {
+            size = new Vector2(buttonSize, buttonSize);
+            minimumSize = size;
+            textPadding = new RectOffset(iconSize + 5, 5, 5, 0);
+        }
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+            if (state == ButtonState.Focused)
+                state = ButtonState.Normal;
+        }
+        public virtual void DeInit()
+        {
+            SetIcon(null, string.Empty);
+        }
         protected override void OnClick(UIMouseEventParameter p)
         {
-            if (Popup == null)
-                OpenPopup();
-            else
-                ClosePopup();
-        }
-
-        protected void OpenPopup()
-        {
-            OnPopupOpen();
-
-            var root = GetRootContainer();
-            Popup = root.AddUIComponent<PopupType>();
-            Popup.eventLeaveFocus += OnPopupLeaveFocus;
-            Popup.eventKeyDown += OnPopupKeyDown;
-            Popup.Focus();
-
-            OnPopupOpened();
-
-            SetPopupPosition();
-            Popup.parent.eventPositionChanged += SetPopupPosition;
-        }
-        public virtual void ClosePopup()
-        {
-            if (Popup != null)
-            {
-                OnPopupClose();
-
-                Popup.eventLeaveFocus -= OnPopupLeaveFocus;
-                Popup.eventKeyDown -= OnPopupKeyDown;
-
-                foreach (var items in Popup.components.ToArray())
-                    ComponentPool.Free(items);
-
-                ComponentPool.Free(Popup);
-                Popup = null;
-
-                OnPopupClosed();
-            }
-        }
-        private void CheckPopup()
-        {
-            if (Popup == null)
-                return;
-
-            if (!Popup.containsFocus && !containsFocus)
-            {
-                ClosePopup();
-                return;
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                var ray = GetCamera().ScreenPointToRay(Input.mousePosition);
-                if (!Popup.Raycast(ray) && !Raycast(ray))
-                {
-                    ClosePopup();
-                    return;
-                }
-            }
-        }
-
-        protected virtual void OnPopupOpen() => PopupOpenEvent?.Invoke();
-        protected virtual void OnPopupOpened() => PopupOpenedEvent?.Invoke(Popup);
-        protected virtual void OnPopupClose() => PopupCloseEvent?.Invoke(Popup);
-        protected virtual void OnPopupClosed() => PopupClosedEvent?.Invoke();
-
-        private void OnPopupLeaveFocus(UIComponent component, UIFocusEventParameter eventParam) => CheckPopup();
-
-        private void OnPopupKeyDown(UIComponent component, UIKeyEventParameter p)
-        {
-            if (p.keycode == KeyCode.Escape)
-            {
-                ClosePopup();
-                p.Use();
-            }
-        }
-
-        private void SetPopupPosition(UIComponent component = null, Vector2 value = default)
-        {
-            if (Popup != null)
-            {
-                UIView uiView = Popup.GetUIView();
-                var screen = uiView.GetScreenResolution();
-                var position = absolutePosition + new Vector3(0, height);
-                position.x = MathPos(position.x, Popup.width, screen.x);
-                position.y = MathPos(position.y, Popup.height, screen.y);
-
-                Popup.relativePosition = position - Popup.parent.absolutePosition;
-            }
-
-            static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);
+            p.Use();
+            base.OnClick(p);
         }
     }
     public abstract class HeaderPopupButton<PopupType> : BaseHeaderPopupButton<PopupType>
         where PopupType : PopupPanel
     {
-        protected override void OnPopupOpened()
+        protected override void WhilePopupOpening()
         {
-            base.OnPopupOpened();
             Popup.Refresh();
         }
     }
@@ -140,10 +77,8 @@ namespace ModsCommon.UI
             Items = items;
         }
 
-        protected override void OnPopupOpened()
+        protected override void WhilePopupOpening()
         {
-            base.OnPopupOpened();
-
             Popup.atlas = CommonTextures.Atlas;
             Popup.normalBgSprite = CommonTextures.FieldHovered;
             Popup.itemHeight = 20;

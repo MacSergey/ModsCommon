@@ -10,13 +10,13 @@ namespace ModsCommon.UI
         public CustomUIScrollablePanel Content { get; private set; }
         private float Padding => 2f;
 
-        private float _width = 250f;
-        public float Width
+        private float popupWidth = 250f;
+        public float PopupWidth
         {
-            get => _width;
+            get => popupWidth;
             set
             {
-                _width = value;
+                popupWidth = value;
                 Refresh();
             }
         }
@@ -54,14 +54,14 @@ namespace ModsCommon.UI
         public void Refresh()
         {
             Content.FitChildrenVertically();
-            Content.width = Content.verticalScrollbar.isVisible ? Width - Content.verticalScrollbar.width : Width;
+            Content.width = Content.verticalScrollbar.isVisible ? PopupWidth - Content.verticalScrollbar.width : PopupWidth;
             ContentSizeChanged();
         }
         private void ContentSizeChanged(UIComponent component = null, Vector2 value = default)
         {
             if (Content != null)
             {
-                size = new Vector2(Width + Padding * 2, Content.height + Padding * 2);
+                size = new Vector2(PopupWidth + Padding * 2, Content.height + Padding * 2);
 
                 foreach (var item in Content.components)
                     item.width = Content.width;

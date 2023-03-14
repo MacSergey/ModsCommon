@@ -49,12 +49,8 @@ namespace ModsCommon.UI
         #region PROPERTIES
 
         public event Action<ObjectType> OnSelectObject;
-        public event Action<PopupType> OnPopupOpen;
-        public event Action<PopupType> OnPopupClose;
         public event PopupStyleDelegate<ObjectType, EntityType, PopupType> OnSetPopupStyle;
         public event EntityStyleDelegate<ObjectType, EntityType> OnSetEntityStyle;
-
-        public PopupType Popup { get; private set; }
 
         public Func<ObjectType, ObjectType, bool> IsEqualDelegate { get; set; }
 
@@ -64,34 +60,28 @@ namespace ModsCommon.UI
 
         #region POPUP
 
-        public override void Update()
-        {
-            base.Update();
-            OnUpdate();
-        }
-        protected virtual void OnUpdate() => CheckPopup();
-        protected override void OnClick(UIMouseEventParameter p)
-        {
-            base.OnClick(p);
+        protected abstract IEnumerable<ObjectType> Objects { get; }
+        protected abstract Func<ObjectType, bool> Selector { get; }
+        protected abstract Func<ObjectType, ObjectType, int> Sorter { get; }
 
-            if (Popup == null)
-                OpenPopup();
-            else
-                ClosePopup();
-        }
+        protected virtual void SetPopupStyle() { }
+        protected virtual void SetEntityStyle(EntityType entity, ref bool overridden) => OnSetEntityStyle?.Invoke(entity, ref overridden);
 
-        protected void OpenPopup()
+        protected virtual void InitPopup() => Popup.Init(Objects, Selector, Sorter);
+
+        protected override void OpenPopup()
         {
             isInteractive = false;
-
-            var root = GetRootContainer();
-            Popup = root.AddUIComponent<PopupType>();
-            Popup.canFocus = true;
-            Popup.IsEqualDelegate = IsEqualDelegate;
-            Popup.eventSizeChanged += OnPopupSizeChanged;
-            Popup.eventKeyDown += OnPopupKeyDown;
-            Popup.eventLeaveFocus += OnPopupLeaveFocus;
-            Popup.OnSelect += OnSelect;
+            base.OpenPopup();
+        }
+        public override void ClosePopup()
+        {
+            isInteractive = true;
+            base.ClosePopup();
+        }
+        protected override void WhilePopupOpening()
+        {
+            base.WhilePopupOpening();
 
             Popup.StopRefresh();
             {
@@ -101,94 +91,26 @@ namespace ModsCommon.UI
                     SetPopupStyle();
 
                 InitPopup();
-
-                SetPopupPosition();
-                Popup.parent.eventPositionChanged += SetPopupPosition;
-
-                PopupOpening();
-                OnPopupOpen?.Invoke(Popup);
-
-                Popup.Focus();
             }
             Popup.StartRefresh();
         }
-
-        protected abstract IEnumerable<ObjectType> Objects { get; }
-        protected abstract Func<ObjectType, bool> Selector { get; }
-        protected abstract Func<ObjectType, ObjectType, int> Sorter { get; }
-
-        protected virtual void SetPopupStyle() { }
-        protected virtual void SetEntityStyle(EntityType entity, ref bool overridden) => OnSetEntityStyle?.Invoke(entity, ref overridden);
-
-        protected virtual void InitPopup() => Popup.Init(Objects, Selector, Sorter);
-        protected virtual void PopupOpening() { }
-
-        public virtual void ClosePopup()
+        protected override void SetPopupProperties()
         {
-            isInteractive = true;
-
-            if (Popup != null)
-            {
-                PopupClosing();
-                OnPopupClose?.Invoke(Popup);
-
-                Popup.eventLeaveFocus -= OnPopupLeaveFocus;
-                Popup.eventKeyDown -= OnPopupKeyDown;
-
-                ComponentPool.Free(Popup);
-                Popup = null;
-            }
+            base.SetPopupProperties();
+            Popup.IsEqualDelegate = IsEqualDelegate;
         }
-        protected virtual void PopupClosing() { }
-
-        private void CheckPopup()
+        protected override void AddPopupEventHandlers()
         {
-            if (Popup == null)
-                return;
-
-            if (!Popup.containsFocus)
-            {
-                ClosePopup();
-                return;
-            }
-
-            if (Input.GetMouseButtonDown(0) && !Popup.Raycast(GetCamera().ScreenPointToRay(Input.mousePosition)))
-            {
-                ClosePopup();
-                return;
-            }
+            base.AddPopupEventHandlers();
+            Popup.OnSelect += Select;
+            Popup.OnSetEntityStyle += SetEntityStyle;
         }
-        private void OnSelect(ObjectType value)
+
+        private void Select(ObjectType value)
         {
             SelectObject(value);
             ClosePopup();
-        }
-        private void OnPopupLeaveFocus(UIComponent component, UIFocusEventParameter eventParam) => CheckPopup();
-        private void OnPopupKeyDown(UIComponent component, UIKeyEventParameter p)
-        {
-            if (p.keycode == KeyCode.Escape)
-            {
-                ClosePopup();
-                p.Use();
-            }
-        }
-        private void OnPopupSizeChanged(UIComponent component, Vector2 value) => SetPopupPosition();
-
-        private void SetPopupPosition(UIComponent component = null, Vector2 value = default)
-        {
-            if (Popup != null)
-            {
-                UIView uiView = Popup.GetUIView();
-                var screen = uiView.GetScreenResolution();
-                var position = absolutePosition + new Vector3(0, height);
-                position.x = MathPos(position.x, Popup.width, screen.x);
-                position.y = MathPos(position.y, Popup.height, screen.y);
-
-                Popup.relativePosition = position - Popup.parent.absolutePosition;
-            }
-
-            static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);
-        }
+        }        
 
         #endregion
     }
