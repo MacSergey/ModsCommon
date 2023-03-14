@@ -175,6 +175,14 @@ namespace ModsCommon.Settings
 
             return item;
         }
+        public static LabelSettingsItem AddInfoLabel(this UIComponent parent, string label, float textScale = 1.125f, Color? color = null)
+        {
+            var item = parent.AddLabel(label, textScale, color);
+            item.Borders = SettingsContentItem.Border.None;
+            item.paddingTop = 0;
+
+            return item;
+        }
 
         public static ToggleSettingsItem AddToggle(this UIComponent parent, string label, SavedBool saved, Action<bool> onStateChanged = null)
         {
