@@ -242,7 +242,7 @@ namespace ModsCommon.Settings
             if (status == ModStatus.Unknown)
                 statusText = ModStatus.Unknown.Description<ModStatus, TypeMod>().AddColor(new Color32(255, 215, 81, 255));
             else if (status == ModStatus.Normal)
-                statusText = ModStatus.Normal.Description<ModStatus, TypeMod>().AddColor(new Color32(65, 229, 107, 255));
+                statusText = ModStatus.Normal.Description<ModStatus, TypeMod>().AddColor(ComponentStyle.NormalGreen);
             else
             {
                 status &= ModStatus.WithErrors;

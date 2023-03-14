@@ -69,16 +69,6 @@ namespace ModsCommon.UI
 
         protected virtual void InitPopup() => Popup.Init(Objects, Selector, Sorter);
 
-        protected override void OpenPopup()
-        {
-            isInteractive = false;
-            base.OpenPopup();
-        }
-        public override void ClosePopup()
-        {
-            isInteractive = true;
-            base.ClosePopup();
-        }
         protected override void WhilePopupOpening()
         {
             base.WhilePopupOpening();

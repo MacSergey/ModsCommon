@@ -17,7 +17,7 @@ namespace ModsCommon.UI
         }
         private bool Move { get; set; }
 
-        private CustomUILabel Caption { get; set; }
+        protected CustomUILabel Caption { get; private set; }
         public UIComponent Target { get; set; }
         private Vector3 LastPosition { get; set; }
 
@@ -29,7 +29,14 @@ namespace ModsCommon.UI
 
         public HeaderMoveablePanel()
         {
-            CreateCaption();
+            Caption = AddUIComponent<CustomUILabel>();
+            Caption.zOrder = 0;
+            Caption.autoSize = false;
+            Caption.autoHeight = true;
+            Caption.padding.top = 5;
+            Caption.textAlignment = UIHorizontalAlignment.Center;
+            Caption.verticalAlignment = UIVerticalAlignment.Middle;
+            Caption.eventSizeChanged += (_, _) => CaptionSizeChanged();
         }
         protected override void Init(float? height)
         {
@@ -53,18 +60,6 @@ namespace ModsCommon.UI
                 else
                     size = new Vector2(200f, 25f);
             }
-        }
-
-        private void CreateCaption()
-        {
-            Caption = AddUIComponent<CustomUILabel>();
-            Caption.zOrder = 0;
-            Caption.autoSize = false;
-            Caption.autoHeight = true;
-            Caption.padding.top = 5;
-            Caption.textAlignment = UIHorizontalAlignment.Center;
-            Caption.verticalAlignment = UIVerticalAlignment.Middle;
-            Caption.eventSizeChanged += (_, _) => CaptionSizeChanged();
         }
 
         private void CaptionSizeChanged() => Caption.relativePosition = new Vector2(10, (height - Caption.height) / 2);

@@ -140,8 +140,8 @@ namespace ModsCommon.UI
     {
         protected override Color32 ButtonHoveredColor => new Color32(32, 32, 32, 255);
         protected override Color32 ButtonPressedColor => Color.black;
-        protected override Color32 AdditionalButtonHoveredColor => new Color32(32, 32, 32, 255);
-        protected override Color32 AdditionalButtonPressedColor => Color.black;
+        protected override Color32 AdditionalButtonHoveredColor => new Color32(112, 112, 112, 255);
+        protected override Color32 AdditionalButtonPressedColor => new Color32(112, 112, 112, 255);
 
         protected override Color32 IconNormalColor => Color.white;
         protected override Color32 IconHoverColor => Color.white;
@@ -154,7 +154,7 @@ namespace ModsCommon.UI
         protected override Color32 ButtonHoveredColor => new Color32(112, 112, 112, 255);
         protected override Color32 ButtonPressedColor => new Color32(144, 144, 144, 255);
         protected override Color32 AdditionalButtonHoveredColor => new Color32(112, 112, 112, 255);
-        protected override Color32 AdditionalButtonPressedColor => new Color32(144, 144, 144, 255);
+        protected override Color32 AdditionalButtonPressedColor => new Color32(112, 112, 112, 255);
 
         protected override Color32 IconNormalColor => Color.white;
         protected override Color32 IconHoverColor => Color.white;

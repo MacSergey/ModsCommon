@@ -46,6 +46,11 @@ namespace ModsCommon.UI
             set => IsEqualDelegate = (x, y) => value(x.value, y.value);
         }
 
+        public SimpleDropDown() : base()
+        {
+            Entity.textScale = EntityTextScale;
+        }
+
         public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, (OptionData)item.ToString()));
         public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, (OptionData)label));
         public virtual void AddItem(ValueType item, OptionData optionData) => AddItem(new DropDownItem<ValueType>(item, optionData));

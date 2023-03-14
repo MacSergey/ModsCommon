@@ -36,6 +36,8 @@ namespace ModsCommon.UI
 
         protected virtual void OpenPopup()
         {
+            isInteractive = false;
+
             BeforePopupOpen();
             OnBeforePopupOpen?.Invoke();
 
@@ -66,6 +68,8 @@ namespace ModsCommon.UI
         }
         public virtual void ClosePopup()
         {
+            isInteractive = true;
+
             if (Popup != null)
             {
                 BeforePopupClose();
@@ -93,7 +97,7 @@ namespace ModsCommon.UI
         protected virtual void WhilePopupClosing() { }
         protected virtual void AfterPopupClose() { }
 
-        private void CheckPopup()
+        protected virtual void CheckPopup()
         {
             if (Popup == null)
                 return;
@@ -111,8 +115,8 @@ namespace ModsCommon.UI
             }
         }
 
-        private void OnPopupLeaveFocus(UIComponent component, UIFocusEventParameter eventParam) => CheckPopup();
-        private void OnPopupKeyDown(UIComponent component, UIKeyEventParameter p)
+        protected virtual void OnPopupLeaveFocus(UIComponent component, UIFocusEventParameter eventParam) => CheckPopup();
+        protected virtual void OnPopupKeyDown(UIComponent component, UIKeyEventParameter p)
         {
             if (p.keycode == KeyCode.Escape)
             {
@@ -120,9 +124,9 @@ namespace ModsCommon.UI
                 p.Use();
             }
         }
-        private void OnPopupSizeChanged(UIComponent component, Vector2 value) => SetPopupPosition();
+        protected virtual void OnPopupSizeChanged(UIComponent component, Vector2 value) => SetPopupPosition();
 
-        private void SetPopupPosition(UIComponent component = null, Vector2 value = default)
+        protected virtual void SetPopupPosition(UIComponent component = null, Vector2 value = default)
         {
             if (Popup != null)
             {
