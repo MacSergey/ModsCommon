@@ -111,7 +111,7 @@ namespace ModsCommon.Settings
             if (BaseTool<TypeMod, TypeTool>.IsUUIEnabled)
                 group.AddTogglePanel(CommonLocalize.Settings_ToolButton, ToolButtonVisible, new string[] { CommonLocalize.Settings_ToolButtonOnlyToolbar, CommonLocalize.Settings_ToolButtonOnlyUUI, CommonLocalize.Settings_ToolButtonBoth }, OnButtonVisibleChanged);
 
-            static void OnButtonVisibleChanged()
+            static void OnButtonVisibleChanged(int value)
             {
                 foreach (var button in UIView.GetAView().GetComponentsInChildren<TypeButton>())
                     button.isVisible = IsToolbarButtonVisible<TypeTool>();

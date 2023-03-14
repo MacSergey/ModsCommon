@@ -94,7 +94,7 @@ namespace ModsCommon.Settings
             }
         }
 
-        public static FloatSettingsItem AddFloatField(this UIComponent parent, string label, SavedFloat saved, float? min = null, float? max = null)
+        public static FloatSettingsItem AddFloatField(this UIComponent parent, string label, SavedFloat saved, float? min = null, float? max = null, Action<float> onValueChanged = null)
         {
             var item = parent.AddUIComponent<FloatSettingsItem>();
             item.Label = label;
@@ -111,6 +111,8 @@ namespace ModsCommon.Settings
             }
             item.Control.Value = saved;
             item.Control.OnValueChanged += OnValueChanged;
+            if (onValueChanged != null)
+                item.Control.OnValueChanged += onValueChanged;
 
             void OnValueChanged(float value)
             {
@@ -119,7 +121,7 @@ namespace ModsCommon.Settings
 
             return item;
         }
-        public static IntSettingsItem AddIntField(this UIComponent parent, string label, SavedInt saved, int? min = null, int? max = null)
+        public static IntSettingsItem AddIntField(this UIComponent parent, string label, SavedInt saved, int? min = null, int? max = null, Action<int> onValueChanged = null)
         {
             var item = parent.AddUIComponent<IntSettingsItem>();
             item.Label = label;
@@ -136,6 +138,8 @@ namespace ModsCommon.Settings
             }
             item.Control.Value = saved;
             item.Control.OnValueChanged += OnValueChanged;
+            if (onValueChanged != null)
+                item.Control.OnValueChanged += onValueChanged;
 
             void OnValueChanged(int value)
             {
@@ -144,13 +148,15 @@ namespace ModsCommon.Settings
 
             return item;
         }
-        public static StringSettingsItem AddStringField(this UIComponent parent, string label, SavedString saved)
+        public static StringSettingsItem AddStringField(this UIComponent parent, string label, SavedString saved, Action<string> onValueChanged = null)
         {
             var item = parent.AddUIComponent<StringSettingsItem>();
             item.Label = label;
 
             item.Control.Value = saved;
             item.Control.OnValueChanged += OnValueChanged;
+            if (onValueChanged != null)
+                item.Control.OnValueChanged += onValueChanged;
 
             void OnValueChanged(string value)
             {
@@ -170,13 +176,15 @@ namespace ModsCommon.Settings
             return item;
         }
 
-        public static ToggleSettingsItem AddToggle(this UIComponent parent, string label, SavedBool saved)
+        public static ToggleSettingsItem AddToggle(this UIComponent parent, string label, SavedBool saved, Action<bool> onStateChanged = null)
         {
             var item = parent.AddUIComponent<ToggleSettingsItem>();
             item.Label = label;
 
             item.Control.State = saved;
             item.Control.OnStateChanged += OnStateChanged;
+            if (onStateChanged != null)
+                item.Control.OnStateChanged += onStateChanged;
 
             void OnStateChanged(bool value)
             {
@@ -185,12 +193,12 @@ namespace ModsCommon.Settings
 
             return item;
         }
-        public static OptionPanelWithLabelData AddTogglePanel(this UIComponent parent, string mainLabel, SavedInt optionsSaved, string[] labels, Action onChanged = null)
+        public static OptionPanelWithLabelData AddTogglePanel(this UIComponent parent, string mainLabel, SavedInt optionsSaved, string[] labels, Action<int> onValueChanged = null)
         {
             var item = parent.AddUIComponent<LabelSettingsItem>();
             item.Label = mainLabel;
 
-            var result = parent.AddCheckboxPanel(optionsSaved, labels, 0, onChanged);
+            var result = parent.AddCheckboxPanel(optionsSaved, labels, 0, onValueChanged);
 
             return new OptionPanelWithLabelData()
             {
@@ -199,17 +207,20 @@ namespace ModsCommon.Settings
                 checkBoxes = result.checkBoxes,
             };
         }
-        public static OptionPanelWithMainData AddTogglePanel(this UIComponent parent, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action onChanged = null)
+        public static OptionPanelWithMainData AddTogglePanel(this UIComponent parent, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action<bool> onStateChanged = null, Action<int> onValueChanged = null)
         {
             var item = parent.AddUIComponent<ToggleSettingsItem>();
             item.Label = mainLabel;
 
             item.Control.State = mainSaved;
 
-            var result = parent.AddCheckboxPanel(optionsSaved, labels, 0, onChanged);
+            var result = parent.AddCheckboxPanel(optionsSaved, labels, 0, onValueChanged);
             var optionsPanel = result.panel;
 
             item.Control.OnStateChanged += OnStateChanged;
+            if (onStateChanged != null)
+                item.Control.OnStateChanged += onStateChanged;
+
             SetVisible(mainSaved);
 
             return new OptionPanelWithMainData()
@@ -227,15 +238,18 @@ namespace ModsCommon.Settings
             void SetVisible(bool visible) => optionsPanel.isVisible = visible;
         }
 
-        public static KeymappingSettingsItem AddKeyMappingButton(this UIComponent parent, Shortcut shortcut)
+        public static KeymappingSettingsItem AddKeyMappingButton(this UIComponent parent, Shortcut shortcut, Action<Shortcut> onBindingChanged = null)
         {
             var item = parent.AddUIComponent<KeymappingSettingsItem>();
             item.Shortcut = shortcut;
 
+            if (onBindingChanged != null)
+                item.BindingChanged += onBindingChanged;
+
             return item;
         }
 
-        private static OptionPanelData AddCheckboxPanel(this UIComponent parent, SavedInt optionsSaved, string[] labels, int padding, Action onChanged)
+        private static OptionPanelData AddCheckboxPanel(this UIComponent parent, SavedInt optionsSaved, string[] labels, int padding, Action<int> onValueChanged)
         {
             var inProcess = false;
             var checkBoxes = new UICheckBox[labels.Length];
@@ -262,7 +276,7 @@ namespace ModsCommon.Settings
                 {
                     inProcess = true;
                     optionsSaved.value = index;
-                    onChanged?.Invoke();
+                    onValueChanged?.Invoke(index);
                     for (var i = 0; i < checkBoxes.Length; i += 1)
                         checkBoxes[i].isChecked = optionsSaved == i;
                     inProcess = false;
