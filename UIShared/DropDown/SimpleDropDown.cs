@@ -87,7 +87,7 @@ namespace ModsCommon.UI
         public RectOffset LayoutPadding => new RectOffset();
 
         public void StopLayout() { }
-        public void StartLayout(bool layoutNow = true) { }
+        public void StartLayout(bool layoutNow = true, bool force = false) { }
         public void PauseLayout(Action action) => action?.Invoke();
     }
     public abstract class SimpleEntity<ValueType> : PopupEntity<DropDownItem<ValueType>>

@@ -238,12 +238,12 @@ namespace ModsCommon.Utilities
 #if DEBUG
             if (RenderOverlayBorders)
             {
-                var borderOverlay = new OverlayData(overlayData.CameraInfo) { Color = Colors.Green };
+                var borderOverlay = new OverlayData(overlayData.CameraInfo) { Color = CommonColors.Green };
                 foreach (var border in BorderLines)
                     border.Render(borderOverlay);
             }
             if (RenderOverlayCentre)
-                Center.RenderCircle(new OverlayData(overlayData.CameraInfo) { Color = Colors.Red });
+                Center.RenderCircle(new OverlayData(overlayData.CameraInfo) { Color = CommonColors.Red });
 #endif
         }
         private void SplitTrajectory(int depth, ITrajectory trajectory, float deltaAngle, float minAngle, float minLength, float maxLength, List<ITrajectory> result)

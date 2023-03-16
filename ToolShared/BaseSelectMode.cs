@@ -11,8 +11,8 @@ namespace ModsCommon
     {
         protected Segment3 Ray => SingletonTool<TypeTool>.Instance.Ray;
 
-        protected virtual Color32 NodeColor => Colors.Orange;
-        protected virtual Color32 SegmentColor => Colors.Purple;
+        protected virtual Color32 NodeColor => CommonColors.Orange;
+        protected virtual Color32 SegmentColor => CommonColors.Purple;
 
         protected NodeSelection HoverNode { get; set; } = null;
         protected bool IsHoverNode => HoverNode != null;

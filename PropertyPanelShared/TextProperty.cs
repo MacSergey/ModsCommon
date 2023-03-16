@@ -61,10 +61,10 @@ namespace ModsCommon.UI
 
     public class ErrorTextProperty : TextProperty
     {
-        protected override Color32 Color => Colors.Error;
+        protected override Color32 Color => CommonColors.Error;
     }
     public class WarningTextProperty : TextProperty
     {
-        protected override Color32 Color => Colors.Warning;
+        protected override Color32 Color => CommonColors.Warning;
     }
 }

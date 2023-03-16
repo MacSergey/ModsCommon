@@ -209,11 +209,8 @@ namespace ModsCommon.UI
         {
             Vector2 result = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
 
-            result.x += (width - renderSize.x) * 0.5f;
-            result.x += spritePadding.left - spritePadding.right;
-
-            result.y -= (height - renderSize.y) * 0.5f;
-            result.y -= spritePadding.top - spritePadding.bottom;
+            result.x += spritePadding.left;
+            result.y -= spritePadding.top;
 
             return result;
         }

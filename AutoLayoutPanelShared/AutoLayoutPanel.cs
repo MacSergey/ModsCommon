@@ -12,7 +12,7 @@ namespace ModsCommon.UI
 
         public int Level { get; }
         public void StopLayout();
-        public void StartLayout(bool layoutNow = true);
+        public void StartLayout(bool layoutNow = true, bool force = false);
         public void PauseLayout(Action action);
     }
     public class UIAutoLayoutPanel : CustomUIPanel, IAutoLayoutPanel
@@ -67,9 +67,9 @@ namespace ModsCommon.UI
 
             level += 1;
         }
-        public virtual void StartLayout(bool layoutNow = true)
+        public virtual void StartLayout(bool layoutNow = true, bool force = false)
         {
-            level = Mathf.Max(level - 1, 0);
+            level = force ? 0 : Mathf.Max(level - 1, 0);
 
             if (level == 0)
             {
@@ -110,9 +110,9 @@ namespace ModsCommon.UI
 
             level += 1;
         }
-        public virtual void StartLayout(bool layoutNow = true)
+        public virtual void StartLayout(bool layoutNow = true, bool force = false)
         {
-            level = Mathf.Max(level - 1, 0);
+            level = force ? 0 : Mathf.Max(level - 1, 0);
 
             if (level == 0)
             {
@@ -205,7 +205,7 @@ namespace ModsCommon.UI
 
         private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width : 0, 0);
         public virtual void StopLayout() => Content.StopLayout();
-        public virtual void StartLayout(bool layoutNow = true) => Content.StartLayout(layoutNow);
+        public virtual void StartLayout(bool layoutNow = true, bool force = false) => Content.StartLayout(layoutNow, force);
         public void PauseLayout(Action action) => Content.PauseLayout(action);
     }
 
@@ -277,9 +277,9 @@ namespace ModsCommon.UI
                     verticalScrollbar.isVisible = Mathf.CeilToInt(verticalScrollbar.scrollSize) < Mathf.CeilToInt(verticalScrollbar.maxValue - verticalScrollbar.minValue);
                 }
             }
-            public override void StartLayout(bool layoutNow = true)
+            public override void StartLayout(bool layoutNow = true, bool force = false)
             {
-                base.StartLayout(layoutNow);
+                base.StartLayout(layoutNow, force);
                 if (layoutNow)
                     FitContentChildren();
             }

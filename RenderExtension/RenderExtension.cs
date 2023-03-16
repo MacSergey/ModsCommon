@@ -85,7 +85,7 @@ namespace ModsCommon.Utilities
         private static bool DefaultLimit => false;
         private static float DefaultMinLimit => -1f;
         private static float DefaultMaxLimit => 1280f;
-        private static Color32 DefaultColor => Colors.White;
+        private static Color32 DefaultColor => CommonColors.White;
 
         public static void RenderBezier(this Bezier3 bezier, OverlayData data)
         {

@@ -90,9 +90,9 @@ namespace ModsCommon.Utilities
             spriteParams[PanelSmall] = new RectOffset(4, 4, 4, 4);
             spriteParams[PanelBig] = new RectOffset(6, 6, 6, 6);
 
-            spriteParams[BorderBottom] = new RectOffset(4, 4, 2, 2);
-            spriteParams[BorderTop] = new RectOffset(4, 4, 2, 2);
-            spriteParams[BorderBoth] = new RectOffset(4, 4, 2, 2);
+            spriteParams[BorderBottom] = new RectOffset(4, 4, 4, 4);
+            spriteParams[BorderTop] = new RectOffset(4, 4, 4, 4);
+            spriteParams[BorderBoth] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderSmall] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderBig] = new RectOffset(6, 6, 6, 6);
             spriteParams[PanelShadow] = new RectOffset();

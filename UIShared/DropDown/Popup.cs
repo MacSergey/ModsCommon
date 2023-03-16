@@ -164,10 +164,8 @@ namespace ModsCommon.UI
         public ObjectPopup()
         {
             clipChildren = true;
-
-            var gameObject = Instantiate(UIHelper.ScrollBar.gameObject);
-            AttachUIComponent(gameObject);
-            ScrollBar = gameObject.GetComponent<CustomUIScrollbar>();
+            
+            ScrollBar = this.AddScrollbar();
             ScrollBar.eventValueChanged += ScrollBarValueChanged;
 
             MaximumSize = new Vector2(200f, 700f);

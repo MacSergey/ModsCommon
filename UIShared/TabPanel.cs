@@ -424,10 +424,9 @@ namespace ModsCommon.UI
             level += 1;
         }
 
-        public void StartLayout(bool layoutNow = true)
+        public void StartLayout(bool layoutNow = true, bool force = false)
         {
-            level = Mathf.Max(level - 1, 0);
-
+            level = force ? 0 : Mathf.Max(level - 1, 0);
 
             if (level == 0)
             {

@@ -96,9 +96,9 @@ namespace ModsCommon.UI
             }
         }
 
-        public override void StartLayout(bool layoutNow = true)
+        public override void StartLayout(bool layoutNow = true, bool force = false)
         {
-            base.StartLayout(layoutNow);
+            base.StartLayout(layoutNow, force);
             SetEven();
         }
     }

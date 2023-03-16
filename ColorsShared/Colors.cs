@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ModsCommon.Utilities
 {
-    public static class Colors
+    public static class CommonColors
     {
         private const byte Alpha = 224;
         public static Color32 White { get; } = new Color32(255, 255, 255, 255);

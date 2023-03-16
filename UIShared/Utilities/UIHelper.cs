@@ -11,41 +11,6 @@ namespace ModsCommon.UI
     {
         public static float PropertyScrollTimeout => 3f;
         private static UIView UIRoot { get; set; } = null;
-        public static CustomUIScrollbar ScrollBar { get; private set; }
-
-        static UIHelper()
-        {
-            var gameObject = new GameObject(typeof(CustomUIScrollbar).Name);
-            GameObject.DontDestroyOnLoad(gameObject);
-            ScrollBar = gameObject.AddComponent<CustomUIScrollbar>();
-            ScrollBar.orientation = UIOrientation.Vertical;
-            ScrollBar.pivot = UIPivotPoint.TopLeft;
-            ScrollBar.minValue = 0;
-            ScrollBar.value = 0;
-            ScrollBar.incrementAmount = 50;
-            ScrollBar.autoHide = true;
-            ScrollBar.width = 10;
-
-            UISlicedSprite trackSprite = ScrollBar.AddUIComponent<UISlicedSprite>();
-            trackSprite.relativePosition = Vector2.zero;
-            trackSprite.autoSize = true;
-            trackSprite.anchor = UIAnchorStyle.All;
-            trackSprite.size = trackSprite.parent.size;
-            trackSprite.fillDirection = UIFillDirection.Vertical;
-            trackSprite.spriteName = "ScrollbarTrack";
-            ScrollBar.trackObject = trackSprite;
-
-            UISlicedSprite thumbSprite = trackSprite.AddUIComponent<UISlicedSprite>();
-            thumbSprite.relativePosition = Vector2.zero;
-            thumbSprite.fillDirection = UIFillDirection.Vertical;
-            thumbSprite.autoSize = true;
-            thumbSprite.width = thumbSprite.parent.width;
-            thumbSprite.atlas = CommonTextures.Atlas;
-            thumbSprite.spriteName = CommonTextures.FieldSingle;
-            thumbSprite.color = ComponentStyle.FieldNormalColor;
-            thumbSprite.minimumSize = new Vector2(0f, 20f);
-            ScrollBar.thumbObject = thumbSprite;
-        }
 
         private static void FindUIRoot()
         {
@@ -109,12 +74,45 @@ namespace ModsCommon.UI
             NameContains = 1
         }
 
+        public static CustomUIScrollbar AddScrollbar(this UIComponent parent)
+        {
+            var scrollbar = parent.AddUIComponent<CustomUIScrollbar>();
+            scrollbar.name = "Scrollbar";
+            scrollbar.orientation = UIOrientation.Vertical;
+            scrollbar.pivot = UIPivotPoint.TopLeft;
+            scrollbar.minValue = 0;
+            scrollbar.value = 0;
+            scrollbar.incrementAmount = 50;
+            scrollbar.autoHide = true;
+            scrollbar.width = 12;
+            scrollbar.thumbPadding = new RectOffset(2, 2, 2, 2);
+
+            var trackSprite = scrollbar.AddUIComponent<UISlicedSprite>();
+            trackSprite.name = "Scrollbar Track";
+            trackSprite.atlas = CommonTextures.Atlas;
+            trackSprite.relativePosition = Vector2.zero;
+            trackSprite.autoSize = true;
+            trackSprite.anchor = UIAnchorStyle.All;
+            trackSprite.size = trackSprite.parent.size;
+            trackSprite.fillDirection = UIFillDirection.Vertical;
+            scrollbar.trackObject = trackSprite;
+
+            var thumb = scrollbar.AddUIComponent<UISlicedSprite>();
+            thumb.name = "Scrollbar Thumb";
+            thumb.relativePosition = Vector2.zero;
+            thumb.fillDirection = UIFillDirection.Vertical;
+            thumb.width = 8;
+            thumb.atlas = CommonTextures.Atlas;
+            thumb.spriteName = CommonTextures.FieldSingle;
+            thumb.color = ComponentStyle.FieldNormalColor;
+            thumb.minimumSize = new Vector2(0f, 20f);
+            scrollbar.thumbObject = thumb;
+
+            return scrollbar;
+        }
         public static void AddScrollbar(this UIComponent parent, UIScrollablePanel scrollablePanel)
         {
-            var gameObject = GameObject.Instantiate(ScrollBar.gameObject);
-            parent.AttachUIComponent(gameObject);
-            var scrollbar = gameObject.GetComponent<CustomUIScrollbar>();
-
+            var scrollbar = parent.AddScrollbar();
             scrollbar.eventValueChanged += (component, value) => scrollablePanel.scrollPosition = new Vector2(0, value);
 
             parent.eventMouseWheel += (component, eventParam) =>

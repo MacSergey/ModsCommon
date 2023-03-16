@@ -312,7 +312,7 @@ namespace ModsCommon.UI
         public RectOffset LayoutPadding => Panel.LayoutPadding;
 
         public void StopLayout() => Panel.StopLayout();
-        public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
+        public void StartLayout(bool layoutNow = true, bool force = false) => Panel.StartLayout(layoutNow, force);
         public void PauseLayout(Action action) => Panel.PauseLayout(action);
     }
 }
