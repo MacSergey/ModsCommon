@@ -7,6 +7,9 @@ namespace ModsCommon.UI
 {
     public interface IAutoLayoutPanel
     {
+        public Vector2 ItemSize { get; }
+        public RectOffset LayoutPadding { get; }
+
         public int Level { get; }
         public void StopLayout();
         public void StartLayout(bool layoutNow = true);
@@ -42,6 +45,9 @@ namespace ModsCommon.UI
         }
 
         public int Level => level;
+
+        public Vector2 ItemSize => new Vector2(width - autoLayoutPadding.horizontal - padding.horizontal, height - autoLayoutPadding.vertical - padding.vertical);
+        public RectOffset LayoutPadding => autoLayoutPadding;
 
         public UIAutoLayoutPanel()
         {
@@ -90,6 +96,9 @@ namespace ModsCommon.UI
         private int level;
         public int Level => level;
 
+        public Vector2 ItemSize => new Vector2(width - autoLayoutPadding.horizontal - scrollPadding.horizontal, height - autoLayoutPadding.vertical - scrollPadding.vertical);
+        public RectOffset LayoutPadding => autoLayoutPadding;
+
         public UIAutoLayoutScrollablePanel()
         {
             m_AutoLayout = true;
@@ -125,6 +134,8 @@ namespace ModsCommon.UI
         where TypeContent : UIAutoLayoutScrollablePanel
     {
         public int Level => Content.Level;
+        public Vector2 ItemSize => Content.ItemSize;
+        public RectOffset LayoutPadding => Content.LayoutPadding;
 
         public TypeContent Content { get; private set; }
 
@@ -172,7 +183,7 @@ namespace ModsCommon.UI
         private void ContentSizeChanged(UIComponent component, Vector2 value)
         {
             foreach (var item in Content.components)
-                item.width = Content.width - Content.autoLayoutPadding.horizontal;
+                item.width = Content.width - Content.autoLayoutPadding.horizontal - Content.scrollPadding.horizontal;
         }
 
         private bool InProgress { get; set; } = false;

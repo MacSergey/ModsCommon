@@ -9,8 +9,8 @@ namespace ModsCommon.UI
     {
         public event Action<VisibleState> OnVisibleStateChanged;
 
-        protected virtual float DefaultHeight => 30;
-        protected virtual int ItemsPadding => 5;
+        protected virtual float DefaultHeight => 34;
+        protected virtual int ItemsPadding => 7;
 
         public virtual bool EnableControl { get; set; } = true;
 
@@ -147,12 +147,14 @@ namespace ModsCommon.UI
         public EditorPropertyPanel()
         {
             LabelItem = AddUIComponent<CustomUILabel>();
+            LabelItem.relativePosition = Vector3.zero;
             LabelItem.textScale = 0.75f;
             LabelItem.autoSize = false;
-            LabelItem.autoHeight = true;
+            LabelItem.autoHeight = false;
             LabelItem.wordWrap = true;
-            LabelItem.padding = new RectOffset(0, 0, 2, 0);
+            LabelItem.padding = new RectOffset(5, 5, 2, 0);
             LabelItem.disabledTextColor = new Color32(160, 160, 160, 255);
+            LabelItem.verticalAlignment = UIVerticalAlignment.Middle;
             LabelItem.name = nameof(LabelItem);
             LabelItem.eventTextChanged += (_, _) => SetLabel();
 
@@ -186,9 +188,8 @@ namespace ModsCommon.UI
         }
         private void SetLabel()
         {
-            LabelItem.width = width - Content.width - ItemsPadding * 2;
+            LabelItem.size = new Vector2(width - Content.width, height);
             LabelItem.MakePixelPerfect(false);
-            LabelItem.relativePosition = new Vector2(5, (height - LabelItem.height) / 2);
         }
         protected override void OnVisibilityChanged()
         {

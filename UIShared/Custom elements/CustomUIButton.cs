@@ -748,7 +748,7 @@ namespace ModsCommon.UI
             renderer.vectorOffset = vectorOffset;
             renderer.textAlign = textHorizontalAlignment;
             renderer.processMarkup = processMarkup;
-            renderer.defaultColor = ApplyOpacity(GetTextColorForState());
+            renderer.defaultColor = ApplyOpacity(RenderTextColor);
             renderer.bottomColor = null;
             renderer.overrideMarkupColors = false;
             renderer.opacity = CalculateOpacity();
@@ -764,45 +764,55 @@ namespace ModsCommon.UI
             return renderer;
         }
 
-        private Color32 GetTextColorForState()
+        private Color32 RenderTextColor
         {
-            if (!isEnabled)
-                return disabledTextColor;
-            else
+            get
+            {
+                if (!isEnabled)
+                    return disabledTextColor;
+                else
+                {
+                    return state switch
+                    {
+                        ButtonState.Normal => isSelected ? selectedNormalTextColor : textColor,
+                        ButtonState.Focused => isSelected ? selectedFocusedTextColor : focusedTextColor,
+                        ButtonState.Hovered => isSelected ? selectedHoveredTextColor : hoveredTextColor,
+                        ButtonState.Pressed => isSelected ? selectedPressedTextColor : pressedTextColor,
+                        ButtonState.Disabled => isSelected ? selectedDisabledTextColor : disabledTextColor,
+                        _ => Color.white,
+                    };
+                }
+            }
+        }
+        private Color32 RenderBackgroundColor
+        {
+            get
             {
                 return state switch
                 {
-                    ButtonState.Normal => isSelected ? selectedNormalTextColor : textColor,
-                    ButtonState.Focused => isSelected ? selectedFocusedTextColor : focusedTextColor,
-                    ButtonState.Hovered => isSelected ? selectedHoveredTextColor : hoveredTextColor,
-                    ButtonState.Pressed => isSelected ? selectedPressedTextColor : pressedTextColor,
-                    ButtonState.Disabled => isSelected ? selectedDisabledTextColor : disabledTextColor,
-                    _ => Color.white,
+                    ButtonState.Focused => isSelected ? selectedFocusedBgColor : focusedBgColor,
+                    ButtonState.Hovered => isSelected ? selectedHoveredBgColor : hoveredBgColor,
+                    ButtonState.Pressed => isSelected ? selectedPressedBgColor : pressedBgColor,
+                    ButtonState.Disabled => isSelected ? selectedDisabledBgColor : disabledBgColor,
+                    _ => isSelected ? selectedNormalBgColor : normalBgColor,
                 };
             }
         }
-        private Color32 GetBackgroundColor()
+        private Color32 RenderForegroundColor
         {
-            return state switch
+            get
             {
-                ButtonState.Focused => isSelected ? selectedFocusedBgColor : focusedBgColor,
-                ButtonState.Hovered => isSelected ? selectedHoveredBgColor : hoveredBgColor,
-                ButtonState.Pressed => isSelected ? selectedPressedBgColor : pressedBgColor,
-                ButtonState.Disabled => isSelected ? selectedDisabledBgColor : disabledBgColor,
-                _ => isSelected ? selectedNormalBgColor : normalBgColor,
-            };
+                return state switch
+                {
+                    ButtonState.Focused => isSelected ? selectedFocusedFgColor : focusedFgColor,
+                    ButtonState.Hovered => isSelected ? selectedHoveredFgColor : hoveredFgColor,
+                    ButtonState.Pressed => isSelected ? selectedPressedFgColor : pressedFgColor,
+                    ButtonState.Disabled => isSelected ? selectedDisabledFgColor : disabledFgColor,
+                    _ => isSelected ? selectedNormalFgColor : normalFgColor,
+                };
+            }
         }
-        private Color32 GetForegroundColor()
-        {
-            return state switch
-            {
-                ButtonState.Focused => isSelected ? selectedFocusedFgColor : focusedFgColor,
-                ButtonState.Hovered => isSelected ? selectedHoveredFgColor : hoveredFgColor,
-                ButtonState.Pressed => isSelected ? selectedPressedFgColor : pressedFgColor,
-                ButtonState.Disabled => isSelected ? selectedDisabledFgColor : disabledFgColor,
-                _ => isSelected ? selectedNormalFgColor : normalFgColor,
-            };
-        }
+
         private Vector3 GetVertAlignOffset(UIFontRenderer fontRenderer)
         {
             var num = PixelsToUnits();
@@ -824,49 +834,58 @@ namespace ModsCommon.UI
             return vectorOffset;
         }
 
-        protected override UITextureAtlas.SpriteInfo GetBackgroundSprite()
+        protected virtual UITextureAtlas.SpriteInfo RenderBackgroundSprite
         {
-            if (atlasBackground is not UITextureAtlas atlas)
-                return null;
-
-            var spriteInfo = state switch
+            get
             {
-                ButtonState.Normal => isSelected ? atlas[selectedNormalBgSprite] : atlas[normalBgSprite],
-                ButtonState.Focused => isSelected ? atlas[selectedFocusedBgSprite] : atlas[focusedBgSprite],
-                ButtonState.Hovered => isSelected ? atlas[selectedHoveredBgSprite] : atlas[hoveredBgSprite],
-                ButtonState.Pressed => isSelected ? atlas[selectedPressedBgSprite] : atlas[pressedBgSprite],
-                ButtonState.Disabled => isSelected ? atlas[selectedDisabledBgSprite] : atlas[disabledBgSprite],
-                _ => null,
-            };
+                if (atlasBackground is not UITextureAtlas atlas)
+                    return null;
 
-            return spriteInfo ?? atlas[normalBgSprite];
+                var spriteInfo = state switch
+                {
+                    ButtonState.Normal => atlas[isSelected ? selectedNormalBgSprite : normalBgSprite],
+                    ButtonState.Focused => atlas[isSelected ? selectedFocusedBgSprite : focusedBgSprite],
+                    ButtonState.Hovered => atlas[isSelected ? selectedHoveredBgSprite : hoveredBgSprite],
+                    ButtonState.Pressed => atlas[isSelected ? selectedPressedBgSprite : pressedBgSprite],
+                    ButtonState.Disabled => atlas[isSelected ? selectedDisabledBgSprite : disabledBgSprite],
+                    _ => null,
+                };
+
+                return spriteInfo ?? atlas[normalBgSprite];
+            }
         }
-        protected override UITextureAtlas.SpriteInfo GetForegroundSprite()
+        protected override UITextureAtlas.SpriteInfo GetBackgroundSprite() => RenderBackgroundSprite;
+
+        protected virtual UITextureAtlas.SpriteInfo RenderForegroundSprite
         {
-            if (atlasForeground is not UITextureAtlas atlas)
-                return null;
-
-            var spriteInfo = state switch
+            get
             {
-                ButtonState.Normal => isSelected ? atlas[normalFgSprite] : atlas[normalFgSprite],
-                ButtonState.Focused => isSelected ? atlas[selectedFocusedFgSprite] : atlas[focusedFgSprite],
-                ButtonState.Hovered => isSelected ? atlas[selectedHoveredFgSprite] : atlas[hoveredFgSprite],
-                ButtonState.Pressed => isSelected ? atlas[selectedPressedFgSprite] : atlas[pressedFgSprite],
-                ButtonState.Disabled => isSelected ? atlas[selectedDisabledFgSprite] : atlas[disabledFgSprite],
-                _ => null,
-            };
+                if (atlasForeground is not UITextureAtlas atlas)
+                    return null;
 
-            return spriteInfo ?? atlas[normalFgSprite];
+                var spriteInfo = state switch
+                {
+                    ButtonState.Normal => atlas[isSelected ? selectedNormalFgSprite : normalFgSprite],
+                    ButtonState.Focused => atlas[isSelected ? selectedFocusedFgSprite : focusedFgSprite],
+                    ButtonState.Hovered => atlas[isSelected ? selectedHoveredFgSprite : hoveredFgSprite],
+                    ButtonState.Pressed => atlas[isSelected ? selectedPressedFgSprite : pressedFgSprite],
+                    ButtonState.Disabled => atlas[isSelected ? selectedDisabledFgSprite : disabledFgSprite],
+                    _ => null,
+                };
+
+                return spriteInfo ?? atlas[normalFgSprite];
+            }
         }
+        protected override UITextureAtlas.SpriteInfo GetForegroundSprite() => RenderForegroundSprite;
 
         protected override void RenderBackground()
         {
-            if (GetBackgroundSprite() is UITextureAtlas.SpriteInfo backgroundSprite)
+            if (RenderBackgroundSprite is UITextureAtlas.SpriteInfo backgroundSprite)
             {
                 var renderOptions = new RenderOptions()
                 {
                     atlas = atlasBackground,
-                    color = GetBackgroundColor(),
+                    color = RenderBackgroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
                     offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
@@ -883,7 +902,7 @@ namespace ModsCommon.UI
         }
         protected override void RenderForeground()
         {
-            if (GetForegroundSprite() is UITextureAtlas.SpriteInfo foregroundSprite)
+            if (RenderForegroundSprite is UITextureAtlas.SpriteInfo foregroundSprite)
             {
                 var foregroundRenderSize = GetForegroundRenderSize(foregroundSprite);
                 var foregroundRenderOffset = GetForegroundRenderOffset(foregroundRenderSize);
@@ -891,7 +910,7 @@ namespace ModsCommon.UI
                 var renderOptions = new RenderOptions()
                 {
                     atlas = atlasForeground,
-                    color = GetForegroundColor(),
+                    color = RenderForegroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
                     offset = foregroundRenderOffset,
@@ -979,7 +998,7 @@ namespace ModsCommon.UI
                     minSize.x = textSize.x + textPadding.horizontal;
                 }
 
-                var sprite = GetForegroundSprite();
+                var sprite = RenderForegroundSprite;
                 var spriteSize = GetForegroundRenderSize(sprite);
                 width = Mathf.Max(spriteSize.x, minSize.x);
             }

@@ -414,6 +414,8 @@ namespace ModsCommon.UI
         private bool tabLayout = true;
         private int level;
         public int Level => level;
+        public Vector2 ItemSize => new Vector2(width - padding.horizontal, height - padding.vertical);
+        public RectOffset LayoutPadding => padding;
         public void StopLayout()
         {
             if (level == 0)

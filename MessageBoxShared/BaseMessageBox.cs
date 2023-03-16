@@ -308,6 +308,9 @@ namespace ModsCommon.UI
 
 
         public int Level => Panel.Level;
+        public Vector2 ItemSize => Panel.ItemSize;
+        public RectOffset LayoutPadding => Panel.LayoutPadding;
+
         public void StopLayout() => Panel.StopLayout();
         public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
         public void PauseLayout(Action action) => Panel.PauseLayout(action);

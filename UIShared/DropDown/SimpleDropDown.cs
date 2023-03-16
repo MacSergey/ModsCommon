@@ -83,6 +83,9 @@ namespace ModsCommon.UI
         }
 
         public int Level => 0;
+        public Vector2 ItemSize => size;
+        public RectOffset LayoutPadding => new RectOffset();
+
         public void StopLayout() { }
         public void StartLayout(bool layoutNow = true) { }
         public void PauseLayout(Action action) => action?.Invoke();

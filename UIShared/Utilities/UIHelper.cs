@@ -234,4 +234,13 @@ namespace ModsCommon.UI
             this.disabled = color;
         }
     }
+
+    public struct ItemStyle
+    {
+        public UITextureAtlas backgroundAtlas;
+        public UITextureAtlas foregroundAtlas;
+
+        public SpriteSet spritesBg;
+        public SpriteSet selectedSpritesBg;
+    }
 }
