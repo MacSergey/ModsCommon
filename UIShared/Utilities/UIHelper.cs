@@ -93,9 +93,8 @@ namespace ModsCommon.UI
             trackSprite.spriteName = CommonTextures.FieldSingle;
             trackSprite.color = ComponentStyle.FieldDisabledColor;
             trackSprite.relativePosition = Vector2.zero;
-            trackSprite.autoSize = true;
-            trackSprite.anchor = UIAnchorStyle.All;
             trackSprite.size = trackSprite.parent.size;
+            trackSprite.anchor = UIAnchorStyle.All;
             trackSprite.fillDirection = UIFillDirection.Vertical;
             scrollbar.trackObject = trackSprite;
 
@@ -164,10 +163,14 @@ namespace ModsCommon.UI
             }
         }
 
-        public static Color32 ButtonNormal = Color.white;
-        public static Color32 ButtonHovered = new Color32(224, 224, 224, 255);
-        public static Color32 ButtonPressed = new Color32(192, 192, 192, 255);
-        public static Color32 ButtonFocused = new Color32(160, 160, 160, 255);
+        [Obsolete]
+        public static Color32 ButtonNormal => Color.white;
+        [Obsolete]
+        public static Color32 ButtonHovered => new Color32(224, 224, 224, 255);
+        [Obsolete]
+        public static Color32 ButtonPressed => new Color32(192, 192, 192, 255);
+        [Obsolete]
+        public static Color32 ButtonFocused => new Color32(160, 160, 160, 255);
         [Obsolete]
         public static void SetDefaultStyle(this UIButton button)
         {

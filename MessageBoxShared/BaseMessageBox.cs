@@ -103,7 +103,7 @@ namespace ModsCommon.UI
             size = new Vector2(DefaultWidth, DefaultHeight);
             Atlas = CommonTextures.Atlas;
             BackgroundSprite = CommonTextures.PanelBig;
-            color = new Color32(17, 19, 22, 255);
+            color = ComponentStyle.DarkPrimaryColor;
             anchor = UIAnchorStyle.Left | UIAnchorStyle.Top | UIAnchorStyle.Proportional;
 
             AddHeader();
@@ -121,7 +121,7 @@ namespace ModsCommon.UI
             var background = Header.AddUIComponent<CustomUISlicedSprite>();
             background.atlas = CommonTextures.Atlas;
             background.spriteName = CommonTextures.PanelBig;
-            background.color = new Color32(12, 12, 12, 255);
+            background.color = ComponentStyle.HeaderColor;
 
             Caption = Header.AddUIComponent<CustomUILabel>();
             Caption.textAlignment = UIHorizontalAlignment.Center;
@@ -313,6 +313,6 @@ namespace ModsCommon.UI
 
         public override void StopLayout() => Panel.StopLayout();
         public override void StartLayout(bool layoutNow = true, bool force = false) => Panel.StartLayout(layoutNow, force);
-        public override void PauseLayout(Action action) => Panel.PauseLayout(action);
+        public override void PauseLayout(Action action, bool layoutNow = true, bool force = false) => Panel.PauseLayout(action, layoutNow, force);
     }
 }

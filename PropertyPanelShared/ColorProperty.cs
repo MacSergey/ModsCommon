@@ -356,11 +356,13 @@ namespace ModsCommon.UI
             opacityColor.size = opacitySlider.size;
             opacityColor.fillDirection = UIFillDirection.Vertical;
 
-            UISlicedSprite thumbSprite = opacitySlider.AddUIComponent<UISlicedSprite>();
+            var thumbSprite = opacitySlider.AddUIComponent<UISlicedSprite>();
             thumbSprite.relativePosition = Vector2.zero;
             thumbSprite.fillDirection = UIFillDirection.Horizontal;
             thumbSprite.size = new Vector2(29, 7);
-            thumbSprite.spriteName = "ScrollbarThumb";
+            thumbSprite.atlas = CommonTextures.Atlas;
+            thumbSprite.spriteName = CommonTextures.PanelSmall;
+            thumbSprite.color = ComponentStyle.FieldNormalColor;
 
             opacitySlider.thumbObject = thumbSprite;
 
@@ -368,21 +370,22 @@ namespace ModsCommon.UI
         }
         private void AddColorValuePanel(UIComponent parent)
         {
-            var rgbPanel = parent.AddUIComponent<CustomUIPanel>();
-            rgbPanel.PauseLayout(() =>
+            var valuePanel = parent.AddUIComponent<CustomUIPanel>();
+            valuePanel.PauseLayout(() =>
             {
-                rgbPanel.relativePosition = new Vector2(10, 223);
-                rgbPanel.AutoLayout = AutoLayout.Horizontal;
-                rgbPanel.AutoLayoutSpace = 4;
-                rgbPanel.AutoFitChildrenHorizontally = true;
-                rgbPanel.AutoFitChildrenVertically = true;
+                valuePanel.relativePosition = new Vector2(10, 223);
+                valuePanel.AutoLayout = AutoLayout.Horizontal;
+                valuePanel.AutoLayoutSpace = 4;
+                valuePanel.AutoFitChildrenHorizontally = true;
+                valuePanel.AutoFitChildrenVertically = true;
+                valuePanel.AutoLayoutCenter = true;
 
-                RPicker = AddField(rgbPanel, "R", PickerRGBChanged);
-                GPicker = AddField(rgbPanel, "G", PickerRGBChanged);
-                BPicker = AddField(rgbPanel, "B", PickerRGBChanged);
-                APicker = AddField(rgbPanel, "A", PickerAChanged);
+                RPicker = AddField(valuePanel, "R", PickerRGBChanged);
+                GPicker = AddField(valuePanel, "G", PickerRGBChanged);
+                BPicker = AddField(valuePanel, "B", PickerRGBChanged);
+                APicker = AddField(valuePanel, "A", PickerAChanged);
 
-                HEXPicker = rgbPanel.AddUIComponent<StringUITextField>();
+                HEXPicker = valuePanel.AddUIComponent<StringUITextField>();
                 HEXPicker.SetDefaultStyle();
                 HEXPicker.Format = "#{0}";
                 HEXPicker.horizontalAlignment = UIHorizontalAlignment.Center;
@@ -392,9 +395,6 @@ namespace ModsCommon.UI
                 HEXPicker.eventGotFocus += FieldGotFocus;
                 HEXPicker.eventLostFocus += FieldLostFocus;
             });
-
-            foreach (var item in rgbPanel.components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (rgbPanel.height - item.height) / 2);
         }
 
         private string CheckHEXValue(string value)

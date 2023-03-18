@@ -404,16 +404,12 @@ namespace ModsCommon.UI
             Search.Unfocus();
         }
 
-        protected override bool FilterObjects(ObjectType value)
+        protected string SearchText => Search.text.ToUpper();
+        protected override bool FilterObjects(ObjectType value) => base.FilterObjects(value) && FilterSearch(value);
+        protected virtual bool FilterSearch(ObjectType value)
         {
-            if (base.FilterObjects(value))
-            {
-                name = GetName(value);
-                if (name.ToUpper().Contains(Search.text.ToUpper()))
-                    return true;
-            }
-
-            return false;
+            name = GetName(value);
+            return name.ToUpper().Contains(SearchText);
         }
         protected abstract string GetName(ObjectType value);
 

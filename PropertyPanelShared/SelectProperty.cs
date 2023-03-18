@@ -69,8 +69,8 @@ namespace ModsCommon.UI
         }
         private void AddReset()
         {
-            var button = AddButton(Content);
-
+            var button = Content.AddUIComponent<CustomUIButton>();
+            button.SetDefaultStyle();
             button.size = new Vector2(20f, 20f);
             button.text = "×";
             button.tooltip = ResetToolTip;

@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ModsCommon.Utilities;
 
 namespace ModsCommon.UI
 {
-    public class ButtonPanel : EditorItem, IReusable
+    public class ButtonPanel : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
         protected CustomUIButton Button { get; set; }
-        private float Height => 20f;
+        protected float DefaultHeight => 20f;
 
         public string Text
         {
@@ -21,26 +22,32 @@ namespace ModsCommon.UI
             get => Button.isEnabled;
             set => Button.isEnabled = value;
         }
+        public float ButtonHeight
+        {
+            get => Button.height;
+            set => Button.height = value;
+        }
 
         public event Action OnButtonClick;
 
-        public ButtonPanel()
+        public ButtonPanel() : base()
         {
-            Button = AddButton(this);
-            Button.textScale = 0.8f;
-            Button.textPadding = new RectOffset(0, 0, 3, 0);
-            Button.isEnabled = EnableControl;
-            Button.eventClick += ButtonClick;
-        }
-        protected override void Init(float? height)
-        {
-            base.Init(height);
-            SetSize();
+            PauseLayout(() =>
+            {
+                Button = AddUIComponent<CustomUIButton>();
+                Button.SetDefaultStyle();
+                Button.height = DefaultHeight;
+                Button.textScale = 0.8f;
+                Button.textPadding = new RectOffset(0, 0, 3, 0);
+                Button.isEnabled = EnableControl;
+                Button.eventClick += ButtonClick;
+            });
         }
         public override void DeInit()
         {
             base.DeInit();
 
+            Button.height = DefaultHeight;
             Text = string.Empty;
             OnButtonClick = null;
         }
@@ -50,23 +57,17 @@ namespace ModsCommon.UI
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            SetSize();
-        }
-        protected virtual void SetSize()
-        {
-            Button.size = new Vector2(width - ItemsPadding * 2, Height);
-            Button.relativePosition = new Vector3(ItemsPadding, (height - Height) / 2);
+            Button.width = width - Padding.horizontal;
         }
     }
-    public class ButtonsPanel : EditorItem, IReusable
+    public class ButtonsPanel : BaseEditorPanel, IReusable
     {
         public event Action<int> OnButtonClick;
 
         bool IReusable.InCache { get; set; }
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
         public int Count => Buttons.Count;
-        private float Space => 10f;
-        private float Height => 20f;
+        protected float DefaultHeight => 20f;
 
         public override bool EnableControl
         {
@@ -80,6 +81,11 @@ namespace ModsCommon.UI
         }
         public CustomUIButton this[int index] => Buttons[index];
 
+        public ButtonsPanel() : base()
+        {
+            autoLayout = AutoLayout.Horizontal;
+            autoLayoutSpace = 10;
+        }
         protected override void Init(float? height)
         {
             base.Init(height);
@@ -101,8 +107,9 @@ namespace ModsCommon.UI
 
         public int AddButton(string text)
         {
-            var button = AddButton(this);
-
+            var button = AddUIComponent<CustomUIButton>();
+            button.SetDefaultStyle();
+            button.height = DefaultHeight;
             button.text = text;
             button.textScale = 0.8f;
             button.textPadding = new RectOffset(0, 0, 3, 0);
@@ -131,12 +138,13 @@ namespace ModsCommon.UI
         }
         private void SetSize()
         {
-            var buttonWidth = (width - Space * (Count - 1) - ItemsPadding * 2) / Count;
-            for (var i = 0; i < Count; i += 1)
+            PauseLayout(() =>
             {
-                Buttons[i].size = new Vector2(buttonWidth, Height);
-                Buttons[i].relativePosition = new Vector2((buttonWidth + Space) * i + ItemsPadding, (height - Height) / 2);
-            }
+                var buttonWidth = (width - AutoLayoutSpace * (Count - 1) - Padding.horizontal) / Count;
+
+                for (var i = 0; i < Count; i += 1)
+                    Buttons[i].width = buttonWidth;
+            });
         }
     }
 
@@ -181,7 +189,8 @@ namespace ModsCommon.UI
 
         protected override void FillContent()
         {
-            Button = AddButton(Content);
+            Button = Content.AddUIComponent<CustomUIButton>();
+            Button.SetDefaultStyle();
             Button.textScale = 0.8f;
             Button.textPadding = new RectOffset(0, 0, 3, 0);
             Button.textHorizontalAlignment = UIHorizontalAlignment.Center;

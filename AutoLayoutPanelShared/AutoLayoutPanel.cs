@@ -15,7 +15,7 @@ namespace ModsCommon.UI
         public bool IsLayoutSuspended { get; }
         public void StopLayout();
         public void StartLayout(bool layoutNow = true, bool force = false);
-        public void PauseLayout(Action action);
+        public void PauseLayout(Action action, bool layoutNow = true, bool force = false);
     }
     public class UIAutoLayoutPanel : CustomUIPanel
     {
@@ -54,13 +54,17 @@ namespace ModsCommon.UI
                     Reset();
             }
         }
-        public void PauseLayout(Action action)
+        public void PauseLayout(Action action, bool layoutNow = true, bool force = false)
         {
-            StopLayout();
+            try
             {
+                StopLayout();
                 action?.Invoke();
             }
-            StartLayout();
+            finally
+            {
+                StartLayout(layoutNow, force);
+            }
         }
     }
     public abstract class BaseAdvancedScrollablePanel<TypeContent> : CustomUIPanel, IAutoLayoutPanel
@@ -139,7 +143,7 @@ namespace ModsCommon.UI
         private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width : 0, 0);
         public override void StopLayout() => Content.StopLayout();
         public override void StartLayout(bool layoutNow = true, bool force = false) => Content.StartLayout(layoutNow, force);
-        public override void PauseLayout(Action action) => Content.PauseLayout(action);
+        public override void PauseLayout(Action action, bool layoutNow = true, bool force = false) => Content.PauseLayout(action, layoutNow, force);
     }
 
     public class AdvancedScrollablePanel : BaseAdvancedScrollablePanel<UIAutoLayoutScrollablePanel> { }

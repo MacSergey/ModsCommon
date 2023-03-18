@@ -7,40 +7,64 @@ namespace ModsCommon.UI
 {
     public abstract class EditorItem : UIAutoLayoutPanel
     {
-        public event Action<VisibleState> OnVisibleStateChanged;
-
         protected virtual float DefaultHeight => 34;
-        protected virtual int ItemsPadding => 7;
+        protected static int ItemsPadding => 7;
 
         public virtual bool EnableControl { get; set; } = true;
 
+        public virtual void DeInit()
+        {
+            EnableControl = true;
+        }
+        public virtual void Init() => Init(null);
+        protected virtual void Init(float? height)
+        {
+            size = new Vector2(GetWidth(), height ?? DefaultHeight);
+        }
+        private float GetWidth()
+        {
+            if (parent is UIScrollablePanel scrollablePanel)
+                return scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
+            else if (parent is CustomUIPanel customPanel)
+                return customPanel.width - customPanel.Padding.horizontal;
+            else if (parent is UIPanel panel)
+                return panel.width - panel.autoLayoutPadding.horizontal;
+            else
+                return parent.width;
+        }
 
-        private bool _canCollapse = true;
+        public override string ToString() => name;
+    }
+    public abstract class BaseEditorPanel : EditorItem
+    {
+        public event Action<VisibleState> OnVisibleStateChanged;
+
+        private bool canCollapse = true;
         public bool CanCollapse
         {
-            get => _canCollapse;
+            get => canCollapse;
             set
             {
-                if (value != _canCollapse)
+                if (value != canCollapse)
                 {
-                    _canCollapse = value;
-                    if (!_canCollapse)
+                    canCollapse = value;
+                    if (!canCollapse)
                         IsCollapsed = false;
                 }
             }
         }
 
-        private VisibleState _visibleState = VisibleState.Visible;
+        private VisibleState visibleState = VisibleState.Visible;
         private VisibleState VisibleState
         {
-            get => _visibleState;
+            get => visibleState;
             set
             {
-                if (value != _visibleState)
+                if (value != visibleState)
                 {
-                    _visibleState = value;
-                    isVisible = _visibleState == VisibleState.Visible;
-                    OnVisibleStateChanged?.Invoke(_visibleState);
+                    visibleState = value;
+                    isVisible = visibleState == VisibleState.Visible;
+                    OnVisibleStateChanged?.Invoke(visibleState);
                 }
             }
         }
@@ -66,53 +90,6 @@ namespace ModsCommon.UI
                     VisibleState &= ~VisibleState.Hidden;
             }
         }
-
-        public virtual void DeInit()
-        {
-            EnableControl = true;
-            _visibleState = VisibleState.Visible;
-            _canCollapse = true;
-        }
-        public virtual void Init() => Init(null);
-        protected virtual void Init(float? height)
-        {
-            size = new Vector2(GetWidth(), height ?? DefaultHeight);
-        }
-        private float GetWidth()
-        {
-            if (parent is UIScrollablePanel scrollablePanel)
-                return scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
-            else if (parent is UIPanel panel)
-                return panel.width - panel.autoLayoutPadding.horizontal;
-            else
-                return parent.width;
-        }
-
-        protected CustomUIButton AddButton(UIComponent parent)
-        {
-            var button = parent.AddUIComponent<CustomUIButton>();
-            button.SetDefaultStyle();
-            return button;
-        }
-
-        public override string ToString() => name;
-    }
-    public abstract class EditorPropertyPanel : EditorItem
-    {
-        private CustomUILabel LabelItem { get; set; }
-        protected UIAutoLayoutPanel Content { get; set; }
-
-        public string Label
-        {
-            get => LabelItem.text;
-            set => LabelItem.text = value;
-        }
-        public override bool EnableControl
-        {
-            get => Content.isEnabled;
-            set => Content.isEnabled = value;
-        }
-
         private PropertyBorder borders = PropertyBorder.None;
         public PropertyBorder Borders
         {
@@ -164,6 +141,36 @@ namespace ModsCommon.UI
             }
         }
 
+        public BaseEditorPanel()
+        {
+            Padding = new RectOffset(10, 10, 7, 7);
+        }
+
+        public override void DeInit()
+        {
+            base.DeInit();
+
+            visibleState = VisibleState.Visible;
+            canCollapse = true;
+            IsEven = false;
+        }
+    }
+    public abstract class EditorPropertyPanel : BaseEditorPanel
+    {
+        private CustomUILabel LabelItem { get; set; }
+        protected UIAutoLayoutPanel Content { get; set; }
+
+        public string Label
+        {
+            get => LabelItem.text;
+            set => LabelItem.text = value;
+        }
+        public override bool EnableControl
+        {
+            get => Content.isEnabled;
+            set => Content.isEnabled = value;
+        }
+
         public EditorPropertyPanel() : base()
         {
             PauseLayout(() =>
@@ -186,7 +193,7 @@ namespace ModsCommon.UI
                 LabelItem.autoSize = false;
                 LabelItem.autoHeight = false;
                 LabelItem.wordWrap = true;
-                LabelItem.padding = new RectOffset(0, 5, 2, 0);
+                LabelItem.padding = new RectOffset(0, 5, 5, 0);
                 LabelItem.disabledTextColor = new Color32(160, 160, 160, 255);
                 LabelItem.verticalAlignment = UIVerticalAlignment.Middle;
 
@@ -208,29 +215,20 @@ namespace ModsCommon.UI
         }
         protected abstract void FillContent();
 
-        public override void DeInit()
-        {
-            base.DeInit();
-            IsEven = false;
-        }
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
             SetLabel();
         }
-        private void ContentSizeChanged(UIComponent component, Vector2 value)
-        {
-            SetLabel();
-        }
+        private void ContentSizeChanged(UIComponent component, Vector2 value) => SetLabel();
 
         private void SetLabel()
         {
-            StopLayout();
+            PauseLayout(() =>
             {
                 LabelItem.size = new Vector2(width - Content.width - Padding.horizontal, Content.height);
                 LabelItem.MakePixelPerfect(false);
-            }
-            StartLayout(false);
+            }, false);
         }
     }
 

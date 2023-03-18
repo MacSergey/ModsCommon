@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class HeaderMoveablePanel<TypeContent> : EditorItem
+    public abstract class HeaderMoveablePanel<TypeContent> : CustomUIPanel
         where TypeContent : BaseHeaderContent
     {
         protected bool CanMove

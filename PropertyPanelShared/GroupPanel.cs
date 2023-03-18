@@ -31,6 +31,8 @@ namespace ModsCommon.UI
                 this.width = width.Value;
             else if (parent is UIScrollablePanel scrollablePanel)
                 this.width = scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
+            else if (parent is CustomUIPanel customPanel)
+                this.width = customPanel.ItemSize.x;
             else if (parent is UIPanel panel)
                 this.width = panel.width - panel.autoLayoutPadding.horizontal;
             else
@@ -39,22 +41,22 @@ namespace ModsCommon.UI
 
         public virtual void DeInit()
         {
-            StopLayout();
+            PauseLayout(() =>
             {
                 var components = this.components.ToArray();
                 foreach (var component in components)
                     ComponentPool.Free(component);
                 isVisible = true;
-            }
-            StartLayout(false);
+            }, false);
         }
 
         protected override void OnSizeChanged()
         {
-            StopLayout();
-            foreach (var item in components)
-                item.width = width - Padding.horizontal;
-            StartLayout();
+            PauseLayout(() =>
+            {
+                foreach (var item in components)
+                    item.width = width - Padding.horizontal;
+            });
 
             base.OnSizeChanged();
         }

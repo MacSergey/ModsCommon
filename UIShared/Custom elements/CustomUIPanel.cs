@@ -320,6 +320,20 @@ namespace ModsCommon.UI
             }
         }
 
+        protected bool autoCenterPadding;
+        public bool AutoCenterPadding
+        {
+            get => autoCenterPadding && ((autoLayout == AutoLayout.Horizontal && !autoFitChildrenHorizontally) || (autoLayout == AutoLayout.Vertical && !autoFitChildrenVertically));
+            set
+            {
+                if(value != autoCenterPadding)
+                {
+                    autoCenterPadding = value;
+                    Reset();
+                }
+            }
+        }
+
         protected bool autoFitChildrenHorizontally;
         public bool AutoFitChildrenHorizontally
         {
@@ -377,7 +391,7 @@ namespace ModsCommon.UI
             if (layoutSuspend == 0 && layoutNow)
                 Reset();
         }
-        public virtual void PauseLayout(Action action)
+        public virtual void PauseLayout(Action action, bool layoutNow = true, bool force = false)
         {
             if (action != null)
             {
@@ -388,7 +402,7 @@ namespace ModsCommon.UI
                 }
                 finally
                 {
-                    StartLayout();
+                    StartLayout(layoutNow, force);
                 }
             }
         }
@@ -415,12 +429,16 @@ namespace ModsCommon.UI
                 var offset = Vector2.zero;
                 var padding = Padding;
 
-                if (autoLayoutStart.StartLeft())
+                if (autoLayout == AutoLayout.Horizontal && AutoCenterPadding)
+                    offset.x = (width - GetHorizontalItemsSpace()) * 0.5f;
+                else if (autoLayoutStart.StartLeft())
                     offset.x = padding.left;
                 else if (autoLayoutStart.StartRight())
                     offset.x = padding.right;
 
-                if (autoLayoutStart.StartTop())
+                if (autoLayout == AutoLayout.Vertical && AutoCenterPadding)
+                    offset.y = (height - GetVerticalItemsSpace()) * 0.5f;
+                else if (autoLayoutStart.StartTop())
                     offset.y = padding.top;
                 else if (autoLayoutStart.StartBottom())
                     offset.y = padding.bottom;
@@ -479,7 +497,7 @@ namespace ModsCommon.UI
                     child.relativePosition = childPos;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogException(e);
             }
@@ -495,91 +513,96 @@ namespace ModsCommon.UI
         protected virtual void FitChildren(bool horizontally, bool vertically)
         {
             var newSize = size;
-            var padding = Padding;
 
             if (horizontally)
-            {
-                switch (autoLayout)
-                {
-                    case AutoLayout.Disabled:
-                        var offset = 0f;
-                        for (int i = 0; i < childCount; i += 1)
-                        {
-                            var child = m_ChildComponents[i];
-                            if (child.isVisibleSelf)
-                                offset = Mathf.Max(offset, child.relativePosition.x + child.width);
-                        }
-                        newSize.x = Mathf.Max(offset, padding.left) + padding.right;
-                        break;
-                    case AutoLayout.Horizontal:
-                        var totalWidth = 0f;
-                        var count = 0;
-                        for (int i = 0; i < childCount; i += 1)
-                        {
-                            var child = m_ChildComponents[i];
-                            if (child.isVisibleSelf)
-                            {
-                                count += 1;
-                                totalWidth += child.width + GetItemPadding(child).horizontal;
-                            }
-                        }
-                        newSize.x = padding.horizontal + totalWidth + Math.Max(0, count - 1) * autoLayoutSpace;
-                        break;
-                    case AutoLayout.Vertical:
-                        var maxWidth = 0f;
-                        for (int i = 0; i < childCount; i += 1)
-                        {
-                            var child = m_ChildComponents[i];
-                            if (child.isVisibleSelf)
-                                maxWidth = Mathf.Max(maxWidth, child.width + GetItemPadding(child).horizontal);
-                        }
-                        newSize.x = padding.horizontal + maxWidth;
-                        break;
-                }
-            }
+                newSize.x = GetHorizontalItemsSpace();
 
             if (vertically)
-            {
-                switch (autoLayout)
-                {
-                    case AutoLayout.Disabled:
-                        var offset = 0f;
-                        for (int i = 0; i < childCount; i += 1)
-                        {
-                            var child = m_ChildComponents[i];
-                            if (child.isVisibleSelf)
-                                offset = Mathf.Max(offset, child.relativePosition.y + child.height);
-                        }
-                        newSize.x = Mathf.Max(offset, padding.top) + padding.bottom;
-                        break;
-                    case AutoLayout.Vertical:
-                        var totalHeight = 0f;
-                        var count = 0;
-                        for (int i = 0; i < childCount; i += 1)
-                        {
-                            var child = m_ChildComponents[i];
-                            if (child.isVisibleSelf)
-                            {
-                                count += 1;
-                                totalHeight += child.height + GetItemPadding(child).vertical;
-                            }
-                        }
-                        newSize.y = padding.vertical + totalHeight + Math.Max(0, count - 1) * autoLayoutSpace;
-                        break;
-                    case AutoLayout.Horizontal:
-                        var maxHeight = 0f;
-                        for (int i = 0; i < childCount; i += 1)
-                        {
-                            var child = m_ChildComponents[i];
-                            if (child.isVisibleSelf)
-                                maxHeight = Mathf.Max(maxHeight, child.height + GetItemPadding(child).vertical);
-                        }
-                        newSize.y = padding.vertical + maxHeight;
-                        break;
-                }
-            }
+                newSize.y = GetVerticalItemsSpace();
 
             size = newSize;
+        }
+        private float GetHorizontalItemsSpace()
+        {
+            var padding = Padding;
+
+            switch (autoLayout)
+            {
+                case AutoLayout.Disabled:
+                    var offset = 0f;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child.isVisibleSelf)
+                            offset = Mathf.Max(offset, child.relativePosition.x + child.width);
+                    }
+                    return Mathf.Max(offset, padding.left) + padding.right;
+                case AutoLayout.Horizontal:
+                    var totalWidth = 0f;
+                    var count = 0;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child.isVisibleSelf)
+                        {
+                            count += 1;
+                            totalWidth += child.width + GetItemPadding(child).horizontal;
+                        }
+                    }
+                    return padding.horizontal + totalWidth + Math.Max(0, count - 1) * autoLayoutSpace;
+                case AutoLayout.Vertical:
+                    var maxWidth = 0f;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child.isVisibleSelf)
+                            maxWidth = Mathf.Max(maxWidth, child.width + GetItemPadding(child).horizontal);
+                    }
+                    return padding.horizontal + maxWidth;
+                default:
+                    return 0f;
+            }
+        }
+        private float GetVerticalItemsSpace()
+        {
+            var padding = Padding;
+
+            switch (autoLayout)
+            {
+                case AutoLayout.Disabled:
+                    var offset = 0f;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child.isVisibleSelf)
+                            offset = Mathf.Max(offset, child.relativePosition.y + child.height);
+                    }
+                    return Mathf.Max(offset, padding.top) + padding.bottom;
+                case AutoLayout.Vertical:
+                    var totalHeight = 0f;
+                    var count = 0;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child.isVisibleSelf)
+                        {
+                            count += 1;
+                            totalHeight += child.height + GetItemPadding(child).vertical;
+                        }
+                    }
+                    return padding.vertical + totalHeight + Math.Max(0, count - 1) * autoLayoutSpace;
+                case AutoLayout.Horizontal:
+                    var maxHeight = 0f;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child.isVisibleSelf)
+                            maxHeight = Mathf.Max(maxHeight, child.height + GetItemPadding(child).vertical);
+                    }
+                    return padding.vertical + maxHeight;
+                default: 
+                    return 0f;
+            }
         }
 
         #endregion

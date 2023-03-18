@@ -7,6 +7,17 @@ namespace ModsCommon.UI
 {
     public static class ComponentStyle
     {
+        public static Color32 DarkPrimaryColor => new Color32(34, 36, 38, 255);
+        public static Color32 DarkSecondaryColor => new Color32(42, 45, 47, 255);
+        public static Color32 DarkPrimaryAdditionalColor => new Color32(52, 55, 58, 255);
+
+        public static Color32 ErrorNormalColor => new Color32(246, 84, 85, 255);
+        public static Color32 ErrorPressedColor => new Color32(248, 68, 68, 255);
+        public static Color32 ErrorFocusedColor => new Color32(225, 62, 62, 255);
+
+        [Obsolete]
+        public static Color32 WarningColor { get; } = new Color32(253, 150, 62, 255);
+
         public static Color32 NormalBlue => new Color32(51, 153, 255, 255);
         public static Color32 HoveredBlue => new Color32(29, 143, 255, 255);
         public static Color32 PressedBlue => new Color32(7, 132, 255, 255);
@@ -26,8 +37,9 @@ namespace ModsCommon.UI
         public static Color32 PressedSettingsGray => new Color32(100, 113, 128, 255);
         public static Color32 DisabledSettingsGray => new Color32(29, 39, 51, 255);
 
-        public static Color32 PanelColorDark => new Color32(17, 19, 22, 255);
-        public static Color32 PanelColor => new Color32(34, 38, 44, 255);
+
+        public static Color32 PanelColor => DarkSecondaryColor;
+        public static Color32 HeaderColor => new Color32(24, 25, 26, 255);
 
 
         #region BUTTON
