@@ -26,45 +26,9 @@ namespace ModsCommon.UI
     }
     public class UIAutoLayoutScrollablePanel : CustomUIScrollablePanel, IAutoLayoutPanel
     {
-        private int layoutSuspend;
-        public bool IsLayoutSuspended => layoutSuspend != 0;
-
-        public Vector2 ItemSize => new Vector2(width - autoLayoutPadding.horizontal - scrollPadding.horizontal, height - autoLayoutPadding.vertical - scrollPadding.vertical);
-        public RectOffset LayoutPadding => autoLayoutPadding;
-
         public UIAutoLayoutScrollablePanel()
         {
             m_AutoLayout = true;
-        }
-        public virtual void StopLayout()
-        {
-            if (layoutSuspend == 0)
-                m_AutoLayout = false;
-
-            layoutSuspend += 1;
-        }
-        public virtual void StartLayout(bool layoutNow = true, bool force = false)
-        {
-            layoutSuspend = force ? 0 : Mathf.Max(layoutSuspend - 1, 0);
-
-            if (layoutSuspend == 0)
-            {
-                m_AutoLayout = true;
-                if (layoutNow)
-                    Reset();
-            }
-        }
-        public void PauseLayout(Action action, bool layoutNow = true, bool force = false)
-        {
-            try
-            {
-                StopLayout();
-                action?.Invoke();
-            }
-            finally
-            {
-                StartLayout(layoutNow, force);
-            }
         }
     }
     public abstract class BaseAdvancedScrollablePanel<TypeContent> : CustomUIPanel, IAutoLayoutPanel
@@ -87,12 +51,12 @@ namespace ModsCommon.UI
                     showScroll = value;
                     if (value)
                     {
-                        Content.verticalScrollbar.autoHide = true;
+                        Content.VerticalScrollbar.AutoHide = true;
                     }
                     else
                     {
-                        Content.verticalScrollbar.autoHide = false;
-                        Content.verticalScrollbar.Hide();
+                        Content.VerticalScrollbar.AutoHide = false;
+                        Content.VerticalScrollbar.Hide();
                     }
                 }
             }
@@ -105,22 +69,24 @@ namespace ModsCommon.UI
             Content = AddUIComponent<TypeContent>();
             Content.name = nameof(Content);
 
-            Content.autoLayoutDirection = LayoutDirection.Vertical;
-            Content.scrollWheelDirection = UIOrientation.Vertical;
+            Content.AutoLayoutDirection = LayoutDirection.Vertical;
+            Content.ScrollWheelDirection = UIOrientation.Vertical;
             Content.builtinKeyNavigation = true;
             Content.clipChildren = true;
-            Content.autoLayoutPadding = new RectOffset(0, 0, 0, 0);
-            Content.autoReset = false;
+            Content.AutoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            Content.AutoReset = false;
 
             this.AddScrollbar(Content);
 
             Content.eventSizeChanged += ContentSizeChanged;
-            Content.verticalScrollbar.eventVisibilityChanged += ScrollbarVisibilityChanged;
+
+            if (Content.VerticalScrollbar != null)
+                Content.VerticalScrollbar.eventVisibilityChanged += ScrollbarVisibilityChanged;
         }
         private void ContentSizeChanged(UIComponent component, Vector2 value)
         {
             foreach (var item in Content.components)
-                item.width = Content.width - Content.autoLayoutPadding.horizontal - Content.scrollPadding.horizontal;
+                item.width = Content.width - Content.AutoLayoutPadding.horizontal - Content.ScrollPadding.horizontal;
         }
 
         private bool InProgress { get; set; } = false;
@@ -140,7 +106,18 @@ namespace ModsCommon.UI
             SetContentSize();
         }
 
-        private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width : 0, 0);
+        private void SetContentSize()
+        {
+            if (Content.VerticalScrollbar != null && Content.VerticalScrollbar.isVisible)
+                Content.width = width - Content.VerticalScrollbar.width;
+            else
+                Content.width = width;
+
+            if (Content.HorizontalScrollbar != null && Content.HorizontalScrollbar.isVisible)
+                Content.height = height - Content.HorizontalScrollbar.height;
+            else
+                Content.height = height;
+        }
         public override void StopLayout() => Content.StopLayout();
         public override void StartLayout(bool layoutNow = true, bool force = false) => Content.StartLayout(layoutNow, force);
         public override void PauseLayout(Action action, bool layoutNow = true, bool force = false) => Content.PauseLayout(action, layoutNow, force);
@@ -161,7 +138,7 @@ namespace ModsCommon.UI
 
         public AutoSizeAdvancedScrollablePanel()
         {
-            Content.verticalScrollbar.autoHide = false;
+            Content.VerticalScrollbar.AutoHide = false;
         }
 
         public class AutoSizeScrollablePanel : UIAutoLayoutScrollablePanel
@@ -189,7 +166,7 @@ namespace ModsCommon.UI
 
             private void FitContentChildren()
             {
-                if (autoLayout && parent != null)
+                if (AutoLayout && parent != null)
                 {
                     var height = 0f;
                     foreach (var component in components)
@@ -198,7 +175,7 @@ namespace ModsCommon.UI
                             height = Mathf.Max(height, component.relativePosition.y + component.height);
                     }
                     if (components.Any())
-                        height += autoLayoutPadding.bottom;
+                        height += AutoLayoutPadding.bottom;
 
                     if (height < this.height)
                     {
@@ -211,7 +188,7 @@ namespace ModsCommon.UI
                         this.height = height;
                     }
 
-                    verticalScrollbar.isVisible = Mathf.CeilToInt(verticalScrollbar.scrollSize) < Mathf.CeilToInt(verticalScrollbar.maxValue - verticalScrollbar.minValue);
+                    VerticalScrollbar.isVisible = Mathf.CeilToInt(VerticalScrollbar.ScrollSize) < Mathf.CeilToInt(VerticalScrollbar.MaxValue - VerticalScrollbar.MinValue);
                 }
             }
             public override void StartLayout(bool layoutNow = true, bool force = false)

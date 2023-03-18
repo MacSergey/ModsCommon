@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BlurEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIScrollablePanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIScrollbar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown\BaseDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown\ObjectDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIListbox.cs" />

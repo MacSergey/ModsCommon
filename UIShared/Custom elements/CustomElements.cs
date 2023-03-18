@@ -3,16 +3,6 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class CustomUIScrollablePanel : UIScrollablePanel
-    {
-        private Vector3 positionBefore;
-        public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout()
-        {
-            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
-                relativePosition = positionBefore;
-        }
-    }
     public class CustomUILabel : UILabel
     {
         private Vector3 positionBefore;
@@ -46,16 +36,6 @@ namespace ModsCommon.UI
         }
     }
 
-    public class CustomUIScrollbar : UIScrollbar
-    {
-        private Vector3 positionBefore;
-        public override void ResetLayout() => positionBefore = relativePosition;
-        public override void PerformLayout()
-        {
-            if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
-                relativePosition = positionBefore;
-        }
-    }
     public class CustomUIProgressBar : UIProgressBar
     {
         private Vector3 positionBefore;

@@ -154,8 +154,8 @@ namespace ModsCommon.UI
             Panel.MaxSize = MaxContentSize;
             Panel.size = new Vector2(DefaultWidth, 0f);
             Panel.relativePosition = new Vector2(0, Header.height + Padding);
-            Panel.Content.autoLayoutPadding = new RectOffset(Padding, Padding, ContentSpacing, 0);
-            Panel.Content.autoReset = true;
+            Panel.Content.AutoLayoutPadding = new RectOffset(Padding, Padding, ContentSpacing, 0);
+            Panel.Content.AutoReset = true;
             Panel.eventSizeChanged += ContentSizeChanged;
         }
         private void AddButtonPanel()

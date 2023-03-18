@@ -164,9 +164,12 @@ namespace ModsCommon.UI
         public ObjectPopup()
         {
             clipChildren = true;
-            
-            ScrollBar = this.AddScrollbar();
-            ScrollBar.eventValueChanged += ScrollBarValueChanged;
+
+            ScrollBar = AddUIComponent<CustomUIScrollbar>();
+            ScrollBar.name = nameof(ScrollBar);
+            ScrollBar.Orientation = UIOrientation.Vertical;
+            ScrollBar.DefaultStyle();
+            ScrollBar.OnScrollValueChanged += ScrollBarValueChanged;
 
             MaximumSize = new Vector2(200f, 700f);
             entityHeight = DefaultEntityHeight;
@@ -233,8 +236,8 @@ namespace ModsCommon.UI
             Values.Sort(SortObjects);
             StartIndex = 0;
 
-            ScrollBar.minValue = 0;
-            ScrollBar.maxValue = Values.Count - VisibleCount + 1;
+            ScrollBar.MinValue = 0;
+            ScrollBar.MaxValue = Values.Count - VisibleCount + 1;
         }
         protected virtual void RefreshEntities()
         {
@@ -319,7 +322,7 @@ namespace ModsCommon.UI
             height = PopupHeight;
             ScrollBar.height = ScrollHeight;
             ScrollBar.relativePosition = ScrollPosition;
-            ScrollBar.value = StartIndex;
+            ScrollBar.Value = StartIndex;
             ScrollBar.isVisible = ShowScroll;
         }
 
@@ -330,7 +333,7 @@ namespace ModsCommon.UI
             p.Use();
             StartIndex += (p.wheelDelta > 0 ? -1 : 1) * (Utility.OnlyShiftIsPressed ? 10 : 1);
         }
-        private void ScrollBarValueChanged(UIComponent component, float value)
+        private void ScrollBarValueChanged(float value)
         {
             StartIndex = Mathf.RoundToInt(value);
         }

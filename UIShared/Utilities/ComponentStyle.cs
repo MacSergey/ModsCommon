@@ -373,5 +373,44 @@ namespace ModsCommon.UI
         }
 
         #endregion
+
+        #region SCROLLBAR
+
+        public static void DefaultStyle(this CustomUIScrollbar scrollbar)
+        {
+            scrollbar.AtlasTrack = CommonTextures.Atlas;
+            scrollbar.TrackSprite = CommonTextures.FieldSingle;
+            scrollbar.TrackColor = FieldDisabledColor;
+
+            scrollbar.AtlasThumb = CommonTextures.Atlas;
+            scrollbar.ThumbSprite = CommonTextures.FieldSingle;
+            scrollbar.ThumbColor = FieldNormalColor;
+
+            scrollbar.DefaultValue();
+        }
+
+        private static void DefaultValue(this CustomUIScrollbar scrollbar)
+        {
+            scrollbar.Increment = 50f;
+            scrollbar.AutoHide = true;
+
+            switch (scrollbar.Orientation)
+            {
+                case UIOrientation.Horizontal:
+                    scrollbar.height = 12f;
+                    scrollbar.MinThumbSize = new Vector2(20f, 4f);
+                    scrollbar.TrackPadding = new RectOffset(4, 4, 0, 4);
+                    scrollbar.ThumbPadding = new RectOffset(4, 4, 0, 4);
+                    break;
+                case UIOrientation.Vertical:
+                    scrollbar.width = 12f;
+                    scrollbar.MinThumbSize = new Vector2(4f, 20f);
+                    scrollbar.TrackPadding = new RectOffset(0, 4, 4, 4);
+                    scrollbar.ThumbPadding = new RectOffset(0, 4, 4, 4);
+                    break;
+            }
+        }
+
+        #endregion
     }
 }

@@ -78,52 +78,24 @@ namespace ModsCommon.UI
         {
             var scrollbar = parent.AddUIComponent<CustomUIScrollbar>();
             scrollbar.name = "Scrollbar";
-            scrollbar.orientation = UIOrientation.Vertical;
-            scrollbar.pivot = UIPivotPoint.TopLeft;
-            scrollbar.minValue = 0;
-            scrollbar.value = 0;
-            scrollbar.incrementAmount = 50;
-            scrollbar.autoHide = true;
-            scrollbar.width = 12;
-            scrollbar.thumbPadding = new RectOffset(2, 2, 2, 2);
-
-            var trackSprite = scrollbar.AddUIComponent<UISlicedSprite>();
-            trackSprite.name = "Scrollbar Track";
-            trackSprite.atlas = CommonTextures.Atlas;
-            trackSprite.spriteName = CommonTextures.FieldSingle;
-            trackSprite.color = ComponentStyle.FieldDisabledColor;
-            trackSprite.relativePosition = Vector2.zero;
-            trackSprite.size = trackSprite.parent.size;
-            trackSprite.anchor = UIAnchorStyle.All;
-            trackSprite.fillDirection = UIFillDirection.Vertical;
-            scrollbar.trackObject = trackSprite;
-
-            var thumb = scrollbar.AddUIComponent<UISlicedSprite>();
-            thumb.name = "Scrollbar Thumb";
-            thumb.relativePosition = Vector2.zero;
-            thumb.fillDirection = UIFillDirection.Vertical;
-            thumb.width = 8;
-            thumb.atlas = CommonTextures.Atlas;
-            thumb.spriteName = CommonTextures.FieldSingle;
-            thumb.color = ComponentStyle.FieldNormalColor;
-            thumb.minimumSize = new Vector2(0f, 20f);
-            scrollbar.thumbObject = thumb;
+            scrollbar.Orientation = UIOrientation.Vertical;
+            scrollbar.DefaultStyle();
 
             return scrollbar;
         }
-        public static void AddScrollbar(this UIComponent parent, UIScrollablePanel scrollablePanel)
+        public static CustomUIScrollbar AddScrollbar(this UIComponent parent, CustomUIScrollablePanel scrollablePanel)
         {
             var scrollbar = parent.AddScrollbar();
-            scrollbar.eventValueChanged += (component, value) => scrollablePanel.scrollPosition = new Vector2(0, value);
+            scrollbar.OnScrollValueChanged += (value) => scrollablePanel.ScrollPosition = new Vector2(0, value);
 
             parent.eventMouseWheel += (component, eventParam) =>
             {
-                scrollbar.value -= (int)eventParam.wheelDelta * scrollbar.incrementAmount;
+                scrollbar.Value -= (int)eventParam.wheelDelta * scrollbar.Increment;
             };
 
             scrollablePanel.eventMouseWheel += (component, eventParam) =>
             {
-                scrollbar.value -= (int)eventParam.wheelDelta * scrollbar.incrementAmount;
+                scrollbar.Value -= (int)eventParam.wheelDelta * scrollbar.Increment;
             };
 
             scrollablePanel.eventSizeChanged += (component, eventParam) =>
@@ -132,11 +104,13 @@ namespace ModsCommon.UI
                 scrollbar.height = scrollablePanel.height;
             };
 
-            scrollablePanel.verticalScrollbar = scrollbar;
+            scrollablePanel.VerticalScrollbar = scrollbar;
+
+            return scrollbar;
         }
-        public static void ScrollIntoViewRecursive(this UIScrollablePanel panel, UIComponent component)
+        public static void ScrollIntoViewRecursive(this CustomUIScrollablePanel panel, UIComponent component)
         {
-            var rect = new Rect(panel.scrollPosition.x + panel.scrollPadding.left, panel.scrollPosition.y + panel.scrollPadding.top, panel.size.x - panel.scrollPadding.horizontal, panel.size.y - panel.scrollPadding.vertical).RoundToInt();
+            var rect = new Rect(panel.ScrollPosition.x + panel.ScrollPadding.left, panel.ScrollPosition.y + panel.ScrollPadding.top, panel.size.x - panel.ScrollPadding.horizontal, panel.size.y - panel.ScrollPadding.vertical).RoundToInt();
 
             var relativePosition = Vector3.zero;
             for (var current = component; current != null && current != panel; current = current.parent)
@@ -145,21 +119,21 @@ namespace ModsCommon.UI
             }
 
             var size = component.size;
-            var other = new Rect(panel.scrollPosition.x + relativePosition.x, panel.scrollPosition.y + relativePosition.y, size.x, size.y).RoundToInt();
+            var other = new Rect(panel.ScrollPosition.x + relativePosition.x, panel.ScrollPosition.y + relativePosition.y, size.x, size.y).RoundToInt();
             if (!rect.Intersects(other))
             {
-                Vector2 scrollPosition = panel.scrollPosition;
+                Vector2 scrollPosition = panel.ScrollPosition;
                 if (other.xMin < rect.xMin)
-                    scrollPosition.x = other.xMin - panel.scrollPadding.left;
+                    scrollPosition.x = other.xMin - panel.ScrollPadding.left;
                 else if (other.xMax > rect.xMax)
-                    scrollPosition.x = other.xMax - Mathf.Max(panel.size.x, size.x) + panel.scrollPadding.horizontal;
+                    scrollPosition.x = other.xMax - Mathf.Max(panel.size.x, size.x) + panel.ScrollPadding.horizontal;
 
                 if (other.y < rect.y)
-                    scrollPosition.y = other.yMin - panel.scrollPadding.top;
+                    scrollPosition.y = other.yMin - panel.ScrollPadding.top;
                 else if (other.yMax > rect.yMax)
-                    scrollPosition.y = other.yMax - Mathf.Max(panel.size.y, size.y) + panel.scrollPadding.vertical;
+                    scrollPosition.y = other.yMax - Mathf.Max(panel.size.y, size.y) + panel.ScrollPadding.vertical;
 
-                panel.scrollPosition = scrollPosition;
+                panel.ScrollPosition = scrollPosition;
             }
         }
 

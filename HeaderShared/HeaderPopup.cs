@@ -8,7 +8,7 @@ namespace ModsCommon.UI
     {
         protected virtual Color32 Background => Color.black;
         public CustomUIScrollablePanel Content { get; private set; }
-        private float Padding => 2f;
+        private float ContentPadding => 2f;
 
         private float popupWidth = 250f;
         public float PopupWidth
@@ -41,27 +41,27 @@ namespace ModsCommon.UI
         private void AddPanel()
         {
             Content = AddUIComponent<CustomUIScrollablePanel>();
-            Content.autoLayout = true;
-            Content.autoLayoutDirection = LayoutDirection.Vertical;
-            Content.autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            Content.AutoLayout = true;
+            Content.AutoLayoutDirection = LayoutDirection.Vertical;
+            Content.AutoLayoutPadding = new RectOffset(0, 0, 0, 0);
             Content.clipChildren = true;
             Content.builtinKeyNavigation = true;
-            Content.scrollWheelDirection = UIOrientation.Vertical;
+            Content.ScrollWheelDirection = UIOrientation.Vertical;
             Content.maximumSize = new Vector2(500, 500);
-            Content.relativePosition = new Vector2(Padding, Padding);
+            Content.relativePosition = new Vector2(ContentPadding, ContentPadding);
             this.AddScrollbar(Content);
         }
         public void Refresh()
         {
             Content.FitChildrenVertically();
-            Content.width = Content.verticalScrollbar.isVisible ? PopupWidth - Content.verticalScrollbar.width : PopupWidth;
+            Content.width = Content.VerticalScrollbar.isVisible ? PopupWidth - Content.VerticalScrollbar.width : PopupWidth;
             ContentSizeChanged();
         }
         private void ContentSizeChanged(UIComponent component = null, Vector2 value = default)
         {
             if (Content != null)
             {
-                size = new Vector2(PopupWidth + Padding * 2, Content.height + Padding * 2);
+                size = new Vector2(PopupWidth + ContentPadding * 2, Content.height + ContentPadding * 2);
 
                 foreach (var item in Content.components)
                     item.width = Content.width;

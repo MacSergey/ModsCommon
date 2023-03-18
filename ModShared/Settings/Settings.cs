@@ -152,7 +152,7 @@ namespace ModsCommon.Settings
             TabStrip.AddTab(label, 1.25f);
 
             var tabPanel = MainPanel.AddUIComponent<AdvancedScrollablePanel>();
-            tabPanel.Content.autoLayoutPadding = new RectOffset(8, 8, 5, 5);
+            tabPanel.Content.AutoLayoutPadding = new RectOffset(8, 8, 5, 5);
             SetTabSize(tabPanel);
             tabPanel.isVisible = false;
             TabPanels.Add(tabPanel);
