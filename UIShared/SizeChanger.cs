@@ -39,8 +39,8 @@ namespace ModsCommon.UI
         public SizeChanger()
         {
             size = new Vector2(9, 9);
-            atlas = CommonTextures.Atlas;
-            backgroundSprite = CommonTextures.Resize;
+            Atlas = CommonTextures.Atlas;
+            BackgroundSprite = CommonTextures.Resize;
             color = new Color32(255, 255, 255, 160);
         }
         public override void Start()

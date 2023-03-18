@@ -49,7 +49,7 @@ namespace ModsCommon.Utilities
             Label.minimumSize = new Vector2(0, 79);
 
             Space = Panel.Content.AddUIComponent<CustomUIPanel>();
-            Space.backgroundSprite = "ContentManagerItemBackground";
+            Space.BackgroundSprite = "ContentManagerItemBackground";
             Space.height = 5f;
         }
 

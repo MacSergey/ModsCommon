@@ -82,7 +82,7 @@ namespace ModsCommon.UI
             this.DropDownDefaultStyle(size);
         }
 
-        public int Level => 0;
+        public bool IsLayoutSuspended => false;
         public Vector2 ItemSize => size;
         public RectOffset LayoutPadding => new RectOffset();
 

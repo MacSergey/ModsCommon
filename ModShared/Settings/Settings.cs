@@ -126,7 +126,7 @@ namespace ModsCommon.Settings
             foreach (var tab in TabPanels)
                 SetTabSize(tab);
         }
-        private void SetTabSize(UIPanel panel)
+        private void SetTabSize(CustomUIPanel panel)
         {
             panel.size = new Vector2(MainPanel.width, MainPanel.height - (TabStrip.isVisible ? MainPanel.autoLayoutPadding.vertical + TabStrip.height : 0f));
         }
@@ -171,13 +171,15 @@ namespace ModsCommon.Settings
             if (GetType().Assembly.LoadTextureFromAssembly("PreviewImage") is Texture2D preview)
             {
                 var group = tabContent.AddGroup();
-                group.autoLayoutDirection = LayoutDirection.Horizontal;
+                group.AutoLayout = AutoLayout.Horizontal;
 
                 var optionsContent = group.AddUIComponent<CustomUIPanel>();
-                optionsContent.autoLayout = true;
-                optionsContent.autoFitChildrenVertically = true;
-                optionsContent.autoLayoutDirection = LayoutDirection.Vertical;
-                optionsContent.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
+                optionsContent.PauseLayout(() => 
+                {
+                    optionsContent.AutoLayout = AutoLayout.Vertical;
+                    optionsContent.AutoFitChildrenVertically = true;
+                    optionsContent.AutoLayoutSpace = 15;
+                });
 
                 var imagePanel = group.AddUIComponent<CustomUIPanel>();
                 imagePanel.size = new Vector2(200f, 200f);
@@ -190,7 +192,7 @@ namespace ModsCommon.Settings
 
                 group.eventSizeChanged += (_, size) => SetSize();
                 SetSize();
-                void SetSize() => optionsContent.width = group.width - imagePanel.width;
+                void SetSize() => optionsContent.width = group.width - imagePanel.width - group.AutoLayoutSpace;
 
                 optionsGroup = optionsContent.FillOptionsGroup(out title, SingletonMod<TypeMod>.Instance.NameRaw);
             }
@@ -200,7 +202,7 @@ namespace ModsCommon.Settings
             title.textScale = 2f;
 
             var versionItem = optionsGroup.AddLabel(string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
-            versionItem.padding = new RectOffset();
+            versionItem.Padding = new RectOffset();
             versionItem.Borders = SettingsContentItem.Border.None;
 
             if (InfoCallback != null)
@@ -210,7 +212,7 @@ namespace ModsCommon.Settings
             }
 
             var infoLabel = optionsGroup.AddLabel(GetStatusText());
-            infoLabel.padding = new RectOffset();
+            infoLabel.Padding = new RectOffset();
             infoLabel.Borders = SettingsContentItem.Border.None;
             infoLabel.LabelItem.processMarkup = true;
 
@@ -266,7 +268,7 @@ namespace ModsCommon.Settings
 
             var labelItem = group.AddLabel(CommonLocalize.Settings_TranslationDescription, 0.8f);
             labelItem.Borders = SettingsContentItem.Border.None;
-            labelItem.padding = new RectOffset(0, 0, 5, 5);
+            labelItem.Padding = new RectOffset(0, 0, 5, 5);
 
             var buttonPanel = group.AddButtonPanel(new RectOffset(0, 0, 0, 10), 10);
             buttonPanel.AddButton(CommonLocalize.Settings_TranslationImprove, () => SingletonMod<TypeMod>.Instance.OpenTranslationProject(), 250f, 1f);

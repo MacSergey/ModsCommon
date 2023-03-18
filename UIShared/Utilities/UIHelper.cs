@@ -90,6 +90,8 @@ namespace ModsCommon.UI
             var trackSprite = scrollbar.AddUIComponent<UISlicedSprite>();
             trackSprite.name = "Scrollbar Track";
             trackSprite.atlas = CommonTextures.Atlas;
+            trackSprite.spriteName = CommonTextures.FieldSingle;
+            trackSprite.color = ComponentStyle.FieldDisabledColor;
             trackSprite.relativePosition = Vector2.zero;
             trackSprite.autoSize = true;
             trackSprite.anchor = UIAnchorStyle.All;

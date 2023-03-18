@@ -21,7 +21,6 @@ namespace ModsCommon.UI
             get => Button.isEnabled;
             set => Button.isEnabled = value;
         }
-        public override bool SupportEven => true;
 
         public event Action OnButtonClick;
 
@@ -68,7 +67,6 @@ namespace ModsCommon.UI
         public int Count => Buttons.Count;
         private float Space => 10f;
         private float Height => 20f;
-        public override bool SupportEven => true;
 
         public override bool EnableControl
         {
@@ -178,11 +176,10 @@ namespace ModsCommon.UI
             get => Button.isEnabled;
             set => Button.isEnabled = value;
         }
-        public override bool SupportEven => true;
 
         public event Action OnButtonClick;
 
-        public ButtonPropertyPanel()
+        protected override void FillContent()
         {
             Button = AddButton(Content);
             Button.textScale = 0.8f;
@@ -191,7 +188,6 @@ namespace ModsCommon.UI
             Button.isEnabled = EnableControl;
             Button.eventClick += ButtonClick;
         }
-
         public new void Init(float? height)
         {
             base.Init(height);

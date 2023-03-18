@@ -145,8 +145,8 @@ namespace ModsCommon.UI
             }
         }
 
-        protected CustomUILabel[] Labels { get; }
-        protected FloatUITextField[] Fields { get; }
+        protected CustomUILabel[] Labels { get; private set; }
+        protected FloatUITextField[] Fields { get; private set; }
 
         public Color32 FieldTextColor
         {
@@ -256,7 +256,7 @@ namespace ModsCommon.UI
             }
         }
 
-        public BaseVectorPropertyPanel()
+        protected override void FillContent()
         {
             Labels = new CustomUILabel[Dimension];
             Fields = new FloatUITextField[Dimension];
@@ -264,7 +264,6 @@ namespace ModsCommon.UI
             for (var i = 0; i < Dimension; i += 1)
                 AddField(i, out Labels[i], out Fields[i]);
         }
-
         public void Init(params int[] indexes)
         {
             for (var i = 0; i < indexes.Length; i += 1)

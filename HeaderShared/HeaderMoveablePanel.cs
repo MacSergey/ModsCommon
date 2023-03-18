@@ -1,9 +1,10 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class HeaderMoveablePanel<TypeContent> : BaseHeaderPanel<TypeContent>
+    public abstract class HeaderMoveablePanel<TypeContent> : EditorItem
         where TypeContent : BaseHeaderContent
     {
         protected bool CanMove
@@ -17,6 +18,7 @@ namespace ModsCommon.UI
         }
         private bool Move { get; set; }
 
+        protected TypeContent Content { get; set; }
         protected CustomUILabel Caption { get; private set; }
         public UIComponent Target { get; set; }
         private Vector3 LastPosition { get; set; }
@@ -27,8 +29,10 @@ namespace ModsCommon.UI
             set => Caption.text = value;
         }
 
-        public HeaderMoveablePanel()
+        public HeaderMoveablePanel() : base()
         {
+            AutoLayout = AutoLayout.Disabled;
+
             Caption = AddUIComponent<CustomUILabel>();
             Caption.zOrder = 0;
             Caption.autoSize = false;
@@ -37,10 +41,17 @@ namespace ModsCommon.UI
             Caption.textAlignment = UIHorizontalAlignment.Center;
             Caption.verticalAlignment = UIVerticalAlignment.Middle;
             Caption.eventSizeChanged += (_, _) => CaptionSizeChanged();
+
+            Content = AddUIComponent<TypeContent>();
+            Content.AutoFitChildrenVertically = false;
+            Content.AutoFitChildrenHorizontally = true;
+            Content.PauseLayout(FillContent);
         }
-        protected override void Init(float? height)
+        protected abstract void FillContent();
+        protected virtual void Init(float? height)
         {
-            base.Init(height);
+            size = new Vector2(parent.width, height ?? 42);
+            Refresh();
             CaptionSizeChanged();
         }
         public override void Start()
@@ -67,15 +78,15 @@ namespace ModsCommon.UI
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            Refresh();
+            UpdateLayout();
         }
-        public override void Refresh()
-        {
-            Content.height = height;
-            base.Refresh();
 
-            Caption.width = width - Content.width - 20;
-            Content.relativePosition = new Vector2(Caption.width - 5 + 20, (height - Content.height) / 2);
+        public virtual void Refresh() => Content.Refresh();
+        public virtual void UpdateLayout()
+        {
+            Caption.width = width - Content.width - 20f;
+            Content.height = height;
+            Content.relativePosition = new Vector2(Caption.width - 5f + 20f, 0f);
         }
 
         protected override void OnMouseDown(UIMouseEventParameter p)
@@ -126,7 +137,6 @@ namespace ModsCommon.UI
             }
             base.OnMouseMove(p);
         }
-
         protected override void OnMouseUp(UIMouseEventParameter p)
         {
             base.OnMouseUp(p);

@@ -59,7 +59,7 @@ namespace ModsCommon.UI
             set => Field.Format = value;
         }
 
-        public SliderPropertyPanel()
+        protected override void FillContent()
         {
             Slider = Content.AddUIComponent<SliderType>();
             Slider.SetDefaultStyle();

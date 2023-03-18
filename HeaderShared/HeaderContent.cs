@@ -37,21 +37,26 @@ namespace ModsCommon.UI
         private List<IHeaderButtonInfo> AdditionalInfos { get; set; }
         private bool ShowAdditional => AdditionalInfos.Count > 0;
 
-        private AdditionalHeaderButton Additional { get; }
+        private AdditionalHeaderButton Additional { get; set; }
 
         public BaseHeaderContent()
         {
-            autoLayoutDirection = LayoutDirection.Horizontal;
-            autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            PauseLayout(() =>
+            {
+                autoLayout = AutoLayout.Horizontal;
+                padding = new RectOffset(0, 0, 5, 5);
+                autoFitChildrenVertically = true;
+                autoLayoutCenter = true;
 
-            Additional = AddUIComponent<AdditionalHeaderButton>();
-            Additional.tooltip = CommonLocalize.Panel_Additional;
-            Additional.SetIcon(AdditionalButtonAtlas, AdditionalButtonSprite);
-            Additional.SetSize(MainButtonSize, MainIconSize);
+                Additional = AddUIComponent<AdditionalHeaderButton>();
+                Additional.tooltip = CommonLocalize.Panel_Additional;
+                Additional.SetIcon(AdditionalButtonAtlas, AdditionalButtonSprite);
+                Additional.SetSize(MainButtonSize, MainIconSize);
 
-            Additional.OnPopupOpening += PopupOpening;
-            Additional.OnBeforePopupClose += BeforePopupClose;
-            SetButtonColors(Additional);
+                Additional.OnPopupOpening += PopupOpening;
+                Additional.OnBeforePopupClose += BeforePopupClose;
+                SetButtonColors(Additional);
+            });
 
             Refresh();
         }
@@ -86,27 +91,7 @@ namespace ModsCommon.UI
         }
         private void PopupClicked(UIComponent component, UIMouseEventParameter eventParam) => Additional.ClosePopup();
 
-        public virtual void Refresh()
-        {
-            PlaceButtons();
-
-            autoLayout = true;
-            autoLayout = false;
-            FitChildrenHorizontally();
-
-            SetSize();
-        }
-
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
-            SetSize();
-        }
-        protected virtual void SetSize()
-        {
-            foreach (var item in components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
-        }
+        public virtual void Refresh() => PlaceButtons();
 
         private void PlaceButtons()
         {

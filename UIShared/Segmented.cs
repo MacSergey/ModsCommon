@@ -75,7 +75,7 @@ namespace ModsCommon.UI
 
         public UISegmented()
         {
-            autoLayoutDirection = LayoutDirection.Horizontal;
+            autoLayout = AutoLayout.Horizontal;
             autoFitChildrenHorizontally = true;
             autoFitChildrenVertically = true;
         }
@@ -114,12 +114,11 @@ namespace ModsCommon.UI
         }
         private void SetButtonsWidth()
         {
-            StopLayout();
-
-            foreach (var button in Buttons)
-                UpdateButton(button);
-
-            StartLayout();
+            PauseLayout(() =>
+            {
+                foreach (var button in Buttons)
+                    UpdateButton(button);
+            });
         }
         private void UpdateButton(CustomUIButton button = null, float? width = null)
         {

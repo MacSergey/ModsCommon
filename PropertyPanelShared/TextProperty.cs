@@ -25,20 +25,23 @@ namespace ModsCommon.UI
         public TextProperty()
         {
             Panel = AddUIComponent<CustomUIPanel>();
-            Panel.relativePosition = new Vector2(ItemsPadding, ItemsPadding);
-            Panel.atlas = TextureHelper.InGameAtlas;
-            Panel.backgroundSprite = "ButtonWhite";
-            Panel.color = Color;
-            Panel.autoLayout = true;
-            Panel.autoFitChildrenVertically = true;
-            Panel.eventSizeChanged += PanelSizeChanged;
+            Panel.PauseLayout(() =>
+            {
+                Panel.relativePosition = new Vector2(ItemsPadding, ItemsPadding);
+                Panel.Atlas = TextureHelper.InGameAtlas;
+                Panel.BackgroundSprite = "ButtonWhite";
+                Panel.color = Color;
+                Panel.AutoLayout = AutoLayout.Horizontal;
+                Panel.AutoFitChildrenVertically = true;
+                Panel.eventSizeChanged += PanelSizeChanged;
 
-            Label = Panel.AddUIComponent<CustomUILabel>();
-            Label.textScale = 0.7f;
-            Label.autoSize = false;
-            Label.autoHeight = true;
-            Label.wordWrap = true;
-            Label.padding = new RectOffset(5, 5, 5, 5);
+                Label = Panel.AddUIComponent<CustomUILabel>();
+                Label.textScale = 0.7f;
+                Label.autoSize = false;
+                Label.autoHeight = true;
+                Label.wordWrap = true;
+                Label.padding = new RectOffset(5, 5, 5, 5);
+            });
         }
 
         private void PanelSizeChanged(UIComponent component, Vector2 value)

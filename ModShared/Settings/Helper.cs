@@ -28,13 +28,12 @@ namespace ModsCommon.Settings
             var panel = parent.AddUIComponent<CustomUIPanel>();
 
             panel.width = 738f;
-            panel.autoLayout = true;
-            panel.autoFitChildrenVertically = true;
-            panel.autoLayoutDirection = LayoutDirection.Vertical;
-            panel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
+            panel.AutoLayout = AutoLayout.Vertical;
+            panel.AutoFitChildrenVertically = true;
+            panel.AutoLayoutSpace = 15;
 
-            panel.atlas = CommonTextures.Atlas;
-            panel.backgroundSprite = CommonTextures.PanelBig;
+            panel.Atlas = CommonTextures.Atlas;
+            panel.BackgroundSprite = CommonTextures.PanelBig;
             panel.color = new Color32(20, 25, 38, 255);
 
             return panel;
@@ -58,14 +57,11 @@ namespace ModsCommon.Settings
 
             var сontent = parent.AddUIComponent<CustomUIPanel>();
             сontent.name = "Content";
-            сontent.autoLayout = true;
-            сontent.autoFitChildrenVertically = true;
-            сontent.autoLayoutDirection = LayoutDirection.Vertical;
-            сontent.verticalSpacing = 5;
+            сontent.AutoLayout = AutoLayout.Vertical;
+            сontent.AutoFitChildrenVertically = true;
             сontent.width = parent.width;
 
-            сontent.autoLayoutPadding = new RectOffset(0, 0, 0, 0);
-            сontent.padding = new RectOffset(40, 0, 0, 0);
+            сontent.Padding = new RectOffset(40, 0, 0, 5);
             сontent.eventComponentAdded += ComponentAdded;
             сontent.eventSizeChanged += SizeChanged;
 
@@ -76,7 +72,7 @@ namespace ModsCommon.Settings
             static void ComponentAdded(UIComponent container, UIComponent child)
             {
                 if (child is BaseSettingItem item)
-                    item.width = container.width - (container as UIPanel).padding.horizontal;
+                    item.width = container.width - (container as CustomUIPanel)?.Padding.horizontal ?? 0;
             }
 
             static void SizeChanged(UIComponent component, Vector2 value)
@@ -84,7 +80,7 @@ namespace ModsCommon.Settings
                 foreach (var child in component.components)
                 {
                     if (child is BaseSettingItem item)
-                        item.width = component.width - (component as UIPanel).padding.horizontal;
+                        item.width = component.width - (component as CustomUIPanel)?.Padding.horizontal ?? 0;
                 }
             }
 
@@ -179,7 +175,7 @@ namespace ModsCommon.Settings
         {
             var item = parent.AddLabel(label, textScale, color);
             item.Borders = SettingsContentItem.Border.None;
-            item.paddingTop = 0;
+            item.PaddingTop = 0;
 
             return item;
         }
@@ -294,11 +290,13 @@ namespace ModsCommon.Settings
         private static CustomUIPanel AddPanel(this UIComponent parent, int padding = 25)
         {
             var optionsPanel = parent.AddUIComponent<CustomUIPanel>();
-            optionsPanel.autoLayout = true;
-            optionsPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            optionsPanel.autoFitChildrenHorizontally = true;
-            optionsPanel.autoFitChildrenVertically = true;
-            optionsPanel.autoLayoutPadding = new RectOffset(padding, 0, 0, 0);
+            optionsPanel.PauseLayout(() =>
+            {
+                optionsPanel.AutoLayout = AutoLayout.Vertical;
+                optionsPanel.AutoFitChildrenHorizontally = true;
+                optionsPanel.AutoFitChildrenVertically = true;
+                optionsPanel.Padding = new RectOffset(padding, 0, 0, 0);
+            });
             return optionsPanel;
         }
 
@@ -329,8 +327,8 @@ namespace ModsCommon.Settings
         public static SettingsContentItem AddHorizontalPanel(this UIComponent parent, RectOffset padding, int itemSpacing)
         {
             var optionsPanel = parent.AddUIComponent<SettingsContentItem>();
-            optionsPanel.padding = padding;
-            optionsPanel.Content.autoLayoutPadding = new RectOffset(0, itemSpacing, 0, 0);
+            optionsPanel.Padding = padding;
+            optionsPanel.Content.AutoLayoutSpace = itemSpacing;
             return optionsPanel;
         }
         public static EmptySpaceSettingsItem AddSpace(this UIComponent parent, float height)

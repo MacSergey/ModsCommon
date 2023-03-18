@@ -18,5 +18,17 @@ namespace ModsCommon.Utilities
 
             return false;
         }
+
+        public static bool StartTop(this LayoutStart layout) => layout == LayoutStart.TopRight || layout == LayoutStart.TopLeft;
+        public static bool StartBottom(this LayoutStart layout) => layout == LayoutStart.BottomLeft || layout == LayoutStart.BottomRight;
+        public static bool StartRight(this LayoutStart layout) => layout == LayoutStart.TopRight || layout == LayoutStart.BottomRight;
+        public static bool StartLeft(this LayoutStart layout) => layout == LayoutStart.TopLeft || layout == LayoutStart.BottomLeft;
+    }
+
+    public enum AutoLayout
+    {
+        Disabled,
+        Horizontal,
+        Vertical
     }
 }

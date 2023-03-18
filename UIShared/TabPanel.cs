@@ -16,23 +16,23 @@ namespace ModsCommon.UI
 
         public int TabSpacingVertical
         {
-            get => padding.vertical / 2;
+            get => Padding.vertical / 2;
             set
             {
                 value = Math.Max(value, 0);
-                padding.top = value;
-                padding.bottom = value;
+                Padding.top = value;
+                Padding.bottom = value;
                 ArrangeTabs();
             }
         }
         public int TabSpacingHorizontal
         {
-            get => padding.horizontal / 2;
+            get => Padding.horizontal / 2;
             set
             {
                 value = Math.Max(value, 0);
-                padding.left = value;
-                padding.right = value;
+                Padding.left = value;
+                Padding.right = value;
                 ArrangeTabs();
             }
         }
@@ -273,7 +273,7 @@ namespace ModsCommon.UI
         }
         private List<List<TabType>> FillTabRows(TabType[] tabs)
         {
-            var totalWidth = tabs.Sum(t => t.width) + tabs.Length * padding.left + padding.right;
+            var totalWidth = tabs.Sum(t => t.width) + tabs.Length * Padding.left + Padding.right;
             var rows = (int)(totalWidth / width) + 1;
             var tabInRow = tabs.Length / rows;
             var extraRows = tabs.Length - (tabInRow * rows);
@@ -296,10 +296,10 @@ namespace ModsCommon.UI
             for (var i = 0; i < tabRows.Count; i += 1)
             {
                 var tabRow = tabRows[i];
-                var totalRowWidth = (float)padding.right;
+                var totalRowWidth = (float)Padding.right;
                 for (var j = 0; j < tabRow.Count; j += 1)
                 {
-                    if (totalRowWidth + tabRow[j].width + padding.left > width)
+                    if (totalRowWidth + tabRow[j].width + Padding.left > width)
                     {
                         var toMove = tabRow.Skip(j == 0 ? j + 1 : j).ToArray();
 
@@ -316,7 +316,7 @@ namespace ModsCommon.UI
                         break;
                     }
                     else
-                        totalRowWidth += tabRow[j].width + padding.left;
+                        totalRowWidth += tabRow[j].width + Padding.left;
                 }
             }
         }
@@ -325,29 +325,29 @@ namespace ModsCommon.UI
             var totalHeight = 0f;
             for (var i = 0; i < tabRows.Count; i += 1)
             {
-                totalHeight += padding.top;
+                totalHeight += Padding.top;
                 var tabRow = tabRows[i];
 
-                var rowWidth = tabRow.Sum(t => t.width) + tabRow.Count * padding.left + padding.right;
+                var rowWidth = tabRow.Sum(t => t.width) + tabRow.Count * Padding.left + Padding.right;
                 var rowHeight = Mathf.Ceil(tabRow.Max(t => t.height));
 
                 var additional = Mathf.Floor((width - rowWidth) / tabRow.Count);
-                var totalRowWidth = (float)padding.right;
+                var totalRowWidth = (float)Padding.right;
 
                 for (var j = 0; j < tabRow.Count; j += 1)
                 {
                     var tab = tabRow[j];
 
-                    tab.width = j < tabRow.Count - 1 ? Mathf.Floor(tab.width + additional) : width - totalRowWidth - padding.right;
+                    tab.width = j < tabRow.Count - 1 ? Mathf.Floor(tab.width + additional) : width - totalRowWidth - Padding.right;
                     tab.height = rowHeight;
                     tab.relativePosition = new Vector2(totalRowWidth, totalHeight);
-                    totalRowWidth += tab.width + padding.left;
+                    totalRowWidth += tab.width + Padding.left;
                 }
 
                 totalHeight += rowHeight;
             }
 
-            height = totalHeight + padding.bottom;
+            height = totalHeight + Padding.bottom;
         }
 
         protected override void OnComponentAdded(UIComponent child)
@@ -413,9 +413,9 @@ namespace ModsCommon.UI
 
         private bool tabLayout = true;
         private int level;
-        public int Level => level;
-        public Vector2 ItemSize => new Vector2(width - padding.horizontal, height - padding.vertical);
-        public RectOffset LayoutPadding => padding;
+        public int LayoutSuspend => level;
+        public Vector2 ItemSize => new Vector2(width - Padding.horizontal, height - Padding.vertical);
+        public RectOffset LayoutPadding => Padding;
         public void StopLayout()
         {
             if (level == 0)

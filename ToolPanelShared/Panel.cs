@@ -93,11 +93,14 @@ namespace ModsCommon.UI
         private void AddContent()
         {
             Content = ComponentPool.Get<PropertyGroupPanel>(this);
-            Content.minimumSize = new Vector2(300f, 0f);
-            Content.color = new Color32(72, 80, 80, 255);
-            Content.autoLayoutDirection = LayoutDirection.Vertical;
-            Content.autoFitChildrenVertically = true;
-            Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
+            Content.PauseLayout(() =>
+            {
+                Content.minimumSize = new Vector2(300f, 0f);
+                Content.color = new Color32(72, 80, 80, 255);
+                Content.AutoLayout = AutoLayout.Vertical;
+                Content.AutoFitChildrenVertically = true;
+                Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
+            });
         }
         private void AddHeader()
         {
@@ -108,23 +111,21 @@ namespace ModsCommon.UI
 
         public void SetPanel()
         {
-            Content.StopLayout();
-
-            ResetPanel();
-            SetPanelProcess();
-            FillProperties();
-
-            Content.StartLayout();
+            Content.PauseLayout(() =>
+            {
+                ResetPanel();
+                SetPanelProcess();
+                FillProperties();
+            });
         }
         protected virtual void SetPanelProcess() { }
         private void ResetPanel()
         {
-            Content.StopLayout();
-
-            ResetPanelProcess();
-            ClearProperties();
-
-            Content.StartLayout();
+            Content.PauseLayout(() =>
+            {
+                ResetPanelProcess();
+                ClearProperties();
+            });
         }
         protected virtual void ResetPanelProcess() { }
 

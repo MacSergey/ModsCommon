@@ -24,13 +24,10 @@ namespace ModsCommon.UI
             set => Selector.Value = value;
         }
 
-        public SelectPropertyPanel()
-        {
-            AddSelector();
-        }
-        private void AddSelector()
+        protected override void FillContent()
         {
             Selector = Content.AddUIComponent<PanelType>();
+            Selector.name = nameof(Selector);
             Selector.width = Width;
             Selector.OnValueChanged += ValueChanged;
 

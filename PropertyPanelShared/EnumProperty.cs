@@ -21,19 +21,18 @@ namespace ModsCommon.UI
         protected virtual IEnumerable<EnumType> GetValues() => EnumExtension.GetEnumValues<EnumType>();
         protected virtual void FillItems(Func<EnumType, bool> selector)
         {
-            Selector.StopLayout();
-            foreach (var value in GetValues())
+            Selector.PauseLayout(() =>
             {
-                if (selector?.Invoke(value) != false)
-                    Selector.AddItem(value, new OptionData(GetDescription(value)));
-            }
-            Selector.StartLayout();
+                foreach (var value in GetValues())
+                {
+                    if (selector?.Invoke(value) != false)
+                        Selector.AddItem(value, new OptionData(GetDescription(value)));
+                }
+            });
         }
         public virtual void Clear()
         {
-            Selector.StopLayout();
-            Selector.Clear();
-            Selector.StartLayout();
+            Selector.PauseLayout(Selector.Clear);
         }
         protected abstract string GetDescription(EnumType value);
     }
@@ -58,19 +57,18 @@ namespace ModsCommon.UI
         }
         protected virtual void FillItems(Func<EnumType, bool> selector)
         {
-            Selector.StopLayout();
-            foreach (var value in EnumExtension.GetEnumValues<EnumType>())
+            Selector.PauseLayout(() =>
             {
-                if (selector?.Invoke(value) != false)
-                    Selector.AddItem(value, new OptionData(GetDescription(value)));
-            }
-            Selector.StartLayout();
+                foreach (var value in EnumExtension.GetEnumValues<EnumType>())
+                {
+                    if (selector?.Invoke(value) != false)
+                        Selector.AddItem(value, new OptionData(GetDescription(value)));
+                }
+            });
         }
         public virtual void Clear()
         {
-            Selector.StopLayout();
-            Selector.Clear();
-            Selector.StartLayout();
+            Selector.PauseLayout(Selector.Clear);
         }
         protected abstract string GetDescription(EnumType value);
 
@@ -91,18 +89,19 @@ namespace ModsCommon.UI
         {
             base.Init(null);
 
-            Selector.StopLayout();
-            if (invert)
+            Selector.PauseLayout(() =>
             {
-                Selector.AddItem(true, new OptionData(trueLabel));
-                Selector.AddItem(false, new OptionData(falseLabel));
-            }
-            else
-            {
-                Selector.AddItem(false, new OptionData(falseLabel));
-                Selector.AddItem(true, new OptionData(trueLabel));
-            }
-            Selector.StartLayout();
+                if (invert)
+                {
+                    Selector.AddItem(true, new OptionData(trueLabel));
+                    Selector.AddItem(false, new OptionData(falseLabel));
+                }
+                else
+                {
+                    Selector.AddItem(false, new OptionData(falseLabel));
+                    Selector.AddItem(true, new OptionData(trueLabel));
+                }
+            });
         }
 
         public class BoolSegmented : UIOnceSegmented<bool> { }
@@ -117,10 +116,11 @@ namespace ModsCommon.UI
         {
             base.Init(null);
 
-            Selector.StopLayout();
-            for (var i = 1; i <= count; i += 1)
-                Selector.AddItem(i, new OptionData(i.ToString()));
-            Selector.StartLayout();
+            Selector.PauseLayout(() =>
+            {
+                for (var i = 1; i <= count; i += 1)
+                    Selector.AddItem(i, new OptionData(i.ToString()));
+            });
         }
 
         public class IntSegmented : UIOnceSegmented<int> { }

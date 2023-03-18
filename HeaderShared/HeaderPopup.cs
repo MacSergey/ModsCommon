@@ -32,8 +32,8 @@ namespace ModsCommon.UI
             canFocus = true;
             isInteractive = true;
             color = Background;
-            atlas = CommonTextures.Atlas;
-            backgroundSprite = CommonTextures.FieldSingle;
+            Atlas = CommonTextures.Atlas;
+            BackgroundSprite = CommonTextures.FieldSingle;
 
             AddPanel();
         }

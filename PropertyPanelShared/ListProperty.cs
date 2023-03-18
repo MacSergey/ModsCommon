@@ -18,7 +18,7 @@ namespace ModsCommon.UI
         protected virtual bool AllowNull => true;
         public string NullText { get; set; } = string.Empty;
 
-        public ListPropertyPanel()
+        protected override void FillContent()
         {
             AddSelector();
             Selector.IsEqualDelegate = IsEqual;
@@ -28,23 +28,19 @@ namespace ModsCommon.UI
             Selector = Content.AddUIComponent<UISelector>();
 
             Selector.SetDefaultStyle(new Vector2(DropDownWidth, 20));
-            Selector.eventSizeChanged += SelectorSizeChanged;
             if (Selector is UIDropDown dropDown)
             {
                 dropDown.eventDropdownOpen += DropDownOpen;
                 dropDown.eventDropdownClose += DropDownClose;
             }
         }
-        private void SelectorSizeChanged(UIComponent component, Vector2 value) => Refresh();
 
         private void DropDownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
-            //dropdown.triggerButton.isInteractive = false;
             OnDropDownStateChange?.Invoke(true);
         }
         private void DropDownClose(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
-            //dropdown.triggerButton.isInteractive = true;
             OnDropDownStateChange?.Invoke(false);
         }
 

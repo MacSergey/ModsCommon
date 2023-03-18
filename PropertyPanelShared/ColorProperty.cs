@@ -51,7 +51,7 @@ namespace ModsCommon.UI
             set => ValueChanged(value, false, OnChangedValue);
         }
 
-        public ColorPropertyPanel()
+        protected override void FillContent()
         {
             AddColorSample();
 
@@ -60,6 +60,7 @@ namespace ModsCommon.UI
             BProperty = AddField(Content, "B", PropertyChangedRGB);
             AProperty = AddField(Content, "A", PropertyChangedA);
         }
+
         protected void ValueChanged(Color32 color, bool callEvent = true, Action<Color32> action = null)
         {
             if (!InProcess)
@@ -272,8 +273,8 @@ namespace ModsCommon.UI
                 return;
 
             var panel = Content.AddUIComponent<CustomUIPanel>();
-            panel.atlas = CommonTextures.Atlas;
-            panel.backgroundSprite = CommonTextures.ColorPickerBoard;
+            panel.Atlas = CommonTextures.Atlas;
+            panel.BackgroundSprite = CommonTextures.ColorPickerBoard;
 
             ColorSample = Instantiate(template.Find<UIColorField>("LineColor").gameObject).GetComponent<UIColorField>();
             panel.AttachUIComponent(ColorSample.gameObject);
@@ -368,29 +369,29 @@ namespace ModsCommon.UI
         private void AddColorValuePanel(UIComponent parent)
         {
             var rgbPanel = parent.AddUIComponent<CustomUIPanel>();
-            rgbPanel.relativePosition = new Vector2(10, 223);
-            rgbPanel.autoLayoutDirection = LayoutDirection.Horizontal;
-            rgbPanel.autoLayoutPadding = new RectOffset(4, 0, 0, 0);
-            rgbPanel.autoFitChildrenHorizontally = true;
-            rgbPanel.autoFitChildrenVertically = true;
+            rgbPanel.PauseLayout(() =>
+            {
+                rgbPanel.relativePosition = new Vector2(10, 223);
+                rgbPanel.AutoLayout = AutoLayout.Horizontal;
+                rgbPanel.AutoLayoutSpace = 4;
+                rgbPanel.AutoFitChildrenHorizontally = true;
+                rgbPanel.AutoFitChildrenVertically = true;
 
-            RPicker = AddField(rgbPanel, "R", PickerRGBChanged);
-            GPicker = AddField(rgbPanel, "G", PickerRGBChanged);
-            BPicker = AddField(rgbPanel, "B", PickerRGBChanged);
-            APicker = AddField(rgbPanel, "A", PickerAChanged);
+                RPicker = AddField(rgbPanel, "R", PickerRGBChanged);
+                GPicker = AddField(rgbPanel, "G", PickerRGBChanged);
+                BPicker = AddField(rgbPanel, "B", PickerRGBChanged);
+                APicker = AddField(rgbPanel, "A", PickerAChanged);
 
-            HEXPicker = rgbPanel.AddUIComponent<StringUITextField>();
-            HEXPicker.SetDefaultStyle();
-            HEXPicker.Format = "#{0}";
-            HEXPicker.horizontalAlignment = UIHorizontalAlignment.Center;
-            HEXPicker.width = 72f;
-            HEXPicker.CheckValue = CheckHEXValue;
-            HEXPicker.OnValueChanged += PickerHEXChanged;
-            HEXPicker.eventGotFocus += FieldGotFocus;
-            HEXPicker.eventLostFocus += FieldLostFocus;
-
-            rgbPanel.autoLayout = true;
-            rgbPanel.autoLayout = false;
+                HEXPicker = rgbPanel.AddUIComponent<StringUITextField>();
+                HEXPicker.SetDefaultStyle();
+                HEXPicker.Format = "#{0}";
+                HEXPicker.horizontalAlignment = UIHorizontalAlignment.Center;
+                HEXPicker.width = 72f;
+                HEXPicker.CheckValue = CheckHEXValue;
+                HEXPicker.OnValueChanged += PickerHEXChanged;
+                HEXPicker.eventGotFocus += FieldGotFocus;
+                HEXPicker.eventLostFocus += FieldLostFocus;
+            });
 
             foreach (var item in rgbPanel.components)
                 item.relativePosition = new Vector2(item.relativePosition.x, (rgbPanel.height - item.height) / 2);

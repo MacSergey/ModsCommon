@@ -10,18 +10,18 @@ namespace ModsCommon.UI
         protected static Color32 NormalColor { get; } = new Color32(82, 101, 117, 255);
 
         bool IReusable.InCache { get; set; }
-        protected virtual Color32 Color => NormalColor;
-        protected virtual string BackgroundSprite => CommonTextures.PanelBig;
-        protected virtual UITextureAtlas Atlas => CommonTextures.Atlas;
+        protected virtual Color32 DefaultColor => NormalColor;
+        protected virtual string DefaultBackgroundSprite => CommonTextures.PanelBig;
+        protected virtual UITextureAtlas DefaultAtlas => CommonTextures.Atlas;
 
         public PropertyGroupPanel()
         {
-            atlas = Atlas;
-            backgroundSprite = BackgroundSprite;
-            color = disabledColor = Color;
+            Atlas = DefaultAtlas;
+            BackgroundSprite = DefaultBackgroundSprite;
+            color = disabledColor = DefaultColor;
 
-            autoLayoutDirection = LayoutDirection.Vertical;
-            autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            autoLayout = AutoLayout.Vertical;
+            padding = new RectOffset(0, 0, 0, 0);
             autoFitChildrenVertically = true;
         }
 
@@ -40,12 +40,12 @@ namespace ModsCommon.UI
         public virtual void DeInit()
         {
             StopLayout();
-
-            var components = this.components.ToArray();
-            foreach (var component in components)
-                ComponentPool.Free(component);
-            isVisible = true;
-
+            {
+                var components = this.components.ToArray();
+                foreach (var component in components)
+                    ComponentPool.Free(component);
+                isVisible = true;
+            }
             StartLayout(false);
         }
 
@@ -53,7 +53,7 @@ namespace ModsCommon.UI
         {
             StopLayout();
             foreach (var item in components)
-                item.width = width - autoLayoutPadding.horizontal;
+                item.width = width - Padding.horizontal;
             StartLayout();
 
             base.OnSizeChanged();
@@ -62,44 +62,45 @@ namespace ModsCommon.UI
         {
             base.OnComponentAdded(child);
 
-            if (child is EditorItem item && item.SupportEven)
+            if (child is EditorPropertyPanel property)
             {
-                item.eventVisibilityChanged += ItemVisibilityChanged;
-                SetEven();
+                property.eventVisibilityChanged += ItemVisibilityChanged;
+                if (!IsLayoutSuspended)
+                    SetBorder();
             }
         }
         protected override void OnComponentRemoved(UIComponent child)
         {
             base.OnComponentRemoved(child);
 
-            if (child is EditorItem item && item.SupportEven)
+            if (child is EditorPropertyPanel property)
             {
-                item.eventVisibilityChanged -= ItemVisibilityChanged;
-                SetEven();
+                property.eventVisibilityChanged -= ItemVisibilityChanged;
+                if (!IsLayoutSuspended)
+                    SetBorder();
             }
         }
 
-        private void ItemVisibilityChanged(UIComponent component, bool value) => SetEven();
-
-        public void SetEven()
+        private void ItemVisibilityChanged(UIComponent component, bool value)
         {
-            if (!autoLayout)
-                return;
+            if (!IsLayoutSuspended)
+                SetBorder();
+        }
 
-            var supportEven = components.OfType<EditorItem>().Where(c => c.SupportEven && c.isVisible).ToArray();
-            var even = supportEven.Length > 1 || components.Count > 1;
-
-            foreach (var item in supportEven)
+        protected virtual void SetBorder()
+        {
+            var items = components.Where(p => p.isVisible).ToArray();
+            for (int i = 0; i < items.Length; i += 1)
             {
-                item.IsEven = even;
-                even = !even;
+                if (items[i] is EditorPropertyPanel property)
+                    property.Borders = i == 0 ? PropertyBorder.None : PropertyBorder.Top;
             }
         }
 
         public override void StartLayout(bool layoutNow = true, bool force = false)
         {
+            SetBorder();
             base.StartLayout(layoutNow, force);
-            SetEven();
         }
     }
 }

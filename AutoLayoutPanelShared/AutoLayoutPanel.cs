@@ -1,6 +1,8 @@
 ﻿using ColossalFramework.UI;
 using System;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -10,91 +12,22 @@ namespace ModsCommon.UI
         public Vector2 ItemSize { get; }
         public RectOffset LayoutPadding { get; }
 
-        public int Level { get; }
+        public bool IsLayoutSuspended { get; }
         public void StopLayout();
         public void StartLayout(bool layoutNow = true, bool force = false);
         public void PauseLayout(Action action);
     }
-    public class UIAutoLayoutPanel : CustomUIPanel, IAutoLayoutPanel
+    public class UIAutoLayoutPanel : CustomUIPanel
     {
-        private int level;
-        private bool fitVertically;
-        private bool fitHorizontally;
-
-        public new bool autoFitChildrenVertically
-        {
-            get => level == 0 ? base.autoFitChildrenVertically : fitVertically;
-            set
-            {
-                if (level == 0)
-                    base.autoFitChildrenVertically = value;
-                else
-                    fitVertically = value;
-            }
-        }
-        public new bool autoFitChildrenHorizontally
-        {
-            get => level == 0 ? base.autoFitChildrenHorizontally : fitHorizontally;
-            set
-            {
-                if (level == 0)
-                    base.autoFitChildrenHorizontally = value;
-                else
-                    fitHorizontally = value;
-            }
-        }
-
-        public int Level => level;
-
-        public Vector2 ItemSize => new Vector2(width - autoLayoutPadding.horizontal - padding.horizontal, height - autoLayoutPadding.vertical - padding.vertical);
-        public RectOffset LayoutPadding => autoLayoutPadding;
-
         public UIAutoLayoutPanel()
         {
-            m_AutoLayout = true;
-        }
-        public virtual void StopLayout()
-        {
-            if (level == 0)
-            {
-                fitVertically = m_AutoFitChildrenVertically;
-                fitHorizontally = m_AutoFitChildrenHorizontally;
-
-                m_AutoLayout = false;
-                m_AutoFitChildrenVertically = false;
-                m_AutoFitChildrenHorizontally = false;
-            }
-
-            level += 1;
-        }
-        public virtual void StartLayout(bool layoutNow = true, bool force = false)
-        {
-            level = force ? 0 : Mathf.Max(level - 1, 0);
-
-            if (level == 0)
-            {
-                m_AutoLayout = true;
-                m_AutoFitChildrenVertically = fitVertically;
-                m_AutoFitChildrenHorizontally = fitHorizontally;
-
-                if (layoutNow)
-                    Reset();
-            }
-        }
-        public void PauseLayout(Action action)
-        {
-            if (action != null)
-            {
-                StopLayout();
-                action();
-                StartLayout();
-            }
+            autoLayout = Utilities.AutoLayout.Horizontal;
         }
     }
     public class UIAutoLayoutScrollablePanel : CustomUIScrollablePanel, IAutoLayoutPanel
     {
-        private int level;
-        public int Level => level;
+        private int layoutSuspend;
+        public bool IsLayoutSuspended => layoutSuspend != 0;
 
         public Vector2 ItemSize => new Vector2(width - autoLayoutPadding.horizontal - scrollPadding.horizontal, height - autoLayoutPadding.vertical - scrollPadding.vertical);
         public RectOffset LayoutPadding => autoLayoutPadding;
@@ -105,16 +38,16 @@ namespace ModsCommon.UI
         }
         public virtual void StopLayout()
         {
-            if (level == 0)
+            if (layoutSuspend == 0)
                 m_AutoLayout = false;
 
-            level += 1;
+            layoutSuspend += 1;
         }
         public virtual void StartLayout(bool layoutNow = true, bool force = false)
         {
-            level = force ? 0 : Mathf.Max(level - 1, 0);
+            layoutSuspend = force ? 0 : Mathf.Max(layoutSuspend - 1, 0);
 
-            if (level == 0)
+            if (layoutSuspend == 0)
             {
                 m_AutoLayout = true;
                 if (layoutNow)
@@ -133,9 +66,9 @@ namespace ModsCommon.UI
     public abstract class BaseAdvancedScrollablePanel<TypeContent> : CustomUIPanel, IAutoLayoutPanel
         where TypeContent : UIAutoLayoutScrollablePanel
     {
-        public int Level => Content.Level;
-        public Vector2 ItemSize => Content.ItemSize;
-        public RectOffset LayoutPadding => Content.LayoutPadding;
+        public new bool IsLayoutSuspended => Content.IsLayoutSuspended;
+        public new Vector2 ItemSize => Content.ItemSize;
+        public new RectOffset LayoutPadding => Content.LayoutPadding;
 
         public TypeContent Content { get; private set; }
 
@@ -204,9 +137,9 @@ namespace ModsCommon.UI
         }
 
         private void SetContentSize() => Content.size = size - new Vector2(Content.verticalScrollbar.isVisible ? Content.verticalScrollbar.width : 0, 0);
-        public virtual void StopLayout() => Content.StopLayout();
-        public virtual void StartLayout(bool layoutNow = true, bool force = false) => Content.StartLayout(layoutNow, force);
-        public void PauseLayout(Action action) => Content.PauseLayout(action);
+        public override void StopLayout() => Content.StopLayout();
+        public override void StartLayout(bool layoutNow = true, bool force = false) => Content.StartLayout(layoutNow, force);
+        public override void PauseLayout(Action action) => Content.PauseLayout(action);
     }
 
     public class AdvancedScrollablePanel : BaseAdvancedScrollablePanel<UIAutoLayoutScrollablePanel> { }

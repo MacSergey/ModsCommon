@@ -30,27 +30,26 @@ namespace ModsCommon.UI
 
         public virtual void Init(Dictionary<ModVersion, string> messages, string modName = null, bool expandFirst = true, CultureInfo culture = null)
         {
-            StopLayout();
-
-            //if (!string.IsNullOrEmpty(modName))
-            //{
-            //    var donate = Panel.Content.AddUIComponent<DonatePanel>();
-            //    donate.Init(modName, new Vector2(200f, 50f));
-            //}
-
-            var first = default(VersionMessage);
-            foreach (var message in messages)
+            PauseLayout(() =>
             {
-                var versionMessage = Panel.Content.AddUIComponent<VersionMessage>();
-                versionMessage.Init(message.Key, message.Value, culture);
+                //if (!string.IsNullOrEmpty(modName))
+                //{
+                //    var donate = Panel.Content.AddUIComponent<DonatePanel>();
+                //    donate.Init(modName, new Vector2(200f, 50f));
+                //}
 
-                if (first == null)
-                    first = versionMessage;
-            }
-            if (expandFirst)
-                first.IsExpand = true;
+                var first = default(VersionMessage);
+                foreach (var message in messages)
+                {
+                    var versionMessage = Panel.Content.AddUIComponent<VersionMessage>();
+                    versionMessage.Init(message.Key, message.Value, culture);
 
-            StartLayout();
+                    if (first == null)
+                        first = versionMessage;
+                }
+                if (expandFirst)
+                    first.IsExpand = true;
+            });
         }
 
         public class VersionMessage : UIAutoLayoutPanel
@@ -63,7 +62,7 @@ namespace ModsCommon.UI
                     Container.isVisible = value;
                     Button.SetFgSprite(new SpriteSet(value ? CommonTextures.ArrowDown : CommonTextures.ArrowRight));
 
-                    Container.StopLayout();
+                    Container.PauseLayout(() =>
                     {
                         if (value)
                         {
@@ -82,8 +81,7 @@ namespace ModsCommon.UI
                                 ComponentPool.Free(component);
                             }
                         }
-                    }
-                    Container.StartLayout();
+                    });
                 }
             }
             private CustomUILabel Title { get; set; }
@@ -94,80 +92,88 @@ namespace ModsCommon.UI
 
             public VersionMessage()
             {
-                StopLayout();
+                autoLayout = AutoLayout.Vertical;
+                autoFitChildrenVertically = true;
+                autoLayoutSpace = 8;
+                padding = new RectOffset(5, 5, 5, 5);
+                Atlas = CommonTextures.Atlas;
+                BackgroundSprite = CommonTextures.PanelBig;
+                color = ComponentStyle.DisabledSettingsGray;
+
+                PauseLayout(() =>
                 {
-                    autoLayoutDirection = LayoutDirection.Vertical;
-                    autoFitChildrenVertically = true;
-                    padding = new RectOffset(5, 5, 5, 5);
-                    autoLayoutPadding = new RectOffset(0, 0, 0, 8);
-                    atlas = CommonTextures.Atlas;
-                    backgroundSprite = CommonTextures.PanelBig;
-                    color = ComponentStyle.DisabledSettingsGray;
-                    verticalSpacing = 5;
                     AddTitle();
                     AddLinesContainer();
-                }
-                StartLayout();
+                });
             }
             private void AddTitle()
             {
                 var titlePanel = AddUIComponent<UIAutoLayoutPanel>();
-                titlePanel.name = "TitlePanel";
-                titlePanel.autoLayoutDirection = LayoutDirection.Horizontal;
-                titlePanel.autoFitChildrenVertically = true;
-                titlePanel.autoFitChildrenHorizontally = true;
-                titlePanel.autoLayoutPadding = new RectOffset(0, 10, 0, 0);
-                titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsExpand = !IsExpand;
+                titlePanel.PauseLayout(() =>
+                {
+                    titlePanel.name = "TitlePanel";
+                    titlePanel.AutoLayout = AutoLayout.Horizontal;
+                    titlePanel.AutoFitChildrenVertically = true;
+                    titlePanel.AutoFitChildrenHorizontally = true;
+                    titlePanel.AutoLayoutSpace = 10;
+                    titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsExpand = !IsExpand;
 
-                var versionPanel = titlePanel.AddUIComponent<UIAutoLayoutPanel>();
-                versionPanel.name = "VersionPanel";
-                versionPanel.autoLayoutDirection = LayoutDirection.Vertical;
-                versionPanel.autoFitChildrenVertically = true;
-                versionPanel.autoFitChildrenHorizontally = true;
-                versionPanel.atlas = CommonTextures.Atlas;
-                versionPanel.backgroundSprite = CommonTextures.PanelBig;
-                versionPanel.color = new Color32(122, 138, 153, 255);
+                    var versionPanel = titlePanel.AddUIComponent<UIAutoLayoutPanel>();
+                    versionPanel.PauseLayout(() =>
+                    {
+                        versionPanel.name = "VersionPanel";
+                        versionPanel.AutoLayout = AutoLayout.Vertical;
+                        versionPanel.AutoFitChildrenVertically = true;
+                        versionPanel.AutoFitChildrenHorizontally = true;
+                        versionPanel.Atlas = CommonTextures.Atlas;
+                        versionPanel.BackgroundSprite = CommonTextures.PanelBig;
+                        versionPanel.color = new Color32(122, 138, 153, 255);
 
-                Title = versionPanel.AddUIComponent<CustomUILabel>();
-                Title.name = "Title";
-                Title.autoSize = false;
-                Title.width = 100f;
-                Title.height = 30f;
-                Title.textScale = 1.4f;
-                Title.textAlignment = UIHorizontalAlignment.Center;
-                Title.verticalAlignment = UIVerticalAlignment.Middle;
-                Title.padding = new RectOffset(0, 0, 4, 0);
+                        Title = versionPanel.AddUIComponent<CustomUILabel>();
+                        Title.name = "Title";
+                        Title.autoSize = false;
+                        Title.width = 100f;
+                        Title.height = 30f;
+                        Title.textScale = 1.4f;
+                        Title.textAlignment = UIHorizontalAlignment.Center;
+                        Title.verticalAlignment = UIVerticalAlignment.Middle;
+                        Title.padding = new RectOffset(0, 0, 4, 0);
 
-                SubTitle = versionPanel.AddUIComponent<CustomUILabel>();
-                SubTitle.name = "SubTitle";
-                SubTitle.autoSize = false;
-                SubTitle.width = 100f;
-                SubTitle.height = 20f;
-                SubTitle.textScale = 0.7f;
-                SubTitle.textAlignment = UIHorizontalAlignment.Center;
-                SubTitle.verticalAlignment = UIVerticalAlignment.Middle;
+                        SubTitle = versionPanel.AddUIComponent<CustomUILabel>();
+                        SubTitle.name = "SubTitle";
+                        SubTitle.autoSize = false;
+                        SubTitle.width = 100f;
+                        SubTitle.height = 20f;
+                        SubTitle.textScale = 0.7f;
+                        SubTitle.textAlignment = UIHorizontalAlignment.Center;
+                        SubTitle.verticalAlignment = UIVerticalAlignment.Middle;
+                    });
 
-                Button = titlePanel.AddUIComponent<CustomUIButton>();
-                Button.atlas = CommonTextures.Atlas;
-                Button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-                Button.scaleFactor = 0.5f;
-                Button.spritePadding.left = 10;
-                Button.autoSize = false;
-                Button.height = 50f;
-                Button.width = 50f;
-                Button.horizontalAlignment = UIHorizontalAlignment.Left;
-                Button.color = Color.white;
-                Button.textScale = 1.5f;
-                Button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-                Button.textVerticalAlignment = UIVerticalAlignment.Middle;
+                    Button = titlePanel.AddUIComponent<CustomUIButton>();
+                    Button.atlas = CommonTextures.Atlas;
+                    Button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+                    Button.scaleFactor = 0.5f;
+                    Button.spritePadding.left = 10;
+                    Button.autoSize = false;
+                    Button.height = 50f;
+                    Button.width = 50f;
+                    Button.horizontalAlignment = UIHorizontalAlignment.Left;
+                    Button.color = Color.white;
+                    Button.textScale = 1.5f;
+                    Button.textHorizontalAlignment = UIHorizontalAlignment.Left;
+                    Button.textVerticalAlignment = UIVerticalAlignment.Middle;
+                });
             }
             private void AddLinesContainer()
             {
                 Container = AddUIComponent<UIAutoLayoutPanel>();
                 Container.name = "Container";
-                Container.autoLayoutDirection = LayoutDirection.Vertical;
-                Container.autoFitChildrenVertically = true;
-                Container.autoLayoutPadding = new RectOffset(0, 0, 0, 6);
+                Container.PauseLayout(() =>
+                {
+                    Container.AutoLayout = AutoLayout.Vertical;
+                    Container.AutoFitChildrenVertically = true;
+                    Container.AutoLayoutSpace = 6;
+                });
             }
 
             public void Init(ModVersion version, string message, CultureInfo culture)
@@ -203,11 +209,11 @@ namespace ModsCommon.UI
                 base.OnSizeChanged();
 
                 if (Button != null)
-                    Button.width = width - padding.horizontal;
+                    Button.width = width - Padding.horizontal;
                 if (Container != null)
-                    Container.width = width - padding.horizontal;
+                    Container.width = width - Padding.horizontal;
                 foreach (var line in Container.components)
-                    line.width = width - padding.horizontal;
+                    line.width = width - Padding.horizontal;
             }
         }
         public readonly struct MessageText
@@ -230,35 +236,39 @@ namespace ModsCommon.UI
 
             public UpdateMessage()
             {
-                autoLayoutDirection = LayoutDirection.Horizontal;
+                autoLayout = AutoLayout.Horizontal;
                 autoFitChildrenVertically = true;
-                autoLayoutPadding = new RectOffset(0, 0, 0, 0);
-                autoLayoutPadding = new RectOffset(0, 10, 0, 0);
+                autoLayoutSpace = 10;
 
-                Tag = AddUIComponent<CustomUILabel>();
-                Tag.autoSize = false;
-                Tag.height = 20f;
-                Tag.width = 100f;
-                Tag.atlas = CommonTextures.Atlas;
-                Tag.backgroundSprite = CommonTextures.PanelSmall;
-                Tag.textAlignment = UIHorizontalAlignment.Center;
-                Tag.verticalAlignment = UIVerticalAlignment.Middle;
-                Tag.textScale = 0.7f;
-                Tag.padding = new RectOffset(0, 0, 4, 0);
+                PauseLayout(() =>
+                {
+                    Tag = AddUIComponent<CustomUILabel>();
+                    Tag.name = nameof(Tag);
+                    Tag.autoSize = false;
+                    Tag.height = 20f;
+                    Tag.width = 100f;
+                    Tag.atlas = CommonTextures.Atlas;
+                    Tag.backgroundSprite = CommonTextures.PanelSmall;
+                    Tag.textAlignment = UIHorizontalAlignment.Center;
+                    Tag.verticalAlignment = UIVerticalAlignment.Middle;
+                    Tag.textScale = 0.7f;
+                    Tag.padding = new RectOffset(0, 0, 4, 0);
 
-                Text = AddUIComponent<CustomUILabel>();
-                Text.textAlignment = UIHorizontalAlignment.Left;
-                Text.verticalAlignment = UIVerticalAlignment.Middle;
-                Text.textScale = 0.8f;
-                Text.wordWrap = true;
-                Text.autoSize = false;
-                Text.autoHeight = true;
-                Text.relativePosition = new Vector3(17, 7);
-                Text.minimumSize = new Vector2(100, 20);
-                Text.padding = new RectOffset(10, 10, 8, 0);
-                Text.atlas = CommonTextures.Atlas;
-                Text.backgroundSprite = CommonTextures.BorderTop;
-                Text.color = ComponentStyle.NormalSettingsGray;
+                    Text = AddUIComponent<CustomUILabel>();
+                    Text.name = nameof(Text);
+                    Text.textAlignment = UIHorizontalAlignment.Left;
+                    Text.verticalAlignment = UIVerticalAlignment.Middle;
+                    Text.textScale = 0.8f;
+                    Text.wordWrap = true;
+                    Text.autoSize = false;
+                    Text.autoHeight = true;
+                    Text.relativePosition = new Vector3(17, 7);
+                    Text.minimumSize = new Vector2(100, 20);
+                    Text.padding = new RectOffset(10, 10, 8, 0);
+                    Text.atlas = CommonTextures.Atlas;
+                    Text.backgroundSprite = CommonTextures.BorderTop;
+                    Text.color = ComponentStyle.NormalSettingsGray;
+                });
             }
             public void Init(MessageText message)
             {
@@ -307,22 +317,22 @@ namespace ModsCommon.UI
 
                 Text.text = message.text.Trim();
                 Tag.textScale = Tag.text.Length <= 11 ? 0.7f : 0.5f;
-                Fit();
+                SetSize();
             }
             protected override void OnSizeChanged()
             {
                 base.OnSizeChanged();
-                Fit();
+                SetSize();
             }
             protected override void OnVisibilityChanged()
             {
                 base.OnVisibilityChanged();
-                Fit();
+                SetSize();
             }
-            private void Fit()
+            private void SetSize()
             {
                 if (Text != null)
-                    Text.width = width - (Tag?.isVisible == true ? 100f + autoLayoutPadding.horizontal : 0f);
+                    Text.width = width - (Tag?.isVisible == true ? Tag.width + Padding.horizontal + AutoLayoutSpace : 0f);
             }
 
             void IReusable.DeInit()
@@ -351,19 +361,18 @@ namespace ModsCommon.UI
 
         public void Init(Dictionary<ModVersion, string> messages, string betaText, string modName = null, bool maximizeFirst = true, CultureInfo culture = null)
         {
-            StopLayout();
-
-            var betaMessage = Panel.Content.AddUIComponent<CustomUILabel>();
-            betaMessage.wordWrap = true;
-            betaMessage.autoHeight = true;
-            betaMessage.textColor = new Color32(255, 160, 0, 255);
-            betaMessage.text = betaText;
-            betaMessage.atlas = CommonTextures.Atlas;
-            betaMessage.backgroundSprite = CommonTextures.PanelBig;
-            betaMessage.color = ComponentStyle.DisabledSettingsGray;
-            betaMessage.padding = new RectOffset(7, 7, 7, 7);
-
-            StartLayout(false);
+            PauseLayout(() =>
+            {
+                var betaMessage = Panel.Content.AddUIComponent<CustomUILabel>();
+                betaMessage.wordWrap = true;
+                betaMessage.autoHeight = true;
+                betaMessage.textColor = new Color32(255, 160, 0, 255);
+                betaMessage.text = betaText;
+                betaMessage.atlas = CommonTextures.Atlas;
+                betaMessage.backgroundSprite = CommonTextures.PanelBig;
+                betaMessage.color = ComponentStyle.DisabledSettingsGray;
+                betaMessage.padding = new RectOffset(7, 7, 7, 7);
+            });
 
             base.Init(messages, modName, maximizeFirst, culture);
         }

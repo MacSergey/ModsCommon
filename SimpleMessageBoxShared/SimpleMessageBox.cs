@@ -15,12 +15,11 @@ namespace ModsCommon.UI
 
         public SimpleMessageBox()
         {
-            Panel.StopLayout();
-
-            Message = AddLabel();
-            Message.minimumSize = new Vector2(0, 79);
-
-            Panel.StartLayout();
+            Panel.PauseLayout(()=>
+            {
+                Message = AddLabel();
+                Message.minimumSize = new Vector2(0, 79);
+            });
         }
 
         protected CustomUILabel AddLabel()

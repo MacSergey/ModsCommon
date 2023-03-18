@@ -12,7 +12,7 @@ namespace ModsCommon.UI
     {
         public EmptySpaceSettingsItem() 
         {
-            autoLayout = false;
+            AutoLayout = AutoLayout.Disabled;
             height = 15f;
         }
     }
@@ -28,11 +28,11 @@ namespace ModsCommon.UI
             {
                 if (value != borders)
                 {
-                    var padding = this.padding;
+                    var padding = Padding;
                     borders = value;
-                    this.padding = padding;
+                    Padding = padding;
 
-                    backgroundSprite = borders switch
+                    BackgroundSprite = borders switch
                     {
                         Border.Top => CommonTextures.BorderTop,
                         Border.Bottom => CommonTextures.BorderBottom,
@@ -42,11 +42,11 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public new RectOffset padding
+        public new RectOffset Padding
         {
             get
             {
-                var padding = base.padding;
+                var padding = base.Padding;
                 var top = Math.Max(padding.top - ((borders & Border.Top) != 0 ? 2 : 0), 0);
                 var bottom = Math.Max(padding.bottom - ((borders & Border.Bottom) != 0 ? 2 : 0), 0);
                 return new RectOffset(padding.left, padding.right, top, bottom);
@@ -56,44 +56,7 @@ namespace ModsCommon.UI
                 var top = value.top + ((borders & Border.Top) != 0 ? 2 : 0);
                 var bottom = value.bottom + ((borders & Border.Bottom) != 0 ? 2 : 0);
                 var padding = new RectOffset(value.left, value.right, top, bottom);
-                base.padding = padding;
-                verticalSpacing = padding.bottom;
-            }
-        }
-        public int paddingRight
-        {
-            get => padding.right;
-            set
-            {
-                var old = padding;
-                padding = new RectOffset(old.left, value, old.top, old.bottom);
-            }
-        }
-        public int paddingLeft
-        {
-            get => padding.left;
-            set
-            {
-                var old = padding;
-                padding = new RectOffset(value, old.right, old.top, old.bottom);
-            }
-        }
-        public int paddingTop
-        {
-            get => padding.top;
-            set
-            {
-                var old = padding;
-                padding = new RectOffset(old.left, old.right, value, old.bottom);
-            }
-        }
-        public int paddingButtom
-        {
-            get => padding.bottom;
-            set
-            {
-                var old = padding;
-                padding = new RectOffset(old.left, old.right, old.top, value);
+                base.Padding = padding;
             }
         }
 
@@ -101,7 +64,7 @@ namespace ModsCommon.UI
 
         public SettingsContentItem()
         {
-            atlas = CommonTextures.Atlas;
+            Atlas = CommonTextures.Atlas;
             color = ComponentStyle.NormalSettingsGray;
             clipChildren = true;
 
@@ -112,21 +75,21 @@ namespace ModsCommon.UI
 
                 Content.PauseLayout(InitContent);
 
-                Content.autoFitChildrenVertically = true;
+                Content.AutoFitChildrenVertically = true;
                 Content.eventSizeChanged += RefreshContent;
             });
 
-            autoLayoutDirection = LayoutDirection.Vertical;
+            AutoLayout = AutoLayout.Vertical;
             autoFitChildrenVertically = true;
             Borders = Border.Top;
-            padding = ItemsPadding;
+            Padding = ItemsPadding;
         }
 
         protected virtual void InitContent() { }
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            Content.width = width - base.padding.horizontal;
+            Content.width = width - base.Padding.horizontal;
         }
         protected override void OnVisibilityChanged()
         {

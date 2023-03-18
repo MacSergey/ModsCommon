@@ -96,8 +96,8 @@ namespace ModsCommon.UI
         public static void PopupDefaultStyle<ObjectType, EntityType>(this ObjectPopup<ObjectType, EntityType> popup, float? entityHeight = null)
             where EntityType : CustomUIButton, IPopupEntity<ObjectType>, IReusable
         {
-            popup.atlas = CommonTextures.Atlas;
-            popup.backgroundSprite = CommonTextures.FieldSingle;
+            popup.Atlas = CommonTextures.Atlas;
+            popup.BackgroundSprite = CommonTextures.FieldSingle;
             popup.color = FieldHoveredColor;
 
             popup.EntityHeight = entityHeight ?? 20f;
@@ -142,8 +142,8 @@ namespace ModsCommon.UI
         public static void PopupMessageBoxStyle<ObjectType, EntityType>(this ObjectPopup<ObjectType, EntityType> popup, float? entityHeight = null)
             where EntityType : PopupEntity<ObjectType>
         {
-            popup.atlas = CommonTextures.Atlas;
-            popup.backgroundSprite = CommonTextures.FieldSingle;
+            popup.Atlas = CommonTextures.Atlas;
+            popup.BackgroundSprite = CommonTextures.FieldSingle;
             popup.color = NormalGray;
 
             popup.EntityHeight = entityHeight ?? 20f;
@@ -190,8 +190,8 @@ namespace ModsCommon.UI
             where PopupType : CustomUIPanel, IPopup<ObjectType, EntityType>
             where EntityType : CustomUIButton, IPopupEntity<ObjectType>
         {
-            popup.atlas = CommonTextures.Atlas;
-            popup.backgroundSprite = CommonTextures.FieldSingle;
+            popup.Atlas = CommonTextures.Atlas;
+            popup.BackgroundSprite = CommonTextures.FieldSingle;
             popup.color = NormalSettingsGray;
 
             popup.EntityHeight = entityHeight ?? 20f;
@@ -268,8 +268,8 @@ namespace ModsCommon.UI
         public static void DefaultStyle<TabType>(this TabStrip<TabType> tabStrip)
             where TabType : Tab
         {
-            tabStrip.atlas = CommonTextures.Atlas;
-            tabStrip.backgroundSprite = CommonTextures.PanelBig;
+            tabStrip.Atlas = CommonTextures.Atlas;
+            tabStrip.BackgroundSprite = CommonTextures.PanelBig;
 
             tabStrip.TabSpacingHorizontal = 4;
             tabStrip.TabSpacingVertical = 4;
@@ -284,8 +284,8 @@ namespace ModsCommon.UI
         public static void SettingsStyle<TabType>(this TabStrip<TabType> tabStrip)
             where TabType : Tab
         {
-            tabStrip.atlas = CommonTextures.Atlas;
-            tabStrip.backgroundSprite = CommonTextures.PanelBig;
+            tabStrip.Atlas = CommonTextures.Atlas;
+            tabStrip.BackgroundSprite = CommonTextures.PanelBig;
             tabStrip.color = NormalSettingsGray;
 
             tabStrip.TabSpacingHorizontal = 4;

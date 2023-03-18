@@ -39,7 +39,7 @@ namespace ModsCommon.UI
             set => Field.Format = value;
         }
 
-        public FieldPropertyPanel()
+        protected override void FillContent()
         {
             Field = Content.AddUIComponent<FieldType>();
             Field.SetDefaultStyle();
@@ -288,7 +288,7 @@ namespace ModsCommon.UI
             }
         }
 
-        public ComparableFieldRangePropertyPanel()
+        protected override void FillContent()
         {
             FieldA = Content.AddUIComponent<FieldType>();
             FieldA.SetDefaultStyle();
@@ -372,8 +372,8 @@ namespace ModsCommon.UI
 
         public override float FieldWidth
         {
-            get => base.FieldWidth + Content.autoLayoutPadding.horizontal + Invert.width;
-            set => base.FieldWidth = value - Content.autoLayoutPadding.horizontal - Invert.width;
+            get => base.FieldWidth + Content.Padding.horizontal + Invert.width;
+            set => base.FieldWidth = value - Content.Padding.horizontal - Invert.width;
         }
 
         public InvertedFieldPropertyPanel()

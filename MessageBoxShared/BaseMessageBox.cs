@@ -101,8 +101,8 @@ namespace ModsCommon.UI
             canFocus = true;
             isInteractive = true;
             size = new Vector2(DefaultWidth, DefaultHeight);
-            atlas = CommonTextures.Atlas;
-            backgroundSprite = CommonTextures.PanelBig;
+            Atlas = CommonTextures.Atlas;
+            BackgroundSprite = CommonTextures.PanelBig;
             color = new Color32(17, 19, 22, 255);
             anchor = UIAnchorStyle.Left | UIAnchorStyle.Top | UIAnchorStyle.Proportional;
 
@@ -307,12 +307,12 @@ namespace ModsCommon.UI
         }
 
 
-        public int Level => Panel.Level;
-        public Vector2 ItemSize => Panel.ItemSize;
-        public RectOffset LayoutPadding => Panel.LayoutPadding;
+        public new bool IsLayoutSuspended => Panel.IsLayoutSuspended;
+        public new Vector2 ItemSize => Panel.ItemSize;
+        public new RectOffset LayoutPadding => Panel.LayoutPadding;
 
-        public void StopLayout() => Panel.StopLayout();
-        public void StartLayout(bool layoutNow = true, bool force = false) => Panel.StartLayout(layoutNow, force);
-        public void PauseLayout(Action action) => Panel.PauseLayout(action);
+        public override void StopLayout() => Panel.StopLayout();
+        public override void StartLayout(bool layoutNow = true, bool force = false) => Panel.StartLayout(layoutNow, force);
+        public override void PauseLayout(Action action) => Panel.PauseLayout(action);
     }
 }
