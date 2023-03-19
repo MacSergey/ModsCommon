@@ -13,6 +13,7 @@ namespace ModsCommon.UI
         public static T Show<T>() where T : UIComponent
         {
             var uiObject = new GameObject();
+            uiObject.name = nameof(MessageBox);
             uiObject.transform.parent = UIView.GetAView().transform;
             var messageBox = uiObject.AddComponent<T>();
 
@@ -83,7 +84,7 @@ namespace ModsCommon.UI
         private CustomUIPanel ButtonPanel { get; set; }
         private IEnumerable<CustomUIButton> Buttons => ButtonPanel.components.OfType<CustomUIButton>();
 
-        private List<uint> ButtonsRatio { get; } = new List<uint>();
+        private List<int> ButtonsRatio { get; } = new List<int>();
         public string CaptionText { set => Caption.text = value; }
 
         private int defaultButton = 0;
@@ -110,7 +111,11 @@ namespace ModsCommon.UI
             AddContent();
             AddButtonPanel();
 
-            SetSize();
+            autoLayoutSpace = 10;
+            autoChildrenVertically = AutoLayoutChildren.Fit;
+            autoChildrenHorizontally = AutoLayoutChildren.Fill;
+            AutoLayout = AutoLayout.Vertical;
+
             CenterToParent();
         }
         private void AddHeader()
@@ -166,7 +171,6 @@ namespace ModsCommon.UI
                 Content.AutoFillChildren = true;
                 Content.ScrollOrientation = UIOrientation.Vertical;
                 Content.AutoReset = true;
-                Content.eventSizeChanged += ContentSizeChanged;
 
                 Content.Scrollbar.DefaultStyle();
                 Content.ScrollbarSize = 12f;
@@ -176,7 +180,13 @@ namespace ModsCommon.UI
         {
             ButtonPanel = AddUIComponent<CustomUIPanel>();
             ButtonPanel.name = nameof(ButtonPanel);
-            ButtonPanel.size = new Vector2(DefaultWidth, ButtonHeight + 10);
+            ButtonPanel.AutoLayoutSpace = ButtonsSpace;
+            ButtonPanel.Padding = new RectOffset(Padding, Padding, 10, 10);
+            ButtonPanel.AutoLayout = AutoLayout.Horizontal;
+            ButtonPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
+            ButtonPanel.eventSizeChanged += (_, _) => ArrangeButtons();
+
+            ButtonPanel.Atlas = CommonTextures.Atlas;
         }
 
         #endregion
@@ -201,12 +211,6 @@ namespace ModsCommon.UI
 
             Content.maximumSize = MaxContentSize;
             Content.size = Content.size;
-        }
-        private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
-        private void SetSize()
-        {
-            height = Mathf.Floor(Header.height + Padding + Content.height + ButtonPanel.height + Padding);
-            ButtonPanel.relativePosition = new Vector2(0, Header.height + Padding + Content.height + Padding);
         }
 
         #endregion
@@ -234,17 +238,17 @@ namespace ModsCommon.UI
             button.ButtonMessageBoxStyle();
             button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => action?.Invoke();
 
-            ButtonsRatio.Add(Math.Max(ratio, 1));
-            ChangeButtons();
+            ButtonsRatio.Add(Math.Max((int)ratio, 1));
+            ArrangeButtons();
 
             return button;
         }
         public void SetButtonsRatio(params uint[] ratio)
         {
             for (var i = 0; i < ButtonsRatio.Count; i += 1)
-                ButtonsRatio[i] = i < ratio.Length ? Math.Max(ratio[i], 1) : 1;
+                ButtonsRatio[i] = i < ratio.Length ? Math.Max((int)ratio[i], 1) : 1;
 
-            ChangeButtons();
+            ArrangeButtons();
         }
         public void SetAutoButtonRatio()
         {
@@ -264,20 +268,17 @@ namespace ModsCommon.UI
             SetButtonsRatio(widths.Select(i => (uint)i).ToArray());
         }
 
-        public void ChangeButtons()
+        public void ArrangeButtons()
         {
-            var sum = 0u;
-            var before = ButtonsRatio.Select(i => (sum += i) - i).ToArray();
+            ButtonPanel.PauseLayout(() =>
+            {
+                var sum = ButtonsRatio.Sum();
+                var buttons = Buttons.ToArray();
+                var space = ButtonPanel.width - ButtonPanel.Padding.horizontal - ButtonPanel.AutoLayoutSpace * (buttons.Length - 1);
 
-            var buttons = Buttons.ToArray();
-            for (var i = 0; i < buttons.Length; i += 1)
-                ChangeButton(buttons[i], i + 1, buttons.Length, (float)before[i] / sum, (float)ButtonsRatio[i] / sum);
-        }
-        private void ChangeButton(CustomUIButton button, int i, int from, float? positionRatio = null, float? widthRatio = null)
-        {
-            var width = this.width - (ButtonsSpace * 2 + ButtonsSpace / 2 * (from - 1));
-            button.size = new Vector2(width * (widthRatio ?? 1f / from), ButtonHeight);
-            button.relativePosition = new Vector2(ButtonsSpace * (0.5f + i / 2f) + width * (positionRatio ?? 1f / from * (i - 1)), 0);
+                for (var i = 0; i < buttons.Length; i += 1)
+                    buttons[i].size = new Vector2(space / sum * ButtonsRatio[i], ButtonHeight);
+            });
         }
 
         #endregion

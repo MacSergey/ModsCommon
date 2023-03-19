@@ -76,8 +76,8 @@ namespace ModsCommon.UI
         public UISegmented()
         {
             autoLayout = AutoLayout.Horizontal;
-            autoFitChildrenHorizontally = true;
-            autoFitChildrenVertically = true;
+            autoChildrenHorizontally = AutoLayoutChildren.Fit;
+            autoChildrenVertically = AutoLayoutChildren.Fit;
         }
 
         public void AddItem(ValueType item, OptionData optionData) => AddItem(item, optionData, true, null);

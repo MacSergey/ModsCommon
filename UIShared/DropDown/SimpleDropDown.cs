@@ -89,6 +89,7 @@ namespace ModsCommon.UI
         public void StopLayout() { }
         public void StartLayout(bool layoutNow = true, bool force = false) { }
         public void PauseLayout(Action action, bool layoutNow = true, bool force = false) => action?.Invoke();
+        public void Ignore(UIComponent item, bool ignore) { }
     }
     public abstract class SimpleEntity<ValueType> : PopupEntity<DropDownItem<ValueType>>
     {

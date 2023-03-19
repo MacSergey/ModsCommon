@@ -514,7 +514,10 @@ namespace ModsCommon.UI
         {
             base.OnClick(p);
             if (!p.used)
+            {
                 Select();
+                p.Use();
+            }
         }
     }
 }

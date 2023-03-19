@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -428,6 +429,17 @@ namespace ModsCommon.UI
             }
         }
 
+        private HashSet<UIComponent> ignoreList = new HashSet<UIComponent>();
+        public void Ignore(UIComponent item, bool ignore)
+        {
+            if (ignore)
+                ignoreList.Add(item);
+            else
+                ignoreList.Remove(item);
+
+            Reset();
+        }
+
         public void Reset()
         {
             if (!IsLayoutSuspended)
@@ -444,7 +456,7 @@ namespace ModsCommon.UI
                     var minPos = (Vector3)CalculateMinChildPosition();
                     for (int i = 0; i < m_ChildComponents.Count; i += 1)
                     {
-                        if (m_ChildComponents[i] != Scrollbar)
+                        if (!ignoreList.Contains(m_ChildComponents[i]))
                             m_ChildComponents[i].relativePosition -= minPos;
                     }
                 }
@@ -495,7 +507,7 @@ namespace ModsCommon.UI
                         _ => m_ChildComponents[i],
                     };
 
-                    if (child == Scrollbar || !child.isVisible || !child.enabled || !child.gameObject.activeSelf)
+                    if (ignoreList.Contains(child) || !child.isVisible || !child.enabled || !child.gameObject.activeSelf)
                         continue;
 
                     var childPos = ScrollOrientation switch
@@ -587,10 +599,7 @@ namespace ModsCommon.UI
                     {
                         var child = m_ChildComponents[i];
 
-                        if (child == Scrollbar)
-                            continue;
-
-                        if (child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                         {
                             var minPos = Mathf.RoundToInt(child.relativePosition.x);
                             var maxPos = minPos + Mathf.RoundToInt(child.width);
@@ -607,7 +616,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child != Scrollbar && child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                         {
                             count += 1;
                             totalWidth += child.width;
@@ -620,7 +629,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child != Scrollbar && child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                             maxWidth = Mathf.Max(maxWidth, child.width);
                     }
                     return padding.horizontal + maxWidth;
@@ -643,10 +652,7 @@ namespace ModsCommon.UI
                     {
                         var child = m_ChildComponents[i];
 
-                        if (child == Scrollbar)
-                            continue;
-
-                        if (child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                         {
                             var minPos = Mathf.RoundToInt(child.relativePosition.y);
                             var maxPos = minPos + Mathf.RoundToInt(child.height);
@@ -663,7 +669,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child != Scrollbar && child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                         {
                             count += 1;
                             totalHeight += child.height;
@@ -676,7 +682,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child != Scrollbar && child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                             maxHeight = Mathf.Max(maxHeight, child.height);
                     }
                     return padding.vertical + maxHeight;
@@ -693,7 +699,7 @@ namespace ModsCommon.UI
             for (int i = 0; i < childCount; i++)
             {
                 var item = m_ChildComponents[i];
-                if (item != Scrollbar && item.enabled && item.gameObject.activeSelf)
+                if (item.enabled && item.gameObject.activeSelf && !ignoreList.Contains(item))
                 {
                     min = Vector2.Min(min, item.relativePosition.XY().FloorToInt());
                 }
@@ -714,6 +720,7 @@ namespace ModsCommon.UI
                 if(scrollbar == null)
                 {
                     scrollbar = AddUIComponent<CustomUIScrollbar>();
+                    ignoreList.Add(scrollbar);
                     UpdateScrollbarSizeAndPosition();
                 }
 
@@ -926,7 +933,7 @@ namespace ModsCommon.UI
                 {
                     var child = m_ChildComponents[i];
 
-                    if (child == Scrollbar)
+                    if (ignoreList.Contains(child))
                         continue;
 
                     var position = child.position;

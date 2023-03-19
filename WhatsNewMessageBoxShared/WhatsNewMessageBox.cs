@@ -12,7 +12,7 @@ namespace ModsCommon.UI
 {
     public class WhatsNewMessageBox : MessageBoxBase
     {
-        protected override int ContentSpacing => 5;
+        protected override int ContentSpacing => 10;
 
         private CustomUIButton OkButton { get; }
         public Func<bool> OnButtonClick { get; set; }
@@ -93,12 +93,11 @@ namespace ModsCommon.UI
             public VersionMessage()
             {
                 autoLayout = AutoLayout.Vertical;
-                autoFitChildrenVertically = true;
-                autoLayoutSpace = 8;
-                padding = new RectOffset(5, 5, 5, 5);
+                autoChildrenVertically = AutoLayoutChildren.Fit;
+                autoChildrenHorizontally = AutoLayoutChildren.Fill;
                 Atlas = CommonTextures.Atlas;
                 BackgroundSprite = CommonTextures.PanelBig;
-                color = ComponentStyle.DisabledSettingsGray;
+                color = ComponentStyle.DarkPrimaryAdditionalColor;
 
                 PauseLayout(() =>
                 {
@@ -113,9 +112,12 @@ namespace ModsCommon.UI
                 {
                     titlePanel.name = "TitlePanel";
                     titlePanel.AutoLayout = AutoLayout.Horizontal;
-                    titlePanel.AutoFitChildrenVertically = true;
-                    titlePanel.AutoFitChildrenHorizontally = true;
+                    titlePanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                    titlePanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
                     titlePanel.AutoLayoutSpace = 10;
+                    titlePanel.Atlas = CommonTextures.Atlas;
+                    titlePanel.BackgroundSprite = CommonTextures.PanelBig;
+                    titlePanel.color = new Color32(127, 140, 141, 255);
                     titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsExpand = !IsExpand;
 
                     var versionPanel = titlePanel.AddUIComponent<CustomUIPanel>();
@@ -123,11 +125,11 @@ namespace ModsCommon.UI
                     {
                         versionPanel.name = "VersionPanel";
                         versionPanel.AutoLayout = AutoLayout.Vertical;
-                        versionPanel.AutoFitChildrenVertically = true;
-                        versionPanel.AutoFitChildrenHorizontally = true;
+                        versionPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                        versionPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
                         versionPanel.Atlas = CommonTextures.Atlas;
                         versionPanel.BackgroundSprite = CommonTextures.PanelBig;
-                        versionPanel.color = new Color32(122, 138, 153, 255);
+                        versionPanel.color = new Color32(127, 140, 141, 255);
 
                         Title = versionPanel.AddUIComponent<CustomUILabel>();
                         Title.name = "Title";
@@ -167,12 +169,14 @@ namespace ModsCommon.UI
             private void AddLinesContainer()
             {
                 Container = AddUIComponent<CustomUIPanel>();
-                Container.name = "Container";
+                Container.name = nameof(Container);
                 Container.PauseLayout(() =>
                 {
                     Container.AutoLayout = AutoLayout.Vertical;
-                    Container.AutoFitChildrenVertically = true;
+                    Container.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                    Container.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
                     Container.AutoLayoutSpace = 6;
+                    Container.Padding = new RectOffset(0, 0, 20, 10);
                 });
             }
 
@@ -203,18 +207,6 @@ namespace ModsCommon.UI
                         Messages.Add(new MessageText(tag.Success ? tag.Value : null, text.Value));
                 }
             }
-
-            protected override void OnSizeChanged()
-            {
-                base.OnSizeChanged();
-
-                if (Button != null)
-                    Button.width = width - Padding.horizontal;
-                if (Container != null)
-                    Container.width = width - Padding.horizontal;
-                foreach (var line in Container.components)
-                    line.width = width - Padding.horizontal;
-            }
         }
         public readonly struct MessageText
         {
@@ -237,8 +229,9 @@ namespace ModsCommon.UI
             public UpdateMessage()
             {
                 autoLayout = AutoLayout.Horizontal;
-                autoFitChildrenVertically = true;
+                autoChildrenVertically = AutoLayoutChildren.Fit;
                 autoLayoutSpace = 10;
+                Padding = new RectOffset(10, 10, 0, 0);
 
                 PauseLayout(() =>
                 {
@@ -253,6 +246,7 @@ namespace ModsCommon.UI
                     Tag.verticalAlignment = UIVerticalAlignment.Middle;
                     Tag.textScale = 0.7f;
                     Tag.padding = new RectOffset(0, 0, 4, 0);
+                    SetItemPadding(Tag, new RectOffset(0, 0, 5, 0));
 
                     Text = AddUIComponent<CustomUILabel>();
                     Text.name = nameof(Text);
@@ -264,10 +258,10 @@ namespace ModsCommon.UI
                     Text.autoHeight = true;
                     Text.relativePosition = new Vector3(17, 7);
                     Text.minimumSize = new Vector2(100, 20);
-                    Text.padding = new RectOffset(10, 10, 8, 0);
+                    Text.padding = new RectOffset(10, 10, 10, 0);
                     Text.atlas = CommonTextures.Atlas;
                     Text.backgroundSprite = CommonTextures.BorderTop;
-                    Text.color = ComponentStyle.NormalSettingsGray;
+                    Text.color = ComponentStyle.DarkSecondaryColor;
                 });
             }
             public void Init(MessageText message)
@@ -280,23 +274,23 @@ namespace ModsCommon.UI
                     {
                         case "NEW":
                             Tag.text = CommonLocalize.WhatsNew_NEW;
-                            Tag.color = new Color32(49, 170, 77, 255);
+                            Tag.color = new Color32(26, 175, 93, 255);
                             break;
                         case "FIXED":
                             Tag.text = CommonLocalize.WhatsNew_FIXED;
-                            Tag.color = new Color32(255, 102, 0, 255);
+                            Tag.color = new Color32(232, 126, 4, 255);
                             break;
                         case "UPDATED":
                             Tag.text = CommonLocalize.WhatsNew_UPDATED;
-                            Tag.color = new Color32(57, 147, 249, 255);
+                            Tag.color = new Color32(71, 140, 255, 255);
                             break;
                         case "REMOVED":
                             Tag.text = CommonLocalize.WhatsNew_REMOVED;
-                            Tag.color = new Color32(251, 185, 4, 255);
+                            Tag.color = new Color32(243, 198, 0, 255);
                             break;
                         case "REVERTED":
                             Tag.text = CommonLocalize.WhatsNew_REVERTED;
-                            Tag.color = new Color32(251, 185, 4, 255);
+                            Tag.color = new Color32(243, 198, 0, 255);
                             break;
                         case "TRANSLATION":
                             Tag.text = CommonLocalize.WhatsNew_TRANSLATION;
@@ -304,11 +298,11 @@ namespace ModsCommon.UI
                             break;
                         case "WARNING":
                             Tag.text = CommonLocalize.WhatsNew_WARNING;
-                            Tag.color = new Color32(217, 38, 38, 255);
+                            Tag.color = new Color32(231, 76, 60, 255);
                             break;
                         default:
                             Tag.text = tag.ToUpper();
-                            Tag.color = new Color32(192, 192, 192, 255);
+                            Tag.color = new Color32(189, 195, 199, 255);
                             break;
                     }
                 }

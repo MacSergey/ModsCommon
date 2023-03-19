@@ -98,7 +98,7 @@ namespace ModsCommon.UI
                 Content.minimumSize = new Vector2(300f, 0f);
                 Content.color = new Color32(72, 80, 80, 255);
                 Content.AutoLayout = AutoLayout.Vertical;
-                Content.AutoFitChildrenVertically = true;
+                Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
                 Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
             });
         }

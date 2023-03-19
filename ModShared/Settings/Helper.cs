@@ -29,7 +29,7 @@ namespace ModsCommon.Settings
 
             panel.width = 738f;
             panel.AutoLayout = AutoLayout.Vertical;
-            panel.AutoFitChildrenVertically = true;
+            panel.AutoChildrenVertically = AutoLayoutChildren.Fit;
             panel.AutoLayoutSpace = 15;
 
             panel.Atlas = CommonTextures.Atlas;
@@ -58,7 +58,7 @@ namespace ModsCommon.Settings
             var сontent = parent.AddUIComponent<CustomUIPanel>();
             сontent.name = "Content";
             сontent.AutoLayout = AutoLayout.Vertical;
-            сontent.AutoFitChildrenVertically = true;
+            сontent.AutoChildrenVertically = AutoLayoutChildren.Fit;
             сontent.width = parent.width;
 
             сontent.Padding = new RectOffset(40, 0, 0, 5);
@@ -293,8 +293,8 @@ namespace ModsCommon.Settings
             optionsPanel.PauseLayout(() =>
             {
                 optionsPanel.AutoLayout = AutoLayout.Vertical;
-                optionsPanel.AutoFitChildrenHorizontally = true;
-                optionsPanel.AutoFitChildrenVertically = true;
+                optionsPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                optionsPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
                 optionsPanel.Padding = new RectOffset(padding, 0, 0, 0);
             });
             return optionsPanel;

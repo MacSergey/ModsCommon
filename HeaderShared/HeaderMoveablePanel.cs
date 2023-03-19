@@ -43,8 +43,8 @@ namespace ModsCommon.UI
             Caption.eventSizeChanged += (_, _) => CaptionSizeChanged();
 
             Content = AddUIComponent<TypeContent>();
-            Content.AutoFitChildrenVertically = false;
-            Content.AutoFitChildrenHorizontally = true;
+            Content.AutoChildrenVertically = AutoLayoutChildren.None;
+            Content.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
             Content.PauseLayout(FillContent);
         }
         protected abstract void FillContent();

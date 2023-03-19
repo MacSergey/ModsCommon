@@ -45,7 +45,7 @@ namespace ModsCommon.UI
             {
                 autoLayout = AutoLayout.Horizontal;
                 padding = new RectOffset(0, 0, 5, 5);
-                autoFitChildrenVertically = true;
+                autoChildrenVertically = AutoLayoutChildren.Fit;
                 autoLayoutCenter = true;
 
                 Additional = AddUIComponent<AdditionalHeaderButton>();

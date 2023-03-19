@@ -180,7 +180,7 @@ namespace ModsCommon.UI
         {
             PauseLayout(() =>
             {
-                autoFitChildrenVertically = true;
+                autoChildrenVertically = AutoLayoutChildren.Fit;
                 autoLayout = AutoLayout.Horizontal;
 
                 Atlas = CommonTextures.Atlas;
@@ -207,8 +207,8 @@ namespace ModsCommon.UI
                 Content.PauseLayout(() =>
                 {
                     Content.AutoLayout = AutoLayout.Horizontal;
-                    Content.AutoFitChildrenHorizontally = true;
-                    Content.AutoFitChildrenVertically = true;
+                    Content.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                    Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
                     Content.AutoLayoutSpace = 5;
                     Content.AutoLayoutCenter = true;
                     Content.Padding = new RectOffset(0, 0, 7, 7);

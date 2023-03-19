@@ -41,7 +41,17 @@ namespace ModsCommon.UI
             BeforePopupOpen();
             OnBeforePopupOpen?.Invoke();
 
-            Popup = GetRootContainer().AddUIComponent<PopupType>();
+            var root = GetRootContainer();
+            if (root is IAutoLayoutPanel layoutPanel)
+            {
+                layoutPanel.PauseLayout(() =>
+                {
+                    Popup = root.AddUIComponent<PopupType>();
+                    layoutPanel.Ignore(Popup, true);
+                });
+            }
+            else
+                Popup = root.AddUIComponent<PopupType>();
 
             SetPopupProperties();
             AddPopupEventHandlers();

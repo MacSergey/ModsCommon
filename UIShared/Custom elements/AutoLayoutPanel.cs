@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColossalFramework.UI;
+using System;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -12,11 +13,19 @@ namespace ModsCommon.UI
         public void StopLayout();
         public void StartLayout(bool layoutNow = true, bool force = false);
         public void PauseLayout(Action action, bool layoutNow = true, bool force = false);
+
+        public void Ignore(UIComponent item, bool ignore);
     }
     public enum AutoLayout
     {
         Disabled,
         Horizontal,
         Vertical
+    }
+    public enum AutoLayoutChildren
+    {
+        None,
+        Fit,
+        Fill
     }
 }

@@ -376,8 +376,8 @@ namespace ModsCommon.UI
                 valuePanel.relativePosition = new Vector2(10, 223);
                 valuePanel.AutoLayout = AutoLayout.Horizontal;
                 valuePanel.AutoLayoutSpace = 4;
-                valuePanel.AutoFitChildrenHorizontally = true;
-                valuePanel.AutoFitChildrenVertically = true;
+                valuePanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                valuePanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
                 valuePanel.AutoLayoutCenter = true;
 
                 RPicker = AddField(valuePanel, "R", PickerRGBChanged);

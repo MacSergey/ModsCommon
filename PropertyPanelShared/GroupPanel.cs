@@ -22,7 +22,7 @@ namespace ModsCommon.UI
 
             autoLayout = AutoLayout.Vertical;
             padding = new RectOffset(0, 0, 0, 0);
-            autoFitChildrenVertically = true;
+            autoChildrenVertically = AutoLayoutChildren.Fit;
         }
 
         public virtual void Init(float? width = null)

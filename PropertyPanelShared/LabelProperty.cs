@@ -43,7 +43,7 @@ namespace ModsCommon.UI
             PauseLayout(() =>
             {
                 autoLayout = AutoLayout.Vertical;
-                autoFitChildrenVertically = true;
+                autoChildrenVertically = AutoLayoutChildren.Fit;
 
                 Label = AddUIComponent<CustomUILabel>();
                 Label.atlas = CommonTextures.Atlas;

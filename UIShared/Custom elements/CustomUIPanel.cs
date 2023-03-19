@@ -213,6 +213,8 @@ namespace ModsCommon.UI
 
         #region LAYOUT
 
+        public event Action<RectOffset> OnPaddingChanged;
+
         protected RectOffset padding;
         public RectOffset Padding
         {
@@ -224,6 +226,7 @@ namespace ModsCommon.UI
                 {
                     padding = value;
                     Reset();
+                    OnPaddingChanged?.Invoke(padding);
                 }
             }
         }
@@ -328,7 +331,7 @@ namespace ModsCommon.UI
         protected bool autoCenterPadding;
         public bool AutoCenterPadding
         {
-            get => autoCenterPadding && ((AutoLayout == AutoLayout.Horizontal && !autoFitChildrenHorizontally) || (AutoLayout == AutoLayout.Vertical && !autoFitChildrenVertically));
+            get => autoCenterPadding && ((AutoLayout == AutoLayout.Horizontal && AutoChildrenHorizontally == AutoLayoutChildren.None) || (AutoLayout == AutoLayout.Vertical && AutoChildrenVertically == AutoLayoutChildren.None));
             set
             {
                 if(value != autoCenterPadding)
@@ -340,30 +343,30 @@ namespace ModsCommon.UI
         }
 
 
-        protected bool autoFitChildrenHorizontally;
-        public bool AutoFitChildrenHorizontally
+        protected AutoLayoutChildren autoChildrenHorizontally;
+        public AutoLayoutChildren AutoChildrenHorizontally
         {
-            get => autoFitChildrenHorizontally;
+            get => autoChildrenHorizontally;
             set
             {
-                if (value != autoFitChildrenHorizontally)
+                if (value != autoChildrenHorizontally)
                 {
-                    autoFitChildrenHorizontally = value;
+                    autoChildrenHorizontally = value;
                     Reset();
                 }
             }
         }
 
 
-        protected bool autoFitChildrenVertically;
-        public bool AutoFitChildrenVertically
+        protected AutoLayoutChildren autoChildrenVertically;
+        public AutoLayoutChildren AutoChildrenVertically
         {
-            get => autoFitChildrenVertically;
+            get => autoChildrenVertically;
             set
             {
-                if (value != autoFitChildrenVertically)
+                if (value != autoChildrenVertically)
                 {
-                    autoFitChildrenVertically = value;
+                    autoChildrenVertically = value;
                     Reset();
                 }
             }
@@ -381,6 +384,7 @@ namespace ModsCommon.UI
             Reset();
         }
         public RectOffset GetItemPadding(UIComponent component) => itemPadding.TryGetValue(component, out var padding) ? padding : new RectOffset();
+
 
         private int layoutSuspend;
         public bool IsLayoutSuspended => layoutSuspend != 0;
@@ -415,6 +419,17 @@ namespace ModsCommon.UI
             }
         }
 
+        private HashSet<UIComponent> ignoreList = new HashSet<UIComponent>();
+        public void Ignore(UIComponent item, bool ignore)
+        {
+            if (ignore)
+                ignoreList.Add(item);
+            else
+                ignoreList.Remove(item);
+
+            Reset();
+        }
+
         public void Reset()
         {
             if (!IsLayoutSuspended)
@@ -432,7 +447,7 @@ namespace ModsCommon.UI
             {
                 StopLayout();
 
-                FitChildren(AutoFitChildrenHorizontally, AutoFitChildrenVertically);
+                FitChildren(AutoChildrenHorizontally == AutoLayoutChildren.Fit, AutoChildrenVertically == AutoLayoutChildren.Fit);
 
                 var offset = Vector2.zero;
                 var padding = Padding;
@@ -462,48 +477,56 @@ namespace ModsCommon.UI
                         _ => m_ChildComponents[i],
                     };
 
-                    if (!child.isVisible || !child.enabled || !child.gameObject.activeSelf)
+                    if (ignoreList.Contains(child) || !child.isVisible || !child.enabled || !child.gameObject.activeSelf)
                         continue;
 
                     var childPos = Vector2.zero;
                     var childPadding = GetItemPadding(child);
+                    var childSize = child.size;
 
                     switch (AutoLayout)
                     {
                         case AutoLayout.Horizontal:
+                            if (AutoChildrenVertically == AutoLayoutChildren.Fill)
+                                childSize.y = height - padding.vertical;
+
                             if (AutoLayoutStart.StartRight())
-                                childPos.x = width - offset.x - child.width - childPadding.right;
+                                childPos.x = width - offset.x - childSize.x - childPadding.right;
                             else
                                 childPos.x = offset.x + childPadding.left;
 
                             if (AutoLayoutCenter)
-                                childPos.y = offset.y + childPadding.top + (height - padding.vertical - child.height - childPadding.vertical) * 0.5f;
+                                childPos.y = offset.y + childPadding.top + (height - padding.vertical - childSize.y - childPadding.vertical) * 0.5f;
                             else if (AutoLayoutStart.StartBottom())
-                                childPos.y = height - offset.y - child.height - childPadding.bottom;
+                                childPos.y = height - offset.y - childSize.y - childPadding.bottom;
                             else
                                 childPos.y = offset.y + childPadding.top;
 
-                            offset.x += child.width + childPadding.horizontal + AutoLayoutSpace;
+                            offset.x += childSize.x + childPadding.horizontal + AutoLayoutSpace;
                             break;
 
                         case AutoLayout.Vertical:
+                            if (AutoChildrenHorizontally == AutoLayoutChildren.Fill)
+                                childSize.x = width - padding.horizontal;
+
                             if (AutoLayoutStart.StartBottom())
-                                childPos.y = height - offset.y - child.height - childPadding.bottom;
+                                childPos.y = height - offset.y - childSize.y - childPadding.bottom;
                             else
                                 childPos.y = offset.y + childPadding.top;
 
                             if (AutoLayoutCenter)
-                                childPos.x = offset.x + childPadding.left + (width - padding.horizontal - child.width - childPadding.horizontal) * 0.5f;
+                                childPos.x = offset.x + childPadding.left + (width - padding.horizontal - childSize.x - childPadding.horizontal) * 0.5f;
                             else if (AutoLayoutStart.StartRight())
-                                childPos.x = width - offset.x - child.width - childPadding.right;
+                                childPos.x = width - offset.x - childSize.x - childPadding.right;
                             else
                                 childPos.x = offset.x + childPadding.left;
 
-                            offset.y += child.height + childPadding.vertical + AutoLayoutSpace;
+                            offset.y += childSize.y + childPadding.vertical + AutoLayoutSpace;
                             break;
                     }
 
                     child.relativePosition = childPos;
+                    child.size = childSize;
                 }
             }
             catch (Exception e)
@@ -542,7 +565,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                             offset = Mathf.Max(offset, child.relativePosition.x + child.width);
                     }
                     return Mathf.Max(offset, padding.left) + padding.right;
@@ -552,7 +575,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                         {
                             count += 1;
                             totalWidth += child.width + GetItemPadding(child).horizontal;
@@ -564,7 +587,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                             maxWidth = Mathf.Max(maxWidth, child.width + GetItemPadding(child).horizontal);
                     }
                     return padding.horizontal + maxWidth;
@@ -583,7 +606,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                             offset = Mathf.Max(offset, child.relativePosition.y + child.height);
                     }
                     return Mathf.Max(offset, padding.top) + padding.bottom;
@@ -593,7 +616,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                         {
                             count += 1;
                             totalHeight += child.height + GetItemPadding(child).vertical;
@@ -605,7 +628,7 @@ namespace ModsCommon.UI
                     for (int i = 0; i < childCount; i += 1)
                     {
                         var child = m_ChildComponents[i];
-                        if (child.isVisibleSelf)
+                        if (child.isVisibleSelf && !ignoreList.Contains(child))
                             maxHeight = Mathf.Max(maxHeight, child.height + GetItemPadding(child).vertical);
                     }
                     return padding.vertical + maxHeight;

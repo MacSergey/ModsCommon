@@ -156,9 +156,10 @@ namespace ModsCommon.Settings
             var tabPanel = MainPanel.AddUIComponent<CustomUIScrollablePanel>();
             tabPanel.ScrollOrientation = UIOrientation.Vertical;
             tabPanel.AutoLayout = AutoLayout.Vertical;
-            tabPanel.AutoLayoutSpace = 10;
+            tabPanel.AutoLayoutSpace = 15;
             tabPanel.AutoFitChildren = true;
-            tabPanel.Padding = new RectOffset(8, 8, 8, 8);
+            tabPanel.AutoFillChildren = true;
+            tabPanel.Padding = new RectOffset(15, 15, 0, 15);
             SetTabSize(tabPanel);
             tabPanel.isVisible = false;
             TabPanels.Add(tabPanel);
@@ -183,10 +184,10 @@ namespace ModsCommon.Settings
                 group.AutoLayout = AutoLayout.Horizontal;
 
                 var optionsContent = group.AddUIComponent<CustomUIPanel>();
-                optionsContent.PauseLayout(() => 
+                optionsContent.PauseLayout(() =>
                 {
                     optionsContent.AutoLayout = AutoLayout.Vertical;
-                    optionsContent.AutoFitChildrenVertically = true;
+                    optionsContent.AutoChildrenVertically = AutoLayoutChildren.Fit;
                     optionsContent.AutoLayoutSpace = 15;
                 });
 

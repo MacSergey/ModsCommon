@@ -76,12 +76,12 @@ namespace ModsCommon.UI
                 Content.PauseLayout(InitContent);
 
                 Content.AutoLayout = AutoLayout.Horizontal;
-                Content.AutoFitChildrenVertically = true;
+                Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
                 Content.eventSizeChanged += RefreshContent;
             });
 
             AutoLayout = AutoLayout.Vertical;
-            autoFitChildrenVertically = true;
+            autoChildrenVertically = AutoLayoutChildren.Fit;
             Borders = Border.Top;
             Padding = ItemsPadding;
         }
