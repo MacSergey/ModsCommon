@@ -11,7 +11,6 @@ namespace ModsCommon.Utilities
         private CustomUILabel Label { get; set; }
         private CustomUIButton Button { get; set; }
         private CustomUIPanel Space { get; set; }
-        public UIAutoLayoutScrollablePanel Content => Panel.Content;
         protected override int ContentSpacing => 5;
 
         public string MessageText
@@ -28,19 +27,21 @@ namespace ModsCommon.Utilities
 
         public DependenciesMessageBox()
         {
-            Panel.Content.AutoLayoutPadding = new RectOffset(ButtonsSpace, ButtonsSpace, ContentSpacing, ContentSpacing);
+            Content.Padding = new RectOffset(ButtonsSpace, ButtonsSpace, ContentSpacing, ContentSpacing);
 
-            Panel.Content.StopLayout();
-            AddLabel();
-            AddButton();
-            Panel.Content.StartLayout();
+            Content.PauseLayout(() =>
+            {
+                AddLabel();
+                AddButton();
+            });
+            Content.StartLayout();
 
-            Panel.Content.eventComponentAdded += ContentComponentChanged;
-            Panel.Content.eventComponentRemoved += ContentComponentChanged;
+            Content.eventComponentAdded += ContentComponentChanged;
+            Content.eventComponentRemoved += ContentComponentChanged;
         }
         private void AddLabel()
         {
-            Label = Panel.Content.AddUIComponent<CustomUILabel>();
+            Label = Content.AddUIComponent<CustomUILabel>();
             Label.textAlignment = UIHorizontalAlignment.Center;
             Label.verticalAlignment = UIVerticalAlignment.Middle;
             Label.textScale = 1.1f;
@@ -48,7 +49,7 @@ namespace ModsCommon.Utilities
             Label.autoHeight = true;
             Label.minimumSize = new Vector2(0, 79);
 
-            Space = Panel.Content.AddUIComponent<CustomUIPanel>();
+            Space = Content.AddUIComponent<CustomUIPanel>();
             Space.BackgroundSprite = "ContentManagerItemBackground";
             Space.height = 5f;
         }
@@ -66,13 +67,13 @@ namespace ModsCommon.Utilities
         }
         public override void OnDestroy()
         {
-            Panel.Content.eventComponentAdded -= ContentComponentChanged;
-            Panel.Content.eventComponentRemoved -= ContentComponentChanged;
+            Content.eventComponentAdded -= ContentComponentChanged;
+            Content.eventComponentRemoved -= ContentComponentChanged;
             base.OnDestroy();
         }
         private void ContentComponentChanged(UIComponent container, UIComponent child)
         {
-            Space.isVisible = Panel.Content.components.Any(c => c is PluginMessage);
+            Space.isVisible = Content.components.Any(c => c is PluginMessage);
         }
 
     }

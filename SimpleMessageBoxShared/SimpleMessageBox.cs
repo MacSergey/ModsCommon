@@ -15,7 +15,7 @@ namespace ModsCommon.UI
 
         public SimpleMessageBox()
         {
-            Panel.PauseLayout(()=>
+            Content.PauseLayout(()=>
             {
                 Message = AddLabel();
                 Message.minimumSize = new Vector2(0, 79);
@@ -24,7 +24,7 @@ namespace ModsCommon.UI
 
         protected CustomUILabel AddLabel()
         {
-            var label = Panel.Content.AddUIComponent<CustomUILabel>();
+            var label = Content.AddUIComponent<CustomUILabel>();
 
             label.textAlignment = UIHorizontalAlignment.Center;
             label.verticalAlignment = UIVerticalAlignment.Middle;

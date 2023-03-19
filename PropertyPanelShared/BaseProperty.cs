@@ -5,12 +5,17 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class EditorItem : UIAutoLayoutPanel
+    public abstract class EditorItem : CustomUIPanel
     {
         protected virtual float DefaultHeight => 34;
         protected static int ItemsPadding => 7;
 
         public virtual bool EnableControl { get; set; } = true;
+
+        public EditorItem()
+        {
+            autoLayout = AutoLayout.Horizontal;
+        }
 
         public virtual void DeInit()
         {
@@ -158,7 +163,7 @@ namespace ModsCommon.UI
     public abstract class EditorPropertyPanel : BaseEditorPanel
     {
         private CustomUILabel LabelItem { get; set; }
-        protected UIAutoLayoutPanel Content { get; set; }
+        protected CustomUIPanel Content { get; set; }
 
         public string Label
         {
@@ -197,7 +202,7 @@ namespace ModsCommon.UI
                 LabelItem.disabledTextColor = new Color32(160, 160, 160, 255);
                 LabelItem.verticalAlignment = UIVerticalAlignment.Middle;
 
-                Content = AddUIComponent<UIAutoLayoutPanel>();
+                Content = AddUIComponent<CustomUIPanel>();
                 Content.name = nameof(Content);
                 Content.PauseLayout(() =>
                 {

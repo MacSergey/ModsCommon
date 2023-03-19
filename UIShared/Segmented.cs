@@ -23,7 +23,7 @@ namespace ModsCommon.UI
         public static explicit operator OptionData(string label) => new OptionData(label);
         public static implicit operator string(OptionData data) => data.label;
     }
-    public abstract class UISegmented<ValueType> : UIAutoLayoutPanel, IReusable
+    public abstract class UISegmented<ValueType> : CustomUIPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }

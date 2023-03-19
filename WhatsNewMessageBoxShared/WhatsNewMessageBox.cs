@@ -41,7 +41,7 @@ namespace ModsCommon.UI
                 var first = default(VersionMessage);
                 foreach (var message in messages)
                 {
-                    var versionMessage = Panel.Content.AddUIComponent<VersionMessage>();
+                    var versionMessage = Content.AddUIComponent<VersionMessage>();
                     versionMessage.Init(message.Key, message.Value, culture);
 
                     if (first == null)
@@ -52,7 +52,7 @@ namespace ModsCommon.UI
             });
         }
 
-        public class VersionMessage : UIAutoLayoutPanel
+        public class VersionMessage : CustomUIPanel
         {
             public bool IsExpand
             {
@@ -87,7 +87,7 @@ namespace ModsCommon.UI
             private CustomUILabel Title { get; set; }
             private CustomUILabel SubTitle { get; set; }
             private CustomUIButton Button { get; set; }
-            private UIAutoLayoutPanel Container { get; set; }
+            private CustomUIPanel Container { get; set; }
             private List<MessageText> Messages { get; } = new List<MessageText>();
 
             public VersionMessage()
@@ -108,7 +108,7 @@ namespace ModsCommon.UI
             }
             private void AddTitle()
             {
-                var titlePanel = AddUIComponent<UIAutoLayoutPanel>();
+                var titlePanel = AddUIComponent<CustomUIPanel>();
                 titlePanel.PauseLayout(() =>
                 {
                     titlePanel.name = "TitlePanel";
@@ -118,7 +118,7 @@ namespace ModsCommon.UI
                     titlePanel.AutoLayoutSpace = 10;
                     titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsExpand = !IsExpand;
 
-                    var versionPanel = titlePanel.AddUIComponent<UIAutoLayoutPanel>();
+                    var versionPanel = titlePanel.AddUIComponent<CustomUIPanel>();
                     versionPanel.PauseLayout(() =>
                     {
                         versionPanel.name = "VersionPanel";
@@ -166,7 +166,7 @@ namespace ModsCommon.UI
             }
             private void AddLinesContainer()
             {
-                Container = AddUIComponent<UIAutoLayoutPanel>();
+                Container = AddUIComponent<CustomUIPanel>();
                 Container.name = "Container";
                 Container.PauseLayout(() =>
                 {
@@ -227,7 +227,7 @@ namespace ModsCommon.UI
                 this.text = text;
             }
         }
-        public class UpdateMessage : UIAutoLayoutPanel, IReusable
+        public class UpdateMessage : CustomUIPanel, IReusable
         {
             bool IReusable.InCache { get; set; }
 
@@ -363,7 +363,7 @@ namespace ModsCommon.UI
         {
             PauseLayout(() =>
             {
-                var betaMessage = Panel.Content.AddUIComponent<CustomUILabel>();
+                var betaMessage = Content.AddUIComponent<CustomUILabel>();
                 betaMessage.wordWrap = true;
                 betaMessage.autoHeight = true;
                 betaMessage.textColor = new Color32(255, 160, 0, 255);

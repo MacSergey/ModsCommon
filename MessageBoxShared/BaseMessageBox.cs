@@ -79,7 +79,7 @@ namespace ModsCommon.UI
 
         private CustomUIDragHandle Header { get; set; }
         private CustomUILabel Caption { get; set; }
-        protected AutoSizeAdvancedScrollablePanel Panel { get; set; }
+        protected CustomUIScrollablePanel Content { get; set; }
         private CustomUIPanel ButtonPanel { get; set; }
         private IEnumerable<CustomUIButton> Buttons => ButtonPanel.components.OfType<CustomUIButton>();
 
@@ -116,6 +116,7 @@ namespace ModsCommon.UI
         private void AddHeader()
         {
             Header = AddUIComponent<CustomUIDragHandle>();
+            Header.name = nameof(Header);
             Header.relativePosition = new Vector2(0, 0);
 
             var background = Header.AddUIComponent<CustomUISlicedSprite>();
@@ -124,6 +125,7 @@ namespace ModsCommon.UI
             background.color = ComponentStyle.HeaderColor;
 
             Caption = Header.AddUIComponent<CustomUILabel>();
+            Caption.name = nameof(Caption);
             Caption.textAlignment = UIHorizontalAlignment.Center;
             Caption.textScale = 1.3f;
             Caption.anchor = UIAnchorStyle.Top;
@@ -150,17 +152,30 @@ namespace ModsCommon.UI
         }
         private void AddContent()
         {
-            Panel = AddUIComponent<AutoSizeAdvancedScrollablePanel>();
-            Panel.MaxSize = MaxContentSize;
-            Panel.size = new Vector2(DefaultWidth, 0f);
-            Panel.relativePosition = new Vector2(0, Header.height + Padding);
-            Panel.Content.AutoLayoutPadding = new RectOffset(Padding, Padding, ContentSpacing, 0);
-            Panel.Content.AutoReset = true;
-            Panel.eventSizeChanged += ContentSizeChanged;
+            Content = AddUIComponent<CustomUIScrollablePanel>();
+            Content.name = nameof(Content);
+            Content.PauseLayout(() =>
+            {
+                Content.maximumSize = MaxContentSize;
+                Content.size = new Vector2(DefaultWidth, 0f);
+                Content.relativePosition = new Vector2(0, Header.height + Padding);
+                Content.Padding = new RectOffset(Padding, Padding, 0, 0);
+                Content.AutoLayoutSpace = ContentSpacing;
+                Content.AutoLayout = AutoLayout.Vertical;
+                Content.AutoFitChildren = true;
+                Content.AutoFillChildren = true;
+                Content.ScrollOrientation = UIOrientation.Vertical;
+                Content.AutoReset = true;
+                Content.eventSizeChanged += ContentSizeChanged;
+
+                Content.Scrollbar.DefaultStyle();
+                Content.ScrollbarSize = 12f;
+            });
         }
         private void AddButtonPanel()
         {
             ButtonPanel = AddUIComponent<CustomUIPanel>();
+            ButtonPanel.name = nameof(ButtonPanel);
             ButtonPanel.size = new Vector2(DefaultWidth, ButtonHeight + 10);
         }
 
@@ -184,14 +199,14 @@ namespace ModsCommon.UI
         {
             base.OnResolutionChanged(previousResolution, currentResolution);
 
-            Panel.MaxSize = MaxContentSize;
-            Panel.size = Panel.size;
+            Content.maximumSize = MaxContentSize;
+            Content.size = Content.size;
         }
         private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
         private void SetSize()
         {
-            height = Mathf.Floor(Header.height + Padding + Panel.height + ButtonPanel.height + Padding);
-            ButtonPanel.relativePosition = new Vector2(0, Header.height + Padding + Panel.height + Padding);
+            height = Mathf.Floor(Header.height + Padding + Content.height + ButtonPanel.height + Padding);
+            ButtonPanel.relativePosition = new Vector2(0, Header.height + Padding + Content.height + Padding);
         }
 
         #endregion
@@ -307,12 +322,12 @@ namespace ModsCommon.UI
         }
 
 
-        public new bool IsLayoutSuspended => Panel.IsLayoutSuspended;
-        public new Vector2 ItemSize => Panel.ItemSize;
-        public new RectOffset LayoutPadding => Panel.LayoutPadding;
+        public new bool IsLayoutSuspended => Content.IsLayoutSuspended;
+        public new Vector2 ItemSize => Content.ItemSize;
+        public new RectOffset LayoutPadding => Content.LayoutPadding;
 
-        public override void StopLayout() => Panel.StopLayout();
-        public override void StartLayout(bool layoutNow = true, bool force = false) => Panel.StartLayout(layoutNow, force);
-        public override void PauseLayout(Action action, bool layoutNow = true, bool force = false) => Panel.PauseLayout(action, layoutNow, force);
+        public override void StopLayout() => Content.StopLayout();
+        public override void StartLayout(bool layoutNow = true, bool force = false) => Content.StartLayout(layoutNow, force);
+        public override void PauseLayout(Action action, bool layoutNow = true, bool force = false) => Content.PauseLayout(action, layoutNow, force);
     }
 }

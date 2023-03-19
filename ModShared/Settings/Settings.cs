@@ -62,7 +62,7 @@ namespace ModsCommon.Settings
 
         private UIPanel MainPanel { get; set; }
         protected TabStrip TabStrip { get; set; }
-        protected List<CustomUIPanel> TabPanels { get; set; }
+        protected List<CustomUIScrollablePanel> TabPanels { get; set; }
         private Dictionary<string, UIComponent> TabContent { get; } = new Dictionary<string, UIComponent>();
         protected UIComponent GeneralTab => TabContent[nameof(GeneralTab)];
         protected UIComponent SupportTab => TabContent[nameof(SupportTab)];
@@ -102,7 +102,7 @@ namespace ModsCommon.Settings
 
         protected void CreateTabStrip()
         {
-            TabPanels = new List<CustomUIPanel>();
+            TabPanels = new List<CustomUIScrollablePanel>();
 
             TabStrip = MainPanel.AddUIComponent<TabStrip>();
             TabStrip.SelectedTabChanged += OnSelectedTabChanged;
@@ -126,9 +126,11 @@ namespace ModsCommon.Settings
             foreach (var tab in TabPanels)
                 SetTabSize(tab);
         }
-        private void SetTabSize(CustomUIPanel panel)
+        private void SetTabSize(CustomUIScrollablePanel panel)
         {
-            panel.size = new Vector2(MainPanel.width, MainPanel.height - (TabStrip.isVisible ? MainPanel.autoLayoutPadding.vertical + TabStrip.height : 0f));
+            var size = new Vector2(MainPanel.width, MainPanel.height - (TabStrip.isVisible ? MainPanel.autoLayoutPadding.vertical + TabStrip.height : 0f));
+            panel.minimumSize = size;
+            panel.maximumSize = size;
         }
 
         private void CreateTabs()
@@ -151,14 +153,21 @@ namespace ModsCommon.Settings
         {
             TabStrip.AddTab(label, 1.25f);
 
-            var tabPanel = MainPanel.AddUIComponent<AdvancedScrollablePanel>();
-            tabPanel.Content.AutoLayoutPadding = new RectOffset(8, 8, 5, 5);
+            var tabPanel = MainPanel.AddUIComponent<CustomUIScrollablePanel>();
+            tabPanel.ScrollOrientation = UIOrientation.Vertical;
+            tabPanel.AutoLayout = AutoLayout.Vertical;
+            tabPanel.AutoLayoutSpace = 10;
+            tabPanel.AutoFitChildren = true;
+            tabPanel.Padding = new RectOffset(8, 8, 8, 8);
             SetTabSize(tabPanel);
             tabPanel.isVisible = false;
             TabPanels.Add(tabPanel);
 
-            TabContent[name] = tabPanel.Content;
-            return tabPanel.Content;
+            tabPanel.Scrollbar.DefaultStyle();
+            tabPanel.ScrollbarSize = 12f;
+
+            TabContent[name] = tabPanel;
+            return tabPanel;
         }
         protected UIComponent GetTabContent(string label) => TabContent[label];
 

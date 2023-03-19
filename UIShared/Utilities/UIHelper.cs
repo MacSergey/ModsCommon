@@ -65,76 +65,15 @@ namespace ModsCommon.UI
 
         public static IEnumerable<T> GetCompenentsWithName<T>(string name)
             where T : UIComponent
-            => GameObject.FindObjectsOfType<T>().Where(c => c.name == name);
+        {
+            return GameObject.FindObjectsOfType<T>().Where(c => c.name == name);
+        }
 
         [Flags]
         public enum FindOptions
         {
             None = 0,
             NameContains = 1
-        }
-
-        public static CustomUIScrollbar AddScrollbar(this UIComponent parent)
-        {
-            var scrollbar = parent.AddUIComponent<CustomUIScrollbar>();
-            scrollbar.name = "Scrollbar";
-            scrollbar.Orientation = UIOrientation.Vertical;
-            scrollbar.DefaultStyle();
-
-            return scrollbar;
-        }
-        public static CustomUIScrollbar AddScrollbar(this UIComponent parent, CustomUIScrollablePanel scrollablePanel)
-        {
-            var scrollbar = parent.AddScrollbar();
-            scrollbar.OnScrollValueChanged += (value) => scrollablePanel.ScrollPosition = new Vector2(0, value);
-
-            parent.eventMouseWheel += (component, eventParam) =>
-            {
-                scrollbar.Value -= (int)eventParam.wheelDelta * scrollbar.Increment;
-            };
-
-            scrollablePanel.eventMouseWheel += (component, eventParam) =>
-            {
-                scrollbar.Value -= (int)eventParam.wheelDelta * scrollbar.Increment;
-            };
-
-            scrollablePanel.eventSizeChanged += (component, eventParam) =>
-            {
-                scrollbar.relativePosition = scrollablePanel.relativePosition + new Vector3(scrollablePanel.width, 0);
-                scrollbar.height = scrollablePanel.height;
-            };
-
-            scrollablePanel.VerticalScrollbar = scrollbar;
-
-            return scrollbar;
-        }
-        public static void ScrollIntoViewRecursive(this CustomUIScrollablePanel panel, UIComponent component)
-        {
-            var rect = new Rect(panel.ScrollPosition.x + panel.ScrollPadding.left, panel.ScrollPosition.y + panel.ScrollPadding.top, panel.size.x - panel.ScrollPadding.horizontal, panel.size.y - panel.ScrollPadding.vertical).RoundToInt();
-
-            var relativePosition = Vector3.zero;
-            for (var current = component; current != null && current != panel; current = current.parent)
-            {
-                relativePosition += current.relativePosition;
-            }
-
-            var size = component.size;
-            var other = new Rect(panel.ScrollPosition.x + relativePosition.x, panel.ScrollPosition.y + relativePosition.y, size.x, size.y).RoundToInt();
-            if (!rect.Intersects(other))
-            {
-                Vector2 scrollPosition = panel.ScrollPosition;
-                if (other.xMin < rect.xMin)
-                    scrollPosition.x = other.xMin - panel.ScrollPadding.left;
-                else if (other.xMax > rect.xMax)
-                    scrollPosition.x = other.xMax - Mathf.Max(panel.size.x, size.x) + panel.ScrollPadding.horizontal;
-
-                if (other.y < rect.y)
-                    scrollPosition.y = other.yMin - panel.ScrollPadding.top;
-                else if (other.yMax > rect.yMax)
-                    scrollPosition.y = other.yMax - Mathf.Max(panel.size.y, size.y) + panel.ScrollPadding.vertical;
-
-                panel.ScrollPosition = scrollPosition;
-            }
         }
 
         [Obsolete]

@@ -138,11 +138,11 @@ namespace ModsCommon.Utilities
         public PluginMessage AddMessage()
         {
             Show();
-            return MessageBox.Content.AddUIComponent<PluginMessage>();
+            return MessageBox.AddUIComponent<PluginMessage>();
         }
         public void RemoveMessage(PluginMessage message)
         {
-            MessageBox.Content.RemoveUIComponent(message);
+            MessageBox.RemoveUIComponent(message);
             Destroy(message.gameObject);
             Destroy(message);
         }

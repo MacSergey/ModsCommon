@@ -24,7 +24,7 @@ namespace ModsCommon.UI
             if (!initialized)
             {
                 initialized = true;
-                if ((resetNeeded || autoLayout != AutoLayout.Disabled) && !IsLayoutSuspended)
+                if ((resetNeeded || AutoLayout != AutoLayout.Disabled) && !IsLayoutSuspended)
                     Reset();
 
                 Invalidate();
@@ -34,7 +34,7 @@ namespace ModsCommon.UI
         {
             base.OnEnable();
 
-            if (autoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
+            if (AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
                 AutoArrange();
         }
         public override void OnDisable()
@@ -48,7 +48,7 @@ namespace ModsCommon.UI
         {
             base.Update();
 
-            if (m_IsComponentInvalidated && autoLayout != AutoLayout.Disabled && !IsLayoutSuspended && isVisible)
+            if (m_IsComponentInvalidated && AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended && isVisible)
                 AutoArrange();
         }
         public override void LateUpdate()
@@ -264,6 +264,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         protected AutoLayout autoLayout;
         public AutoLayout AutoLayout
         {
@@ -277,6 +278,7 @@ namespace ModsCommon.UI
                 }
             }
         }
+
 
         protected LayoutStart autoLayoutStart;
         public LayoutStart AutoLayoutStart
@@ -292,6 +294,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         protected int autoLayoutSpace;
         public int AutoLayoutSpace
         {
@@ -305,6 +308,7 @@ namespace ModsCommon.UI
                 }
             }
         }
+
 
         protected bool autoLayoutCenter;
         public bool AutoLayoutCenter
@@ -320,10 +324,11 @@ namespace ModsCommon.UI
             }
         }
 
+
         protected bool autoCenterPadding;
         public bool AutoCenterPadding
         {
-            get => autoCenterPadding && ((autoLayout == AutoLayout.Horizontal && !autoFitChildrenHorizontally) || (autoLayout == AutoLayout.Vertical && !autoFitChildrenVertically));
+            get => autoCenterPadding && ((AutoLayout == AutoLayout.Horizontal && !autoFitChildrenHorizontally) || (AutoLayout == AutoLayout.Vertical && !autoFitChildrenVertically));
             set
             {
                 if(value != autoCenterPadding)
@@ -333,6 +338,7 @@ namespace ModsCommon.UI
                 }
             }
         }
+
 
         protected bool autoFitChildrenHorizontally;
         public bool AutoFitChildrenHorizontally
@@ -348,6 +354,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         protected bool autoFitChildrenVertically;
         public bool AutoFitChildrenVertically
         {
@@ -361,6 +368,7 @@ namespace ModsCommon.UI
                 }
             }
         }
+
 
         private Dictionary<UIComponent, RectOffset> itemPadding = new Dictionary<UIComponent, RectOffset>();
         public void SetItemPadding(UIComponent component, RectOffset padding)
@@ -377,7 +385,7 @@ namespace ModsCommon.UI
         private int layoutSuspend;
         public bool IsLayoutSuspended => layoutSuspend != 0;
 
-        public Vector2 ItemSize => new Vector2(width - -Padding.horizontal, height - Padding.vertical);
+        public Vector2 ItemSize => new Vector2(width - Padding.horizontal, height - Padding.vertical);
         public RectOffset LayoutPadding => Padding;
 
         public virtual void StopLayout()
@@ -411,7 +419,7 @@ namespace ModsCommon.UI
         {
             if (!IsLayoutSuspended)
             {
-                if (autoLayout != AutoLayout.Disabled)
+                if (AutoLayout != AutoLayout.Disabled)
                     AutoArrange();
 
                 Invalidate();
@@ -424,33 +432,33 @@ namespace ModsCommon.UI
             {
                 StopLayout();
 
-                FitChildren(autoFitChildrenHorizontally, autoFitChildrenVertically);
+                FitChildren(AutoFitChildrenHorizontally, AutoFitChildrenVertically);
 
                 var offset = Vector2.zero;
                 var padding = Padding;
 
-                if (autoLayout == AutoLayout.Horizontal && AutoCenterPadding)
+                if (AutoLayout == AutoLayout.Horizontal && AutoCenterPadding)
                     offset.x = (width - GetHorizontalItemsSpace()) * 0.5f;
-                else if (autoLayoutStart.StartLeft())
+                else if (AutoLayoutStart.StartLeft())
                     offset.x = padding.left;
-                else if (autoLayoutStart.StartRight())
+                else if (AutoLayoutStart.StartRight())
                     offset.x = padding.right;
 
-                if (autoLayout == AutoLayout.Vertical && AutoCenterPadding)
+                if (AutoLayout == AutoLayout.Vertical && AutoCenterPadding)
                     offset.y = (height - GetVerticalItemsSpace()) * 0.5f;
-                else if (autoLayoutStart.StartTop())
+                else if (AutoLayoutStart.StartTop())
                     offset.y = padding.top;
-                else if (autoLayoutStart.StartBottom())
+                else if (AutoLayoutStart.StartBottom())
                     offset.y = padding.bottom;
 
                 for (int i = 0; i < childCount; i += 1)
                 {
-                    var child = autoLayoutStart switch
+                    var child = AutoLayoutStart switch
                     {
-                        LayoutStart.TopLeft or LayoutStart.BottomLeft when autoLayout == AutoLayout.Horizontal => m_ChildComponents[i],
-                        LayoutStart.TopRight or LayoutStart.BottomRight when autoLayout == AutoLayout.Horizontal => m_ChildComponents[childCount - 1 - i],
-                        LayoutStart.TopLeft or LayoutStart.TopRight when autoLayout == AutoLayout.Vertical => m_ChildComponents[i],
-                        LayoutStart.BottomLeft or LayoutStart.BottomRight when autoLayout == AutoLayout.Vertical => m_ChildComponents[childCount - 1 - i],
+                        LayoutStart.TopLeft or LayoutStart.BottomLeft when AutoLayout == AutoLayout.Horizontal => m_ChildComponents[i],
+                        LayoutStart.TopRight or LayoutStart.BottomRight when AutoLayout == AutoLayout.Horizontal => m_ChildComponents[childCount - 1 - i],
+                        LayoutStart.TopLeft or LayoutStart.TopRight when AutoLayout == AutoLayout.Vertical => m_ChildComponents[i],
+                        LayoutStart.BottomLeft or LayoutStart.BottomRight when AutoLayout == AutoLayout.Vertical => m_ChildComponents[childCount - 1 - i],
                         _ => m_ChildComponents[i],
                     };
 
@@ -460,37 +468,38 @@ namespace ModsCommon.UI
                     var childPos = Vector2.zero;
                     var childPadding = GetItemPadding(child);
 
-                    switch (autoLayout)
+                    switch (AutoLayout)
                     {
                         case AutoLayout.Horizontal:
-                            if (autoLayoutStart.StartRight())
+                            if (AutoLayoutStart.StartRight())
                                 childPos.x = width - offset.x - child.width - childPadding.right;
                             else
                                 childPos.x = offset.x + childPadding.left;
 
-                            if (autoLayoutCenter)
+                            if (AutoLayoutCenter)
                                 childPos.y = offset.y + childPadding.top + (height - padding.vertical - child.height - childPadding.vertical) * 0.5f;
-                            else if (autoLayoutStart.StartBottom())
+                            else if (AutoLayoutStart.StartBottom())
                                 childPos.y = height - offset.y - child.height - childPadding.bottom;
                             else
                                 childPos.y = offset.y + childPadding.top;
 
-                            offset.x += child.width + childPadding.horizontal + autoLayoutSpace;
+                            offset.x += child.width + childPadding.horizontal + AutoLayoutSpace;
                             break;
+
                         case AutoLayout.Vertical:
-                            if (autoLayoutStart.StartBottom())
+                            if (AutoLayoutStart.StartBottom())
                                 childPos.y = height - offset.y - child.height - childPadding.bottom;
                             else
                                 childPos.y = offset.y + childPadding.top;
 
-                            if (autoLayoutCenter)
+                            if (AutoLayoutCenter)
                                 childPos.x = offset.x + childPadding.left + (width - padding.horizontal - child.width - childPadding.horizontal) * 0.5f;
-                            else if (autoLayoutStart.StartRight())
+                            else if (AutoLayoutStart.StartRight())
                                 childPos.x = width - offset.x - child.width - childPadding.right;
                             else
                                 childPos.x = offset.x + childPadding.left;
 
-                            offset.y += child.height + childPadding.vertical + autoLayoutSpace;
+                            offset.y += child.height + childPadding.vertical + AutoLayoutSpace;
                             break;
                     }
 
@@ -526,7 +535,7 @@ namespace ModsCommon.UI
         {
             var padding = Padding;
 
-            switch (autoLayout)
+            switch (AutoLayout)
             {
                 case AutoLayout.Disabled:
                     var offset = 0f;
@@ -549,7 +558,7 @@ namespace ModsCommon.UI
                             totalWidth += child.width + GetItemPadding(child).horizontal;
                         }
                     }
-                    return padding.horizontal + totalWidth + Math.Max(0, count - 1) * autoLayoutSpace;
+                    return padding.horizontal + totalWidth + Math.Max(0, count - 1) * AutoLayoutSpace;
                 case AutoLayout.Vertical:
                     var maxWidth = 0f;
                     for (int i = 0; i < childCount; i += 1)
@@ -567,7 +576,7 @@ namespace ModsCommon.UI
         {
             var padding = Padding;
 
-            switch (autoLayout)
+            switch (AutoLayout)
             {
                 case AutoLayout.Disabled:
                     var offset = 0f;
@@ -590,7 +599,7 @@ namespace ModsCommon.UI
                             totalHeight += child.height + GetItemPadding(child).vertical;
                         }
                     }
-                    return padding.vertical + totalHeight + Math.Max(0, count - 1) * autoLayoutSpace;
+                    return padding.vertical + totalHeight + Math.Max(0, count - 1) * AutoLayoutSpace;
                 case AutoLayout.Horizontal:
                     var maxHeight = 0f;
                     for (int i = 0; i < childCount; i += 1)
@@ -616,7 +625,7 @@ namespace ModsCommon.UI
             if (child != null)
                 AttachEvents(child);
 
-            if (autoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
+            if (AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
                 AutoArrange();
         }
 
@@ -627,7 +636,7 @@ namespace ModsCommon.UI
             if (child != null)
                 DetachEvents(child);
 
-            if (autoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
+            if (AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
                 AutoArrange();
         }
 
@@ -663,7 +672,6 @@ namespace ModsCommon.UI
 
         protected UIRenderData BgRenderData { get; set; }
         protected UIRenderData FgRenderData { get; set; }
-
 
         protected override void OnRebuildRenderData()
         {

@@ -41,20 +41,21 @@ namespace ModsCommon.UI
         private void AddPanel()
         {
             Content = AddUIComponent<CustomUIScrollablePanel>();
-            Content.AutoLayout = true;
-            Content.AutoLayoutDirection = LayoutDirection.Vertical;
-            Content.AutoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            Content.AutoLayout = AutoLayout.Vertical;
+            Content.AutoFitChildren = true;
+            Content.Padding = new RectOffset(0, 0, 0, 0);
             Content.clipChildren = true;
-            Content.builtinKeyNavigation = true;
-            Content.ScrollWheelDirection = UIOrientation.Vertical;
+            Content.ScrollOrientation = UIOrientation.Vertical;
             Content.maximumSize = new Vector2(500, 500);
             Content.relativePosition = new Vector2(ContentPadding, ContentPadding);
-            this.AddScrollbar(Content);
+
+            Content.Scrollbar.DefaultStyle();
+            Content.ScrollbarSize = 12f;
         }
         public void Refresh()
         {
             Content.FitChildrenVertically();
-            Content.width = Content.VerticalScrollbar.isVisible ? PopupWidth - Content.VerticalScrollbar.width : PopupWidth;
+            Content.width = Content.Scrollbar.isVisible ? PopupWidth - Content.Scrollbar.width : PopupWidth;
             ContentSizeChanged();
         }
         private void ContentSizeChanged(UIComponent component = null, Vector2 value = default)

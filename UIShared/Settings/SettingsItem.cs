@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class BaseSettingItem : UIAutoLayoutPanel { }
+    public abstract class BaseSettingItem : CustomUIPanel { }
     public class EmptySpaceSettingsItem : BaseSettingItem
     {
         public EmptySpaceSettingsItem() 
@@ -60,7 +60,7 @@ namespace ModsCommon.UI
             }
         }
 
-        public UIAutoLayoutPanel Content { get; private set; }
+        public CustomUIPanel Content { get; private set; }
 
         public SettingsContentItem()
         {
@@ -70,11 +70,12 @@ namespace ModsCommon.UI
 
             PauseLayout(() =>
             {
-                Content = AddUIComponent<UIAutoLayoutPanel>();
+                Content = AddUIComponent<CustomUIPanel>();
                 Content.name = nameof(Content);
 
                 Content.PauseLayout(InitContent);
 
+                Content.AutoLayout = AutoLayout.Horizontal;
                 Content.AutoFitChildrenVertically = true;
                 Content.eventSizeChanged += RefreshContent;
             });

@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
 using UnityEngine;
 
@@ -14,1072 +15,1012 @@ namespace ModsCommon.UI
                 relativePosition = positionBefore;
         }
 
-        public static readonly Vector2 kMaxVerticalScroll = new Vector2(0f, 2.14748365E+09f);
-
-        public static readonly Vector2 kMaxHorizontalScroll = new Vector2(2.14748365E+09f, 0f);
-
-        protected UITextureAtlas m_Atlas;
+        public const float kMaxScroll = int.MaxValue;
 
 
-        protected string m_BackgroundSprite;
+        public event Action<float> OnScrollPositionChanged;
 
 
-        protected bool m_AutoReset = true;
+        private bool initialized;
 
+        private bool resetNeeded;
 
-        protected bool m_AutoLayout;
+        private bool scrolling;
 
+        private bool isMouseDown;
 
-        protected RectOffset m_ScrollPadding;
+        public override bool canFocus => (isEnabled && isVisible) || base.canFocus;
 
-
-        protected RectOffset m_AutoLayoutPadding;
-
-
-        protected LayoutDirection m_AutoLayoutDirection;
-
-
-        protected LayoutStart m_AutoLayoutStart;
-
-
-        protected bool m_WrapLayout;
-
-
-        protected bool m_Center;
-
-
-        protected bool m_FreeScroll;
-
-
-        protected bool m_CustomScrollBounds;
-
-
-        protected Vector2 m_ScrollPosition = Vector2.zero;
-
-
-        protected int m_ScrollWheelAmount = 10;
-
-
-        protected CustomUIScrollbar m_HorizontalScrollbar;
-
-
-        protected CustomUIScrollbar m_VerticalScrollbar;
-
-
-        protected UIOrientation m_WheelDirection;
-
-
-        protected bool m_ScrollWithArrowKeys;
-
-
-        protected bool m_UseScrollMomentum;
-
-
-        protected bool m_UseTouchMouseScroll;
-
-        private bool m_Initialized;
-
-        private bool m_ResetNeeded;
-
-        private bool m_Scrolling;
-
-        private bool m_IsMouseDown;
-
-        private Vector2 m_TouchStartPosition = Vector2.zero;
-
-        private Vector2 m_ScrollMomentum = Vector2.zero;
-
-        public bool UseScrollMomentum
+        public CustomUIScrollablePanel()
         {
-            get
+            clipChildren = true;
+            builtinKeyNavigation = true;
+
+            if (maximumSize == Vector2.zero)
             {
-                return m_UseScrollMomentum;
-            }
-            set
-            {
-                m_UseScrollMomentum = value;
-                m_ScrollMomentum = Vector2.zero;
+                Camera camera = GetCamera();
+                maximumSize = new Vector3(camera.pixelWidth / 2, camera.pixelHeight / 2);
             }
         }
 
-        public bool UseTouchMouseScroll
+        private void Initialize()
         {
-            get
+            if (!initialized)
             {
-                return m_UseTouchMouseScroll;
+                initialized = true;
+
+                if (Scrollbar != null)
+                    Scrollbar.OnScrollValueChanged += ScrollbarValueChanged;
+
+                if (resetNeeded || AutoLayout != AutoLayout.Disabled || AutoReset)
+                    Reset();
+
+                Invalidate();
+                if (AutoReset)
+                {
+                    if (AutoLayoutStart == LayoutStart.TopLeft)
+                        ScrollPosition = 0f;
+                    else if (AutoLayoutStart == LayoutStart.BottomLeft)
+                        ScrollPosition = kMaxScroll;
+                }
+
+                UpdateScrollbarValues();
+                UpdateScrollbarSizeAndPosition();
             }
-            set
+        }
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            if (AutoLayout != AutoLayout.Disabled)
+                AutoArrange();
+
+            UpdateScrollbarValues();
+            UpdateScrollbarSizeAndPosition();
+        }
+        public override void Update()
+        {
+            base.Update();
+
+            if (UseScrollMomentum && !isMouseDown && scrollMomentum != 0f)
+                ScrollPosition += scrollMomentum;
+
+            if (m_IsComponentInvalidated && AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended && isVisible)
             {
-                m_UseTouchMouseScroll = value;
+                AutoArrange();
+                UpdateScrollbarValues();
+                UpdateScrollbarSizeAndPosition();
+            }
+
+            scrollMomentum *= 0.95f - Time.deltaTime;
+            if (scrollMomentum < 0.1f)
+                scrollMomentum = 0f;
+        }
+        public override void LateUpdate()
+        {
+            base.LateUpdate();
+
+            Initialize();
+            if (resetNeeded && isVisible)
+            {
+                resetNeeded = false;
+                if (AutoReset || AutoLayout != AutoLayout)
+                    Reset();
             }
         }
 
-        public bool ScrollWithArrowKeys
-        {
-            get
-            {
-                return m_ScrollWithArrowKeys;
-            }
-            set
-            {
-                m_ScrollWithArrowKeys = value;
-            }
-        }
 
-        public bool FreeScroll
-        {
-            get
-            {
-                return m_FreeScroll;
-            }
-            set
-            {
-                m_FreeScroll = value;
-            }
-        }
+        #region STYLE
 
-        public bool CustomScrollBounds
-        {
-            get
-            {
-                return m_CustomScrollBounds;
-            }
-            set
-            {
-                m_CustomScrollBounds = value;
-            }
-        }
-
+        protected UITextureAtlas atlas;
         public UITextureAtlas Atlas
         {
-            get
-            {
-                if (m_Atlas == null)
-                {
-                    UIView uIView = GetUIView();
-                    if (uIView != null)
-                    {
-                        m_Atlas = uIView.defaultAtlas;
-                    }
-                }
-
-                return m_Atlas;
-            }
+            get => atlas ??= GetUIView()?.defaultAtlas;
             set
             {
-                if (!UITextureAtlas.Equals(value, m_Atlas))
+                if (!Equals(value, atlas))
                 {
-                    m_Atlas = value;
+                    atlas = value;
                     Invalidate();
                 }
             }
         }
 
+
+        protected UITextureAtlas atlasBackground;
+        public UITextureAtlas AtlasBackground
+        {
+            get => atlasBackground ?? Atlas;
+            set
+            {
+                if (!Equals(value, atlasBackground))
+                {
+                    atlasBackground = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected UITextureAtlas atlasForeground;
+        public UITextureAtlas AtlasForeground
+        {
+            get => atlasForeground ?? Atlas;
+            set
+            {
+                if (!Equals(value, atlasForeground))
+                {
+                    atlasForeground = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        Color32? normalBgColor;
+        public Color32 NormalBgColor
+        {
+            get => normalBgColor ?? base.color;
+            set
+            {
+                normalBgColor = value;
+                Invalidate();
+            }
+        }
+
+
+        Color32? disabledBgColor;
+        public Color32 DisabledBgColor
+        {
+            get => disabledBgColor ?? base.disabledColor;
+            set
+            {
+                disabledBgColor = value;
+                Invalidate();
+            }
+        }
+
+
+        Color32? normalFgColor;
+        public Color32 NormalFgColor
+        {
+            get => normalFgColor ?? base.color;
+            set
+            {
+                normalFgColor = value;
+                Invalidate();
+            }
+        }
+
+
+        Color32? disabledFgColor;
+        public Color32 DisabledFgColor
+        {
+            get => disabledFgColor ?? base.disabledColor;
+            set
+            {
+                disabledFgColor = value;
+                Invalidate();
+            }
+        }
+
+
+        string backgroundSprite;
         public string BackgroundSprite
         {
-            get
-            {
-                return m_BackgroundSprite;
-            }
+            get => backgroundSprite;
             set
             {
-                if (value != m_BackgroundSprite)
+                if (value != backgroundSprite)
                 {
-                    m_BackgroundSprite = value;
+                    backgroundSprite = value;
                     Invalidate();
                 }
             }
         }
 
-        public bool AutoReset
+
+        string foregroundSprite;
+        public string ForegroundSprite
         {
-            get
-            {
-                return m_AutoReset;
-            }
+            get => foregroundSprite;
             set
             {
-                if (value != m_AutoReset)
+                if (value != foregroundSprite)
                 {
-                    m_AutoReset = value;
-                    if (value)
-                    {
-                        Reset();
-                    }
+                    foregroundSprite = value;
+                    Invalidate();
                 }
             }
         }
 
-        public RectOffset ScrollPadding
-        {
-            get
-            {
-                if (m_ScrollPadding == null)
-                {
-                    m_ScrollPadding = new RectOffset();
-                }
 
-                return m_ScrollPadding;
+        private RectOffset spritePadding;
+        public RectOffset SpritePadding
+        {
+            get => spritePadding ??= new RectOffset();
+            set
+            {
+                if (!Equals(value, spritePadding))
+                {
+                    spritePadding = value;
+                    Invalidate();
+                }
             }
+        }
+
+        #endregion
+
+        #region LAYOUT
+
+        protected RectOffset padding;
+        public RectOffset Padding
+        {
+            get => padding ??= new RectOffset();
             set
             {
                 value = value.ConstrainPadding();
-                if (!object.Equals(value, m_ScrollPadding))
+                if (!Equals(value, padding))
                 {
-                    m_ScrollPadding = value;
+                    padding = value;
                     Reset();
                 }
             }
         }
-
-        public bool AutoLayout
+        public int PaddingRight
         {
-            get
-            {
-                return m_AutoLayout;
-            }
+            get => Padding.right;
             set
             {
-                if (value != m_AutoLayout)
-                {
-                    m_AutoLayout = value;
-                    Reset();
-                }
+                var old = Padding;
+                Padding = new RectOffset(old.left, value, old.top, old.bottom);
             }
         }
-
-        public bool WrapLayout
+        public int PaddingLeft
         {
-            get
-            {
-                return m_WrapLayout;
-            }
+            get => Padding.left;
             set
             {
-                if (value != m_WrapLayout)
-                {
-                    m_WrapLayout = value;
-                    Reset();
-                }
+                var old = Padding;
+                Padding = new RectOffset(value, old.right, old.top, old.bottom);
             }
         }
-
-        public LayoutDirection AutoLayoutDirection
+        public int PaddingTop
         {
-            get
-            {
-                if (!m_Center)
-                {
-                    return m_AutoLayoutDirection;
-                }
-
-                return LayoutDirection.Horizontal;
-            }
+            get => Padding.top;
             set
             {
-                if (value != m_AutoLayoutDirection)
+                var old = Padding;
+                Padding = new RectOffset(old.left, old.right, value, old.bottom);
+            }
+        }
+        public int PaddingButtom
+        {
+            get => Padding.bottom;
+            set
+            {
+                var old = Padding;
+                Padding = new RectOffset(old.left, old.right, old.top, value);
+            }
+        }
+
+
+        protected AutoLayout autoLayout;
+        public AutoLayout AutoLayout
+        {
+            get => autoLayout;
+            set
+            {
+                if (value != autoLayout)
                 {
-                    m_AutoLayoutDirection = value;
+                    autoLayout = value;
                     Reset();
                 }
             }
         }
 
+
+        protected LayoutStart autoLayoutStart;
         public LayoutStart AutoLayoutStart
         {
-            get
-            {
-                return m_AutoLayoutStart;
-            }
+            get => autoLayoutStart;
             set
             {
-                if (value == LayoutStart.TopRight || value == LayoutStart.BottomRight)
+                if (value != autoLayoutStart)
                 {
-                    throw new NotSupportedException("Right layout start is unsupported");
-                }
-
-                if (value != m_AutoLayoutStart)
-                {
-                    m_AutoLayoutStart = value;
+                    autoLayoutStart = value;
                     Reset();
                 }
             }
         }
 
-        public bool UseCenter
+
+        protected int autoLayoutSpace;
+        public int AutoLayoutSpace
         {
-            get
-            {
-                return m_Center;
-            }
+            get => autoLayoutSpace;
             set
             {
-                if (value != m_Center)
+                if (value != autoLayoutSpace)
                 {
-                    m_Center = value;
-                    for (int i = 0; i < base.childCount; i++)
-                    {
-                        m_ChildComponents[i].PerformLayout();
-                    }
-
+                    autoLayoutSpace = value;
                     Reset();
                 }
             }
         }
 
-        public RectOffset AutoLayoutPadding
-        {
-            get
-            {
-                if (m_AutoLayoutPadding == null)
-                {
-                    m_AutoLayoutPadding = new RectOffset();
-                }
 
-                return m_AutoLayoutPadding;
-            }
+        protected bool autoLayoutCenter;
+        public bool AutoLayoutCenter
+        {
+            get => autoLayoutCenter;
             set
             {
-                value = value.ConstrainPadding();
-                if (!object.Equals(value, m_AutoLayoutPadding))
+                if (value != autoLayoutCenter)
                 {
-                    m_AutoLayoutPadding = value;
+                    autoLayoutCenter = value;
                     Reset();
                 }
             }
         }
 
-        public Vector2 ScrollPosition
+
+        protected bool autoFitChildren;
+        public bool AutoFitChildren
         {
-            get
-            {
-                return m_ScrollPosition;
-            }
+            get => autoFitChildren;
             set
             {
-                if (!m_FreeScroll)
+                if (value != autoFitChildren)
                 {
-                    Vector2 vector = CalculateViewSize();
-                    Vector2 vector2 = new Vector2(base.size.x - (float)ScrollPadding.horizontal, base.size.y - (float)ScrollPadding.vertical);
-                    value = Vector2.Min(vector - vector2, value);
-                    value = Vector2.Max(Vector2.zero, value);
-                    value = value.RoundToInt();
+                    autoFitChildren = value;
+                    Reset();
                 }
+            }
+        }
 
-                if ((value - m_ScrollPosition).sqrMagnitude > float.Epsilon)
+
+        protected bool autoFillChildren;
+        public bool AutoFillChildren
+        {
+            get => autoFillChildren;
+            set
+            {
+                if(value != autoFillChildren)
                 {
-                    Vector2 vector3 = value - m_ScrollPosition;
-                    m_ScrollPosition = value;
-                    ScrollChildControls(vector3, m_FreeScroll);
-                    UpdateScrollbars();
+                    autoFillChildren = value;
+                    Reset();
                 }
-
-                OnScrollPositionChanged();
             }
         }
 
-        public int ScrollWheelAmount
+
+        private int layoutSuspend;
+        public bool IsLayoutSuspended => layoutSuspend != 0;
+
+        public Vector2 ItemSize => new Vector2(width - Padding.horizontal, height - Padding.vertical);
+        public RectOffset LayoutPadding => Padding;
+
+        public virtual void StopLayout()
         {
-            get
-            {
-                return m_ScrollWheelAmount;
-            }
-            set
-            {
-                m_ScrollWheelAmount = value;
-            }
+            layoutSuspend += 1;
         }
-
-        public CustomUIScrollbar HorizontalScrollbar
+        public virtual void StartLayout(bool layoutNow = true, bool force = false)
         {
-            get
-            {
-                return m_HorizontalScrollbar;
-            }
-            set
-            {
-                m_HorizontalScrollbar = value;
-                UpdateScrollbars();
-            }
-        }
+            layoutSuspend = force ? 0 : Mathf.Max(layoutSuspend - 1, 0);
 
-        public CustomUIScrollbar VerticalScrollbar
-        {
-            get
-            {
-                return m_VerticalScrollbar;
-            }
-            set
-            {
-                m_VerticalScrollbar = value;
-                UpdateScrollbars();
-            }
-        }
-
-        public UIOrientation ScrollWheelDirection
-        {
-            get
-            {
-                return m_WheelDirection;
-            }
-            set
-            {
-                m_WheelDirection = value;
-            }
-        }
-
-        public override bool canFocus
-        {
-            get
-            {
-                if (base.isEnabled && base.isVisible)
-                {
-                    return true;
-                }
-
-                return base.canFocus;
-            }
-        }
-
-        public event PropertyChangedEventHandler<Vector2> eventScrollPositionChanged;
-
-        protected override void OnVisibilityChanged()
-        {
-            base.OnVisibilityChanged();
-            if (base.isVisible && (AutoReset || AutoLayout))
-            {
+            if (layoutSuspend == 0 && layoutNow)
                 Reset();
-                UpdateScrollbars();
-            }
         }
-
-        protected override void OnSizeChanged()
+        public virtual void PauseLayout(Action action, bool layoutNow = true, bool force = false)
         {
-            base.OnSizeChanged();
-            if (AutoReset || AutoLayout)
+            if (action != null)
             {
-                Reset();
-                return;
-            }
-
-            Vector2 lhs = CalculateMinChildPosition();
-            if (lhs.x > (float)ScrollPadding.left || lhs.y > (float)ScrollPadding.top)
-            {
-                lhs -= new Vector2(ScrollPadding.left, ScrollPadding.top);
-                lhs = Vector2.Max(lhs, Vector2.zero);
-                ScrollChildControls(lhs);
-            }
-
-            UpdateScrollbars();
-        }
-
-        protected override void OnResolutionChanged(Vector2 previousResolution, Vector2 currentResolution)
-        {
-            base.OnResolutionChanged(previousResolution, currentResolution);
-            m_ResetNeeded = true;
-        }
-
-        protected override void OnGotFocus(UIFocusEventParameter p)
-        {
-            base.OnGotFocus(p);
-            UIComponent source = p.source;
-            while (source != null)
-            {
-                if (m_ChildComponents.Contains(source))
+                try
                 {
-                    ScrollIntoView(source);
-                    break;
+                    StopLayout();
+                    action();
                 }
-
-                source = source.parent;
-            }
-        }
-
-        protected override void OnKeyDown(UIKeyEventParameter p)
-        {
-            if (base.builtinKeyNavigation)
-            {
-                if (!ScrollWithArrowKeys || p.used)
+                finally
                 {
-                    base.OnKeyDown(p);
-                    return;
+                    StartLayout(layoutNow, force);
                 }
-
-                float num = ((HorizontalScrollbar != null) ? HorizontalScrollbar.Increment : 1f);
-                float num2 = ((VerticalScrollbar != null) ? VerticalScrollbar.Increment : 1f);
-                if (p.keycode == KeyCode.LeftArrow)
-                {
-                    ScrollPosition += new Vector2(0f - num, 0f);
-                    p.Use();
-                }
-                else if (p.keycode == KeyCode.RightArrow)
-                {
-                    ScrollPosition += new Vector2(num, 0f);
-                    p.Use();
-                }
-                else if (p.keycode == KeyCode.UpArrow)
-                {
-                    ScrollPosition += new Vector2(0f, 0f - num2);
-                    p.Use();
-                }
-                else if (p.keycode == KeyCode.DownArrow)
-                {
-                    ScrollPosition += new Vector2(0f, num2);
-                    p.Use();
-                }
-            }
-
-            base.OnKeyDown(p);
-        }
-
-        protected override void OnMouseEnter(UIMouseEventParameter p)
-        {
-            base.OnMouseEnter(p);
-            m_TouchStartPosition = p.position;
-        }
-
-        protected override void OnMouseDown(UIMouseEventParameter p)
-        {
-            base.OnMouseDown(p);
-            m_TouchStartPosition = p.position;
-            m_IsMouseDown = true;
-        }
-
-        protected override void OnDragEnd(UIDragEventParameter p)
-        {
-            base.OnDragEnd(p);
-            m_IsMouseDown = false;
-        }
-
-        protected override void OnMouseUp(UIMouseEventParameter p)
-        {
-            base.OnMouseUp(p);
-            m_IsMouseDown = false;
-        }
-
-        protected override void OnMouseMove(UIMouseEventParameter p)
-        {
-            base.OnMouseMove(p);
-            if (UseTouchMouseScroll && m_IsMouseDown && (p.position - m_TouchStartPosition).magnitude > 5f)
-            {
-                Vector2 vector = p.moveDelta.Scale(-1f, 1f);
-                ScrollPosition += vector;
-                m_ScrollMomentum = (m_ScrollMomentum + vector) * 0.5f;
-            }
-        }
-
-        protected override void OnMouseWheel(UIMouseEventParameter p)
-        {
-            if (base.builtinKeyNavigation)
-            {
-                if (p.used)
-                {
-                    return;
-                }
-
-                float num = ((ScrollWheelDirection != 0) ? ((VerticalScrollbar != null) ? VerticalScrollbar.Increment : ((float)ScrollWheelAmount)) : ((HorizontalScrollbar != null) ? HorizontalScrollbar.Increment : ((float)ScrollWheelAmount)));
-                if (ScrollWheelDirection == UIOrientation.Horizontal)
-                {
-                    ScrollPosition = new Vector2(ScrollPosition.x - num * p.wheelDelta, ScrollPosition.y);
-                    m_ScrollMomentum = new Vector2((0f - num) * p.wheelDelta, 0f);
-                }
-                else
-                {
-                    ScrollPosition = new Vector2(ScrollPosition.x, ScrollPosition.y - num * p.wheelDelta);
-                    m_ScrollMomentum = new Vector2(0f, (0f - num) * p.wheelDelta);
-                }
-
-                p.Use();
-                Invoke("OnMouseWheel", p);
-            }
-
-            base.OnMouseWheel(p);
-        }
-
-        protected override void OnComponentAdded(UIComponent child)
-        {
-            base.OnComponentAdded(child);
-            AttachEvents(child);
-            if (AutoLayout)
-            {
-                AutoArrange();
-            }
-        }
-
-        protected override void OnComponentRemoved(UIComponent child)
-        {
-            base.OnComponentRemoved(child);
-            if (child != null)
-            {
-                DetachEvents(child);
-            }
-
-            if (AutoLayout)
-            {
-                AutoArrange();
-            }
-        }
-
-        protected void OnScrollPositionChanged()
-        {
-            Invalidate();
-            if (this.eventScrollPositionChanged != null)
-            {
-                this.eventScrollPositionChanged(this, ScrollPosition);
-            }
-
-            InvokeUpward("OnScrollPositionChanged", ScrollPosition);
-        }
-
-        protected override Plane[] GetClippingPlanes()
-        {
-            if (!base.clipChildren)
-            {
-                return null;
-            }
-
-            Vector3[] corners = GetCorners();
-            Vector3 vector = base.transform.TransformDirection(Vector3.right);
-            Vector3 vector2 = base.transform.TransformDirection(Vector3.left);
-            Vector3 vector3 = base.transform.TransformDirection(Vector3.up);
-            Vector3 vector4 = base.transform.TransformDirection(Vector3.down);
-            float num = PixelsToUnits();
-            RectOffset rectOffset = ScrollPadding;
-            corners[0] += vector * rectOffset.left * num + vector4 * rectOffset.top * num;
-            corners[1] += vector2 * rectOffset.right * num + vector4 * rectOffset.top * num;
-            corners[2] += vector * rectOffset.left * num + vector3 * rectOffset.bottom * num;
-            ref Plane reference = ref m_CachedClippingPlanes[0];
-            reference = new Plane(vector, corners[0]);
-            ref Plane reference2 = ref m_CachedClippingPlanes[1];
-            reference2 = new Plane(vector2, corners[1]);
-            ref Plane reference3 = ref m_CachedClippingPlanes[2];
-            reference3 = new Plane(vector3, corners[2]);
-            ref Plane reference4 = ref m_CachedClippingPlanes[3];
-            reference4 = new Plane(vector4, corners[0]);
-            return m_CachedClippingPlanes;
-        }
-
-        protected override void OnRebuildRenderData()
-        {
-            if (Atlas == null || string.IsNullOrEmpty(BackgroundSprite))
-            {
-                return;
-            }
-
-            UITextureAtlas.SpriteInfo spriteInfo = Atlas[BackgroundSprite];
-            if (!(spriteInfo == null))
-            {
-                base.renderData.material = Atlas.material;
-
-                var renderOptions = new RenderOptions()
-                {
-                    atlas = Atlas,
-                    color = ApplyOpacity(base.isEnabled ? base.color : base.disabledColor),
-                    fillAmount = 1f,
-                    flip = UISpriteFlip.None,
-                    offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
-                    pixelsToUnits = PixelsToUnits(),
-                    size = size,
-                    spriteInfo = spriteInfo,
-                };
-
-                if (spriteInfo.isSliced)
-                    Render.RenderSlicedSprite(base.renderData, renderOptions);
-                else
-                    Render.RenderSprite(base.renderData, renderOptions);
-            }
-        }
-
-        public void FitToContents()
-        {
-            if (base.childCount != 0)
-            {
-                Vector2 vector = Vector2.zero;
-                for (int i = 0; i < base.childCount; i++)
-                {
-                    UIComponent uIComponent = m_ChildComponents[i];
-                    Vector2 rhs = (Vector2)uIComponent.relativePosition + uIComponent.size;
-                    vector = Vector2.Max(vector, rhs);
-                }
-
-                base.size = vector + new Vector2(ScrollPadding.right, ScrollPadding.bottom);
-            }
-        }
-
-        public void CenterChildControls()
-        {
-            if (base.childCount != 0)
-            {
-                Vector2 vector = Vector2.one * float.MaxValue;
-                Vector2 vector2 = Vector2.one * float.MinValue;
-                for (int i = 0; i < base.childCount; i++)
-                {
-                    UIComponent uIComponent = m_ChildComponents[i];
-                    Vector2 vector3 = uIComponent.relativePosition;
-                    Vector2 rhs = vector3 + uIComponent.size;
-                    vector = Vector2.Min(vector, vector3);
-                    vector2 = Vector2.Max(vector2, rhs);
-                }
-
-                Vector2 vector4 = vector2 - vector;
-                Vector2 vector5 = (base.size - vector4) * 0.5f;
-                for (int j = 0; j < base.childCount; j++)
-                {
-                    UIComponent uIComponent2 = m_ChildComponents[j];
-                    uIComponent2.relativePosition = (Vector2)uIComponent2.relativePosition - vector + vector5;
-                }
-            }
-        }
-
-        public void ScrollToTop()
-        {
-            ScrollPosition = new Vector2(ScrollPosition.x, 0f);
-        }
-
-        public void ScrollToBottom()
-        {
-            ScrollPosition = new Vector2(ScrollPosition.x, 2.14748365E+09f);
-        }
-
-        public void ScrollToLeft()
-        {
-            ScrollPosition = new Vector2(0f, ScrollPosition.y);
-        }
-
-        public void ScrollToRight()
-        {
-            ScrollPosition = new Vector2(2.14748365E+09f, ScrollPosition.y);
-        }
-
-        public void ScrollIntoView(UIComponent component)
-        {
-            if (!m_ChildComponents.Contains(component))
-            {
-                return;
-            }
-
-            Rect rect = new Rect(ScrollPosition.x + (float)ScrollPadding.left, ScrollPosition.y + (float)ScrollPadding.top, base.size.x - (float)ScrollPadding.horizontal, base.size.y - (float)ScrollPadding.vertical).RoundToInt();
-            Vector3 vector = component.relativePosition;
-            Vector2 vector2 = component.size;
-            Rect other = new Rect(ScrollPosition.x + vector.x, ScrollPosition.y + vector.y, vector2.x, vector2.y).RoundToInt();
-            if (!rect.Intersects(other))
-            {
-                Vector2 vector3 = ScrollPosition;
-                if (other.xMin < rect.xMin)
-                {
-                    vector3.x = other.xMin - (float)ScrollPadding.left;
-                }
-                else if (other.xMax > rect.xMax)
-                {
-                    vector3.x = other.xMax - Mathf.Max(base.size.x, vector2.x) + (float)ScrollPadding.horizontal;
-                }
-
-                if (other.y < rect.y)
-                {
-                    vector3.y = other.yMin - (float)ScrollPadding.top;
-                }
-                else if (other.yMax > rect.yMax)
-                {
-                    vector3.y = other.yMax - Mathf.Max(base.size.y, vector2.y) + (float)ScrollPadding.vertical;
-                }
-
-                ScrollPosition = vector3;
             }
         }
 
         public void Reset()
         {
-            try
+            if (!IsLayoutSuspended)
             {
-                //SuspendLayout();
-                if (AutoLayout)
+                if (AutoLayout != AutoLayout.Disabled)
                 {
                     if (AutoReset)
-                    {
-                        ScrollPosition = Vector2.zero;
-                    }
+                        ScrollPosition = 0f;
 
                     AutoArrange();
                 }
                 else
                 {
-                    ScrollPadding = ScrollPadding.ConstrainPadding();
-                    Vector3 vector = CalculateMinChildPosition();
-                    vector -= new Vector3(ScrollPadding.left, ScrollPadding.top);
-                    for (int i = 0; i < m_ChildComponents.Count; i++)
+                    var minPos = (Vector3)CalculateMinChildPosition();
+                    for (int i = 0; i < m_ChildComponents.Count; i += 1)
                     {
-                        m_ChildComponents[i].relativePosition -= vector;
+                        if (m_ChildComponents[i] != Scrollbar)
+                            m_ChildComponents[i].relativePosition -= minPos;
                     }
                 }
 
                 if (AutoReset)
                 {
                     if (AutoLayoutStart == LayoutStart.TopLeft)
-                    {
-                        ScrollPosition = Vector2.zero;
-                    }
+                        ScrollPosition = 0f;
                     else if (AutoLayoutStart == LayoutStart.BottomLeft)
-                    {
-                        ScrollPosition = kMaxVerticalScroll;
-                    }
+                        ScrollPosition = kMaxScroll;
                 }
 
                 Invalidate();
-                UpdateScrollbars();
-            }
-            finally
-            {
-                //ResumeLayout();
+                UpdateScrollbarValues();
+                UpdateScrollbarSizeAndPosition();
             }
         }
-
         private void AutoArrange()
         {
-            //SuspendLayout();
             try
             {
-                ScrollPadding = ScrollPadding.ConstrainPadding();
-                AutoLayoutPadding = AutoLayoutPadding.ConstrainPadding();
-                float num = (float)ScrollPadding.left + (float)AutoLayoutPadding.left - ScrollPosition.x;
-                float num2 = 0f;
-                if (!UseCenter)
-                {
-                    if (AutoLayoutStart == LayoutStart.TopLeft)
-                    {
-                        num2 = (float)ScrollPadding.top + (float)AutoLayoutPadding.top - ScrollPosition.y;
-                    }
-                    else if (AutoLayoutStart == LayoutStart.BottomLeft)
-                    {
-                        num2 = base.height - (float)ScrollPadding.bottom - (float)AutoLayoutPadding.bottom - ScrollPosition.y;
-                    }
-                }
+                StopLayout();
 
-                float num3 = 0f;
-                float num4 = 0f;
-                for (int i = 0; i < base.childCount; i++)
+                FitChildren(AutoFitChildren && ScrollOrientation == UIOrientation.Horizontal, AutoFitChildren && ScrollOrientation == UIOrientation.Vertical);
+
+                var offset = Vector2.zero;
+                var padding = Padding;
+                var scrollbarSize = VisibleScrollbarSize;
+
+                if (AutoLayoutStart.StartLeft())
+                    offset.x = padding.left;
+                else if (AutoLayoutStart.StartRight())
+                    offset.x = padding.right;
+
+                if (AutoLayoutStart.StartTop())
+                    offset.y = padding.top;
+                else if (AutoLayoutStart.StartBottom())
+                    offset.y = padding.bottom;
+
+                for (int i = 0; i < childCount; i += 1)
                 {
-                    UIComponent uIComponent = m_ChildComponents[i];
-                    if (!uIComponent.isVisibleSelf || !uIComponent.enabled || !uIComponent.gameObject.activeSelf || uIComponent == HorizontalScrollbar || uIComponent == VerticalScrollbar)
+                    var child = AutoLayoutStart switch
                     {
+                        LayoutStart.TopLeft or LayoutStart.BottomLeft when AutoLayout == AutoLayout.Horizontal => m_ChildComponents[i],
+                        LayoutStart.TopRight or LayoutStart.BottomRight when AutoLayout == AutoLayout.Horizontal => m_ChildComponents[childCount - 1 - i],
+                        LayoutStart.TopLeft or LayoutStart.TopRight when AutoLayout == AutoLayout.Vertical => m_ChildComponents[i],
+                        LayoutStart.BottomLeft or LayoutStart.BottomRight when AutoLayout == AutoLayout.Vertical => m_ChildComponents[childCount - 1 - i],
+                        _ => m_ChildComponents[i],
+                    };
+
+                    if (child == Scrollbar || !child.isVisible || !child.enabled || !child.gameObject.activeSelf)
                         continue;
+
+                    var childPos = ScrollOrientation switch
+                    {
+                        UIOrientation.Horizontal => new Vector2(ScrollPosition, 0f),
+                        UIOrientation.Vertical => new Vector2(0f, -ScrollPosition),
+                        _ => Vector2.zero
+                    };
+                    var childSize = child.size;
+
+                    switch (AutoLayout)
+                    {
+                        case AutoLayout.Horizontal:
+                            if (AutoFillChildren && scrollOrientation == UIOrientation.Horizontal)
+                                childSize.y = height - padding.vertical - scrollbarSize;
+
+                            if (AutoLayoutStart.StartRight())
+                                childPos.x += width - offset.x - childSize.x;
+                            else
+                                childPos.x += offset.x;
+
+                            if (AutoLayoutCenter)
+                                childPos.y += offset.y + (height - scrollbarSize - padding.vertical - childSize.y) * 0.5f;
+                            else if (AutoLayoutStart.StartBottom())
+                                childPos.y += height - scrollbarSize - offset.y - childSize.y;
+                            else
+                                childPos.y += offset.y;
+
+                            offset.x += childSize.x + AutoLayoutSpace;
+                            break;
+
+                        case AutoLayout.Vertical:
+                            if (AutoFillChildren && scrollOrientation == UIOrientation.Vertical)
+                                childSize.x = width - padding.horizontal - scrollbarSize;
+
+                            if (AutoLayoutStart.StartBottom())
+                                childPos.y += height - offset.y - childSize.y;
+                            else
+                                childPos.y += offset.y;
+
+                            if (AutoLayoutCenter)
+                                childPos.x += offset.x + (width - scrollbarSize - padding.horizontal - childSize.x) * 0.5f;
+                            else if (AutoLayoutStart.StartRight())
+                                childPos.x += width - scrollbarSize - offset.x - childSize.x;
+                            else
+                                childPos.x += offset.x;
+
+                            offset.y += childSize.y + AutoLayoutSpace;
+                            break;
                     }
 
-                    if (!UseCenter && WrapLayout)
-                    {
-                        if (AutoLayoutDirection == LayoutDirection.Horizontal)
-                        {
-                            if (num + uIComponent.width >= base.size.x - (float)ScrollPadding.right)
-                            {
-                                num = (float)ScrollPadding.left + (float)AutoLayoutPadding.left;
-                                if (AutoLayoutStart == LayoutStart.TopLeft)
-                                {
-                                    num2 += num4;
-                                }
-                                else if (AutoLayoutStart == LayoutStart.BottomLeft)
-                                {
-                                    num2 -= num4;
-                                }
-
-                                num4 = 0f;
-                            }
-                        }
-                        else if (num2 + uIComponent.height + (float)AutoLayoutPadding.vertical >= base.size.y - (float)ScrollPadding.bottom)
-                        {
-                            num2 = (float)ScrollPadding.top + (float)AutoLayoutPadding.top;
-                            num += num3;
-                            num3 = 0f;
-                        }
-                    }
-
-                    Vector2 vector = Vector2.zero;
-                    if (UseCenter)
-                    {
-                        vector = new Vector2(num, uIComponent.relativePosition.y);
-                    }
-                    else if (AutoLayoutStart == LayoutStart.TopLeft)
-                    {
-                        vector = new Vector2(num, num2);
-                    }
-                    else if (AutoLayoutStart == LayoutStart.BottomLeft)
-                    {
-                        vector = new Vector2(num, num2 - uIComponent.height);
-                    }
-
-                    uIComponent.relativePosition = vector;
-                    float num5 = uIComponent.width + (float)AutoLayoutPadding.horizontal;
-                    float num6 = uIComponent.height + (float)AutoLayoutPadding.vertical;
-                    num3 = Mathf.Max(num5, num3);
-                    num4 = Mathf.Max(num6, num4);
-                    if (AutoLayoutDirection == LayoutDirection.Horizontal)
-                    {
-                        num += num5;
-                    }
-                    else if (AutoLayoutStart == LayoutStart.TopLeft)
-                    {
-                        num2 += num6;
-                    }
-                    else if (AutoLayoutStart == LayoutStart.BottomLeft)
-                    {
-                        num2 -= num6;
-                    }
+                    child.relativePosition = childPos;
+                    child.size = childSize;
                 }
-
-                UpdateScrollbars();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
             }
             finally
             {
-                //ResumeLayout();
+                StartLayout(false);
             }
         }
 
-        private void Initialize()
+        protected virtual void FitChildren(bool horizontally, bool vertically)
         {
-            if (m_Initialized)
-            {
-                return;
-            }
+            var newSize = size;
 
-            m_Initialized = true;
-            if (Application.isPlaying)
-            {
-                if (HorizontalScrollbar != null)
-                {
-                    HorizontalScrollbar.OnScrollValueChanged += HorizontalScrollbarValueChanged;
-                }
+            if (horizontally)
+                newSize.x = GetHorizontalItemsSpace();
 
-                if (VerticalScrollbar != null)
-                {
-                    VerticalScrollbar.OnScrollValueChanged += VerticalScrollbarValueChanged;
-                }
-            }
+            if (vertically)
+                newSize.y = GetVerticalItemsSpace();
 
-            if (m_ResetNeeded || AutoLayout || AutoReset)
-            {
-                Reset();
-            }
-
-            Invalidate();
-            if (AutoReset)
-            {
-                if (AutoLayoutStart == LayoutStart.TopLeft)
-                {
-                    ScrollPosition = Vector2.zero;
-                }
-                else if (AutoLayoutStart == LayoutStart.BottomLeft)
-                {
-                    ScrollPosition = kMaxVerticalScroll;
-                }
-            }
-
-            UpdateScrollbars();
+            size = newSize;
         }
-
-        private void ScrollChildControls(Vector3 delta, bool free = false)
+        private float GetHorizontalItemsSpace()
         {
-            try
+            var padding = Padding;
+
+            switch (AutoLayout)
             {
-                m_Scrolling = true;
-                delta = delta.Scale(1f, -1f, 1f);
-                for (int i = 0; i < base.childCount; i++)
-                {
-                    UIComponent uIComponent = m_ChildComponents[i];
-                    Vector3 vector = uIComponent.position - delta;
-                    if (!free)
+                case AutoLayout.Disabled:
+                    var min = float.MaxValue;
+                    var max = float.MinValue;
+
+                    for (int i = 0; i < childCount; i++)
                     {
-                        vector = vector.RoundToInt();
+                        var child = m_ChildComponents[i];
+
+                        if (child == Scrollbar)
+                            continue;
+
+                        if (child.isVisibleSelf)
+                        {
+                            var minPos = Mathf.RoundToInt(child.relativePosition.x);
+                            var maxPos = minPos + Mathf.RoundToInt(child.width);
+                            min = Mathf.Min(minPos, min);
+                            max = Mathf.Max(maxPos, max);
+                        }
                     }
 
-                    uIComponent.position = vector;
-                }
+                    return max - min;
+
+                case AutoLayout.Horizontal:
+                    var totalWidth = 0f;
+                    var count = 0;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child != Scrollbar && child.isVisibleSelf)
+                        {
+                            count += 1;
+                            totalWidth += child.width;
+                        }
+                    }
+                    return padding.horizontal + totalWidth + Math.Max(0, count - 1) * AutoLayoutSpace;
+
+                case AutoLayout.Vertical:
+                    var maxWidth = 0f;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child != Scrollbar && child.isVisibleSelf)
+                            maxWidth = Mathf.Max(maxWidth, child.width);
+                    }
+                    return padding.horizontal + maxWidth;
+
+                default:
+                    return 0f;
             }
-            finally
+        }
+        private float GetVerticalItemsSpace()
+        {
+            var padding = Padding;
+
+            switch (AutoLayout)
             {
-                m_Scrolling = false;
+                case AutoLayout.Disabled:
+                    var min = float.MaxValue;
+                    var max = float.MinValue;
+
+                    for (int i = 0; i < childCount; i++)
+                    {
+                        var child = m_ChildComponents[i];
+
+                        if (child == Scrollbar)
+                            continue;
+
+                        if (child.isVisibleSelf)
+                        {
+                            var minPos = Mathf.RoundToInt(child.relativePosition.y);
+                            var maxPos = minPos + Mathf.RoundToInt(child.height);
+                            min = Mathf.Min(minPos, min);
+                            max = Mathf.Max(maxPos, max);
+                        }
+                    }
+
+                    return max - min;
+
+                case AutoLayout.Vertical:
+                    var totalHeight = 0f;
+                    var count = 0;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child != Scrollbar && child.isVisibleSelf)
+                        {
+                            count += 1;
+                            totalHeight += child.height;
+                        }
+                    }
+                    return padding.vertical + totalHeight + Math.Max(0, count - 1) * AutoLayoutSpace;
+
+                case AutoLayout.Horizontal:
+                    var maxHeight = 0f;
+                    for (int i = 0; i < childCount; i += 1)
+                    {
+                        var child = m_ChildComponents[i];
+                        if (child != Scrollbar && child.isVisibleSelf)
+                            maxHeight = Mathf.Max(maxHeight, child.height);
+                    }
+                    return padding.vertical + maxHeight;
+
+                default:
+                    return 0f;
             }
         }
 
         private Vector2 CalculateMinChildPosition()
         {
-            float num = float.MaxValue;
-            float num2 = float.MaxValue;
-            for (int i = 0; i < base.childCount; i++)
+            var min = new Vector2(float.MaxValue, float.MaxValue);
+
+            for (int i = 0; i < childCount; i++)
             {
-                UIComponent uIComponent = m_ChildComponents[i];
-                if (uIComponent.enabled && uIComponent.gameObject.activeSelf)
+                var item = m_ChildComponents[i];
+                if (item != Scrollbar && item.enabled && item.gameObject.activeSelf)
                 {
-                    Vector3 vector = uIComponent.relativePosition.FloorToInt();
-                    num = Mathf.Min(num, vector.x);
-                    num2 = Mathf.Min(num2, vector.y);
+                    min = Vector2.Min(min, item.relativePosition.XY().FloorToInt());
                 }
             }
 
-            return new Vector2(num, num2);
+            return min;
         }
 
-        public Vector2 CalculateViewSize()
+        #endregion
+
+        #region SCROLLING
+
+        protected CustomUIScrollbar scrollbar;
+        public CustomUIScrollbar Scrollbar
         {
-            if (m_CustomScrollBounds)
+            get
             {
-                float x = 0f;
-                float y = 0f;
-                if (m_HorizontalScrollbar != null)
+                if(scrollbar == null)
                 {
-                    x = m_HorizontalScrollbar.MaxValue - m_HorizontalScrollbar.MinValue;
+                    scrollbar = AddUIComponent<CustomUIScrollbar>();
+                    UpdateScrollbarSizeAndPosition();
                 }
 
-                if (m_VerticalScrollbar != null)
-                {
-                    y = m_VerticalScrollbar.MaxValue - m_VerticalScrollbar.MinValue;
-                }
-
-                return new Vector2(x, y);
+                return scrollbar;
             }
-
-            Vector2 vector = new Vector2(ScrollPadding.horizontal, ScrollPadding.vertical).RoundToInt();
-            Vector2 result = base.size.RoundToInt() - vector;
-            if (base.childCount == 0)
-            {
-                return result;
-            }
-
-            Vector2 vector2 = Vector2.one * float.MaxValue;
-            Vector2 vector3 = Vector2.one * float.MinValue;
-            for (int i = 0; i < base.childCount; i++)
-            {
-                UIComponent uIComponent = m_ChildComponents[i];
-                if (uIComponent.isVisibleSelf)
-                {
-                    Vector2 vector4 = uIComponent.relativePosition.RoundToInt();
-                    Vector2 lhs = vector4 + uIComponent.size.RoundToInt();
-                    lhs.x += AutoLayoutPadding.horizontal;
-                    lhs.y += AutoLayoutPadding.vertical;
-                    vector2 = Vector2.Min(vector4, vector2);
-                    vector3 = Vector2.Max(lhs, vector3);
-                }
-            }
-
-            return vector3 - vector2;
         }
 
-        private void UpdateScrollbars()
+
+        private bool showScroll = true;
+        public bool ShowScroll
         {
-            Vector2 vector = CalculateViewSize();
-            Vector2 vector2 = base.size - new Vector2(ScrollPadding.horizontal, ScrollPadding.vertical);
-            if (HorizontalScrollbar != null)
+            get => showScroll;
+            set
             {
-                HorizontalScrollbar.MinValue = 0f;
-                HorizontalScrollbar.MaxValue = vector.x;
-                HorizontalScrollbar.ScrollSize = vector2.x;
-                HorizontalScrollbar.Value = Mathf.Max(0f, ScrollPosition.x);
+                if (value != showScroll)
+                {
+                    showScroll = value;
+                    if (value)
+                    {
+                        Scrollbar.AutoHide = true;
+                    }
+                    else
+                    {
+                        Scrollbar.AutoHide = false;
+                        Scrollbar.Hide();
+                    }
+
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected UIOrientation scrollOrientation = UIOrientation.Vertical;
+        public UIOrientation ScrollOrientation
+        {
+            get => scrollOrientation;
+            set
+            {
+                if (value != scrollOrientation)
+                {
+                    scrollOrientation = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        public float scrollbarSize = 10;
+        public float ScrollbarSize
+        {
+            get => scrollbarSize;
+            set
+            {
+                if (value != scrollbarSize)
+                {
+                    scrollbarSize = value;
+                    Invalidate();
+                }
+            }
+        }
+        public float VisibleScrollbarSize => Scrollbar.isVisible ? ScrollbarSize : 0f;
+
+
+        protected bool autoReset = false;
+        public bool AutoReset
+        {
+            get => autoReset;
+            set
+            {
+                if (value != autoReset)
+                {
+                    autoReset = value;
+                    if (value)
+                        Reset();
+                }
+            }
+        }
+
+
+        protected float scrollPosition = 0f;
+        public float ScrollPosition
+        {
+            get => scrollPosition;
+            set
+            {
+                switch (ScrollOrientation)
+                {
+                    case UIOrientation.Horizontal:
+                        var horizontalSpace = GetHorizontalItemsSpace();
+                        value = Mathf.Clamp(value, 0f, horizontalSpace - width);
+                        break;
+                    case UIOrientation.Vertical:
+                        var verticalSpace = GetVerticalItemsSpace();
+                        value = Mathf.Clamp(value, 0f, verticalSpace - height);
+                        break;
+                }
+
+                value = Mathf.RoundToInt(value);
+
+                if (Mathf.Abs(value - scrollPosition) > float.Epsilon)
+                {
+                    var delta = value - scrollPosition;
+                    scrollPosition = value;
+                    ScrollChildControls(delta);
+                    UpdateScrollbarValues();
+                }
+
+                ScrollPositionChanged();
+            }
+        }
+
+
+        protected int scrollWheelAmount = 10;
+        public int ScrollWheelAmount
+        {
+            get => scrollWheelAmount;
+            set => scrollWheelAmount = value;
+        }
+
+
+        protected bool scrollWithArrowKeys;
+        public bool ScrollWithArrowKeys
+        {
+            get => scrollWithArrowKeys;
+            set => scrollWithArrowKeys = value;
+        }
+
+
+        private float scrollMomentum = 0f;
+        protected bool useScrollMomentum;
+        public bool UseScrollMomentum
+        {
+            get => useScrollMomentum;
+            set
+            {
+                useScrollMomentum = value;
+                scrollMomentum = 0f;
+            }
+        }
+
+
+        protected bool useTouchMouseScroll;
+        public bool UseTouchMouseScroll
+        {
+            get => useTouchMouseScroll;
+            set => useTouchMouseScroll = value;
+        }
+
+        private Vector2 touchStartPosition = Vector2.zero;
+
+        private void ScrollbarValueChanged(float value)
+        {
+            ScrollPosition = value;
+        }
+
+        public void ScrollToBegin() => ScrollPosition = 0f;
+        public void ScrollToEnd() => ScrollPosition = kMaxScroll;
+
+        public void ScrollIntoView(UIComponent item)
+        {
+            var itemPosition = Vector3.zero;
+            for (var current = item; current != this; current = current.parent)
+            {
+                if (current == null)
+                    return;
+                else
+                    itemPosition += current.relativePosition;
             }
 
-            if (VerticalScrollbar != null)
+            var viewRect = (ScrollOrientation switch
             {
-                VerticalScrollbar.MinValue = 0f;
-                VerticalScrollbar.MaxValue = vector.y;
-                VerticalScrollbar.ScrollSize = vector2.y;
-                VerticalScrollbar.Value = Mathf.Max(0f, ScrollPosition.y);
+                UIOrientation.Horizontal => new Rect(ScrollPosition, 0f, width, height - Scrollbar.height),
+                UIOrientation.Vertical => new Rect(0f, ScrollPosition, width - Scrollbar.width, height),
+                _ => new Rect(0f, 0f, width, height),
+            }).RoundToInt();
+
+            var itemRect = (ScrollOrientation switch
+            {
+                UIOrientation.Horizontal => new Rect(itemPosition.x + ScrollPosition, itemPosition.y, item.width, item.height),
+                UIOrientation.Vertical => new Rect(itemPosition.x, itemPosition.y + ScrollPosition, item.width, item.height),
+                _ => new Rect(itemPosition.x, itemPosition.y, item.width, item.height),
+            }).RoundToInt();
+
+            if (!viewRect.Intersects(itemRect))
+            {
+                switch (ScrollOrientation)
+                {
+                    case UIOrientation.Horizontal:
+                        if (itemRect.xMin < viewRect.xMin)
+                            ScrollPosition = itemRect.xMin;
+                        else if (itemRect.xMax > viewRect.xMax)
+                            ScrollPosition = itemRect.xMax - Mathf.Max(item.width, width);
+                        break;
+                    case UIOrientation.Vertical:
+                        if (itemRect.y < viewRect.y)
+                            ScrollPosition = itemRect.yMin;
+                        else if (itemRect.yMax > viewRect.yMax)
+                            ScrollPosition = itemRect.yMax - Mathf.Max(item.height, height);
+                        break;
+                }
             }
+        }
+
+        private void ScrollChildControls(float delta)
+        {
+            try
+            {
+                scrolling = true;
+                for (int i = 0; i < childCount; i++)
+                {
+                    var child = m_ChildComponents[i];
+
+                    if (child == Scrollbar)
+                        continue;
+
+                    var position = child.position;
+                    switch (ScrollOrientation)
+                    {
+                        case UIOrientation.Horizontal:
+                            position.x -= delta;
+                            break;
+                        case UIOrientation.Vertical:
+                            position.y -= delta;
+                            break;
+                    }
+
+                    child.position = position.RoundToInt();
+                }
+            }
+            finally
+            {
+                scrolling = false;
+            }
+        }
+        private void UpdateScrollbarValues()
+        {
+            if (Scrollbar is CustomUIScrollbar scrollbar)
+            {
+                switch (ScrollOrientation)
+                {
+                    case UIOrientation.Horizontal:
+                        scrollbar.MinValue = 0f;
+                        scrollbar.MaxValue = GetHorizontalItemsSpace();
+                        scrollbar.ScrollSize = width;
+                        scrollbar.Value = Mathf.Max(0f, ScrollPosition);
+                        break;
+                    case UIOrientation.Vertical:
+                        scrollbar.MinValue = 0f;
+                        scrollbar.MaxValue = GetVerticalItemsSpace();
+                        scrollbar.ScrollSize = height;
+                        scrollbar.Value = Mathf.Max(0f, ScrollPosition);
+                        break;
+                }
+            }
+        }
+        private void UpdateScrollbarSizeAndPosition()
+        {
+            if (this.scrollbar is CustomUIScrollbar scrollbar)
+            {
+                switch (ScrollOrientation)
+                {
+                    case UIOrientation.Horizontal:
+                        scrollbar.relativePosition = new Vector3(0f, height - ScrollbarSize);
+                        scrollbar.size = new Vector2(width, ScrollbarSize);
+                        scrollbar.Orientation = UIOrientation.Horizontal;
+                        break;
+                    case UIOrientation.Vertical:
+                        scrollbar.relativePosition = new Vector3(width - ScrollbarSize, 0f);
+                        scrollbar.size = new Vector2(ScrollbarSize, height);
+                        scrollbar.Orientation = UIOrientation.Vertical;
+                        break;
+                }
+            }
+        }
+
+        #endregion
+
+        #region HANDLERS
+
+        protected override void OnComponentAdded(UIComponent child)
+        {
+            base.OnComponentAdded(child);
+
+            if (child is CustomUIScrollbar)
+                return;
+
+            if (child != null)
+                AttachEvents(child);
+
+            if (AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
+                AutoArrange();
+        }
+        protected override void OnComponentRemoved(UIComponent child)
+        {
+            base.OnComponentRemoved(child);
+
+            if (child == scrollbar)
+            {
+                scrollbar = null;
+                return;
+            }
+
+            if (child != null)
+                DetachEvents(child);
+
+            if (AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
+                AutoArrange();
         }
 
         private void AttachEvents(UIComponent child)
@@ -1089,7 +1030,6 @@ namespace ModsCommon.UI
             child.eventSizeChanged += ChildInvalidated;
             child.eventZOrderChanged += ChildZOrderChanged;
         }
-
         private void DetachEvents(UIComponent child)
         {
             child.eventVisibilityChanged -= ChildIsVisibleChanged;
@@ -1098,151 +1038,301 @@ namespace ModsCommon.UI
             child.eventZOrderChanged -= ChildZOrderChanged;
         }
 
-        private void ChildZOrderChanged(UIComponent child, int value)
-        {
-            ChildInvalidatedLayout();
-        }
-
-        private void ChildIsVisibleChanged(UIComponent child, bool value)
-        {
-            ChildInvalidatedLayout();
-        }
-
-        private void ChildInvalidated(UIComponent child, Vector2 value)
-        {
-            ChildInvalidatedLayout();
-        }
-
+        private void ChildZOrderChanged(UIComponent child, int value) => ChildInvalidatedLayout();
+        private void ChildIsVisibleChanged(UIComponent child, bool value) => ChildInvalidatedLayout();
+        private void ChildInvalidated(UIComponent child, Vector2 value) => ChildInvalidatedLayout();
         private void ChildInvalidatedLayout()
         {
-            if (!m_Scrolling && !base.isLayoutSuspended)
+            if (!scrolling && !IsLayoutSuspended)
             {
-                if (AutoLayout)
-                {
+                if (AutoLayout != AutoLayout.Disabled)
                     AutoArrange();
-                }
 
-                UpdateScrollbars();
+                UpdateScrollbarValues();
                 Invalidate();
             }
         }
 
-        public override void OnEnable()
+        protected override void OnVisibilityChanged()
         {
-            base.OnEnable();
-            if (base.size == Vector2.zero)
+            base.OnVisibilityChanged();
+            if (isVisible && (AutoReset || AutoLayout != AutoLayout.Disabled))
             {
-                //SuspendLayout();
-                Camera camera = GetCamera();
-                base.size = new Vector3(camera.pixelWidth / 2, camera.pixelHeight / 2);
-                //ResumeLayout();
-            }
-
-            if (AutoLayout)
-            {
-                AutoArrange();
-            }
-
-            UpdateScrollbars();
-        }
-
-        public override void Update()
-        {
-            base.Update();
-            if (UseScrollMomentum && !m_IsMouseDown && m_ScrollMomentum != Vector2.zero)
-            {
-                ScrollPosition += m_ScrollMomentum;
-            }
-
-            if (m_IsComponentInvalidated && AutoLayout && base.isVisible)
-            {
-                AutoArrange();
-                UpdateScrollbars();
-            }
-
-            m_ScrollMomentum *= 0.95f - Time.deltaTime;
-            if (m_ScrollMomentum.sqrMagnitude < 0.01f)
-            {
-                m_ScrollMomentum = Vector2.zero;
+                Reset();
+                UpdateScrollbarValues();
+                UpdateScrollbarSizeAndPosition();
             }
         }
-
-        public override void LateUpdate()
+        protected override void OnSizeChanged()
         {
-            base.LateUpdate();
-            Initialize();
-            if (m_ResetNeeded)
+            base.OnSizeChanged();
+
+            if (AutoReset || AutoLayout != AutoLayout.Disabled)
             {
-                m_ResetNeeded = false;
-                if (AutoReset || AutoLayout)
+                Reset();
+            }
+            else
+            {
+                var minPos = CalculateMinChildPosition();
+                switch (ScrollOrientation)
                 {
-                    Reset();
+                    case UIOrientation.Horizontal:
+                        if (minPos.x > 0)
+                        {
+                            ScrollChildControls(minPos.x);
+                        }
+                        break;
+                    case UIOrientation.Vertical:
+                        if (minPos.y > 0)
+                        {
+                            ScrollChildControls(minPos.y);
+                        }
+                        break;
+                }
+
+                UpdateScrollbarValues();
+                UpdateScrollbarSizeAndPosition();
+            }
+        }
+
+        protected override void OnResolutionChanged(Vector2 previousResolution, Vector2 currentResolution)
+        {
+            base.OnResolutionChanged(previousResolution, currentResolution);
+            resetNeeded = true;
+        }
+        protected override void OnGotFocus(UIFocusEventParameter p)
+        {
+            base.OnGotFocus(p);
+            ScrollIntoView(p.source);
+        }
+
+        protected override void OnKeyDown(UIKeyEventParameter p)
+        {
+            if (builtinKeyNavigation && ScrollWithArrowKeys && !p.used)
+            {
+                var increment = Scrollbar.Increment;
+
+                switch (ScrollOrientation)
+                {
+                    case UIOrientation.Horizontal when p.keycode == KeyCode.LeftArrow:
+                        ScrollPosition -= increment;
+                        p.Use();
+                        break;
+                    case UIOrientation.Horizontal when p.keycode == KeyCode.RightArrow:
+                        ScrollPosition += increment;
+                        p.Use();
+                        break;
+                    case UIOrientation.Vertical when p.keycode == KeyCode.UpArrow:
+                        ScrollPosition -= increment;
+                        p.Use();
+                        break;
+                    case UIOrientation.Vertical when p.keycode == KeyCode.DownArrow:
+                        ScrollPosition += increment;
+                        p.Use();
+                        break;
+                    default:
+                        base.OnKeyDown(p);
+                        break;
+                }
+            }
+            else
+                base.OnKeyDown(p);
+        }
+        protected override void OnMouseEnter(UIMouseEventParameter p)
+        {
+            base.OnMouseEnter(p);
+            touchStartPosition = p.position;
+        }
+        protected override void OnMouseDown(UIMouseEventParameter p)
+        {
+            base.OnMouseDown(p);
+            touchStartPosition = p.position;
+            isMouseDown = true;
+        }
+        protected override void OnDragEnd(UIDragEventParameter p)
+        {
+            base.OnDragEnd(p);
+            isMouseDown = false;
+        }
+        protected override void OnMouseUp(UIMouseEventParameter p)
+        {
+            base.OnMouseUp(p);
+            isMouseDown = false;
+        }
+        protected override void OnMouseMove(UIMouseEventParameter p)
+        {
+            base.OnMouseMove(p);
+            if (UseTouchMouseScroll && isMouseDown && (p.position - touchStartPosition).magnitude > 5f)
+            {
+                var delta = p.moveDelta.Scale(-1f, 1f);
+                switch (ScrollOrientation)
+                {
+                    case UIOrientation.Horizontal:
+                        ScrollPosition += delta.x;
+                        scrollMomentum = (scrollMomentum + delta.x) * 0.5f;
+                        break;
+                    case UIOrientation.Vertical:
+                        ScrollPosition += delta.y;
+                        scrollMomentum = (scrollMomentum + delta.y) * 0.5f;
+                        break;
+
                 }
             }
         }
-
-        public override void OnDestroy()
+        protected override void OnMouseWheel(UIMouseEventParameter p)
         {
-            if (m_HorizontalScrollbar != null)
+            if (builtinKeyNavigation)
             {
-                m_HorizontalScrollbar.OnScrollValueChanged -= HorizontalScrollbarValueChanged;
+                if (p.used)
+                    return;
+
+                var increment = Scrollbar.Increment;
+                switch (ScrollOrientation)
+                {
+                    case UIOrientation.Horizontal:
+                        ScrollPosition = ScrollPosition - increment * p.wheelDelta;
+                        scrollMomentum = -increment * p.wheelDelta;
+                        break;
+                    case UIOrientation.Vertical:
+                        ScrollPosition = ScrollPosition - increment * p.wheelDelta;
+                        scrollMomentum = -increment * p.wheelDelta;
+                        break;
+                }
+
+                p.Use();
             }
 
-            if (m_VerticalScrollbar != null)
+            base.OnMouseWheel(p);
+        }
+        protected void ScrollPositionChanged()
+        {
+            Invalidate();
+            OnScrollPositionChanged?.Invoke(ScrollPosition);
+        }
+
+        #endregion
+
+        #region RENDER
+
+        protected UIRenderData BgRenderData { get; set; }
+        protected UIRenderData FgRenderData { get; set; }
+
+        protected override void OnRebuildRenderData()
+        {
+            if (BgRenderData == null)
             {
-                m_VerticalScrollbar.OnScrollValueChanged -= VerticalScrollbarValueChanged;
+                BgRenderData = UIRenderData.Obtain();
+                m_RenderData.Add(BgRenderData);
             }
+            else
+                BgRenderData.Clear();
 
-            m_HorizontalScrollbar = null;
-            m_VerticalScrollbar = null;
-        }
-
-        private void VerticalScrollbarValueChanged(float value)
-        {
-            ScrollPosition = new Vector2(ScrollPosition.x, value);
-        }
-
-        private void HorizontalScrollbarValueChanged(float value)
-        {
-            ScrollPosition = new Vector2(value, ScrollPosition.y);
-        }
-
-
-        private int layoutSuspend;
-        public bool IsLayoutSuspended => layoutSuspend != 0;
-
-        public Vector2 ItemSize => new Vector2(width - AutoLayoutPadding.horizontal - ScrollPadding.horizontal, height - AutoLayoutPadding.vertical - ScrollPadding.vertical);
-        public RectOffset LayoutPadding => AutoLayoutPadding;
-
-        public virtual void StopLayout()
-        {
-            if (layoutSuspend == 0)
-                m_AutoLayout = false;
-
-            layoutSuspend += 1;
-        }
-        public virtual void StartLayout(bool layoutNow = true, bool force = false)
-        {
-            layoutSuspend = force ? 0 : Mathf.Max(layoutSuspend - 1, 0);
-
-            if (layoutSuspend == 0)
+            if (FgRenderData == null)
             {
-                m_AutoLayout = true;
-                if (layoutNow)
-                    Reset();
+                FgRenderData = UIRenderData.Obtain();
+                m_RenderData.Add(FgRenderData);
+            }
+            else
+                FgRenderData.Clear();
+
+            if (AtlasBackground is UITextureAtlas bgAtlas && AtlasForeground is UITextureAtlas fgAtlas)
+            {
+                BgRenderData.material = bgAtlas.material;
+                FgRenderData.material = fgAtlas.material;
+
+                RenderBackground();
+                RenderForeground();
             }
         }
-        public void PauseLayout(Action action, bool layoutNow = true, bool force = false)
+        private void RenderBackground()
         {
-            try
+            if (AtlasBackground[BackgroundSprite] is UITextureAtlas.SpriteInfo backgroundSprite)
             {
-                StopLayout();
-                action?.Invoke();
-            }
-            finally
-            {
-                StartLayout(layoutNow, force);
+                var renderOptions = new RenderOptions()
+                {
+                    atlas = AtlasBackground,
+                    color = isEnabled ? NormalBgColor : DisabledBgColor,
+                    fillAmount = 1f,
+                    offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
+                    pixelsToUnits = PixelsToUnits(),
+                    size = size,
+                    spriteInfo = backgroundSprite,
+                };
+
+                if (backgroundSprite.isSliced)
+                    Render.RenderSlicedSprite(BgRenderData, renderOptions);
+                else
+                    Render.RenderSprite(BgRenderData, renderOptions);
             }
         }
+        private void RenderForeground()
+        {
+            if (AtlasForeground[ForegroundSprite] is UITextureAtlas.SpriteInfo foregroundSprite)
+            {
+                var foregroundRenderSize = GetForegroundRenderSize(foregroundSprite);
+                var foregroundRenderOffset = GetForegroundRenderOffset(foregroundRenderSize);
+
+                var renderOptions = new RenderOptions()
+                {
+                    atlas = AtlasForeground,
+                    color = isEnabled ? NormalFgColor : DisabledFgColor,
+                    fillAmount = 1f,
+                    offset = foregroundRenderOffset,
+                    pixelsToUnits = PixelsToUnits(),
+                    size = foregroundRenderSize,
+                    spriteInfo = foregroundSprite,
+                };
+
+                if (foregroundSprite.isSliced)
+                    Render.RenderSlicedSprite(BgRenderData, renderOptions);
+                else
+                    Render.RenderSprite(BgRenderData, renderOptions);
+            }
+        }
+        protected virtual Vector2 GetForegroundRenderSize(UITextureAtlas.SpriteInfo spriteInfo)
+        {
+            if (spriteInfo == null)
+                return Vector2.zero;
+
+            return new Vector2(width - SpritePadding.horizontal, height - SpritePadding.vertical);
+        }
+        protected virtual Vector2 GetForegroundRenderOffset(Vector2 renderSize)
+        {
+            Vector2 result = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
+
+            result.x += SpritePadding.left;
+            result.y -= SpritePadding.top;
+
+            return result;
+        }
+
+        protected override Plane[] GetClippingPlanes()
+        {
+            if (clipChildren)
+            {
+                var corners = GetCorners();
+                var right = transform.TransformDirection(Vector3.right);
+                var left = transform.TransformDirection(Vector3.left);
+                var up = transform.TransformDirection(Vector3.up);
+                var down = transform.TransformDirection(Vector3.down);
+                var ratio = PixelsToUnits();
+
+                //var padding = Padding;
+                //corners[0] += right * padding.left * ratio + down * padding.top * ratio;
+                //corners[1] += left * padding.right * ratio + down * padding.top * ratio;
+                //corners[2] += right * padding.left * ratio + up * padding.bottom * ratio;
+
+                m_CachedClippingPlanes[0] = new Plane(right, corners[0]);
+                m_CachedClippingPlanes[1] = new Plane(left, corners[1]);
+                m_CachedClippingPlanes[2] = new Plane(up, corners[2]);
+                m_CachedClippingPlanes[3] = new Plane(down, corners[0]);
+
+                return m_CachedClippingPlanes;
+            }
+            else
+                return null;
+        }
+
+        #endregion
     }
 }

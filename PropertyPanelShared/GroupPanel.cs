@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class PropertyGroupPanel : UIAutoLayoutPanel, IReusable
+    public class PropertyGroupPanel : CustomUIPanel, IReusable
     {
         protected static Color32 NormalColor { get; } = new Color32(82, 101, 117, 255);
 
