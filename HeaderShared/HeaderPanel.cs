@@ -2,6 +2,7 @@
 using ModsCommon.Utilities;
 using System;
 using UnityEngine;
+using LayoutStart = ModsCommon.UI.LayoutStart;
 
 namespace ModsCommon.UI
 {
@@ -17,7 +18,7 @@ namespace ModsCommon.UI
         {
             PauseLayout(() =>
             {
-                AutoLayoutCenter = true;
+                AutoLayoutStart = LayoutStart.MiddleLeft;
 
                 Content = AddUIComponent<TypeContent>();
                 Content.PauseLayout(FillContent);

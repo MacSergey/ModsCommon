@@ -321,12 +321,13 @@ namespace ModsCommon.UI
         }
 
 
-        protected LayoutStart autoLayoutStart;
+        protected LayoutStart autoLayoutStart = LayoutStart.TopLeft;
         public LayoutStart AutoLayoutStart
         {
             get => autoLayoutStart;
             set
             {
+                value = value.Correct();
                 if (value != autoLayoutStart)
                 {
                     autoLayoutStart = value;
@@ -351,45 +352,30 @@ namespace ModsCommon.UI
         }
 
 
-        protected bool autoLayoutCenter;
-        public bool AutoLayoutCenter
+        protected AutoLayoutChildren autoChildrenHorizontally;
+        public AutoLayoutChildren AutoChildrenHorizontally
         {
-            get => autoLayoutCenter;
+            get => autoChildrenHorizontally;
             set
             {
-                if (value != autoLayoutCenter)
+                if (value != autoChildrenHorizontally)
                 {
-                    autoLayoutCenter = value;
+                    autoChildrenHorizontally = value;
                     Reset();
                 }
             }
         }
 
 
-        protected bool autoFitChildren;
-        public bool AutoFitChildren
+        protected AutoLayoutChildren autoChildrenVertically;
+        public AutoLayoutChildren AutoChildrenVertically
         {
-            get => autoFitChildren;
+            get => autoChildrenVertically;
             set
             {
-                if (value != autoFitChildren)
+                if (value != autoChildrenVertically)
                 {
-                    autoFitChildren = value;
-                    Reset();
-                }
-            }
-        }
-
-
-        protected bool autoFillChildren;
-        public bool AutoFillChildren
-        {
-            get => autoFillChildren;
-            set
-            {
-                if(value != autoFillChildren)
-                {
-                    autoFillChildren = value;
+                    autoChildrenVertically = value;
                     Reset();
                 }
             }
@@ -480,21 +466,44 @@ namespace ModsCommon.UI
             {
                 StopLayout();
 
-                FitChildren(AutoFitChildren && ScrollOrientation == UIOrientation.Horizontal, AutoFitChildren && ScrollOrientation == UIOrientation.Vertical);
+                FitChildren(AutoChildrenHorizontally == AutoLayoutChildren.Fit && ScrollOrientation == UIOrientation.Horizontal, AutoChildrenVertically == AutoLayoutChildren.Fit && ScrollOrientation == UIOrientation.Vertical);
 
                 var offset = Vector2.zero;
                 var padding = Padding;
                 var scrollbarSize = VisibleScrollbarSize;
 
-                if (AutoLayoutStart.StartLeft())
-                    offset.x = padding.left;
-                else if (AutoLayoutStart.StartRight())
-                    offset.x = padding.right;
+                switch (AutoLayoutStart & LayoutStart.Horizontal)
+                {
+                    case LayoutStart.Left:
+                        offset.x = padding.left;
+                        break;
+                    case LayoutStart.Centre:
+                        if (AutoLayout == AutoLayout.Horizontal && AutoChildrenHorizontally != AutoLayoutChildren.Fill)
+                            offset.x = (width - GetHorizontalItemsSpace()) * 0.5f;
+                        else
+                            offset.x = padding.left;
+                        break;
+                    case LayoutStart.Right:
+                        offset.x = padding.right;
+                        break;
+                }
 
-                if (AutoLayoutStart.StartTop())
-                    offset.y = padding.top;
-                else if (AutoLayoutStart.StartBottom())
-                    offset.y = padding.bottom;
+                switch (AutoLayoutStart & LayoutStart.Vertical)
+                {
+                    case LayoutStart.Top:
+                        offset.y = padding.top;
+                        break;
+                    case LayoutStart.Middle:
+                        if (AutoLayout == AutoLayout.Vertical && AutoChildrenVertically != AutoLayoutChildren.Fill)
+                            offset.y = (height - GetVerticalItemsSpace()) * 0.5f;
+                        else
+                            offset.y = padding.top;
+                        break;
+                    case LayoutStart.Bottom:
+                        offset.y = padding.bottom;
+                        break;
+                }
+
 
                 for (int i = 0; i < childCount; i += 1)
                 {
@@ -521,39 +530,63 @@ namespace ModsCommon.UI
                     switch (AutoLayout)
                     {
                         case AutoLayout.Horizontal:
-                            if (AutoFillChildren && scrollOrientation == UIOrientation.Horizontal)
+                            if (AutoChildrenVertically == AutoLayoutChildren.Fill && scrollOrientation == UIOrientation.Horizontal)
                                 childSize.y = height - padding.vertical - scrollbarSize;
 
-                            if (AutoLayoutStart.StartRight())
-                                childPos.x += width - offset.x - childSize.x;
-                            else
-                                childPos.x += offset.x;
+                            switch (AutoLayoutStart & LayoutStart.Horizontal)
+                            {
+                                case LayoutStart.Left:
+                                case LayoutStart.Centre:
+                                    childPos.x += offset.x;
+                                    break;
+                                case LayoutStart.Right:
+                                    childPos.x += width - offset.x - childSize.x;
+                                    break;
+                            }
 
-                            if (AutoLayoutCenter)
-                                childPos.y += offset.y + (height - scrollbarSize - padding.vertical - childSize.y) * 0.5f;
-                            else if (AutoLayoutStart.StartBottom())
-                                childPos.y += height - scrollbarSize - offset.y - childSize.y;
-                            else
-                                childPos.y += offset.y;
+                            switch (AutoLayoutStart & LayoutStart.Vertical)
+                            {
+                                case LayoutStart.Top:
+                                    childPos.y += offset.y;
+                                    break;
+                                case LayoutStart.Middle:
+                                    childPos.y += offset.y + (height - scrollbarSize - padding.vertical - childSize.y) * 0.5f;
+                                    break;
+                                case LayoutStart.Bottom:
+                                    childPos.y += height - scrollbarSize - offset.y - childSize.y;
+                                    break;
+                            }
 
                             offset.x += childSize.x + AutoLayoutSpace;
                             break;
 
                         case AutoLayout.Vertical:
-                            if (AutoFillChildren && scrollOrientation == UIOrientation.Vertical)
+                            if (AutoChildrenHorizontally == AutoLayoutChildren.Fill && scrollOrientation == UIOrientation.Vertical)
                                 childSize.x = width - padding.horizontal - scrollbarSize;
 
-                            if (AutoLayoutStart.StartBottom())
-                                childPos.y += height - offset.y - childSize.y;
-                            else
-                                childPos.y += offset.y;
+                            switch (AutoLayoutStart & LayoutStart.Vertical)
+                            {
+                                case LayoutStart.Top:
+                                case LayoutStart.Middle:
+                                    childPos.y += offset.y;
+                                    break;
+                                case LayoutStart.Bottom:
+                                    childPos.y += height - offset.y - childSize.y;
+                                    break;
+                            }
 
-                            if (AutoLayoutCenter)
-                                childPos.x += offset.x + (width - scrollbarSize - padding.horizontal - childSize.x) * 0.5f;
-                            else if (AutoLayoutStart.StartRight())
-                                childPos.x += width - scrollbarSize - offset.x - childSize.x;
-                            else
-                                childPos.x += offset.x;
+                            switch (AutoLayoutStart & LayoutStart.Horizontal)
+                            {
+                                case LayoutStart.Left:
+                                    childPos.x += offset.x;
+                                    break;
+                                case LayoutStart.Centre:
+                                    childPos.x += offset.x + (width - scrollbarSize - padding.horizontal - childSize.x) * 0.5f;
+                                    break;
+                                case LayoutStart.Right:
+                                    childPos.x += width - scrollbarSize - offset.x - childSize.x;
+                                    break;
+                            }
 
                             offset.y += childSize.y + AutoLayoutSpace;
                             break;

@@ -60,7 +60,7 @@ namespace ModsCommon.UI
                 set
                 {
                     Container.isVisible = value;
-                    Button.SetFgSprite(new SpriteSet(value ? CommonTextures.ArrowDown : CommonTextures.ArrowRight));
+                    Button.SetFgSprite(new SpriteSet(value ? CommonTextures.VectorDown : CommonTextures.VectorRight));
 
                     Container.PauseLayout(() =>
                     {
@@ -97,7 +97,9 @@ namespace ModsCommon.UI
                 autoChildrenHorizontally = AutoLayoutChildren.Fill;
                 Atlas = CommonTextures.Atlas;
                 BackgroundSprite = CommonTextures.PanelBig;
-                color = ComponentStyle.DarkPrimaryAdditionalColor;
+                color = ComponentStyle.DarkPrimaryColor20;
+                ForegroundSprite = CommonTextures.BorderBig;
+                NormalFgColor = ComponentStyle.DarkPrimaryColor10;
 
                 PauseLayout(() =>
                 {
@@ -113,11 +115,9 @@ namespace ModsCommon.UI
                     titlePanel.name = "TitlePanel";
                     titlePanel.AutoLayout = AutoLayout.Horizontal;
                     titlePanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
-                    titlePanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
-                    titlePanel.AutoLayoutSpace = 10;
+                    titlePanel.AutoLayoutStart = LayoutStart.MiddleLeft;
+                    titlePanel.Padding = new RectOffset(10, 20, 10, 10);
                     titlePanel.Atlas = CommonTextures.Atlas;
-                    titlePanel.BackgroundSprite = CommonTextures.PanelBig;
-                    titlePanel.color = new Color32(127, 140, 141, 255);
                     titlePanel.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => IsExpand = !IsExpand;
 
                     var versionPanel = titlePanel.AddUIComponent<CustomUIPanel>();
@@ -129,7 +129,7 @@ namespace ModsCommon.UI
                         versionPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
                         versionPanel.Atlas = CommonTextures.Atlas;
                         versionPanel.BackgroundSprite = CommonTextures.PanelBig;
-                        versionPanel.color = new Color32(127, 140, 141, 255);
+                        versionPanel.color = ComponentStyle.DarkPrimaryColor60;
 
                         Title = versionPanel.AddUIComponent<CustomUILabel>();
                         Title.name = "Title";
@@ -151,19 +151,29 @@ namespace ModsCommon.UI
                         SubTitle.verticalAlignment = UIVerticalAlignment.Middle;
                     });
 
-                    Button = titlePanel.AddUIComponent<CustomUIButton>();
-                    Button.atlas = CommonTextures.Atlas;
-                    Button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-                    Button.scaleFactor = 0.5f;
-                    Button.spritePadding.left = 10;
-                    Button.autoSize = false;
-                    Button.height = 50f;
-                    Button.width = 50f;
-                    Button.horizontalAlignment = UIHorizontalAlignment.Left;
-                    Button.color = Color.white;
-                    Button.textScale = 1.5f;
-                    Button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-                    Button.textVerticalAlignment = UIVerticalAlignment.Middle;
+                    var buttonPanel = titlePanel.AddUIComponent<CustomUIPanel>();
+                    buttonPanel.name = "ButtonPanel";
+                    buttonPanel.PauseLayout(() =>
+                    {
+                        buttonPanel.AutoLayout = AutoLayout.Horizontal;
+                        buttonPanel.AutoLayoutStart = LayoutStart.MiddleRight;
+
+                        Button = buttonPanel.AddUIComponent<CustomUIButton>();
+                        Button.atlas = CommonTextures.Atlas;
+                        Button.SetBgSprite(new SpriteSet(CommonTextures.Circle));
+                        Button.SetBgColor(new ColorSet(ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor35, ComponentStyle.DarkPrimaryColor40, ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor30));
+                        Button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+                        Button.scaleFactor = 0.6f;
+                        Button.autoSize = false;
+                        Button.height = 40f;
+                        Button.width = 40f;
+                        Button.horizontalAlignment = UIHorizontalAlignment.Center;
+                        Button.textScale = 1.5f;
+                        Button.textHorizontalAlignment = UIHorizontalAlignment.Left;
+                        Button.textVerticalAlignment = UIVerticalAlignment.Middle;
+                    });
+
+                    titlePanel.eventSizeChanged += (_, _) => buttonPanel.size = titlePanel.ItemSize - new Vector2(titlePanel.AutoLayoutSpace + versionPanel.width, 0f);
                 });
             }
             private void AddLinesContainer()
@@ -175,8 +185,8 @@ namespace ModsCommon.UI
                     Container.AutoLayout = AutoLayout.Vertical;
                     Container.AutoChildrenVertically = AutoLayoutChildren.Fit;
                     Container.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
-                    Container.AutoLayoutSpace = 6;
-                    Container.Padding = new RectOffset(0, 0, 20, 10);
+                    Container.AutoLayoutSpace = -2;
+                    Container.Padding = new RectOffset(0, 0, 10, 5);
                 });
             }
 
@@ -231,7 +241,13 @@ namespace ModsCommon.UI
                 autoLayout = AutoLayout.Horizontal;
                 autoChildrenVertically = AutoLayoutChildren.Fit;
                 autoLayoutSpace = 10;
-                Padding = new RectOffset(10, 10, 0, 0);
+                Padding = new RectOffset(10, 10, 0, 7);
+
+                Atlas = CommonTextures.Atlas;
+                ForegroundSprite = CommonTextures.PanelSmall;
+                NormalFgColor = new Color32(0, 0, 0, 0);
+                HoveredFgColor = ComponentStyle.DarkPrimaryColor30;
+                SpritePadding = new RectOffset(5, 5, 0, 0);
 
                 PauseLayout(() =>
                 {
@@ -246,7 +262,7 @@ namespace ModsCommon.UI
                     Tag.verticalAlignment = UIVerticalAlignment.Middle;
                     Tag.textScale = 0.7f;
                     Tag.padding = new RectOffset(0, 0, 4, 0);
-                    SetItemPadding(Tag, new RectOffset(0, 0, 5, 0));
+                    SetItemPadding(Tag, new RectOffset(0, 0, 8, 0));
 
                     Text = AddUIComponent<CustomUILabel>();
                     Text.name = nameof(Text);
@@ -261,7 +277,7 @@ namespace ModsCommon.UI
                     Text.padding = new RectOffset(10, 10, 10, 0);
                     Text.atlas = CommonTextures.Atlas;
                     Text.backgroundSprite = CommonTextures.BorderTop;
-                    Text.color = ComponentStyle.DarkSecondaryColor;
+                    Text.color = ComponentStyle.DarkPrimaryColor30;
                 });
             }
             public void Init(MessageText message)
@@ -274,15 +290,15 @@ namespace ModsCommon.UI
                     {
                         case "NEW":
                             Tag.text = CommonLocalize.WhatsNew_NEW;
-                            Tag.color = new Color32(26, 175, 93, 255);
+                            Tag.color = new Color32(42, 185, 48, 255);
                             break;
                         case "FIXED":
                             Tag.text = CommonLocalize.WhatsNew_FIXED;
-                            Tag.color = new Color32(232, 126, 4, 255);
+                            Tag.color = new Color32(237, 149, 38, 255);
                             break;
                         case "UPDATED":
                             Tag.text = CommonLocalize.WhatsNew_UPDATED;
-                            Tag.color = new Color32(71, 140, 255, 255);
+                            Tag.color = new Color32(80, 150, 241, 255);
                             break;
                         case "REMOVED":
                             Tag.text = CommonLocalize.WhatsNew_REMOVED;
@@ -298,7 +314,7 @@ namespace ModsCommon.UI
                             break;
                         case "WARNING":
                             Tag.text = CommonLocalize.WhatsNew_WARNING;
-                            Tag.color = new Color32(231, 76, 60, 255);
+                            Tag.color = new Color32(245, 65, 61, 255);
                             break;
                         default:
                             Tag.text = tag.ToUpper();
@@ -364,7 +380,7 @@ namespace ModsCommon.UI
                 betaMessage.text = betaText;
                 betaMessage.atlas = CommonTextures.Atlas;
                 betaMessage.backgroundSprite = CommonTextures.PanelBig;
-                betaMessage.color = ComponentStyle.DisabledSettingsGray;
+                betaMessage.color = ComponentStyle.DarkPrimaryColor30;
                 betaMessage.padding = new RectOffset(7, 7, 7, 7);
             });
 

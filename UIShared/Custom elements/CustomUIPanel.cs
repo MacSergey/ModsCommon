@@ -119,6 +119,19 @@ namespace ModsCommon.UI
             }
         }
 
+
+        Color32? hoveredBgColor;
+        public Color32 HoveredBgColor
+        {
+            get => hoveredBgColor ?? NormalBgColor;
+            set
+            {
+                hoveredBgColor = value;
+                Invalidate();
+            }
+        }
+
+
         Color32? disabledBgColor;
         public Color32 DisabledBgColor
         {
@@ -129,6 +142,7 @@ namespace ModsCommon.UI
                 Invalidate();
             }
         }
+
 
         Color32? normalFgColor;
         public Color32 NormalFgColor
@@ -141,6 +155,19 @@ namespace ModsCommon.UI
             }
         }
 
+
+        Color32? hoveredFgColor;
+        public Color32 HoveredFgColor
+        {
+            get => hoveredFgColor ?? NormalFgColor;
+            set
+            {
+                hoveredFgColor = value;
+                Invalidate();
+            }
+        }
+
+
         Color32? disabledFgColor;
         public Color32 DisabledFgColor
         {
@@ -151,6 +178,7 @@ namespace ModsCommon.UI
                 Invalidate();
             }
         }
+
 
         string backgroundSprite;
         public string BackgroundSprite
@@ -166,6 +194,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         string foregroundSprite;
         public string ForegroundSprite
         {
@@ -180,6 +209,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         private RectOffset spritePadding;
         public RectOffset SpritePadding
         {
@@ -193,6 +223,8 @@ namespace ModsCommon.UI
                 }
             }
         }
+
+
 
         protected UISpriteFlip spriteFlip;
         public UISpriteFlip SpriteFlip
@@ -283,12 +315,13 @@ namespace ModsCommon.UI
         }
 
 
-        protected LayoutStart autoLayoutStart;
+        protected LayoutStart autoLayoutStart = LayoutStart.TopLeft;
         public LayoutStart AutoLayoutStart
         {
             get => autoLayoutStart;
             set
             {
+                value = value.Correct();
                 if (value != autoLayoutStart)
                 {
                     autoLayoutStart = value;
@@ -313,28 +346,13 @@ namespace ModsCommon.UI
         }
 
 
-        protected bool autoLayoutCenter;
-        public bool AutoLayoutCenter
-        {
-            get => autoLayoutCenter;
-            set
-            {
-                if (value != autoLayoutCenter)
-                {
-                    autoLayoutCenter = value;
-                    Reset();
-                }
-            }
-        }
-
-
         protected bool autoCenterPadding;
         public bool AutoCenterPadding
         {
             get => autoCenterPadding && ((AutoLayout == AutoLayout.Horizontal && AutoChildrenHorizontally == AutoLayoutChildren.None) || (AutoLayout == AutoLayout.Vertical && AutoChildrenVertically == AutoLayoutChildren.None));
             set
             {
-                if(value != autoCenterPadding)
+                if (value != autoCenterPadding)
                 {
                     autoCenterPadding = value;
                     Reset();
@@ -452,19 +470,38 @@ namespace ModsCommon.UI
                 var offset = Vector2.zero;
                 var padding = Padding;
 
-                if (AutoLayout == AutoLayout.Horizontal && AutoCenterPadding)
-                    offset.x = (width - GetHorizontalItemsSpace()) * 0.5f;
-                else if (AutoLayoutStart.StartLeft())
-                    offset.x = padding.left;
-                else if (AutoLayoutStart.StartRight())
-                    offset.x = padding.right;
 
-                if (AutoLayout == AutoLayout.Vertical && AutoCenterPadding)
-                    offset.y = (height - GetVerticalItemsSpace()) * 0.5f;
-                else if (AutoLayoutStart.StartTop())
-                    offset.y = padding.top;
-                else if (AutoLayoutStart.StartBottom())
-                    offset.y = padding.bottom;
+                switch (AutoLayoutStart & LayoutStart.Horizontal)
+                {
+                    case LayoutStart.Left:
+                        offset.x = padding.left;
+                        break;
+                    case LayoutStart.Centre:
+                        if (AutoLayout == AutoLayout.Horizontal && AutoChildrenHorizontally != AutoLayoutChildren.Fill)
+                            offset.x = (width - GetHorizontalItemsSpace()) * 0.5f;
+                        else
+                            offset.x = padding.left;
+                        break;
+                    case LayoutStart.Right:
+                        offset.x = padding.right;
+                        break;
+                }
+
+                switch (AutoLayoutStart & LayoutStart.Vertical)
+                {
+                    case LayoutStart.Top:
+                        offset.y = padding.top;
+                        break;
+                    case LayoutStart.Middle:
+                        if (AutoLayout == AutoLayout.Vertical && AutoChildrenVertically != AutoLayoutChildren.Fill)
+                            offset.y = (height - GetVerticalItemsSpace()) * 0.5f;
+                        else
+                            offset.y = padding.top;
+                        break;
+                    case LayoutStart.Bottom:
+                        offset.y = padding.bottom;
+                        break;
+                }
 
                 for (int i = 0; i < childCount; i += 1)
                 {
@@ -490,17 +527,31 @@ namespace ModsCommon.UI
                             if (AutoChildrenVertically == AutoLayoutChildren.Fill)
                                 childSize.y = height - padding.vertical;
 
-                            if (AutoLayoutStart.StartRight())
-                                childPos.x = width - offset.x - childSize.x - childPadding.right;
-                            else
-                                childPos.x = offset.x + childPadding.left;
+                            switch (AutoLayoutStart & LayoutStart.Horizontal)
+                            {
+                                case LayoutStart.Left:
+                                    childPos.x = offset.x + childPadding.left;
+                                    break;
+                                case LayoutStart.Centre:
 
-                            if (AutoLayoutCenter)
-                                childPos.y = offset.y + childPadding.top + (height - padding.vertical - childSize.y - childPadding.vertical) * 0.5f;
-                            else if (AutoLayoutStart.StartBottom())
-                                childPos.y = height - offset.y - childSize.y - childPadding.bottom;
-                            else
-                                childPos.y = offset.y + childPadding.top;
+                                    break;
+                                case LayoutStart.Right:
+                                    childPos.x = width - offset.x - childSize.x - childPadding.right;
+                                    break;
+                            }
+
+                            switch (AutoLayoutStart & LayoutStart.Vertical)
+                            {
+                                case LayoutStart.Top:
+                                    childPos.y = offset.y + childPadding.top;
+                                    break;
+                                case LayoutStart.Middle:
+                                    childPos.y = offset.y + childPadding.top + (height - padding.vertical - childSize.y - childPadding.vertical) * 0.5f;
+                                    break;
+                                case LayoutStart.Bottom:
+                                    childPos.y = height - offset.y - childSize.y - childPadding.bottom;
+                                    break;
+                            }
 
                             offset.x += childSize.x + childPadding.horizontal + AutoLayoutSpace;
                             break;
@@ -509,17 +560,31 @@ namespace ModsCommon.UI
                             if (AutoChildrenHorizontally == AutoLayoutChildren.Fill)
                                 childSize.x = width - padding.horizontal;
 
-                            if (AutoLayoutStart.StartBottom())
-                                childPos.y = height - offset.y - childSize.y - childPadding.bottom;
-                            else
-                                childPos.y = offset.y + childPadding.top;
+                            switch (AutoLayoutStart & LayoutStart.Vertical)
+                            {
+                                case LayoutStart.Top:
+                                    childPos.y = offset.y + childPadding.top;
+                                    break;
+                                case LayoutStart.Middle:
 
-                            if (AutoLayoutCenter)
-                                childPos.x = offset.x + childPadding.left + (width - padding.horizontal - childSize.x - childPadding.horizontal) * 0.5f;
-                            else if (AutoLayoutStart.StartRight())
-                                childPos.x = width - offset.x - childSize.x - childPadding.right;
-                            else
-                                childPos.x = offset.x + childPadding.left;
+                                    break;
+                                case LayoutStart.Bottom:
+                                    childPos.y = height - offset.y - childSize.y - childPadding.bottom;
+                                    break;
+                            }
+
+                            switch (AutoLayoutStart & LayoutStart.Horizontal)
+                            {
+                                case LayoutStart.Left:
+                                    childPos.x = offset.x + childPadding.left;
+                                    break;
+                                case LayoutStart.Centre:
+                                    childPos.x = offset.x + childPadding.left + (width - padding.horizontal - childSize.x - childPadding.horizontal) * 0.5f;
+                                    break;
+                                case LayoutStart.Right:
+                                    childPos.x = width - offset.x - childSize.x - childPadding.right;
+                                    break;
+                            }
 
                             offset.y += childSize.y + childPadding.vertical + AutoLayoutSpace;
                             break;
@@ -632,7 +697,7 @@ namespace ModsCommon.UI
                             maxHeight = Mathf.Max(maxHeight, child.height + GetItemPadding(child).vertical);
                     }
                     return padding.vertical + maxHeight;
-                default: 
+                default:
                     return 0f;
             }
         }
@@ -689,6 +754,25 @@ namespace ModsCommon.UI
             resetNeeded = true;
         }
 
+        protected override void OnMouseEnter(UIMouseEventParameter p)
+        {
+            var isHovered = containsMouse;
+
+            base.OnMouseEnter(p);
+
+            if (containsMouse != isHovered)
+                Invalidate();
+        }
+        protected override void OnMouseLeave(UIMouseEventParameter p)
+        {
+            var isHovered = containsMouse;
+
+            base.OnMouseLeave(p);
+
+            if (containsMouse != isHovered)
+                Invalidate();
+        }
+
         #endregion
 
         #region RENDER
@@ -730,7 +814,7 @@ namespace ModsCommon.UI
                 var renderOptions = new RenderOptions()
                 {
                     atlas = AtlasBackground,
-                    color = isEnabled ? NormalBgColor : DisabledBgColor,
+                    color = isEnabled ? (m_IsMouseHovering ? HoveredBgColor : NormalBgColor) : DisabledBgColor,
                     fillAmount = 1f,
                     flip = spriteFlip,
                     offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
@@ -755,7 +839,7 @@ namespace ModsCommon.UI
                 var renderOptions = new RenderOptions()
                 {
                     atlas = AtlasForeground,
-                    color = isEnabled ? NormalFgColor : DisabledFgColor,
+                    color = isEnabled ? (m_IsMouseHovering ? HoveredFgColor : NormalFgColor) : DisabledFgColor,
                     fillAmount = 1f,
                     flip = spriteFlip,
                     offset = foregroundRenderOffset,

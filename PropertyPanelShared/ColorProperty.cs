@@ -378,7 +378,7 @@ namespace ModsCommon.UI
                 valuePanel.AutoLayoutSpace = 4;
                 valuePanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
                 valuePanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
-                valuePanel.AutoLayoutCenter = true;
+                valuePanel.AutoLayoutStart = LayoutStart.MiddleLeft;
 
                 RPicker = AddField(valuePanel, "R", PickerRGBChanged);
                 GPicker = AddField(valuePanel, "G", PickerRGBChanged);

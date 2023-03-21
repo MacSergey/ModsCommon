@@ -42,7 +42,7 @@ namespace ModsCommon.UI
         {
             Content = AddUIComponent<CustomUIScrollablePanel>();
             Content.AutoLayout = AutoLayout.Vertical;
-            Content.AutoFitChildren = true;
+            Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
             Content.Padding = new RectOffset(0, 0, 0, 0);
             Content.clipChildren = true;
             Content.ScrollOrientation = UIOrientation.Vertical;

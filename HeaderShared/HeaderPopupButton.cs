@@ -141,7 +141,7 @@ namespace ModsCommon.UI
     {
         public class AdditionalPopup : PopupPanel
         {
-            protected override Color32 Background => ComponentStyle.DarkPrimaryColor;
+            protected override Color32 Background => ComponentStyle.DarkPrimaryColor15;
         }
     }
 }

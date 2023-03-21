@@ -61,6 +61,7 @@ namespace ModsCommon.Utilities
 
         public static string Empty => nameof(Empty);
         public static string EmptyWithotBorder => nameof(EmptyWithotBorder);
+        public static string Circle => nameof(Circle);
 
         public static string OpacitySliderBoard { get; } = nameof(OpacitySliderBoard);
         public static string OpacitySliderColor { get; } = nameof(OpacitySliderColor);
@@ -82,6 +83,11 @@ namespace ModsCommon.Utilities
         public static string HeaderAdditionalButton { get; } = nameof(HeaderAdditionalButton);
 
         public static string PlusMinusButton { get; } = nameof(PlusMinusButton);
+
+        public static string VectorUp { get; } = nameof(VectorUp);
+        public static string VectorDown { get; } = nameof(VectorDown);
+        public static string VectorLeft { get; } = nameof(VectorLeft);
+        public static string VectorRight { get; } = nameof(VectorRight);
 
         static CommonTextures()
         {
@@ -154,6 +160,12 @@ namespace ModsCommon.Utilities
             spriteParams[ArrowRight] = new RectOffset();
             spriteParams[ArrowUp] = new RectOffset();
 
+            //Vectors
+            spriteParams[VectorDown] = new RectOffset();
+            spriteParams[VectorLeft] = new RectOffset();
+            spriteParams[VectorRight] = new RectOffset();
+            spriteParams[VectorUp] = new RectOffset();
+
             //OpacitySlider
             spriteParams[OpacitySliderBoard] = new RectOffset();
             spriteParams[OpacitySliderColor] = new RectOffset();
@@ -164,6 +176,7 @@ namespace ModsCommon.Utilities
 
             spriteParams[Empty] = new RectOffset(4, 4, 4, 4);
             spriteParams[EmptyWithotBorder] = new RectOffset();
+            spriteParams[Circle] = new RectOffset();
             spriteParams[Resize] = new RectOffset();
             spriteParams[PlusMinusButton] = new RectOffset();
 

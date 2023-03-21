@@ -7,9 +7,28 @@ namespace ModsCommon.UI
 {
     public static class ComponentStyle
     {
-        public static Color32 DarkPrimaryColor => new Color32(34, 36, 38, 255);
-        public static Color32 DarkSecondaryColor => new Color32(42, 45, 47, 255);
-        public static Color32 DarkPrimaryAdditionalColor => new Color32(52, 55, 58, 255);
+        public static Color32 DarkPrimaryColor0 => new Color32(0, 0, 0, 255);
+        public static Color32 DarkPrimaryColor5 => new Color32(12, 13, 13, 255);
+        public static Color32 DarkPrimaryColor10 => new Color32(24, 26, 27, 255);
+        public static Color32 DarkPrimaryColor15 => new Color32(36, 39, 40, 255);
+        public static Color32 DarkPrimaryColor20 => new Color32(48, 52, 54, 255);
+        public static Color32 DarkPrimaryColor25 => new Color32(61, 65, 67, 255);
+        public static Color32 DarkPrimaryColor30 => new Color32(73, 78, 80, 255);
+        public static Color32 DarkPrimaryColor35 => new Color32(85, 90, 94, 255);
+        public static Color32 DarkPrimaryColor40 => new Color32(97, 103, 107, 255);
+        public static Color32 DarkPrimaryColor45 => new Color32(109, 116, 120, 255);
+        public static Color32 DarkPrimaryColor50 => new Color32(121, 129, 134, 255);
+        public static Color32 DarkPrimaryColor55 => new Color32(135, 142, 146, 255);
+        public static Color32 DarkPrimaryColor60 => new Color32(148, 154, 158, 255);
+        public static Color32 DarkPrimaryColor65 => new Color32(162, 167, 170, 255);
+        public static Color32 DarkPrimaryColor70 => new Color32(175, 179, 182, 255);
+        public static Color32 DarkPrimaryColor75 => new Color32(188, 192, 194, 255);
+        public static Color32 DarkPrimaryColor80 => new Color32(202, 205, 206, 255);
+        public static Color32 DarkPrimaryColor85 => new Color32(215, 217, 219, 255);
+        public static Color32 DarkPrimaryColor90 => new Color32(228, 230, 231, 255);
+        public static Color32 DarkPrimaryColor95 => new Color32(242, 242, 243, 255);
+        public static Color32 DarkPrimaryColor100 => new Color32(255, 255, 255, 255);
+
 
         public static Color32 ErrorNormalColor => new Color32(246, 84, 85, 255);
         public static Color32 ErrorPressedColor => new Color32(248, 68, 68, 255);
@@ -22,10 +41,6 @@ namespace ModsCommon.UI
         public static Color32 HoveredBlue => new Color32(29, 143, 255, 255);
         public static Color32 PressedBlue => new Color32(7, 132, 255, 255);
 
-        public static Color32 NormalGray => new Color32(129, 141, 145, 255);
-        public static Color32 HoveredGray => new Color32(104, 116, 120, 255);
-        public static Color32 PressedGray => new Color32(81, 90, 93, 255);
-        public static Color32 DisabledGray => new Color32(35, 39, 41, 255);
 
         public static Color32 NormalGreen => new Color32(98, 179, 45, 255);
         public static Color32 HoveredGreen => new Color32(84, 153, 38, 255);
@@ -38,22 +53,22 @@ namespace ModsCommon.UI
         public static Color32 DisabledSettingsGray => new Color32(29, 39, 51, 255);
 
 
-        public static Color32 PanelColor => DarkSecondaryColor;
-        public static Color32 HeaderColor => new Color32(24, 25, 26, 255);
+        public static Color32 PanelColor => DarkPrimaryColor20;
+        public static Color32 HeaderColor => DarkPrimaryColor10;
 
 
         #region BUTTON
 
-        public static Color32 ButtonNormalColor => NormalGray;
-        public static Color32 ButtonHoveredColor => HoveredGray;
-        public static Color32 ButtonPressedColor => PressedGray;
+        public static Color32 ButtonNormalColor => DarkPrimaryColor55;
+        public static Color32 ButtonHoveredColor => DarkPrimaryColor45;
+        public static Color32 ButtonPressedColor => DarkPrimaryColor35;
         public static Color32 ButtonFocusedColor => NormalBlue;
-        public static Color32 ButtonDisabledColor => DisabledGray;
+        public static Color32 ButtonDisabledColor => DarkPrimaryColor15;
         public static Color32 ButtonSelectedNormalColor => NormalBlue;
         public static Color32 ButtonSelectedHoveredColor => HoveredBlue;
         public static Color32 ButtonSelectedPressedColor => PressedBlue;
         public static Color32 ButtonSelectedFocusedColor => NormalBlue;
-        public static Color32 ButtonSelectedDisabledColor => DisabledGray;
+        public static Color32 ButtonSelectedDisabledColor => DarkPrimaryColor15;
 
         public static void ButtonMessageBoxStyle(this CustomUIButton button)
         {
@@ -66,6 +81,8 @@ namespace ModsCommon.UI
             button.horizontalAlignment = UIHorizontalAlignment.Center;
             button.verticalAlignment = UIVerticalAlignment.Middle;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+
+            button.textPadding.top = 2;
         }
         public static void ButtonSettingsStyle(this CustomUIButton button)
         {
@@ -77,6 +94,8 @@ namespace ModsCommon.UI
             button.horizontalAlignment = UIHorizontalAlignment.Center;
             button.verticalAlignment = UIVerticalAlignment.Middle;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+
+            button.textPadding.top = 2;
         }
 
         #endregion
@@ -133,7 +152,7 @@ namespace ModsCommon.UI
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
             dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
-            dropDown.SetBgColor(new ColorSet(NormalGray, PressedGray, PressedGray, HoveredGray, DisabledGray));
+            dropDown.SetBgColor(new ColorSet(DarkPrimaryColor55, DarkPrimaryColor35, DarkPrimaryColor35, DarkPrimaryColor45, DarkPrimaryColor15));
 
             dropDown.atlasForeground = CommonTextures.Atlas;
             dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
@@ -156,7 +175,7 @@ namespace ModsCommon.UI
         {
             popup.Atlas = CommonTextures.Atlas;
             popup.BackgroundSprite = CommonTextures.FieldSingle;
-            popup.color = NormalGray;
+            popup.color = DarkPrimaryColor55;
 
             popup.EntityHeight = entityHeight ?? 20f;
             popup.MaximumSize = new Vector2(230f, 700f);
@@ -168,7 +187,7 @@ namespace ModsCommon.UI
             entity.hoveredBgSprite = CommonTextures.FieldSingle;
             entity.focusedBgSprite = CommonTextures.FieldSingle;
 
-            entity.hoveredBgColor = HoveredGray;
+            entity.hoveredBgColor = DarkPrimaryColor45;
             entity.focusedBgColor = NormalBlue;
         }
 
@@ -225,9 +244,9 @@ namespace ModsCommon.UI
 
         #region TEXT FIELD
 
-        public static Color32 FieldNormalColor => new Color32(148, 161, 166, 255);
-        public static Color32 FieldHoveredColor => new Color32(177, 189, 193, 255);
-        public static Color32 FieldDisabledColor => new Color32(104, 110, 113, 255);
+        public static Color32 FieldNormalColor => DarkPrimaryColor60;
+        public static Color32 FieldHoveredColor => DarkPrimaryColor70;
+        public static Color32 FieldDisabledColor => DarkPrimaryColor50;
         public static Color32 FieldFocusedColor => new Color32(151, 202, 222, 255);
         public static Color32 FieldDisabledFocusedColor => new Color32(113, 151, 166, 255);
 
@@ -324,9 +343,9 @@ namespace ModsCommon.UI
         public static Color32 ToggleOnHoveredColor => HoveredGreen;
         public static Color32 ToggleOnPressedColor => PressedGreen;
 
-        public static Color32 ToggleOffNormalColor => NormalGray;
-        public static Color32 ToggleOffHoveredColor => HoveredGray;
-        public static Color32 ToggleOffPressedColor => PressedGray;
+        public static Color32 ToggleOffNormalColor => DarkPrimaryColor55;
+        public static Color32 ToggleOffHoveredColor => DarkPrimaryColor45;
+        public static Color32 ToggleOffPressedColor => DarkPrimaryColor35;
 
 
         public static void DefaultStyle(this CustomUIToggle toggle)
@@ -380,11 +399,11 @@ namespace ModsCommon.UI
         {
             scrollbar.AtlasTrack = CommonTextures.Atlas;
             scrollbar.TrackSprite = CommonTextures.FieldSingle;
-            scrollbar.TrackColor = FieldDisabledColor;
+            scrollbar.TrackColor = DarkPrimaryColor30;
 
             scrollbar.AtlasThumb = CommonTextures.Atlas;
             scrollbar.ThumbSprite = CommonTextures.FieldSingle;
-            scrollbar.ThumbColor = FieldNormalColor;
+            scrollbar.ThumbColor = DarkPrimaryColor50;
 
             scrollbar.DefaultValue();
         }

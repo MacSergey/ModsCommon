@@ -157,8 +157,8 @@ namespace ModsCommon.Settings
             tabPanel.ScrollOrientation = UIOrientation.Vertical;
             tabPanel.AutoLayout = AutoLayout.Vertical;
             tabPanel.AutoLayoutSpace = 15;
-            tabPanel.AutoFitChildren = true;
-            tabPanel.AutoFillChildren = true;
+            tabPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
+            tabPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
             tabPanel.Padding = new RectOffset(15, 15, 0, 15);
             SetTabSize(tabPanel);
             tabPanel.isVisible = false;

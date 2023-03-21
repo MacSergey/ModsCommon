@@ -32,7 +32,7 @@ namespace ModsCommon.UI
                     borders = value;
                     Padding = padding;
 
-                    BackgroundSprite = borders switch
+                    ForegroundSprite = borders switch
                     {
                         Border.Top => CommonTextures.BorderTop,
                         Border.Bottom => CommonTextures.BorderBottom,

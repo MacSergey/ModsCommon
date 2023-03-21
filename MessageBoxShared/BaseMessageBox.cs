@@ -104,7 +104,7 @@ namespace ModsCommon.UI
             size = new Vector2(DefaultWidth, DefaultHeight);
             Atlas = CommonTextures.Atlas;
             BackgroundSprite = CommonTextures.PanelBig;
-            color = ComponentStyle.DarkPrimaryColor;
+            color = ComponentStyle.DarkPrimaryColor15;
             anchor = UIAnchorStyle.Left | UIAnchorStyle.Top | UIAnchorStyle.Proportional;
 
             AddHeader();
@@ -167,8 +167,8 @@ namespace ModsCommon.UI
                 Content.Padding = new RectOffset(Padding, Padding, 0, 0);
                 Content.AutoLayoutSpace = ContentSpacing;
                 Content.AutoLayout = AutoLayout.Vertical;
-                Content.AutoFitChildren = true;
-                Content.AutoFillChildren = true;
+                Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                Content.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
                 Content.ScrollOrientation = UIOrientation.Vertical;
                 Content.AutoReset = true;
 

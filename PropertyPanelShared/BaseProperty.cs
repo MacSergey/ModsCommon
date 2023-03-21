@@ -12,7 +12,7 @@ namespace ModsCommon.UI
 
         public virtual bool EnableControl { get; set; } = true;
 
-        public EditorItem()
+        public EditorItem() : base()
         {
             autoLayout = AutoLayout.Horizontal;
         }
@@ -146,7 +146,7 @@ namespace ModsCommon.UI
             }
         }
 
-        public BaseEditorPanel()
+        public BaseEditorPanel() : base()
         {
             Padding = new RectOffset(10, 10, 7, 7);
         }
@@ -210,7 +210,7 @@ namespace ModsCommon.UI
                     Content.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
                     Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
                     Content.AutoLayoutSpace = 5;
-                    Content.AutoLayoutCenter = true;
+                    Content.AutoLayoutStart = LayoutStart.MiddleLeft;
                     Content.Padding = new RectOffset(0, 0, 7, 7);
                     Content.eventSizeChanged += ContentSizeChanged;
 

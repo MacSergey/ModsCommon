@@ -46,7 +46,7 @@ namespace ModsCommon.UI
                 autoLayout = AutoLayout.Horizontal;
                 padding = new RectOffset(0, 0, 5, 5);
                 autoChildrenVertically = AutoLayoutChildren.Fit;
-                autoLayoutCenter = true;
+                autoLayoutStart = LayoutStart.MiddleLeft;
 
                 Additional = AddUIComponent<AdditionalHeaderButton>();
                 Additional.tooltip = CommonLocalize.Panel_Additional;
