@@ -391,17 +391,17 @@ namespace ModsCommon.UI
         }
 
 
-        private Dictionary<UIComponent, RectOffset> itemPadding = new Dictionary<UIComponent, RectOffset>();
-        public void SetItemPadding(UIComponent component, RectOffset padding)
+        private Dictionary<UIComponent, RectOffset> itemsMargin = new Dictionary<UIComponent, RectOffset>();
+        public void SetItemMargin(UIComponent component, RectOffset margin)
         {
-            padding = padding.ConstrainPadding();
-            if (itemPadding.TryGetValue(component, out var oldPadding) && Equals(oldPadding, padding))
+            margin = margin.ConstrainPadding();
+            if (itemsMargin.TryGetValue(component, out var oldMargin) && Equals(oldMargin, margin))
                 return;
 
-            itemPadding[component] = padding;
+            itemsMargin[component] = margin;
             Reset();
         }
-        public RectOffset GetItemPadding(UIComponent component) => itemPadding.TryGetValue(component, out var padding) ? padding : new RectOffset();
+        public RectOffset GetItemMargin(UIComponent component) => itemsMargin.TryGetValue(component, out var margin) ? margin : new RectOffset();
 
 
         private int layoutSuspend;
@@ -518,7 +518,7 @@ namespace ModsCommon.UI
                         continue;
 
                     var childPos = Vector2.zero;
-                    var childPadding = GetItemPadding(child);
+                    var childMargin = GetItemMargin(child);
                     var childSize = child.size;
 
                     switch (AutoLayout)
@@ -530,30 +530,30 @@ namespace ModsCommon.UI
                             switch (AutoLayoutStart & LayoutStart.Horizontal)
                             {
                                 case LayoutStart.Left:
-                                    childPos.x = offset.x + childPadding.left;
+                                    childPos.x = offset.x + childMargin.left;
                                     break;
                                 case LayoutStart.Centre:
 
                                     break;
                                 case LayoutStart.Right:
-                                    childPos.x = width - offset.x - childSize.x - childPadding.right;
+                                    childPos.x = width - offset.x - childSize.x - childMargin.right;
                                     break;
                             }
 
                             switch (AutoLayoutStart & LayoutStart.Vertical)
                             {
                                 case LayoutStart.Top:
-                                    childPos.y = offset.y + childPadding.top;
+                                    childPos.y = offset.y + childMargin.top;
                                     break;
                                 case LayoutStart.Middle:
-                                    childPos.y = offset.y + childPadding.top + (height - padding.vertical - childSize.y - childPadding.vertical) * 0.5f;
+                                    childPos.y = offset.y + childMargin.top + (height - padding.vertical - childSize.y - childMargin.vertical) * 0.5f;
                                     break;
                                 case LayoutStart.Bottom:
-                                    childPos.y = height - offset.y - childSize.y - childPadding.bottom;
+                                    childPos.y = height - offset.y - childSize.y - childMargin.bottom;
                                     break;
                             }
 
-                            offset.x += childSize.x + childPadding.horizontal + AutoLayoutSpace;
+                            offset.x += childSize.x + childMargin.horizontal + AutoLayoutSpace;
                             break;
 
                         case AutoLayout.Vertical:
@@ -563,30 +563,30 @@ namespace ModsCommon.UI
                             switch (AutoLayoutStart & LayoutStart.Vertical)
                             {
                                 case LayoutStart.Top:
-                                    childPos.y = offset.y + childPadding.top;
+                                    childPos.y = offset.y + childMargin.top;
                                     break;
                                 case LayoutStart.Middle:
 
                                     break;
                                 case LayoutStart.Bottom:
-                                    childPos.y = height - offset.y - childSize.y - childPadding.bottom;
+                                    childPos.y = height - offset.y - childSize.y - childMargin.bottom;
                                     break;
                             }
 
                             switch (AutoLayoutStart & LayoutStart.Horizontal)
                             {
                                 case LayoutStart.Left:
-                                    childPos.x = offset.x + childPadding.left;
+                                    childPos.x = offset.x + childMargin.left;
                                     break;
                                 case LayoutStart.Centre:
-                                    childPos.x = offset.x + childPadding.left + (width - padding.horizontal - childSize.x - childPadding.horizontal) * 0.5f;
+                                    childPos.x = offset.x + childMargin.left + (width - padding.horizontal - childSize.x - childMargin.horizontal) * 0.5f;
                                     break;
                                 case LayoutStart.Right:
-                                    childPos.x = width - offset.x - childSize.x - childPadding.right;
+                                    childPos.x = width - offset.x - childSize.x - childMargin.right;
                                     break;
                             }
 
-                            offset.y += childSize.y + childPadding.vertical + AutoLayoutSpace;
+                            offset.y += childSize.y + childMargin.vertical + AutoLayoutSpace;
                             break;
                     }
 
@@ -643,7 +643,7 @@ namespace ModsCommon.UI
                         if (child.isVisibleSelf && !ignoreList.Contains(child))
                         {
                             count += 1;
-                            totalWidth += child.width + GetItemPadding(child).horizontal;
+                            totalWidth += child.width + GetItemMargin(child).horizontal;
                         }
                     }
                     return padding.horizontal + totalWidth + Math.Max(0, count - 1) * AutoLayoutSpace;
@@ -653,7 +653,7 @@ namespace ModsCommon.UI
                     {
                         var child = m_ChildComponents[i];
                         if (child.isVisibleSelf && !ignoreList.Contains(child))
-                            maxWidth = Mathf.Max(maxWidth, child.width + GetItemPadding(child).horizontal);
+                            maxWidth = Mathf.Max(maxWidth, child.width + GetItemMargin(child).horizontal);
                     }
                     return padding.horizontal + maxWidth;
                 default:
@@ -684,7 +684,7 @@ namespace ModsCommon.UI
                         if (child.isVisibleSelf && !ignoreList.Contains(child))
                         {
                             count += 1;
-                            totalHeight += child.height + GetItemPadding(child).vertical;
+                            totalHeight += child.height + GetItemMargin(child).vertical;
                         }
                     }
                     return padding.vertical + totalHeight + Math.Max(0, count - 1) * AutoLayoutSpace;
@@ -694,7 +694,7 @@ namespace ModsCommon.UI
                     {
                         var child = m_ChildComponents[i];
                         if (child.isVisibleSelf && !ignoreList.Contains(child))
-                            maxHeight = Mathf.Max(maxHeight, child.height + GetItemPadding(child).vertical);
+                            maxHeight = Mathf.Max(maxHeight, child.height + GetItemMargin(child).vertical);
                     }
                     return padding.vertical + maxHeight;
                 default:

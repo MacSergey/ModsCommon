@@ -14,33 +14,52 @@ namespace ModsCommon.Utilities
         }
         public abstract IEnumerable<BaseDependencyWatcher> GetWatcher(DependenciesWatcher mainWatcher);
     }
-    public class NeedDependencyInfo : BaseDependencyInfo
+    public class RequiredDependencyInfo : BaseDependencyInfo
     {
         public string Name { get; }
         public ulong Id { get; }
 
-        public NeedDependencyInfo(DependencyState state, PluginSearcher searcher, string name, ulong id) : base(state, searcher)
+        public RequiredDependencyInfo(DependencyState state, PluginSearcher searcher, string name, ulong id) : base(state, searcher)
         {
             Name = name;
             Id = id;
         }
         public override IEnumerable<BaseDependencyWatcher> GetWatcher(DependenciesWatcher mainWatcher)
         {
-            if (State == DependencyState.Subscribe || State == DependencyState.Enable)
-                yield return new SubscribeDependencyWatcher(mainWatcher, this);
-            if (State == DependencyState.Enable)
-                yield return new EnableDependencyWatcher(mainWatcher, this);
+            switch (State)
+            {
+                case DependencyState.Subscribe:
+                    yield return new SubscribeDependencyWatcher(mainWatcher, this);
+                    break;
+                case DependencyState.Enable:
+                    yield return new EnableDependencyWatcher(mainWatcher, this);
+                    break;
+                default:
+                    yield break;
+            }    
         }
     }
     public class ConflictDependencyInfo : BaseDependencyInfo
     {
-        public ConflictDependencyInfo(DependencyState state, PluginSearcher searcher) : base(state, searcher) { }
+        public string Name { get; }
+
+        public ConflictDependencyInfo(DependencyState state, PluginSearcher searcher, string name) : base(state, searcher) 
+        {
+            Name = name;
+        }
         public override IEnumerable<BaseDependencyWatcher> GetWatcher(DependenciesWatcher mainWatcher)
         {
-            if (State == DependencyState.Unsubscribe)
-                yield return new UnsubscribeDependencyWatcher(mainWatcher, this);
-            if (State == DependencyState.Disable)
-                yield return new DisableDependencyWatcher(mainWatcher, this);
+            switch (State)
+            {
+                case DependencyState.Unsubscribe:
+                    yield return new UnsubscribeDependencyWatcher(mainWatcher, this);
+                    break;
+                case DependencyState.Disable:
+                    yield return new DisableDependencyWatcher(mainWatcher, this);
+                    break;
+                default:
+                    yield break;
+            }
         }
     }
 

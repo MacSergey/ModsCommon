@@ -89,6 +89,8 @@ namespace ModsCommon.Utilities
         public static string VectorLeft { get; } = nameof(VectorLeft);
         public static string VectorRight { get; } = nameof(VectorRight);
 
+        public static string Success { get; } = nameof(Success);
+
         static CommonTextures()
         {
             var spriteParams = new Dictionary<string, RectOffset>();
@@ -102,6 +104,8 @@ namespace ModsCommon.Utilities
             spriteParams[BorderSmall] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderBig] = new RectOffset(6, 6, 6, 6);
             spriteParams[PanelShadow] = new RectOffset();
+
+            spriteParams[Success] = new RectOffset();
 
             //UUIButton
             spriteParams[CloseButtonNormal] = new RectOffset();

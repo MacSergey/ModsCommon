@@ -53,7 +53,12 @@ namespace ModsCommon
         public abstract string Description { get; }
 
         public PluginSearcher ThisSearcher { get; }
+
+#if DEBUG
+        public DependenciesWatcher DependencyWatcher { get; private set; }
+#else
         private DependenciesWatcher DependencyWatcher { get; set; }
+#endif
 
         public ILogger Logger { get; private set; }
         protected abstract ulong StableWorkshopId { get; }
@@ -84,9 +89,9 @@ namespace ModsCommon
                 var otherSearcher = PluginUtilities.GetSearcher(NameRaw, !IsBeta ? BetaWorkshopId : StableWorkshopId);
                 var searcher = otherSearcher & !ThisSearcher;
 #if DEBUG
-                var info = new ConflictDependencyInfo(DependencyState.Disable, searcher);
+                var info = new ConflictDependencyInfo(DependencyState.Disable, searcher, IsBeta ? NameRaw : $"{NameRaw} {BETA}");
 #else
-                var info = new ConflictDependencyInfo(BaseSettings<TypeMod>.AnyVersions ? DependencyState.Disable : DependencyState.Unsubscribe, searcher);
+                var info = new ConflictDependencyInfo(BaseSettings<TypeMod>.AnyVersions ? DependencyState.Disable : DependencyState.Unsubscribe, searcher, IsBeta ? NameRaw : $"{NameRaw} {BETA}");
 #endif
                 infos.Add(info);
 

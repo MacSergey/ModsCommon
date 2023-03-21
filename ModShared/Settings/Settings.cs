@@ -393,6 +393,20 @@ namespace ModsCommon.Settings
             group.AddToggle("Show Beta warning", BetaWarning);
             group.AddToggle("Show Linux warning", LinuxWarning);
             group.AddToggle("Any versions", AnyVersions);
+
+            var buttonPanel = group.AddButtonPanel();
+            buttonPanel.AddButton("Dependency message", OpenDependency, 200);
+
+            static void OpenDependency()
+            {
+                var message = SingletonMod<TypeMod>.Instance.DependencyWatcher.AddMessage();
+                message.Text = "Harmony";
+                message.RequiredText = "Get";
+
+                message = SingletonMod<TypeMod>.Instance.DependencyWatcher.AddMessage();
+                message.Text = "Harmony";
+                message.RequiredText = "Get";
+            }
         }
 
         #endregion

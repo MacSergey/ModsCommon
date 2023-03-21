@@ -107,6 +107,7 @@ namespace ModsCommon.UI
                     AddLinesContainer();
                 });
             }
+
             private void AddTitle()
             {
                 var titlePanel = AddUIComponent<CustomUIPanel>();
@@ -262,7 +263,7 @@ namespace ModsCommon.UI
                     Tag.verticalAlignment = UIVerticalAlignment.Middle;
                     Tag.textScale = 0.7f;
                     Tag.padding = new RectOffset(0, 0, 4, 0);
-                    SetItemPadding(Tag, new RectOffset(0, 0, 8, 0));
+                    SetItemMargin(Tag, new RectOffset(0, 0, 8, 0));
 
                     Text = AddUIComponent<CustomUILabel>();
                     Text.name = nameof(Text);
@@ -280,6 +281,13 @@ namespace ModsCommon.UI
                     Text.color = ComponentStyle.DarkPrimaryColor30;
                 });
             }
+            public static Color32 NewColor => new Color32(42, 185, 48, 255);
+            public static Color32 FixedColor => new Color32(237, 149, 38, 255);
+            public static Color32 UpdatedColor => new Color32(80, 150, 241, 255);
+            public static Color32 RemovedOrRevertedColor => new Color32(243, 198, 0, 255);
+            public static Color32 TranslationColor => new Color32(0, 79, 153, 255);
+            public static Color32 WarningColor => new Color32(245, 65, 61, 255);
+            public static Color32 OtherColor => new Color32(189, 195, 199, 255);
             public void Init(MessageText message)
             {
                 if (!string.IsNullOrEmpty(message.text))
@@ -290,35 +298,35 @@ namespace ModsCommon.UI
                     {
                         case "NEW":
                             Tag.text = CommonLocalize.WhatsNew_NEW;
-                            Tag.color = new Color32(42, 185, 48, 255);
+                            Tag.color = NewColor;
                             break;
                         case "FIXED":
                             Tag.text = CommonLocalize.WhatsNew_FIXED;
-                            Tag.color = new Color32(237, 149, 38, 255);
+                            Tag.color = FixedColor;
                             break;
                         case "UPDATED":
                             Tag.text = CommonLocalize.WhatsNew_UPDATED;
-                            Tag.color = new Color32(80, 150, 241, 255);
+                            Tag.color = UpdatedColor;
                             break;
                         case "REMOVED":
                             Tag.text = CommonLocalize.WhatsNew_REMOVED;
-                            Tag.color = new Color32(243, 198, 0, 255);
+                            Tag.color = RemovedOrRevertedColor;
                             break;
                         case "REVERTED":
                             Tag.text = CommonLocalize.WhatsNew_REVERTED;
-                            Tag.color = new Color32(243, 198, 0, 255);
+                            Tag.color = RemovedOrRevertedColor;
                             break;
                         case "TRANSLATION":
                             Tag.text = CommonLocalize.WhatsNew_TRANSLATION;
-                            Tag.color = new Color32(0, 79, 153, 255);
+                            Tag.color = TranslationColor;
                             break;
                         case "WARNING":
                             Tag.text = CommonLocalize.WhatsNew_WARNING;
-                            Tag.color = new Color32(245, 65, 61, 255);
+                            Tag.color = WarningColor;
                             break;
                         default:
                             Tag.text = tag.ToUpper();
-                            Tag.color = new Color32(189, 195, 199, 255);
+                            Tag.color = OtherColor;
                             break;
                     }
                 }
@@ -374,14 +382,15 @@ namespace ModsCommon.UI
             PauseLayout(() =>
             {
                 var betaMessage = Content.AddUIComponent<CustomUILabel>();
+                betaMessage.name = "Beta Message";
                 betaMessage.wordWrap = true;
                 betaMessage.autoHeight = true;
-                betaMessage.textColor = new Color32(255, 160, 0, 255);
+                betaMessage.textColor = ComponentStyle.DarkPrimaryColor100;
                 betaMessage.text = betaText;
                 betaMessage.atlas = CommonTextures.Atlas;
                 betaMessage.backgroundSprite = CommonTextures.PanelBig;
-                betaMessage.color = ComponentStyle.DarkPrimaryColor30;
-                betaMessage.padding = new RectOffset(7, 7, 7, 7);
+                betaMessage.color = ComponentStyle.WarningColor;
+                betaMessage.padding = new RectOffset(15, 15, 10, 10);
             });
 
             base.Init(messages, modName, maximizeFirst, culture);

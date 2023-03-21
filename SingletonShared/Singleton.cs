@@ -1,4 +1,5 @@
 ﻿using ICities;
+using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -24,6 +25,7 @@ namespace ModsCommon
         public CultureInfo Culture { get; }
 #if DEBUG
         public bool NeedMonoDevelopDebug { get; }
+        public DependenciesWatcher DependencyWatcher { get; }
 #else
         public bool NeedMonoDevelop { get; }
 #endif

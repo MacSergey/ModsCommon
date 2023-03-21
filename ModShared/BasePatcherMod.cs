@@ -43,10 +43,12 @@ namespace ModsCommon
                     new UserModNameSearcher("Harmony 2", BaseMatchSearcher.Option.AllOptions | BaseMatchSearcher.Option.StartsWidth) &
                     new UserModDescriptionSearcher("Mod Dependency", BaseMatchSearcher.Option.AllOptions);
                 var idSearcher = new IdSearcher(2040656402ul) | new IdSearcher(2399204842ul);
-                infos.Add(new NeedDependencyInfo(DependencyState.Subscribe, nameSearcher | idSearcher, "Harmony", 2040656402ul));
+                infos.Add(new RequiredDependencyInfo(DependencyState.Enable, nameSearcher | idSearcher, "Harmony", 2040656402ul));
 
                 var conflictSearcher = new IdSearcher(2399343344ul);
-                infos.Add(new ConflictDependencyInfo(DependencyState.Unsubscribe, conflictSearcher));
+                infos.Add(new ConflictDependencyInfo(DependencyState.Unsubscribe, conflictSearcher, "Harmony (redesigned)"));
+
+                infos.Add(new ConflictDependencyInfo(DependencyState.Unsubscribe, new UserModNameSearcher("MacSergey"), "MacSergey"));
 
                 return infos;
             }

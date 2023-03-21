@@ -295,15 +295,15 @@ namespace ModsCommon.Utilities
     {
         public event Action<PluginInfo, bool> StateChanged;
 
-        private bool _enable = false;
+        private bool enable = false;
         public bool Enable
         {
-            get => _enable;
+            get => enable;
             set
             {
-                if (value != _enable)
+                if (value != enable)
                 {
-                    _enable = value;
+                    enable = value;
 
                     if (Enable)
                     {

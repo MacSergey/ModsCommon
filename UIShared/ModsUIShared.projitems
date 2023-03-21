@@ -133,6 +133,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Success.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorDown.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorLeft.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorRight.png" />

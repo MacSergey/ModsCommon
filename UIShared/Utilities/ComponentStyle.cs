@@ -34,8 +34,9 @@ namespace ModsCommon.UI
         public static Color32 ErrorPressedColor => new Color32(248, 68, 68, 255);
         public static Color32 ErrorFocusedColor => new Color32(225, 62, 62, 255);
 
-        [Obsolete]
-        public static Color32 WarningColor { get; } = new Color32(253, 150, 62, 255);
+
+        public static Color32 WellColor => new Color32(42, 185, 48, 255);
+        public static Color32 WarningColor => new Color32(237, 149, 38, 255);
 
         public static Color32 NormalBlue => new Color32(51, 153, 255, 255);
         public static Color32 HoveredBlue => new Color32(29, 143, 255, 255);
@@ -74,7 +75,7 @@ namespace ModsCommon.UI
         {
             button.atlas = CommonTextures.Atlas;
             button.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
-            button.SetBgColor(new ColorSet(ButtonNormalColor, ButtonHoveredColor, ButtonPressedColor, ButtonFocusedColor, ButtonDisabledColor));
+            button.SetBgColor(new ColorSet(ButtonNormalColor, ButtonHoveredColor, ButtonPressedColor, ButtonNormalColor, ButtonDisabledColor));
             button.SetSelectedBgColor(new ColorSet(ButtonSelectedNormalColor, ButtonSelectedHoveredColor, ButtonSelectedPressedColor, ButtonSelectedFocusedColor, ButtonSelectedDisabledColor));
             button.SetTextColor(new ColorSet(Color.white, Color.white, Color.white, null, null));
 
