@@ -48,8 +48,6 @@ namespace ModsCommon
                 var conflictSearcher = new IdSearcher(2399343344ul);
                 infos.Add(new ConflictDependencyInfo(DependencyState.Unsubscribe, conflictSearcher, "Harmony (redesigned)"));
 
-                infos.Add(new ConflictDependencyInfo(DependencyState.Unsubscribe, new UserModNameSearcher("MacSergey"), "MacSergey"));
-
                 return infos;
             }
         }

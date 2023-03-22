@@ -383,6 +383,7 @@ namespace ModsCommon.Settings
 
         #region DEBUG
 
+#if DEBUG
         private void AddDebug(UIComponent tabContent)
         {
             var group = tabContent.AddOptionsGroup("Base");
@@ -408,7 +409,7 @@ namespace ModsCommon.Settings
                 message.RequiredText = "Get";
             }
         }
-
+#endif
         #endregion
     }
 }
