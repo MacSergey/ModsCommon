@@ -2,7 +2,6 @@
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -18,7 +17,7 @@ namespace ModsCommon.UI
         public Func<bool> OnButtonClick { get; set; }
         public string OkText { set => OkButton.text = value; }
 
-        public WhatsNewMessageBox()
+        public WhatsNewMessageBox() : base()
         {
             OkButton = AddButton(OkClick);
         }

@@ -327,8 +327,19 @@ namespace ModsCommon.UI
         public new Vector2 ItemSize => Content.ItemSize;
         public new RectOffset LayoutPadding => Content.LayoutPadding;
 
-        public override void StopLayout() => Content.StopLayout();
-        public override void StartLayout(bool layoutNow = true, bool force = false) => Content.StartLayout(layoutNow, force);
-        public override void PauseLayout(Action action, bool layoutNow = true, bool force = false) => Content.PauseLayout(action, layoutNow, force);
+        public override void StopLayout()
+        {
+            base.StopLayout();
+            Content.StopLayout();
+        }
+        public override void StartLayout(bool layoutNow = true, bool force = false)
+        {
+            Content.StartLayout(layoutNow, force);
+            base.StartLayout(layoutNow, force);
+        }
+        public override void PauseLayout(Action action, bool layoutNow = true, bool force = false)
+        {
+            base.PauseLayout(() => Content.PauseLayout(action, layoutNow, force), layoutNow, force);
+        }
     }
 }

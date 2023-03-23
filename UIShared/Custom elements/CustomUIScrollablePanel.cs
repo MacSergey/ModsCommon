@@ -86,7 +86,7 @@ namespace ModsCommon.UI
             if (UseScrollMomentum && !isMouseDown && scrollMomentum != 0f)
                 ScrollPosition += scrollMomentum;
 
-            if (m_IsComponentInvalidated && AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended && isVisible)
+            if (m_IsComponentInvalidated && AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended/* && isVisible*/)
             {
                 AutoArrange();
                 UpdateScrollbarValues();
@@ -516,7 +516,7 @@ namespace ModsCommon.UI
                         _ => m_ChildComponents[i],
                     };
 
-                    if (ignoreList.Contains(child) || !child.isVisible || !child.enabled || !child.gameObject.activeSelf)
+                    if (ignoreList.Contains(child) || !child.isVisibleSelf || !child.enabled || !child.gameObject.activeSelf)
                         continue;
 
                     var childPos = ScrollOrientation switch
@@ -617,6 +617,9 @@ namespace ModsCommon.UI
                 newSize.y = GetVerticalItemsSpace();
 
             size = newSize;
+
+            UpdateScrollbarValues();
+            UpdateScrollbarSizeAndPosition();
         }
         private float GetHorizontalItemsSpace()
         {
@@ -814,7 +817,7 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public float VisibleScrollbarSize => Scrollbar.isVisible ? ScrollbarSize : 0f;
+        public float VisibleScrollbarSize => Scrollbar.isVisibleSelf ? ScrollbarSize : 0f;
 
 
         protected bool autoReset = false;
@@ -1103,6 +1106,7 @@ namespace ModsCommon.UI
                 UpdateScrollbarSizeAndPosition();
             }
         }
+
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();

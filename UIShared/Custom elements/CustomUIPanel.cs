@@ -48,7 +48,7 @@ namespace ModsCommon.UI
         {
             base.Update();
 
-            if (m_IsComponentInvalidated && AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended && isVisible)
+            if (m_IsComponentInvalidated && AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended/* && isVisible*/)
                 AutoArrange();
         }
         public override void LateUpdate()
@@ -514,7 +514,7 @@ namespace ModsCommon.UI
                         _ => m_ChildComponents[i],
                     };
 
-                    if (ignoreList.Contains(child) || !child.isVisible || !child.enabled || !child.gameObject.activeSelf)
+                    if (ignoreList.Contains(child) || !child.isVisibleSelf || !child.enabled || !child.gameObject.activeSelf)
                         continue;
 
                     var childPos = Vector2.zero;
@@ -752,6 +752,22 @@ namespace ModsCommon.UI
         {
             base.OnResolutionChanged(previousResolution, currentResolution);
             resetNeeded = true;
+        }
+        protected override void OnVisibilityChanged()
+        {
+            base.OnVisibilityChanged();
+            if (isVisible && AutoLayout != AutoLayout.Disabled)
+            {
+                Reset();
+            }
+        }
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+            if (isVisible && AutoLayout != AutoLayout.Disabled)
+            {
+                Reset();
+            }
         }
 
         protected override void OnMouseEnter(UIMouseEventParameter p)
