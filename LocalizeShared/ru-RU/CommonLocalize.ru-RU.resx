@@ -448,4 +448,37 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>Не показывать снова</value>
   </data>
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>Включено</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>Установлено</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>Удалено</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>Подписано</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>Отписано</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>Нажмите {0} для отмены</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>Нажмите {0} для сброса</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Пробел</value>
+  </data>
 </root>

@@ -232,10 +232,10 @@ Shift X10, Ctrl X0.1</value>
     <value>Vācu</value>
   </data>
   <data name="Mod_Locale_en-US" xml:space="preserve">
-    <value>Angļu (ASV)</value>
+    <value>Angļu ASV</value>
   </data>
   <data name="Mod_Locale_en-GB" xml:space="preserve">
-    <value>Angļu (AK)</value>
+    <value>Angļu AK</value>
   </data>
   <data name="Mod_Locale_es-ES" xml:space="preserve">
     <value>Spāņu</value>
@@ -406,6 +406,17 @@ lai izlaistu atlase</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>BRĪDINĀJUMS</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
 </root>

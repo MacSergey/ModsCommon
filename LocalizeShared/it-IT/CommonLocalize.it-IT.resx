@@ -290,18 +290,46 @@ Riavvia il gioco.</value>
   <data name="Mod_Locale_zh-TW" xml:space="preserve">
     <value>Cinese Tradizionale</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Stato: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>La versione del gioco è obsoleta</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Errore di caricamento</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>La versione della mod è obsoleta</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Operare normalmente</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Sconosciuto</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Supporto</value>
   </data>
-  
-  
-  
+  <data name="Mod_Version" xml:space="preserve">
+    <value>Versione: {0}</value>
+  </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>La versione del gioco è obsoleta.
+
+La mod richiede la versione: {0}
+Versione corrente del gioco: {1}
+
+Aggiorna il gioco alla versione più recente, altrimenti il corretto funzionamento della mod non è garantito e può portare a errori imprevedibili.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>La versione mod è obsoleta.
+
+La mod è stata creata per la versione: {0}
+Versione corrente del gioco: {1}
+
+Aggiorna la mod alla versione più recente, altrimenti il corretto funzionamento della mod non è garantito e può portare a errori imprevedibili.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Cosa c'è di nuovo in {0}</value>
   </data>
@@ -372,9 +400,16 @@ Riavvia il gioco.</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Mostra solo nella UnifiedUI</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Puoi contribuire a migliorare la traduzione delle mod
+o a tradurre la mod nella tua lingua</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Migliora traduzione</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Aggiungi una nuova lingua</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Risoluzione problemi</value>
   </data>
@@ -385,13 +420,65 @@ Riavvia il gioco.</value>
     <value>Premi {0} per
 selezionare il passaggio successivo</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="WhatsNew_FIXED" xml:space="preserve">
+    <value>CORRETTO</value>
+  </data>
+  <data name="WhatsNew_NEW" xml:space="preserve">
+    <value>NUOVO</value>
+  </data>
+  <data name="WhatsNew_REMOVED" xml:space="preserve">
+    <value>RIMOSSO</value>
+  </data>
+  <data name="WhatsNew_REVERTED" xml:space="preserve">
+    <value>RIPRISTINATO</value>
+  </data>
+  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
+    <value>TRADUZIONE</value>
+  </data>
+  <data name="WhatsNew_UPDATED" xml:space="preserve">
+    <value>AGGIORNATO</value>
+  </data>
+  <data name="WhatsNew_WARNING" xml:space="preserve">
+    <value>ATTENZIONE</value>
+  </data>
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Brasiliano</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Non mostrare più</value>
+  </data>
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>Disabilitato</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>Abilitato</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>Installato</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>Rimosso</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>Sottoscritto</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>Disiscritto</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>Premi {0} per scartare le modifiche</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>Premi {0} per reimpostare l'associazione</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Spazio</value>
+  </data>
 </root>

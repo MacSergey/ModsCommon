@@ -450,4 +450,37 @@ parmi les nœuds proches</value>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>Ne plus afficher</value>
   </data>
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>Désactivé</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>Activé</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>Installé</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>Supprimé</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>Abonné</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>Désabonné</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Retour arrière</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Échap</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>Appuyez sur {0} pour annuler les changements</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>Appuyez sur {0} pour réinitialiser le raccourci clavier</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Espace</value>
+  </data>
 </root>

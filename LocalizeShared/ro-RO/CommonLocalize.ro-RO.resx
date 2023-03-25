@@ -232,10 +232,10 @@ Reporniți jocul.</value>
     <value>Germană</value>
   </data>
   <data name="Mod_Locale_en-US" xml:space="preserve">
-    <value>Engleză (Statele Unite)</value>
+    <value>Engleză Statele Unite</value>
   </data>
   <data name="Mod_Locale_en-GB" xml:space="preserve">
-    <value>Engleză (Regatul Unit)</value>
+    <value>Engleză Regatul Unit</value>
   </data>
   <data name="Mod_Locale_es-ES" xml:space="preserve">
     <value>Spaniolă</value>
@@ -445,5 +445,18 @@ termina selecția</value>
     <value>Braziliană</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Nu mai afișa</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 </root>

@@ -301,14 +301,18 @@ Não é recomendado usar o mod neste estado pois pode levar a comportamento impr
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
     <value>A versão do jogo está desatualizada</value>
   </data>
-  
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Operar normalmente</value>
+  </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
     <value>Desconhecido</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Apoio</value>
   </data>
-  
+  <data name="Mod_Version" xml:space="preserve">
+    <value>Versão: {0}</value>
+  </data>
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
     <value>A versão do jogo está desatualizada.
 
@@ -438,6 +442,22 @@ saltar a seleção</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>AVISO</value>
   </data>
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Português (Brasil)</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Não mostrar novamente</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
 </root>

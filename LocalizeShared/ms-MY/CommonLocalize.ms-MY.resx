@@ -448,4 +448,37 @@ pilihan pertindihan</value>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>Jangan tunjukkan lagi</value>
   </data>
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>Dinyahdayakan</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>Didayakan</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>Dipasang</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>Dibuang</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>Dilanggan</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>Dinyahlanggan</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Undur ruang</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>Tekan {0} untuk membatalkan perubahan</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>Tekan {0} untuk menetapkan semula pengikatan</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Jarak</value>
+  </data>
 </root>

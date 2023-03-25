@@ -450,4 +450,37 @@ helfen oder die Mod in deine Sprache übersetzen</value>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>Nicht erneut anzeigen</value>
   </data>
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>Aktiviert</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>Installiert</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>Entfernt</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>Abonniert</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>Abbestellt</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>Drücke {0}, um Änderungen zu verwerfen</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>Drücke {0}, um die Bindung zurückzusetzen</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Leertaste</value>
+  </data>
 </root>

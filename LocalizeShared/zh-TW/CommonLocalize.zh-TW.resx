@@ -232,10 +232,10 @@ Shift X10, Ctrl X0.1</value>
     <value>德文</value>
   </data>
   <data name="Mod_Locale_en-US" xml:space="preserve">
-    <value>英文（美國）</value>
+    <value>英文 美國</value>
   </data>
   <data name="Mod_Locale_en-GB" xml:space="preserve">
-    <value>英文（英國）</value>
+    <value>英文 英國</value>
   </data>
   <data name="Mod_Locale_es-ES" xml:space="preserve">
     <value>西班牙文</value>
@@ -448,4 +448,17 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>不再提示</value>
   </data>
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>已禁用</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

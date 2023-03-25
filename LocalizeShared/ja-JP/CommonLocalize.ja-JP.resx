@@ -451,4 +451,37 @@ MODを最新バージョンに更新してください！ 更新をしないとM
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>次回から非表示</value>
   </data>
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>無効化</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>有効化</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>導入済み</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>削除済み</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>購読済み</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>購読解除</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>{0} で変更を破棄</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>{0} でバインドをリセット</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Space</value>
+  </data>
 </root>
