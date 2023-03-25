@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class LanguageSettingsItem : SettingsContentItem
+    public class LanguageSettingsItem : ContentSettingsItem
     {
         protected override RectOffset ItemsPadding => new RectOffset(0, 0, 5, 5);
         public LanguageDropDown DropDown { get; }

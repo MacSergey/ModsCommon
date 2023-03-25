@@ -10,6 +10,7 @@ namespace ModsCommon.UI
     {
         public event Action<Shortcut> BindingChanged;
 
+        protected override RectOffset ItemsPadding => new RectOffset(20, 20, 10, 10);
         private static WarningLabel Warning { get; set; }
         private static bool InProgress => Warning != null;
 
@@ -116,7 +117,7 @@ namespace ModsCommon.UI
                 autoHeight = true;
                 atlas = CommonTextures.Atlas;
                 backgroundSprite = CommonTextures.PanelBig;
-                color = ComponentStyle.NormalSettingsGray;
+                color = ComponentStyle.SettingsColor25;
 
                 var res = GetUIView().GetScreenResolution();
                 relativePosition = new Vector3((res.x - width) * 0.5f, (res.y - height) * 0.5f);

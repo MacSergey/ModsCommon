@@ -81,7 +81,7 @@ namespace ModsCommon.Settings
 
             MainPanel.autoLayout = true;
             MainPanel.autoLayoutDirection = LayoutDirection.Vertical;
-            MainPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 15);
+            MainPanel.autoLayoutPadding = new RectOffset(0, 0, 0, 5);
 
             CreateTabStrip();
             CreateTabs();
@@ -156,15 +156,15 @@ namespace ModsCommon.Settings
             var tabPanel = MainPanel.AddUIComponent<CustomUIScrollablePanel>();
             tabPanel.ScrollOrientation = UIOrientation.Vertical;
             tabPanel.AutoLayout = AutoLayout.Vertical;
-            tabPanel.AutoLayoutSpace = 15;
+            tabPanel.AutoLayoutSpace = 25;
             tabPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
             tabPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
-            tabPanel.Padding = new RectOffset(15, 15, 0, 15);
+            tabPanel.Padding = new RectOffset(15, 15, 15, 15);
             SetTabSize(tabPanel);
             tabPanel.isVisible = false;
             TabPanels.Add(tabPanel);
 
-            tabPanel.Scrollbar.DefaultStyle();
+            tabPanel.Scrollbar.SettingsStyle();
             tabPanel.ScrollbarSize = 12f;
 
             TabContent[name] = tabPanel;
@@ -176,44 +176,54 @@ namespace ModsCommon.Settings
 
         private void AddInfo(UIComponent tabContent)
         {
-            CustomUIPanel optionsGroup;
+            SettingsItemSection optionsSection;
             CustomUILabel title;
             if (GetType().Assembly.LoadTextureFromAssembly("PreviewImage") is Texture2D preview)
             {
-                var group = tabContent.AddGroup();
-                group.AutoLayout = AutoLayout.Horizontal;
+                var section = tabContent.AddSection();
+                section.NormalBgColor = ComponentStyle.SettingsColor60;
+                section.ForegroundSprite = string.Empty;
+                section.AutoLayout = AutoLayout.Horizontal;
+                section.maximumSize = new Vector2(0f, 200f);
 
-                var optionsContent = group.AddUIComponent<CustomUIPanel>();
+                var optionsContent = section.AddUIComponent<CustomUIPanel>();
                 optionsContent.PauseLayout(() =>
                 {
                     optionsContent.AutoLayout = AutoLayout.Vertical;
                     optionsContent.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                    optionsContent.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
                     optionsContent.AutoLayoutSpace = 15;
                 });
 
-                var imagePanel = group.AddUIComponent<CustomUIPanel>();
+                var imagePanel = section.AddUIComponent<CustomUIPanel>();
                 imagePanel.size = new Vector2(200f, 200f);
 
                 var image = imagePanel.AddUIComponent<CustomUITextureSprite>();
                 image.texture = preview;
                 image.color = Color.white;
-                image.size = new Vector2(170f, 170f);
+                image.size = new Vector2(200f, 200f);
                 image.relativePosition = new Vector3((imagePanel.width - image.width) * 0.5f, (imagePanel.height - image.height) * 0.5f);
 
-                group.eventSizeChanged += (_, size) => SetSize();
+                section.eventSizeChanged += (_, size) => SetSize();
                 SetSize();
-                void SetSize() => optionsContent.width = group.width - imagePanel.width - group.AutoLayoutSpace;
+                void SetSize() => optionsContent.width = section.width - imagePanel.width - section.AutoLayoutSpace;
 
-                optionsGroup = optionsContent.FillOptionsGroup(out title, SingletonMod<TypeMod>.Instance.NameRaw);
+                optionsSection = optionsContent.FillOptionsSection(out title, SingletonMod<TypeMod>.Instance.NameRaw);
             }
             else
-                optionsGroup = tabContent.AddOptionsGroup(out title, SingletonMod<TypeMod>.Instance.NameRaw);
+            {
+                optionsSection = tabContent.AddOptionsSection(out title, SingletonMod<TypeMod>.Instance.NameRaw);
 
+                optionsSection.NormalBgColor = ComponentStyle.SettingsColor60;
+                optionsSection.ForegroundSprite = string.Empty;
+            }
+            optionsSection.CustomSection = true;
             title.textScale = 2f;
 
-            var versionItem = optionsGroup.AddLabel(string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
+            var versionItem = optionsSection.AddLabel(string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
             versionItem.Padding = new RectOffset();
-            versionItem.Borders = SettingsContentItem.Border.None;
+            versionItem.Borders = SettingsItemBorder.None;
+            versionItem.CanHover = false;
 
             if (InfoCallback != null)
             {
@@ -221,9 +231,10 @@ namespace ModsCommon.Settings
                 InfoCallback = null;
             }
 
-            var infoLabel = optionsGroup.AddLabel(GetStatusText());
+            var infoLabel = optionsSection.AddLabel(GetStatusText());
             infoLabel.Padding = new RectOffset();
-            infoLabel.Borders = SettingsContentItem.Border.None;
+            infoLabel.Borders = SettingsItemBorder.None;
+            infoLabel.CanHover = false;
             infoLabel.LabelItem.processMarkup = true;
 
             InfoCallback = () =>
@@ -243,8 +254,12 @@ namespace ModsCommon.Settings
             };
             SingletonMod<TypeMod>.Instance.OnStatusChanged += InfoCallback;
 
-            optionsGroup.AddSpace(35f);
-            optionsGroup.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton(CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
+            optionsSection.AddSpace(25f);
+            var changeLogPanel = optionsSection.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0);
+            changeLogPanel.CanHover = false;
+            var changeLog = changeLogPanel.AddButton(CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
+            changeLog.SetBgColor(new ColorSet(ComponentStyle.SettingsColor25, ComponentStyle.SettingsColor20, ComponentStyle.SettingsColor20, ComponentStyle.SettingsColor25, ComponentStyle.SettingsColor15));
+            changeLog.height = 50f;
         }
 
         private string GetStatusText()
@@ -271,16 +286,19 @@ namespace ModsCommon.Settings
 
         protected void AddLanguage(UIComponent tabContent)
         {
-            var group = tabContent.AddOptionsGroup(CommonLocalize.Settings_Language);
-            AddLanguageList(group);
+            var section = tabContent.AddOptionsSection(CommonLocalize.Settings_Language);
+            section.CustomSection = true;
+            AddLanguageList(section);
 
-            group.AddSpace(25f);
+            section.AddSpace(25f);
 
-            var labelItem = group.AddLabel(CommonLocalize.Settings_TranslationDescription, 0.8f);
-            labelItem.Borders = SettingsContentItem.Border.None;
+            var labelItem = section.AddLabel(CommonLocalize.Settings_TranslationDescription, 0.8f);
+            labelItem.CanHover = false;
+            labelItem.Borders = SettingsItemBorder.None;
             labelItem.Padding = new RectOffset(0, 0, 5, 5);
 
-            var buttonPanel = group.AddButtonPanel(new RectOffset(0, 0, 0, 10), 10);
+            var buttonPanel = section.AddButtonPanel(itemSpacing: 10);
+            buttonPanel.CanHover = false;
             buttonPanel.AddButton(CommonLocalize.Settings_TranslationImprove, () => SingletonMod<TypeMod>.Instance.OpenTranslationProject(), 250f, 1f);
             buttonPanel.AddButton(CommonLocalize.Settings_TranslationNew, () => "https://crowdin.com/messages/create/14337258/".OpenUrl(), 250f, 1f);
         }
@@ -288,7 +306,8 @@ namespace ModsCommon.Settings
         private void AddLanguageList(UIComponent tabContent)
         {
             var item = tabContent.AddUIComponent<LanguageSettingsItem>();
-            item.Borders = SettingsContentItem.Border.None;
+            item.CanHover = false;
+            item.Borders = SettingsItemBorder.None;
 
             item.DropDown.AddItem(GetLocaleItem(string.Empty));
 
@@ -335,10 +354,10 @@ namespace ModsCommon.Settings
 
         protected void AddNotifications(UIComponent tabContent)
         {
-            var group = tabContent.AddOptionsGroup(CommonLocalize.Settings_Notifications);
+            var section = tabContent.AddOptionsSection(CommonLocalize.Settings_Notifications);
 
-            var showToggle = group.AddToggle(CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
-            var onlyMajorToggle = group.AddToggle(CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
+            var showToggle = section.AddToggle(CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
+            var onlyMajorToggle = section.AddToggle(CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
 
             showToggle.Control.OnStateChanged += OnChange;
             OnChange(ShowWhatsNew);
@@ -352,18 +371,18 @@ namespace ModsCommon.Settings
 
         private void AddSupport(UIComponent tabContent)
         {
-            var group = tabContent.AddOptionsGroup();
+            var section = tabContent.AddOptionsSection();
 
-            group.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton(CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
-            group.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton("Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
+            section.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton(CommonLocalize.Settings_Troubleshooting, () => SingletonMod<TypeMod>.Instance.OpenSupport());
+            section.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton("Discord", () => SingletonMod<TypeMod>.Instance.OpenDiscord());
 #if DEBUG
             if (SingletonMod<TypeMod>.Instance.NeedMonoDevelopDebug)
 #else
             if (SingletonMod<TypeMod>.Instance.NeedMonoDevelop)
 #endif
             {
-                var linuxGroup = tabContent.AddOptionsGroup(CommonLocalize.Settings_ForLinuxUsers);
-                linuxGroup.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton(CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
+                var linuxSection = tabContent.AddOptionsSection(CommonLocalize.Settings_ForLinuxUsers);
+                linuxSection.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0).AddButton(CommonLocalize.Settings_SolveCrashOnLinux, () => SingletonMod<TypeMod>.Instance.ShowLinuxTip());
             }
         }
         private void ShowChangeLog()
@@ -386,16 +405,16 @@ namespace ModsCommon.Settings
 #if DEBUG
         private void AddDebug(UIComponent tabContent)
         {
-            var group = tabContent.AddOptionsGroup("Base");
+            var section = tabContent.AddOptionsSection("Base");
 
-            group.AddStringField("Whats new version", WhatsNewVersionValue);
-            group.AddStringField("Compatible check game version", CompatibleCheckGameVersionValue);
-            group.AddStringField("Compatible check mod version", CompatibleCheckModVersionValue);
-            group.AddToggle("Show Beta warning", BetaWarning);
-            group.AddToggle("Show Linux warning", LinuxWarning);
-            group.AddToggle("Any versions", AnyVersions);
+            section.AddStringField("Whats new version", WhatsNewVersionValue);
+            section.AddStringField("Compatible check game version", CompatibleCheckGameVersionValue);
+            section.AddStringField("Compatible check mod version", CompatibleCheckModVersionValue);
+            section.AddToggle("Show Beta warning", BetaWarning);
+            section.AddToggle("Show Linux warning", LinuxWarning);
+            section.AddToggle("Any versions", AnyVersions);
 
-            var buttonPanel = group.AddButtonPanel();
+            var buttonPanel = section.AddButtonPanel();
             buttonPanel.AddButton("Dependency message", OpenDependency, 200);
 
             static void OpenDependency()

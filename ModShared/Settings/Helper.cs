@@ -23,71 +23,52 @@ namespace ModsCommon.Settings
         }
 
 
-        public static CustomUIPanel AddGroup(this UIComponent parent)
+        public static CustomUIPanel AddSection(this UIComponent parent)
         {
             var panel = parent.AddUIComponent<CustomUIPanel>();
 
             panel.width = 738f;
-            panel.AutoLayout = AutoLayout.Vertical;
             panel.AutoChildrenVertically = AutoLayoutChildren.Fit;
+            panel.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
             panel.AutoLayoutSpace = 15;
+            panel.AutoLayout = AutoLayout.Vertical;
 
             panel.Atlas = CommonTextures.Atlas;
-            panel.BackgroundSprite = CommonTextures.PanelBig;
-            panel.color = new Color32(20, 25, 38, 255);
+            panel.BackgroundSprite = CommonTextures.PanelLarge;
+            panel.NormalBgColor = ComponentStyle.SettingsColor15;
+            panel.ForegroundSprite = CommonTextures.BorderLarge;
+            panel.NormalFgColor = ComponentStyle.SettingsColor30;
 
             return panel;
         }
-        public static CustomUIPanel AddOptionsGroup(this UIComponent parent, string name = null) => AddOptionsGroup(parent, out _, name);
-        public static CustomUIPanel AddOptionsGroup(this UIComponent parent, out CustomUILabel label, string name = null)
+        public static SettingsItemSection AddOptionsSection(this UIComponent parent, string name = null) => AddOptionsSection(parent, out _, name);
+        public static SettingsItemSection AddOptionsSection(this UIComponent parent, out CustomUILabel label, string name = null)
         {
-            return parent.AddGroup().FillOptionsGroup(out label, name);
+            return parent.AddSection().FillOptionsSection(out label, name);
         }
-        public static CustomUIPanel FillOptionsGroup(this CustomUIPanel parent, out CustomUILabel label, string name = null)
+        public static SettingsItemSection FillOptionsSection(this CustomUIPanel parent, out CustomUILabel label, string name = null)
         {
-            label = parent.AddUIComponent<CustomUILabel>();
-            label.name = "Title";
-            label.font = SemiBoldFont;
-            label.textScale = 1.3f;
-            label.padding = new RectOffset(12, 0, 12, 0);
+            parent.StopLayout();
+
             if (!string.IsNullOrEmpty(name))
+            {
+                label = parent.AddUIComponent<CustomUILabel>();
+                label.name = "Title";
+                label.font = SemiBoldFont;
+                label.textScale = 1.3f;
+                label.padding = new RectOffset(12, 0, 12, 0);
                 label.text = name;
+            }
             else
-                label.isVisible = false;
+                label = null;
 
-            var сontent = parent.AddUIComponent<CustomUIPanel>();
-            сontent.name = "Content";
-            сontent.AutoLayout = AutoLayout.Vertical;
-            сontent.AutoChildrenVertically = AutoLayoutChildren.Fit;
-            сontent.width = parent.width;
+            var сontent = parent.AddUIComponent<SettingsItemSection>();
+            сontent.PaddingTop = string.IsNullOrEmpty(name) ? 15 : 0;
+            сontent.PaddingBottom = 15;
 
-            сontent.Padding = new RectOffset(40, 0, 0, 5);
-            сontent.eventComponentAdded += ComponentAdded;
-            сontent.eventSizeChanged += SizeChanged;
-
-            parent.eventSizeChanged += ParentSizeChanged;
+            parent.StartLayout();
 
             return сontent;
-
-            static void ComponentAdded(UIComponent container, UIComponent child)
-            {
-                if (child is BaseSettingItem item)
-                    item.width = container.width - (container as CustomUIPanel)?.Padding.horizontal ?? 0;
-            }
-
-            static void SizeChanged(UIComponent component, Vector2 value)
-            {
-                foreach (var child in component.components)
-                {
-                    if (child is BaseSettingItem item)
-                        item.width = component.width - (component as CustomUIPanel)?.Padding.horizontal ?? 0;
-                }
-            }
-
-            void ParentSizeChanged(UIComponent component, Vector2 value)
-            {
-                сontent.width = component.width;
-            }
         }
 
         public static FloatSettingsItem AddFloatField(this UIComponent parent, string label, SavedFloat saved, float? min = null, float? max = null, Action<float> onValueChanged = null)
@@ -174,7 +155,7 @@ namespace ModsCommon.Settings
         public static LabelSettingsItem AddInfoLabel(this UIComponent parent, string label, float textScale = 1.125f, Color? color = null)
         {
             var item = parent.AddLabel(label, textScale, color);
-            item.Borders = SettingsContentItem.Border.None;
+            item.Borders = SettingsItemBorder.None;
             item.PaddingTop = 0;
 
             return item;
@@ -197,41 +178,43 @@ namespace ModsCommon.Settings
 
             return item;
         }
-        public static OptionPanelWithLabelData AddTogglePanel(this UIComponent parent, string mainLabel, SavedInt optionsSaved, string[] labels, Action<int> onValueChanged = null)
+        public static OptionPanelData AddTogglePanel(this UIComponent parent, string mainLabel, SavedInt optionsSaved, string[] labels, Action<int> onValueChanged = null)
         {
-            var item = parent.AddUIComponent<LabelSettingsItem>();
-            item.Label = mainLabel;
+            var groupItem = parent.AddUIComponent<SettingsItemGroup>();
 
-            var result = parent.AddCheckboxPanel(optionsSaved, labels, 0, onValueChanged);
+            var labelItem = groupItem.AddUIComponent<LabelSettingsItem>();
+            labelItem.Label = mainLabel;
 
-            return new OptionPanelWithLabelData()
+            var checkBoxItem = groupItem.AddCheckboxPanel(optionsSaved, labels, onValueChanged);
+
+            return new OptionPanelData()
             {
-                label = item,
-                panel = result.panel,
-                checkBoxes = result.checkBoxes,
+                group = groupItem,
+                label = labelItem,
+                checkBoxes = checkBoxItem,
             };
         }
-        public static OptionPanelWithMainData AddTogglePanel(this UIComponent parent, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action<bool> onStateChanged = null, Action<int> onValueChanged = null)
+        public static OptionPanelData AddTogglePanel(this UIComponent parent, string mainLabel, SavedBool mainSaved, SavedInt optionsSaved, string[] labels, Action<bool> onStateChanged = null, Action<int> onValueChanged = null)
         {
-            var item = parent.AddUIComponent<ToggleSettingsItem>();
-            item.Label = mainLabel;
+            var groupItem = parent.AddUIComponent<SettingsItemGroup>();
 
-            item.Control.State = mainSaved;
+            var toggleItem = groupItem.AddUIComponent<ToggleSettingsItem>();
+            toggleItem.Label = mainLabel;
+            toggleItem.Control.State = mainSaved;
 
-            var result = parent.AddCheckboxPanel(optionsSaved, labels, 0, onValueChanged);
-            var optionsPanel = result.panel;
+            var checkBoxItem = groupItem.AddCheckboxPanel(optionsSaved, labels, onValueChanged);
 
-            item.Control.OnStateChanged += OnStateChanged;
+            toggleItem.Control.OnStateChanged += OnStateChanged;
             if (onStateChanged != null)
-                item.Control.OnStateChanged += onStateChanged;
+                toggleItem.Control.OnStateChanged += onStateChanged;
 
             SetVisible(mainSaved);
 
-            return new OptionPanelWithMainData()
+            return new OptionPanelData()
             {
-                toggle = item,
-                panel = result.panel,
-                checkBoxes = result.checkBoxes,
+                group = groupItem,
+                toggle = toggleItem,
+                checkBoxes = checkBoxItem,
             };
 
             void OnStateChanged(bool value)
@@ -239,7 +222,7 @@ namespace ModsCommon.Settings
                 mainSaved.value = value;
                 SetVisible(value);
             };
-            void SetVisible(bool visible) => optionsPanel.isVisible = visible;
+            void SetVisible(bool visible) => checkBoxItem.isVisible = visible;
         }
 
         public static KeymappingSettingsItem AddKeyMappingButton(this UIComponent parent, Shortcut shortcut, Action<Shortcut> onBindingChanged = null)
@@ -253,41 +236,21 @@ namespace ModsCommon.Settings
             return item;
         }
 
-        private static OptionPanelData AddCheckboxPanel(this UIComponent parent, SavedInt optionsSaved, string[] labels, int padding, Action<int> onValueChanged)
+        private static CheckPanelSettingsItem AddCheckboxPanel(this UIComponent parent, SavedInt optionsSaved, string[] labels, Action<int> onValueChanged)
         {
-            var inProcess = false;
-            var checkBoxes = new UICheckBox[labels.Length];
+            var item = parent.AddUIComponent<CheckPanelSettingsItem>();
+            item.Init(labels);
+            item.Value = optionsSaved;
 
-            var optionsPanel = parent.AddPanel(25 + padding);
-            var panelHelper = new UIHelper(optionsPanel);
+            item.OnValueChanged += OnValueChanged;
+            if (onValueChanged != null)
+                item.OnValueChanged += onValueChanged;
 
-            for (var i = 0; i < checkBoxes.Length; i += 1)
-            {
-                var index = i;
-                checkBoxes[i] = panelHelper.AddCheckbox(labels[i], optionsSaved == i, (value) => Set(index, value)) as UICheckBox;
-                checkBoxes[i].Find<UILabel>("Label").textScale = 0.9f;
-            }
+            return item;
 
-            return new OptionPanelData()
-            {
-                panel = optionsPanel,
-                checkBoxes = checkBoxes,
-            };
-
-            void Set(int index, bool value)
-            {
-                if (!inProcess)
-                {
-                    inProcess = true;
-                    optionsSaved.value = index;
-                    onValueChanged?.Invoke(index);
-                    for (var i = 0; i < checkBoxes.Length; i += 1)
-                        checkBoxes[i].isChecked = optionsSaved == i;
-                    inProcess = false;
-                }
-            }
+            void OnValueChanged(int value) => optionsSaved.value = value;
         }
-        private static CustomUIPanel AddPanel(this UIComponent parent, int padding = 25)
+        private static CustomUIPanel AddPanel(this UIComponent parent, RectOffset padding = null)
         {
             var optionsPanel = parent.AddUIComponent<CustomUIPanel>();
             optionsPanel.PauseLayout(() =>
@@ -295,18 +258,19 @@ namespace ModsCommon.Settings
                 optionsPanel.AutoLayout = AutoLayout.Vertical;
                 optionsPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
                 optionsPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
-                optionsPanel.Padding = new RectOffset(padding, 0, 0, 0);
+                optionsPanel.Padding = padding ?? new RectOffset();
             });
             return optionsPanel;
         }
 
-        public static SettingsContentItem AddButtonPanel(this UIComponent parent, RectOffset padding = null, int itemSpacing = 10, SettingsContentItem.Border border = SettingsContentItem.Border.None)
+        public static ContentSettingsItem AddButtonPanel(this UIComponent parent, RectOffset padding = null, int itemSpacing = 10)
         {
             var item = parent.AddHorizontalPanel(padding ?? new RectOffset(0, 0, 5, 5), itemSpacing);
-            item.Borders = border;
+            item.BorderEnabled = false;
+            item.CanHover = false;
             return item;
         }
-        public static CustomUIButton AddButton(this SettingsContentItem item, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
+        public static CustomUIButton AddButton(this ContentSettingsItem item, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
         {
             var button = item.Content.AddUIComponent<CustomUIButton>();
             button.text = text;
@@ -324,9 +288,9 @@ namespace ModsCommon.Settings
             return button;
         }
 
-        public static SettingsContentItem AddHorizontalPanel(this UIComponent parent, RectOffset padding, int itemSpacing)
+        public static ContentSettingsItem AddHorizontalPanel(this UIComponent parent, RectOffset padding, int itemSpacing)
         {
-            var optionsPanel = parent.AddUIComponent<SettingsContentItem>();
+            var optionsPanel = parent.AddUIComponent<ContentSettingsItem>();
             optionsPanel.Padding = padding;
             optionsPanel.Content.AutoLayoutSpace = itemSpacing;
             return optionsPanel;
@@ -338,23 +302,14 @@ namespace ModsCommon.Settings
 
             return item;
         }
+        public static SettingsItemGroup AddItemsGroup(this UIComponent parent) => parent.AddUIComponent<SettingsItemGroup>();
 
         public struct OptionPanelData
         {
-            public CustomUIPanel panel;
-            public UICheckBox[] checkBoxes;
-        }
-        public struct OptionPanelWithMainData
-        {
-            public ToggleSettingsItem toggle;
-            public CustomUIPanel panel;
-            public UICheckBox[] checkBoxes;
-        }
-        public struct OptionPanelWithLabelData
-        {
+            public SettingsItemGroup group;
             public LabelSettingsItem label;
-            public CustomUIPanel panel;
-            public UICheckBox[] checkBoxes;
+            public ToggleSettingsItem toggle;
+            public CheckPanelSettingsItem checkBoxes;
         }
     }
 }

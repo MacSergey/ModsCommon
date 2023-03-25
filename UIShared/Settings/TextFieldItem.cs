@@ -10,7 +10,7 @@ namespace ModsCommon.UI
     public abstract class FieldSettingsItem<ValueType, FieldType> : ControlSettingsItem<FieldType>
         where FieldType : UITextField<ValueType>
     {
-        protected override RectOffset ItemsPadding => new RectOffset(10, 40, 7, 7);
+        protected override RectOffset ItemsPadding => new RectOffset(20, 20, 10, 10);
 
         public ValueType Value
         {

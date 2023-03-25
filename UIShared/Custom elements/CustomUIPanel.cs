@@ -289,7 +289,7 @@ namespace ModsCommon.UI
                 Padding = new RectOffset(old.left, old.right, value, old.bottom);
             }
         }
-        public int PaddingButtom
+        public int PaddingBottom
         {
             get => Padding.bottom;
             set
@@ -713,8 +713,7 @@ namespace ModsCommon.UI
             if (child != null)
                 AttachEvents(child);
 
-            if (AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
-                AutoArrange();
+            ChildChanged(child);
         }
 
         protected override void OnComponentRemoved(UIComponent child)
@@ -724,8 +723,7 @@ namespace ModsCommon.UI
             if (child != null)
                 DetachEvents(child);
 
-            if (AutoLayout != AutoLayout.Disabled && !IsLayoutSuspended)
-                AutoArrange();
+            ChildChanged(child);
         }
 
         private void AttachEvents(UIComponent child)
@@ -744,9 +742,11 @@ namespace ModsCommon.UI
             child.eventZOrderChanged -= ChildZOrderChanged;
         }
 
-        private void ChildZOrderChanged(UIComponent child, int value) => Reset();
-        private void ChildIsVisibleChanged(UIComponent child, bool value) => Reset();
-        private void ChildInvalidated(UIComponent child, Vector2 value) => Reset();
+        private void ChildZOrderChanged(UIComponent child, int value) => ChildChanged(child);
+        private void ChildIsVisibleChanged(UIComponent child, bool value) => ChildChanged(child);
+        private void ChildInvalidated(UIComponent child, Vector2 value) => ChildChanged(child);
+
+        protected virtual void ChildChanged(UIComponent child) => Reset();
 
         protected override void OnResolutionChanged(Vector2 previousResolution, Vector2 currentResolution)
         {

@@ -111,7 +111,7 @@ namespace ModsCommon.UI
             m_BackgroundSprites.m_Focused = sprites.focused;
             m_BackgroundSprites.m_Disabled = sprites.disabled;
             m_PressedBgSprite = sprites.pressed;
-            Invalidate();
+            OnColorChanged();
         }
         public void SetFgSprite(UI.SpriteSet sprites)
         {
@@ -120,7 +120,7 @@ namespace ModsCommon.UI
             m_ForegroundSprites.m_Focused = sprites.focused;
             m_ForegroundSprites.m_Disabled = sprites.disabled;
             m_PressedFgSprite = sprites.pressed;
-            Invalidate();
+            OnColorChanged();
         }
         public void SetTextColor(ColorSet colors)
         {
@@ -129,7 +129,7 @@ namespace ModsCommon.UI
             m_FocusedTextColor = colors.focused ?? new Color32(255, 255, 255, 255);
             m_DisabledTextColor = colors.disabled ?? new Color32(255, 255, 255, 255);
             m_PressedTextColor = colors.pressed ?? new Color32(255, 255, 255, 255);
-            Invalidate();
+            OnColorChanged();
         }
 
         #region BACKGROUND COLOR
@@ -144,7 +144,7 @@ namespace ModsCommon.UI
                 if (!bgColors.normal.Equals(value))
                 {
                     bgColors.normal = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace ModsCommon.UI
                 if (!bgColors.focused.Equals(value))
                 {
                     bgColors.focused = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -168,7 +168,7 @@ namespace ModsCommon.UI
                 if (!bgColors.hovered.Equals(value))
                 {
                     bgColors.hovered = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -180,7 +180,7 @@ namespace ModsCommon.UI
                 if (!bgColors.pressed.Equals(value))
                 {
                     bgColors.pressed = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -192,7 +192,7 @@ namespace ModsCommon.UI
                 if (!bgColors.disabled.Equals(value))
                 {
                     bgColors.disabled = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -200,7 +200,7 @@ namespace ModsCommon.UI
         public void SetBgColor(ColorSet colors)
         {
             bgColors = colors;
-            Invalidate();
+            OnColorChanged();
         }
 
         #endregion
@@ -217,7 +217,7 @@ namespace ModsCommon.UI
                 if (!fgColors.normal.Equals(value))
                 {
                     fgColors.normal = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace ModsCommon.UI
                 if (!fgColors.focused.Equals(value))
                 {
                     fgColors.focused = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -241,7 +241,7 @@ namespace ModsCommon.UI
                 if (!fgColors.hovered.Equals(value))
                 {
                     fgColors.hovered = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -253,7 +253,7 @@ namespace ModsCommon.UI
                 if (!fgColors.pressed.Equals(value))
                 {
                     fgColors.pressed = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace ModsCommon.UI
                 if (!fgColors.disabled.Equals(value))
                 {
                     fgColors.disabled = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -273,7 +273,7 @@ namespace ModsCommon.UI
         public void SetFgColor(ColorSet colors)
         {
             fgColors = colors;
-            Invalidate();
+            OnColorChanged();
         }
 
         #endregion
@@ -436,7 +436,7 @@ namespace ModsCommon.UI
                 if (!selectedBgColors.normal.Equals(value))
                 {
                     selectedBgColors.normal = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -448,7 +448,7 @@ namespace ModsCommon.UI
                 if (!selectedBgColors.focused.Equals(value))
                 {
                     selectedBgColors.focused = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -460,7 +460,7 @@ namespace ModsCommon.UI
                 if (!selectedBgColors.hovered.Equals(value))
                 {
                     selectedBgColors.hovered = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -472,7 +472,7 @@ namespace ModsCommon.UI
                 if (!selectedBgColors.pressed.Equals(value))
                 {
                     selectedBgColors.pressed = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -484,7 +484,7 @@ namespace ModsCommon.UI
                 if (!selectedBgColors.disabled.Equals(value))
                 {
                     selectedBgColors.disabled = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -492,7 +492,7 @@ namespace ModsCommon.UI
         public void SetSelectedBgColor(ColorSet colors)
         {
             selectedBgColors = colors;
-            Invalidate();
+            OnColorChanged();
         }
 
         #endregion
@@ -509,7 +509,7 @@ namespace ModsCommon.UI
                 if (!selectedFgColors.normal.Equals(value))
                 {
                     selectedFgColors.normal = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -521,7 +521,7 @@ namespace ModsCommon.UI
                 if (!selectedFgColors.focused.Equals(value))
                 {
                     selectedFgColors.focused = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -533,7 +533,7 @@ namespace ModsCommon.UI
                 if (!selectedFgColors.hovered.Equals(value))
                 {
                     selectedFgColors.hovered = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -545,7 +545,7 @@ namespace ModsCommon.UI
                 if (!selectedFgColors.pressed.Equals(value))
                 {
                     selectedFgColors.pressed = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -557,7 +557,7 @@ namespace ModsCommon.UI
                 if (!selectedFgColors.disabled.Equals(value))
                 {
                     selectedFgColors.disabled = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -565,7 +565,7 @@ namespace ModsCommon.UI
         public void SetSelectedFgColor(ColorSet colors)
         {
             selectedFgColors = colors;
-            Invalidate();
+            OnColorChanged();
         }
 
         #endregion
@@ -582,7 +582,7 @@ namespace ModsCommon.UI
                 if (!selectedTextColors.normal.Equals(value))
                 {
                     selectedTextColors.normal = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -594,7 +594,7 @@ namespace ModsCommon.UI
                 if (!selectedTextColors.focused.Equals(value))
                 {
                     selectedTextColors.focused = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -606,7 +606,7 @@ namespace ModsCommon.UI
                 if (!selectedTextColors.hovered.Equals(value))
                 {
                     selectedTextColors.hovered = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -618,7 +618,7 @@ namespace ModsCommon.UI
                 if (!selectedTextColors.pressed.Equals(value))
                 {
                     selectedTextColors.pressed = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -630,7 +630,7 @@ namespace ModsCommon.UI
                 if (!selectedTextColors.disabled.Equals(value))
                 {
                     selectedTextColors.disabled = value;
-                    Invalidate();
+                    OnColorChanged();
                 }
             }
         }
@@ -638,7 +638,7 @@ namespace ModsCommon.UI
         public void SetSelectedTextColor(ColorSet colors)
         {
             selectedTextColors = colors;
-            Invalidate();
+            OnColorChanged();
         }
 
         #endregion
@@ -720,7 +720,7 @@ namespace ModsCommon.UI
         }
         private void RenderText()
         {
-            if (m_Font == null || !m_Font.isValid)
+            if (m_Font == null || !m_Font.isValid || string.IsNullOrEmpty(m_Text))
                 return;
 
             using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
@@ -737,7 +737,6 @@ namespace ModsCommon.UI
             var maxSize = (autoSize ? (Vector2.one * 2.14748365E+09f) : vector);
             var ratio = PixelsToUnits();
             var vectorOffset = (pivot.TransformToUpperLeft(size, arbitraryPivotOffset) + new Vector3(textPadding.left, -textPadding.top)) * ratio;
-            GetTextScaleMultiplier();
 
             var renderer = font.ObtainRenderer();
             renderer.wordWrap = wordWrap;

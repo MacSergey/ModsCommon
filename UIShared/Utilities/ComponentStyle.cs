@@ -30,6 +30,30 @@ namespace ModsCommon.UI
         public static Color32 DarkPrimaryColor100 => new Color32(255, 255, 255, 255);
 
 
+        public static Color32 SettingsColor0 => new Color32(0, 0, 0, 255);
+        public static Color32 SettingsColor5 => new Color32(10, 13, 15, 255);
+        public static Color32 SettingsColor10 => new Color32(20, 25, 31, 255);
+        public static Color32 SettingsColor15 => new Color32(30, 38, 46, 255);
+        public static Color32 SettingsColor20 => new Color32(40, 50, 62, 255);
+        public static Color32 SettingsColor25 => new Color32(50, 63, 77, 255);
+        public static Color32 SettingsColor30 => new Color32(60, 75, 93, 255);
+        public static Color32 SettingsColor35 => new Color32(71, 88, 108, 255);
+        public static Color32 SettingsColor40 => new Color32(81, 101, 123, 255);
+        public static Color32 SettingsColor45 => new Color32(91, 113, 139, 255);
+        public static Color32 SettingsColor50 => new Color32(101, 126, 154, 255);
+        public static Color32 SettingsColor55 => new Color32(116, 139, 164, 255);
+        public static Color32 SettingsColor60 => new Color32(132, 152, 174, 255);
+        public static Color32 SettingsColor65 => new Color32(147, 165, 184, 255);
+        public static Color32 SettingsColor70 => new Color32(162, 177, 195, 255);
+        public static Color32 SettingsColor75 => new Color32(178, 190, 205, 255);
+        public static Color32 SettingsColor80 => new Color32(193, 203, 215, 255);
+        public static Color32 SettingsColor85 => new Color32(109, 216, 225, 255);
+        public static Color32 SettingsColor90 => new Color32(224, 229, 235, 255);
+        public static Color32 SettingsColor95 => new Color32(240, 242, 245, 255);
+        public static Color32 SettingsColor100 => new Color32(255, 255, 255, 255);
+
+
+
         public static Color32 ErrorNormalColor => new Color32(246, 84, 85, 255);
         public static Color32 ErrorPressedColor => new Color32(248, 68, 68, 255);
         public static Color32 ErrorFocusedColor => new Color32(225, 62, 62, 255);
@@ -44,14 +68,7 @@ namespace ModsCommon.UI
 
 
         public static Color32 NormalGreen => new Color32(98, 179, 45, 255);
-        public static Color32 HoveredGreen => new Color32(84, 153, 38, 255);
-        public static Color32 PressedGreen => new Color32(70, 128, 32, 255);
-
-        public static Color32 NormalSettingsGray => new Color32(48, 60, 74, 255);
-        public static Color32 HoveredSettingsGray => new Color32(85, 99, 115, 255);
-        public static Color32 HoveredSettingsGrayLight => new Color32(122, 138, 153, 255);
-        public static Color32 PressedSettingsGray => new Color32(100, 113, 128, 255);
-        public static Color32 DisabledSettingsGray => new Color32(29, 39, 51, 255);
+        public static Color32 HoveredGreen => new Color32(115, 205, 55, 255);
 
 
         public static Color32 PanelColor => DarkPrimaryColor20;
@@ -89,7 +106,7 @@ namespace ModsCommon.UI
         {
             button.atlas = CommonTextures.Atlas;
             button.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
-            button.SetBgColor(new ColorSet(HoveredSettingsGrayLight, PressedSettingsGray, PressedSettingsGray, HoveredSettingsGrayLight, DisabledSettingsGray));
+            button.SetBgColor(new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15));
             button.SetTextColor(new ColorSet(Color.white, Color.white, Color.white, null, null));
 
             button.horizontalAlignment = UIHorizontalAlignment.Center;
@@ -157,7 +174,7 @@ namespace ModsCommon.UI
 
             dropDown.atlasForeground = CommonTextures.Atlas;
             dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
-            dropDown.SetFgColor(new ColorSet(DisabledSettingsGray));
+            dropDown.SetFgColor(new ColorSet(SettingsColor15));
 
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
             dropDown.scaleFactor = 0.7f;
@@ -199,11 +216,11 @@ namespace ModsCommon.UI
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
             dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
-            dropDown.SetBgColor(new ColorSet(HoveredSettingsGrayLight, PressedSettingsGray, PressedSettingsGray, HoveredSettingsGrayLight, DisabledSettingsGray));
+            dropDown.SetBgColor(new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15));
 
             dropDown.atlasForeground = CommonTextures.Atlas;
             dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
-            dropDown.SetFgColor(new ColorSet(DisabledSettingsGray));
+            dropDown.SetFgColor(new ColorSet(SettingsColor15));
 
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
             dropDown.scaleFactor = 0.7f;
@@ -224,7 +241,7 @@ namespace ModsCommon.UI
         {
             popup.Atlas = CommonTextures.Atlas;
             popup.BackgroundSprite = CommonTextures.FieldSingle;
-            popup.color = NormalSettingsGray;
+            popup.color = SettingsColor25;
 
             popup.EntityHeight = entityHeight ?? 20f;
             popup.MaximumSize = new Vector2(230f, 700f);
@@ -237,7 +254,7 @@ namespace ModsCommon.UI
             entity.hoveredBgSprite = CommonTextures.FieldSingle;
             entity.focusedBgSprite = CommonTextures.FieldSingle;
 
-            entity.hoveredBgColor = HoveredSettingsGray;
+            entity.hoveredBgColor = SettingsColor45;
             entity.focusedBgColor = NormalBlue;
         }
 
@@ -287,10 +304,10 @@ namespace ModsCommon.UI
             textField.disabledBgSprite = CommonTextures.FieldSingle;
             textField.selectionSprite = CommonTextures.Empty;
 
-            textField.color = HoveredSettingsGrayLight;
-            textField.hoveredColor = PressedSettingsGray;
+            textField.color = SettingsColor60;
+            textField.hoveredColor = SettingsColor70;
             textField.focusedColor = NormalBlue;
-            textField.disabledColor = DisabledSettingsGray;
+            textField.disabledColor = SettingsColor15;
         }
 
         #endregion
@@ -318,7 +335,7 @@ namespace ModsCommon.UI
         {
             tabStrip.Atlas = CommonTextures.Atlas;
             tabStrip.BackgroundSprite = CommonTextures.PanelBig;
-            tabStrip.color = NormalSettingsGray;
+            tabStrip.color = SettingsColor25;
 
             tabStrip.TabSpacingHorizontal = 4;
             tabStrip.TabSpacingVertical = 4;
@@ -330,9 +347,9 @@ namespace ModsCommon.UI
             tabStrip.TabFocusedSprite = CommonTextures.PanelSmall;
             tabStrip.TabDisabledSprite = CommonTextures.PanelSmall;
 
-            tabStrip.TabColor = NormalSettingsGray;
-            tabStrip.TabHoveredColor = HoveredSettingsGray;
-            tabStrip.TabPressedColor = PressedSettingsGray;
+            tabStrip.TabColor = SettingsColor25;
+            tabStrip.TabHoveredColor = SettingsColor45;
+            tabStrip.TabPressedColor = SettingsColor55;
             tabStrip.TabFocusedColor = NormalBlue;
         }
 
@@ -342,11 +359,11 @@ namespace ModsCommon.UI
 
         public static Color32 ToggleOnNormalColor => NormalGreen;
         public static Color32 ToggleOnHoveredColor => HoveredGreen;
-        public static Color32 ToggleOnPressedColor => PressedGreen;
+        public static Color32 ToggleOnPressedColor => HoveredGreen;
 
         public static Color32 ToggleOffNormalColor => DarkPrimaryColor55;
-        public static Color32 ToggleOffHoveredColor => DarkPrimaryColor45;
-        public static Color32 ToggleOffPressedColor => DarkPrimaryColor35;
+        public static Color32 ToggleOffHoveredColor => DarkPrimaryColor65;
+        public static Color32 ToggleOffPressedColor => DarkPrimaryColor65;
 
 
         public static void DefaultStyle(this CustomUIToggle toggle)
@@ -382,9 +399,9 @@ namespace ModsCommon.UI
             toggle.OnHoverColor = ToggleOnHoveredColor;
             toggle.OnPressedColor = ToggleOnHoveredColor;
 
-            toggle.OffColor = HoveredSettingsGrayLight;
-            toggle.OffHoverColor = PressedSettingsGray;
-            toggle.OffPressedColor = PressedSettingsGray;
+            toggle.OffColor = SettingsColor60;
+            toggle.OffHoverColor = SettingsColor70;
+            toggle.OffPressedColor = SettingsColor70;
 
             toggle.CircleScale = 0.7f;
             toggle.ShowMark = true;
@@ -409,6 +426,19 @@ namespace ModsCommon.UI
             scrollbar.DefaultValue();
         }
 
+        public static void SettingsStyle(this CustomUIScrollbar scrollbar)
+        {
+            scrollbar.AtlasTrack = CommonTextures.Atlas;
+            scrollbar.TrackSprite = CommonTextures.FieldSingle;
+            scrollbar.TrackColor = SettingsColor30;
+
+            scrollbar.AtlasThumb = CommonTextures.Atlas;
+            scrollbar.ThumbSprite = CommonTextures.FieldSingle;
+            scrollbar.ThumbColor = SettingsColor50;
+
+            scrollbar.DefaultValue();
+        }
+
         private static void DefaultValue(this CustomUIScrollbar scrollbar)
         {
             scrollbar.Increment = 50f;
@@ -429,6 +459,20 @@ namespace ModsCommon.UI
                     scrollbar.ThumbPadding = new RectOffset(0, 4, 4, 4);
                     break;
             }
+        }
+
+        #endregion
+
+        #region CHECKBOX
+
+        public static void SettingsStyle(this CustomUICheckBox checkBox)
+        {
+            checkBox.Atlas = CommonTextures.Atlas;
+            checkBox.MarkSize = new Vector2(14f, 14f);
+            checkBox.CheckedSprite = CommonTextures.RadioChecked;
+            checkBox.UncheckedSprite = CommonTextures.RadioUnchecked;
+            checkBox.CheckedNormalColor = NormalBlue;
+            checkBox.TextPadding.left = 10;
         }
 
         #endregion

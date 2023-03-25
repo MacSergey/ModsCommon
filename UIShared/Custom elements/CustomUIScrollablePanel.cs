@@ -37,11 +37,11 @@ namespace ModsCommon.UI
             clipChildren = true;
             builtinKeyNavigation = true;
 
-            if (maximumSize == Vector2.zero)
-            {
-                Camera camera = GetCamera();
-                maximumSize = new Vector3(camera.pixelWidth / 2, camera.pixelHeight / 2);
-            }
+            //if (maximumSize == Vector2.zero)
+            //{
+            //    Camera camera = GetCamera();
+            //    maximumSize = new Vector3(camera.pixelWidth / 2, camera.pixelHeight / 2);
+            //}
         }
 
         private void Initialize()

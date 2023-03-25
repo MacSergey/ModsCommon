@@ -10,13 +10,17 @@ namespace ModsCommon.Utilities
 
         public static string PanelSmall => nameof(PanelSmall);
         public static string PanelBig => nameof(PanelBig);
+        public static string PanelLarge => nameof(PanelLarge);
 
         public static string BorderBottom => nameof(BorderBottom);
         public static string BorderTop => nameof(BorderTop);
         public static string BorderBoth => nameof(BorderBoth);
         public static string BorderSmall => nameof(BorderSmall);
         public static string BorderBig => nameof(BorderBig);
-        public static string PanelShadow => nameof(PanelShadow);
+        public static string BorderLarge => nameof(BorderLarge);
+
+        public static string ShadowVertical => nameof(ShadowVertical);
+        public static string ShadowHorizontal => nameof(ShadowHorizontal);
 
         public static string FieldSingle => nameof(FieldSingle);
         public static string FieldLeft => nameof(FieldLeft);
@@ -91,19 +95,26 @@ namespace ModsCommon.Utilities
 
         public static string Success { get; } = nameof(Success);
 
+        public static string RadioChecked { get; } = nameof(RadioChecked);
+        public static string RadioUnchecked { get; } = nameof(RadioUnchecked);
+
         static CommonTextures()
         {
             var spriteParams = new Dictionary<string, RectOffset>();
 
             spriteParams[PanelSmall] = new RectOffset(4, 4, 4, 4);
             spriteParams[PanelBig] = new RectOffset(6, 6, 6, 6);
+            spriteParams[PanelLarge] = new RectOffset(10, 10, 10, 10);
 
             spriteParams[BorderBottom] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderTop] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderBoth] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderSmall] = new RectOffset(4, 4, 4, 4);
             spriteParams[BorderBig] = new RectOffset(6, 6, 6, 6);
-            spriteParams[PanelShadow] = new RectOffset();
+            spriteParams[BorderLarge] = new RectOffset(10, 10, 10, 10);
+
+            spriteParams[ShadowVertical] = new RectOffset();
+            spriteParams[ShadowHorizontal] = new RectOffset();
 
             spriteParams[Success] = new RectOffset();
 
@@ -149,6 +160,10 @@ namespace ModsCommon.Utilities
             spriteParams[ToggleBackground] = new RectOffset(17, 17, 0, 0);
             spriteParams[ToggleBackgroundSmall] = new RectOffset(11, 11, 0, 0);
             spriteParams[ToggleCircle] = new RectOffset();
+
+            //Radio
+            spriteParams[RadioChecked] = new RectOffset();
+            spriteParams[RadioUnchecked] = new RectOffset();
 
             //Tab
             spriteParams[Tab] = new RectOffset(4, 4, 4, 4);

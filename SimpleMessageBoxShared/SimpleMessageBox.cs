@@ -17,6 +17,8 @@ namespace ModsCommon.UI
         {
             Content.PauseLayout(()=>
             {
+                Content.AutoLayoutSpace = 15;
+
                 Message = AddLabel();
                 Message.minimumSize = new Vector2(0, 79);
             });
@@ -31,7 +33,7 @@ namespace ModsCommon.UI
             label.textScale = 1.1f;
             label.wordWrap = true;
             label.autoHeight = true;
-            label.width = DefaultWidth - 2 * Padding;
+            label.padding = new RectOffset(10,10, 10, 10);
 
             return label;
         }

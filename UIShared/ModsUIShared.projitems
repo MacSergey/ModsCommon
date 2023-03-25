@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BlurEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\AutoLayoutPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUICheckBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIScrollablePanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIScrollbar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown\BaseDropDown.cs" />
@@ -20,9 +21,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUITextField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown\SelectItemDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown\SimpleDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\BorderSettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\ControlSettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsItemSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\CheckPanelSettingsItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\KeymappingItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\LanguageItem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsContentItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsItemGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsLabelItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\TextFieldItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\ToggleItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Toggle.cs" />
@@ -133,13 +141,18 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Radio\RadioChecked.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Radio\RadioUnchecked.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderLarge.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\PanelLarge.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\ShadowHorizontal.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Success.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorDown.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorLeft.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorRight.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorUp.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Circle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\PanelShadow.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\ShadowVertical.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBackgroundSmall.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowDown.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowLeft.png" />
