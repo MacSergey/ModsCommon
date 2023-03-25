@@ -100,7 +100,17 @@ namespace ModsCommon.UI
         {
             SelectObject(value);
             ClosePopup();
-        }        
+        }
+
+        protected DropDownStyle Style { get; set; }
+        public void SetStyle(DropDownStyle style)
+        {
+            Style = style;
+
+            bgColors = style.BgColors;
+            fgColors = style.FgColors;
+            SetTextColor(style.TextColors);
+        }
 
         #endregion
     }

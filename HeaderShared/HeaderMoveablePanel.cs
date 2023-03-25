@@ -35,11 +35,10 @@ namespace ModsCommon.UI
 
             Caption = AddUIComponent<CustomUILabel>();
             Caption.zOrder = 0;
-            Caption.autoSize = false;
-            Caption.autoHeight = true;
-            Caption.padding.top = 5;
-            Caption.textAlignment = UIHorizontalAlignment.Center;
-            Caption.verticalAlignment = UIVerticalAlignment.Middle;
+            Caption.AutoSize = AutoSize.Height;
+            Caption.Padding.top = 5;
+            Caption.HorizontalAlignment = UIHorizontalAlignment.Center;
+            Caption.VerticalAlignment = UIVerticalAlignment.Middle;
             Caption.eventSizeChanged += (_, _) => CaptionSizeChanged();
 
             Content = AddUIComponent<TypeContent>();

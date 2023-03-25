@@ -97,6 +97,10 @@ namespace ModsCommon.UI
         private void SliderChanged(ValueType value) => ValueChanged(value);
         private void FieldChanged(ValueType value) => ValueChanged(value);
 
+        public override void SetStyle(ControlStyle style)
+        {
+            Field.SetStyle(style.TextField);
+        }
 
 
         public override string ToString() => $"{base.ToString()}: {Value}";

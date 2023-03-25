@@ -47,5 +47,10 @@ namespace ModsCommon.UI
         }
         protected abstract void SelectorChangedImpl(ItemType selctedItem);
         protected abstract void Refresh();
+
+        public override void SetStyle(ControlStyle style)
+        {
+            Selector.SetStyle(style.Segmented);
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace ModsCommon.Utilities
     public class DependenciesMessageBox : MessageBoxBase
     {
         private CustomUILabel Label { get; set; }
-        private CustomUIPanel MessagePanel { get; set; }
+        private CustomUIPanel RequestPanel { get; set; }
         private CustomUIButton Button { get; set; }
         protected override int ContentSpacing => 5;
 
@@ -32,25 +32,25 @@ namespace ModsCommon.Utilities
                 Label = Content.AddUIComponent<CustomUILabel>();
                 Label.name = "Message";
                 Label.Bold = true;
-                Label.wordWrap = true;
-                Label.autoHeight = true;
+                Label.WordWrap = true;
+                Label.AutoSize = AutoSize.Height;
                 Label.textColor = ComponentStyle.DarkPrimaryColor100;
-                Label.textAlignment = UIHorizontalAlignment.Center;
-                Label.verticalAlignment = UIVerticalAlignment.Middle;
+                Label.HorizontalAlignment = UIHorizontalAlignment.Center;
+                Label.VerticalAlignment = UIVerticalAlignment.Middle;
 
-                Label.atlas = CommonTextures.Atlas;
-                Label.backgroundSprite = CommonTextures.PanelBig;
+                Label.Atlas = CommonTextures.Atlas;
+                Label.BackgroundSprite = CommonTextures.PanelBig;
                 Label.color = ComponentStyle.WarningColor;
-                Label.padding = new RectOffset(15, 15, 10, 10);
+                Label.Padding = new RectOffset(15, 15, 10, 10);
 
 
-                MessagePanel = Content.AddUIComponent<CustomUIPanel>();
-                MessagePanel.name = nameof(MessagePanel);
-                MessagePanel.AutoLayout = AutoLayout.Vertical;
-                MessagePanel.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
-                MessagePanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
-                MessagePanel.AutoLayoutSpace = 10;
-                MessagePanel.Padding = new RectOffset(0, 0, 10, 0);
+                RequestPanel = Content.AddUIComponent<CustomUIPanel>();
+                RequestPanel.name = nameof(RequestPanel);
+                RequestPanel.AutoLayout = AutoLayout.Vertical;
+                RequestPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
+                RequestPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                RequestPanel.AutoLayoutSpace = 10;
+                RequestPanel.Padding = new RectOffset(0, 0, 10, 0);
 
                 Button = AddButton(OkClick);
                 ButtonText = CommonLocalize.MessageBox_OK;
@@ -64,19 +64,19 @@ namespace ModsCommon.Utilities
                 Close();
         }
 
-        public PluginMessage AddMessage()
+        public PluginRequest AddRequest()
         {
-            var message = MessagePanel.AddUIComponent<PluginMessage>();
-            return message;
+            var request = RequestPanel.AddUIComponent<PluginRequest>();
+            return request;
         }
-        public void RemoveMessage(PluginMessage message)
+        public void RemoveRequest(PluginRequest message)
         {
-            MessagePanel.RemoveUIComponent(message);
+            RequestPanel.RemoveUIComponent(message);
             Destroy(message.gameObject);
             Destroy(message);
         }
     }
-    public class PluginMessage : CustomUIPanel
+    public class PluginRequest : CustomUIPanel
     {
         private CustomUILabel Label { get; set; }
         private CustomUIButton Required { get; set; }
@@ -105,7 +105,7 @@ namespace ModsCommon.Utilities
         public string RequiredText { set => Required.text = value; }
         public string ResolvedText { set => Resolved.text = value; }
 
-        public PluginMessage()
+        public PluginRequest()
         {
             PauseLayout(() =>
             {
@@ -121,10 +121,9 @@ namespace ModsCommon.Utilities
                 NormalFgColor = ComponentStyle.DarkPrimaryColor10;
 
                 Label = AddUIComponent<CustomUILabel>();
-                Label.autoSize = false;
-                Label.autoHeight = true;
-                Label.wordWrap = true;
-                Label.padding = new RectOffset(10, 10, 5, 0);
+                Label.AutoSize = AutoSize.Height;
+                Label.WordWrap = true;
+                Label.Padding = new RectOffset(10, 10, 5, 0);
 
                 Required = AddUIComponent<CustomUIButton>();
                 Required.ButtonMessageBoxStyle();

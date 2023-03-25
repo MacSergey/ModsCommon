@@ -170,5 +170,20 @@ namespace ModsCommon.UI
             base.OnSizeChanged();
             SetCircle();
         }
+
+        public void SetStyle(ToggleStyle style)
+        {
+            onColor = style.OnColors.normal;
+            onHoverColor = style.OnColors.hovered;
+            onPressedColor = style.OnColors.pressed;
+            onDisabledColor = style.OnColors.disabled;
+
+            offColor = style.OffColors.normal;
+            offHoverColor = style.OffColors.hovered;
+            offPressedColor = style.OffColors.pressed;
+            offDisabledColor = style.OffColors.disabled;
+
+            SetState();
+        }
     }
 }

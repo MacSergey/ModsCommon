@@ -114,7 +114,7 @@ namespace ModsCommon.Utilities
             State = state;
         }
 
-        private void Show()
+        private void ShowMessageBox()
         {
             if (MessageBox == null)
             {
@@ -123,8 +123,6 @@ namespace ModsCommon.Utilities
                 MessageBox.OnButtonClick = () => IsValid ? EnablePlugin() : DisablePlugin();
                 MessageBox.OnCloseClick += () => enabled = false;
 
-                Plugin.SetState(false);
-                UpdateState();
                 UpdateMessageBox();
             }
         }
@@ -136,10 +134,15 @@ namespace ModsCommon.Utilities
                 MessageBox = null;
             }
         }
-        public PluginMessage AddMessage()
+        public PluginRequest AddRequest(bool setState = true)
         {
-            Show();
-            return MessageBox.AddMessage();
+            ShowMessageBox();
+
+            if(setState)
+                Plugin.SetState(false);
+
+            UpdateState();
+            return MessageBox.AddRequest();
         }
         private void UpdateMessageBox()
         {
@@ -218,6 +221,7 @@ namespace ModsCommon.Utilities
         }
 
         public abstract void Update();
-        protected PluginMessage AddMessage() => MainWatcher.AddMessage();
+        protected PluginRequest AddRequest() => MainWatcher.AddRequest();
+        protected float FakeProgress() => Mathf.Clamp01(DateTime.Now.Millisecond * 0.00125f);
     }
 }

@@ -135,6 +135,13 @@ namespace ModsCommon.UI
             OnValueChanged?.Invoke(Value);
             text = Value?.ToString() ?? NotSet;
         }
+
+        public void SetStyle(DropDownStyle style)
+        {
+            bgColors = style.BgColors;
+            fgColors = style.FgColors;
+            SetTextColor(style.TextColors);
+        }
     }
     public abstract class SelectListPropertyButton<Type> : SelectPropertyButton<Type>
     {

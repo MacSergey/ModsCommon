@@ -103,6 +103,10 @@ namespace ModsCommon.UI
                 }
             });
         }
+        public override void SetStyle(ControlStyle style)
+        {
+            Selector.SetStyle(style.Segmented);
+        }
 
         public class BoolSegmented : UIOnceSegmented<bool> { }
     }
@@ -121,6 +125,10 @@ namespace ModsCommon.UI
                 for (var i = 1; i <= count; i += 1)
                     Selector.AddItem(i, new OptionData(i.ToString()));
             });
+        }
+        public override void SetStyle(ControlStyle style)
+        {
+            Selector.SetStyle(style.Segmented);
         }
 
         public class IntSegmented : UIOnceSegmented<int> { }

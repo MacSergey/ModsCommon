@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon.Utilities
@@ -53,7 +54,7 @@ namespace ModsCommon.Utilities
             return !string.IsNullOrEmpty(name) ? name : Info.Name;
         }
         protected override Action GetAction(PluginInfo plugin) => () => Unsubscribe(plugin);
-        protected override Func<float> GetProgress(PluginInfo plugin) => () => DateTime.Now.Millisecond * 0.001f /*0.5f*/;
+        protected override Func<float> GetProgress(PluginInfo plugin) => FakeProgress;
 
         protected override string GetRequiredText(PluginInfo plugin)
         {

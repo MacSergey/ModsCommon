@@ -18,7 +18,7 @@ namespace ModsCommon.UI
 
         public string MessageText { set => Message.text = value; }
         public float MessageScale { set => Message.textScale = value; }
-        public UIHorizontalAlignment TextAlignment { set => Message.textAlignment = value; }
+        public UIHorizontalAlignment TextAlignment { set => Message.HorizontalAlignment = value; }
 
         private MessageType type;
         public MessageType Type
@@ -30,7 +30,7 @@ namespace ModsCommon.UI
                 {
                     type = value;
 
-                    Message.backgroundSprite = value == MessageType.None ? string.Empty : CommonTextures.PanelBig;
+                    Message.BackgroundSprite = value == MessageType.None ? string.Empty : CommonTextures.PanelBig;
                     Message.color = value switch
                     {
                         MessageType.Regular => ComponentStyle.DarkPrimaryColor15,
@@ -50,13 +50,13 @@ namespace ModsCommon.UI
                 Message = Content.AddUIComponent<CustomUILabel>();
 
                 Message.Bold = true;
-                Message.textAlignment = UIHorizontalAlignment.Center;
-                Message.verticalAlignment = UIVerticalAlignment.Middle;
+                Message.HorizontalAlignment = UIHorizontalAlignment.Center;
+                Message.VerticalAlignment = UIVerticalAlignment.Middle;
                 Message.textScale = 1.1f;
-                Message.wordWrap = true;
-                Message.autoHeight = true;
-                Message.padding = new RectOffset(10, 10, 10, 10);
-                Message.atlas = CommonTextures.Atlas;
+                Message.WordWrap = true;
+                Message.AutoSize = AutoSize.Height;
+                Message.Padding = new RectOffset(10, 10, 10, 10);
+                Message.Atlas = CommonTextures.Atlas;
                 Message.minimumSize = new Vector2(0, 79);
 
                 Type = MessageType.Warning;

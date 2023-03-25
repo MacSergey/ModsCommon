@@ -64,7 +64,7 @@ namespace ModsCommon.Utilities
         public static string TabDisabled { get; } = nameof(TabDisabled);
 
         public static string Empty => nameof(Empty);
-        public static string EmptyWithotBorder => nameof(EmptyWithotBorder);
+        public static string EmptyWithoutBorder => nameof(EmptyWithoutBorder);
         public static string Circle => nameof(Circle);
 
         public static string OpacitySliderBoard { get; } = nameof(OpacitySliderBoard);
@@ -194,7 +194,7 @@ namespace ModsCommon.Utilities
             spriteParams[HeaderHover] = new RectOffset(4, 4, 4, 4);
 
             spriteParams[Empty] = new RectOffset(4, 4, 4, 4);
-            spriteParams[EmptyWithotBorder] = new RectOffset();
+            spriteParams[EmptyWithoutBorder] = new RectOffset();
             spriteParams[Circle] = new RectOffset();
             spriteParams[Resize] = new RectOffset();
             spriteParams[PlusMinusButton] = new RectOffset();

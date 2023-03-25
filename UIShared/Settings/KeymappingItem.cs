@@ -43,9 +43,6 @@ namespace ModsCommon.UI
 
         private void OnBindingKeyDown(UIComponent comp, UIKeyEventParameter p)
         {
-            if (p.keycode != KeyCode.Escape)
-                return;
-
             if (Shortcut is Shortcut shortcut && !IsModifierKey(p.keycode))
             {
                 p.Use();
@@ -120,18 +117,17 @@ namespace ModsCommon.UI
                 set
                 {
                     ShortcutTitle.text = value.Label;
-                    ShortcutTitle.autoSize = true;
-                    ShortcutTitle.autoHeight = true;
+                    ShortcutTitle.AutoSize = AutoSize.All;
                 }
             }
 
             public WarningLabel()
             {
                 ShortcutTitle = AddUIComponent<CustomUILabel>();
-                ShortcutTitle.atlas = CommonTextures.Atlas;
-                ShortcutTitle.backgroundSprite = CommonTextures.PanelBig;
+                ShortcutTitle.Atlas = CommonTextures.Atlas;
+                ShortcutTitle.BackgroundSprite = CommonTextures.PanelBig;
                 ShortcutTitle.color = ComponentStyle.SettingsColor50;
-                ShortcutTitle.padding = new RectOffset(30, 30, 0, 5);
+                ShortcutTitle.Padding = new RectOffset(30, 30, 0, 5);
                 ShortcutTitle.autoSize = true;
                 ShortcutTitle.textScale = 3f;
 
@@ -139,19 +135,19 @@ namespace ModsCommon.UI
                 pressAnyKey.Bold = true;
                 pressAnyKey.text = CommonLocalize.Settings_PressAnyKey.ToUpper();
                 pressAnyKey.textScale = 7f;
-                pressAnyKey.padding = new RectOffset(0, 0, 15, 30);
-                pressAnyKey.autoHeight = true;
+                pressAnyKey.Padding = new RectOffset(0, 0, 15, 30);
+                pressAnyKey.AutoSize = AutoSize.All;
 
                 var pressEsc = AddUIComponent<CustomUILabel>();
                 pressEsc.text = $"{string.Format(CommonLocalize.Settings_DiscardShortcut, LocalizeExtension.Esc.ToUpper())}\n{string.Format(CommonLocalize.Settings_ResetShortcut, LocalizeExtension.Backspace.ToUpper())}";
-                pressEsc.atlas = CommonTextures.Atlas;
-                pressEsc.backgroundSprite = CommonTextures.PanelBig;
+                pressEsc.Atlas = CommonTextures.Atlas;
+                pressEsc.BackgroundSprite = CommonTextures.PanelBig;
                 pressEsc.color = ComponentStyle.SettingsColor20;
                 pressEsc.textColor = ComponentStyle.SettingsColor90;
                 pressEsc.textScale = 1f;
-                pressEsc.padding = new RectOffset(15, 15, 7, 7);
-                pressEsc.textAlignment = UIHorizontalAlignment.Center;
-                pressEsc.autoSize = true;
+                pressEsc.Padding = new RectOffset(15, 15, 7, 7);
+                pressEsc.HorizontalAlignment = UIHorizontalAlignment.Center;
+                pressEsc.AutoSize = AutoSize.All;
 
                 Atlas = CommonTextures.Atlas;
                 BackgroundSprite = CommonTextures.PanelLarge;

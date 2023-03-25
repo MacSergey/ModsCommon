@@ -134,7 +134,7 @@ namespace ModsCommon.UI
 
         #region BACKGROUND COLOR
 
-        ColorSet bgColors;
+        protected ColorSet bgColors;
 
         public Color32 normalBgColor
         {
@@ -207,7 +207,7 @@ namespace ModsCommon.UI
 
         #region FOREGROUND COLOR
 
-        ColorSet fgColors;
+        protected ColorSet fgColors;
 
         public Color32 normalFgColor
         {
@@ -426,7 +426,7 @@ namespace ModsCommon.UI
 
         #region SELECTED BACKGROUND COLOR
 
-        ColorSet selectedBgColors;
+        protected ColorSet selectedBgColors;
 
         public Color32 selectedNormalBgColor
         {
@@ -499,7 +499,7 @@ namespace ModsCommon.UI
 
         #region SELECTED FOREGROUND COLOR
 
-        ColorSet selectedFgColors;
+        protected ColorSet selectedFgColors;
 
         public Color32 selectedNormalFgColor
         {
@@ -572,7 +572,7 @@ namespace ModsCommon.UI
 
         #region SELECTED TEXT COLOR
 
-        ColorSet selectedTextColors;
+        protected ColorSet selectedTextColors;
 
         public Color32 selectedNormalTextColor
         {
@@ -642,6 +642,20 @@ namespace ModsCommon.UI
         }
 
         #endregion
+
+        public void SetStyle(ButtonStyle style)
+        {
+            bgColors = style.BgColors;
+            selectedBgColors = style.SelBgColors;
+
+            fgColors = style.FgColors;
+            selectedFgColors = style.SelFgColors;
+
+            SetTextColor(style.TextColors);
+            selectedTextColors = style.SelTextColors;
+
+            OnColorChanged();
+        }
 
         private bool bold;
         public bool Bold

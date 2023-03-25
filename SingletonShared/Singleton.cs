@@ -39,6 +39,9 @@ namespace ModsCommon
 
         public string GetLocalizedString(string key, CultureInfo culture = null);
         public IEnumerable<string> GetSupportLocales();
+
+        public void ShowGameOutOfDate();
+        public void ShowModOutOfDate();
     }
     public abstract class SingletonMod<T> : SingletonItem<T>
         where T : ICustomMod

@@ -131,12 +131,12 @@ namespace ModsCommon.UI
 
             Caption = Header.AddUIComponent<CustomUILabel>();
             Caption.name = nameof(Caption);
+            Caption.AutoSize = AutoSize.None;
             Caption.Bold = true;
-            Caption.textAlignment = UIHorizontalAlignment.Center;
+            Caption.HorizontalAlignment = UIHorizontalAlignment.Center;
+            Caption.VerticalAlignment = UIVerticalAlignment.Middle;
             Caption.textScale = 1.3f;
-            Caption.anchor = UIAnchorStyle.Top;
-
-            Caption.eventTextChanged += (_, _) => Caption.CenterToParent();
+            Caption.size = Header.size;
 
             var cancel = Header.AddUIComponent<CustomUIButton>();
             cancel.atlas = CommonTextures.Atlas;
@@ -150,8 +150,6 @@ namespace ModsCommon.UI
             Header.eventSizeChanged += (component, size) =>
             {
                 Caption.size = size;
-                Caption.CenterToParent();
-
                 background.size = size;
             };
             Header.size = new Vector2(DefaultWidth, 42);

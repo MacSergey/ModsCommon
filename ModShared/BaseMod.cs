@@ -243,9 +243,15 @@ namespace ModsCommon
                 }
 
                 if ((Status & ModStatus.GameOutOfDate) != 0)
-                    ShowGameOutOfDate();
+                {
+                    if (BaseSettings<TypeMod>.CompatibleCheckGameVersion != CurrentGameVersion || BaseSettings<TypeMod>.CompatibleCheckModVersion != Version)
+                        ShowGameOutOfDate();
+                }
                 else if ((Status & ModStatus.ModOutOfDate) != 0)
-                    ShowModOutOfDate();
+                {
+                    if (BaseSettings<TypeMod>.CompatibleCheckGameVersion != CurrentGameVersion || BaseSettings<TypeMod>.CompatibleCheckModVersion != Version)
+                        ShowModOutOfDate();
+                }
             }
         }
         protected virtual void SetCulture(CultureInfo culture) { }
@@ -412,36 +418,30 @@ namespace ModsCommon
 
         public void ShowGameOutOfDate()
         {
-            if (BaseSettings<TypeMod>.CompatibleCheckGameVersion != CurrentGameVersion || BaseSettings<TypeMod>.CompatibleCheckModVersion != Version)
-            {
-                var message = MessageBox.Show<ThreeButtonMessageBox>();
-                message.CaptionText = NameRaw;
-                message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_GameOutOfDate, RequiredGameVersion.GetStringGameFormat(), CurrentGameVersion.GetStringGameFormat());
-                message.Button1Text = CommonLocalize.MessageBox_OK;
-                message.Button2Text = CommonLocalize.Mod_VersionWarning_DontShow;
-                message.Button3Text = CommonLocalize.Dependency_Disable;
-                message.OnButton2Click = OnDontShowAgain;
-                message.OnButton3Click = OnDisable;
+            var message = MessageBox.Show<ThreeButtonMessageBox>();
+            message.CaptionText = NameRaw;
+            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_GameOutOfDate, RequiredGameVersion.GetStringGameFormat(), CurrentGameVersion.GetStringGameFormat());
+            message.Button1Text = CommonLocalize.MessageBox_OK;
+            message.Button2Text = CommonLocalize.Mod_VersionWarning_DontShow;
+            message.Button3Text = CommonLocalize.Dependency_Disable;
+            message.OnButton2Click = OnDontShowAgain;
+            message.OnButton3Click = OnDisable;
 
-                message.SetAutoButtonRatio();
-            }
+            message.SetAutoButtonRatio();
         }
         public void ShowModOutOfDate()
         {
-            if (BaseSettings<TypeMod>.CompatibleCheckGameVersion != CurrentGameVersion || BaseSettings<TypeMod>.CompatibleCheckModVersion != Version)
-            {
-                var message = MessageBox.Show<ThreeButtonMessageBox>();
-                message.CaptionText = NameRaw;
-                var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
-                message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_ModOutOfDate, requiredString, BuildConfig.applicationVersion);
-                message.Button1Text = CommonLocalize.MessageBox_OK;
-                message.Button2Text = CommonLocalize.Dependency_Disable;
-                message.Button3Text = CommonLocalize.Mod_VersionWarning_DontShow;
-                message.OnButton2Click = OnDisable;
-                message.OnButton3Click = OnDontShowAgain;
+            var message = MessageBox.Show<ThreeButtonMessageBox>();
+            message.CaptionText = NameRaw;
+            var requiredString = BuildConfig.VersionToString(BuildConfig.MakeVersionNumber((uint)RequiredGameVersion.Major, (uint)RequiredGameVersion.Minor, (uint)RequiredGameVersion.Build, BuildConfig.ReleaseType.Final, (uint)RequiredGameVersion.Revision, BuildConfig.BuildType.Unknown), false);
+            message.MessageText = string.Format(CommonLocalize.Mod_VersionWarning_ModOutOfDate, requiredString, BuildConfig.applicationVersion);
+            message.Button1Text = CommonLocalize.MessageBox_OK;
+            message.Button2Text = CommonLocalize.Dependency_Disable;
+            message.Button3Text = CommonLocalize.Mod_VersionWarning_DontShow;
+            message.OnButton2Click = OnDisable;
+            message.OnButton3Click = OnDontShowAgain;
 
-                message.SetAutoButtonRatio();
-            }
+            message.SetAutoButtonRatio();
         }
         private bool OnDisable()
         {

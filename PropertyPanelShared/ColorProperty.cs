@@ -235,7 +235,7 @@ namespace ModsCommon.UI
             var label = parent.AddUIComponent<CustomUILabel>();
             label.text = name;
             label.textScale = 0.7f;
-            label.padding = new RectOffset(0, 0, 2, 0);
+            label.Padding = new RectOffset(0, 0, 2, 0);
 
             var field = parent.AddUIComponent<ByteUITextField>();
             field.SetDefaultStyle();
@@ -419,6 +419,14 @@ namespace ModsCommon.UI
             }
 
             return $"{r:X2}{g:X2}{b:X2}";
+        }
+
+        public override void SetStyle(ControlStyle style)
+        {
+            RProperty.SetStyle(style.TextField);
+            GProperty.SetStyle(style.TextField);
+            BProperty.SetStyle(style.TextField);
+            AProperty.SetStyle(style.TextField);
         }
 
         public override string ToString() => $"{base.ToString()}: {Value}";

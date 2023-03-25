@@ -46,14 +46,13 @@ namespace ModsCommon.UI
                 autoChildrenVertically = AutoLayoutChildren.Fit;
 
                 Label = AddUIComponent<CustomUILabel>();
-                Label.atlas = CommonTextures.Atlas;
-                Label.backgroundSprite = CommonTextures.PanelBig;
+                Label.Atlas = CommonTextures.Atlas;
+                Label.BackgroundSprite = CommonTextures.PanelBig;
                 Label.color = DefaultColor;
                 Label.textScale = DefaultTextScale;
-                Label.autoSize = false;
-                Label.autoHeight = true;
-                Label.wordWrap = true;
-                Label.padding = new RectOffset(5, 5, 5, 5);
+                Label.AutoSize = AutoSize.Height;
+                Label.WordWrap = true;
+                Label.Padding = new RectOffset(10, 10, 7, 5);
             });
         }
         public override void DeInit()
@@ -70,6 +69,10 @@ namespace ModsCommon.UI
         {
             base.OnSizeChanged();
             Label.width = width - Padding.horizontal;
+        }
+        public override void SetStyle(ControlStyle style)
+        {
+
         }
     }
 

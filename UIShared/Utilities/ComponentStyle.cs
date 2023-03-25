@@ -123,6 +123,30 @@ namespace ModsCommon.UI
             button.textPadding.top = 2;
         }
 
+        [Obsolete]
+        public static Color32 ButtonNormal => Color.white;
+        [Obsolete]
+        public static Color32 ButtonHovered => new Color32(224, 224, 224, 255);
+        [Obsolete]
+        public static Color32 ButtonPressed => new Color32(192, 192, 192, 255);
+        [Obsolete]
+        public static Color32 ButtonFocused => new Color32(160, 160, 160, 255);
+        [Obsolete]
+        public static void SetDefaultStyle(this UIButton button)
+        {
+            button.atlas = TextureHelper.InGameAtlas;
+            button.normalBgSprite = "ButtonWhite";
+            button.disabledBgSprite = "ButtonWhite";
+            button.hoveredBgSprite = "ButtonWhite";
+            button.pressedBgSprite = "ButtonWhite";
+            button.color = ButtonNormal;
+            button.hoveredColor = ButtonHovered;
+            button.pressedColor = ButtonPressed;
+            button.disabledColor = ButtonFocused;
+            button.textColor = button.hoveredTextColor = button.focusedTextColor = Color.black;
+            button.pressedTextColor = button.disabledTextColor = Color.white;
+        }
+
         #endregion
 
         #region DROPDOWN
@@ -159,7 +183,7 @@ namespace ModsCommon.UI
             popup.EntityHeight = entityHeight ?? 20f;
             popup.MaximumSize = new Vector2(230f, 700f);
         }
-        public static void EntityStyle<ObjectType, EntityType>(this EntityType entity)
+        public static void EntityDefaultStyle<ObjectType, EntityType>(this EntityType entity)
             where EntityType : CustomUIButton, IPopupEntity<ObjectType>
         {
             entity.atlas = CommonTextures.Atlas;
@@ -316,7 +340,16 @@ namespace ModsCommon.UI
             textField.focusedColor = NormalBlue;
             textField.disabledColor = SettingsColor15;
         }
+        public static void SetStyle(this CustomUITextField textField, TextFieldStyle style)
+        {
+            textField.color = style.Colors.normal;
+            textField.hoveredColor = style.Colors.hovered;
+            textField.focusedColor = style.Colors.focused;
+            textField.disabledColor = style.Colors.disabled;
 
+            textField.textColor = style.TextColor;
+            textField.selectionBackgroundColor = style.SelectionColor;
+        }
         #endregion
 
         #region TAB STRIPE
@@ -483,5 +516,181 @@ namespace ModsCommon.UI
         }
 
         #endregion
+
+    }
+
+    public class ControlStyle
+    {
+        public static ControlStyle Default { get; } = new ControlStyle()
+        {
+            TextField = new TextFieldStyle()
+            {
+                Colors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledColor),
+                TextColor = ComponentStyle.DarkPrimaryColor100,
+                SelectionColor = ComponentStyle.DarkPrimaryColor0,
+            },
+            Segmented = new ButtonStyle()
+            {
+                BgColors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledColor),
+                SelBgColors = new ColorSet(ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledFocusedColor),
+
+                FgColors = new ColorSet(ComponentStyle.DarkPrimaryColor100),
+                SelFgColors = new ColorSet(ComponentStyle.DarkPrimaryColor100),
+
+                TextColors = new ColorSet(ComponentStyle.DarkPrimaryColor100),
+                SelTextColors = new ColorSet(ComponentStyle.DarkPrimaryColor100),
+            },
+            Button = new ButtonStyle()
+            {
+                BgColors = new ColorSet(ComponentStyle.ButtonNormal, ComponentStyle.ButtonHovered, ComponentStyle.ButtonPressed, ComponentStyle.ButtonNormal, ComponentStyle.ButtonFocused),
+                SelBgColors = new ColorSet(),
+
+                FgColors = new ColorSet(ComponentStyle.ButtonNormal),
+                SelFgColors = new ColorSet(),
+
+                TextColors = new ColorSet(Color.black, Color.black, Color.white, Color.black, Color.white),
+                SelTextColors = new ColorSet(),
+            },
+            DropDown = new DropDownStyle()
+            {
+
+            },
+            Toggle = new ToggleStyle()
+            {
+                OnColors = new ColorSet(ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledFocusedColor),
+                OffColors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldNormalColor, ComponentStyle.FieldDisabledColor)
+            },
+        };
+
+        public TextFieldStyle TextField { get; set; }
+        public ButtonStyle Segmented { get; set; }
+        public ButtonStyle Button { get; set; }
+        public DropDownStyle DropDown { get; set; }
+        public ToggleStyle Toggle { get; set; }
+
+        public struct ColorSet
+        {
+            public Color32 normal;
+            public Color32 hovered;
+            public Color32 pressed;
+            public Color32 focused;
+            public Color32 disabled;
+
+            public ColorSet(Color32 normal, Color32 hovered, Color32 pressed, Color32 focused, Color32 disabled)
+            {
+                this.normal = normal;
+                this.hovered = hovered;
+                this.pressed = pressed;
+                this.focused = focused;
+                this.disabled = disabled;
+            }
+            public ColorSet(Color32 color)
+            {
+                this.normal = color;
+                this.hovered = color;
+                this.pressed = color;
+                this.focused = color;
+                this.disabled = color;
+            }
+
+            public static implicit operator UI.ColorSet(ColorSet set) => new UI.ColorSet(set.normal, set.hovered, set.pressed, set.focused, set.disabled);
+        }
+    }
+    public class BaseStyle
+    {
+
+    }
+    public class TextFieldStyle : BaseStyle
+    {
+        public ControlStyle.ColorSet Colors { get; set; }
+        public Color32 SelectionColor { get; set; }
+        public Color32 TextColor { get; set; }
+    }
+    public class ButtonStyle : BaseStyle
+    {
+        public ControlStyle.ColorSet BgColors { get; set; }
+        public ControlStyle.ColorSet SelBgColors { get; set; }
+        public ControlStyle.ColorSet FgColors { get; set; }
+        public ControlStyle.ColorSet SelFgColors { get; set; }
+        public ControlStyle.ColorSet TextColors { get; set; }
+        public ControlStyle.ColorSet SelTextColors { get; set; }
+    }
+    public class DropDownStyle : BaseStyle
+    {
+        public ControlStyle.ColorSet BgColors { get; set; }
+        public ControlStyle.ColorSet FgColors { get; set; }
+        public ControlStyle.ColorSet TextColors { get; set; }
+
+        public Color32 PopupColor { get; set; }
+
+        public Color32 EntityHoveredColor { get; set; }
+        public Color32 EntitySelectedColor { get; set; }
+    }
+    public class ToggleStyle : BaseStyle
+    {
+        public ControlStyle.ColorSet OnColors { get; set; }
+        public ControlStyle.ColorSet OffColors { get; set; }
+    }
+
+    public struct SpriteSet
+    {
+        public string normal;
+        public string hovered;
+        public string pressed;
+        public string focused;
+        public string disabled;
+
+        public SpriteSet(string normal, string hovered, string pressed, string focused, string disabled)
+        {
+            this.normal = normal;
+            this.hovered = hovered;
+            this.pressed = pressed;
+            this.focused = focused;
+            this.disabled = disabled;
+        }
+        public SpriteSet(string sprite)
+        {
+            this.normal = sprite;
+            this.hovered = sprite;
+            this.pressed = sprite;
+            this.focused = sprite;
+            this.disabled = sprite;
+        }
+    }
+
+    [Obsolete]
+    public struct ColorSet
+    {
+        public Color32? normal;
+        public Color32? hovered;
+        public Color32? pressed;
+        public Color32? focused;
+        public Color32? disabled;
+
+        public ColorSet(Color32? normal, Color32? hovered, Color32? pressed, Color32? focused, Color32? disabled)
+        {
+            this.normal = normal;
+            this.hovered = hovered;
+            this.pressed = pressed;
+            this.focused = focused;
+            this.disabled = disabled;
+        }
+        public ColorSet(Color32? color)
+        {
+            this.normal = color;
+            this.hovered = color;
+            this.pressed = color;
+            this.focused = color;
+            this.disabled = color;
+        }
+    }
+
+    public struct ItemStyle
+    {
+        public UITextureAtlas backgroundAtlas;
+        public UITextureAtlas foregroundAtlas;
+
+        public SpriteSet spritesBg;
+        public SpriteSet selectedSpritesBg;
     }
 }

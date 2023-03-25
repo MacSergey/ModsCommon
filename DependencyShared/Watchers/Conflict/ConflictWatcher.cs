@@ -37,7 +37,7 @@ namespace ModsCommon.Utilities
 
         protected ConflictDependencyInfo Info { get; }
         protected Dictionary<PluginInfo, PluginStateWatcher> Watchers { get; } = new Dictionary<PluginInfo, PluginStateWatcher>();
-        protected Dictionary<PluginInfo, PluginMessage> Messages { get; } = new Dictionary<PluginInfo, PluginMessage>();
+        protected Dictionary<PluginInfo, PluginRequest> Messages { get; } = new Dictionary<PluginInfo, PluginRequest>();
 
         public ConflictDependencyWatcher(DependenciesWatcher watcher, ConflictDependencyInfo info) : base(watcher)
         {
@@ -90,7 +90,7 @@ namespace ModsCommon.Utilities
                 case DependencyMessageState.Required:
                     if (message == null)
                     {
-                        message = AddMessage();
+                        message = AddRequest();
                         Messages[plugin] = message;
                     }
 

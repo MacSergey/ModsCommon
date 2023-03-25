@@ -44,10 +44,10 @@ namespace ModsCommon.Settings
             {
                 label = parent.AddUIComponent<CustomUILabel>();
                 label.name = "Title";
-                label.autoHeight = true;
+                label.AutoSize = AutoSize.Height;
                 label.font = ComponentStyle.SemiBoldFont;
                 label.textScale = 1.3f;
-                label.padding = new RectOffset(12, 0, 12, 0);
+                label.Padding = new RectOffset(12, 0, 12, 0);
                 label.text = name;
             }
             else

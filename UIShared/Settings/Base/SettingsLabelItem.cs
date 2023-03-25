@@ -21,11 +21,10 @@ namespace ModsCommon.UI
         {
             LabelItem = Content.AddUIComponent<CustomUILabel>();
             LabelItem.name = nameof(Label);
-            LabelItem.autoSize = false;
-            LabelItem.autoHeight = true;
-            LabelItem.wordWrap = true;
-            LabelItem.verticalAlignment = UIVerticalAlignment.Middle;
-            LabelItem.padding = new RectOffset(0, 0, 2, 0);
+            LabelItem.AutoSize = AutoSize.Height;
+            LabelItem.WordWrap = true;
+            LabelItem.VerticalAlignment = UIVerticalAlignment.Middle;
+            LabelItem.Padding = new RectOffset(0, 0, 2, 0);
         }
         protected override void RefreshItems()
         {

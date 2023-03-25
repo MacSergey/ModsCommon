@@ -227,16 +227,16 @@ namespace ModsCommon.Settings
                     var version = versionData.AddUIComponent<CustomUILabel>();
                     version.Bold = true;
                     version.text = SingletonMod<TypeMod>.Instance.Version.ToString();
-                    version.atlas = CommonTextures.Atlas;
-                    version.backgroundSprite = CommonTextures.FieldLeft;
+                    version.Atlas = CommonTextures.Atlas;
+                    version.BackgroundSprite = CommonTextures.FieldLeft;
                     version.color = ComponentStyle.SettingsColor25;
-                    version.padding = new RectOffset(5, 5, 3, 0);
+                    version.Padding = new RectOffset(5, 5, 3, 0);
 
                     var beta = versionData.AddUIComponent<CustomUILabel>();
                     beta.Bold = true;
-                    beta.atlas = CommonTextures.Atlas;
-                    beta.backgroundSprite = CommonTextures.FieldRight;
-                    beta.padding = new RectOffset(5, 5, 3, 0);
+                    beta.Atlas = CommonTextures.Atlas;
+                    beta.BackgroundSprite = CommonTextures.FieldRight;
+                    beta.Padding = new RectOffset(5, 5, 3, 0);
                     if (!SingletonMod<TypeMod>.Instance.IsBeta)
                     {
                         beta.text = "STABLE";
@@ -251,11 +251,12 @@ namespace ModsCommon.Settings
 
                 var statusData = infoPanel.AddUIComponent<CustomUILabel>();
                 statusData.Bold = true;
+                statusData.text = GetStatusText();
                 statusData.processMarkup = true;
-                statusData.atlas = CommonTextures.Atlas;
-                statusData.backgroundSprite = CommonTextures.FieldSingle;
+                statusData.Atlas = CommonTextures.Atlas;
+                statusData.BackgroundSprite = CommonTextures.FieldSingle;
                 statusData.color = ComponentStyle.SettingsColor25;
-                statusData.padding = new RectOffset(5, 5, 5, 3);
+                statusData.Padding = new RectOffset(5, 5, 5, 3);
 
                 if (InfoCallback != null)
                 {
@@ -445,16 +446,25 @@ namespace ModsCommon.Settings
 
             var buttonPanel = section.AddButtonPanel();
             buttonPanel.AddButton("Dependency message", OpenDependency, 200);
+            buttonPanel.AddButton("Game out of data", SingletonMod<TypeMod>.Instance.ShowGameOutOfDate, 200);
+            buttonPanel.AddButton("Mod out of date", SingletonMod<TypeMod>.Instance.ShowModOutOfDate, 200);
 
             static void OpenDependency()
             {
-                var message = SingletonMod<TypeMod>.Instance.DependencyWatcher.AddMessage();
+                var message = SingletonMod<TypeMod>.Instance.DependencyWatcher.AddRequest(false);
+                message.State = DependencyMessageState.Required;
                 message.Text = "Harmony";
                 message.RequiredText = "Get";
 
-                message = SingletonMod<TypeMod>.Instance.DependencyWatcher.AddMessage();
+                message = SingletonMod<TypeMod>.Instance.DependencyWatcher.AddRequest(false);
+                message.State = DependencyMessageState.InProgress;
                 message.Text = "Harmony";
-                message.RequiredText = "Get";
+                message.GetProgress = () => Mathf.Clamp01(DateTime.Now.Millisecond * 0.00125f);
+
+                message = SingletonMod<TypeMod>.Instance.DependencyWatcher.AddRequest(false);
+                message.State = DependencyMessageState.Resolved;
+                message.Text = "Harmony";
+                message.ResolvedText = "Installed";
             }
         }
 #endif

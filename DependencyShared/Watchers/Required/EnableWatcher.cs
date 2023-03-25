@@ -23,7 +23,7 @@ namespace ModsCommon.Utilities
         protected override string RequiredText => Watcher == null ? base.RequiredText : CommonLocalize.Dependency_Enable;
         protected override string ResolvedText => Watcher == null ? base.ResolvedText : CommonLocalize.Dependency_Enabled;
         protected override Action Action => Watcher == null ? base.Action : Enable;
-        protected override Func<float> Progress => Watcher == null ? base.Progress : null;
+        protected override Func<float> Progress => Watcher == null ? base.Progress : FakeProgress;
 
         public EnableDependencyWatcher(DependenciesWatcher watcher, RequiredDependencyInfo info) : base(watcher, info) { }
 

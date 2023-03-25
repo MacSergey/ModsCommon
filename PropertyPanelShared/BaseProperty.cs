@@ -158,10 +158,15 @@ namespace ModsCommon.UI
             visibleState = VisibleState.Visible;
             canCollapse = true;
             IsEven = false;
+
+            SetStyle(ControlStyle.Default);
         }
+        public abstract void SetStyle(ControlStyle style);
     }
-    public abstract class EditorPropertyPanel : BaseEditorPanel
+    public abstract class EditorPropertyPanel : BaseEditorPanel, IReusable
     {
+        bool IReusable.InCache { get; set; }
+
         private CustomUILabel LabelItem { get; set; }
         protected CustomUIPanel Content { get; set; }
 
@@ -195,12 +200,11 @@ namespace ModsCommon.UI
                 LabelItem.name = "Label";
                 LabelItem.relativePosition = Vector3.zero;
                 LabelItem.textScale = 0.8f;
-                LabelItem.autoSize = false;
-                LabelItem.autoHeight = false;
-                LabelItem.wordWrap = true;
-                LabelItem.padding = new RectOffset(0, 5, 5, 0);
+                LabelItem.AutoSize = AutoSize.None;
+                LabelItem.WordWrap = true;
+                LabelItem.Padding = new RectOffset(0, 5, 5, 0);
                 LabelItem.disabledTextColor = new Color32(160, 160, 160, 255);
-                LabelItem.verticalAlignment = UIVerticalAlignment.Middle;
+                LabelItem.VerticalAlignment = UIVerticalAlignment.Middle;
 
                 Content = AddUIComponent<CustomUIPanel>();
                 Content.name = nameof(Content);

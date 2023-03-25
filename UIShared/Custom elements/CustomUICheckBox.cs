@@ -223,6 +223,7 @@ namespace ModsCommon.UI
                 {
                     label = value;
                     OnLabelChanged?.Invoke(label);
+                    Invalidate();
                 }
             }
         }

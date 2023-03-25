@@ -6,8 +6,6 @@ namespace ModsCommon.UI
 {
     public class BoolPropertyPanel : EditorPropertyPanel, IReusable
     {
-        bool IReusable.InCache { get; set; }
-
         private CustomUIToggle Toggle { get; set; }
         public event Action<bool> OnValueChanged;
 
@@ -35,5 +33,10 @@ namespace ModsCommon.UI
         }
 
         private void ToggleStateChanged(bool value) => OnValueChanged?.Invoke(value);
+
+        public override void SetStyle(ControlStyle style)
+        {
+            Toggle.SetStyle(style.Toggle);
+        }
     }
 }

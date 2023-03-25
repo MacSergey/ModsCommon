@@ -59,6 +59,11 @@ namespace ModsCommon.UI
             base.OnSizeChanged();
             Button.width = width - Padding.horizontal;
         }
+
+        public override void SetStyle(ControlStyle style)
+        {
+            Button.SetStyle(style.Button);
+        }
     }
     public class ButtonsPanel : BaseEditorPanel, IReusable
     {
@@ -109,6 +114,7 @@ namespace ModsCommon.UI
         {
             var button = AddUIComponent<CustomUIButton>();
             button.SetDefaultStyle();
+            button.SetStyle(Style);
             button.height = DefaultHeight;
             button.text = text;
             button.textScale = 0.8f;
@@ -145,6 +151,15 @@ namespace ModsCommon.UI
                 for (var i = 0; i < Count; i += 1)
                     Buttons[i].width = buttonWidth;
             });
+        }
+
+        private ButtonStyle Style { get; set; } = ControlStyle.Default.Button;
+        public override void SetStyle(ControlStyle style)
+        {
+            Style = style.Button;
+            
+            foreach(var button in Buttons)
+                button.SetStyle(Style);
         }
     }
 
@@ -223,6 +238,11 @@ namespace ModsCommon.UI
         {
             Button.height = Content.height - ItemsPadding * 2;
             Button.relativePosition = new Vector3(ItemsPadding, ItemsPadding);
+        }
+
+        public override void SetStyle(ControlStyle style)
+        {
+            Button.SetStyle(style.Button);
         }
     }
 }

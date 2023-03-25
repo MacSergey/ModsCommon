@@ -8,7 +8,6 @@ namespace ModsCommon.UI
     public abstract class FieldPropertyPanel<ValueType, FieldType> : EditorPropertyPanel, IReusable
         where FieldType : UITextField<ValueType>
     {
-        bool IReusable.InCache { get; set; }
         protected FieldType Field { get; set; }
 
         public event Action<ValueType> OnValueChanged;
@@ -60,6 +59,11 @@ namespace ModsCommon.UI
             Format = null;
             SubmitOnFocusLost = true;
         }
+        public override void SetStyle(ControlStyle style)
+        {
+            Field.SetStyle(style.TextField);
+        }
+
         public void Edit() => Field.Focus();
         public override string ToString() => $"{base.ToString()}: {Value}";
 
@@ -356,6 +360,11 @@ namespace ModsCommon.UI
                 FieldB.MinValue = FieldA.MinValue;
                 FieldB.CheckMin = FieldB.CheckMin;
             }
+        }
+        public override void SetStyle(ControlStyle style)
+        {
+            FieldA.SetStyle(style.TextField);
+            FieldB.SetStyle(style.TextField);
         }
 
         public override string ToString() => $"{base.ToString()}: from {ValueA} to {ValueB}";

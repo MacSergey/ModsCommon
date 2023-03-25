@@ -753,7 +753,7 @@ namespace ModsCommon.UI
         {
             get
             {
-                if(scrollbar == null)
+                if (scrollbar == null)
                 {
                     scrollbar = AddUIComponent<CustomUIScrollbar>();
                     ignoreList.Add(scrollbar);
@@ -846,11 +846,11 @@ namespace ModsCommon.UI
                 {
                     case UIOrientation.Horizontal:
                         var horizontalSpace = GetHorizontalItemsSpace();
-                        value = Mathf.Clamp(value, 0f, horizontalSpace - width);
+                        value = Mathf.Clamp(value, 0f, Mathf.Max(horizontalSpace - width, 0f));
                         break;
                     case UIOrientation.Vertical:
                         var verticalSpace = GetVerticalItemsSpace();
-                        value = Mathf.Clamp(value, 0f, verticalSpace - height);
+                        value = Mathf.Clamp(value, 0f, Mathf.Max(verticalSpace - height, 0f));
                         break;
                 }
 
@@ -925,6 +925,7 @@ namespace ModsCommon.UI
                 else
                     itemPosition += current.relativePosition;
             }
+            itemPosition.Scale(1f, -1f, 1f);
 
             var viewRect = (ScrollOrientation switch
             {
@@ -940,23 +941,20 @@ namespace ModsCommon.UI
                 _ => new Rect(itemPosition.x, itemPosition.y, item.width, item.height),
             }).RoundToInt();
 
-            if (!viewRect.Intersects(itemRect))
+            switch (ScrollOrientation)
             {
-                switch (ScrollOrientation)
-                {
-                    case UIOrientation.Horizontal:
-                        if (itemRect.xMin < viewRect.xMin)
-                            ScrollPosition = itemRect.xMin;
-                        else if (itemRect.xMax > viewRect.xMax)
-                            ScrollPosition = itemRect.xMax - Mathf.Max(item.width, width);
-                        break;
-                    case UIOrientation.Vertical:
-                        if (itemRect.y < viewRect.y)
-                            ScrollPosition = itemRect.yMin;
-                        else if (itemRect.yMax > viewRect.yMax)
-                            ScrollPosition = itemRect.yMax - Mathf.Max(item.height, height);
-                        break;
-                }
+                case UIOrientation.Horizontal:
+                    if (itemRect.xMin < viewRect.xMin)
+                        ScrollPosition = itemRect.xMin;
+                    else if (itemRect.xMax > viewRect.xMax)
+                        ScrollPosition = itemRect.xMax - Mathf.Max(item.width, width);
+                    break;
+                case UIOrientation.Vertical:
+                    if (itemRect.y < viewRect.y)
+                        ScrollPosition = itemRect.yMin;
+                    else if (itemRect.yMax > viewRect.yMax)
+                        ScrollPosition = itemRect.yMax - Mathf.Max(item.height, height);
+                    break;
             }
         }
 

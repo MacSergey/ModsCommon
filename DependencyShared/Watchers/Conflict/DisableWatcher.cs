@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
 using static ColossalFramework.Plugins.PluginManager;
 
 namespace ModsCommon.Utilities
@@ -36,6 +37,6 @@ namespace ModsCommon.Utilities
 
             plugin.SetState(false);
         };
-        protected override Func<float> GetProgress(PluginInfo plugin) => () => 0.5f;
+        protected override Func<float> GetProgress(PluginInfo plugin) => FakeProgress;
     }
 }

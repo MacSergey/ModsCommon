@@ -29,7 +29,6 @@ namespace ModsCommon.UI
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
-        protected Dictionary<CustomUIButton, bool> Clickable { get; } = new Dictionary<CustomUIButton, bool>();
         protected virtual int TextPadding => AutoButtonSize ? 8 : (int)Mathf.Clamp((buttonWidth - 20f) / 2f, 0, 8);
 
         private bool autoButtonSize = true;
@@ -88,6 +87,7 @@ namespace ModsCommon.UI
             var button = AddUIComponent<CustomUIButton>();
             button.atlas = CommonTextures.Atlas;
             button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+            SetColor(button);
 
             if (optionData.atlas != null && !string.IsNullOrEmpty(optionData.sprite))
             {
@@ -102,15 +102,14 @@ namespace ModsCommon.UI
             UpdateButton(button, width);
             if (clickable)
                 button.eventClick += ButtonClick;
+            else
+                button.isEnabled = false;
 
-            var last = Buttons.LastOrDefault();
             Buttons.Add(button);
-            Clickable.Add(button, clickable);
+            SetSprite(button);
 
-            SetSprite(button, false);
-            if (last != null)
-                SetSprite(last, IsSelect(Buttons.Count - 2));
-
+            if (Buttons.Count >= 2)
+                SetSprite(Buttons[Buttons.Count - 2]);
         }
         private void SetButtonsWidth()
         {
@@ -137,46 +136,32 @@ namespace ModsCommon.UI
 
             button.height = 20;
         }
-        protected void SetSprite(CustomUIButton button, bool isSelect)
+        protected void SetSprite(CustomUIButton button)
         {
             var index = Buttons.IndexOf(button);
-            button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.focusedBgSprite = button.disabledBgSprite = GetSprite(index);
 
-            if (isSelect)
+            if (index == 0)
             {
-                button.color = ComponentStyle.FieldFocusedColor;
-                button.hoveredBgColor = ComponentStyle.FieldFocusedColor;
-                button.pressedBgColor = ComponentStyle.FieldFocusedColor;
-                button.focusedBgColor = ComponentStyle.FieldFocusedColor;
-                button.disabledBgColor = ComponentStyle.FieldDisabledFocusedColor;
-            }
-            else if (!Clickable[button])
-            {
-                button.color = ComponentStyle.FieldDisabledColor;
-                button.hoveredBgColor = ComponentStyle.FieldDisabledColor;
-                button.pressedBgColor = ComponentStyle.FieldDisabledColor;
-                button.focusedBgColor = ComponentStyle.FieldDisabledColor;
-                button.disabledBgColor = ComponentStyle.FieldDisabledColor;
+                if (Buttons.Count == 1)
+                    button.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
+                else
+                    button.SetBgSprite(new SpriteSet(CommonTextures.FieldLeft));
             }
             else
             {
-                button.color = ComponentStyle.FieldNormalColor;
-                button.hoveredBgColor = ComponentStyle.FieldHoveredColor;
-                button.pressedBgColor = ComponentStyle.FieldHoveredColor;
-                button.focusedBgColor = ComponentStyle.FieldNormalColor;
-                button.disabledBgColor = ComponentStyle.FieldDisabledColor;
+                if (index == Buttons.Count - 1)
+                    button.SetBgSprite(new SpriteSet(CommonTextures.FieldRight));
+                else
+                    button.SetBgSprite(new SpriteSet(CommonTextures.FieldMiddle));
             }
         }
-        private string GetSprite(int index)
+        protected void SetColor(CustomUIButton button)
         {
-            if (index == 0)
-                return Buttons.Count == 1 ? CommonTextures.FieldSingle : CommonTextures.FieldLeft;
-            else
-                return index == Buttons.Count - 1 ? CommonTextures.FieldRight : CommonTextures.FieldMiddle;
+            if (Style != null)
+                button.SetStyle(Style);
         }
 
         protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null);
-        protected abstract bool IsSelect(int index);
 
         public virtual void DeInit()
         {
@@ -194,10 +179,18 @@ namespace ModsCommon.UI
                 ComponentPool.Free(button);
 
             Buttons.Clear();
-            Clickable.Clear();
         }
 
         public void SetDefaultStyle(Vector2? size = null) { }
+
+        private ButtonStyle Style { get; set; } = ControlStyle.Default.Button;
+        public void SetStyle(ButtonStyle style)
+        {
+            Style = style;
+
+            foreach (var button in Buttons)
+                SetColor(button);
+        }
     }
 
     public abstract class UIOnceSegmented<ValueType> : UISegmented<ValueType>, IUIOnceSelector<ValueType>, IValueChanger<ValueType>
@@ -234,13 +227,13 @@ namespace ModsCommon.UI
                 return;
 
             if (SelectedIndex != -1)
-                SetSprite(Buttons[SelectedIndex], false);
+                Buttons[SelectedIndex].isSelected = false;
 
             SelectedIndex = index;
 
             if (SelectedIndex != -1)
             {
-                SetSprite(Buttons[SelectedIndex], true);
+                Buttons[SelectedIndex].isSelected = true;
                 if (callEvent)
                     OnSelectObject?.Invoke(SelectedObject);
             }
@@ -257,7 +250,6 @@ namespace ModsCommon.UI
             base.Clear();
         }
         protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null) => SetSelected(Buttons.FindIndex(b => b == component));
-        protected override bool IsSelect(int index) => SelectedIndex == index;
     }
     public class BoolSegmented : UIOnceSegmented<bool>
     {
@@ -312,13 +304,13 @@ namespace ModsCommon.UI
             foreach (var index in SelectedIndices)
             {
                 if (!indices.Contains(index))
-                    SetSprite(Buttons[index], false);
+                    Buttons[index].isSelected = false;
             }
 
             foreach (var index in indices)
             {
                 if (!SelectedIndices.Contains(index))
-                    SetSprite(Buttons[index], true);
+                    Buttons[index].isSelected = true;
             }
 
             SelectedIndices = new HashSet<int>(indices);
@@ -349,6 +341,5 @@ namespace ModsCommon.UI
 
             SetSelected(indices);
         }
-        protected override bool IsSelect(int index) => SelectedIndices.Contains(index);
     }
 }

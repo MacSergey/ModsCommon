@@ -28,7 +28,7 @@ namespace ModsCommon.Utilities
 
         protected RequiredDependencyInfo Info { get; }
         protected PluginStateWatcher Watcher { get; set; }
-        protected PluginMessage Message { get; set; }
+        protected PluginRequest Message { get; set; }
 
         protected abstract DependencyMessageState State { get; }
         protected abstract string Label { get; }
@@ -79,7 +79,7 @@ namespace ModsCommon.Utilities
             {
                 case DependencyMessageState.Required:
                     if (Message == null)
-                        Message = AddMessage();
+                        Message = AddRequest();
 
                     if (Message != null)
                     {

@@ -138,9 +138,9 @@ namespace ModsCommon.UI
                         Title.width = 100f;
                         Title.height = 30f;
                         Title.textScale = 1.4f;
-                        Title.textAlignment = UIHorizontalAlignment.Center;
-                        Title.verticalAlignment = UIVerticalAlignment.Middle;
-                        Title.padding = new RectOffset(0, 0, 4, 0);
+                        Title.HorizontalAlignment = UIHorizontalAlignment.Center;
+                        Title.VerticalAlignment = UIVerticalAlignment.Middle;
+                        Title.Padding = new RectOffset(0, 0, 4, 0);
 
                         SubTitle = versionPanel.AddUIComponent<CustomUILabel>();
                         SubTitle.name = "SubTitle";
@@ -148,8 +148,8 @@ namespace ModsCommon.UI
                         SubTitle.width = 100f;
                         SubTitle.height = 20f;
                         SubTitle.textScale = 0.7f;
-                        SubTitle.textAlignment = UIHorizontalAlignment.Center;
-                        SubTitle.verticalAlignment = UIVerticalAlignment.Middle;
+                        SubTitle.HorizontalAlignment = UIHorizontalAlignment.Center;
+                        SubTitle.VerticalAlignment = UIVerticalAlignment.Middle;
                     });
 
                     var buttonPanel = titlePanel.AddUIComponent<CustomUIPanel>();
@@ -258,27 +258,26 @@ namespace ModsCommon.UI
                     Tag.autoSize = false;
                     Tag.height = 20f;
                     Tag.width = 100f;
-                    Tag.atlas = CommonTextures.Atlas;
-                    Tag.backgroundSprite = CommonTextures.PanelSmall;
-                    Tag.textAlignment = UIHorizontalAlignment.Center;
-                    Tag.verticalAlignment = UIVerticalAlignment.Middle;
+                    Tag.Atlas = CommonTextures.Atlas;
+                    Tag.BackgroundSprite = CommonTextures.PanelSmall;
+                    Tag.HorizontalAlignment = UIHorizontalAlignment.Center;
+                    Tag.VerticalAlignment = UIVerticalAlignment.Middle;
                     Tag.textScale = 0.7f;
-                    Tag.padding = new RectOffset(0, 0, 4, 0);
+                    Tag.Padding = new RectOffset(0, 0, 4, 0);
                     SetItemMargin(Tag, new RectOffset(0, 0, 8, 0));
 
                     Text = AddUIComponent<CustomUILabel>();
                     Text.name = nameof(Text);
-                    Text.textAlignment = UIHorizontalAlignment.Left;
-                    Text.verticalAlignment = UIVerticalAlignment.Middle;
+                    Text.HorizontalAlignment = UIHorizontalAlignment.Left;
+                    Text.VerticalAlignment = UIVerticalAlignment.Middle;
                     Text.textScale = 0.8f;
-                    Text.wordWrap = true;
-                    Text.autoSize = false;
-                    Text.autoHeight = true;
+                    Text.WordWrap = true;
+                    Text.AutoSize = AutoSize.Height;
                     Text.relativePosition = new Vector3(17, 7);
                     Text.minimumSize = new Vector2(100, 20);
-                    Text.padding = new RectOffset(10, 10, 10, 0);
-                    Text.atlas = CommonTextures.Atlas;
-                    Text.backgroundSprite = CommonTextures.BorderTop;
+                    Text.Padding = new RectOffset(10, 10, 10, 0);
+                    Text.Atlas = CommonTextures.Atlas;
+                    Text.BackgroundSprite = CommonTextures.BorderTop;
                     Text.color = ComponentStyle.DarkPrimaryColor30;
                 });
             }
@@ -384,14 +383,14 @@ namespace ModsCommon.UI
             {
                 var betaMessage = Content.AddUIComponent<CustomUILabel>();
                 betaMessage.name = "Beta Message";
-                betaMessage.wordWrap = true;
-                betaMessage.autoHeight = true;
+                betaMessage.WordWrap = true;
+                betaMessage.AutoSize = AutoSize.Height;
                 betaMessage.textColor = ComponentStyle.DarkPrimaryColor100;
                 betaMessage.text = betaText;
-                betaMessage.atlas = CommonTextures.Atlas;
-                betaMessage.backgroundSprite = CommonTextures.PanelBig;
+                betaMessage.Atlas = CommonTextures.Atlas;
+                betaMessage.BackgroundSprite = CommonTextures.PanelBig;
                 betaMessage.color = ComponentStyle.WarningColor;
-                betaMessage.padding = new RectOffset(15, 15, 10, 10);
+                betaMessage.Padding = new RectOffset(15, 15, 10, 10);
             });
 
             base.Init(messages, modName, maximizeFirst, culture);

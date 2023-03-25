@@ -27,6 +27,8 @@ namespace ModsCommon.UI
         private List<ObjectType> RawValues { get; set; } = new List<ObjectType>();
         private List<ObjectType> Values { get; set; } = new List<ObjectType>();
 
+        public DropDownStyle Style { get; set; }
+
 
         private ObjectType selectedObject;
         public ObjectType SelectedObject
@@ -389,12 +391,11 @@ namespace ModsCommon.UI
             NothingFound = AddUIComponent<CustomUILabel>();
             NothingFound.name = nameof(NothingFound);
             NothingFound.text = NotFoundText;
-            NothingFound.autoSize = false;
-            NothingFound.autoHeight = false;
+            NothingFound.AutoSize = AutoSize.None;
             NothingFound.height = EntityHeight;
             NothingFound.relativePosition = new Vector2(0, 30f);
-            NothingFound.verticalAlignment = UIVerticalAlignment.Middle;
-            NothingFound.textAlignment = UIHorizontalAlignment.Center;
+            NothingFound.VerticalAlignment = UIVerticalAlignment.Middle;
+            NothingFound.HorizontalAlignment = UIHorizontalAlignment.Center;
             NothingFound.isVisible = false;
         }
 
