@@ -531,7 +531,7 @@ namespace ModsCommon
 		public static string Mod_VersionWarning_DontShow => LocaleManager.GetString("Mod_VersionWarning_DontShow", Culture);
 
 		/// <summary>
-		/// Desabled
+		/// Disabled
 		/// </summary>
 		public static string Dependency_Disabled => LocaleManager.GetString("Dependency_Disabled", Culture);
 

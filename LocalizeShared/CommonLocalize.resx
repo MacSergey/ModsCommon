@@ -451,7 +451,7 @@ selection step over</value>
     <value>Don't show again</value>
   </data>
   <data name="Dependency_Disabled" xml:space="preserve">
-    <value>Desabled</value>
+    <value>Disabled</value>
   </data>
   <data name="Dependency_Enabled" xml:space="preserve">
     <value>Enabled</value>
