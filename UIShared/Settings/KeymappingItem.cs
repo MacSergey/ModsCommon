@@ -3,6 +3,7 @@ using System;
 using ColossalFramework.UI;
 using UnityEngine;
 using ColossalFramework;
+using IMT.Utilities;
 
 namespace ModsCommon.UI
 {
@@ -15,12 +16,12 @@ namespace ModsCommon.UI
         private static bool InProgress => Warning != null;
 
         private Shortcut shortcut;
-        public Shortcut Shortcut 
+        public Shortcut Shortcut
         {
             get => shortcut;
             set
             {
-                if(shortcut != value)
+                if (shortcut != value)
                 {
                     shortcut = value;
                     Label = shortcut.Label;
@@ -42,6 +43,9 @@ namespace ModsCommon.UI
 
         private void OnBindingKeyDown(UIComponent comp, UIKeyEventParameter p)
         {
+            if (p.keycode != KeyCode.Escape)
+                return;
+
             if (Shortcut is Shortcut shortcut && !IsModifierKey(p.keycode))
             {
                 p.Use();
@@ -72,6 +76,7 @@ namespace ModsCommon.UI
 
                 p.Use();
                 Warning = MessageBox.Show<WarningLabel>();
+                Warning.Shortcut = Shortcut;
                 Warning.Focus();
             }
             else if (!IsUnbindableMouseButton(p.buttons))
@@ -107,17 +112,55 @@ namespace ModsCommon.UI
         private bool IsModifierKey(KeyCode code) => code == KeyCode.LeftControl || code == KeyCode.RightControl || code == KeyCode.LeftShift || code == KeyCode.RightShift || code == KeyCode.LeftAlt || code == KeyCode.RightAlt;
         private bool IsUnbindableMouseButton(UIMouseButton code) => code == UIMouseButton.Left || code == UIMouseButton.Right;
 
-        private class WarningLabel : CustomUILabel
+        private class WarningLabel : CustomUIPanel
         {
+            private CustomUILabel ShortcutTitle { get; set; }
+            public Shortcut Shortcut
+            {
+                set
+                {
+                    ShortcutTitle.text = value.Label;
+                    ShortcutTitle.autoSize = true;
+                    ShortcutTitle.autoHeight = true;
+                }
+            }
+
             public WarningLabel()
             {
-                text = CommonLocalize.Settings_PressAnyKey;
-                textScale = 7f;
-                padding = new RectOffset(50, 50, 10, 30);
-                autoHeight = true;
-                atlas = CommonTextures.Atlas;
-                backgroundSprite = CommonTextures.PanelBig;
+                ShortcutTitle = AddUIComponent<CustomUILabel>();
+                ShortcutTitle.atlas = CommonTextures.Atlas;
+                ShortcutTitle.backgroundSprite = CommonTextures.PanelBig;
+                ShortcutTitle.color = ComponentStyle.SettingsColor50;
+                ShortcutTitle.padding = new RectOffset(30, 30, 0, 5);
+                ShortcutTitle.autoSize = true;
+                ShortcutTitle.textScale = 3f;
+
+                var pressAnyKey = AddUIComponent<CustomUILabel>();
+                pressAnyKey.Bold = true;
+                pressAnyKey.text = CommonLocalize.Settings_PressAnyKey.ToUpper();
+                pressAnyKey.textScale = 7f;
+                pressAnyKey.padding = new RectOffset(0, 0, 15, 30);
+                pressAnyKey.autoHeight = true;
+
+                var pressEsc = AddUIComponent<CustomUILabel>();
+                pressEsc.text = $"{string.Format(CommonLocalize.Settings_DiscardShortcut, LocalizeExtension.Esc.ToUpper())}\n{string.Format(CommonLocalize.Settings_ResetShortcut, LocalizeExtension.Backspace.ToUpper())}";
+                pressEsc.atlas = CommonTextures.Atlas;
+                pressEsc.backgroundSprite = CommonTextures.PanelBig;
+                pressEsc.color = ComponentStyle.SettingsColor20;
+                pressEsc.textColor = ComponentStyle.SettingsColor90;
+                pressEsc.textScale = 1f;
+                pressEsc.padding = new RectOffset(15, 15, 7, 7);
+                pressEsc.textAlignment = UIHorizontalAlignment.Center;
+                pressEsc.autoSize = true;
+
+                Atlas = CommonTextures.Atlas;
+                BackgroundSprite = CommonTextures.PanelLarge;
                 color = ComponentStyle.SettingsColor25;
+                AutoChildrenVertically = AutoLayoutChildren.Fit;
+                AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                AutoLayoutStart = LayoutStart.TopCentre;
+                Padding = new RectOffset(50, 50, 10, 10);
+                AutoLayout = AutoLayout.Vertical;
 
                 var res = GetUIView().GetScreenResolution();
                 relativePosition = new Vector3((res.x - width) * 0.5f, (res.y - height) * 0.5f);

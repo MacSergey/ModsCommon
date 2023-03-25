@@ -22,7 +22,7 @@ namespace ModsCommon.Utilities
 
         protected override string Label => Info.Name;
         protected override string RequiredText => IsWorkshopAvailable ? CommonLocalize.Dependency_Subscribe : CommonLocalize.Dependency_Get;
-        protected override string ResolvedText => IsWorkshopAvailable ? "Subscribed" : "Installed";
+        protected override string ResolvedText => IsWorkshopAvailable ? CommonLocalize.Dependency_Subscribed : CommonLocalize.Dependency_Installed;
         protected override Action Action => Subscribe;
         protected override Func<float> Progress => GetProgress;
 

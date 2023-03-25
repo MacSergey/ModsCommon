@@ -1,12 +1,17 @@
 ﻿using ColossalFramework.UI;
 using ModsCommon.Utilities;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ModsCommon.UI
 {
     public static class ComponentStyle
     {
+        public static UIDynamicFont SemiBoldFont { get; } = Resources.FindObjectsOfTypeAll<UIDynamicFont>().FirstOrDefault(f => f.name == "OpenSans-Semibold");
+        public static UIDynamicFont RegularFont { get; } = Resources.FindObjectsOfTypeAll<UIDynamicFont>().FirstOrDefault(f => f.name == "OpenSans-Regular");
+
+
         public static Color32 DarkPrimaryColor0 => new Color32(0, 0, 0, 255);
         public static Color32 DarkPrimaryColor5 => new Color32(12, 13, 13, 255);
         public static Color32 DarkPrimaryColor10 => new Color32(24, 26, 27, 255);
@@ -88,6 +93,7 @@ namespace ModsCommon.UI
         public static Color32 ButtonSelectedFocusedColor => NormalBlue;
         public static Color32 ButtonSelectedDisabledColor => DarkPrimaryColor15;
 
+
         public static void ButtonMessageBoxStyle(this CustomUIButton button)
         {
             button.atlas = CommonTextures.Atlas;
@@ -95,6 +101,7 @@ namespace ModsCommon.UI
             button.SetBgColor(new ColorSet(ButtonNormalColor, ButtonHoveredColor, ButtonPressedColor, ButtonNormalColor, ButtonDisabledColor));
             button.SetSelectedBgColor(new ColorSet(ButtonSelectedNormalColor, ButtonSelectedHoveredColor, ButtonSelectedPressedColor, ButtonSelectedFocusedColor, ButtonSelectedDisabledColor));
             button.SetTextColor(new ColorSet(Color.white, Color.white, Color.white, null, null));
+            button.Bold = true;
 
             button.horizontalAlignment = UIHorizontalAlignment.Center;
             button.verticalAlignment = UIVerticalAlignment.Middle;
@@ -170,7 +177,7 @@ namespace ModsCommon.UI
         {
             dropDown.atlasBackground = CommonTextures.Atlas;
             dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
-            dropDown.SetBgColor(new ColorSet(DarkPrimaryColor55, DarkPrimaryColor35, DarkPrimaryColor35, DarkPrimaryColor45, DarkPrimaryColor15));
+            dropDown.SetBgColor(new ColorSet(DarkPrimaryColor55, DarkPrimaryColor45, DarkPrimaryColor35, DarkPrimaryColor55, DarkPrimaryColor15));
 
             dropDown.atlasForeground = CommonTextures.Atlas;
             dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));

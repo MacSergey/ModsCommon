@@ -66,7 +66,7 @@ namespace ModsCommon.UI
         public static int DefaultHeight => 200;
         public static int ButtonHeight => 35;
         protected static int ButtonsSpace => 25;
-        public static int Padding => 16;
+        public static int DefaultPadding => 16;
         public Vector2 MaxContentSize
         {
             get
@@ -131,6 +131,7 @@ namespace ModsCommon.UI
 
             Caption = Header.AddUIComponent<CustomUILabel>();
             Caption.name = nameof(Caption);
+            Caption.Bold = true;
             Caption.textAlignment = UIHorizontalAlignment.Center;
             Caption.textScale = 1.3f;
             Caption.anchor = UIAnchorStyle.Top;
@@ -163,8 +164,8 @@ namespace ModsCommon.UI
             {
                 Content.maximumSize = MaxContentSize;
                 Content.size = new Vector2(DefaultWidth, 0f);
-                Content.relativePosition = new Vector2(0, Header.height + Padding);
-                Content.Padding = new RectOffset(Padding, Padding, 0, 0);
+                Content.relativePosition = new Vector2(0, Header.height + DefaultPadding);
+                Content.Padding = new RectOffset(DefaultPadding, DefaultPadding, 0, 0);
                 Content.AutoLayoutSpace = ContentSpacing;
                 Content.AutoLayout = AutoLayout.Vertical;
                 Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
@@ -181,7 +182,7 @@ namespace ModsCommon.UI
             ButtonPanel = AddUIComponent<CustomUIPanel>();
             ButtonPanel.name = nameof(ButtonPanel);
             ButtonPanel.AutoLayoutSpace = ButtonsSpace;
-            ButtonPanel.Padding = new RectOffset(Padding, Padding, 10, 10);
+            ButtonPanel.Padding = new RectOffset(DefaultPadding, DefaultPadding, 10, 10);
             ButtonPanel.AutoLayout = AutoLayout.Horizontal;
             ButtonPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
             ButtonPanel.eventSizeChanged += (_, _) => ArrangeButtons();

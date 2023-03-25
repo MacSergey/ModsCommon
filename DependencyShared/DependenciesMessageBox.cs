@@ -31,6 +31,7 @@ namespace ModsCommon.Utilities
             {
                 Label = Content.AddUIComponent<CustomUILabel>();
                 Label.name = "Message";
+                Label.Bold = true;
                 Label.wordWrap = true;
                 Label.autoHeight = true;
                 Label.textColor = ComponentStyle.DarkPrimaryColor100;

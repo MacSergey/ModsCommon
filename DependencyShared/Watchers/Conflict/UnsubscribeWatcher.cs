@@ -10,9 +10,6 @@ namespace ModsCommon.Utilities
     {
         public override bool IsResolved => Watchers.Values.Count(watcher => watcher != null) == 0;
 
-        protected override string RequiredText => IsWorkshopAvailable ? CommonLocalize.Dependency_Unsubscribe : CommonLocalize.Dependency_Remove;
-        protected override string ResolvedText => IsWorkshopAvailable ? "Unsubscribed" : "Removed";
-
         public UnsubscribeDependencyWatcher(DependenciesWatcher watcher, ConflictDependencyInfo info) : base(watcher, info) { }
 
 
@@ -57,5 +54,25 @@ namespace ModsCommon.Utilities
         }
         protected override Action GetAction(PluginInfo plugin) => () => Unsubscribe(plugin);
         protected override Func<float> GetProgress(PluginInfo plugin) => () => DateTime.Now.Millisecond * 0.001f /*0.5f*/;
+
+        protected override string GetRequiredText(PluginInfo plugin)
+        {
+            if (!IsWorkshopAvailable)
+                return CommonLocalize.Dependency_Remove;
+            else if (plugin == null || plugin.publishedFileID == PublishedFileId.invalid)
+                return CommonLocalize.Dependency_Remove;
+            else
+                return CommonLocalize.Dependency_Unsubscribe;
+        }
+
+        protected override string GetResolvedText(PluginInfo plugin)
+        {
+            if (!IsWorkshopAvailable)
+                return CommonLocalize.Dependency_Removed;
+            else if (plugin == null || plugin.publishedFileID == PublishedFileId.invalid)
+                return CommonLocalize.Dependency_Removed;
+            else
+                return CommonLocalize.Dependency_Unsubscribed;
+        }
     }
 }

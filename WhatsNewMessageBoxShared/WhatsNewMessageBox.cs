@@ -133,6 +133,7 @@ namespace ModsCommon.UI
 
                         Title = versionPanel.AddUIComponent<CustomUILabel>();
                         Title.name = "Title";
+                        Title.Bold = true;
                         Title.autoSize = false;
                         Title.width = 100f;
                         Title.height = 30f;
@@ -253,6 +254,7 @@ namespace ModsCommon.UI
                 {
                     Tag = AddUIComponent<CustomUILabel>();
                     Tag.name = nameof(Tag);
+                    Tag.Bold = true;
                     Tag.autoSize = false;
                     Tag.height = 20f;
                     Tag.width = 100f;

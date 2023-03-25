@@ -12,6 +12,21 @@ namespace ModsCommon.UI
             if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
                 relativePosition = positionBefore;
         }
+
+        private bool bold;
+        public bool Bold
+        {
+            get => bold;
+            set
+            {
+                if (value != bold)
+                {
+                    bold = value;
+                    font = value ? ComponentStyle.SemiBoldFont : ComponentStyle.RegularFont;
+                    Invalidate();
+                }
+            }
+        }
     }
     public class CustomUIDragHandle : UIDragHandle
     {

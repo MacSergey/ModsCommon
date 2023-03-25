@@ -346,21 +346,6 @@ namespace ModsCommon.UI
         }
 
 
-        protected bool autoCenterPadding;
-        public bool AutoCenterPadding
-        {
-            get => autoCenterPadding && ((AutoLayout == AutoLayout.Horizontal && AutoChildrenHorizontally == AutoLayoutChildren.None) || (AutoLayout == AutoLayout.Vertical && AutoChildrenVertically == AutoLayoutChildren.None));
-            set
-            {
-                if (value != autoCenterPadding)
-                {
-                    autoCenterPadding = value;
-                    Reset();
-                }
-            }
-        }
-
-
         protected AutoLayoutChildren autoChildrenHorizontally;
         public AutoLayoutChildren AutoChildrenHorizontally
         {
@@ -530,10 +515,8 @@ namespace ModsCommon.UI
                             switch (AutoLayoutStart & LayoutStart.Horizontal)
                             {
                                 case LayoutStart.Left:
-                                    childPos.x = offset.x + childMargin.left;
-                                    break;
                                 case LayoutStart.Centre:
-
+                                    childPos.x = offset.x + childMargin.left;
                                     break;
                                 case LayoutStart.Right:
                                     childPos.x = width - offset.x - childSize.x - childMargin.right;
@@ -563,10 +546,8 @@ namespace ModsCommon.UI
                             switch (AutoLayoutStart & LayoutStart.Vertical)
                             {
                                 case LayoutStart.Top:
-                                    childPos.y = offset.y + childMargin.top;
-                                    break;
                                 case LayoutStart.Middle:
-
+                                    childPos.y = offset.y + childMargin.top;
                                     break;
                                 case LayoutStart.Bottom:
                                     childPos.y = height - offset.y - childSize.y - childMargin.bottom;

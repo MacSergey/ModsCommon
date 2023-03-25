@@ -13,16 +13,6 @@ namespace ModsCommon.Settings
 {
     public static partial class Helper
     {
-        private static UIDynamicFont SemiBoldFont { get; }
-
-        static Helper()
-        {
-            var panel = UITemplateManager.Get<UIPanel>("OptionsGroupTemplate");
-            SemiBoldFont = panel.Find<UILabel>("Label").font as UIDynamicFont;
-            GameObject.Destroy(panel);
-        }
-
-
         public static CustomUIPanel AddSection(this UIComponent parent)
         {
             var panel = parent.AddUIComponent<CustomUIPanel>();
@@ -54,7 +44,8 @@ namespace ModsCommon.Settings
             {
                 label = parent.AddUIComponent<CustomUILabel>();
                 label.name = "Title";
-                label.font = SemiBoldFont;
+                label.autoHeight = true;
+                label.font = ComponentStyle.SemiBoldFont;
                 label.textScale = 1.3f;
                 label.padding = new RectOffset(12, 0, 12, 0);
                 label.text = name;
@@ -186,6 +177,7 @@ namespace ModsCommon.Settings
             labelItem.Label = mainLabel;
 
             var checkBoxItem = groupItem.AddCheckboxPanel(optionsSaved, labels, onValueChanged);
+            checkBoxItem.PaddingTop = 0;
 
             return new OptionPanelData()
             {
@@ -203,6 +195,7 @@ namespace ModsCommon.Settings
             toggleItem.Control.State = mainSaved;
 
             var checkBoxItem = groupItem.AddCheckboxPanel(optionsSaved, labels, onValueChanged);
+            checkBoxItem.PaddingTop = 0;
 
             toggleItem.Control.OnStateChanged += OnStateChanged;
             if (onStateChanged != null)
@@ -266,11 +259,12 @@ namespace ModsCommon.Settings
         public static ContentSettingsItem AddButtonPanel(this UIComponent parent, RectOffset padding = null, int itemSpacing = 10)
         {
             var item = parent.AddHorizontalPanel(padding ?? new RectOffset(0, 0, 5, 5), itemSpacing);
+            item.Content.AutoLayoutStart = UI.LayoutStart.TopCentre;
             item.BorderEnabled = false;
             item.CanHover = false;
             return item;
         }
-        public static CustomUIButton AddButton(this ContentSettingsItem item, string text, OnButtonClicked click, float? width = 400, float? textScale = null)
+        public static CustomUIButton AddButton(this ContentSettingsItem item, string text, OnButtonClicked click, float? width = 600, float? textScale = null)
         {
             var button = item.Content.AddUIComponent<CustomUIButton>();
             button.text = text;

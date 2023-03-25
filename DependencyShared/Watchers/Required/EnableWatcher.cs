@@ -21,7 +21,7 @@ namespace ModsCommon.Utilities
 
         protected override string Label => Watcher == null ? base.Label : Watcher.Name;
         protected override string RequiredText => Watcher == null ? base.RequiredText : CommonLocalize.Dependency_Enable;
-        protected override string ResolvedText => Watcher == null ? base.ResolvedText : "Enabled";
+        protected override string ResolvedText => Watcher == null ? base.ResolvedText : CommonLocalize.Dependency_Enabled;
         protected override Action Action => Watcher == null ? base.Action : Enable;
         protected override Func<float> Progress => Watcher == null ? base.Progress : null;
 

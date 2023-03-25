@@ -643,6 +643,21 @@ namespace ModsCommon.UI
 
         #endregion
 
+        private bool bold;
+        public bool Bold
+        {
+            get => bold;
+            set
+            {
+                if (value != bold)
+                {
+                    bold = value;
+                    font = value ? ComponentStyle.SemiBoldFont : ComponentStyle.RegularFont;
+                    Invalidate();
+                }
+            }
+        }
+
         public Vector2 MinimumAutoSize
         {
             get

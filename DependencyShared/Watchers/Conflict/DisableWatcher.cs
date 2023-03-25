@@ -8,9 +8,6 @@ namespace ModsCommon.Utilities
     {
         public override bool IsResolved => Watchers.Values.All(watcher => watcher == null || !watcher.IsPluginEnabled);
 
-        protected override string RequiredText => CommonLocalize.Dependency_Disable;
-        protected override string ResolvedText => "Disabled";
-
         public DisableDependencyWatcher(DependenciesWatcher watcher, ConflictDependencyInfo info) : base(watcher, info) { }
 
 
@@ -30,6 +27,8 @@ namespace ModsCommon.Utilities
             var name = plugin.GetName();
             return !string.IsNullOrEmpty(name) ? name : Info.Name;
         }
+        protected override string GetRequiredText(PluginInfo plugin) => CommonLocalize.Dependency_Disable;
+        protected override string GetResolvedText(PluginInfo plugin) => CommonLocalize.Dependency_Disabled;
         protected override Action GetAction(PluginInfo plugin) => () =>
         {
             if (Messages.TryGetValue(plugin, out var message))

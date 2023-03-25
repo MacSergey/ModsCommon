@@ -5,6 +5,13 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
+    public enum MessageType
+    {
+        None,
+        Regular,
+        Warning
+    }
+
     public abstract class SimpleMessageBox : MessageBoxBase
     {
         protected CustomUILabel Message { get; set; }
@@ -13,29 +20,47 @@ namespace ModsCommon.UI
         public float MessageScale { set => Message.textScale = value; }
         public UIHorizontalAlignment TextAlignment { set => Message.textAlignment = value; }
 
+        private MessageType type;
+        public MessageType Type
+        {
+            get => type;
+            set
+            {
+                if(value != type)
+                {
+                    type = value;
+
+                    Message.backgroundSprite = value == MessageType.None ? string.Empty : CommonTextures.PanelBig;
+                    Message.color = value switch
+                    {
+                        MessageType.Regular => ComponentStyle.DarkPrimaryColor15,
+                        MessageType.Warning => ComponentStyle.WarningColor,
+                        _ => ComponentStyle.DarkPrimaryColor0,
+                    };
+                }
+            }
+        }
+
         public SimpleMessageBox()
         {
-            Content.PauseLayout(()=>
+            Content.PauseLayout(() =>
             {
                 Content.AutoLayoutSpace = 15;
 
-                Message = AddLabel();
+                Message = Content.AddUIComponent<CustomUILabel>();
+
+                Message.Bold = true;
+                Message.textAlignment = UIHorizontalAlignment.Center;
+                Message.verticalAlignment = UIVerticalAlignment.Middle;
+                Message.textScale = 1.1f;
+                Message.wordWrap = true;
+                Message.autoHeight = true;
+                Message.padding = new RectOffset(10, 10, 10, 10);
+                Message.atlas = CommonTextures.Atlas;
                 Message.minimumSize = new Vector2(0, 79);
+
+                Type = MessageType.Warning;
             });
-        }
-
-        protected CustomUILabel AddLabel()
-        {
-            var label = Content.AddUIComponent<CustomUILabel>();
-
-            label.textAlignment = UIHorizontalAlignment.Center;
-            label.verticalAlignment = UIVerticalAlignment.Middle;
-            label.textScale = 1.1f;
-            label.wordWrap = true;
-            label.autoHeight = true;
-            label.padding = new RectOffset(10,10, 10, 10);
-
-            return label;
         }
     }
 

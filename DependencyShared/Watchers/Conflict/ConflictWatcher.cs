@@ -46,8 +46,8 @@ namespace ModsCommon.Utilities
 
         protected abstract DependencyMessageState GetState(PluginInfo plugin);
         protected abstract string GetLabel(PluginInfo plugin);
-        protected abstract string RequiredText { get; }
-        protected abstract string ResolvedText { get; }
+        protected abstract string GetRequiredText(PluginInfo plugin);
+        protected abstract string GetResolvedText(PluginInfo plugin);
         protected abstract Action GetAction(PluginInfo plugin);
         protected abstract Func<float> GetProgress(PluginInfo plugin);
 
@@ -116,8 +116,8 @@ namespace ModsCommon.Utilities
             if (message != null)
             {
                 message.Text = GetLabel(plugin);
-                message.RequiredText = RequiredText;
-                message.ResolvedText = ResolvedText;
+                message.RequiredText = GetRequiredText(plugin);
+                message.ResolvedText = GetResolvedText(plugin);
                 message.OnButtonClick = GetAction(plugin);
                 message.GetProgress = GetProgress(plugin);
             }

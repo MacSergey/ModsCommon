@@ -26,8 +26,8 @@ namespace ModsCommon.UI
             AutoLayout = AutoLayout.Vertical;
             autoChildrenVertically = AutoLayoutChildren.Fit;
             autoChildrenHorizontally = AutoLayoutChildren.Fill;
-            autoLayoutSpace = 3;
-            Padding = new RectOffset(45, 20, 5, 5);
+            autoLayoutSpace = 5;
+            Padding = new RectOffset(45, 20, 7, 7);
         }
 
         public void Init(string[] labels)

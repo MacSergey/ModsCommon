@@ -176,89 +176,117 @@ namespace ModsCommon.Settings
 
         private void AddInfo(UIComponent tabContent)
         {
-            SettingsItemSection optionsSection;
-            CustomUILabel title;
-            if (GetType().Assembly.LoadTextureFromAssembly("PreviewImage") is Texture2D preview)
+            var section = tabContent.AddSection();
+            section.NormalBgColor = ComponentStyle.SettingsColor60;
+            section.ForegroundSprite = string.Empty;
+            section.AutoLayout = AutoLayout.Horizontal;
+            section.maximumSize = new Vector2(0f, 200f);
+
+            var optionsContent = section.AddUIComponent<CustomUIPanel>();
+            optionsContent.PauseLayout(() =>
             {
-                var section = tabContent.AddSection();
-                section.NormalBgColor = ComponentStyle.SettingsColor60;
-                section.ForegroundSprite = string.Empty;
-                section.AutoLayout = AutoLayout.Horizontal;
-                section.maximumSize = new Vector2(0f, 200f);
+                optionsContent.AutoLayout = AutoLayout.Vertical;
+                optionsContent.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                optionsContent.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
+                optionsContent.AutoLayoutSpace = 15;
+            });
 
-                var optionsContent = section.AddUIComponent<CustomUIPanel>();
-                optionsContent.PauseLayout(() =>
-                {
-                    optionsContent.AutoLayout = AutoLayout.Vertical;
-                    optionsContent.AutoChildrenVertically = AutoLayoutChildren.Fit;
-                    optionsContent.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
-                    optionsContent.AutoLayoutSpace = 15;
-                });
+            var imagePanel = section.AddUIComponent<CustomUIPanel>();
+            imagePanel.size = new Vector2(200f, 200f);
 
-                var imagePanel = section.AddUIComponent<CustomUIPanel>();
-                imagePanel.size = new Vector2(200f, 200f);
+            var image = imagePanel.AddUIComponent<CustomUITextureSprite>();
+            image.texture = GetType().Assembly.LoadTextureFromAssembly("PreviewImage");
+            image.color = Color.white;
+            image.size = new Vector2(200f, 200f);
+            image.relativePosition = new Vector3((imagePanel.width - image.width) * 0.5f, (imagePanel.height - image.height) * 0.5f);
 
-                var image = imagePanel.AddUIComponent<CustomUITextureSprite>();
-                image.texture = preview;
-                image.color = Color.white;
-                image.size = new Vector2(200f, 200f);
-                image.relativePosition = new Vector3((imagePanel.width - image.width) * 0.5f, (imagePanel.height - image.height) * 0.5f);
+            section.eventSizeChanged += (_, size) => SetSize();
+            SetSize();
+            void SetSize() => optionsContent.width = section.width - imagePanel.width - section.AutoLayoutSpace;
 
-                section.eventSizeChanged += (_, size) => SetSize();
-                SetSize();
-                void SetSize() => optionsContent.width = section.width - imagePanel.width - section.AutoLayoutSpace;
-
-                optionsSection = optionsContent.FillOptionsSection(out title, SingletonMod<TypeMod>.Instance.NameRaw);
-            }
-            else
-            {
-                optionsSection = tabContent.AddOptionsSection(out title, SingletonMod<TypeMod>.Instance.NameRaw);
-
-                optionsSection.NormalBgColor = ComponentStyle.SettingsColor60;
-                optionsSection.ForegroundSprite = string.Empty;
-            }
+            var optionsSection = optionsContent.FillOptionsSection(out var title, SingletonMod<TypeMod>.Instance.NameRaw);
             optionsSection.CustomSection = true;
             title.textScale = 2f;
 
-            var versionItem = optionsSection.AddLabel(string.Format(CommonLocalize.Mod_Version, SingletonMod<TypeMod>.Instance.VersionString));
-            versionItem.Padding = new RectOffset();
-            versionItem.Borders = SettingsItemBorder.None;
-            versionItem.CanHover = false;
-
-            if (InfoCallback != null)
+            var infoPanel = optionsSection.AddUIComponent<CustomUIPanel>();
+            infoPanel.name = "Info";
+            infoPanel.PauseLayout(() =>
             {
-                SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
-                InfoCallback = null;
-            }
+                infoPanel.AutoLayout = AutoLayout.Vertical;
+                infoPanel.AutoLayoutSpace = 5;
+                infoPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                infoPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
 
-            var infoLabel = optionsSection.AddLabel(GetStatusText());
-            infoLabel.Padding = new RectOffset();
-            infoLabel.Borders = SettingsItemBorder.None;
-            infoLabel.CanHover = false;
-            infoLabel.LabelItem.processMarkup = true;
+                var versionData = infoPanel.AddUIComponent<CustomUIPanel>();
+                versionData.PauseLayout(() =>
+                {
+                    versionData.AutoLayout = AutoLayout.Horizontal;
+                    versionData.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                    versionData.AutoChildrenVertically = AutoLayoutChildren.Fit;
 
-            InfoCallback = () =>
-            {
-                try
-                {
-                    infoLabel.Label = GetStatusText();
-                }
-                catch
-                {
-                    if (InfoCallback != null)
+                    var version = versionData.AddUIComponent<CustomUILabel>();
+                    version.Bold = true;
+                    version.text = SingletonMod<TypeMod>.Instance.Version.ToString();
+                    version.atlas = CommonTextures.Atlas;
+                    version.backgroundSprite = CommonTextures.FieldLeft;
+                    version.color = ComponentStyle.SettingsColor25;
+                    version.padding = new RectOffset(5, 5, 3, 0);
+
+                    var beta = versionData.AddUIComponent<CustomUILabel>();
+                    beta.Bold = true;
+                    beta.atlas = CommonTextures.Atlas;
+                    beta.backgroundSprite = CommonTextures.FieldRight;
+                    beta.padding = new RectOffset(5, 5, 3, 0);
+                    if (!SingletonMod<TypeMod>.Instance.IsBeta)
                     {
-                        SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
-                        InfoCallback = null;
+                        beta.text = "STABLE";
+                        beta.color = ComponentStyle.NormalGreen;
                     }
-                }
-            };
-            SingletonMod<TypeMod>.Instance.OnStatusChanged += InfoCallback;
+                    else
+                    {
+                        beta.text = "BETA";
+                        beta.color = ComponentStyle.WarningColor;
+                    }
+                });
 
-            optionsSection.AddSpace(25f);
+                var statusData = infoPanel.AddUIComponent<CustomUILabel>();
+                statusData.Bold = true;
+                statusData.processMarkup = true;
+                statusData.atlas = CommonTextures.Atlas;
+                statusData.backgroundSprite = CommonTextures.FieldSingle;
+                statusData.color = ComponentStyle.SettingsColor25;
+                statusData.padding = new RectOffset(5, 5, 5, 3);
+
+                if (InfoCallback != null)
+                {
+                    SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
+                    InfoCallback = null;
+                }
+                InfoCallback = () =>
+                {
+                    try
+                    {
+                        statusData.text = GetStatusText();
+                    }
+                    catch
+                    {
+                        if (InfoCallback != null)
+                        {
+                            SingletonMod<TypeMod>.Instance.OnStatusChanged -= InfoCallback;
+                            InfoCallback = null;
+                        }
+                    }
+                };
+                SingletonMod<TypeMod>.Instance.OnStatusChanged += InfoCallback;
+            });
+
+            optionsSection.AddSpace(20f);
             var changeLogPanel = optionsSection.AddButtonPanel(new RectOffset(0, 0, 5, 5), 0);
+            changeLogPanel.Content.AutoLayoutStart = UI.LayoutStart.TopLeft;
             changeLogPanel.CanHover = false;
             var changeLog = changeLogPanel.AddButton(CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
             changeLog.SetBgColor(new ColorSet(ComponentStyle.SettingsColor25, ComponentStyle.SettingsColor20, ComponentStyle.SettingsColor20, ComponentStyle.SettingsColor25, ComponentStyle.SettingsColor15));
+            changeLog.Bold = true;
             changeLog.height = 50f;
         }
 
@@ -267,17 +295,17 @@ namespace ModsCommon.Settings
             var statusText = string.Empty;
             var status = SingletonMod<TypeMod>.Instance.Status;
             if (status == ModStatus.Unknown)
-                statusText = ModStatus.Unknown.Description<ModStatus, TypeMod>().AddColor(new Color32(255, 215, 81, 255));
+                statusText = ModStatus.Unknown.Description<ModStatus, TypeMod>().AddColor(ComponentStyle.WarningColor);
             else if (status == ModStatus.Normal)
-                statusText = ModStatus.Normal.Description<ModStatus, TypeMod>().AddColor(new Color32(96, 209, 21, 255));
+                statusText = ModStatus.Normal.Description<ModStatus, TypeMod>().AddColor(ComponentStyle.HoveredGreen);
             else
             {
                 status &= ModStatus.WithErrors;
                 var errors = status.GetEnumValues().Select(s => s.Description<ModStatus, TypeMod>()).ToArray();
-                statusText = string.Join(" | ", errors).AddColor(new Color32(255, 68, 68, 255));
+                statusText = string.Join(" | ", errors).AddColor(ComponentStyle.ErrorFocusedColor);
             }
 
-            return string.Format(CommonLocalize.Mod_Status, statusText);
+            return statusText;
         }
 
         #endregion
@@ -298,6 +326,7 @@ namespace ModsCommon.Settings
             labelItem.Padding = new RectOffset(0, 0, 5, 5);
 
             var buttonPanel = section.AddButtonPanel(itemSpacing: 10);
+            buttonPanel.Content.AutoLayoutStart = UI.LayoutStart.TopLeft;
             buttonPanel.CanHover = false;
             buttonPanel.AddButton(CommonLocalize.Settings_TranslationImprove, () => SingletonMod<TypeMod>.Instance.OpenTranslationProject(), 250f, 1f);
             buttonPanel.AddButton(CommonLocalize.Settings_TranslationNew, () => "https://crowdin.com/messages/create/14337258/".OpenUrl(), 250f, 1f);
