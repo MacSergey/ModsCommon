@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class SelectItemDropDown<ObjectType, EntityType, PopupType> : ObjectDropDown<ObjectType, PopupType, EntityType>
+    public abstract class SelectItemDropDown<ObjectType, EntityType, PopupType> : ObjectDropDown<ObjectType, EntityType, PopupType>
         where PopupType : CustomUIPanel, IPopup<ObjectType, EntityType>
         where EntityType : CustomUIButton, IPopupEntity<ObjectType>
     {

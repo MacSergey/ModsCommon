@@ -34,17 +34,17 @@ namespace ModsCommon.UI
         event Action<int, ObjectType> OnSelected;
 
         ObjectType EditObject { get; }
-        bool Selected { get; set; }
+        bool IsSelected { get; set; }
         int Index { get; set; }
         RectOffset Padding { get; set; }
 
         void SetObject(int index, ObjectType value, bool selected);
-        void PerformWidth();
+        void PerformAutoWidth();
     }
 
-    public abstract class ObjectDropDown<ObjectType, PopupType, EntityType> : BaseDropDown<PopupType>
-        where PopupType : CustomUIPanel, IPopup<ObjectType, EntityType>
+    public abstract class ObjectDropDown<ObjectType, EntityType, PopupType> : BaseDropDown<PopupType>
         where EntityType : CustomUIButton, IPopupEntity<ObjectType>
+        where PopupType : CustomUIPanel, IPopup<ObjectType, EntityType>
     {
         #region PROPERTIES
 

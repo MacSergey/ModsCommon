@@ -584,5 +584,10 @@ namespace ModsCommon
 		/// Space
 		/// </summary>
 		public static string Key_Space => LocaleManager.GetString("Key_Space", Culture);
+
+		/// <summary>
+		/// List is empty
+		/// </summary>
+		public static string Popup_Empty => LocaleManager.GetString("Popup_Empty", Culture);
 	}
 }

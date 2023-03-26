@@ -72,8 +72,7 @@ namespace ModsCommon.UI
             foreach (var info in AdditionalInfos)
             {
                 info.AddButton(popup.Content, true, AdditionalButtonSize, AdditionalIconSize);
-                info.Button.autoSize = true;
-                info.Button.autoSize = false;
+                info.Button.PerformAutoWidth();
                 info.ClickedEvent += PopupClicked;
                 SetAdditionalButtonColors(info.Button);
             }

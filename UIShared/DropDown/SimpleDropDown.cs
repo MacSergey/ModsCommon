@@ -145,10 +145,12 @@ namespace ModsCommon.UI
 
         public override bool Equals(object obj)
         {
-            if (obj is DropDownItem<ValueType> item)
-                return value.Equals(item.value);
-            else
+            if (obj is not DropDownItem<ValueType> item)
                 return false;
+            else if (value == null)
+                return item.value == null;
+            else
+                return value.Equals(item.value);
         }
         public override int GetHashCode() => value.GetHashCode();
     }

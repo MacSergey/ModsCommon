@@ -41,8 +41,8 @@ namespace ModsCommon.UI
         protected override void OnUpdate()
         {
             base.OnUpdate();
-            if (state == UIButton.ButtonState.Focused)
-                state = UIButton.ButtonState.Normal;
+            if (State == UIButton.ButtonState.Focused)
+                State = UIButton.ButtonState.Normal;
         }
         public virtual void DeInit()
         {

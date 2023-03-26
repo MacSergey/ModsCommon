@@ -17,6 +17,7 @@ namespace ModsCommon.UI
         public event Action OnAfterPopupClose;
 
         public PopupType Popup { get; private set; }
+        public bool AutoClose { get; set; } = true;
 
         public override void Update()
         {
@@ -36,7 +37,8 @@ namespace ModsCommon.UI
 
         protected virtual void OpenPopup()
         {
-            isInteractive = false;
+            if (AutoClose)
+                isInteractive = false;
 
             BeforePopupOpen();
             OnBeforePopupOpen?.Invoke();
@@ -109,7 +111,7 @@ namespace ModsCommon.UI
 
         protected virtual void CheckPopup()
         {
-            if (Popup == null)
+            if (Popup == null || !AutoClose)
                 return;
 
             if (!Popup.containsFocus)

@@ -150,7 +150,7 @@ namespace ModsCommon.Utilities
                 Resolved.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
                 Resolved.FgSprites = CommonTextures.Success;
                 Resolved.FgColors = ComponentStyle.DarkPrimaryColor100;
-                Resolved.autoSize = false;
+                Resolved.AutoSize = AutoSize.None;
                 Resolved.size = new Vector2(150f, 30f);
                 Resolved.HorizontalAlignment = UIHorizontalAlignment.Left;
                 Resolved.TextHorizontalAlignment = UIHorizontalAlignment.Center;

@@ -123,18 +123,14 @@ namespace ModsCommon.UI
         {
             button.TextPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
             button.textScale = TextScale;
+            button.height = 20;
 
             if (AutoButtonSize)
-            {
-                button.autoSize = true;
-                button.autoSize = false;
-            }
+                button.PerformAutoWidth();
             else if (width.HasValue)
                 button.width = width.Value;
             else
                 button.width = ButtonWidth;
-
-            button.height = 20;
         }
         protected void SetSprite(CustomUIButton button)
         {
@@ -143,16 +139,16 @@ namespace ModsCommon.UI
             if (index == 0)
             {
                 if (Buttons.Count == 1)
-                    button.BgSprites = CommonTextures.FieldSingle;
+                    button.AllBgSprites = CommonTextures.FieldSingle;
                 else
-                    button.BgSprites = CommonTextures.FieldLeft;
+                    button.AllBgSprites = CommonTextures.FieldLeft;
             }
             else
             {
                 if (index == Buttons.Count - 1)
-                    button.BgSprites = CommonTextures.FieldRight;
+                    button.AllBgSprites = CommonTextures.FieldRight;
                 else
-                    button.BgSprites = CommonTextures.FieldMiddle;
+                    button.AllBgSprites = CommonTextures.FieldMiddle;
             }
         }
         protected void SetColor(CustomUIButton button)

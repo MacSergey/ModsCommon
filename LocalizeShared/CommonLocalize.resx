@@ -483,4 +483,7 @@ selection step over</value>
   <data name="Key_Space" xml:space="preserve">
     <value>Space</value>
   </data>
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>List is empty</value>
+  </data>
 </root>

@@ -100,7 +100,7 @@ namespace ModsCommon.UI
             button.AllBgSprites = CommonTextures.PanelBig;
             button.BgColors = new ColorSet(ButtonNormalColor, ButtonHoveredColor, ButtonPressedColor, ButtonNormalColor, ButtonDisabledColor);
             button.SelBgColors = new ColorSet(ButtonSelectedNormalColor, ButtonSelectedHoveredColor, ButtonSelectedPressedColor, ButtonSelectedFocusedColor, ButtonSelectedDisabledColor);
-            button.TextColors = new ColorSet(Color.white, Color.white, Color.white, default, default);
+            button.AllTextColors = Color.white;
             button.Bold = true;
 
             button.HorizontalAlignment = UIHorizontalAlignment.Center;
@@ -112,9 +112,9 @@ namespace ModsCommon.UI
         public static void ButtonSettingsStyle(this CustomUIButton button)
         {
             button.Atlas = CommonTextures.Atlas;
-            button.BgSprites = CommonTextures.PanelBig;
-            button.BgColors = new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15);
-            button.TextColors = new ColorSet(Color.white, Color.white, Color.white, default, default);
+            button.AllBgSprites = CommonTextures.PanelBig;
+            button.AllBgColors = new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15);
+            button.AllTextColors = Color.white;
 
             button.HorizontalAlignment = UIHorizontalAlignment.Center;
             button.VerticalAlignment = UIVerticalAlignment.Middle;
@@ -181,10 +181,10 @@ namespace ModsCommon.UI
         {
             entity.Atlas = CommonTextures.Atlas;
             entity.HoveredBgSprite = CommonTextures.FieldSingle;
-            entity.FocusedBgSprite = CommonTextures.FieldSingle;
+            entity.SelBgSprites = CommonTextures.FieldSingle;
 
             entity.HoveredBgColor = FieldNormalColor;
-            entity.FocusedBgColor = FieldFocusedColor;
+            entity.SelBgColors = FieldFocusedColor;
         }
 
 
@@ -227,10 +227,10 @@ namespace ModsCommon.UI
         {
             entity.Atlas = CommonTextures.Atlas;
             entity.HoveredBgSprite = CommonTextures.FieldSingle;
-            entity.FocusedBgSprite = CommonTextures.FieldSingle;
+            entity.SelBgSprites = CommonTextures.FieldSingle;
 
             entity.HoveredBgColor = DarkPrimaryColor45;
-            entity.FocusedBgColor = NormalBlue;
+            entity.SelBgColors = NormalBlue;
         }
 
 
@@ -276,10 +276,10 @@ namespace ModsCommon.UI
         {
             entity.Atlas = CommonTextures.Atlas;
             entity.HoveredBgSprite = CommonTextures.FieldSingle;
-            entity.FocusedBgSprite = CommonTextures.FieldSingle;
+            entity.SelBgSprites = CommonTextures.FieldSingle;
 
             entity.HoveredBgColor = SettingsColor45;
-            entity.FocusedBgColor = NormalBlue;
+            entity.SelBgColors = NormalBlue;
         }
 
         #endregion

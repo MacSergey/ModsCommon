@@ -727,7 +727,11 @@ namespace ModsCommon.UI
         private void ChildIsVisibleChanged(UIComponent child, bool value) => ChildChanged(child);
         private void ChildInvalidated(UIComponent child, Vector2 value) => ChildChanged(child);
 
-        protected virtual void ChildChanged(UIComponent child) => Reset();
+        protected virtual void ChildChanged(UIComponent child)
+        {
+            if(!ignoreList.Contains(child))
+                Reset();
+        }
 
         protected override void OnResolutionChanged(Vector2 previousResolution, Vector2 currentResolution)
         {

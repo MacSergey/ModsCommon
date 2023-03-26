@@ -18,14 +18,14 @@ namespace ModsCommon.UI
         }
         protected override void OnEnterFocus(UIFocusEventParameter p)
         {
-            if (state != UIButton.ButtonState.Pressed)
-                state = UIButton.ButtonState.Focused;
+            if (State != UIButton.ButtonState.Pressed)
+                State = UIButton.ButtonState.Focused;
 
             base.OnEnterFocus(p);
         }
         protected override void OnLeaveFocus(UIFocusEventParameter p)
         {
-            state = containsMouse ? UIButton.ButtonState.Hovered : UIButton.ButtonState.Normal;
+            State = containsMouse ? UIButton.ButtonState.Hovered : UIButton.ButtonState.Normal;
             base.OnLeaveFocus(p);
         }
         protected override void OnKeyPress(UIKeyEventParameter p)
@@ -39,8 +39,8 @@ namespace ModsCommon.UI
         {
             if ((p.buttons & ButtonsMask) != 0)
             {
-                if (state != UIButton.ButtonState.Focused)
-                    state = UIButton.ButtonState.Pressed;
+                if (State != UIButton.ButtonState.Focused)
+                    State = UIButton.ButtonState.Pressed;
 
                 base.OnMouseDown(p);
             }
@@ -48,18 +48,18 @@ namespace ModsCommon.UI
         protected override void OnMouseUp(UIMouseEventParameter p)
         {
             if (m_IsMouseHovering)
-                state = UIButton.ButtonState.Hovered;
+                State = UIButton.ButtonState.Hovered;
             else if (hasFocus)
-                state = UIButton.ButtonState.Focused;
+                State = UIButton.ButtonState.Focused;
             else
-                state = UIButton.ButtonState.Normal;
+                State = UIButton.ButtonState.Normal;
 
             base.OnMouseUp(p);
         }
         protected override void OnMouseEnter(UIMouseEventParameter p)
         {
-            if (state != UIButton.ButtonState.Focused)
-                state = UIButton.ButtonState.Hovered;
+            if (State != UIButton.ButtonState.Focused)
+                State = UIButton.ButtonState.Hovered;
 
             base.OnMouseEnter(p);
             Invalidate();
@@ -67,9 +67,9 @@ namespace ModsCommon.UI
         protected override void OnMouseLeave(UIMouseEventParameter p)
         {
             if (containsFocus)
-                state = UIButton.ButtonState.Focused;
+                State = UIButton.ButtonState.Focused;
             else
-                state = UIButton.ButtonState.Normal;
+                State = UIButton.ButtonState.Normal;
 
             base.OnMouseLeave(p);
             Invalidate();
@@ -77,9 +77,9 @@ namespace ModsCommon.UI
         protected override void OnIsEnabledChanged()
         {
             if (!isEnabled)
-                state = UIButton.ButtonState.Disabled;
+                State = UIButton.ButtonState.Disabled;
             else
-                state = UIButton.ButtonState.Normal;
+                State = UIButton.ButtonState.Normal;
 
             base.OnIsEnabledChanged();
         }
@@ -87,7 +87,9 @@ namespace ModsCommon.UI
         {
             if (isEnabled || value == UIButton.ButtonState.Disabled)
             {
+#pragma warning disable CS0612
                 state = value;
+#pragma warning restore CS0612
                 OnStateChanged?.Invoke(value);
 
                 Invalidate();
@@ -98,7 +100,6 @@ namespace ModsCommon.UI
             base.OnGotFocus(p);
             Invalidate();
         }
-
         protected override void OnLostFocus(UIFocusEventParameter p)
         {
             base.OnLostFocus(p);
@@ -107,10 +108,11 @@ namespace ModsCommon.UI
 
         #endregion
 
-
+        [Obsolete]
         protected UIButton.ButtonState state;
         public UIButton.ButtonState State
         {
+#pragma warning disable CS0612
             get => state;
             set
             {
@@ -120,11 +122,15 @@ namespace ModsCommon.UI
                     Invalidate();
                 }
             }
+#pragma warning restore CS0612
         }
 
+
+        [Obsolete]
         protected bool wordWrap;
         public bool WordWrap
         {
+#pragma warning disable CS0612
             get => wordWrap;
             set
             {
@@ -134,12 +140,15 @@ namespace ModsCommon.UI
                     Invalidate();
                 }
             }
+#pragma warning restore CS0612
         }
 
 
+        [Obsolete]
         protected UIHorizontalAlignment textHorizontalAlign = UIHorizontalAlignment.Center;
         public UIHorizontalAlignment TextHorizontalAlignment
         {
+#pragma warning disable CS0612
             get => (AutoSize & AutoSize.Width) != 0 ? UIHorizontalAlignment.Left : textHorizontalAlign;
             set
             {
@@ -149,12 +158,15 @@ namespace ModsCommon.UI
                     Invalidate();
                 }
             }
+#pragma warning restore CS0612
         }
 
 
+        [Obsolete]
         protected UIVerticalAlignment textVerticalAlign = UIVerticalAlignment.Middle;
         public virtual UIVerticalAlignment TextVerticalAlignment
         {
+#pragma warning disable CS0612
             get => (AutoSize & AutoSize.Height) != 0 ? UIVerticalAlignment.Top : textVerticalAlign;
             set
             {
@@ -164,11 +176,15 @@ namespace ModsCommon.UI
                     Invalidate();
                 }
             }
+#pragma warning restore CS0612
         }
 
+
+        [Obsolete]
         protected UIHorizontalAlignment horizontalAlignment = UIHorizontalAlignment.Center;
         public UIHorizontalAlignment HorizontalAlignment
         {
+#pragma warning disable CS0612
             get => (AutoSize & AutoSize.Width) != 0 ? UIHorizontalAlignment.Left : horizontalAlignment;
             set
             {
@@ -178,10 +194,15 @@ namespace ModsCommon.UI
                     Invalidate();
                 }
             }
+#pragma warning restore CS0612
         }
+
+
+        [Obsolete]
         protected UIVerticalAlignment verticalAlignment = UIVerticalAlignment.Middle;
         public UIVerticalAlignment VerticalAlignment
         {
+#pragma warning disable CS0612
             get => (AutoSize & AutoSize.Height) != 0 ? UIVerticalAlignment.Top : verticalAlignment;
             set
             {
@@ -191,12 +212,15 @@ namespace ModsCommon.UI
                     Invalidate();
                 }
             }
+#pragma warning restore CS0612
         }
 
 
+        [Obsolete]
         protected RectOffset textPadding;
         public RectOffset TextPadding
         {
+#pragma warning disable CS0612
             get => textPadding ??= new RectOffset();
             set
             {
@@ -207,10 +231,13 @@ namespace ModsCommon.UI
                     Invalidate();
                 }
             }
+#pragma warning restore CS0612
         }
 
 
+
         private AutoSize _autoSize;
+        [Obsolete]
         public override bool autoSize
         {
             get => AutoSize == AutoSize.All;
@@ -218,23 +245,40 @@ namespace ModsCommon.UI
         }
         public AutoSize AutoSize
         {
+#pragma warning disable CS0612
             get => _autoSize;
             set
             {
                 if (value != _autoSize)
                 {
                     _autoSize = value;
+
+                    if ((value & AutoSize.Width) != 0)
+                    {
+                        horizontalAlignment = UIHorizontalAlignment.Left;
+                        textHorizontalAlign = UIHorizontalAlignment.Left;
+                    }
+
+                    if ((value & AutoSize.Height) != 0)
+                    {
+                        verticalAlignment = UIVerticalAlignment.Top;
+                        textVerticalAlign = UIVerticalAlignment.Top;
+                    }
+
                     Invalidate();
                 }
             }
+#pragma warning restore CS0612
         }
 
 
         protected UIMouseButton buttonsMask = UIMouseButton.Left;
         public UIMouseButton ButtonsMask
         {
+#pragma warning disable CS0612
             get => buttonsMask;
             set => buttonsMask = value;
+#pragma warning restore CS0612
         }
 
 
@@ -1263,39 +1307,48 @@ namespace ModsCommon.UI
         {
             base.Invalidate();
 
-            if (font != null && font.isValid && !string.IsNullOrEmpty(text) && AutoSize != AutoSize.None)
+            switch (AutoSize)
             {
-                using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
-                Vector2 measured = uIFontRenderer.MeasureString(text).RoundToInt();
-
-                var width = Mathf.Max(measured.x + TextPadding.horizontal, minimumSize.x);
-                var height = Mathf.Max(measured.y + TextPadding.vertical, minimumSize.y);
-
-                size = AutoSize switch
-                {
-                    AutoSize.Width => new Vector2(width, size.y),
-                    AutoSize.Height => new Vector2(size.x, height),
-                    AutoSize.All => new Vector2(width, height),
-                    _ => size
-                };
+                case AutoSize.Width:
+                    PerformAutoWidth();
+                    break;
+                case AutoSize.Height:
+                    PerformAutoHeight();
+                    break;
+                case AutoSize.All:
+                    PerformAutoSize();
+                    break;
             }
         }
 
-        public void AutoWidth()
+        public void PerformAutoSize()
+        {
+            if (font != null && font.isValid && !string.IsNullOrEmpty(text))
+            {
+                using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
+                var measured = uIFontRenderer.MeasureString(text).RoundToInt();
+
+                var width = Mathf.Max(measured.x + TextPadding.horizontal, minimumSize.x);
+                var height = Mathf.Max(measured.y + TextPadding.vertical, minimumSize.y);
+                size = new Vector2(width, height);
+            }
+        }
+        public void PerformAutoWidth()
         {
             if (m_Font != null && m_Font.isValid && !string.IsNullOrEmpty(m_Text))
             {
-                var minSize = minimumSize;
-
-                using (UIFontRenderer uIFontRenderer = ObtainTextRenderer())
-                {
-                    var textSize = uIFontRenderer.MeasureString(m_Text);
-                    minSize.x = textSize.x + TextPadding.horizontal;
-                }
-
-                var sprite = RenderForegroundSprite;
-                var spriteSize = GetForegroundRenderSize(sprite);
-                width = Mathf.Max(spriteSize.x, minSize.x);
+                using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
+                var measured = uIFontRenderer.MeasureString(text).RoundToInt();
+                width = Mathf.Max(measured.x + TextPadding.horizontal, minimumSize.x);
+            }
+        }
+        public void PerformAutoHeight()
+        {
+            if (m_Font != null && m_Font.isValid && !string.IsNullOrEmpty(m_Text))
+            {
+                using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
+                var measured = uIFontRenderer.MeasureString(text).RoundToInt();
+                height = Mathf.Max(measured.y + TextPadding.vertical, minimumSize.y);
             }
         }
 
@@ -1377,7 +1430,7 @@ namespace ModsCommon.UI
             offset.y -= TextPadding.top * ratio;
 
             var renderer = font.ObtainRenderer();
-            renderer.wordWrap = wordWrap;
+            renderer.wordWrap = WordWrap;
             renderer.multiLine = true;
             renderer.maxSize = maxSize;
             renderer.pixelRatio = ratio;
@@ -1395,7 +1448,7 @@ namespace ModsCommon.UI
             renderer.outline = useOutline;
             renderer.outlineSize = outlineSize;
             renderer.outlineColor = outlineColor;
-            if (AutoSize != AutoSize.Height && TextVerticalAlignment != UIVerticalAlignment.Top)
+            if (TextVerticalAlignment != UIVerticalAlignment.Top)
                 renderer.vectorOffset = GetVertAlignOffset(renderer);
 
             return renderer;
@@ -1409,7 +1462,7 @@ namespace ModsCommon.UI
                     return DisabledTextColor;
                 else
                 {
-                    return state switch
+                    return State switch
                     {
                         UIButton.ButtonState.Normal => IsSelected ? SelNormalTextColor : NormalTextColor,
                         UIButton.ButtonState.Hovered => IsSelected ? SelHoveredTextColor : HoveredTextColor,
@@ -1425,7 +1478,7 @@ namespace ModsCommon.UI
         {
             get
             {
-                return state switch
+                return State switch
                 {
                     UIButton.ButtonState.Focused => IsSelected ? SelFocusedBgColor : FocusedBgColor,
                     UIButton.ButtonState.Hovered => IsSelected ? SelHoveredBgColor : HoveredBgColor,
@@ -1439,7 +1492,7 @@ namespace ModsCommon.UI
         {
             get
             {
-                return state switch
+                return State switch
                 {
                     UIButton.ButtonState.Focused => IsSelected ? SelFocusedFgColor : FocusedFgColor,
                     UIButton.ButtonState.Hovered => IsSelected ? SelHoveredFgColor : HoveredFgColor,
@@ -1478,7 +1531,7 @@ namespace ModsCommon.UI
                 if (AtlasBackground is not UITextureAtlas atlas)
                     return null;
 
-                var spriteInfo = state switch
+                var spriteInfo = State switch
                 {
                     UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalBgSprite : NormalBgSprite],
                     UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedBgSprite : FocusedBgSprite],
@@ -1500,7 +1553,7 @@ namespace ModsCommon.UI
                 if (AtlasForeground is not UITextureAtlas atlas)
                     return null;
 
-                var spriteInfo = state switch
+                var spriteInfo = State switch
                 {
                     UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalFgSprite : NormalFgSprite],
                     UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedFgSprite : FocusedFgSprite],

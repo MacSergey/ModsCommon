@@ -7,13 +7,14 @@ namespace ModsCommon.UI
 {
     public interface IHeaderButton
     {
-        bool autoSize { get; set; }
+        AutoSize AutoSize { get; set; }
         float height { get; set; }
         float width { get; set; }
 
 
         void SetIcon(UITextureAtlas atlas, string sprite);
         void SetSize(int buttonSize, int iconSize);
+        void PerformAutoWidth();
         ColorSet BgColors {set;}
         ColorSet FgColors { set; }
     }
@@ -51,8 +52,8 @@ namespace ModsCommon.UI
         public override void Update()
         {
             base.Update();
-            if (state == UIButton.ButtonState.Focused)
-                state = UIButton.ButtonState.Normal;
+            if (State == UIButton.ButtonState.Focused)
+                State = UIButton.ButtonState.Normal;
         }
 
         public virtual void DeInit()

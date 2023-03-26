@@ -257,8 +257,7 @@ namespace ModsCommon.UI
 
             foreach (var tab in tabs)
             {
-                tab.autoSize = true;
-                tab.autoSize = false;
+                tab.PerformAutoSize();
                 tab.MakePixelPerfect(false);
                 tab.TextHorizontalAlignment = UIHorizontalAlignment.Center;
             }

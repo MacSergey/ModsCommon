@@ -28,10 +28,10 @@ namespace ModsCommon.UI
 
             var enable = SingletonTool<TypeTool>.Instance?.enabled == true;
 
-            if (enable && (state == UIButton.ButtonState.Normal || state == UIButton.ButtonState.Hovered))
-                state = UIButton.ButtonState.Focused;
-            else if (!enable && state == UIButton.ButtonState.Focused)
-                state = UIButton.ButtonState.Normal;
+            if (enable && (State == UIButton.ButtonState.Normal || State == UIButton.ButtonState.Hovered))
+                State = UIButton.ButtonState.Focused;
+            else if (!enable && State == UIButton.ButtonState.Focused)
+                State = UIButton.ButtonState.Normal;
         }
 
         protected override void OnClick(UIMouseEventParameter p)

@@ -188,10 +188,10 @@ namespace ModsCommon.UI
             get => Button.TextHorizontalAlignment;
             set => Button.TextHorizontalAlignment = value;
         }
-        public bool AutoSize
+        public AutoSize AutoSize
         {
-            get => Button.autoSize;
-            set => Button.autoSize = value;
+            get => Button.AutoSize;
+            set => Button.AutoSize = value;
         }
 
         public override bool EnableControl
@@ -223,7 +223,7 @@ namespace ModsCommon.UI
 
             ButtonText = string.Empty;
             WordWrap = false;
-            AutoSize = false;
+            AutoSize = AutoSize.None;
             OnButtonClick = null;
         }
 

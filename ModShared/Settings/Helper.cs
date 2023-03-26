@@ -272,7 +272,7 @@ namespace ModsCommon.Settings
                 button.eventClick += (_, _) => click();
             if (textScale != null)
                 button.textScale = textScale.Value;
-            button.autoSize = false;
+            button.AutoSize = AutoSize.None;
             button.height = 34f;
             if (width != null)
                 button.width = width.Value;

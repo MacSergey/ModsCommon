@@ -122,7 +122,7 @@ namespace ModsCommon.UI
             SpritePadding = new RectOffset(0, 5, 0, 0);
 
             enabled = true;
-            autoSize = false;
+            AutoSize = AutoSize.None;
             TextHorizontalAlignment = UIHorizontalAlignment.Left;
             TextVerticalAlignment = UIVerticalAlignment.Middle;
             height = 20;

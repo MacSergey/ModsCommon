@@ -18,6 +18,8 @@ namespace ModsCommon.UI
         protected virtual float DefaultEntityHeight => 20f;
 
         private CustomUIScrollbar ScrollBar { get; set; }
+        private CustomUILabel EmptyLabel { get; set; }
+        protected virtual string EmptyText => CommonLocalize.Popup_Empty;
         private List<EntityType> Entities { get; set; } = new List<EntityType>();
 
         public Func<ObjectType, ObjectType, bool> IsEqualDelegate { protected get; set; }
@@ -84,6 +86,8 @@ namespace ModsCommon.UI
                 }
             }
         }
+
+
         private new Vector2 maximumSize;
         public Vector2 MaximumSize
         {
@@ -97,6 +101,8 @@ namespace ModsCommon.UI
                 }
             }
         }
+
+
         private new Vector2 minimumSize;
         public Vector2 MinimumSize
         {
@@ -111,6 +117,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         private bool autoWidth;
         public bool AutoWidth
         {
@@ -120,10 +127,13 @@ namespace ModsCommon.UI
                 if (value != autoWidth)
                 {
                     autoWidth = value;
+                    autoChildrenHorizontally = value ? AutoLayoutChildren.Fit : AutoLayoutChildren.None;
                     StartIndex = StartIndex;
                 }
             }
         }
+
+
         private bool autoHeight;
         public bool AutoHeight
         {
@@ -138,6 +148,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         private RectOffset itemsPadding = new RectOffset(0, 0, 0, 0);
         public RectOffset ItemsPadding
         {
@@ -145,7 +156,7 @@ namespace ModsCommon.UI
             set
             {
                 itemsPadding = value;
-                PlaceEntities();
+                RefreshEntities();
             }
         }
 
@@ -158,7 +169,6 @@ namespace ModsCommon.UI
                 return Mathf.Min(Values.Count, visibleCount, fitCount);
             }
         }
-        protected virtual float PopupHeight => VisibleCount * EntityHeight + ItemsPadding.vertical;
         protected bool ShowScroll => Values.Count > VisibleCount;
         protected virtual Vector2 ScrollPosition => new Vector2(width - ScrollBar.width, 0f);
         protected virtual float ScrollHeight => height;
@@ -167,14 +177,35 @@ namespace ModsCommon.UI
         {
             clipChildren = true;
 
+            PauseLayout(() =>
+            {
+                AutoLayout = AutoLayout.Vertical;
+                AutoChildrenVertically = AutoLayoutChildren.Fit;
+
+                FillPopup();
+
+                MaximumSize = new Vector2(200f, 700f);
+                entityHeight = DefaultEntityHeight;
+            });
+        }
+        protected virtual void FillPopup()
+        {
             ScrollBar = AddUIComponent<CustomUIScrollbar>();
             ScrollBar.name = nameof(ScrollBar);
             ScrollBar.Orientation = UIOrientation.Vertical;
             ScrollBar.DefaultStyle();
             ScrollBar.OnScrollValueChanged += ScrollBarValueChanged;
+            Ignore(ScrollBar, true);
 
-            MaximumSize = new Vector2(200f, 700f);
-            entityHeight = DefaultEntityHeight;
+            EmptyLabel = AddUIComponent<CustomUILabel>();
+            EmptyLabel.name = nameof(EmptyLabel);
+            EmptyLabel.text = EmptyText;
+            EmptyLabel.AutoSize = AutoSize.None;
+            EmptyLabel.height = 30f;
+            EmptyLabel.relativePosition = new Vector2(0, 0);
+            EmptyLabel.VerticalAlignment = UIVerticalAlignment.Middle;
+            EmptyLabel.HorizontalAlignment = UIHorizontalAlignment.Center;
+            EmptyLabel.isVisible = false;
         }
 
         public virtual void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector, Func<ObjectType, ObjectType, int> sorter)
@@ -240,95 +271,96 @@ namespace ModsCommon.UI
 
             ScrollBar.MinValue = 0;
             ScrollBar.MaxValue = Values.Count - VisibleCount + 1;
+
+            EmptyLabel.size = new Vector2(width, 30f);
+            EmptyLabel.isVisible = VisibleCount == 0;
+            EmptyLabel.text = EmptyText;
         }
         protected virtual void RefreshEntities()
         {
             if (!refreshEnable)
                 return;
 
-            var visibleCount = VisibleCount;
-
-            var count = Math.Max(visibleCount, Entities.Count);
-
-            for (var i = 0; i < count; i += 1)
+            PauseLayout(() =>
             {
-                var index = StartIndex + i;
 
-                if (i < visibleCount)
+                var visibleCount = VisibleCount;
+
+                var count = Math.Max(visibleCount, Entities.Count);
+
+                for (var i = 0; i < count; i += 1)
                 {
-                    EntityType entity;
-                    if (i < Entities.Count)
-                        entity = Entities[i];
+                    var index = StartIndex + i;
+
+                    if (i < visibleCount)
+                    {
+                        EntityType entity;
+                        if (i < Entities.Count)
+                            entity = Entities[i];
+                        else
+                        {
+                            entity = ComponentPool.Get<EntityType>(this);
+                            entity.OnSelected += ObjectSelected;
+
+                            var overridden = false;
+                            OnSetEntityStyle?.Invoke(entity, ref overridden);
+                            if (!overridden)
+                                SetEntityStyle(entity);
+
+                            Entities.Add(entity);
+                        }
+
+                        var value = Values[index];
+                        SetEntityValue(Entities[i], index, value, Equal(value, SelectedObject));
+                    }
                     else
                     {
-                        entity = ComponentPool.Get<EntityType>(this);
-                        entity.OnSelected += ObjectSelected;
+                        Entities[i].OnSelected -= ObjectSelected;
+                        ComponentPool.Free(Entities[i]);
+                    }
+                }
+                Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
 
-                        var overridden = false;
-                        OnSetEntityStyle?.Invoke(entity, ref overridden);
-                        if (!overridden)
-                            SetEntityStyle(entity);
 
-                        Entities.Add(entity);
+                var showScroll = ShowScroll;
+                Padding = ItemsPadding;
+                var itemMargin = new RectOffset(0, showScroll ? Mathf.CeilToInt(ScrollBar.width) : 0, 0, 0);
+
+                if (AutoWidth)
+                {
+                    var entityWidth = 0f;
+                    for (var i = 0; i < visibleCount; i += 1)
+                    {
+                        Entities[i].height = EntityHeight;
+                        Entities[i].PerformAutoWidth();
+                        entityWidth = Mathf.Max(entityWidth, Entities[i].width);
                     }
 
-                    var value = Values[index];
-                    SetEntityValue(Entities[i], index, value, Equal(value, SelectedObject));
+                    for (var i = 0; i < visibleCount; i += 1)
+                    {
+                        Entities[i].width = entityWidth;
+                    }
                 }
                 else
                 {
-                    Entities[i].OnSelected -= ObjectSelected;
-                    ComponentPool.Free(Entities[i]);
+                    var entitySize = new Vector2(EntityWidth, EntityHeight);
+                    for (var i = 0; i < visibleCount; i += 1)
+                    {
+                        Entities[i].size = entitySize;
+                    }
                 }
-            }
-            Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
+            });
 
-            PlaceEntities();
+            ScrollBar.height = ScrollHeight;
+            ScrollBar.relativePosition = ScrollPosition;
+            ScrollBar.Value = StartIndex;
+            ScrollBar.isVisible = ShowScroll;
         }
         protected virtual void SetEntityStyle(EntityType entity) { }
         protected virtual void SetEntityValue(EntityType entity, int index, ObjectType value, bool selected)
         {
             entity.SetObject(index, value, selected);
         }
-        protected virtual void PlaceEntities()
-        {
-            var visibleCount = VisibleCount;
-
-            if (AutoWidth)
-            {
-                var entitySize = new Vector2(0f, EntityHeight);
-                for (var i = 0; i < visibleCount; i += 1)
-                {
-                    Entities[i].PerformWidth();
-                    entitySize.x = Mathf.Max(entitySize.x, Entities[i].width);
-                }
-
-                for (var i = 0; i < visibleCount; i += 1)
-                {
-                    Entities[i].size = entitySize;
-                    Entities[i].relativePosition = GetEntityPosition(i);
-                }
-
-                width = entitySize.x + ItemsPadding.horizontal;
-            }
-            else
-            {
-                var entitySize = new Vector2(EntityWidth, EntityHeight);
-                for (var i = 0; i < visibleCount; i += 1)
-                {
-                    Entities[i].size = entitySize;
-                    Entities[i].relativePosition = GetEntityPosition(i);
-                }
-            }
-
-            height = PopupHeight;
-            ScrollBar.height = ScrollHeight;
-            ScrollBar.relativePosition = ScrollPosition;
-            ScrollBar.Value = StartIndex;
-            ScrollBar.isVisible = ShowScroll;
-        }
-
-        protected virtual Vector2 GetEntityPosition(int index) => new Vector2(ItemsPadding.left, EntityHeight * index + ItemsPadding.top);
 
         protected override void OnMouseWheel(UIMouseEventParameter p)
         {
@@ -347,11 +379,9 @@ namespace ModsCommon.UI
     {
         private bool CanSubmit { get; set; } = true;
         protected CustomUITextField Search { get; private set; }
-        private CustomUILabel NothingFound { get; set; }
         private CustomUIButton ResetButton { get; set; }
-        protected abstract string NotFoundText { get; }
 
-        public SearchPopup()
+        protected override void FillPopup()
         {
             Search = AddUIComponent<CustomUITextField>();
             Search.name = nameof(Search);
@@ -360,7 +390,6 @@ namespace ModsCommon.UI
             Search.atlas = TextureHelper.InGameAtlas;
             Search.selectionSprite = "EmptySprite";
             Search.BgColors = new Color32(10, 10, 10, 255);
-            Search.relativePosition = new Vector2(5f, 5f);
             Search.height = 20f;
             Search.builtinKeyNavigation = true;
             Search.cursorWidth = 1;
@@ -372,6 +401,7 @@ namespace ModsCommon.UI
             Search.eventTextChanged += SearchTextChanged;
             Search.eventGotFocus += SearchGotFocus;
             Search.eventLostFocus += SearchLostFocus;
+            SetItemMargin(Search, new RectOffset(5, 5, 5, 5));
 
             var loop = Search.AddUIComponent<UISprite>();
             loop.atlas = TextureHelper.InGameAtlas;
@@ -388,17 +418,8 @@ namespace ModsCommon.UI
             ResetButton.isVisible = false;
             ResetButton.eventClick += ResetClick;
 
-            NothingFound = AddUIComponent<CustomUILabel>();
-            NothingFound.name = nameof(NothingFound);
-            NothingFound.text = NotFoundText;
-            NothingFound.AutoSize = AutoSize.None;
-            NothingFound.height = EntityHeight;
-            NothingFound.relativePosition = new Vector2(0, 30f);
-            NothingFound.VerticalAlignment = UIVerticalAlignment.Middle;
-            NothingFound.HorizontalAlignment = UIHorizontalAlignment.Center;
-            NothingFound.isVisible = false;
+            base.FillPopup();
         }
-
 
         public override void DeInit()
         {
@@ -433,9 +454,7 @@ namespace ModsCommon.UI
         protected override void RefreshValues()
         {
             base.RefreshValues();
-            Search.width = width - 10f;
-            NothingFound.size = new Vector2(width, EntityHeight);
-            NothingFound.isVisible = VisibleCount == 0;
+            Search.width = width - GetItemMargin(Search).horizontal;
             ResetButton.relativePosition = new Vector2(Search.width - 15f, 5f);
         }
         private void SearchGotFocus(UIComponent component, UIFocusEventParameter p)
@@ -463,10 +482,8 @@ namespace ModsCommon.UI
                 base.OnLeaveFocus(p);
         }
 
-        protected override float PopupHeight => Math.Max(base.PopupHeight, EntityHeight) + 30f;
         protected override Vector2 ScrollPosition => base.ScrollPosition + new Vector2(0f, 30f);
         protected override float ScrollHeight => height - 30f;
-        protected override Vector2 GetEntityPosition(int index) => base.GetEntityPosition(index) + new Vector2(0f, 30f);
     }
 
     public abstract class PopupEntity<ObjectType> : CustomUIButton, IPopupEntity<ObjectType>, IReusable
@@ -475,26 +492,13 @@ namespace ModsCommon.UI
         bool IReusable.InCache { get; set; }
 
         public virtual ObjectType EditObject { get; protected set; }
-        public bool Selected { get; set; }
         public int Index { get; set; }
         public RectOffset Padding { get; set; } = new RectOffset();
-
-        public override void Update()
-        {
-            base.Update();
-
-            if (Selected)
-                state = UIButton.ButtonState.Focused;
-            else if (m_IsMouseHovering)
-                state = UIButton.ButtonState.Hovered;
-            else
-                state = UIButton.ButtonState.Normal;
-        }
 
         public virtual void DeInit()
         {
             OnSelected = null;
-            Selected = false;
+            IsSelected = false;
             Index = -1;
             Padding = new RectOffset();
         }
@@ -503,13 +507,9 @@ namespace ModsCommon.UI
         {
             Index = index;
             EditObject = value;
-            Selected = selected;
+            IsSelected = selected;
         }
         protected void Select() => OnSelected?.Invoke(Index, EditObject);
-        public virtual void PerformWidth()
-        {
-            AutoWidth();
-        }
 
         protected override void OnClick(UIMouseEventParameter p)
         {

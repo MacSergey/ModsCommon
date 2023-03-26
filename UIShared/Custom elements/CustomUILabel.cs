@@ -372,7 +372,7 @@ namespace ModsCommon.UI
             renderer.outline = useOutline;
             renderer.outlineSize = outlineSize;
             renderer.outlineColor = outlineColor;
-            if (AutoSize != AutoSize.Height && VerticalAlignment != UIVerticalAlignment.Top)
+            if (VerticalAlignment != UIVerticalAlignment.Top)
                 renderer.vectorOffset = GetVertAlignOffset(renderer);
 
             return renderer;
