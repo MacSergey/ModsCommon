@@ -355,11 +355,11 @@ namespace ModsCommon.UI
         {
             Search = AddUIComponent<CustomUITextField>();
             Search.name = nameof(Search);
-            Search.atlasBackground = CommonTextures.Atlas;
-            Search.normalBgSprite = CommonTextures.PanelSmall;
+            Search.AtlasBackground = CommonTextures.Atlas;
+            Search.BgSprites = CommonTextures.PanelSmall;
             Search.atlas = TextureHelper.InGameAtlas;
             Search.selectionSprite = "EmptySprite";
-            Search.color = new Color32(10, 10, 10, 255);
+            Search.BgColors = new Color32(10, 10, 10, 255);
             Search.relativePosition = new Vector2(5f, 5f);
             Search.height = 20f;
             Search.builtinKeyNavigation = true;

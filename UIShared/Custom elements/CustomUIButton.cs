@@ -289,7 +289,7 @@ namespace ModsCommon.UI
         UITextureAtlas atlas;
         public UITextureAtlas Atlas
         {
-            get => atlas;
+            get => atlas ??= GetUIView()?.defaultAtlas;
             set
             {
                 if (value != atlas)
@@ -585,7 +585,7 @@ namespace ModsCommon.UI
             {
                 if (value != fgSprites.disabled)
                 {
-                    selFgSprites.disabled = value;
+                    fgSprites.disabled = value;
                     Invalidate();
                 }
             }

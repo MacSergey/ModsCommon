@@ -136,7 +136,7 @@ namespace ModsCommon.UI
         {
             button.Atlas = TextureHelper.InGameAtlas;
             button.BgSprites = "ButtonWhite";
-            button.BgColors = new ColorSet(ButtonNormal, ButtonHovered, ButtonPressed, ButtonFocused, Color.black);
+            button.BgColors = new ColorSet(ButtonNormal, ButtonHovered, ButtonPressed, ButtonNormal, Color.black);
             button.TextColors = new ColorSet(Color.black, Color.black, Color.white, Color.black, Color.white);
         }
 
@@ -295,16 +295,10 @@ namespace ModsCommon.UI
         public static void DefaultStyle(this CustomUITextField textField)
         {
             textField.atlas = CommonTextures.Atlas;
-            textField.normalBgSprite = CommonTextures.FieldSingle;
-            textField.hoveredBgSprite = CommonTextures.FieldSingle;
-            textField.focusedBgSprite = CommonTextures.FieldSingle;
-            textField.disabledBgSprite = CommonTextures.FieldSingle;
+            textField.BgSprites = CommonTextures.FieldSingle;
             textField.selectionSprite = CommonTextures.Empty;
 
-            textField.color = FieldNormalColor;
-            textField.hoveredColor = FieldHoveredColor;
-            textField.focusedColor = FieldFocusedColor;
-            textField.disabledColor = FieldDisabledColor;
+            textField.BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, default, FieldFocusedColor, FieldDisabledColor);
             textField.selectionBackgroundColor = Color.black;
 
             textField.allowFloats = true;
@@ -322,24 +316,15 @@ namespace ModsCommon.UI
         public static void SettingsStyle(this CustomUITextField textField)
         {
             textField.atlas = CommonTextures.Atlas;
-            textField.normalBgSprite = CommonTextures.FieldSingle;
-            textField.hoveredBgSprite = CommonTextures.FieldSingle;
-            textField.focusedBgSprite = CommonTextures.FieldSingle;
-            textField.disabledBgSprite = CommonTextures.FieldSingle;
+            textField.BgSprites = CommonTextures.FieldSingle;
             textField.selectionSprite = CommonTextures.Empty;
 
-            textField.color = SettingsColor60;
-            textField.hoveredColor = SettingsColor70;
-            textField.focusedColor = NormalBlue;
-            textField.disabledColor = SettingsColor15;
+            textField.BgColors = new ColorSet(SettingsColor60, SettingsColor70, default, NormalBlue, SettingsColor15);
         }
         public static void SetStyle(this CustomUITextField textField, TextFieldStyle style)
         {
-            textField.color = style.Colors.normal;
-            textField.hoveredColor = style.Colors.hovered;
-            textField.focusedColor = style.Colors.focused;
-            textField.disabledColor = style.Colors.disabled;
-
+            textField.BgColors = style.BgColors;
+            textField.FgColors = style.FgColors;
             textField.textColor = style.TextColor;
             textField.selectionBackgroundColor = style.SelectionColor;
         }
@@ -518,7 +503,7 @@ namespace ModsCommon.UI
         {
             TextField = new TextFieldStyle()
             {
-                Colors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledColor),
+                BgColors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledColor),
                 TextColor = ComponentStyle.DarkPrimaryColor100,
                 SelectionColor = ComponentStyle.DarkPrimaryColor0,
             },
@@ -568,7 +553,8 @@ namespace ModsCommon.UI
     }
     public class TextFieldStyle : ItemStyle
     {
-        public ColorSet Colors { get; set; }
+        public ColorSet BgColors { get; set; }
+        public ColorSet FgColors { get; set; }
         public Color32 SelectionColor { get; set; }
         public Color32 TextColor { get; set; }
 
