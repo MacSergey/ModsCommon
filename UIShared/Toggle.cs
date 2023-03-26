@@ -9,18 +9,18 @@ namespace ModsCommon.UI
 {
     public class CustomUIToggle : CustomUIButton
     {
-        public event Action<bool> OnStateChanged;
+        public event Action<bool> OnValueChanged;
 
-        private new bool state;
-        public bool State
+
+        public bool Value
         {
-            get => state;
+            get => IsSelected;
             set
             {
-                if (value != state)
+                if (value != Value)
                 {
-                    state = value;
-                    OnStateChanged?.Invoke(state);
+                    IsSelected = value;
+                    OnValueChanged?.Invoke(value);
                     SetState();
                 }
             }
@@ -39,88 +39,6 @@ namespace ModsCommon.UI
             }
         }
 
-        private Color32 onColor;
-        public Color32 OnColor
-        {
-            get => onColor;
-            set
-            {
-                onColor = value;
-                SetState();
-            }
-        }
-        private Color32 onHoverColor;
-        public Color32 OnHoverColor
-        {
-            get => onHoverColor;
-            set
-            {
-                onHoverColor = value;
-                SetState();
-            }
-        }
-        private Color32 onPressedColor;
-        public Color32 OnPressedColor
-        {
-            get => onPressedColor;
-            set
-            {
-                onPressedColor = value;
-                SetState();
-            }
-        }
-        private Color32 onDisabledColor;
-        public Color32 OnDisabledColor
-        {
-            get => onDisabledColor;
-            set
-            {
-                onDisabledColor = value;
-                SetState();
-            }
-        }
-
-
-        private Color32 offColor;
-        public Color32 OffColor
-        {
-            get => offColor;
-            set
-            {
-                offColor = value;
-                SetState();
-            }
-        }
-        private Color32 offHoverColor;
-        public Color32 OffHoverColor
-        {
-            get => offHoverColor;
-            set
-            {
-                offHoverColor = value;
-                SetState();
-            }
-        }
-        private Color32 offPressedColor;
-        public Color32 OffPressedColor
-        {
-            get => offPressedColor;
-            set
-            {
-                offPressedColor = value;
-                SetState();
-            }
-        }
-        private Color32 offDisabledColor;
-        public Color32 OffDisabledColor
-        {
-            get => offDisabledColor;
-            set
-            {
-                offDisabledColor = value;
-                SetState();
-            }
-        }
         private float circleScale = 1f;
         public float CircleScale
         {
@@ -143,15 +61,9 @@ namespace ModsCommon.UI
 
         private void SetState()
         {
-            NormalBgColor = state ? OnColor : OffColor;
-            FocusedBgColor = state ? OnColor : OffColor;
-            HoveredBgColor = state ? OnHoverColor : OffHoverColor;
-            PressedBgColor = state ? OnPressedColor : OffPressedColor;
-            DisabledBgColor = state ? OnDisabledColor : OffDisabledColor;
-
-            HorizontalAlignment = state ? UIHorizontalAlignment.Right : UIHorizontalAlignment.Left;
-            TextHorizontalAlignment = state ? UIHorizontalAlignment.Left : UIHorizontalAlignment.Right;
-            text = showMark ? (state ? "I" : "O") : string.Empty;
+            HorizontalAlignment = Value ? UIHorizontalAlignment.Right : UIHorizontalAlignment.Left;
+            TextHorizontalAlignment = Value ? UIHorizontalAlignment.Left : UIHorizontalAlignment.Right;
+            text = showMark ? (Value ? "I" : "O") : string.Empty;
         }
         private void SetCircle()
         {
@@ -163,7 +75,7 @@ namespace ModsCommon.UI
         protected override void OnClick(UIMouseEventParameter p)
         {
             base.OnClick(p);
-            State = !State;
+            Value = !Value;
         }
         protected override void OnSizeChanged()
         {
@@ -171,19 +83,91 @@ namespace ModsCommon.UI
             SetCircle();
         }
 
-        public void SetStyle(ToggleStyle style)
+        public ButtonStyle ToggleStyle { set => ButtonStyle = value; }
+
+        protected override Color32 RenderTextColor
         {
-            onColor = style.OnColors.normal;
-            onHoverColor = style.OnColors.hovered;
-            onPressedColor = style.OnColors.pressed;
-            onDisabledColor = style.OnColors.disabled;
+            get
+            {
+                return State switch
+                {
+                    UIButton.ButtonState.Normal => Value ? SelNormalTextColor : NormalTextColor,
+                    UIButton.ButtonState.Hovered => Value ? SelHoveredTextColor : HoveredTextColor,
+                    UIButton.ButtonState.Pressed => Value ? SelPressedTextColor : PressedTextColor,
+                    UIButton.ButtonState.Disabled => Value ? SelDisabledTextColor : DisabledTextColor,
+                    UIButton.ButtonState.Focused => Value ? SelFocusedTextColor : FocusedTextColor,
+                    _ => Color.white,
+                };
+            }
+        }
+        protected override Color32 RenderBackgroundColor
+        {
+            get
+            {
+                return State switch
+                {
+                    UIButton.ButtonState.Focused => Value ? SelFocusedBgColor : FocusedBgColor,
+                    UIButton.ButtonState.Hovered => Value ? SelHoveredBgColor : HoveredBgColor,
+                    UIButton.ButtonState.Pressed => Value ? SelPressedBgColor : PressedBgColor,
+                    UIButton.ButtonState.Disabled => Value ? SelDisabledBgColor : DisabledBgColor,
+                    _ => Value ? SelNormalBgColor : NormalBgColor,
+                };
+            }
+        }
+        protected override Color32 RenderForegroundColor
+        {
+            get
+            {
+                return State switch
+                {
+                    UIButton.ButtonState.Focused => Value ? SelFocusedFgColor : FocusedFgColor,
+                    UIButton.ButtonState.Hovered => Value ? SelHoveredFgColor : HoveredFgColor,
+                    UIButton.ButtonState.Pressed => Value ? SelPressedFgColor : PressedFgColor,
+                    UIButton.ButtonState.Disabled => Value ? SelDisabledFgColor : DisabledFgColor,
+                    _ => Value ? SelNormalFgColor : NormalFgColor,
+                };
+            }
+        }
+        protected override UITextureAtlas.SpriteInfo RenderBackgroundSprite
+        {
+            get
+            {
+                if (BgAtlas is not UITextureAtlas atlas)
+                    return null;
 
-            offColor = style.OffColors.normal;
-            offHoverColor = style.OffColors.hovered;
-            offPressedColor = style.OffColors.pressed;
-            offDisabledColor = style.OffColors.disabled;
+                var spriteInfo = State switch
+                {
+                    UIButton.ButtonState.Normal => atlas[Value ? SelNormalBgSprite : NormalBgSprite],
+                    UIButton.ButtonState.Focused => atlas[Value ? SelFocusedBgSprite : FocusedBgSprite],
+                    UIButton.ButtonState.Hovered => atlas[Value ? SelHoveredBgSprite : HoveredBgSprite],
+                    UIButton.ButtonState.Pressed => atlas[Value ? SelPressedBgSprite : PressedBgSprite],
+                    UIButton.ButtonState.Disabled => atlas[Value ? SelDisabledBgSprite : DisabledBgSprite],
+                    _ => null,
+                };
 
-            SetState();
+                return spriteInfo ?? atlas[NormalBgSprite];
+            }
+        }
+
+        protected override UITextureAtlas.SpriteInfo RenderForegroundSprite
+        {
+            get
+            {
+                if (FgAtlas is not UITextureAtlas atlas)
+                    return null;
+
+                var spriteInfo = State switch
+                {
+                    UIButton.ButtonState.Normal => atlas[Value ? SelNormalFgSprite : NormalFgSprite],
+                    UIButton.ButtonState.Focused => atlas[Value ? SelFocusedFgSprite : FocusedFgSprite],
+                    UIButton.ButtonState.Hovered => atlas[Value ? SelHoveredFgSprite : HoveredFgSprite],
+                    UIButton.ButtonState.Pressed => atlas[Value ? SelPressedFgSprite : PressedFgSprite],
+                    UIButton.ButtonState.Disabled => atlas[Value ? SelDisabledFgSprite : DisabledFgSprite],
+                    _ => null,
+                };
+
+                return spriteInfo ?? atlas[NormalFgSprite];
+            }
         }
     }
 }

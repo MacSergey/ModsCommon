@@ -11,8 +11,8 @@ namespace ModsCommon.UI
     {
         public bool State
         {
-            get => Control.State;
-            set => Control.State = value;
+            get => Control.Value;
+            set => Control.Value = value;
         }
 
         protected override void InitControl()

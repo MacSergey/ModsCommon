@@ -157,10 +157,10 @@ namespace ModsCommon.Settings
             var item = parent.AddUIComponent<ToggleSettingsItem>();
             item.Label = label;
 
-            item.Control.State = saved;
-            item.Control.OnStateChanged += OnStateChanged;
+            item.Control.Value = saved;
+            item.Control.OnValueChanged += OnStateChanged;
             if (onStateChanged != null)
-                item.Control.OnStateChanged += onStateChanged;
+                item.Control.OnValueChanged += onStateChanged;
 
             void OnStateChanged(bool value)
             {
@@ -192,14 +192,14 @@ namespace ModsCommon.Settings
 
             var toggleItem = groupItem.AddUIComponent<ToggleSettingsItem>();
             toggleItem.Label = mainLabel;
-            toggleItem.Control.State = mainSaved;
+            toggleItem.Control.Value = mainSaved;
 
             var checkBoxItem = groupItem.AddCheckboxPanel(optionsSaved, labels, onValueChanged);
             checkBoxItem.PaddingTop = 0;
 
-            toggleItem.Control.OnStateChanged += OnStateChanged;
+            toggleItem.Control.OnValueChanged += OnStateChanged;
             if (onStateChanged != null)
-                toggleItem.Control.OnStateChanged += onStateChanged;
+                toggleItem.Control.OnValueChanged += onStateChanged;
 
             SetVisible(mainSaved);
 

@@ -99,7 +99,7 @@ namespace ModsCommon.UI
 
         public override void SetStyle(ControlStyle style)
         {
-            Field.SetStyle(style.TextField);
+            Field.TextFieldStyle = style.TextField;
         }
 
 

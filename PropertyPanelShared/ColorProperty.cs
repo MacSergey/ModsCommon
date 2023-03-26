@@ -423,10 +423,10 @@ namespace ModsCommon.UI
 
         public override void SetStyle(ControlStyle style)
         {
-            RProperty.SetStyle(style.TextField);
-            GProperty.SetStyle(style.TextField);
-            BProperty.SetStyle(style.TextField);
-            AProperty.SetStyle(style.TextField);
+            RProperty.TextFieldStyle = style.TextField;
+            GProperty.TextFieldStyle = style.TextField;
+            BProperty.TextFieldStyle = style.TextField;
+            AProperty.TextFieldStyle = style.TextField;
         }
 
         public override string ToString() => $"{base.ToString()}: {Value}";

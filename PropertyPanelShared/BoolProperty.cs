@@ -11,8 +11,8 @@ namespace ModsCommon.UI
 
         public bool Value 
         { 
-            get => Toggle.State; 
-            set => Toggle.State = value; 
+            get => Toggle.Value; 
+            set => Toggle.Value = value; 
         }
 
         public BoolPropertyPanel()
@@ -24,7 +24,7 @@ namespace ModsCommon.UI
             Toggle = Content.AddUIComponent<CustomUIToggle>();
             Toggle.name = nameof(Toggle);
             Toggle.DefaultStyle();
-            Toggle.OnStateChanged += ToggleStateChanged;
+            Toggle.OnValueChanged += ToggleStateChanged;
         }
         public override void DeInit()
         {
@@ -36,7 +36,7 @@ namespace ModsCommon.UI
 
         public override void SetStyle(ControlStyle style)
         {
-            Toggle.SetStyle(style.Toggle);
+            Toggle.ToggleStyle = style.Toggle;
         }
     }
 }

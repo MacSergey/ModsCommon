@@ -108,7 +108,7 @@ namespace ModsCommon.UI
             }
         }
 
-        Color32? normalBgColor;
+        protected Color32? normalBgColor;
         public Color32 NormalBgColor
         {
             get => normalBgColor ?? base.color;
@@ -120,7 +120,7 @@ namespace ModsCommon.UI
         }
 
 
-        Color32? hoveredBgColor;
+        protected Color32? hoveredBgColor;
         public Color32 HoveredBgColor
         {
             get => hoveredBgColor ?? NormalBgColor;
@@ -132,7 +132,7 @@ namespace ModsCommon.UI
         }
 
 
-        Color32? disabledBgColor;
+        protected Color32? disabledBgColor;
         public Color32 DisabledBgColor
         {
             get => disabledBgColor ?? base.disabledColor;
@@ -144,7 +144,7 @@ namespace ModsCommon.UI
         }
 
 
-        Color32? normalFgColor;
+        protected Color32? normalFgColor;
         public Color32 NormalFgColor
         {
             get => normalFgColor ?? base.color;
@@ -156,7 +156,7 @@ namespace ModsCommon.UI
         }
 
 
-        Color32? hoveredFgColor;
+        protected Color32? hoveredFgColor;
         public Color32 HoveredFgColor
         {
             get => hoveredFgColor ?? NormalFgColor;
@@ -168,7 +168,7 @@ namespace ModsCommon.UI
         }
 
 
-        Color32? disabledFgColor;
+        protected Color32? disabledFgColor;
         public Color32 DisabledFgColor
         {
             get => disabledFgColor ?? base.disabledColor;
@@ -180,7 +180,7 @@ namespace ModsCommon.UI
         }
 
 
-        string backgroundSprite;
+        protected string backgroundSprite;
         public string BackgroundSprite
         {
             get => backgroundSprite;
@@ -195,7 +195,7 @@ namespace ModsCommon.UI
         }
 
 
-        string foregroundSprite;
+        protected string foregroundSprite;
         public string ForegroundSprite
         {
             get => foregroundSprite;

@@ -18,6 +18,8 @@ namespace ModsCommon.UI
         event Action<ObjectType> OnSelect;
         event EntityStyleDelegate<ObjectType, EntityType> OnSetEntityStyle;
 
+        DropDownStyle PopupStyle { set; }
+
         ObjectType SelectedObject { get; set; }
         Func<ObjectType, ObjectType, bool> IsEqualDelegate { set; }
 
@@ -32,6 +34,8 @@ namespace ModsCommon.UI
     public interface IPopupEntity<ObjectType>
     {
         event Action<int, ObjectType> OnSelected;
+
+        DropDownStyle EntityStyle { set; }
 
         ObjectType EditObject { get; }
         bool IsSelected { get; set; }
@@ -102,16 +106,27 @@ namespace ModsCommon.UI
             ClosePopup();
         }
 
-        protected DropDownStyle Style { get; set; }
-        public void SetStyle(DropDownStyle style)
+        private DropDownStyle style;
+        public DropDownStyle DropDownStyle
         {
-            Style = style;
+            get => style;
+            set
+            {
+                style = value;
 
-            bgColors = style.BgColors;
-            fgColors = style.FgColors;
-            textColors = style.TextColors;
+                bgAtlas = value.BgAtlas;
+                fgAtlas = value.FgAtlas;
 
-            Invalidate();
+                bgSprites = value.BgSprites;
+                fgSprites = value.FgSprites;
+
+                bgColors = value.BgColors;
+                fgColors = value.FgColors;
+
+                textColors = value.TextColors;
+
+                Invalidate();
+            }
         }
 
         #endregion

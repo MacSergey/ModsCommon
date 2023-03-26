@@ -159,7 +159,7 @@ namespace ModsCommon.UI
             canCollapse = true;
             IsEven = false;
 
-            SetStyle(ControlStyle.Default);
+            SetStyle(ComponentStyle.Default);
         }
         public abstract void SetStyle(ControlStyle style);
     }

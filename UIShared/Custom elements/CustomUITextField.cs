@@ -34,33 +34,35 @@ namespace ModsCommon.UI
         }
 
 
-        UITextureAtlas atlasForeground;
-        public UITextureAtlas AtlasForeground
+        UITextureAtlas bgAtlas;
+        public UITextureAtlas BgAtlas
         {
-            get => atlasForeground ?? atlas;
+            get => bgAtlas ?? atlas;
             set
             {
-                if (!Equals(value, atlasForeground))
+                if (!Equals(value, bgAtlas))
                 {
-                    atlasForeground = value;
+                    bgAtlas = value;
                     Invalidate();
                 }
             }
         }
 
-        UITextureAtlas atlasBackground;
-        public UITextureAtlas AtlasBackground
+
+        UITextureAtlas fgAtlas;
+        public UITextureAtlas FgAtlas
         {
-            get => atlasBackground ?? atlas;
+            get => fgAtlas ?? atlas;
             set
             {
-                if (!Equals(value, atlasBackground))
+                if (!Equals(value, fgAtlas))
                 {
-                    atlasBackground = value;
+                    fgAtlas = value;
                     Invalidate();
                 }
             }
         }
+
 
         [Obsolete]
         public new Color32 color
@@ -379,6 +381,29 @@ namespace ModsCommon.UI
         #endregion
 
 
+        public TextFieldStyle TextFieldStyle
+        {
+            set
+            {
+                bgAtlas = value.BgAtlas;
+                fgAtlas = value.FgAtlas;
+
+                bgSprites = value.BgSprites;
+                fgSprites = value.FgSprites;
+
+                bgColors = value.BgColors;
+                fgColors = value.FgColors;
+
+                m_TextColor = value.TextColor;
+
+                m_Atlas = value.BgAtlas;
+                m_SelectionSprite = value.SelectionSprite;
+                m_SelectionBackground = value.SelectionColor;
+
+                Invalidate();
+            }
+        }
+
         protected UIRenderData FgRenderData { get; set; }
 
         public override void OnDisable()
@@ -399,10 +424,10 @@ namespace ModsCommon.UI
             else
                 FgRenderData.Clear();
 
-            if (renderData != null && AtlasBackground is UITextureAtlas atlas)
+            if (renderData != null && BgAtlas is UITextureAtlas atlas)
                 renderData.material = atlas.material;
 
-            if (AtlasForeground is UITextureAtlas fgAtlas)
+            if (FgAtlas is UITextureAtlas fgAtlas)
             {
                 FgRenderData.material = fgAtlas.material;
                 RenderForeground();
@@ -411,7 +436,7 @@ namespace ModsCommon.UI
 
         protected override void RenderBackground()
         {
-            if (AtlasBackground is UITextureAtlas atlas)
+            if (BgAtlas is UITextureAtlas atlas)
             {
                 var backgroundSprite = GetBackgroundSprite();
                 if (backgroundSprite != null)
@@ -437,7 +462,7 @@ namespace ModsCommon.UI
         }
         protected override UITextureAtlas.SpriteInfo GetBackgroundSprite()
         {
-            if (AtlasBackground is UITextureAtlas atlas)
+            if (BgAtlas is UITextureAtlas atlas)
             {
                 if (!isEnabled)
                     return atlas[DisabledBgSprite];
@@ -487,7 +512,7 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = AtlasForeground,
+                    atlas = FgAtlas,
                     color = RenderForegroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
@@ -508,7 +533,7 @@ namespace ModsCommon.UI
         {
             get
             {
-                if (AtlasForeground is not UITextureAtlas atlas)
+                if (FgAtlas is not UITextureAtlas atlas)
                     return null;
 
                 if (!isEnabled)

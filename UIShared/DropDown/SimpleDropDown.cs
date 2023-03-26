@@ -62,8 +62,8 @@ namespace ModsCommon.UI
         protected override void SetPopupStyle()
         {
             Popup.PopupDefaultStyle();
-            if (Style != null)
-                Popup.color = Style.PopupColor;
+            if (DropDownStyle != null)
+                Popup.PopupStyle = DropDownStyle;
         }
         protected override void InitPopup()
         {
@@ -72,7 +72,6 @@ namespace ModsCommon.UI
             Popup.width = width;
             Popup.MaxVisibleItems = 0;
             Popup.EntityTextScale = EntityTextScale;
-            Popup.Style = Style;
             base.InitPopup();
         }
         public void DeInit()
@@ -120,11 +119,8 @@ namespace ModsCommon.UI
             entity.EntityDefaultStyle<DropDownItem<ValueType>, EntityType>();
             entity.textScale = EntityTextScale;
 
-            if (Style != null)
-            {
-                entity.HoveredBgColor = Style.EntityHoveredColor;
-                entity.FocusedBgColor = Style.EntitySelectedColor;
-            }
+            if (PopupStyle != null)
+                entity.EntityStyle = PopupStyle;
         }
         public override void DeInit()
         {

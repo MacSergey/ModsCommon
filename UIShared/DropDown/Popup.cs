@@ -29,7 +29,21 @@ namespace ModsCommon.UI
         private List<ObjectType> RawValues { get; set; } = new List<ObjectType>();
         private List<ObjectType> Values { get; set; } = new List<ObjectType>();
 
-        public DropDownStyle Style { get; set; }
+        private DropDownStyle style;
+        public DropDownStyle PopupStyle 
+        {
+            get => style;
+            set
+            {
+                style = value;
+
+                atlasBackground = value.PopupAtlas;
+                backgroundSprite = value.PopupSprite;
+                normalBgColor = value.PopupColor;
+
+                Invalidate();
+            }
+        }
 
 
         private ObjectType selectedObject;
@@ -385,7 +399,7 @@ namespace ModsCommon.UI
         {
             Search = AddUIComponent<CustomUITextField>();
             Search.name = nameof(Search);
-            Search.AtlasBackground = CommonTextures.Atlas;
+            Search.BgAtlas = CommonTextures.Atlas;
             Search.BgSprites = CommonTextures.PanelSmall;
             Search.atlas = TextureHelper.InGameAtlas;
             Search.selectionSprite = "EmptySprite";
@@ -518,6 +532,22 @@ namespace ModsCommon.UI
             {
                 Select();
                 p.Use();
+            }
+        }
+
+        public DropDownStyle EntityStyle
+        {
+            set
+            {
+                bgAtlas = value.EntityAtlas;
+
+                bgSprites = value.EntitySprites;
+                selBgSprites = value.EntitySelSprites;
+
+                bgColors = value.EntityColors;
+                selBgColors = value.EntitySelColors;
+
+                Invalidate();
             }
         }
     }

@@ -11,7 +11,7 @@ namespace ModsCommon.UI
     {
         public BaseHeaderPopupButton()
         {
-            AtlasBackground = CommonTextures.Atlas;
+            BgAtlas = CommonTextures.Atlas;
             BgSprites = new SpriteSet(string.Empty, CommonTextures.HeaderHover, CommonTextures.HeaderHover, CommonTextures.HeaderHover, string.Empty);
 
             clipChildren = true;
@@ -28,7 +28,7 @@ namespace ModsCommon.UI
 
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            AtlasForeground = atlas ?? TextureHelper.InGameAtlas;
+            FgAtlas = atlas ?? TextureHelper.InGameAtlas;
             FgSprites = sprite;
         }
 

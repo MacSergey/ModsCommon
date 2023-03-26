@@ -105,13 +105,13 @@ namespace ModsCommon.UI
         {
             text = NotSet;
 
-            AtlasBackground = CommonTextures.Atlas;
+            BgAtlas = CommonTextures.Atlas;
             bgSprites = CommonTextures.FieldSingle;
             selBgSprites = CommonTextures.FieldSingle;
             bgColors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldNormalColor, ComponentStyle.FieldDisabledColor);
             selBgColors = new ColorSet(ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledFocusedColor);
 
-            AtlasForeground = CommonTextures.Atlas;
+            FgAtlas = CommonTextures.Atlas;
             fgSprites = CommonTextures.ArrowDown;
             fgColors = Color.black;
 

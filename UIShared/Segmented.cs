@@ -23,12 +23,31 @@ namespace ModsCommon.UI
         public static explicit operator OptionData(string label) => new OptionData(label);
         public static implicit operator string(OptionData data) => data.label;
     }
+    public class CustomUISegmentedButton : CustomUIButton
+    {
+        public ButtonStyle SegmentedStyle
+        {
+            set
+            {
+                bgColors = value.BgColors;
+                selBgColors = value.SelBgColors;
+
+                fgColors = value.FgColors;
+                selFgColors = value.SelFgColors;
+
+                textColors = value.TextColors;
+                selTextColors = value.SelTextColors;
+
+                OnColorChanged();
+            }
+        }
+    }
     public abstract class UISegmented<ValueType> : CustomUIPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
-        protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
+        protected List<CustomUISegmentedButton> Buttons { get; } = new List<CustomUISegmentedButton>();
         protected virtual int TextPadding => AutoButtonSize ? 8 : (int)Mathf.Clamp((buttonWidth - 20f) / 2f, 0, 8);
 
         private bool autoButtonSize = true;
@@ -84,14 +103,14 @@ namespace ModsCommon.UI
         {
             Objects.Add(item);
 
-            var button = AddUIComponent<CustomUIButton>();
+            var button = AddUIComponent<CustomUISegmentedButton>();
             button.Atlas = CommonTextures.Atlas;
             button.TextHorizontalAlignment = UIHorizontalAlignment.Center;
             SetColor(button);
 
             if (optionData.atlas != null && !string.IsNullOrEmpty(optionData.sprite))
             {
-                button.AtlasForeground = optionData.atlas;
+                button.FgAtlas = optionData.atlas;
                 button.FgSprites = optionData.sprite;
                 button.tooltip = optionData.label ?? item.ToString();
                 button.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
@@ -119,7 +138,7 @@ namespace ModsCommon.UI
                     UpdateButton(button);
             });
         }
-        private void UpdateButton(CustomUIButton button = null, float? width = null)
+        private void UpdateButton(CustomUISegmentedButton button = null, float? width = null)
         {
             button.TextPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
             button.textScale = TextScale;
@@ -132,7 +151,7 @@ namespace ModsCommon.UI
             else
                 button.width = ButtonWidth;
         }
-        protected void SetSprite(CustomUIButton button)
+        protected void SetSprite(CustomUISegmentedButton button)
         {
             var index = Buttons.IndexOf(button);
 
@@ -151,10 +170,10 @@ namespace ModsCommon.UI
                     button.AllBgSprites = CommonTextures.FieldMiddle;
             }
         }
-        protected void SetColor(CustomUIButton button)
+        protected void SetColor(CustomUISegmentedButton button)
         {
             if (Style != null)
-                button.SetStyle(Style);
+                button.ButtonStyle = Style;
         }
 
         protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null);
@@ -179,7 +198,7 @@ namespace ModsCommon.UI
 
         public void SetDefaultStyle(Vector2? size = null) { }
 
-        private ButtonStyle Style { get; set; } = ControlStyle.Default.Button;
+        private ButtonStyle Style { get; set; } = ComponentStyle.Default.Button;
         public void SetStyle(ButtonStyle style)
         {
             Style = style;

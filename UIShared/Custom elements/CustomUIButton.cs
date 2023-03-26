@@ -39,9 +39,7 @@ namespace ModsCommon.UI
         {
             if ((p.buttons & ButtonsMask) != 0)
             {
-                if (State != UIButton.ButtonState.Focused)
-                    State = UIButton.ButtonState.Pressed;
-
+                State = UIButton.ButtonState.Pressed;
                 base.OnMouseDown(p);
             }
         }
@@ -58,8 +56,7 @@ namespace ModsCommon.UI
         }
         protected override void OnMouseEnter(UIMouseEventParameter p)
         {
-            if (State != UIButton.ButtonState.Focused)
-                State = UIButton.ButtonState.Hovered;
+            State = UIButton.ButtonState.Hovered;
 
             base.OnMouseEnter(p);
             Invalidate();
@@ -300,37 +297,37 @@ namespace ModsCommon.UI
         }
 
 
-        UITextureAtlas atlasForeground;
-        public UITextureAtlas AtlasForeground
+        protected UITextureAtlas fgAtlas;
+        public UITextureAtlas FgAtlas
         {
-            get => atlasForeground ?? Atlas;
+            get => fgAtlas ?? Atlas;
             set
             {
-                if (!Equals(value, atlasForeground))
+                if (!Equals(value, fgAtlas))
                 {
-                    atlasForeground = value;
+                    fgAtlas = value;
                     Invalidate();
                 }
             }
         }
 
 
-        UITextureAtlas atlasBackground;
-        public UITextureAtlas AtlasBackground
+        protected UITextureAtlas bgAtlas;
+        public UITextureAtlas BgAtlas
         {
-            get => atlasBackground ?? Atlas;
+            get => bgAtlas ?? Atlas;
             set
             {
-                if (!Equals(value, atlasBackground))
+                if (!Equals(value, bgAtlas))
                 {
-                    atlasBackground = value;
+                    bgAtlas = value;
                     Invalidate();
                 }
             }
         }
 
 
-        UITextureAtlas atlas;
+        protected UITextureAtlas atlas;
         public UITextureAtlas Atlas
         {
             get => atlas ??= GetUIView()?.defaultAtlas;
@@ -1245,18 +1242,30 @@ namespace ModsCommon.UI
 
         #endregion
 
-        public void SetStyle(ButtonStyle style)
+        public ButtonStyle ButtonStyle
         {
-            bgColors = style.BgColors;
-            selBgColors = style.SelBgColors;
+            set
+            {
+                bgAtlas = value.BgAtlas;
+                fgAtlas = value.FgAtlas;
 
-            fgColors = style.FgColors;
-            selFgColors = style.SelFgColors;
+                bgSprites = value.BgSprites;
+                selBgSprites = value.SelBgSprites;
 
-            textColors = style.TextColors;
-            selTextColors = style.SelTextColors;
+                fgSprites = value.FgSprites;
+                selFgSprites = value.SelFgSprites;
 
-            OnColorChanged();
+                bgColors = value.BgColors;
+                selBgColors = value.SelBgColors;
+
+                fgColors = value.FgColors;
+                selFgColors = value.SelFgColors;
+
+                textColors = value.TextColors;
+                selTextColors = value.SelTextColors;
+
+                OnColorChanged();
+            }
         }
 
         private bool bold;
@@ -1391,7 +1400,7 @@ namespace ModsCommon.UI
             else
                 TextRenderData.Clear();
 
-            if (AtlasBackground is UITextureAtlas bgAtlas && AtlasForeground is UITextureAtlas fgAtlas)
+            if (BgAtlas is UITextureAtlas bgAtlas && FgAtlas is UITextureAtlas fgAtlas)
             {
                 BgRenderData.material = bgAtlas.material;
                 FgRenderData.material = fgAtlas.material;
@@ -1410,7 +1419,7 @@ namespace ModsCommon.UI
             using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
             if (uIFontRenderer is UIDynamicFont.DynamicFontRenderer dynamicFontRenderer)
             {
-                dynamicFontRenderer.spriteAtlas = AtlasBackground;
+                dynamicFontRenderer.spriteAtlas = BgAtlas;
                 dynamicFontRenderer.spriteBuffer = BgRenderData;
             }
             uIFontRenderer.Render(text, TextRenderData);
@@ -1454,7 +1463,7 @@ namespace ModsCommon.UI
             return renderer;
         }
 
-        private Color32 RenderTextColor
+        protected virtual Color32 RenderTextColor
         {
             get
             {
@@ -1467,14 +1476,14 @@ namespace ModsCommon.UI
                         UIButton.ButtonState.Normal => IsSelected ? SelNormalTextColor : NormalTextColor,
                         UIButton.ButtonState.Hovered => IsSelected ? SelHoveredTextColor : HoveredTextColor,
                         UIButton.ButtonState.Pressed => IsSelected ? SelPressedTextColor : PressedTextColor,
-                        UIButton.ButtonState.Disabled => IsSelected ? SelDisabledTextColor : DisabledTextColor,
                         UIButton.ButtonState.Focused => IsSelected ? SelFocusedTextColor : FocusedTextColor,
+                        UIButton.ButtonState.Disabled => IsSelected ? SelDisabledTextColor : DisabledTextColor,
                         _ => Color.white,
                     };
                 }
             }
         }
-        private Color32 RenderBackgroundColor
+        protected virtual Color32 RenderBackgroundColor
         {
             get
             {
@@ -1488,7 +1497,7 @@ namespace ModsCommon.UI
                 };
             }
         }
-        private Color32 RenderForegroundColor
+        protected virtual Color32 RenderForegroundColor
         {
             get
             {
@@ -1528,7 +1537,7 @@ namespace ModsCommon.UI
         {
             get
             {
-                if (AtlasBackground is not UITextureAtlas atlas)
+                if (BgAtlas is not UITextureAtlas atlas)
                     return null;
 
                 var spriteInfo = State switch
@@ -1544,13 +1553,12 @@ namespace ModsCommon.UI
                 return spriteInfo ?? atlas[NormalBgSprite];
             }
         }
-        protected UITextureAtlas.SpriteInfo GetBackgroundSprite() => RenderBackgroundSprite;
 
         protected virtual UITextureAtlas.SpriteInfo RenderForegroundSprite
         {
             get
             {
-                if (AtlasForeground is not UITextureAtlas atlas)
+                if (FgAtlas is not UITextureAtlas atlas)
                     return null;
 
                 var spriteInfo = State switch
@@ -1566,7 +1574,6 @@ namespace ModsCommon.UI
                 return spriteInfo ?? atlas[NormalFgSprite];
             }
         }
-        protected UITextureAtlas.SpriteInfo GetForegroundSprite() => RenderForegroundSprite;
 
         protected void RenderBackground()
         {
@@ -1574,7 +1581,7 @@ namespace ModsCommon.UI
             {
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = AtlasBackground,
+                    atlas = BgAtlas,
                     color = RenderBackgroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
@@ -1599,7 +1606,7 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = AtlasForeground,
+                    atlas = FgAtlas,
                     color = RenderForegroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,

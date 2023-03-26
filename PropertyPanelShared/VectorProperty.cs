@@ -329,7 +329,7 @@ namespace ModsCommon.UI
         public override void SetStyle(ControlStyle style)
         {
             foreach (var field in Fields)
-                field.SetStyle(style.TextField);
+                field.TextFieldStyle = style.TextField;
         }
     }
 

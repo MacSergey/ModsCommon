@@ -389,7 +389,7 @@ namespace ModsCommon.Settings
             var showToggle = section.AddToggle(CommonLocalize.Settings_ShowWhatsNew, ShowWhatsNew);
             var onlyMajorToggle = section.AddToggle(CommonLocalize.Settings_ShowOnlyMajor, ShowOnlyMajor);
 
-            showToggle.Control.OnStateChanged += OnChange;
+            showToggle.Control.OnValueChanged += OnChange;
             OnChange(ShowWhatsNew);
 
             void OnChange(bool show) => onlyMajorToggle.isVisible = show;

@@ -61,7 +61,7 @@ namespace ModsCommon.UI
         }
         public override void SetStyle(ControlStyle style)
         {
-            Field.SetStyle(style.TextField);
+            Field.TextFieldStyle = style.TextField;
         }
 
         public void Edit() => Field.Focus();
@@ -363,8 +363,8 @@ namespace ModsCommon.UI
         }
         public override void SetStyle(ControlStyle style)
         {
-            FieldA.SetStyle(style.TextField);
-            FieldB.SetStyle(style.TextField);
+            FieldA.TextFieldStyle = style.TextField;
+            FieldB.TextFieldStyle = style.TextField;
         }
 
         public override string ToString() => $"{base.ToString()}: from {ValueA} to {ValueB}";
@@ -390,7 +390,7 @@ namespace ModsCommon.UI
             Invert = Content.AddUIComponent<CustomUIButton>();
             Invert.SetDefaultStyle();
             Invert.width = 20;
-            Invert.AtlasForeground = CommonTextures.Atlas;
+            Invert.FgAtlas = CommonTextures.Atlas;
             Invert.FgSprites = CommonTextures.PlusMinusButton;
             Invert.eventClick += InvertClick;
         }
