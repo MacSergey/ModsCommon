@@ -80,14 +80,14 @@ namespace ModsCommon.UI
                 base.SetObject(index, language, selected);
 
                 text = language.label;
-                NormalFgSprite = language.sprite;
+                FgSprites = language.sprite;
             }
             public override void DeInit()
             {
                 base.DeInit();
 
                 text = string.Empty;
-                NormalFgSprite = string.Empty;
+                FgSprites = string.Empty;
             }
 
             protected override void OnSizeChanged()

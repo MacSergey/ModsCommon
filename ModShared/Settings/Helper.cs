@@ -4,10 +4,9 @@ using ICities;
 using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using static ModsCommon.UI.ComponentStyle;
+using static ModsCommon.Utilities.CommonTextures;
 
 namespace ModsCommon.Settings
 {
@@ -23,11 +22,11 @@ namespace ModsCommon.Settings
             panel.AutoLayoutSpace = 15;
             panel.AutoLayout = AutoLayout.Vertical;
 
-            panel.Atlas = CommonTextures.Atlas;
-            panel.BackgroundSprite = CommonTextures.PanelLarge;
-            panel.NormalBgColor = ComponentStyle.SettingsColor15;
-            panel.ForegroundSprite = CommonTextures.BorderLarge;
-            panel.NormalFgColor = ComponentStyle.SettingsColor30;
+            panel.Atlas = Atlas;
+            panel.BackgroundSprite = PanelLarge;
+            panel.BgColors = SettingsColor15;
+            panel.ForegroundSprite = BorderLarge;
+            panel.FgColors = SettingsColor30;
 
             return panel;
         }
@@ -45,7 +44,7 @@ namespace ModsCommon.Settings
                 label = parent.AddUIComponent<CustomUILabel>();
                 label.name = "Title";
                 label.AutoSize = AutoSize.Height;
-                label.font = ComponentStyle.SemiBoldFont;
+                label.font = SemiBoldFont;
                 label.textScale = 1.3f;
                 label.Padding = new RectOffset(12, 0, 12, 0);
                 label.text = name;

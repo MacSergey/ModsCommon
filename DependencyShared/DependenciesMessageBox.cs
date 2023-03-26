@@ -116,9 +116,9 @@ namespace ModsCommon.Utilities
 
                 Atlas = CommonTextures.Atlas;
                 BackgroundSprite = CommonTextures.PanelBig;
-                color = ComponentStyle.DarkPrimaryColor20;
+                BgColors = ComponentStyle.DarkPrimaryColor20;
                 ForegroundSprite = CommonTextures.BorderBig;
-                NormalFgColor = ComponentStyle.DarkPrimaryColor10;
+                FgColors = ComponentStyle.DarkPrimaryColor10;
 
                 Label = AddUIComponent<CustomUILabel>();
                 Label.AutoSize = AutoSize.Height;

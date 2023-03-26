@@ -95,10 +95,10 @@ namespace ModsCommon.UI
                 autoChildrenVertically = AutoLayoutChildren.Fit;
                 autoChildrenHorizontally = AutoLayoutChildren.Fill;
                 Atlas = CommonTextures.Atlas;
-                BackgroundSprite = CommonTextures.PanelBig;
-                color = ComponentStyle.DarkPrimaryColor20;
-                ForegroundSprite = CommonTextures.BorderBig;
-                NormalFgColor = ComponentStyle.DarkPrimaryColor10;
+                BackgroundSprite = CommonTextures.PanelLarge;
+                BgColors = ComponentStyle.DarkPrimaryColor20;
+                ForegroundSprite = CommonTextures.BorderLarge;
+                FgColors = ComponentStyle.DarkPrimaryColor10;
 
                 PauseLayout(() =>
                 {
@@ -129,7 +129,7 @@ namespace ModsCommon.UI
                         versionPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
                         versionPanel.Atlas = CommonTextures.Atlas;
                         versionPanel.BackgroundSprite = CommonTextures.PanelBig;
-                        versionPanel.color = ComponentStyle.DarkPrimaryColor60;
+                        versionPanel.BgColors = ComponentStyle.DarkPrimaryColor60;
 
                         Title = versionPanel.AddUIComponent<CustomUILabel>();
                         Title.name = "Title";
@@ -246,8 +246,7 @@ namespace ModsCommon.UI
 
                 Atlas = CommonTextures.Atlas;
                 ForegroundSprite = CommonTextures.PanelSmall;
-                NormalFgColor = new Color32(0, 0, 0, 0);
-                HoveredFgColor = ComponentStyle.DarkPrimaryColor30;
+                FgColors = new ColorSet(default, ComponentStyle.DarkPrimaryColor30, default, default, default);
                 SpritePadding = new RectOffset(5, 5, 0, 0);
 
                 PauseLayout(() =>

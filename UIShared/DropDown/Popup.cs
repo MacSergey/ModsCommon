@@ -19,6 +19,7 @@ namespace ModsCommon.UI
 
         private CustomUIScrollbar ScrollBar { get; set; }
         private CustomUILabel EmptyLabel { get; set; }
+        private CustomUIPanel Content { get; set; }
         protected virtual string EmptyText => CommonLocalize.Popup_Empty;
         private List<EntityType> Entities { get; set; } = new List<EntityType>();
 
@@ -29,8 +30,9 @@ namespace ModsCommon.UI
         private List<ObjectType> RawValues { get; set; } = new List<ObjectType>();
         private List<ObjectType> Values { get; set; } = new List<ObjectType>();
 
+
         private DropDownStyle style;
-        public DropDownStyle PopupStyle 
+        public DropDownStyle PopupStyle
         {
             get => style;
             set
@@ -39,7 +41,9 @@ namespace ModsCommon.UI
 
                 atlasBackground = value.PopupAtlas;
                 backgroundSprite = value.PopupSprite;
-                normalBgColor = value.PopupColor;
+                bgColors = value.PopupColor;
+                if (value.PopupItemsPadding != null)
+                    ItemsPadding = value.PopupItemsPadding;
 
                 Invalidate();
             }
@@ -60,6 +64,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         private int startIndex;
         private int StartIndex
         {
@@ -67,9 +72,10 @@ namespace ModsCommon.UI
             set
             {
                 startIndex = Mathf.Clamp(value, 0, Values.Count - VisibleCount);
-                RefreshEntities();
+                Refresh();
             }
         }
+
 
         private float entityHeight = 20f;
         public float EntityHeight
@@ -84,7 +90,6 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public float EntityWidth => width - (ShowScroll ? ScrollBar.width : 0f) - itemsPadding.horizontal;
 
 
         private int maxVisibleItems = 0;
@@ -141,7 +146,6 @@ namespace ModsCommon.UI
                 if (value != autoWidth)
                 {
                     autoWidth = value;
-                    autoChildrenHorizontally = value ? AutoLayoutChildren.Fit : AutoLayoutChildren.None;
                     StartIndex = StartIndex;
                 }
             }
@@ -162,16 +166,10 @@ namespace ModsCommon.UI
             }
         }
 
-
-        private RectOffset itemsPadding = new RectOffset(0, 0, 0, 0);
         public RectOffset ItemsPadding
         {
-            get => itemsPadding;
-            set
-            {
-                itemsPadding = value;
-                RefreshEntities();
-            }
+            get => Content.Padding;
+            set => Content.Padding = value;
         }
 
         protected virtual int VisibleCount
@@ -195,6 +193,7 @@ namespace ModsCommon.UI
             {
                 AutoLayout = AutoLayout.Vertical;
                 AutoChildrenVertically = AutoLayoutChildren.Fit;
+                AutoChildrenHorizontally = AutoLayoutChildren.Fill;
 
                 FillPopup();
 
@@ -220,6 +219,12 @@ namespace ModsCommon.UI
             EmptyLabel.VerticalAlignment = UIVerticalAlignment.Middle;
             EmptyLabel.HorizontalAlignment = UIHorizontalAlignment.Center;
             EmptyLabel.isVisible = false;
+
+            Content = AddUIComponent<CustomUIPanel>();
+            Content.name = nameof(Content);
+            Content.AutoLayout = AutoLayout.Vertical;
+            Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
+            Content.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
         }
 
         public virtual void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector, Func<ObjectType, ObjectType, int> sorter)
@@ -243,7 +248,6 @@ namespace ModsCommon.UI
             entityHeight = DefaultEntityHeight;
             maxVisibleItems = 0;
             autoWidth = false;
-            refreshEnable = true;
         }
         protected bool Equal(ObjectType value1, ObjectType value2)
         {
@@ -263,17 +267,12 @@ namespace ModsCommon.UI
             OnSelect?.Invoke(value);
         }
 
+        public void PauseRefreshing(Action action)
+        {
+            PauseLayout(action, false);
+            Refresh();
+        }
 
-        private bool refreshEnable = true;
-        public void StopRefresh()
-        {
-            refreshEnable = false;
-        }
-        public void StartRefresh()
-        {
-            refreshEnable = true;
-            RefreshEntities();
-        }
         protected virtual bool FilterObjects(ObjectType value) => Selector == null || Selector(value);
         protected virtual int SortObjects(ObjectType objA, ObjectType objB) => Sorter != null ? Sorter(objA, objB) : -1;
         protected virtual void RefreshValues()
@@ -282,93 +281,93 @@ namespace ModsCommon.UI
             Values.AddRange(RawValues.Where(FilterObjects));
             Values.Sort(SortObjects);
             StartIndex = 0;
+        }
 
-            ScrollBar.MinValue = 0;
-            ScrollBar.MaxValue = Values.Count - VisibleCount + 1;
+        private void Refresh()
+        {
+            if (IsLayoutSuspended)
+                return;
 
-            EmptyLabel.size = new Vector2(width, 30f);
-            EmptyLabel.isVisible = VisibleCount == 0;
-            EmptyLabel.text = EmptyText;
+            StopLayout();
+            {
+                Content.PauseLayout(RefreshEntities);
+
+                ScrollBar.MinValue = 0;
+                ScrollBar.MaxValue = Values.Count - VisibleCount + 1;
+                ScrollBar.Value = StartIndex;
+                ScrollBar.isVisible = ShowScroll;
+            }
+            StartLayout();
         }
         protected virtual void RefreshEntities()
         {
-            if (!refreshEnable)
-                return;
+            ArrangeEntitiesList();
 
-            PauseLayout(() =>
+            var visibleCount = VisibleCount;
+
+            if (AutoWidth)
             {
-
-                var visibleCount = VisibleCount;
-
-                var count = Math.Max(visibleCount, Entities.Count);
-
-                for (var i = 0; i < count; i += 1)
+                var entityWidth = 0f;
+                for (var i = 0; i < visibleCount; i += 1)
                 {
-                    var index = StartIndex + i;
+                    Entities[i].height = EntityHeight;
+                    entityWidth = Mathf.Max(entityWidth, Entities[i].MeasuredSize.x);
+                }
 
-                    if (i < visibleCount)
-                    {
-                        EntityType entity;
-                        if (i < Entities.Count)
-                            entity = Entities[i];
-                        else
-                        {
-                            entity = ComponentPool.Get<EntityType>(this);
-                            entity.OnSelected += ObjectSelected;
+                width = entityWidth + ItemsPadding.horizontal + (ShowScroll ? ScrollBar.width : 0f);
+            }
+            else
+            {
+                for (var i = 0; i < visibleCount; i += 1)
+                    Entities[i].height = EntityHeight;
+            }
 
-                            var overridden = false;
-                            OnSetEntityStyle?.Invoke(entity, ref overridden);
-                            if (!overridden)
-                                SetEntityStyle(entity);
+            if (ShowScroll)
+                SetItemMargin(Content, new RectOffset(0, Mathf.CeilToInt(ScrollBar.width), 0, 0));
+            else
+                SetItemMargin(Content, new RectOffset());
 
-                            Entities.Add(entity);
-                        }
+            EmptyLabel.isVisible = VisibleCount == 0;
+            EmptyLabel.text = EmptyText;
+        }
+        private void ArrangeEntitiesList()
+        {
+            var visibleCount = VisibleCount;
 
-                        var value = Values[index];
-                        SetEntityValue(Entities[i], index, value, Equal(value, SelectedObject));
-                    }
+            var count = Math.Max(visibleCount, Entities.Count);
+
+            for (var i = 0; i < count; i += 1)
+            {
+                var index = StartIndex + i;
+
+                if (i < visibleCount)
+                {
+                    EntityType entity;
+                    if (i < Entities.Count)
+                        entity = Entities[i];
                     else
                     {
-                        Entities[i].OnSelected -= ObjectSelected;
-                        ComponentPool.Free(Entities[i]);
-                    }
-                }
-                Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
+                        entity = ComponentPool.Get<EntityType>(Content);
+                        entity.OnSelected += ObjectSelected;
 
+                        var overridden = false;
+                        OnSetEntityStyle?.Invoke(entity, ref overridden);
+                        if (!overridden)
+                            SetEntityStyle(entity);
 
-                var showScroll = ShowScroll;
-                Padding = ItemsPadding;
-                var itemMargin = new RectOffset(0, showScroll ? Mathf.CeilToInt(ScrollBar.width) : 0, 0, 0);
-
-                if (AutoWidth)
-                {
-                    var entityWidth = 0f;
-                    for (var i = 0; i < visibleCount; i += 1)
-                    {
-                        Entities[i].height = EntityHeight;
-                        Entities[i].PerformAutoWidth();
-                        entityWidth = Mathf.Max(entityWidth, Entities[i].width);
+                        Entities.Add(entity);
                     }
 
-                    for (var i = 0; i < visibleCount; i += 1)
-                    {
-                        Entities[i].width = entityWidth;
-                    }
+                    var value = Values[index];
+                    SetEntityValue(Entities[i], index, value, Equal(value, SelectedObject));
                 }
                 else
                 {
-                    var entitySize = new Vector2(EntityWidth, EntityHeight);
-                    for (var i = 0; i < visibleCount; i += 1)
-                    {
-                        Entities[i].size = entitySize;
-                    }
+                    Entities[i].OnSelected -= ObjectSelected;
+                    ComponentPool.Free(Entities[i]);
                 }
-            });
-
-            ScrollBar.height = ScrollHeight;
-            ScrollBar.relativePosition = ScrollPosition;
-            ScrollBar.Value = StartIndex;
-            ScrollBar.isVisible = ShowScroll;
+            }
+            Entities.RemoveRange(visibleCount, Entities.Count - visibleCount);
         }
         protected virtual void SetEntityStyle(EntityType entity) { }
         protected virtual void SetEntityValue(EntityType entity, int index, ObjectType value, bool selected)
@@ -376,6 +375,13 @@ namespace ModsCommon.UI
             entity.SetObject(index, value, selected);
         }
 
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+
+            ScrollBar.height = ScrollHeight;
+            ScrollBar.relativePosition = ScrollPosition;
+        }
         protected override void OnMouseWheel(UIMouseEventParameter p)
         {
             p.Use();
@@ -426,11 +432,13 @@ namespace ModsCommon.UI
             ResetButton = Search.AddUIComponent<CustomUIButton>();
             ResetButton.name = nameof(ResetButton);
             ResetButton.Atlas = TextureHelper.InGameAtlas;
-            ResetButton.NormalFgSprite = "ContentManagerSearchReset";
+            ResetButton.FgSprites = "ContentManagerSearchReset";
             ResetButton.size = new Vector2(10f, 10f);
             ResetButton.HoveredBgColor = new Color32(127, 127, 127, 255);
             ResetButton.isVisible = false;
             ResetButton.eventClick += ResetClick;
+
+            Search.eventSizeChanged += SearchSizeChanged;
 
             base.FillPopup();
         }
@@ -465,10 +473,8 @@ namespace ModsCommon.UI
             Search.text = string.Empty;
             Focus();
         }
-        protected override void RefreshValues()
+        private void SearchSizeChanged(UIComponent component, Vector2 value)
         {
-            base.RefreshValues();
-            Search.width = width - GetItemMargin(Search).horizontal;
             ResetButton.relativePosition = new Vector2(Search.width - 15f, 5f);
         }
         private void SearchGotFocus(UIComponent component, UIFocusEventParameter p)

@@ -28,8 +28,7 @@ namespace ModsCommon.UI
         RectOffset ItemsPadding { get; set; }
 
         void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector, Func<ObjectType, ObjectType, int> sorter);
-        void StopRefresh();
-        void StartRefresh();
+        public void PauseRefreshing(Action action);
     }
     public interface IPopupEntity<ObjectType>
     {
@@ -77,7 +76,7 @@ namespace ModsCommon.UI
         {
             base.WhilePopupOpening();
 
-            Popup.StopRefresh();
+            Popup.PauseRefreshing(() =>
             {
                 var overridden = false;
                 OnSetPopupStyle?.Invoke(Popup, ref overridden);
@@ -85,8 +84,7 @@ namespace ModsCommon.UI
                     SetPopupStyle();
 
                 InitPopup();
-            }
-            Popup.StartRefresh();
+            });
         }
         protected override void SetPopupProperties()
         {

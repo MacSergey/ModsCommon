@@ -108,74 +108,100 @@ namespace ModsCommon.UI
             }
         }
 
-        protected Color32? normalBgColor;
+        protected ColorSet bgColors = new ColorSet(Color.white);
+        public ColorSet BgColors
+        {
+            get => bgColors;
+            set
+            {
+                bgColors = value;
+                OnColorChanged();
+            }
+        }
+
         public Color32 NormalBgColor
         {
-            get => normalBgColor ?? base.color;
+            get => bgColors.normal;
             set
             {
-                normalBgColor = value;
-                Invalidate();
+                if (!bgColors.normal.Equals(value))
+                {
+                    bgColors.normal = value;
+                    OnColorChanged();
+                }
             }
         }
-
-
-        protected Color32? hoveredBgColor;
         public Color32 HoveredBgColor
         {
-            get => hoveredBgColor ?? NormalBgColor;
+            get => bgColors.hovered;
             set
             {
-                hoveredBgColor = value;
-                Invalidate();
+                if (!bgColors.hovered.Equals(value))
+                {
+                    bgColors.hovered = value;
+                    OnColorChanged();
+                }
             }
         }
-
-
-        protected Color32? disabledBgColor;
         public Color32 DisabledBgColor
         {
-            get => disabledBgColor ?? base.disabledColor;
+            get => bgColors.disabled;
             set
             {
-                disabledBgColor = value;
-                Invalidate();
+                if (!bgColors.disabled.Equals(value))
+                {
+                    bgColors.disabled = value;
+                    OnColorChanged();
+                }
             }
         }
 
 
-        protected Color32? normalFgColor;
+        protected ColorSet fgColors = new ColorSet(Color.white);
+        public ColorSet FgColors
+        {
+            get => fgColors;
+            set
+            {
+                fgColors = value;
+                OnColorChanged();
+            }
+        }
+
         public Color32 NormalFgColor
         {
-            get => normalFgColor ?? base.color;
+            get => fgColors.normal;
             set
             {
-                normalFgColor = value;
-                Invalidate();
+                if (!fgColors.normal.Equals(value))
+                {
+                    fgColors.normal = value;
+                    OnColorChanged();
+                }
             }
         }
-
-
-        protected Color32? hoveredFgColor;
         public Color32 HoveredFgColor
         {
-            get => hoveredFgColor ?? NormalFgColor;
+            get => fgColors.hovered;
             set
             {
-                hoveredFgColor = value;
-                Invalidate();
+                if (!fgColors.hovered.Equals(value))
+                {
+                    fgColors.hovered = value;
+                    OnColorChanged();
+                }
             }
         }
-
-
-        protected Color32? disabledFgColor;
         public Color32 DisabledFgColor
         {
-            get => disabledFgColor ?? base.disabledColor;
+            get => fgColors.disabled;
             set
             {
-                disabledFgColor = value;
-                Invalidate();
+                if (!fgColors.disabled.Equals(value))
+                {
+                    fgColors.disabled = value;
+                    OnColorChanged();
+                }
             }
         }
 
@@ -240,6 +266,31 @@ namespace ModsCommon.UI
             }
         }
 
+
+        [Obsolete]
+        public new Color32 color
+        {
+            get => base.color;
+            set
+            {
+                bgColors = value;
+                fgColors = value;
+                base.color = value;
+            }
+        }
+
+
+        [Obsolete]
+        public new Color32 disabledColor
+        {
+            get => base.disabledColor;
+            set
+            {
+                bgColors.disabled = value;
+                fgColors.disabled = value;
+                base.disabledColor = value;
+            }
+        }
 
         #endregion
 
@@ -379,7 +430,6 @@ namespace ModsCommon.UI
         private Dictionary<UIComponent, RectOffset> itemsMargin = new Dictionary<UIComponent, RectOffset>();
         public void SetItemMargin(UIComponent component, RectOffset margin)
         {
-            margin = margin.ConstrainPadding();
             if (itemsMargin.TryGetValue(component, out var oldMargin) && Equals(oldMargin, margin))
                 return;
 
@@ -510,7 +560,7 @@ namespace ModsCommon.UI
                     {
                         case AutoLayout.Horizontal:
                             if (AutoChildrenVertically == AutoLayoutChildren.Fill)
-                                childSize.y = height - padding.vertical;
+                                childSize.y = height - padding.vertical - childMargin.vertical;
 
                             switch (AutoLayoutStart & LayoutStart.Horizontal)
                             {
@@ -541,7 +591,7 @@ namespace ModsCommon.UI
 
                         case AutoLayout.Vertical:
                             if (AutoChildrenHorizontally == AutoLayoutChildren.Fill)
-                                childSize.x = width - padding.horizontal;
+                                childSize.x = width - padding.horizontal - childMargin.horizontal;
 
                             switch (AutoLayoutStart & LayoutStart.Vertical)
                             {
@@ -729,7 +779,7 @@ namespace ModsCommon.UI
 
         protected virtual void ChildChanged(UIComponent child)
         {
-            if(!ignoreList.Contains(child))
+            if (!ignoreList.Contains(child))
                 Reset();
         }
 

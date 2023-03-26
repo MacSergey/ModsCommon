@@ -31,7 +31,7 @@ namespace ModsCommon.UI
             isVisible = true;
             canFocus = true;
             isInteractive = true;
-            color = Background;
+            BgColors = Background;
             Atlas = CommonTextures.Atlas;
             BackgroundSprite = CommonTextures.FieldSingle;
 

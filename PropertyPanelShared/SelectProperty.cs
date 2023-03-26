@@ -136,14 +136,7 @@ namespace ModsCommon.UI
             text = Value?.ToString() ?? NotSet;
         }
 
-        public void SetStyle(DropDownStyle style)
-        {
-            bgColors = style.BgColors;
-            fgColors = style.FgColors;
-            textColors = style.TextColors;
-
-            Invalidate();
-        }
+        public DropDownStyle SelectorStyle { set => ButtonStyle = value; }
     }
     public abstract class SelectListPropertyButton<Type> : SelectPropertyButton<Type>
     {

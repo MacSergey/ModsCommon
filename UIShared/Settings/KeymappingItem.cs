@@ -151,7 +151,7 @@ namespace ModsCommon.UI
 
                 Atlas = CommonTextures.Atlas;
                 BackgroundSprite = CommonTextures.PanelLarge;
-                color = ComponentStyle.SettingsColor25;
+                BgColors = ComponentStyle.SettingsColor25;
                 AutoChildrenVertically = AutoLayoutChildren.Fit;
                 AutoChildrenHorizontally = AutoLayoutChildren.Fit;
                 AutoLayoutStart = LayoutStart.TopCentre;

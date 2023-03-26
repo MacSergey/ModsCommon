@@ -189,8 +189,8 @@ namespace ModsCommon.UI
                 autoLayout = AutoLayout.Horizontal;
 
                 Atlas = CommonTextures.Atlas;
-                NormalFgColor = new Color32(0, 0, 0, 96);
-                NormalBgColor = new Color32(0, 0, 0, 48);
+                FgColors = new Color32(0, 0, 0, 96);
+                BgColors = new Color32(0, 0, 0, 48);
                 SpritePadding.left = 10;
                 SpritePadding.right = 10;
                 Borders = PropertyBorder.Top;

@@ -1181,7 +1181,7 @@ namespace ModsCommon.UI
 
         public Color32 SelNormalTextColor
         {
-            get => string.IsNullOrEmpty(selBgSprites.normal) ? NormalTextColor : selTextColors.normal;
+            get => selTextColors.normal;
             set
             {
                 if (!selTextColors.normal.Equals(value))
@@ -1193,7 +1193,7 @@ namespace ModsCommon.UI
         }
         public Color32 SelHoveredTextColor
         {
-            get => string.IsNullOrEmpty(selBgSprites.hovered) ? HoveredTextColor : selTextColors.hovered;
+            get => selTextColors.hovered;
             set
             {
                 if (!selTextColors.hovered.Equals(value))
@@ -1205,7 +1205,7 @@ namespace ModsCommon.UI
         }
         public Color32 SelPressedTextColor
         {
-            get => string.IsNullOrEmpty(selBgSprites.pressed) ? PressedTextColor : selTextColors.pressed;
+            get => selTextColors.pressed;
             set
             {
                 if (!selTextColors.pressed.Equals(value))
@@ -1217,7 +1217,7 @@ namespace ModsCommon.UI
         }
         public Color32 SelFocusedTextColor
         {
-            get => string.IsNullOrEmpty(selBgSprites.hovered) ? FocusedTextColor : selTextColors.focused;
+            get => selTextColors.focused;
             set
             {
                 if (!selTextColors.focused.Equals(value))
@@ -1229,7 +1229,7 @@ namespace ModsCommon.UI
         }
         public Color32 SelDisabledTextColor
         {
-            get => string.IsNullOrEmpty(selBgSprites.disabled) ? DisabledTextColor : selTextColors.disabled;
+            get => selTextColors.disabled;
             set
             {
                 if (!selTextColors.disabled.Equals(value))
@@ -1333,31 +1333,27 @@ namespace ModsCommon.UI
         public void PerformAutoSize()
         {
             if (font != null && font.isValid && !string.IsNullOrEmpty(text))
-            {
-                using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
-                var measured = uIFontRenderer.MeasureString(text).RoundToInt();
-
-                var width = Mathf.Max(measured.x + TextPadding.horizontal, minimumSize.x);
-                var height = Mathf.Max(measured.y + TextPadding.vertical, minimumSize.y);
-                size = new Vector2(width, height);
-            }
+                size = MeasuredSize;
         }
         public void PerformAutoWidth()
         {
             if (m_Font != null && m_Font.isValid && !string.IsNullOrEmpty(m_Text))
-            {
-                using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
-                var measured = uIFontRenderer.MeasureString(text).RoundToInt();
-                width = Mathf.Max(measured.x + TextPadding.horizontal, minimumSize.x);
-            }
+                width = MeasuredSize.x;
         }
         public void PerformAutoHeight()
         {
             if (m_Font != null && m_Font.isValid && !string.IsNullOrEmpty(m_Text))
+                height = MeasuredSize.y;
+        }
+        public Vector2 MeasuredSize
+        {
+            get
             {
                 using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
                 var measured = uIFontRenderer.MeasureString(text).RoundToInt();
-                height = Mathf.Max(measured.y + TextPadding.vertical, minimumSize.y);
+                measured += new Vector2(TextPadding.horizontal, TextPadding.vertical);
+                measured = Vector2.Max(measured, minimumSize);
+                return measured;
             }
         }
 
@@ -1540,7 +1536,7 @@ namespace ModsCommon.UI
                 if (BgAtlas is not UITextureAtlas atlas)
                     return null;
 
-                var spriteInfo = State switch
+                return State switch
                 {
                     UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalBgSprite : NormalBgSprite],
                     UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedBgSprite : FocusedBgSprite],
@@ -1549,8 +1545,6 @@ namespace ModsCommon.UI
                     UIButton.ButtonState.Disabled => atlas[IsSelected ? SelDisabledBgSprite : DisabledBgSprite],
                     _ => null,
                 };
-
-                return spriteInfo ?? atlas[NormalBgSprite];
             }
         }
 
@@ -1561,7 +1555,7 @@ namespace ModsCommon.UI
                 if (FgAtlas is not UITextureAtlas atlas)
                     return null;
 
-                var spriteInfo = State switch
+                return State switch
                 {
                     UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalFgSprite : NormalFgSprite],
                     UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedFgSprite : FocusedFgSprite],
@@ -1570,8 +1564,6 @@ namespace ModsCommon.UI
                     UIButton.ButtonState.Disabled => atlas[IsSelected ? SelDisabledFgSprite : DisabledFgSprite],
                     _ => null,
                 };
-
-                return spriteInfo ?? atlas[NormalFgSprite];
             }
         }
 

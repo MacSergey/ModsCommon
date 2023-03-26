@@ -125,6 +125,22 @@ namespace ModsCommon.UI
         }
 
 
+        private bool bold;
+        public bool Bold
+        {
+            get => bold;
+            set
+            {
+                if (value != bold)
+                {
+                    bold = value;
+                    font = value ? ComponentStyle.SemiBoldFont : ComponentStyle.RegularFont;
+                    Invalidate();
+                }
+            }
+        }
+
+
         #region BACKGROUND SPRITE
 
         protected UI.SpriteSet bgSprites;
@@ -394,7 +410,8 @@ namespace ModsCommon.UI
                 bgColors = value.BgColors;
                 fgColors = value.FgColors;
 
-                m_TextColor = value.TextColor;
+                m_TextColor = value.TextColors.normal;
+                m_DisabledTextColor = value.TextColors.disabled;
 
                 m_Atlas = value.BgAtlas;
                 m_SelectionSprite = value.SelectionSprite;

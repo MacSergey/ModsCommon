@@ -297,7 +297,7 @@ namespace ModsCommon.UI
         {
             tabStrip.Atlas = Atlas;
             tabStrip.BackgroundSprite = PanelBig;
-            tabStrip.color = SettingsColor25;
+            tabStrip.BgColors = SettingsColor25;
 
             tabStrip.TabSpacingHorizontal = 4;
             tabStrip.TabSpacingVertical = 4;
@@ -419,7 +419,7 @@ namespace ModsCommon.UI
                 BgSprites = FieldSingle,
                 BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, default, FieldFocusedColor, FieldDisabledColor),
 
-                TextColor = DarkPrimaryColor100,
+                TextColors = DarkPrimaryColor100,
 
                 SelectionSprite = Empty,
                 SelectionColor = DarkPrimaryColor0,
@@ -532,7 +532,7 @@ namespace ModsCommon.UI
                 //FgSprites = new SpriteSet(default, default, default, BorderSmall, default),
                 //FgColors = NormalBlue,
 
-                TextColor = DarkPrimaryColor100,
+                TextColors = DarkPrimaryColor100,
 
                 SelectionSprite = Empty,
                 SelectionColor = DarkPrimaryColor0,
@@ -626,7 +626,7 @@ namespace ModsCommon.UI
             set
             {
                 BgColors = value;
-                AllBgColors = value;
+                SelBgColors = value;
             }
         }
 
@@ -656,7 +656,6 @@ namespace ModsCommon.UI
     {
         public string SelectionSprite { get; set; }
         public Color32 SelectionColor { get; set; }
-        public Color32 TextColor { get; set; }
     }
     public class ButtonStyle : ItemStyle
     {
@@ -667,6 +666,7 @@ namespace ModsCommon.UI
         public UITextureAtlas PopupAtlas { get; set; }
         public string PopupSprite { get; set; }
         public Color32 PopupColor { get; set; }
+        public RectOffset PopupItemsPadding { get; set; }
 
 
         public UITextureAtlas EntityAtlas { get; set; }

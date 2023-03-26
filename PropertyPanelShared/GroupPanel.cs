@@ -18,7 +18,7 @@ namespace ModsCommon.UI
         {
             Atlas = DefaultAtlas;
             BackgroundSprite = DefaultBackgroundSprite;
-            color = disabledColor = DefaultColor;
+            BgColors = DefaultColor;
 
             autoLayout = AutoLayout.Vertical;
             padding = new RectOffset(0, 0, 0, 0);

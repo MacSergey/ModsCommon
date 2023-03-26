@@ -104,7 +104,7 @@ namespace ModsCommon.UI
             size = new Vector2(DefaultWidth, DefaultHeight);
             Atlas = CommonTextures.Atlas;
             BackgroundSprite = CommonTextures.PanelBig;
-            color = ComponentStyle.DarkPrimaryColor15;
+            BgColors = ComponentStyle.DarkPrimaryColor15;
             anchor = UIAnchorStyle.Left | UIAnchorStyle.Top | UIAnchorStyle.Proportional;
 
             AddHeader();

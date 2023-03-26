@@ -177,7 +177,7 @@ namespace ModsCommon.Settings
         private void AddInfo(UIComponent tabContent)
         {
             var section = tabContent.AddSection();
-            section.NormalBgColor = ComponentStyle.SettingsColor60;
+            section.BgColors = ComponentStyle.SettingsColor60;
             section.ForegroundSprite = string.Empty;
             section.AutoLayout = AutoLayout.Horizontal;
             section.maximumSize = new Vector2(0f, 200f);

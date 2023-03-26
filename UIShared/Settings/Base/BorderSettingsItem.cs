@@ -40,7 +40,7 @@ namespace ModsCommon.UI
             get => borderEnabled;
             set
             {
-                if(value != borderEnabled)
+                if (value != borderEnabled)
                 {
                     borderEnabled = value;
                     Borders = Borders;
@@ -80,9 +80,8 @@ namespace ModsCommon.UI
         public BorderSettingsItem() : base()
         {
             Atlas = CommonTextures.Atlas;
-            NormalFgColor = ComponentStyle.SettingsColor20;
-            NormalBgColor = new Color32(0, 0, 0, 0);
-            HoveredBgColor = ComponentStyle.SettingsColor20;
+            FgColors = ComponentStyle.SettingsColor20;
+            BgColors = new ColorSet(default, ComponentStyle.SettingsColor20, default, default, default);
             CanHover = true;
             Borders = SettingsItemBorder.Both;
             SpritePadding = new RectOffset(10, 10, 0, 0);
