@@ -381,10 +381,10 @@ namespace ModsCommon.UI
 
             ResetButton = Search.AddUIComponent<CustomUIButton>();
             ResetButton.name = nameof(ResetButton);
-            ResetButton.atlas = TextureHelper.InGameAtlas;
-            ResetButton.normalFgSprite = "ContentManagerSearchReset";
+            ResetButton.Atlas = TextureHelper.InGameAtlas;
+            ResetButton.NormalFgSprite = "ContentManagerSearchReset";
             ResetButton.size = new Vector2(10f, 10f);
-            ResetButton.hoveredBgColor = new Color32(127, 127, 127, 255);
+            ResetButton.HoveredBgColor = new Color32(127, 127, 127, 255);
             ResetButton.isVisible = false;
             ResetButton.eventClick += ResetClick;
 
@@ -484,11 +484,11 @@ namespace ModsCommon.UI
             base.Update();
 
             if (Selected)
-                state = ButtonState.Focused;
+                state = UIButton.ButtonState.Focused;
             else if (m_IsMouseHovering)
-                state = ButtonState.Hovered;
+                state = UIButton.ButtonState.Hovered;
             else
-                state = ButtonState.Normal;
+                state = UIButton.ButtonState.Normal;
         }
 
         public virtual void DeInit()

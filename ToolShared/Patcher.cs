@@ -1,6 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
 using HarmonyLib;
+using ModsCommon.UI;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -51,7 +52,7 @@ namespace ModsCommon
 
         public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeMod, TypeButton>(string templateName, ref OptionPanelBase __result, params string[] allow)
             where TypeMod : ICustomMod
-            where TypeButton : UIButton
+            where TypeButton : CustomUIButton
         {
             if (__result == null || !allow.Any(i => i == templateName) || __result.component.Find<TypeButton>(typeof(TypeButton).Name) != null)
                 return;

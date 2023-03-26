@@ -11,13 +11,13 @@ namespace ModsCommon.UI
     {
         public BaseHeaderPopupButton()
         {
-            atlasBackground = CommonTextures.Atlas;
-            SetBgSprite(new UI.SpriteSet(string.Empty, CommonTextures.HeaderHover, CommonTextures.HeaderHover, CommonTextures.HeaderHover, string.Empty));
+            AtlasBackground = CommonTextures.Atlas;
+            BgSprites = new SpriteSet(string.Empty, CommonTextures.HeaderHover, CommonTextures.HeaderHover, CommonTextures.HeaderHover, string.Empty);
 
             clipChildren = true;
             textScale = 0.8f;
-            textHorizontalAlignment = UIHorizontalAlignment.Left;
-            foregroundSpriteMode = UIForegroundSpriteMode.Fill;
+            TextHorizontalAlignment = UIHorizontalAlignment.Left;
+            ForegroundSpriteMode = UIForegroundSpriteMode.Fill;
         }
 
         protected override void WhilePopupClosing()
@@ -28,21 +28,21 @@ namespace ModsCommon.UI
 
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            atlasForeground = atlas ?? TextureHelper.InGameAtlas;
-            SetFgSprite(new UI.SpriteSet(sprite));
+            AtlasForeground = atlas ?? TextureHelper.InGameAtlas;
+            FgSprites = sprite;
         }
 
         public void SetSize(int buttonSize, int iconSize)
         {
             size = new Vector2(buttonSize, buttonSize);
             minimumSize = size;
-            textPadding = new RectOffset(iconSize + 5, 5, 5, 0);
+            TextPadding = new RectOffset(iconSize + 5, 5, 5, 0);
         }
         protected override void OnUpdate()
         {
             base.OnUpdate();
-            if (state == ButtonState.Focused)
-                state = ButtonState.Normal;
+            if (state == UIButton.ButtonState.Focused)
+                state = UIButton.ButtonState.Normal;
         }
         public virtual void DeInit()
         {

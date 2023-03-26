@@ -64,14 +64,14 @@ namespace ModsCommon.UI
         {
             public LanguageEntity()
             {
-                atlas = CommonTextures.Atlas;
-                foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+                Atlas = CommonTextures.Atlas;
+                ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
 
-                horizontalAlignment = UIHorizontalAlignment.Left;
-                verticalAlignment = UIVerticalAlignment.Middle;
+                HorizontalAlignment = UIHorizontalAlignment.Left;
+                VerticalAlignment = UIVerticalAlignment.Middle;
 
-                textVerticalAlignment = UIVerticalAlignment.Middle;
-                textHorizontalAlignment = UIHorizontalAlignment.Left;
+                TextVerticalAlignment = UIVerticalAlignment.Middle;
+                TextHorizontalAlignment = UIHorizontalAlignment.Left;
                 textScale = 0.9f;
             }
 
@@ -80,21 +80,21 @@ namespace ModsCommon.UI
                 base.SetObject(index, language, selected);
 
                 text = language.label;
-                normalFgSprite = language.sprite;
+                NormalFgSprite = language.sprite;
             }
             public override void DeInit()
             {
                 base.DeInit();
 
                 text = string.Empty;
-                normalFgSprite = string.Empty;
+                NormalFgSprite = string.Empty;
             }
 
             protected override void OnSizeChanged()
             {
-                textPadding = new RectOffset(Mathf.CeilToInt(height) + 4, 8, 3, 0);
-                spritePadding = new RectOffset(5, 0, 0, 0);
-                scaleFactor = 24f / height;
+                TextPadding = new RectOffset(Mathf.CeilToInt(height) + 4, 8, 3, 0);
+                SpritePadding = new RectOffset(5, 0, 0, 0);
+                ScaleFactor = 24f / height;
             }
         }
         public class LanguagePopup : ObjectPopup<Language, LanguageEntity>

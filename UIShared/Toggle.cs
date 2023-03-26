@@ -138,26 +138,26 @@ namespace ModsCommon.UI
         public CustomUIToggle()
         {
             canFocus = false;
-            foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+            ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
         }
 
         private void SetState()
         {
-            normalBgColor = state ? OnColor : OffColor;
-            focusedBgColor = state ? OnColor : OffColor;
-            hoveredBgColor = state ? OnHoverColor : OffHoverColor;
-            pressedBgColor = state ? OnPressedColor : OffPressedColor;
-            disabledBgColor = state ? OnDisabledColor : OffDisabledColor;
+            NormalBgColor = state ? OnColor : OffColor;
+            FocusedBgColor = state ? OnColor : OffColor;
+            HoveredBgColor = state ? OnHoverColor : OffHoverColor;
+            PressedBgColor = state ? OnPressedColor : OffPressedColor;
+            DisabledBgColor = state ? OnDisabledColor : OffDisabledColor;
 
-            horizontalAlignment = state ? UIHorizontalAlignment.Right : UIHorizontalAlignment.Left;
-            textHorizontalAlignment = state ? UIHorizontalAlignment.Left : UIHorizontalAlignment.Right;
+            HorizontalAlignment = state ? UIHorizontalAlignment.Right : UIHorizontalAlignment.Left;
+            TextHorizontalAlignment = state ? UIHorizontalAlignment.Left : UIHorizontalAlignment.Right;
             text = showMark ? (state ? "I" : "O") : string.Empty;
         }
         private void SetCircle()
         {
             var padding = Mathf.RoundToInt(height * (1f - CircleScale) * 0.5f);
-            spritePadding = new RectOffset(padding, padding, 0, 0);
-            scaleFactor = 1f - spritePadding.horizontal / height;
+            SpritePadding = new RectOffset(padding, padding, 0, 0);
+            ScaleFactor = 1f - SpritePadding.horizontal / height;
         }
 
         protected override void OnClick(UIMouseEventParameter p)

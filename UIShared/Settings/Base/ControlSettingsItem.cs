@@ -25,7 +25,6 @@ namespace ModsCommon.UI
 
         protected override void RefreshItems()
         {
-            LabelItem.minimumSize = new Vector2(0, Control.height);
             LabelItem.width = Content.width - Control.width;
         }
     }

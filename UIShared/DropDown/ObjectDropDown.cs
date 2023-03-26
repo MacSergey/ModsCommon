@@ -109,7 +109,9 @@ namespace ModsCommon.UI
 
             bgColors = style.BgColors;
             fgColors = style.FgColors;
-            SetTextColor(style.TextColors);
+            textColors = style.TextColors;
+
+            Invalidate();
         }
 
         #endregion

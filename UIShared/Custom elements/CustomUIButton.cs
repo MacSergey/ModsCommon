@@ -4,141 +4,763 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class CustomUIButton : UIButton
+    public class CustomUIButton : UITextComponent
     {
-        UITextureAtlas _atlasForeground;
-        UITextureAtlas _atlasBackground;
+        public event Action<UIButton.ButtonState> OnStateChanged;
 
-        private bool _isSelected;
-        public bool isSelected
+        #region HANDLERS
+        public override void OnEnable()
         {
-            get => _isSelected;
+            base.OnEnable();
+
+            if (m_Font == null || !m_Font.isValid)
+                m_Font = GetUIView().defaultFont;
+        }
+        protected override void OnEnterFocus(UIFocusEventParameter p)
+        {
+            if (state != UIButton.ButtonState.Pressed)
+                state = UIButton.ButtonState.Focused;
+
+            base.OnEnterFocus(p);
+        }
+        protected override void OnLeaveFocus(UIFocusEventParameter p)
+        {
+            state = containsMouse ? UIButton.ButtonState.Hovered : UIButton.ButtonState.Normal;
+            base.OnLeaveFocus(p);
+        }
+        protected override void OnKeyPress(UIKeyEventParameter p)
+        {
+            if (builtinKeyNavigation && (p.keycode == KeyCode.Space || p.keycode == KeyCode.Return))
+                OnClick(new UIMouseEventParameter(this, UIMouseButton.Left, 1, default, Vector2.zero, Vector2.zero, 0f));
+            else
+                base.OnKeyPress(p);
+        }
+        protected override void OnMouseDown(UIMouseEventParameter p)
+        {
+            if ((p.buttons & ButtonsMask) != 0)
+            {
+                if (state != UIButton.ButtonState.Focused)
+                    state = UIButton.ButtonState.Pressed;
+
+                base.OnMouseDown(p);
+            }
+        }
+        protected override void OnMouseUp(UIMouseEventParameter p)
+        {
+            if (m_IsMouseHovering)
+                state = UIButton.ButtonState.Hovered;
+            else if (hasFocus)
+                state = UIButton.ButtonState.Focused;
+            else
+                state = UIButton.ButtonState.Normal;
+
+            base.OnMouseUp(p);
+        }
+        protected override void OnMouseEnter(UIMouseEventParameter p)
+        {
+            if (state != UIButton.ButtonState.Focused)
+                state = UIButton.ButtonState.Hovered;
+
+            base.OnMouseEnter(p);
+            Invalidate();
+        }
+        protected override void OnMouseLeave(UIMouseEventParameter p)
+        {
+            if (containsFocus)
+                state = UIButton.ButtonState.Focused;
+            else
+                state = UIButton.ButtonState.Normal;
+
+            base.OnMouseLeave(p);
+            Invalidate();
+        }
+        protected override void OnIsEnabledChanged()
+        {
+            if (!isEnabled)
+                state = UIButton.ButtonState.Disabled;
+            else
+                state = UIButton.ButtonState.Normal;
+
+            base.OnIsEnabledChanged();
+        }
+        protected virtual void OnButtonStateChanged(UIButton.ButtonState value)
+        {
+            if (isEnabled || value == UIButton.ButtonState.Disabled)
+            {
+                state = value;
+                OnStateChanged?.Invoke(value);
+
+                Invalidate();
+            }
+        }
+        protected override void OnGotFocus(UIFocusEventParameter p)
+        {
+            base.OnGotFocus(p);
+            Invalidate();
+        }
+
+        protected override void OnLostFocus(UIFocusEventParameter p)
+        {
+            base.OnLostFocus(p);
+            Invalidate();
+        }
+
+        #endregion
+
+
+        protected UIButton.ButtonState state;
+        public UIButton.ButtonState State
+        {
+            get => state;
             set
             {
-                if (value != _isSelected)
+                if (value != state)
                 {
-                    _isSelected = value;
+                    OnButtonStateChanged(value);
                     Invalidate();
                 }
             }
         }
 
-        public UITextureAtlas atlasForeground
+        protected bool wordWrap;
+        public bool WordWrap
         {
-            get => _atlasForeground ?? atlas;
+            get => wordWrap;
             set
             {
-                if (!Equals(value, _atlasForeground))
+                if (value != wordWrap)
                 {
-                    _atlasForeground = value;
+                    wordWrap = value;
                     Invalidate();
                 }
-            }
-        }
-        public UITextureAtlas atlasBackground
-        {
-            get => _atlasBackground ?? atlas;
-            set
-            {
-                if (!Equals(value, _atlasBackground))
-                {
-                    _atlasBackground = value;
-                    Invalidate();
-                }
-            }
-        }
-        public new UITextureAtlas atlas
-        {
-            get => base.atlas;
-            set
-            {
-                _atlasForeground = null;
-                _atlasBackground = null;
-                base.atlas = value;
             }
         }
 
+
+        protected UIHorizontalAlignment textHorizontalAlign = UIHorizontalAlignment.Center;
+        public UIHorizontalAlignment TextHorizontalAlignment
+        {
+            get => (AutoSize & AutoSize.Width) != 0 ? UIHorizontalAlignment.Left : textHorizontalAlign;
+            set
+            {
+                if (value != textHorizontalAlign)
+                {
+                    textHorizontalAlign = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected UIVerticalAlignment textVerticalAlign = UIVerticalAlignment.Middle;
+        public virtual UIVerticalAlignment TextVerticalAlignment
+        {
+            get => (AutoSize & AutoSize.Height) != 0 ? UIVerticalAlignment.Top : textVerticalAlign;
+            set
+            {
+                if (value != textVerticalAlign)
+                {
+                    textVerticalAlign = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        protected UIHorizontalAlignment horizontalAlignment = UIHorizontalAlignment.Center;
+        public UIHorizontalAlignment HorizontalAlignment
+        {
+            get => (AutoSize & AutoSize.Width) != 0 ? UIHorizontalAlignment.Left : horizontalAlignment;
+            set
+            {
+                if (value != horizontalAlignment)
+                {
+                    horizontalAlignment = value;
+                    Invalidate();
+                }
+            }
+        }
+        protected UIVerticalAlignment verticalAlignment = UIVerticalAlignment.Middle;
+        public UIVerticalAlignment VerticalAlignment
+        {
+            get => (AutoSize & AutoSize.Height) != 0 ? UIVerticalAlignment.Top : verticalAlignment;
+            set
+            {
+                if (value != verticalAlignment)
+                {
+                    verticalAlignment = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected RectOffset textPadding;
+        public RectOffset TextPadding
+        {
+            get => textPadding ??= new RectOffset();
+            set
+            {
+                value = value.ConstrainPadding();
+                if (!Equals(value, textPadding))
+                {
+                    textPadding = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        private AutoSize _autoSize;
+        public override bool autoSize
+        {
+            get => AutoSize == AutoSize.All;
+            set => AutoSize = value ? AutoSize.All : AutoSize.None;
+        }
+        public AutoSize AutoSize
+        {
+            get => _autoSize;
+            set
+            {
+                if (value != _autoSize)
+                {
+                    _autoSize = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected UIMouseButton buttonsMask = UIMouseButton.Left;
+        public UIMouseButton ButtonsMask
+        {
+            get => buttonsMask;
+            set => buttonsMask = value;
+        }
+
+
+
+        #region Style
+
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                if (value != isSelected)
+                {
+                    isSelected = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        UITextureAtlas atlasForeground;
+        public UITextureAtlas AtlasForeground
+        {
+            get => atlasForeground ?? Atlas;
+            set
+            {
+                if (!Equals(value, atlasForeground))
+                {
+                    atlasForeground = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        UITextureAtlas atlasBackground;
+        public UITextureAtlas AtlasBackground
+        {
+            get => atlasBackground ?? Atlas;
+            set
+            {
+                if (!Equals(value, atlasBackground))
+                {
+                    atlasBackground = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        UITextureAtlas atlas;
+        public UITextureAtlas Atlas
+        {
+            get => atlas;
+            set
+            {
+                if (value != atlas)
+                {
+                    atlas = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected UIForegroundSpriteMode foregroundSpriteMode;
+        public UIForegroundSpriteMode ForegroundSpriteMode
+        {
+            get => foregroundSpriteMode;
+            set
+            {
+                if (value != foregroundSpriteMode)
+                {
+                    foregroundSpriteMode = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        protected float scaleFactor = 1f;
+        public float ScaleFactor
+        {
+            get => scaleFactor;
+            set
+            {
+                if (!Mathf.Approximately(value, scaleFactor))
+                {
+                    scaleFactor = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected RectOffset spritePadding;
+        public RectOffset SpritePadding
+        {
+            get => spritePadding ??= new RectOffset();
+            set
+            {
+                if (!Equals(value, spritePadding))
+                {
+                    spritePadding = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        public override bool canFocus => isEnabled && isVisible ? true : base.canFocus;
+
+        [Obsolete]
         public new Color32 color
         {
             get => base.color;
             set
             {
-                bgColors.normal = null;
+                bgColors = value;
+                fgColors = value;
+                selBgColors = value;
+                selFgColors = value;
                 base.color = value;
             }
         }
-        public new Color32 hoveredColor
+
+        [Obsolete]
+        public new Color32 textColor
         {
-            get => base.hoveredColor;
+            get => base.textColor;
             set
             {
-                bgColors.hovered = null;
-                base.hoveredColor = value;
+                textColors = value;
+                selTextColors = value;
+                base.textColor = value;
             }
         }
-        public new Color32 pressedColor
-        {
-            get => base.pressedColor;
-            set
-            {
-                bgColors.pressed = null;
-                base.pressedColor = value;
-            }
-        }
-        public new Color32 focusedColor
-        {
-            get => base.focusedColor;
-            set
-            {
-                bgColors.focused = null;
-                base.focusedColor = value;
-            }
-        }
+
+        [Obsolete]
         public new Color32 disabledColor
         {
             get => base.disabledColor;
             set
             {
-                bgColors.disabled = null;
+                bgColors.disabled = value;
+                fgColors.disabled = value;
                 base.disabledColor = value;
             }
         }
 
-        public void SetBgSprite(UI.SpriteSet sprites)
+        [Obsolete]
+        public new Color32 disabledTextColor
         {
-            m_BackgroundSprites.m_Normal = sprites.normal;
-            m_BackgroundSprites.m_Hovered = sprites.hovered;
-            m_BackgroundSprites.m_Focused = sprites.focused;
-            m_BackgroundSprites.m_Disabled = sprites.disabled;
-            m_PressedBgSprite = sprites.pressed;
-            OnColorChanged();
+            get => base.disabledTextColor;
+            set
+            {
+                textColors.disabled = value;
+                selTextColors.disabled = value;
+                base.disabledTextColor = value;
+            }
         }
-        public void SetFgSprite(UI.SpriteSet sprites)
+
+        public SpriteSet AllBgSprites
         {
-            m_ForegroundSprites.m_Normal = sprites.normal;
-            m_ForegroundSprites.m_Hovered = sprites.hovered;
-            m_ForegroundSprites.m_Focused = sprites.focused;
-            m_ForegroundSprites.m_Disabled = sprites.disabled;
-            m_PressedFgSprite = sprites.pressed;
-            OnColorChanged();
+            set
+            {
+                bgSprites = value;
+                selBgSprites = value;
+                Invalidate();
+            }
         }
-        public void SetTextColor(ColorSet colors)
+        public SpriteSet AllFgSprites
         {
-            m_TextColor = colors.normal ?? new Color32(255, 255, 255, 255);
-            m_HoveredTextColor = colors.hovered ?? new Color32(255, 255, 255, 255);
-            m_FocusedTextColor = colors.focused ?? new Color32(255, 255, 255, 255);
-            m_DisabledTextColor = colors.disabled ?? new Color32(255, 255, 255, 255);
-            m_PressedTextColor = colors.pressed ?? new Color32(255, 255, 255, 255);
-            OnColorChanged();
+            set
+            {
+                fgSprites = value;
+                selFgSprites = value;
+                Invalidate();
+            }
         }
+        public ColorSet AllBgColors
+        {
+            set
+            {
+                bgColors = value;
+                selBgColors = value;
+                Invalidate();
+            }
+        }
+        public ColorSet AllFgColors
+        {
+            set
+            {
+                fgColors = value;
+                selFgColors = value;
+                Invalidate();
+            }
+        }
+        public ColorSet AllTextColors
+        {
+            set
+            {
+                textColors = value;
+                selTextColors = value;
+                Invalidate();
+            }
+        }
+
+        #region BACKGROUND SPRITE
+
+        protected SpriteSet bgSprites;
+        public SpriteSet BgSprites
+        {
+            get => bgSprites;
+            set
+            {
+                bgSprites = value;
+                Invalidate();
+            }
+        }
+        public string NormalBgSprite
+        {
+            get => bgSprites.normal;
+            set
+            {
+                if (value != bgSprites.normal)
+                {
+                    bgSprites.normal = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string HoveredBgSprite
+        {
+            get => bgSprites.hovered;
+            set
+            {
+                if (value != bgSprites.hovered)
+                {
+                    bgSprites.hovered = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string PressedBgSprite
+        {
+            get => bgSprites.pressed;
+            set
+            {
+                if (value != bgSprites.pressed)
+                {
+                    bgSprites.pressed = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string FocusedBgSprite
+        {
+            get => bgSprites.focused;
+            set
+            {
+                if (value != bgSprites.focused)
+                {
+                    bgSprites.focused = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string DisabledBgSprite
+        {
+            get => bgSprites.disabled;
+            set
+            {
+                if (value != bgSprites.disabled)
+                {
+                    bgSprites.disabled = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        #endregion
+
+        #region FOREGROUND SPRITE
+
+        protected SpriteSet fgSprites;
+        public SpriteSet FgSprites
+        {
+            get => fgSprites;
+            set
+            {
+                fgSprites = value;
+                Invalidate();
+            }
+        }
+
+        public string NormalFgSprite
+        {
+            get => fgSprites.normal;
+            set
+            {
+                if (value != fgSprites.normal)
+                {
+                    fgSprites.normal = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string HoveredFgSprite
+        {
+            get => fgSprites.hovered;
+            set
+            {
+                if (value != fgSprites.hovered)
+                {
+                    fgSprites.hovered = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string PressedFgSprite
+        {
+            get => fgSprites.pressed;
+            set
+            {
+                if (value != fgSprites.pressed)
+                {
+                    fgSprites.pressed = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string FocusedFgSprite
+        {
+            get => fgSprites.focused;
+            set
+            {
+                if (value != fgSprites.focused)
+                {
+                    fgSprites.focused = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string DisabledFgSprite
+        {
+            get => fgSprites.disabled;
+            set
+            {
+                if (value != fgSprites.disabled)
+                {
+                    selFgSprites.disabled = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        #endregion
+
+        #region SELECTED BACKGROUND SPRITE
+
+        protected SpriteSet selBgSprites;
+        public SpriteSet SelBgSprites
+        {
+            get => selBgSprites;
+            set
+            {
+                selBgSprites = value;
+                Invalidate();
+            }
+        }
+
+        public string SelNormalBgSprite
+        {
+            get => string.IsNullOrEmpty(selBgSprites.normal) ? FocusedBgSprite : selBgSprites.normal;
+            set
+            {
+                if (value != selBgSprites.normal)
+                {
+                    selBgSprites.normal = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelHoveredBgSprite
+        {
+            get => string.IsNullOrEmpty(selBgSprites.hovered) ? HoveredBgSprite : selBgSprites.hovered;
+            set
+            {
+                if (value != selBgSprites.hovered)
+                {
+                    selBgSprites.hovered = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelPressedBgSprite
+        {
+            get => string.IsNullOrEmpty(selBgSprites.pressed) ? PressedBgSprite : selBgSprites.pressed;
+            set
+            {
+                if (value != selBgSprites.pressed)
+                {
+                    selBgSprites.pressed = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelFocusedBgSprite
+        {
+            get => string.IsNullOrEmpty(selBgSprites.focused) ? FocusedBgSprite : selBgSprites.focused;
+            set
+            {
+                if (value != selBgSprites.focused)
+                {
+                    selBgSprites.focused = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelDisabledBgSprite
+        {
+            get => string.IsNullOrEmpty(selBgSprites.disabled) ? DisabledBgSprite : selBgSprites.disabled;
+            set
+            {
+                if (value != selBgSprites.disabled)
+                {
+                    selBgSprites.disabled = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        #endregion
+
+        #region SELECTED FOREGROUND SPRITE
+
+        protected SpriteSet selFgSprites;
+        public SpriteSet SelFgSprites
+        {
+            get => selFgSprites;
+            set
+            {
+                selFgSprites = value;
+                Invalidate();
+            }
+        }
+
+        public string SelNormalFgSprite
+        {
+            get => string.IsNullOrEmpty(selFgSprites.normal) ? FocusedFgSprite : selFgSprites.normal;
+            set
+            {
+                if (value != selFgSprites.normal)
+                {
+                    selFgSprites.normal = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelHoveredFgSprite
+        {
+            get => string.IsNullOrEmpty(selFgSprites.hovered) ? HoveredFgSprite : selFgSprites.hovered;
+            set
+            {
+                if (value != selFgSprites.hovered)
+                {
+                    selFgSprites.hovered = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelPressedFgSprite
+        {
+            get => string.IsNullOrEmpty(selFgSprites.pressed) ? PressedFgSprite : selFgSprites.pressed;
+            set
+            {
+                if (value != selFgSprites.pressed)
+                {
+                    selFgSprites.pressed = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelFocusedFgSprite
+        {
+            get => string.IsNullOrEmpty(selFgSprites.focused) ? FocusedFgSprite : selFgSprites.focused;
+            set
+            {
+                if (value != selFgSprites.focused)
+                {
+                    selFgSprites.focused = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelDisabledFgSprite
+        {
+            get => string.IsNullOrEmpty(selFgSprites.disabled) ? DisabledFgSprite : selFgSprites.disabled;
+            set
+            {
+                if (value != selFgSprites.disabled)
+                {
+                    selFgSprites.disabled = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        #endregion
 
         #region BACKGROUND COLOR
 
-        protected ColorSet bgColors;
-
-        public Color32 normalBgColor
+        protected ColorSet bgColors = new ColorSet(Color.white);
+        public ColorSet BgColors
         {
-            get => bgColors.normal ?? base.color;
+            get => bgColors;
+            set
+            {
+                bgColors = value;
+                OnColorChanged();
+            }
+        }
+
+        public Color32 NormalBgColor
+        {
+            get => bgColors.normal;
             set
             {
                 if (!bgColors.normal.Equals(value))
@@ -148,9 +770,9 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public Color32 focusedBgColor
+        public Color32 FocusedBgColor
         {
-            get => bgColors.focused ?? base.focusedColor;
+            get => bgColors.focused;
             set
             {
                 if (!bgColors.focused.Equals(value))
@@ -160,9 +782,9 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public Color32 hoveredBgColor
+        public Color32 HoveredBgColor
         {
-            get => bgColors.hovered ?? base.hoveredColor;
+            get => bgColors.hovered;
             set
             {
                 if (!bgColors.hovered.Equals(value))
@@ -172,9 +794,9 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public Color32 pressedBgColor
+        public Color32 PressedBgColor
         {
-            get => bgColors.pressed ?? base.pressedColor;
+            get => bgColors.pressed;
             set
             {
                 if (!bgColors.pressed.Equals(value))
@@ -184,9 +806,9 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public Color32 disabledBgColor
+        public Color32 DisabledBgColor
         {
-            get => bgColors.disabled ?? base.disabledColor;
+            get => bgColors.disabled;
             set
             {
                 if (!bgColors.disabled.Equals(value))
@@ -197,21 +819,24 @@ namespace ModsCommon.UI
             }
         }
 
-        public void SetBgColor(ColorSet colors)
-        {
-            bgColors = colors;
-            OnColorChanged();
-        }
-
         #endregion
 
         #region FOREGROUND COLOR
 
-        protected ColorSet fgColors;
-
-        public Color32 normalFgColor
+        protected ColorSet fgColors = new ColorSet(Color.white);
+        public ColorSet FgColors
         {
-            get => fgColors.normal ?? base.textColor;
+            get => fgColors;
+            set
+            {
+                fgColors = value;
+                OnColorChanged();
+            }
+        }
+
+        public Color32 NormalFgColor
+        {
+            get => fgColors.normal;
             set
             {
                 if (!fgColors.normal.Equals(value))
@@ -221,9 +846,9 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public Color32 focusedFgColor
+        public Color32 FocusedFgColor
         {
-            get => fgColors.focused ?? base.focusedTextColor;
+            get => fgColors.focused;
             set
             {
                 if (!fgColors.focused.Equals(value))
@@ -233,9 +858,9 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public Color32 hoveredFgColor
+        public Color32 HoveredFgColor
         {
-            get => fgColors.hovered ?? base.hoveredTextColor;
+            get => fgColors.hovered;
             set
             {
                 if (!fgColors.hovered.Equals(value))
@@ -245,9 +870,9 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public Color32 pressedFgColor
+        public Color32 PressedFgColor
         {
-            get => fgColors.pressed ?? base.pressedTextColor;
+            get => fgColors.pressed;
             set
             {
                 if (!fgColors.pressed.Equals(value))
@@ -257,9 +882,9 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public Color32 disabledFgColor
+        public Color32 DisabledFgColor
         {
-            get => fgColors.disabled ?? base.disabledTextColor;
+            get => fgColors.disabled;
             set
             {
                 if (!fgColors.disabled.Equals(value))
@@ -270,375 +895,308 @@ namespace ModsCommon.UI
             }
         }
 
-        public void SetFgColor(ColorSet colors)
-        {
-            fgColors = colors;
-            OnColorChanged();
-        }
-
         #endregion
 
-        #region SELECTED BACKGROUND SPRITE
+        #region TEXT COLOR
 
-        UI.SpriteSet selectedBgSprites;
-
-        public string selectedNormalBgSprite
+        protected ColorSet textColors = new ColorSet(Color.white);
+        public ColorSet TextColors
         {
-            get => string.IsNullOrEmpty(selectedBgSprites.normal) ? focusedBgSprite : selectedBgSprites.normal;
+            get => textColors;
             set
             {
-                if (value != selectedBgSprites.normal)
-                {
-                    selectedBgSprites.normal = value;
-                    Invalidate();
-                }
-            }
-        }
-        public string selectedHoveredBgSprite
-        {
-            get => string.IsNullOrEmpty(selectedBgSprites.hovered) ? hoveredBgSprite : selectedBgSprites.hovered;
-            set
-            {
-                if (value != selectedBgSprites.hovered)
-                {
-                    selectedBgSprites.hovered = value;
-                    Invalidate();
-                }
-            }
-        }
-        public string selectedPressedBgSprite
-        {
-            get => string.IsNullOrEmpty(selectedBgSprites.pressed) ? pressedBgSprite : selectedBgSprites.pressed;
-            set
-            {
-                if (value != selectedBgSprites.pressed)
-                {
-                    selectedBgSprites.pressed = value;
-                    Invalidate();
-                }
-            }
-        }
-        public string selectedFocusedBgSprite
-        {
-            get => string.IsNullOrEmpty(selectedBgSprites.focused) ? focusedBgSprite : selectedBgSprites.focused;
-            set
-            {
-                if (value != selectedBgSprites.focused)
-                {
-                    selectedBgSprites.focused = value;
-                    Invalidate();
-                }
-            }
-        }
-        public string selectedDisabledBgSprite
-        {
-            get => string.IsNullOrEmpty(selectedBgSprites.disabled) ? disabledBgSprite : selectedBgSprites.disabled;
-            set
-            {
-                if (value != selectedBgSprites.disabled)
-                {
-                    selectedBgSprites.disabled = value;
-                    Invalidate();
-                }
+                textColors = value;
+                OnColorChanged();
             }
         }
 
-        public void SetSelectedBgSprite(UI.SpriteSet sprites)
+        public Color32 NormalTextColor
         {
-            selectedBgSprites = sprites;
-            Invalidate();
-        }
-
-        #endregion
-
-        #region SELECTED FOREGROUND SPRITE
-
-        UI.SpriteSet selectedFgSprites;
-
-        public string selectedNormalFgSprite
-        {
-            get => string.IsNullOrEmpty(selectedFgSprites.normal) ? focusedFgSprite : selectedFgSprites.normal;
+            get => textColors.normal;
             set
             {
-                if (value != selectedFgSprites.normal)
+                if (!textColors.normal.Equals(value))
                 {
-                    selectedFgSprites.normal = value;
-                    Invalidate();
+                    textColors.normal = value;
+                    OnColorChanged();
                 }
             }
         }
-        public string selectedHoveredFgSprite
+        public Color32 FocusedTextColor
         {
-            get => string.IsNullOrEmpty(selectedFgSprites.hovered) ? hoveredFgSprite : selectedFgSprites.hovered;
+            get => textColors.focused;
             set
             {
-                if (value != selectedFgSprites.hovered)
+                if (!textColors.focused.Equals(value))
                 {
-                    selectedFgSprites.hovered = value;
-                    Invalidate();
+                    textColors.focused = value;
+                    OnColorChanged();
                 }
             }
         }
-        public string selectedPressedFgSprite
+        public Color32 HoveredTextColor
         {
-            get => string.IsNullOrEmpty(selectedFgSprites.pressed) ? pressedFgSprite : selectedFgSprites.pressed;
+            get => textColors.hovered;
             set
             {
-                if (value != selectedFgSprites.pressed)
+                if (!textColors.hovered.Equals(value))
                 {
-                    selectedFgSprites.pressed = value;
-                    Invalidate();
+                    textColors.hovered = value;
+                    OnColorChanged();
                 }
             }
         }
-        public string selectedFocusedFgSprite
+        public Color32 PressedTextColor
         {
-            get => string.IsNullOrEmpty(selectedFgSprites.focused) ? focusedFgSprite : selectedFgSprites.focused;
+            get => textColors.pressed;
             set
             {
-                if (value != selectedFgSprites.focused)
+                if (!textColors.pressed.Equals(value))
                 {
-                    selectedFgSprites.focused = value;
-                    Invalidate();
+                    textColors.pressed = value;
+                    OnColorChanged();
                 }
             }
         }
-        public string selectedDisabledFgSprite
+        public Color32 DisabledTextColor
         {
-            get => string.IsNullOrEmpty(selectedFgSprites.disabled) ? disabledFgSprite : selectedFgSprites.disabled;
+            get => textColors.disabled;
             set
             {
-                if (value != selectedFgSprites.disabled)
+                if (!textColors.disabled.Equals(value))
                 {
-                    selectedFgSprites.disabled = value;
-                    Invalidate();
+                    textColors.disabled = value;
+                    OnColorChanged();
                 }
             }
-        }
-
-        public void SetSelectedFgSprite(UI.SpriteSet sprites)
-        {
-            selectedFgSprites = sprites;
-            Invalidate();
         }
 
         #endregion
 
         #region SELECTED BACKGROUND COLOR
 
-        protected ColorSet selectedBgColors;
-
-        public Color32 selectedNormalBgColor
+        protected ColorSet selBgColors = new ColorSet(Color.white);
+        public ColorSet SelBgColors
         {
-            get => selectedBgColors.normal ?? focusedBgColor;
+            get => selBgColors;
             set
             {
-                if (!selectedBgColors.normal.Equals(value))
-                {
-                    selectedBgColors.normal = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedFocusedBgColor
-        {
-            get => selectedBgColors.focused ?? focusedBgColor;
-            set
-            {
-                if (!selectedBgColors.focused.Equals(value))
-                {
-                    selectedBgColors.focused = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedHoveredBgColor
-        {
-            get => selectedBgColors.hovered ?? hoveredBgColor;
-            set
-            {
-                if (!selectedBgColors.hovered.Equals(value))
-                {
-                    selectedBgColors.hovered = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedPressedBgColor
-        {
-            get => selectedBgColors.pressed ?? pressedBgColor;
-            set
-            {
-                if (!selectedBgColors.pressed.Equals(value))
-                {
-                    selectedBgColors.pressed = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedDisabledBgColor
-        {
-            get => selectedBgColors.disabled ?? disabledBgColor;
-            set
-            {
-                if (!selectedBgColors.disabled.Equals(value))
-                {
-                    selectedBgColors.disabled = value;
-                    OnColorChanged();
-                }
+                selBgColors = value;
+                OnColorChanged();
             }
         }
 
-        public void SetSelectedBgColor(ColorSet colors)
+        public Color32 SelNormalBgColor
         {
-            selectedBgColors = colors;
-            OnColorChanged();
+            get => string.IsNullOrEmpty(selBgSprites.normal) ? NormalBgColor : selBgColors.normal;
+            set
+            {
+                if (!selBgColors.normal.Equals(value))
+                {
+                    selBgColors.normal = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelHoveredBgColor
+        {
+            get => string.IsNullOrEmpty(selBgSprites.hovered) ? HoveredBgColor : selBgColors.hovered;
+            set
+            {
+                if (!selBgColors.hovered.Equals(value))
+                {
+                    selBgColors.hovered = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelPressedBgColor
+        {
+            get => string.IsNullOrEmpty(selBgSprites.pressed) ? PressedBgColor : selBgColors.pressed;
+            set
+            {
+                if (!selBgColors.pressed.Equals(value))
+                {
+                    selBgColors.pressed = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelFocusedBgColor
+        {
+            get => string.IsNullOrEmpty(selBgSprites.hovered) ? FocusedBgColor : selBgColors.focused;
+            set
+            {
+                if (!selBgColors.focused.Equals(value))
+                {
+                    selBgColors.focused = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelDisabledBgColor
+        {
+            get => string.IsNullOrEmpty(selBgSprites.disabled) ? DisabledBgColor : selBgColors.disabled;
+            set
+            {
+                if (!selBgColors.disabled.Equals(value))
+                {
+                    selBgColors.disabled = value;
+                    OnColorChanged();
+                }
+            }
         }
 
         #endregion
 
         #region SELECTED FOREGROUND COLOR
 
-        protected ColorSet selectedFgColors;
-
-        public Color32 selectedNormalFgColor
+        protected ColorSet selFgColors = new ColorSet(Color.white);
+        public ColorSet SelFgColors
         {
-            get => selectedFgColors.normal ?? base.focusedTextColor;
+            get => selFgColors;
             set
             {
-                if (!selectedFgColors.normal.Equals(value))
-                {
-                    selectedFgColors.normal = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedFocusedFgColor
-        {
-            get => selectedFgColors.focused ?? base.focusedTextColor;
-            set
-            {
-                if (!selectedFgColors.focused.Equals(value))
-                {
-                    selectedFgColors.focused = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedHoveredFgColor
-        {
-            get => selectedFgColors.hovered ?? base.hoveredTextColor;
-            set
-            {
-                if (!selectedFgColors.hovered.Equals(value))
-                {
-                    selectedFgColors.hovered = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedPressedFgColor
-        {
-            get => selectedFgColors.pressed ?? base.pressedTextColor;
-            set
-            {
-                if (!selectedFgColors.pressed.Equals(value))
-                {
-                    selectedFgColors.pressed = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedDisabledFgColor
-        {
-            get => selectedFgColors.disabled ?? base.disabledTextColor;
-            set
-            {
-                if (!selectedFgColors.disabled.Equals(value))
-                {
-                    selectedFgColors.disabled = value;
-                    OnColorChanged();
-                }
+                selFgColors = value;
+                OnColorChanged();
             }
         }
 
-        public void SetSelectedFgColor(ColorSet colors)
+        public Color32 SelNormalFgColor
         {
-            selectedFgColors = colors;
-            OnColorChanged();
+            get => string.IsNullOrEmpty(selFgSprites.normal) ? NormalFgColor : selFgColors.normal;
+            set
+            {
+                if (!selFgColors.normal.Equals(value))
+                {
+                    selFgColors.normal = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelHoveredFgColor
+        {
+            get => string.IsNullOrEmpty(selFgSprites.hovered) ? FocusedFgColor : selFgColors.hovered;
+            set
+            {
+                if (!selFgColors.hovered.Equals(value))
+                {
+                    selFgColors.hovered = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelPressedFgColor
+        {
+            get => string.IsNullOrEmpty(selFgSprites.pressed) ? PressedFgColor : selFgColors.pressed;
+            set
+            {
+                if (!selFgColors.pressed.Equals(value))
+                {
+                    selFgColors.pressed = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelFocusedFgColor
+        {
+            get => string.IsNullOrEmpty(selFgSprites.focused) ? FocusedFgColor : selFgColors.focused;
+            set
+            {
+                if (!selFgColors.focused.Equals(value))
+                {
+                    selFgColors.focused = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelDisabledFgColor
+        {
+            get => string.IsNullOrEmpty(selFgSprites.disabled) ? DisabledFgColor : selFgColors.disabled;
+            set
+            {
+                if (!selFgColors.disabled.Equals(value))
+                {
+                    selFgColors.disabled = value;
+                    OnColorChanged();
+                }
+            }
         }
 
         #endregion
 
         #region SELECTED TEXT COLOR
 
-        protected ColorSet selectedTextColors;
-
-        public Color32 selectedNormalTextColor
+        protected ColorSet selTextColors = new ColorSet(Color.white);
+        public ColorSet SelTextColors
         {
-            get => selectedTextColors.normal ?? base.focusedTextColor;
+            get => selTextColors;
             set
             {
-                if (!selectedTextColors.normal.Equals(value))
-                {
-                    selectedTextColors.normal = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedFocusedTextColor
-        {
-            get => selectedTextColors.focused ?? base.focusedTextColor;
-            set
-            {
-                if (!selectedTextColors.focused.Equals(value))
-                {
-                    selectedTextColors.focused = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedHoveredTextColor
-        {
-            get => selectedTextColors.hovered ?? base.hoveredTextColor;
-            set
-            {
-                if (!selectedTextColors.hovered.Equals(value))
-                {
-                    selectedTextColors.hovered = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedPressedTextColor
-        {
-            get => selectedTextColors.pressed ?? base.pressedTextColor;
-            set
-            {
-                if (!selectedTextColors.pressed.Equals(value))
-                {
-                    selectedTextColors.pressed = value;
-                    OnColorChanged();
-                }
-            }
-        }
-        public Color32 selectedDisabledTextColor
-        {
-            get => selectedTextColors.disabled ?? base.disabledTextColor;
-            set
-            {
-                if (!selectedTextColors.disabled.Equals(value))
-                {
-                    selectedTextColors.disabled = value;
-                    OnColorChanged();
-                }
+                selTextColors = value;
+                OnColorChanged();
             }
         }
 
-        public void SetSelectedTextColor(ColorSet colors)
+        public Color32 SelNormalTextColor
         {
-            selectedTextColors = colors;
-            OnColorChanged();
+            get => string.IsNullOrEmpty(selBgSprites.normal) ? NormalTextColor : selTextColors.normal;
+            set
+            {
+                if (!selTextColors.normal.Equals(value))
+                {
+                    selTextColors.normal = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelHoveredTextColor
+        {
+            get => string.IsNullOrEmpty(selBgSprites.hovered) ? HoveredTextColor : selTextColors.hovered;
+            set
+            {
+                if (!selTextColors.hovered.Equals(value))
+                {
+                    selTextColors.hovered = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelPressedTextColor
+        {
+            get => string.IsNullOrEmpty(selBgSprites.pressed) ? PressedTextColor : selTextColors.pressed;
+            set
+            {
+                if (!selTextColors.pressed.Equals(value))
+                {
+                    selTextColors.pressed = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelFocusedTextColor
+        {
+            get => string.IsNullOrEmpty(selBgSprites.hovered) ? FocusedTextColor : selTextColors.focused;
+            set
+            {
+                if (!selTextColors.focused.Equals(value))
+                {
+                    selTextColors.focused = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelDisabledTextColor
+        {
+            get => string.IsNullOrEmpty(selBgSprites.disabled) ? DisabledTextColor : selTextColors.disabled;
+            set
+            {
+                if (!selTextColors.disabled.Equals(value))
+                {
+                    selTextColors.disabled = value;
+                    OnColorChanged();
+                }
+            }
         }
 
         #endregion
@@ -646,13 +1204,13 @@ namespace ModsCommon.UI
         public void SetStyle(ButtonStyle style)
         {
             bgColors = style.BgColors;
-            selectedBgColors = style.SelBgColors;
+            selBgColors = style.SelBgColors;
 
             fgColors = style.FgColors;
-            selectedFgColors = style.SelFgColors;
+            selFgColors = style.SelFgColors;
 
-            SetTextColor(style.TextColors);
-            selectedTextColors = style.SelTextColors;
+            textColors = style.TextColors;
+            selTextColors = style.SelTextColors;
 
             OnColorChanged();
         }
@@ -672,6 +1230,8 @@ namespace ModsCommon.UI
             }
         }
 
+        #endregion
+
         public Vector2 MinimumAutoSize
         {
             get
@@ -682,8 +1242,8 @@ namespace ModsCommon.UI
                 {
                     using (UIFontRenderer uIFontRenderer = ObtainTextRenderer())
                     {
-                        Vector2 vector = uIFontRenderer.MeasureString(m_Text);
-                        size = new Vector2(vector.x + textPadding.horizontal, vector.y + textPadding.vertical);
+                        Vector2 measure = uIFontRenderer.MeasureString(m_Text);
+                        size = new Vector2(measure.x + TextPadding.horizontal, measure.y + TextPadding.vertical);
                     }
                 }
 
@@ -698,6 +1258,48 @@ namespace ModsCommon.UI
             if ((relativePosition - positionBefore).sqrMagnitude > 0.001)
                 relativePosition = positionBefore;
         }
+
+        public override void Invalidate()
+        {
+            base.Invalidate();
+
+            if (font != null && font.isValid && !string.IsNullOrEmpty(text) && AutoSize != AutoSize.None)
+            {
+                using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
+                Vector2 measured = uIFontRenderer.MeasureString(text).RoundToInt();
+
+                var width = Mathf.Max(measured.x + TextPadding.horizontal, minimumSize.x);
+                var height = Mathf.Max(measured.y + TextPadding.vertical, minimumSize.y);
+
+                size = AutoSize switch
+                {
+                    AutoSize.Width => new Vector2(width, size.y),
+                    AutoSize.Height => new Vector2(size.x, height),
+                    AutoSize.All => new Vector2(width, height),
+                    _ => size
+                };
+            }
+        }
+
+        public void AutoWidth()
+        {
+            if (m_Font != null && m_Font.isValid && !string.IsNullOrEmpty(m_Text))
+            {
+                var minSize = minimumSize;
+
+                using (UIFontRenderer uIFontRenderer = ObtainTextRenderer())
+                {
+                    var textSize = uIFontRenderer.MeasureString(m_Text);
+                    minSize.x = textSize.x + TextPadding.horizontal;
+                }
+
+                var sprite = RenderForegroundSprite;
+                var spriteSize = GetForegroundRenderSize(sprite);
+                width = Mathf.Max(spriteSize.x, minSize.x);
+            }
+        }
+
+        #region RENDER
 
         protected UIRenderData BgRenderData { get; set; }
         protected UIRenderData FgRenderData { get; set; }
@@ -736,7 +1338,7 @@ namespace ModsCommon.UI
             else
                 TextRenderData.Clear();
 
-            if (atlasBackground is UITextureAtlas bgAtlas && atlasForeground is UITextureAtlas fgAtlas)
+            if (AtlasBackground is UITextureAtlas bgAtlas && AtlasForeground is UITextureAtlas fgAtlas)
             {
                 BgRenderData.material = bgAtlas.material;
                 FgRenderData.material = fgAtlas.material;
@@ -749,23 +1351,30 @@ namespace ModsCommon.UI
         }
         private void RenderText()
         {
-            if (m_Font == null || !m_Font.isValid || string.IsNullOrEmpty(m_Text))
+            if (font == null || !font.isValid || string.IsNullOrEmpty(text))
                 return;
 
             using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
             if (uIFontRenderer is UIDynamicFont.DynamicFontRenderer dynamicFontRenderer)
             {
-                dynamicFontRenderer.spriteAtlas = atlasBackground;
+                dynamicFontRenderer.spriteAtlas = AtlasBackground;
                 dynamicFontRenderer.spriteBuffer = BgRenderData;
             }
-            uIFontRenderer.Render(m_Text, TextRenderData);
+            uIFontRenderer.Render(text, TextRenderData);
         }
         private UIFontRenderer ObtainTextRenderer()
         {
-            var vector = size - new Vector2(textPadding.horizontal, textPadding.vertical);
-            var maxSize = (autoSize ? (Vector2.one * 2.14748365E+09f) : vector);
+            var maxSize = AutoSize switch
+            {
+                AutoSize.Width or AutoSize.All => new Vector2(width - TextPadding.horizontal, height),
+                AutoSize.Height => new Vector2(width - TextPadding.horizontal, 4096f),
+                _ => new Vector2(width - TextPadding.horizontal, height - TextPadding.vertical),
+            };
+
             var ratio = PixelsToUnits();
-            var vectorOffset = (pivot.TransformToUpperLeft(size, arbitraryPivotOffset) + new Vector3(textPadding.left, -textPadding.top)) * ratio;
+            var offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
+            offset.x += TextPadding.left * ratio;
+            offset.y -= TextPadding.top * ratio;
 
             var renderer = font.ObtainRenderer();
             renderer.wordWrap = wordWrap;
@@ -773,8 +1382,8 @@ namespace ModsCommon.UI
             renderer.maxSize = maxSize;
             renderer.pixelRatio = ratio;
             renderer.textScale = textScale;
-            renderer.vectorOffset = vectorOffset;
-            renderer.textAlign = textHorizontalAlignment;
+            renderer.vectorOffset = offset;
+            renderer.textAlign = TextHorizontalAlignment;
             renderer.processMarkup = processMarkup;
             renderer.defaultColor = ApplyOpacity(RenderTextColor);
             renderer.bottomColor = null;
@@ -786,7 +1395,7 @@ namespace ModsCommon.UI
             renderer.outline = useOutline;
             renderer.outlineSize = outlineSize;
             renderer.outlineColor = outlineColor;
-            if (!autoSize && m_TextVerticalAlign != 0)
+            if (AutoSize != AutoSize.Height && TextVerticalAlignment != UIVerticalAlignment.Top)
                 renderer.vectorOffset = GetVertAlignOffset(renderer);
 
             return renderer;
@@ -797,16 +1406,16 @@ namespace ModsCommon.UI
             get
             {
                 if (!isEnabled)
-                    return disabledTextColor;
+                    return DisabledTextColor;
                 else
                 {
                     return state switch
                     {
-                        ButtonState.Normal => isSelected ? selectedNormalTextColor : textColor,
-                        ButtonState.Focused => isSelected ? selectedFocusedTextColor : focusedTextColor,
-                        ButtonState.Hovered => isSelected ? selectedHoveredTextColor : hoveredTextColor,
-                        ButtonState.Pressed => isSelected ? selectedPressedTextColor : pressedTextColor,
-                        ButtonState.Disabled => isSelected ? selectedDisabledTextColor : disabledTextColor,
+                        UIButton.ButtonState.Normal => IsSelected ? SelNormalTextColor : NormalTextColor,
+                        UIButton.ButtonState.Hovered => IsSelected ? SelHoveredTextColor : HoveredTextColor,
+                        UIButton.ButtonState.Pressed => IsSelected ? SelPressedTextColor : PressedTextColor,
+                        UIButton.ButtonState.Disabled => IsSelected ? SelDisabledTextColor : DisabledTextColor,
+                        UIButton.ButtonState.Focused => IsSelected ? SelFocusedTextColor : FocusedTextColor,
                         _ => Color.white,
                     };
                 }
@@ -818,11 +1427,11 @@ namespace ModsCommon.UI
             {
                 return state switch
                 {
-                    ButtonState.Focused => isSelected ? selectedFocusedBgColor : focusedBgColor,
-                    ButtonState.Hovered => isSelected ? selectedHoveredBgColor : hoveredBgColor,
-                    ButtonState.Pressed => isSelected ? selectedPressedBgColor : pressedBgColor,
-                    ButtonState.Disabled => isSelected ? selectedDisabledBgColor : disabledBgColor,
-                    _ => isSelected ? selectedNormalBgColor : normalBgColor,
+                    UIButton.ButtonState.Focused => IsSelected ? SelFocusedBgColor : FocusedBgColor,
+                    UIButton.ButtonState.Hovered => IsSelected ? SelHoveredBgColor : HoveredBgColor,
+                    UIButton.ButtonState.Pressed => IsSelected ? SelPressedBgColor : PressedBgColor,
+                    UIButton.ButtonState.Disabled => IsSelected ? SelDisabledBgColor : DisabledBgColor,
+                    _ => IsSelected ? SelNormalBgColor : NormalBgColor,
                 };
             }
         }
@@ -832,11 +1441,11 @@ namespace ModsCommon.UI
             {
                 return state switch
                 {
-                    ButtonState.Focused => isSelected ? selectedFocusedFgColor : focusedFgColor,
-                    ButtonState.Hovered => isSelected ? selectedHoveredFgColor : hoveredFgColor,
-                    ButtonState.Pressed => isSelected ? selectedPressedFgColor : pressedFgColor,
-                    ButtonState.Disabled => isSelected ? selectedDisabledFgColor : disabledFgColor,
-                    _ => isSelected ? selectedNormalFgColor : normalFgColor,
+                    UIButton.ButtonState.Focused => IsSelected ? SelFocusedFgColor : FocusedFgColor,
+                    UIButton.ButtonState.Hovered => IsSelected ? SelHoveredFgColor : HoveredFgColor,
+                    UIButton.ButtonState.Pressed => IsSelected ? SelPressedFgColor : PressedFgColor,
+                    UIButton.ButtonState.Disabled => IsSelected ? SelDisabledFgColor : DisabledFgColor,
+                    _ => IsSelected ? SelNormalFgColor : NormalFgColor,
                 };
             }
         }
@@ -844,13 +1453,13 @@ namespace ModsCommon.UI
         private Vector3 GetVertAlignOffset(UIFontRenderer fontRenderer)
         {
             var num = PixelsToUnits();
-            var vector = fontRenderer.MeasureString(m_Text) * num;
+            var vector = fontRenderer.MeasureString(text) * num;
             var vectorOffset = fontRenderer.vectorOffset;
-            var num2 = (height - textPadding.vertical) * num;
+            var num2 = (height - TextPadding.vertical) * num;
             if (vector.y >= num2)
                 return vectorOffset;
 
-            switch (m_TextVerticalAlign)
+            switch (TextVerticalAlignment)
             {
                 case UIVerticalAlignment.Middle:
                     vectorOffset.y -= (num2 - vector.y) * 0.5f;
@@ -866,53 +1475,53 @@ namespace ModsCommon.UI
         {
             get
             {
-                if (atlasBackground is not UITextureAtlas atlas)
+                if (AtlasBackground is not UITextureAtlas atlas)
                     return null;
 
                 var spriteInfo = state switch
                 {
-                    ButtonState.Normal => atlas[isSelected ? selectedNormalBgSprite : normalBgSprite],
-                    ButtonState.Focused => atlas[isSelected ? selectedFocusedBgSprite : focusedBgSprite],
-                    ButtonState.Hovered => atlas[isSelected ? selectedHoveredBgSprite : hoveredBgSprite],
-                    ButtonState.Pressed => atlas[isSelected ? selectedPressedBgSprite : pressedBgSprite],
-                    ButtonState.Disabled => atlas[isSelected ? selectedDisabledBgSprite : disabledBgSprite],
+                    UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalBgSprite : NormalBgSprite],
+                    UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedBgSprite : FocusedBgSprite],
+                    UIButton.ButtonState.Hovered => atlas[IsSelected ? SelHoveredBgSprite : HoveredBgSprite],
+                    UIButton.ButtonState.Pressed => atlas[IsSelected ? SelPressedBgSprite : PressedBgSprite],
+                    UIButton.ButtonState.Disabled => atlas[IsSelected ? SelDisabledBgSprite : DisabledBgSprite],
                     _ => null,
                 };
 
-                return spriteInfo ?? atlas[normalBgSprite];
+                return spriteInfo ?? atlas[NormalBgSprite];
             }
         }
-        protected override UITextureAtlas.SpriteInfo GetBackgroundSprite() => RenderBackgroundSprite;
+        protected UITextureAtlas.SpriteInfo GetBackgroundSprite() => RenderBackgroundSprite;
 
         protected virtual UITextureAtlas.SpriteInfo RenderForegroundSprite
         {
             get
             {
-                if (atlasForeground is not UITextureAtlas atlas)
+                if (AtlasForeground is not UITextureAtlas atlas)
                     return null;
 
                 var spriteInfo = state switch
                 {
-                    ButtonState.Normal => atlas[isSelected ? selectedNormalFgSprite : normalFgSprite],
-                    ButtonState.Focused => atlas[isSelected ? selectedFocusedFgSprite : focusedFgSprite],
-                    ButtonState.Hovered => atlas[isSelected ? selectedHoveredFgSprite : hoveredFgSprite],
-                    ButtonState.Pressed => atlas[isSelected ? selectedPressedFgSprite : pressedFgSprite],
-                    ButtonState.Disabled => atlas[isSelected ? selectedDisabledFgSprite : disabledFgSprite],
+                    UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalFgSprite : NormalFgSprite],
+                    UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedFgSprite : FocusedFgSprite],
+                    UIButton.ButtonState.Hovered => atlas[IsSelected ? SelHoveredFgSprite : HoveredFgSprite],
+                    UIButton.ButtonState.Pressed => atlas[IsSelected ? SelPressedFgSprite : PressedFgSprite],
+                    UIButton.ButtonState.Disabled => atlas[IsSelected ? SelDisabledFgSprite : DisabledFgSprite],
                     _ => null,
                 };
 
-                return spriteInfo ?? atlas[normalFgSprite];
+                return spriteInfo ?? atlas[NormalFgSprite];
             }
         }
-        protected override UITextureAtlas.SpriteInfo GetForegroundSprite() => RenderForegroundSprite;
+        protected UITextureAtlas.SpriteInfo GetForegroundSprite() => RenderForegroundSprite;
 
-        protected override void RenderBackground()
+        protected void RenderBackground()
         {
             if (RenderBackgroundSprite is UITextureAtlas.SpriteInfo backgroundSprite)
             {
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = atlasBackground,
+                    atlas = AtlasBackground,
                     color = RenderBackgroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
@@ -928,7 +1537,7 @@ namespace ModsCommon.UI
                     Render.RenderSprite(BgRenderData, renderOptions);
             }
         }
-        protected override void RenderForeground()
+        protected void RenderForeground()
         {
             if (RenderForegroundSprite is UITextureAtlas.SpriteInfo foregroundSprite)
             {
@@ -937,7 +1546,7 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = atlasForeground,
+                    atlas = AtlasForeground,
                     color = RenderForegroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
@@ -953,83 +1562,67 @@ namespace ModsCommon.UI
                     Render.RenderSprite(FgRenderData, renderOptions);
             }
         }
-        protected override Vector2 GetForegroundRenderSize(UITextureAtlas.SpriteInfo spriteInfo)
+        protected Vector2 GetForegroundRenderSize(UITextureAtlas.SpriteInfo spriteInfo)
         {
             if (spriteInfo == null)
                 return Vector2.zero;
 
-            if (m_ForegroundSpriteMode == UIForegroundSpriteMode.Stretch)
+            if (ForegroundSpriteMode == UIForegroundSpriteMode.Stretch)
             {
-                return new Vector2(width - spritePadding.horizontal, height - spritePadding.vertical) * m_ScaleFactor;
+                return new Vector2(width - SpritePadding.horizontal, height - SpritePadding.vertical) * scaleFactor;
             }
-            else if (m_ForegroundSpriteMode == UIForegroundSpriteMode.Fill)
+            else if (ForegroundSpriteMode == UIForegroundSpriteMode.Fill)
             {
                 return spriteInfo.pixelSize;
             }
-            else if (m_ForegroundSpriteMode == UIForegroundSpriteMode.Scale)
+            else if (ForegroundSpriteMode == UIForegroundSpriteMode.Scale)
             {
-                var widthRatio = Mathf.Max(width - spritePadding.horizontal, 0f) / spriteInfo.width;
-                var heightRatio = Mathf.Max(height - spritePadding.vertical, 0f) / spriteInfo.height;
+                var widthRatio = Mathf.Max(width - SpritePadding.horizontal, 0f) / spriteInfo.width;
+                var heightRatio = Mathf.Max(height - SpritePadding.vertical, 0f) / spriteInfo.height;
                 var ratio = Mathf.Min(widthRatio, heightRatio);
-                return new Vector2(ratio * spriteInfo.width, ratio * spriteInfo.height) * m_ScaleFactor;
+                return new Vector2(ratio * spriteInfo.width, ratio * spriteInfo.height) * scaleFactor;
             }
             else
             {
                 return Vector2.zero;
             }
         }
-        protected override Vector2 GetForegroundRenderOffset(Vector2 renderSize)
+        protected Vector2 GetForegroundRenderOffset(Vector2 renderSize)
         {
             Vector2 result = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
-            if (horizontalAlignment == UIHorizontalAlignment.Left)
+            if (HorizontalAlignment == UIHorizontalAlignment.Left)
             {
-                result.x += spritePadding.left;
+                result.x += SpritePadding.left;
             }
-            else if (horizontalAlignment == UIHorizontalAlignment.Center)
+            else if (HorizontalAlignment == UIHorizontalAlignment.Center)
             {
                 result.x += (width - renderSize.x) * 0.5f;
-                result.x += spritePadding.left - spritePadding.right;
+                result.x += SpritePadding.left - SpritePadding.right;
             }
-            else if (horizontalAlignment == UIHorizontalAlignment.Right)
+            else if (HorizontalAlignment == UIHorizontalAlignment.Right)
             {
                 result.x += width - renderSize.x;
-                result.x -= spritePadding.right;
+                result.x -= SpritePadding.right;
             }
 
-            if (verticalAlignment == UIVerticalAlignment.Bottom)
+            if (VerticalAlignment == UIVerticalAlignment.Bottom)
             {
                 result.y -= height - renderSize.y;
-                result.y += spritePadding.bottom;
+                result.y += SpritePadding.bottom;
             }
-            else if (verticalAlignment == UIVerticalAlignment.Middle)
+            else if (VerticalAlignment == UIVerticalAlignment.Middle)
             {
                 result.y -= (height - renderSize.y) * 0.5f;
-                result.y -= spritePadding.top - spritePadding.bottom;
+                result.y -= SpritePadding.top - SpritePadding.bottom;
             }
-            else if (verticalAlignment == UIVerticalAlignment.Top)
+            else if (VerticalAlignment == UIVerticalAlignment.Top)
             {
-                result.y -= spritePadding.top;
+                result.y -= SpritePadding.top;
             }
 
             return result;
         }
 
-        public void AutoWidth()
-        {
-            if (m_Font != null && m_Font.isValid && !string.IsNullOrEmpty(m_Text))
-            {
-                var minSize = minimumSize;
-
-                using (UIFontRenderer uIFontRenderer = ObtainTextRenderer())
-                {
-                    var textSize = uIFontRenderer.MeasureString(m_Text);
-                    minSize.x = textSize.x + textPadding.horizontal;
-                }
-
-                var sprite = RenderForegroundSprite;
-                var spriteSize = GetForegroundRenderSize(sprite);
-                width = Mathf.Max(spriteSize.x, minSize.x);
-            }
-        }
+        #endregion
     }
 }

@@ -96,31 +96,31 @@ namespace ModsCommon.UI
 
         public static void ButtonMessageBoxStyle(this CustomUIButton button)
         {
-            button.atlas = CommonTextures.Atlas;
-            button.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
-            button.SetBgColor(new ColorSet(ButtonNormalColor, ButtonHoveredColor, ButtonPressedColor, ButtonNormalColor, ButtonDisabledColor));
-            button.SetSelectedBgColor(new ColorSet(ButtonSelectedNormalColor, ButtonSelectedHoveredColor, ButtonSelectedPressedColor, ButtonSelectedFocusedColor, ButtonSelectedDisabledColor));
-            button.SetTextColor(new ColorSet(Color.white, Color.white, Color.white, null, null));
+            button.Atlas = CommonTextures.Atlas;
+            button.AllBgSprites = CommonTextures.PanelBig;
+            button.BgColors = new ColorSet(ButtonNormalColor, ButtonHoveredColor, ButtonPressedColor, ButtonNormalColor, ButtonDisabledColor);
+            button.SelBgColors = new ColorSet(ButtonSelectedNormalColor, ButtonSelectedHoveredColor, ButtonSelectedPressedColor, ButtonSelectedFocusedColor, ButtonSelectedDisabledColor);
+            button.TextColors = new ColorSet(Color.white, Color.white, Color.white, default, default);
             button.Bold = true;
 
-            button.horizontalAlignment = UIHorizontalAlignment.Center;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+            button.HorizontalAlignment = UIHorizontalAlignment.Center;
+            button.VerticalAlignment = UIVerticalAlignment.Middle;
+            button.TextHorizontalAlignment = UIHorizontalAlignment.Center;
 
-            button.textPadding.top = 2;
+            button.TextPadding.top = 2;
         }
         public static void ButtonSettingsStyle(this CustomUIButton button)
         {
-            button.atlas = CommonTextures.Atlas;
-            button.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
-            button.SetBgColor(new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15));
-            button.SetTextColor(new ColorSet(Color.white, Color.white, Color.white, null, null));
+            button.Atlas = CommonTextures.Atlas;
+            button.BgSprites = CommonTextures.PanelBig;
+            button.BgColors = new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15);
+            button.TextColors = new ColorSet(Color.white, Color.white, Color.white, default, default);
 
-            button.horizontalAlignment = UIHorizontalAlignment.Center;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+            button.HorizontalAlignment = UIHorizontalAlignment.Center;
+            button.VerticalAlignment = UIVerticalAlignment.Middle;
+            button.TextHorizontalAlignment = UIHorizontalAlignment.Center;
 
-            button.textPadding.top = 2;
+            button.TextPadding.top = 2;
         }
 
         [Obsolete]
@@ -132,19 +132,12 @@ namespace ModsCommon.UI
         [Obsolete]
         public static Color32 ButtonFocused => new Color32(160, 160, 160, 255);
         [Obsolete]
-        public static void SetDefaultStyle(this UIButton button)
+        public static void SetDefaultStyle(this CustomUIButton button)
         {
-            button.atlas = TextureHelper.InGameAtlas;
-            button.normalBgSprite = "ButtonWhite";
-            button.disabledBgSprite = "ButtonWhite";
-            button.hoveredBgSprite = "ButtonWhite";
-            button.pressedBgSprite = "ButtonWhite";
-            button.color = ButtonNormal;
-            button.hoveredColor = ButtonHovered;
-            button.pressedColor = ButtonPressed;
-            button.disabledColor = ButtonFocused;
-            button.textColor = button.hoveredTextColor = button.focusedTextColor = Color.black;
-            button.pressedTextColor = button.disabledTextColor = Color.white;
+            button.Atlas = TextureHelper.InGameAtlas;
+            button.BgSprites = "ButtonWhite";
+            button.BgColors = new ColorSet(ButtonNormal, ButtonHovered, ButtonPressed, ButtonFocused, Color.black);
+            button.TextColors = new ColorSet(Color.black, Color.black, Color.white, Color.black, Color.white);
         }
 
         #endregion
@@ -155,19 +148,19 @@ namespace ModsCommon.UI
             where PopupType : CustomUIPanel, IPopup<ObjectType, EntityType>
             where EntityType : CustomUIButton, IPopupEntity<ObjectType>
         {
-            dropDown.atlasBackground = CommonTextures.Atlas;
-            dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
-            dropDown.SetBgColor(new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldNormalColor, FieldDisabledColor));
+            dropDown.AtlasBackground = CommonTextures.Atlas;
+            dropDown.BgSprites = CommonTextures.FieldSingle;
+            dropDown.BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldNormalColor, FieldDisabledColor);
 
-            dropDown.atlasForeground = CommonTextures.Atlas;
-            dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
-            dropDown.SetFgColor(new ColorSet(new Color32(0, 0, 0, 255)));
+            dropDown.AtlasForeground = CommonTextures.Atlas;
+            dropDown.FgSprites = CommonTextures.ArrowDown;
+            dropDown.FgColors = Color.black;
 
-            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            dropDown.scaleFactor = 0.7f;
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
-            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.spritePadding = new RectOffset(0, 5, 0, 0);
+            dropDown.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.ScaleFactor = 0.7f;
+            dropDown.HorizontalAlignment = UIHorizontalAlignment.Right;
+            dropDown.VerticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.SpritePadding = new RectOffset(0, 5, 0, 0);
 
             dropDown.Entity.Padding = new RectOffset(0, 40, 0, 0);
 
@@ -186,12 +179,12 @@ namespace ModsCommon.UI
         public static void EntityDefaultStyle<ObjectType, EntityType>(this EntityType entity)
             where EntityType : CustomUIButton, IPopupEntity<ObjectType>
         {
-            entity.atlas = CommonTextures.Atlas;
-            entity.hoveredBgSprite = CommonTextures.FieldSingle;
-            entity.focusedBgSprite = CommonTextures.FieldSingle;
+            entity.Atlas = CommonTextures.Atlas;
+            entity.HoveredBgSprite = CommonTextures.FieldSingle;
+            entity.FocusedBgSprite = CommonTextures.FieldSingle;
 
-            entity.hoveredBgColor = FieldNormalColor;
-            entity.focusedBgColor = FieldFocusedColor;
+            entity.HoveredBgColor = FieldNormalColor;
+            entity.FocusedBgColor = FieldFocusedColor;
         }
 
 
@@ -199,23 +192,23 @@ namespace ModsCommon.UI
             where PopupType : ObjectPopup<ObjectType, EntityType>
             where EntityType : PopupEntity<ObjectType>
         {
-            dropDown.atlasBackground = CommonTextures.Atlas;
-            dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
-            dropDown.SetBgColor(new ColorSet(DarkPrimaryColor55, DarkPrimaryColor45, DarkPrimaryColor35, DarkPrimaryColor55, DarkPrimaryColor15));
+            dropDown.AtlasBackground = CommonTextures.Atlas;
+            dropDown.BgSprites = CommonTextures.FieldSingle;
+            dropDown.BgColors = new ColorSet(DarkPrimaryColor55, DarkPrimaryColor45, DarkPrimaryColor35, DarkPrimaryColor55, DarkPrimaryColor15);
 
-            dropDown.atlasForeground = CommonTextures.Atlas;
-            dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
-            dropDown.SetFgColor(new ColorSet(SettingsColor15));
+            dropDown.AtlasForeground = CommonTextures.Atlas;
+            dropDown.FgSprites = CommonTextures.ArrowDown;
+            dropDown.FgColors = SettingsColor15;
 
-            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            dropDown.scaleFactor = 0.7f;
-            dropDown.spritePadding.right = 5;
+            dropDown.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.ScaleFactor = 0.7f;
+            dropDown.SpritePadding.right = 5;
 
-            dropDown.textVerticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.textHorizontalAlignment = UIHorizontalAlignment.Left;
+            dropDown.TextVerticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.TextHorizontalAlignment = UIHorizontalAlignment.Left;
 
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
-            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.HorizontalAlignment = UIHorizontalAlignment.Right;
+            dropDown.VerticalAlignment = UIVerticalAlignment.Middle;
 
             dropDown.size = size ?? new Vector2(230, 20);
         }
@@ -232,12 +225,12 @@ namespace ModsCommon.UI
         }
         public static void EntityMessageBoxStyle<ObjectType>(this PopupEntity<ObjectType> entity)
         {
-            entity.atlas = CommonTextures.Atlas;
-            entity.hoveredBgSprite = CommonTextures.FieldSingle;
-            entity.focusedBgSprite = CommonTextures.FieldSingle;
+            entity.Atlas = CommonTextures.Atlas;
+            entity.HoveredBgSprite = CommonTextures.FieldSingle;
+            entity.FocusedBgSprite = CommonTextures.FieldSingle;
 
-            entity.hoveredBgColor = DarkPrimaryColor45;
-            entity.focusedBgColor = NormalBlue;
+            entity.HoveredBgColor = DarkPrimaryColor45;
+            entity.FocusedBgColor = NormalBlue;
         }
 
 
@@ -245,23 +238,23 @@ namespace ModsCommon.UI
             where PopupType : ObjectPopup<ObjectType, EntityType>
             where EntityType : PopupEntity<ObjectType>
         {
-            dropDown.atlasBackground = CommonTextures.Atlas;
-            dropDown.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
-            dropDown.SetBgColor(new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15));
+            dropDown.AtlasBackground = CommonTextures.Atlas;
+            dropDown.BgSprites = CommonTextures.FieldSingle;
+            dropDown.BgColors = new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15);
 
-            dropDown.atlasForeground = CommonTextures.Atlas;
-            dropDown.SetFgSprite(new SpriteSet(CommonTextures.ArrowDown));
-            dropDown.SetFgColor(new ColorSet(SettingsColor15));
+            dropDown.AtlasForeground = CommonTextures.Atlas;
+            dropDown.FgSprites = CommonTextures.ArrowDown;
+            dropDown.FgColors = SettingsColor15;
 
-            dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            dropDown.scaleFactor = 0.7f;
-            dropDown.spritePadding.right = 5;
+            dropDown.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.ScaleFactor = 0.7f;
+            dropDown.SpritePadding.right = 5;
 
-            dropDown.textVerticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.textHorizontalAlignment = UIHorizontalAlignment.Left;
+            dropDown.TextVerticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.TextHorizontalAlignment = UIHorizontalAlignment.Left;
 
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Right;
-            dropDown.verticalAlignment = UIVerticalAlignment.Middle;
+            dropDown.HorizontalAlignment = UIHorizontalAlignment.Right;
+            dropDown.VerticalAlignment = UIVerticalAlignment.Middle;
 
             dropDown.size = size ?? new Vector2(230, 20);
         }
@@ -281,12 +274,12 @@ namespace ModsCommon.UI
         public static void EntitySettingsStyle<ObjectType, EntityType>(this EntityType entity)
             where EntityType : CustomUIButton, IPopupEntity<ObjectType>
         {
-            entity.atlas = CommonTextures.Atlas;
-            entity.hoveredBgSprite = CommonTextures.FieldSingle;
-            entity.focusedBgSprite = CommonTextures.FieldSingle;
+            entity.Atlas = CommonTextures.Atlas;
+            entity.HoveredBgSprite = CommonTextures.FieldSingle;
+            entity.FocusedBgSprite = CommonTextures.FieldSingle;
 
-            entity.hoveredBgColor = SettingsColor45;
-            entity.focusedBgColor = NormalBlue;
+            entity.HoveredBgColor = SettingsColor45;
+            entity.FocusedBgColor = NormalBlue;
         }
 
         #endregion
@@ -408,9 +401,9 @@ namespace ModsCommon.UI
 
         public static void DefaultStyle(this CustomUIToggle toggle)
         {
-            toggle.atlas = CommonTextures.Atlas;
-            toggle.SetBgSprite(new SpriteSet(CommonTextures.ToggleBackgroundSmall));
-            toggle.SetFgSprite(new SpriteSet(CommonTextures.ToggleCircle));
+            toggle.Atlas = CommonTextures.Atlas;
+            toggle.BgSprites = CommonTextures.ToggleBackgroundSmall;
+            toggle.FgSprites = CommonTextures.ToggleCircle;
 
             toggle.OnColor = FieldFocusedColor;
             toggle.OnHoverColor = FieldFocusedColor;
@@ -425,15 +418,15 @@ namespace ModsCommon.UI
             toggle.textScale = 0.8f;
             toggle.CircleScale = 0.7f;
             toggle.ShowMark = true;
-            toggle.textPadding = new RectOffset(12, 6, 5, 0);
+            toggle.TextPadding = new RectOffset(12, 6, 5, 0);
             toggle.size = new Vector2(42f, 22f);
         }
 
         public static void SettingsStyle(this CustomUIToggle toggle)
         {
-            toggle.atlas = CommonTextures.Atlas;
-            toggle.SetBgSprite(new SpriteSet(CommonTextures.ToggleBackground));
-            toggle.SetFgSprite(new SpriteSet(CommonTextures.ToggleCircle));
+            toggle.Atlas = CommonTextures.Atlas;
+            toggle.BgSprites = CommonTextures.ToggleBackground;
+            toggle.FgSprites = CommonTextures.ToggleCircle;
 
             toggle.OnColor = ToggleOnNormalColor;
             toggle.OnHoverColor = ToggleOnHoveredColor;
@@ -445,7 +438,7 @@ namespace ModsCommon.UI
 
             toggle.CircleScale = 0.7f;
             toggle.ShowMark = true;
-            toggle.textPadding = new RectOffset(17, 11, 5, 0);
+            toggle.TextPadding = new RectOffset(17, 11, 5, 0);
             toggle.size = new Vector2(60f, 30f);
         }
 
@@ -567,69 +560,44 @@ namespace ModsCommon.UI
         public ButtonStyle Button { get; set; }
         public DropDownStyle DropDown { get; set; }
         public ToggleStyle Toggle { get; set; }
-
-        public struct ColorSet
-        {
-            public Color32 normal;
-            public Color32 hovered;
-            public Color32 pressed;
-            public Color32 focused;
-            public Color32 disabled;
-
-            public ColorSet(Color32 normal, Color32 hovered, Color32 pressed, Color32 focused, Color32 disabled)
-            {
-                this.normal = normal;
-                this.hovered = hovered;
-                this.pressed = pressed;
-                this.focused = focused;
-                this.disabled = disabled;
-            }
-            public ColorSet(Color32 color)
-            {
-                this.normal = color;
-                this.hovered = color;
-                this.pressed = color;
-                this.focused = color;
-                this.disabled = color;
-            }
-
-            public static implicit operator UI.ColorSet(ColorSet set) => new UI.ColorSet(set.normal, set.hovered, set.pressed, set.focused, set.disabled);
-        }
     }
-    public class BaseStyle
+    public class ItemStyle
     {
-
+        //public SpriteSet BgSprite { get; set; }
+        //public 
     }
-    public class TextFieldStyle : BaseStyle
+    public class TextFieldStyle : ItemStyle
     {
-        public ControlStyle.ColorSet Colors { get; set; }
+        public ColorSet Colors { get; set; }
         public Color32 SelectionColor { get; set; }
         public Color32 TextColor { get; set; }
+
+        //public SpriteSet 
     }
-    public class ButtonStyle : BaseStyle
+    public class ButtonStyle : ItemStyle
     {
-        public ControlStyle.ColorSet BgColors { get; set; }
-        public ControlStyle.ColorSet SelBgColors { get; set; }
-        public ControlStyle.ColorSet FgColors { get; set; }
-        public ControlStyle.ColorSet SelFgColors { get; set; }
-        public ControlStyle.ColorSet TextColors { get; set; }
-        public ControlStyle.ColorSet SelTextColors { get; set; }
+        public ColorSet BgColors { get; set; }
+        public ColorSet SelBgColors { get; set; }
+        public ColorSet FgColors { get; set; }
+        public ColorSet SelFgColors { get; set; }
+        public ColorSet TextColors { get; set; }
+        public ColorSet SelTextColors { get; set; }
     }
-    public class DropDownStyle : BaseStyle
+    public class DropDownStyle : ItemStyle
     {
-        public ControlStyle.ColorSet BgColors { get; set; }
-        public ControlStyle.ColorSet FgColors { get; set; }
-        public ControlStyle.ColorSet TextColors { get; set; }
+        public ColorSet BgColors { get; set; }
+        public ColorSet FgColors { get; set; }
+        public ColorSet TextColors { get; set; }
 
         public Color32 PopupColor { get; set; }
 
         public Color32 EntityHoveredColor { get; set; }
         public Color32 EntitySelectedColor { get; set; }
     }
-    public class ToggleStyle : BaseStyle
+    public class ToggleStyle : ItemStyle
     {
-        public ControlStyle.ColorSet OnColors { get; set; }
-        public ControlStyle.ColorSet OffColors { get; set; }
+        public ColorSet OnColors { get; set; }
+        public ColorSet OffColors { get; set; }
     }
 
     public struct SpriteSet
@@ -656,18 +624,19 @@ namespace ModsCommon.UI
             this.focused = sprite;
             this.disabled = sprite;
         }
+
+        public static implicit operator SpriteSet(string sprite) => new SpriteSet(sprite);
     }
 
-    [Obsolete]
     public struct ColorSet
     {
-        public Color32? normal;
-        public Color32? hovered;
-        public Color32? pressed;
-        public Color32? focused;
-        public Color32? disabled;
+        public Color32 normal;
+        public Color32 hovered;
+        public Color32 pressed;
+        public Color32 focused;
+        public Color32 disabled;
 
-        public ColorSet(Color32? normal, Color32? hovered, Color32? pressed, Color32? focused, Color32? disabled)
+        public ColorSet(Color32 normal, Color32 hovered, Color32 pressed, Color32 focused, Color32 disabled)
         {
             this.normal = normal;
             this.hovered = hovered;
@@ -675,7 +644,7 @@ namespace ModsCommon.UI
             this.focused = focused;
             this.disabled = disabled;
         }
-        public ColorSet(Color32? color)
+        public ColorSet(Color32 color)
         {
             this.normal = color;
             this.hovered = color;
@@ -683,14 +652,17 @@ namespace ModsCommon.UI
             this.focused = color;
             this.disabled = color;
         }
+
+        public static implicit operator ColorSet(Color32 color) => new ColorSet(color);
+        public static implicit operator ColorSet(Color color) => new ColorSet(color);
     }
 
-    public struct ItemStyle
-    {
-        public UITextureAtlas backgroundAtlas;
-        public UITextureAtlas foregroundAtlas;
+    //public struct ItemStyle
+    //{
+    //    public UITextureAtlas backgroundAtlas;
+    //    public UITextureAtlas foregroundAtlas;
 
-        public SpriteSet spritesBg;
-        public SpriteSet selectedSpritesBg;
-    }
+    //    public SpriteSet spritesBg;
+    //    public SpriteSet selectedSpritesBg;
+    //}
 }

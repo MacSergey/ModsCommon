@@ -68,7 +68,7 @@ namespace ModsCommon.UI
         {
             if (!InProgress)
             {
-                Control.buttonsMask = UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle | UIMouseButton.Special0 | UIMouseButton.Special1 | UIMouseButton.Special2 | UIMouseButton.Special3;
+                Control.ButtonsMask = UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle | UIMouseButton.Special0 | UIMouseButton.Special1 | UIMouseButton.Special2 | UIMouseButton.Special3;
                 Control.text = CommonLocalize.Settings_PressAnyKey;
 
                 p.Use();
@@ -88,7 +88,7 @@ namespace ModsCommon.UI
                     Shortcut.InputKey.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utility.CtrlIsPressed, Utility.ShiftIsPressed, Utility.AltIsPressed);
 
                 Control.text = Shortcut.InputKey.GetLocale();
-                Control.buttonsMask = UIMouseButton.Left;
+                Control.ButtonsMask = UIMouseButton.Left;
 
                 BindingChanged?.Invoke(Shortcut);
             }

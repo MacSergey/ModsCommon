@@ -286,7 +286,7 @@ namespace ModsCommon.Settings
             changeLogPanel.Content.AutoLayoutStart = UI.LayoutStart.TopLeft;
             changeLogPanel.CanHover = false;
             var changeLog = changeLogPanel.AddButton(CommonLocalize.Settings_ChangeLog, ShowChangeLog, 250f, 1f);
-            changeLog.SetBgColor(new ColorSet(ComponentStyle.SettingsColor25, ComponentStyle.SettingsColor20, ComponentStyle.SettingsColor20, ComponentStyle.SettingsColor25, ComponentStyle.SettingsColor15));
+            changeLog.BgColors = new ColorSet(ComponentStyle.SettingsColor25, ComponentStyle.SettingsColor20, ComponentStyle.SettingsColor20, ComponentStyle.SettingsColor25, ComponentStyle.SettingsColor15);
             changeLog.Bold = true;
             changeLog.height = 50f;
         }

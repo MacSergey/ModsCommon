@@ -390,8 +390,8 @@ namespace ModsCommon.UI
             Invert = Content.AddUIComponent<CustomUIButton>();
             Invert.SetDefaultStyle();
             Invert.width = 20;
-            Invert.atlasForeground = CommonTextures.Atlas;
-            Invert.normalFgSprite = CommonTextures.PlusMinusButton;
+            Invert.AtlasForeground = CommonTextures.Atlas;
+            Invert.FgSprites = CommonTextures.PlusMinusButton;
             Invert.eventClick += InvertClick;
         }
 

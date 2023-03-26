@@ -139,10 +139,8 @@ namespace ModsCommon.UI
             Caption.size = Header.size;
 
             var cancel = Header.AddUIComponent<CustomUIButton>();
-            cancel.atlas = CommonTextures.Atlas;
-            cancel.normalBgSprite = CommonTextures.CloseButtonNormal;
-            cancel.hoveredBgSprite = CommonTextures.CloseButtonHovered;
-            cancel.pressedBgSprite = CommonTextures.CloseButtonPressed;
+            cancel.Atlas = CommonTextures.Atlas;
+            cancel.BgSprites = new SpriteSet(CommonTextures.CloseButtonNormal, CommonTextures.CloseButtonHovered, CommonTextures.CloseButtonPressed, CommonTextures.CloseButtonNormal, string.Empty);
             cancel.size = new Vector2(24, 24);
             cancel.relativePosition = new Vector2(540, 9);
             cancel.eventClick += CloseClick;
@@ -224,10 +222,10 @@ namespace ModsCommon.UI
 
             for (var i = 0; i < buttons.Length; i += 1)
             {
-                buttons[i].isSelected = (i == defaultButton);
+                buttons[i].IsSelected = (i == defaultButton);
 
-                if (buttons[i].state == UIButton.ButtonState.Focused)
-                    buttons[i].state = UIButton.ButtonState.Normal;
+                if (buttons[i].State == UIButton.ButtonState.Focused)
+                    buttons[i].State = UIButton.ButtonState.Normal;
             }
         }
 

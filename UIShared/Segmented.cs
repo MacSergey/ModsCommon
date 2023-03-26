@@ -85,16 +85,16 @@ namespace ModsCommon.UI
             Objects.Add(item);
 
             var button = AddUIComponent<CustomUIButton>();
-            button.atlas = CommonTextures.Atlas;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+            button.Atlas = CommonTextures.Atlas;
+            button.TextHorizontalAlignment = UIHorizontalAlignment.Center;
             SetColor(button);
 
             if (optionData.atlas != null && !string.IsNullOrEmpty(optionData.sprite))
             {
-                button.atlasForeground = optionData.atlas;
-                button.normalFgSprite = optionData.sprite;
+                button.AtlasForeground = optionData.atlas;
+                button.FgSprites = optionData.sprite;
                 button.tooltip = optionData.label ?? item.ToString();
-                button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+                button.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
             }
             else
                 button.text = optionData.label ?? item.ToString();
@@ -121,7 +121,7 @@ namespace ModsCommon.UI
         }
         private void UpdateButton(CustomUIButton button = null, float? width = null)
         {
-            button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
+            button.TextPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
             button.textScale = TextScale;
 
             if (AutoButtonSize)
@@ -143,16 +143,16 @@ namespace ModsCommon.UI
             if (index == 0)
             {
                 if (Buttons.Count == 1)
-                    button.SetBgSprite(new SpriteSet(CommonTextures.FieldSingle));
+                    button.BgSprites = CommonTextures.FieldSingle;
                 else
-                    button.SetBgSprite(new SpriteSet(CommonTextures.FieldLeft));
+                    button.BgSprites = CommonTextures.FieldLeft;
             }
             else
             {
                 if (index == Buttons.Count - 1)
-                    button.SetBgSprite(new SpriteSet(CommonTextures.FieldRight));
+                    button.BgSprites = CommonTextures.FieldRight;
                 else
-                    button.SetBgSprite(new SpriteSet(CommonTextures.FieldMiddle));
+                    button.BgSprites = CommonTextures.FieldMiddle;
             }
         }
         protected void SetColor(CustomUIButton button)
@@ -227,13 +227,13 @@ namespace ModsCommon.UI
                 return;
 
             if (SelectedIndex != -1)
-                Buttons[SelectedIndex].isSelected = false;
+                Buttons[SelectedIndex].IsSelected = false;
 
             SelectedIndex = index;
 
             if (SelectedIndex != -1)
             {
-                Buttons[SelectedIndex].isSelected = true;
+                Buttons[SelectedIndex].IsSelected = true;
                 if (callEvent)
                     OnSelectObject?.Invoke(SelectedObject);
             }
@@ -304,13 +304,13 @@ namespace ModsCommon.UI
             foreach (var index in SelectedIndices)
             {
                 if (!indices.Contains(index))
-                    Buttons[index].isSelected = false;
+                    Buttons[index].IsSelected = false;
             }
 
             foreach (var index in indices)
             {
                 if (!SelectedIndices.Contains(index))
-                    Buttons[index].isSelected = true;
+                    Buttons[index].IsSelected = true;
             }
 
             SelectedIndices = new HashSet<int>(indices);

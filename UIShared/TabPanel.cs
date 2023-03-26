@@ -221,10 +221,10 @@ namespace ModsCommon.UI
 
             for (var i = 0; i < Tabs.Count; i += 1)
             {
-                if (Tabs[i].state == UIButton.ButtonState.Focused)
-                    Tabs[i].state = UIButton.ButtonState.Normal;
+                if (Tabs[i].State == UIButton.ButtonState.Focused)
+                    Tabs[i].State = UIButton.ButtonState.Normal;
 
-                Tabs[i].isSelected = i == SelectedTab;
+                Tabs[i].IsSelected = i == SelectedTab;
             }
         }
         public void AddTab(string name, float textScale = 0.85f) => AddTabImpl(name, textScale);
@@ -232,9 +232,9 @@ namespace ModsCommon.UI
         {
             var tabButton = AddUIComponent<TabType>();
             tabButton.text = name;
-            tabButton.textPadding = new RectOffset(5, 5, 2, 2);
+            tabButton.TextPadding = new RectOffset(5, 5, 2, 2);
             tabButton.textScale = textScale;
-            tabButton.verticalAlignment = UIVerticalAlignment.Middle;
+            tabButton.VerticalAlignment = UIVerticalAlignment.Middle;
 
             SetStyle(tabButton);
 
@@ -260,7 +260,7 @@ namespace ModsCommon.UI
                 tab.autoSize = true;
                 tab.autoSize = false;
                 tab.MakePixelPerfect(false);
-                tab.textHorizontalAlignment = UIHorizontalAlignment.Center;
+                tab.TextHorizontalAlignment = UIHorizontalAlignment.Center;
             }
 
             var tabRows = FillTabRows(tabs);
@@ -391,7 +391,7 @@ namespace ModsCommon.UI
             if (!component.isEnabled)
             {
                 var button = component as TabType;
-                button.disabledColor = button.state == UIButton.ButtonState.Focused ? button.focusedBgColor : button.normalBgColor;
+                button.DisabledBgColor = button.State == UIButton.ButtonState.Focused ? button.FocusedBgColor : button.NormalBgColor;
             }
         }
         private void TabButtonVisibilityChanged(UIComponent component, bool value) => ArrangeTabs();
@@ -403,10 +403,10 @@ namespace ModsCommon.UI
         }
         protected virtual void SetStyle(TabType tabButton)
         {
-            tabButton.atlas = tabAtlas;
-            tabButton.SetBgSprite(new SpriteSet(TabNormalSprite, TabHoveredSprite, TabPressedSprite, TabFocusedSprite, TabDisabledSprite));
-            tabButton.SetBgColor(new ColorSet(TabColor, TabHoveredColor, TabPressedColor, TabFocusedColor, TabDisabledColor));
-            tabButton.SetSelectedBgColor(new ColorSet(TabFocusedColor, TabFocusedColor, TabFocusedColor, TabFocusedColor, TabFocusedDisabledColor));
+            tabButton.Atlas = tabAtlas;
+            tabButton.AllBgSprites = new SpriteSet(TabNormalSprite, TabHoveredSprite, TabPressedSprite, TabFocusedSprite, TabDisabledSprite);
+            tabButton.BgColors = new ColorSet(TabColor, TabHoveredColor, TabPressedColor, TabFocusedColor, TabDisabledColor);
+            tabButton.SelBgColors = new ColorSet(TabFocusedColor, TabFocusedColor, TabFocusedColor, TabFocusedColor, TabFocusedDisabledColor);
         }
 
 
@@ -414,9 +414,7 @@ namespace ModsCommon.UI
         private bool tabLayout = true;
         private int level;
         public int LayoutSuspend => level;
-        public Vector2 ItemSize => new Vector2(width - Padding.horizontal, height - Padding.vertical);
-        public RectOffset LayoutPadding => Padding;
-        public void StopLayout()
+        public override void StopLayout()
         {
             if (level == 0)
                 tabLayout = false;
@@ -424,7 +422,7 @@ namespace ModsCommon.UI
             level += 1;
         }
 
-        public void StartLayout(bool layoutNow = true, bool force = false)
+        public override void StartLayout(bool layoutNow = true, bool force = false)
         {
             level = force ? 0 : Mathf.Max(level - 1, 0);
 
@@ -433,14 +431,6 @@ namespace ModsCommon.UI
                 tabLayout = true;
                 ArrangeTabs();
             }
-        }
-        public void PauseLayout(Action action)
-        {
-            StopLayout();
-            {
-                action?.Invoke();
-            }
-            StartLayout();
         }
     }
     public class Tab : CustomUIButton

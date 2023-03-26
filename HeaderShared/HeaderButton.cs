@@ -14,8 +14,8 @@ namespace ModsCommon.UI
 
         void SetIcon(UITextureAtlas atlas, string sprite);
         void SetSize(int buttonSize, int iconSize);
-        void SetBgColor(ColorSet colors);
-        void SetFgColor(ColorSet colors);
+        ColorSet BgColors {set;}
+        ColorSet FgColors { set; }
     }
     public class HeaderButton : CustomUIButton, IHeaderButton, IReusable
     {
@@ -23,12 +23,12 @@ namespace ModsCommon.UI
 
         public HeaderButton()
         {
-            atlasBackground = CommonTextures.Atlas;
-            hoveredBgSprite = pressedBgSprite = focusedBgSprite = CommonTextures.HeaderHover;
+            AtlasBackground = CommonTextures.Atlas;
+            BgSprites = new SpriteSet(string.Empty, CommonTextures.HeaderHover, CommonTextures.HeaderHover, CommonTextures.HeaderHover, string.Empty);
             clipChildren = true;
             textScale = 0.8f;
-            textHorizontalAlignment = UIHorizontalAlignment.Left;
-            foregroundSpriteMode = UIForegroundSpriteMode.Fill;
+            TextHorizontalAlignment = UIHorizontalAlignment.Left;
+            ForegroundSpriteMode = UIForegroundSpriteMode.Fill;
         }
 
         public void Init(UITextureAtlas atlas, string sprite, int size, int iconSize)
@@ -40,21 +40,19 @@ namespace ModsCommon.UI
         {
             size = new Vector2(buttonSize, buttonSize);
             minimumSize = size;
-            textPadding = new RectOffset(iconSize + 5, 5, 5, 0);
+            TextPadding = new RectOffset(iconSize + 5, 5, 5, 0);
         }
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            atlasForeground = atlas ?? TextureHelper.InGameAtlas;
-            normalFgSprite = sprite;
-            hoveredFgSprite = sprite;
-            pressedFgSprite = sprite;
+            AtlasForeground = atlas ?? TextureHelper.InGameAtlas;
+            FgSprites = sprite;
         }
 
         public override void Update()
         {
             base.Update();
-            if (state == ButtonState.Focused)
-                state = ButtonState.Normal;
+            if (state == UIButton.ButtonState.Focused)
+                state = UIButton.ButtonState.Normal;
         }
 
         public virtual void DeInit()

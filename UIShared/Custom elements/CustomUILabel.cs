@@ -125,10 +125,10 @@ namespace ModsCommon.UI
         }
 
         private AutoSize _autoSize = AutoSize.All;
-        public override bool autoSize 
-        { 
-            get => AutoSize == AutoSize.All; 
-            set => AutoSize = value ? AutoSize.All : AutoSize.None; 
+        public override bool autoSize
+        {
+            get => AutoSize == AutoSize.All;
+            set => AutoSize = value ? AutoSize.All : AutoSize.None;
         }
         public AutoSize AutoSize
         {
@@ -350,7 +350,7 @@ namespace ModsCommon.UI
             var ratio = PixelsToUnits();
             var offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
             offset.y -= Padding.top * ratio;
-            if (horizontalAlignment != UIHorizontalAlignment.Right)
+            if (HorizontalAlignment != UIHorizontalAlignment.Right)
                 offset.x += Padding.left * ratio;
 
             var renderer = font.ObtainRenderer();
@@ -360,7 +360,7 @@ namespace ModsCommon.UI
             renderer.pixelRatio = ratio;
             renderer.textScale = textScale;
             renderer.vectorOffset = offset;
-            renderer.textAlign = horizontalAlignment;
+            renderer.textAlign = HorizontalAlignment;
             renderer.processMarkup = processMarkup;
             renderer.defaultColor = textColor;
             renderer.bottomColor = null;
@@ -372,7 +372,7 @@ namespace ModsCommon.UI
             renderer.outline = useOutline;
             renderer.outlineSize = outlineSize;
             renderer.outlineColor = outlineColor;
-            if (AutoSize != AutoSize.Height && verticalAlignment != UIVerticalAlignment.Top)
+            if (AutoSize != AutoSize.Height && VerticalAlignment != UIVerticalAlignment.Top)
                 renderer.vectorOffset = GetVertAlignOffset(renderer);
 
             return renderer;
@@ -387,7 +387,7 @@ namespace ModsCommon.UI
             if (measure.y >= height)
                 return vectorOffset;
 
-            switch (verticalAlignment)
+            switch (VerticalAlignment)
             {
                 case UIVerticalAlignment.Middle:
                     vectorOffset.y -= (height - measure.y) * 0.5f;

@@ -59,7 +59,7 @@ namespace ModsCommon.UI
                 set
                 {
                     Container.isVisible = value;
-                    Button.SetFgSprite(new SpriteSet(value ? CommonTextures.VectorDown : CommonTextures.VectorRight));
+                    Button.FgSprites = value ? CommonTextures.VectorDown : CommonTextures.VectorRight;
 
                     Container.PauseLayout(() =>
                     {
@@ -160,18 +160,18 @@ namespace ModsCommon.UI
                         buttonPanel.AutoLayoutStart = LayoutStart.MiddleRight;
 
                         Button = buttonPanel.AddUIComponent<CustomUIButton>();
-                        Button.atlas = CommonTextures.Atlas;
-                        Button.SetBgSprite(new SpriteSet(CommonTextures.Circle));
-                        Button.SetBgColor(new ColorSet(ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor35, ComponentStyle.DarkPrimaryColor40, ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor30));
-                        Button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-                        Button.scaleFactor = 0.6f;
+                        Button.Atlas = CommonTextures.Atlas;
+                        Button.BgSprites = CommonTextures.Circle;
+                        Button.BgColors = new ColorSet(ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor35, ComponentStyle.DarkPrimaryColor40, ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor30);
+                        Button.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+                        Button.ScaleFactor = 0.6f;
                         Button.autoSize = false;
                         Button.height = 40f;
                         Button.width = 40f;
-                        Button.horizontalAlignment = UIHorizontalAlignment.Center;
+                        Button.HorizontalAlignment = UIHorizontalAlignment.Center;
                         Button.textScale = 1.5f;
-                        Button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-                        Button.textVerticalAlignment = UIVerticalAlignment.Middle;
+                        Button.TextHorizontalAlignment = UIHorizontalAlignment.Left;
+                        Button.TextVerticalAlignment = UIVerticalAlignment.Middle;
                     });
 
                     titlePanel.eventSizeChanged += (_, _) => buttonPanel.size = titlePanel.ItemSize - new Vector2(titlePanel.AutoLayoutSpace + versionPanel.width, 0f);

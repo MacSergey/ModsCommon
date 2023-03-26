@@ -47,8 +47,8 @@ namespace ModsCommon.UI
         }
         public bool Selected
         {
-            get => Selector.isSelected;
-            set => Selector.isSelected = value;
+            get => Selector.IsSelected;
+            set => Selector.IsSelected = value;
         }
 
         protected void ValueChanged(Type value) => OnValueChanged?.Invoke(value);
@@ -75,7 +75,7 @@ namespace ModsCommon.UI
             button.text = "×";
             button.tooltip = ResetToolTip;
             button.textScale = 1.3f;
-            button.textPadding = new RectOffset(0, 0, 0, 0);
+            button.TextPadding = new RectOffset(0, 0, 0, 0);
             button.eventClick += ResetClick;
         }
 
@@ -105,29 +105,29 @@ namespace ModsCommon.UI
         {
             text = NotSet;
 
-            atlasBackground = CommonTextures.Atlas;
-            SetBgSprite(new UI.SpriteSet(CommonTextures.FieldSingle));
-            SetBgColor(new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldNormalColor, ComponentStyle.FieldDisabledColor));
-            SetSelectedBgColor(new ColorSet(ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledFocusedColor));
+            AtlasBackground = CommonTextures.Atlas;
+            bgSprites = CommonTextures.FieldSingle;
+            selBgSprites = CommonTextures.FieldSingle;
+            bgColors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldNormalColor, ComponentStyle.FieldDisabledColor);
+            selBgColors = new ColorSet(ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledFocusedColor);
 
-            atlasForeground = CommonTextures.Atlas;
-            SetFgSprite(new UI.SpriteSet(CommonTextures.ArrowDown));
-            SetFgColor(new ColorSet(new Color32(0, 0, 0, 255)));
-            SetSelectedFgColor(new ColorSet(new Color32(0, 0, 0, 255)));
+            AtlasForeground = CommonTextures.Atlas;
+            fgSprites = CommonTextures.ArrowDown;
+            fgColors = Color.black;
 
-            foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            scaleFactor = 0.7f;
-            horizontalAlignment = UIHorizontalAlignment.Right;
-            verticalAlignment = UIVerticalAlignment.Middle;
-            spritePadding = new RectOffset(0, 5, 0, 0);
+            ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            ScaleFactor = 0.7f;
+            HorizontalAlignment = UIHorizontalAlignment.Right;
+            VerticalAlignment = UIVerticalAlignment.Middle;
+            SpritePadding = new RectOffset(0, 5, 0, 0);
 
             enabled = true;
             autoSize = false;
-            textHorizontalAlignment = UIHorizontalAlignment.Left;
-            textVerticalAlignment = UIVerticalAlignment.Middle;
+            TextHorizontalAlignment = UIHorizontalAlignment.Left;
+            TextVerticalAlignment = UIVerticalAlignment.Middle;
             height = 20;
             textScale = 0.6f;
-            textPadding = new RectOffset(8, 0, 4, 0);
+            TextPadding = new RectOffset(8, 0, 4, 0);
         }
 
         protected void ValueChanged()
@@ -140,7 +140,9 @@ namespace ModsCommon.UI
         {
             bgColors = style.BgColors;
             fgColors = style.FgColors;
-            SetTextColor(style.TextColors);
+            textColors = style.TextColors;
+
+            Invalidate();
         }
     }
     public abstract class SelectListPropertyButton<Type> : SelectPropertyButton<Type>

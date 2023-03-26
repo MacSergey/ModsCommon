@@ -38,7 +38,7 @@ namespace ModsCommon.UI
                 Button.SetDefaultStyle();
                 Button.height = DefaultHeight;
                 Button.textScale = 0.8f;
-                Button.textPadding = new RectOffset(0, 0, 3, 0);
+                Button.TextPadding = new RectOffset(0, 0, 3, 0);
                 Button.isEnabled = EnableControl;
                 Button.eventClick += ButtonClick;
             });
@@ -118,7 +118,7 @@ namespace ModsCommon.UI
             button.height = DefaultHeight;
             button.text = text;
             button.textScale = 0.8f;
-            button.textPadding = new RectOffset(0, 0, 3, 0);
+            button.TextPadding = new RectOffset(0, 0, 3, 0);
             button.isEnabled = EnableControl;
             button.eventClick += ButtonClick;
 
@@ -180,13 +180,13 @@ namespace ModsCommon.UI
         }
         public bool WordWrap
         {
-            get => Button.wordWrap;
-            set => Button.wordWrap = value;
+            get => Button.WordWrap;
+            set => Button.WordWrap = value;
         }
         public UIHorizontalAlignment TextAlignment
         {
-            get => Button.textHorizontalAlignment;
-            set => Button.textHorizontalAlignment = value;
+            get => Button.TextHorizontalAlignment;
+            set => Button.TextHorizontalAlignment = value;
         }
         public bool AutoSize
         {
@@ -207,8 +207,8 @@ namespace ModsCommon.UI
             Button = Content.AddUIComponent<CustomUIButton>();
             Button.SetDefaultStyle();
             Button.textScale = 0.8f;
-            Button.textPadding = new RectOffset(0, 0, 3, 0);
-            Button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+            Button.TextPadding = new RectOffset(0, 0, 3, 0);
+            Button.TextHorizontalAlignment = UIHorizontalAlignment.Center;
             Button.isEnabled = EnableControl;
             Button.eventClick += ButtonClick;
         }

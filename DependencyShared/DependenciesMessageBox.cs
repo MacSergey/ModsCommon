@@ -144,19 +144,19 @@ namespace ModsCommon.Utilities
                 Progress.padding = new RectOffset(3, 3, 3, 3);
 
                 Resolved = AddUIComponent<CustomUIButton>();
-                Resolved.atlas = CommonTextures.Atlas;
-                Resolved.SetBgSprite(new SpriteSet(CommonTextures.PanelBig));
-                Resolved.SetBgColor(new ColorSet(ComponentStyle.WellColor));
-                Resolved.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-                Resolved.SetFgSprite(new SpriteSet(CommonTextures.Success));
-                Resolved.SetFgColor(new ColorSet(ComponentStyle.DarkPrimaryColor100));
+                Resolved.Atlas = CommonTextures.Atlas;
+                Resolved.BgSprites = CommonTextures.PanelBig;
+                Resolved.BgColors = ComponentStyle.WellColor;
+                Resolved.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+                Resolved.FgSprites = CommonTextures.Success;
+                Resolved.FgColors = ComponentStyle.DarkPrimaryColor100;
                 Resolved.autoSize = false;
                 Resolved.size = new Vector2(150f, 30f);
-                Resolved.horizontalAlignment = UIHorizontalAlignment.Left;
-                Resolved.textHorizontalAlignment = UIHorizontalAlignment.Center;
-                Resolved.textVerticalAlignment = UIVerticalAlignment.Middle;
-                Resolved.textPadding = new RectOffset(20, 0, 3, 0);
-                Resolved.spritePadding = new RectOffset(2, 0, 0, 0);
+                Resolved.HorizontalAlignment = UIHorizontalAlignment.Left;
+                Resolved.TextHorizontalAlignment = UIHorizontalAlignment.Center;
+                Resolved.TextVerticalAlignment = UIVerticalAlignment.Middle;
+                Resolved.TextPadding = new RectOffset(20, 0, 3, 0);
+                Resolved.SpritePadding = new RectOffset(2, 0, 0, 0);
 
                 StateChanged();
             });

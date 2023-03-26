@@ -27,6 +27,7 @@ namespace ModsCommon.UI
 
                 Content.AutoLayout = AutoLayout.Horizontal;
                 Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                Content.AutoLayoutStart = LayoutStart.MiddleLeft;
                 Content.eventSizeChanged += RefreshContent;
             });
 

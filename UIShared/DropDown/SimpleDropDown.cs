@@ -101,8 +101,8 @@ namespace ModsCommon.UI
     {
         public SimpleEntity()
         {
-            textHorizontalAlignment = UIHorizontalAlignment.Left;
-            textPadding = new RectOffset(8, 40, 3, 0);
+            TextHorizontalAlignment = UIHorizontalAlignment.Left;
+            TextPadding = new RectOffset(8, 40, 3, 0);
         }
 
         public override void SetObject(int index, DropDownItem<ValueType> value, bool selected)
@@ -122,8 +122,8 @@ namespace ModsCommon.UI
 
             if (Style != null)
             {
-                entity.hoveredBgColor = Style.EntityHoveredColor;
-                entity.focusedBgColor = Style.EntitySelectedColor;
+                entity.HoveredBgColor = Style.EntityHoveredColor;
+                entity.FocusedBgColor = Style.EntitySelectedColor;
             }
         }
         public override void DeInit()

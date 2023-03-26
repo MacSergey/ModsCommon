@@ -112,13 +112,13 @@ namespace ModsCommon.UI
         }
         private void SetButtonColors(IHeaderButton button)
         {
-            button.SetBgColor(new ColorSet(Color.white, ButtonHoveredColor, ButtonPressedColor, ButtonPressedColor, Color.white));
-            button.SetFgColor(new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor));
+            button.BgColors = new ColorSet(Color.white, ButtonHoveredColor, ButtonPressedColor, ButtonPressedColor, Color.white);
+            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor);
         }
         private void SetAdditionalButtonColors(IHeaderButton button)
         {
-            button.SetBgColor(new ColorSet(Color.white, AdditionalButtonHoveredColor, AdditionalButtonPressedColor, AdditionalButtonPressedColor, Color.white));
-            button.SetFgColor(new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor));
+            button.BgColors = new ColorSet(Color.white, AdditionalButtonHoveredColor, AdditionalButtonPressedColor, AdditionalButtonPressedColor, Color.white);
+            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor);
         }
     }
     public class HeaderContent : BaseHeaderContent
