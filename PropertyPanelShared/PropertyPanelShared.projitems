@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FieldProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GroupPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ListProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NewColorProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SliderProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LabelProperty.cs" />

@@ -858,7 +858,7 @@ namespace ModsCommon.UI
                 RenderForeground();
             }
         }
-        private void RenderBackground()
+        protected virtual void RenderBackground()
         {
             if (AtlasBackground[BackgroundSprite] is UITextureAtlas.SpriteInfo backgroundSprite)
             {
@@ -880,7 +880,7 @@ namespace ModsCommon.UI
                     Render.RenderSprite(BgRenderData, renderOptions);
             }
         }
-        private void RenderForeground()
+        protected virtual void RenderForeground()
         {
             if (AtlasForeground[ForegroundSprite] is UITextureAtlas.SpriteInfo foregroundSprite)
             {

@@ -28,7 +28,7 @@ namespace ModsCommon.UI
 
         private UIColorField ColorSample { get; set; }
         protected UIColorPicker Popup { get; private set; }
-        private UISlider Opacity { get; set; }
+        private CustomUISlider Opacity { get; set; }
         public bool WheelTip
         {
             set
@@ -77,7 +77,7 @@ namespace ModsCommon.UI
 
         private void PropertyChangedRGB(byte value)
         {
-            if(Utility.AltIsPressed)
+            if (Utility.AltIsPressed)
             {
                 RProperty.Value = value;
                 GProperty.Value = value;
@@ -101,7 +101,7 @@ namespace ModsCommon.UI
                 ValueChanged(color, action: OnChangedColor);
             }
         }
-        private void OpacityChanged(UIComponent component, float value)
+        private void OpacityChanged(float value)
         {
             if (!InProcess)
             {
@@ -217,9 +217,10 @@ namespace ModsCommon.UI
         {
             if (Opacity != null)
             {
-                Opacity.value = color.a;
+                Opacity.Value = color.a;
                 color.a = byte.MaxValue;
-                Opacity.Find<UISlicedSprite>("color").color = color;
+                Opacity.FgColor = color;
+                //Opacity.Find<UISlicedSprite>("color").color = color;
             }
         }
 
@@ -255,7 +256,7 @@ namespace ModsCommon.UI
 
         private void FieldGotFocus(UIComponent component, UIFocusEventParameter eventParam)
         {
-            if(Popup != null)
+            if (Popup != null)
                 Popup.component.isInteractive = false;
         }
         private void FieldLostFocus(UIComponent component, UIFocusEventParameter eventParam)
@@ -328,43 +329,64 @@ namespace ModsCommon.UI
             APicker = null;
             HEXPicker = null;
         }
-        private UISlider AddOpacitySlider(UIComponent parent)
+        private CustomUISlider AddOpacitySlider(UIComponent parent)
         {
-            var opacitySlider = parent.AddUIComponent<UISlider>();
+            //var opacitySlider = parent.AddUIComponent<UISlider>();
 
-            opacitySlider.atlas = TextureHelper.InGameAtlas;
+            //opacitySlider.atlas = TextureHelper.InGameAtlas;
+            //opacitySlider.size = new Vector2(18, 200);
+            //opacitySlider.relativePosition = new Vector3(254, 12);
+            //opacitySlider.orientation = UIOrientation.Vertical;
+            //opacitySlider.minValue = 0f;
+            //opacitySlider.maxValue = 255f;
+            //opacitySlider.stepSize = 1f;
+            //opacitySlider.eventValueChanged += OpacityChanged;
+
+            //var opacityBoard = opacitySlider.AddUIComponent<UISlicedSprite>();
+            //opacityBoard.atlas = CommonTextures.Atlas;
+            //opacityBoard.spriteName = CommonTextures.OpacitySliderBoard;
+            //opacityBoard.relativePosition = Vector2.zero;
+            //opacityBoard.size = opacitySlider.size;
+            //opacityBoard.fillDirection = UIFillDirection.Vertical;
+
+            //var opacityColor = opacitySlider.AddUIComponent<UISlicedSprite>();
+            //opacityColor.name = "color";
+            //opacityColor.atlas = CommonTextures.Atlas;
+            //opacityColor.spriteName = CommonTextures.OpacitySliderColor;
+            //opacityColor.relativePosition = Vector2.zero;
+            //opacityColor.size = opacitySlider.size;
+            //opacityColor.fillDirection = UIFillDirection.Vertical;
+
+            //var thumbSprite = opacitySlider.AddUIComponent<UISlicedSprite>();
+            //thumbSprite.relativePosition = Vector2.zero;
+            //thumbSprite.fillDirection = UIFillDirection.Horizontal;
+            //thumbSprite.size = new Vector2(29, 7);
+            //thumbSprite.atlas = CommonTextures.Atlas;
+            //thumbSprite.spriteName = CommonTextures.PanelSmall;
+            //thumbSprite.color = ComponentStyle.FieldNormalColor;
+
+            //opacitySlider.thumbObject = thumbSprite;
+
+            var opacitySlider = parent.AddUIComponent<CustomUISlider>();
             opacitySlider.size = new Vector2(18, 200);
             opacitySlider.relativePosition = new Vector3(254, 12);
-            opacitySlider.orientation = UIOrientation.Vertical;
-            opacitySlider.minValue = 0f;
-            opacitySlider.maxValue = 255f;
-            opacitySlider.stepSize = 1f;
-            opacitySlider.eventValueChanged += OpacityChanged;
+            opacitySlider.Orientation = UIOrientation.Vertical;
+            opacitySlider.MinValue = 0f;
+            opacitySlider.MaxValue = 255f;
+            opacitySlider.StepSize = 1f;
+            opacitySlider.OnSliderValueChanged += OpacityChanged;
 
-            var opacityBoard = opacitySlider.AddUIComponent<UISlicedSprite>();
-            opacityBoard.atlas = CommonTextures.Atlas;
-            opacityBoard.spriteName = CommonTextures.OpacitySliderBoard;
-            opacityBoard.relativePosition = Vector2.zero;
-            opacityBoard.size = opacitySlider.size;
-            opacityBoard.fillDirection = UIFillDirection.Vertical;
+            opacitySlider.BgAtlas = CommonTextures.Atlas;
+            opacitySlider.BgSprite = CommonTextures.OpacitySliderBoard;
+            opacitySlider.BgColor = Color.white;
 
-            var opacityColor = opacitySlider.AddUIComponent<UISlicedSprite>();
-            opacityColor.name = "color";
-            opacityColor.atlas = CommonTextures.Atlas;
-            opacityColor.spriteName = CommonTextures.OpacitySliderColor;
-            opacityColor.relativePosition = Vector2.zero;
-            opacityColor.size = opacitySlider.size;
-            opacityColor.fillDirection = UIFillDirection.Vertical;
+            opacitySlider.FgAtlas = CommonTextures.Atlas;
+            opacitySlider.FgSprite = CommonTextures.OpacitySliderColor;
 
-            var thumbSprite = opacitySlider.AddUIComponent<UISlicedSprite>();
-            thumbSprite.relativePosition = Vector2.zero;
-            thumbSprite.fillDirection = UIFillDirection.Horizontal;
-            thumbSprite.size = new Vector2(29, 7);
-            thumbSprite.atlas = CommonTextures.Atlas;
-            thumbSprite.spriteName = CommonTextures.PanelSmall;
-            thumbSprite.color = ComponentStyle.FieldNormalColor;
-
-            opacitySlider.thumbObject = thumbSprite;
+            opacitySlider.ThumbAtlas = CommonTextures.Atlas;
+            opacitySlider.ThumbSprites = CommonTextures.PanelSmall;
+            opacitySlider.ThumbColors = ComponentStyle.FieldNormalColor;
+            opacitySlider.ThumbSize = new Vector2(30f, 8f);
 
             return opacitySlider;
         }
@@ -403,9 +425,9 @@ namespace ModsCommon.UI
             byte g = 0;
             byte b = 0;
 
-            if(value.Length > 0)
+            if (value.Length > 0)
             {
-                if(value.StartsWith("#"))
+                if (value.StartsWith("#"))
                     value = value.Substring(1);
 
                 if (value.Length < 2 || !byte.TryParse(value.Substring(0, 2), NumberStyles.HexNumber, null, out r))

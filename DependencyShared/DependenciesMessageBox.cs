@@ -115,9 +115,9 @@ namespace ModsCommon.Utilities
                 Padding = new RectOffset(10, 10, 10, 10);
 
                 Atlas = CommonTextures.Atlas;
-                BackgroundSprite = CommonTextures.PanelBig;
+                BackgroundSprite = CommonTextures.PanelLarge;
                 BgColors = ComponentStyle.DarkPrimaryColor20;
-                ForegroundSprite = CommonTextures.BorderBig;
+                ForegroundSprite = CommonTextures.BorderLarge;
                 FgColors = ComponentStyle.DarkPrimaryColor10;
 
                 Label = AddUIComponent<CustomUILabel>();

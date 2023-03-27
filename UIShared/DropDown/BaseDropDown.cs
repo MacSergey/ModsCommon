@@ -48,12 +48,12 @@ namespace ModsCommon.UI
             {
                 layoutPanel.PauseLayout(() =>
                 {
-                    Popup = root.AddUIComponent<PopupType>();
+                    Popup = ComponentPool.Get<PopupType>(root, "Popup");
                     layoutPanel.Ignore(Popup, true);
                 });
             }
             else
-                Popup = root.AddUIComponent<PopupType>();
+                Popup = ComponentPool.Get<PopupType>(root, "Popup");
 
             SetPopupProperties();
             AddPopupEventHandlers();
