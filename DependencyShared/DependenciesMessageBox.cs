@@ -71,9 +71,7 @@ namespace ModsCommon.Utilities
         }
         public void RemoveRequest(PluginRequest message)
         {
-            RequestPanel.RemoveUIComponent(message);
-            Destroy(message.gameObject);
-            Destroy(message);
+            ComponentPool.Free(message);
         }
     }
     public class PluginRequest : CustomUIPanel

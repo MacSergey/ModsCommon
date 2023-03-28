@@ -25,6 +25,7 @@ namespace ModsCommon.UI
     }
     public class CustomUISegmentedButton : CustomUIButton
     {
+        public SegmentedButtonType Type { get; set; }
         public ButtonStyle SegmentedStyle
         {
             set
@@ -41,6 +42,13 @@ namespace ModsCommon.UI
                 OnColorChanged();
             }
         }
+    }
+    public enum SegmentedButtonType
+    {
+        Single,
+        Left,
+        Middle,
+        Right,
     }
     public abstract class UISegmented<ValueType> : CustomUIPanel, IReusable
     {
@@ -104,14 +112,14 @@ namespace ModsCommon.UI
             Objects.Add(item);
 
             var button = AddUIComponent<CustomUISegmentedButton>();
+            button.name = optionData.label ?? item.ToString();
             button.Atlas = CommonTextures.Atlas;
             button.TextHorizontalAlignment = UIHorizontalAlignment.Center;
-            SetColor(button);
 
             if (optionData.atlas != null && !string.IsNullOrEmpty(optionData.sprite))
             {
                 button.FgAtlas = optionData.atlas;
-                button.FgSprites = optionData.sprite;
+                button.AllFgSprites = optionData.sprite;
                 button.tooltip = optionData.label ?? item.ToString();
                 button.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
             }
@@ -125,10 +133,14 @@ namespace ModsCommon.UI
                 button.isEnabled = false;
 
             Buttons.Add(button);
-            SetSprite(button);
+            SetType(button);
+            SetStyle(button);
 
             if (Buttons.Count >= 2)
-                SetSprite(Buttons[Buttons.Count - 2]);
+            {
+                SetType(Buttons[Buttons.Count - 2]);
+                SetStyle(Buttons[Buttons.Count - 2]);
+            }
         }
         private void SetButtonsWidth()
         {
@@ -142,38 +154,82 @@ namespace ModsCommon.UI
         {
             button.TextPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
             button.textScale = TextScale;
-            button.height = 20;
 
             if (AutoButtonSize)
+            {
+                button.height = 20f;
                 button.PerformAutoWidth();
+            }
             else if (width.HasValue)
-                button.width = width.Value;
+                button.size = new Vector2(width.Value, 20f);
             else
-                button.width = ButtonWidth;
+                button.size = new Vector2(ButtonWidth, 20f);
         }
-        protected void SetSprite(CustomUISegmentedButton button)
+        private void SetType(CustomUISegmentedButton button)
         {
             var index = Buttons.IndexOf(button);
 
             if (index == 0)
             {
                 if (Buttons.Count == 1)
-                    button.AllBgSprites = CommonTextures.FieldSingle;
+                    button.Type = SegmentedButtonType.Single;
                 else
-                    button.AllBgSprites = CommonTextures.FieldLeft;
+                    button.Type = SegmentedButtonType.Left;
             }
             else
             {
                 if (index == Buttons.Count - 1)
-                    button.AllBgSprites = CommonTextures.FieldRight;
+                    button.Type = SegmentedButtonType.Right;
                 else
-                    button.AllBgSprites = CommonTextures.FieldMiddle;
+                    button.Type = SegmentedButtonType.Middle;
             }
         }
-        protected void SetColor(CustomUISegmentedButton button)
+        protected void SetStyle(CustomUISegmentedButton button)
         {
-            if (Style != null)
-                button.ButtonStyle = Style;
+            if (Style == null)
+            {
+                switch (button.Type)
+                {
+                    case SegmentedButtonType.Single:
+                        button.AllBgSprites = CommonTextures.FieldSingle;
+                        break;
+                    case SegmentedButtonType.Left:
+                        button.AllBgSprites = CommonTextures.FieldLeft;
+                        break;
+                    case SegmentedButtonType.Middle:
+                        button.AllBgSprites = CommonTextures.FieldMiddle;
+                        break;
+                    case SegmentedButtonType.Right:
+                        button.AllBgSprites = CommonTextures.FieldRight;
+                        break;
+                }
+            }
+            else
+            {
+                var fgAtlas = button.FgAtlas;
+                var fgSprites = button.FgSprites;
+                var selFgSprites = button.SelFgSprites;
+
+                switch (button.Type)
+                {
+                    case SegmentedButtonType.Single:
+                        button.ButtonStyle = Style.Single;
+                        break;
+                    case SegmentedButtonType.Left:
+                        button.ButtonStyle = Style.Left;
+                        break;
+                    case SegmentedButtonType.Middle:
+                        button.ButtonStyle = Style.Middle;
+                        break;
+                    case SegmentedButtonType.Right:
+                        button.ButtonStyle = Style.Right;
+                        break;
+                }
+
+                button.FgAtlas = fgAtlas;
+                button.FgSprites = fgSprites;
+                button.SelFgSprites = selFgSprites;
+            }
         }
 
         protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null);
@@ -190,21 +246,24 @@ namespace ModsCommon.UI
         {
             Objects.Clear();
 
-            foreach (var button in Buttons)
-                ComponentPool.Free(button);
+            PauseLayout(() =>
+            {
+                foreach (var button in Buttons)
+                    ComponentPool.Free(button);
+            });
 
             Buttons.Clear();
         }
 
         public void SetDefaultStyle(Vector2? size = null) { }
 
-        private ButtonStyle Style { get; set; } = ComponentStyle.Default.Button;
-        public void SetStyle(ButtonStyle style)
+        private SegmentedStyle Style { get; set; } = ComponentStyle.Default.Segmented;
+        public void SetStyle(SegmentedStyle style)
         {
             Style = style;
 
             foreach (var button in Buttons)
-                SetColor(button);
+                SetStyle(button);
         }
     }
 

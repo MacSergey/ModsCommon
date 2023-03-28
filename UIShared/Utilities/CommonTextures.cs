@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,29 +27,20 @@ namespace ModsCommon.Utilities
         public static string FieldLeft => nameof(FieldLeft);
         public static string FieldRight => nameof(FieldRight);
         public static string FieldMiddle => nameof(FieldMiddle);
+        public static string FieldBorderLeft => nameof(FieldBorderLeft);
+        public static string FieldBorderRight => nameof(FieldBorderRight);
+        public static string FieldBorderMiddle => nameof(FieldBorderMiddle);
 
+        [Obsolete]
         public static string FieldNormal => nameof(FieldNormal);
+        [Obsolete]
         public static string FieldHovered => nameof(FieldHovered);
+        [Obsolete]
         public static string FieldFocused => nameof(FieldFocused);
-        //public static string FieldDisabled => nameof(FieldDisabled);
-
-        //public static string FieldNormalLeft => nameof(FieldNormalLeft);
-        //public static string FieldHoveredLeft => nameof(FieldHoveredLeft);
-        //public static string FieldFocusedLeft => nameof(FieldFocusedLeft);
-        //public static string FieldDisabledLeft => nameof(FieldDisabledLeft);
-
-        //public static string FieldNormalRight => nameof(FieldNormalRight);
-        //public static string FieldHoveredRight => nameof(FieldHoveredRight);
-        //public static string FieldFocusedRight => nameof(FieldFocusedRight);
-        //public static string FieldDisabledRight => nameof(FieldDisabledRight);
-
-        //public static string FieldNormalMiddle => nameof(FieldNormalMiddle);
-        //public static string FieldHoveredMiddle => nameof(FieldHoveredMiddle);
-        //public static string FieldFocusedMiddle => nameof(FieldFocusedMiddle);
-        //public static string FieldDisabledMiddle => nameof(FieldDisabledMiddle);
 
         public static string ToggleBackground { get; } = nameof(ToggleBackground);
         public static string ToggleBackgroundSmall { get; } = nameof(ToggleBackgroundSmall);
+        public static string ToggleBorderSmall { get; } = nameof(ToggleBorderSmall);
         public static string ToggleCircle { get; } = nameof(ToggleCircle);
         public static string Tab { get; } = nameof(Tab);
 
@@ -137,29 +129,18 @@ namespace ModsCommon.Utilities
             spriteParams[FieldRight] = new RectOffset(4, 4, 4, 4);
             spriteParams[FieldMiddle] = new RectOffset(4, 4, 4, 4);
 
+            spriteParams[FieldBorderLeft] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldBorderRight] = new RectOffset(4, 4, 4, 4);
+            spriteParams[FieldBorderMiddle] = new RectOffset(4, 4, 4, 4);
+
             spriteParams[FieldNormal] = new RectOffset(4, 4, 4, 4);
             spriteParams[FieldHovered] = new RectOffset(4, 4, 4, 4);
             spriteParams[FieldFocused] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldDisabled] = new RectOffset(4, 4, 4, 4);
-
-            //spriteParams[FieldNormalLeft] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldHoveredLeft] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldFocusedLeft] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldDisabledLeft] = new RectOffset(4, 4, 4, 4);
-
-            //spriteParams[FieldNormalRight] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldHoveredRight] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldFocusedRight] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldDisabledRight] = new RectOffset(4, 4, 4, 4);
-
-            //spriteParams[FieldNormalMiddle] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldHoveredMiddle] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldFocusedMiddle] = new RectOffset(4, 4, 4, 4);
-            //spriteParams[FieldDisabledMiddle] = new RectOffset(4, 4, 4, 4);
 
             //Toggle
             spriteParams[ToggleBackground] = new RectOffset(17, 17, 0, 0);
             spriteParams[ToggleBackgroundSmall] = new RectOffset(11, 11, 0, 0);
+            spriteParams[ToggleBorderSmall] = new RectOffset(11, 11, 0, 0);
             spriteParams[ToggleCircle] = new RectOffset();
 
             //Radio

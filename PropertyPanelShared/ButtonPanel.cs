@@ -100,8 +100,7 @@ namespace ModsCommon.UI
         {
             foreach (var button in Buttons)
             {
-                button.parent.RemoveUIComponent(button);
-                Destroy(button);
+                ComponentPool.Free(button);
             }
 
             OnButtonClick = null;

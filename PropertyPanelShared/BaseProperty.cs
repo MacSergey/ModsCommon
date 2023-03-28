@@ -216,27 +216,33 @@ namespace ModsCommon.UI
                     Content.AutoLayoutSpace = 5;
                     Content.AutoLayoutStart = LayoutStart.MiddleLeft;
                     Content.Padding = new RectOffset(0, 0, 7, 7);
-                    Content.eventSizeChanged += ContentSizeChanged;
+                    Content.eventSizeChanged += (_,_) => SetLabel();
 
                     FillContent();
                 });
             });
         }
+
         protected abstract void FillContent();
+
+        public override void Init() { }
+        protected override void Init(float? height) { }
 
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
             SetLabel();
         }
-        private void ContentSizeChanged(UIComponent component, Vector2 value) => SetLabel();
 
         private void SetLabel()
         {
             PauseLayout(() =>
             {
+                var oldWidth = LabelItem.width;
                 LabelItem.size = new Vector2(width - Content.width - Padding.horizontal, Content.height);
                 LabelItem.MakePixelPerfect(false);
+
+                Content.relativePosition += new Vector3(LabelItem.width - oldWidth, 0f, 0f);
             }, false);
         }
     }

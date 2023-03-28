@@ -136,6 +136,7 @@ namespace ModsCommon.UI
 
             Button.text = showText ? GetText() : string.Empty;
             Button.tooltip = showText ? string.Empty : GetText();
+            Button.HorizontalAlignment = showText ? UIHorizontalAlignment.Left : UIHorizontalAlignment.Center;
             Button.SetSize(size, iconSize);
         }
         public void RemoveButton()

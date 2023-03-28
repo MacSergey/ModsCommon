@@ -105,7 +105,7 @@ namespace ModsCommon.UI
         }
 
         private DropDownStyle style;
-        public DropDownStyle DropDownStyle
+        public virtual DropDownStyle DropDownStyle
         {
             get => style;
             set

@@ -357,6 +357,8 @@ namespace ModsCommon.UI
 
                 var color = HSBAValue;
                 ColorChanged(color, action: OnChangedIndicator);
+
+                HSBField.Focus();
             }
         }
         private void HueChanged(float value)

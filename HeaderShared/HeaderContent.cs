@@ -90,7 +90,7 @@ namespace ModsCommon.UI
         }
         private void PopupClicked(UIComponent component, UIMouseEventParameter eventParam) => Additional.ClosePopup();
 
-        public virtual void Refresh() => PlaceButtons();
+        public virtual void Refresh() => PauseLayout(PlaceButtons);
 
         private void PlaceButtons()
         {

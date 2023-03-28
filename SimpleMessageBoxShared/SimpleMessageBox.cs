@@ -43,12 +43,12 @@ namespace ModsCommon.UI
 
         public SimpleMessageBox()
         {
-            Content.PauseLayout(() =>
+            PauseLayout(() =>
             {
                 Content.AutoLayoutSpace = 15;
 
                 Message = Content.AddUIComponent<CustomUILabel>();
-
+                Message.name = nameof(Message);
                 Message.Bold = true;
                 Message.HorizontalAlignment = UIHorizontalAlignment.Center;
                 Message.VerticalAlignment = UIVerticalAlignment.Middle;

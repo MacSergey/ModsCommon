@@ -391,7 +391,7 @@ namespace ModsCommon.UI
             Invert.SetDefaultStyle();
             Invert.width = 20;
             Invert.FgAtlas = CommonTextures.Atlas;
-            Invert.FgSprites = CommonTextures.PlusMinusButton;
+            Invert.AllFgSprites = CommonTextures.PlusMinusButton;
             Invert.eventClick += InvertClick;
         }
 
@@ -416,6 +416,15 @@ namespace ModsCommon.UI
         {
             if (Invert != null)
                 Invert.height = Content.height - ItemsPadding * 2;
+        }
+
+        public override void SetStyle(ControlStyle style)
+        {
+            base.SetStyle(style);
+
+            Invert.ButtonStyle = style.Button;
+            Invert.FgAtlas = CommonTextures.Atlas;
+            Invert.AllFgSprites = CommonTextures.PlusMinusButton;
         }
     }
     public class FloatInvertedPropertyPanel : InvertedFieldPropertyPanel<float, FloatUITextField>

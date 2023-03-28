@@ -61,22 +61,20 @@ namespace ModsCommon.UI
         where PanelType : SelectListPropertyButton<Type>
     {
         public event Action<PanelType> OnReset;
+
+        protected CustomUIButton ResetButton { get; }
         protected abstract string ResetToolTip { get; }
 
         public ResetableSelectPropertyPanel()
         {
-            AddReset();
-        }
-        private void AddReset()
-        {
-            var button = Content.AddUIComponent<CustomUIButton>();
-            button.SetDefaultStyle();
-            button.size = new Vector2(20f, 20f);
-            button.text = "×";
-            button.tooltip = ResetToolTip;
-            button.textScale = 1.3f;
-            button.TextPadding = new RectOffset(0, 0, 0, 0);
-            button.eventClick += ResetClick;
+            ResetButton = Content.AddUIComponent<CustomUIButton>();
+            ResetButton.SetDefaultStyle();
+            ResetButton.size = new Vector2(20f, 20f);
+            ResetButton.text = "×";
+            ResetButton.tooltip = ResetToolTip;
+            ResetButton.textScale = 1.3f;
+            ResetButton.TextPadding = new RectOffset(0, 0, 0, 0);
+            ResetButton.eventClick += ResetClick;
         }
 
         public override void DeInit()

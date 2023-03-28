@@ -330,6 +330,9 @@ namespace ModsCommon.UI
         {
             foreach (var field in Fields)
                 field.TextFieldStyle = style.TextField;
+
+            foreach (var label in Labels)
+                label.LabelStyle = style.Label;
         }
     }
 

@@ -1464,7 +1464,7 @@ namespace ModsCommon.UI
             get
             {
                 if (!isEnabled)
-                    return DisabledTextColor;
+                    return IsSelected ? SelDisabledTextColor : DisabledTextColor;
                 else
                 {
                     return State switch

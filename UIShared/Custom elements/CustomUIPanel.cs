@@ -483,7 +483,7 @@ namespace ModsCommon.UI
             Reset();
         }
 
-        public void Reset()
+        public virtual void Reset()
         {
             if (!IsLayoutSuspended)
             {

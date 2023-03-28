@@ -417,23 +417,65 @@ namespace ModsCommon.UI
                 FgAtlas = Atlas,
 
                 BgSprites = FieldSingle,
-                BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, default, FieldFocusedColor, FieldDisabledColor),
+                BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
 
                 TextColors = DarkPrimaryColor100,
 
                 SelectionSprite = Empty,
                 SelectionColor = DarkPrimaryColor0,
             },
-            Segmented = new ButtonStyle()
+            Segmented = new SegmentedStyle()
             {
-                BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
-                SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
+                Single = new ButtonStyle()
+                {
+                    BgAtlas = Atlas,
+                    FgAtlas = Atlas,
 
-                FgColors = new ColorSet(DarkPrimaryColor100),
-                SelFgColors = new ColorSet(DarkPrimaryColor100),
+                    AllBgSprites = FieldSingle,
+                    BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
+                    SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
 
-                TextColors = new ColorSet(DarkPrimaryColor100),
-                SelTextColors = new ColorSet(DarkPrimaryColor100),
+                    FgColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, Color.black),
+                    SelFgColors = new ColorSet(Color.white),
+
+                    AllTextColors = new ColorSet(DarkPrimaryColor100),
+                },
+                Left = new ButtonStyle()
+                {
+                    BgAtlas = Atlas,
+                    FgAtlas = Atlas,
+
+                    AllBgSprites = FieldLeft,
+                    BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
+                    SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
+
+                    AllFgColors = new ColorSet(DarkPrimaryColor100),
+                    AllTextColors = new ColorSet(DarkPrimaryColor100),
+                },
+                Middle = new ButtonStyle()
+                {
+                    BgAtlas = Atlas,
+                    FgAtlas = Atlas,
+
+                    AllBgSprites = FieldMiddle,
+                    BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
+                    SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
+
+                    AllFgColors = new ColorSet(DarkPrimaryColor100),
+                    AllTextColors = new ColorSet(DarkPrimaryColor100),
+                },
+                Right = new ButtonStyle()
+                {
+                    BgAtlas = Atlas,
+                    FgAtlas = Atlas,
+
+                    AllBgSprites = FieldRight,
+                    BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
+                    SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
+
+                    AllFgColors = new ColorSet(DarkPrimaryColor100),
+                    AllTextColors = new ColorSet(DarkPrimaryColor100),
+                }
             },
             Button = new ButtonStyle()
             {
@@ -488,6 +530,22 @@ namespace ModsCommon.UI
                 OnMarkColors = Color.white,
                 OffMarkColors = Color.white,
             },
+            ColorPicker = new ColorPickerStyle()
+            {
+                BgAtlas = Atlas,
+                FgAtlas = Atlas,
+
+                BgSprites = PanelSmall,
+                BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldNormalColor, FieldDisabledColor),
+
+                FgSprites = PanelSmall,
+            },
+            Label = new LabelStyle()
+            { 
+                NormalTextColor = Color.white,
+                DisabledTextColor = Color.white,
+            },
+
         };
 
         public static ControlStyle MessageBox { get; } = new ControlStyle()
@@ -587,13 +645,18 @@ namespace ModsCommon.UI
     public class ControlStyle
     {
         public TextFieldStyle TextField { get; set; }
-        public ButtonStyle Segmented { get; set; }
+        public SegmentedStyle Segmented { get; set; }
         public ButtonStyle Button { get; set; }
         public DropDownStyle DropDown { get; set; }
         public ToggleStyle Toggle { get; set; }
         public ColorPickerStyle ColorPicker { get; set; }
+        public LabelStyle Label { get; set; }
     }
     public class ItemStyle
+    {
+
+    }
+    public class InteractiveStyle : ItemStyle
     {
         public UITextureAtlas BgAtlas { get; set; }
         public UITextureAtlas FgAtlas { get; set; }
@@ -653,14 +716,21 @@ namespace ModsCommon.UI
             }
         }
     }
-    public class TextFieldStyle : ItemStyle
+    public class TextFieldStyle : InteractiveStyle
     {
         public string SelectionSprite { get; set; }
         public Color32 SelectionColor { get; set; }
     }
-    public class ButtonStyle : ItemStyle
+    public class ButtonStyle : InteractiveStyle
     {
 
+    }
+    public class SegmentedStyle : InteractiveStyle
+    {
+        public ButtonStyle Single { get; set; }
+        public ButtonStyle Left { get; set; }
+        public ButtonStyle Middle { get; set; }
+        public ButtonStyle Right { get; set; }
     }
     public class DropDownStyle : ButtonStyle
     {
@@ -729,16 +799,31 @@ namespace ModsCommon.UI
             get => FgColors;
             set => FgColors = value;
         }
+
+        public ColorSet OnTextColors
+        {
+            get => SelTextColors;
+            set => SelTextColors = value;
+        }
+        public ColorSet OffTextColors
+        {
+            get => TextColors;
+            set => TextColors = value;
+        }
     }
-    public class CheckBoxStyle : ItemStyle
+    public class CheckBoxStyle : InteractiveStyle
     {
 
     }
-    public class ColorPickerStyle : ItemStyle
+    public class ColorPickerStyle : InteractiveStyle
     {
 
     }
-
+    public class LabelStyle : ItemStyle
+    {
+        public Color32 NormalTextColor { get; set; }
+        public Color32 DisabledTextColor { get; set; }
+    }
     public struct SpriteSet
     {
         public string normal;

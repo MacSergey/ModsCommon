@@ -95,6 +95,16 @@ namespace ModsCommon.UI
             }
         }
 
+        public LabelStyle LabelStyle
+        {
+            set
+            {
+                textColor = value.NormalTextColor;
+                disabledTextColor = value.DisabledTextColor;
+                Invalidate();
+            }
+        }
+
         public override string text
         {
             get => m_Text;
@@ -229,6 +239,8 @@ namespace ModsCommon.UI
         {
             base.Invalidate();
 
+            var size = this.size;
+
             if (font != null && font.isValid && !string.IsNullOrEmpty(text) && AutoSize != AutoSize.None)
             {
                 using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
@@ -237,14 +249,21 @@ namespace ModsCommon.UI
                 var width = measured.x + Padding.horizontal;
                 var height = measured.y + Padding.vertical;
 
-                size = AutoSize switch
+                switch (AutoSize)
                 {
-                    AutoSize.Width => new Vector2(width, size.y),
-                    AutoSize.Height => new Vector2(size.x, height),
-                    AutoSize.All => new Vector2(width, height),
-                    _ => size
-                };
+                    case AutoSize.Width:
+                        size.x = width;
+                        break;
+                    case AutoSize.Height:
+                        size.y = height;
+                        break;
+                    case AutoSize.All:
+                        size = new Vector2(width, height);
+                        break;
+                }
             }
+
+            this.size = size;
         }
 
         protected UIRenderData BgRenderData { get; set; }
@@ -359,7 +378,7 @@ namespace ModsCommon.UI
             renderer.vectorOffset = offset;
             renderer.textAlign = HorizontalAlignment;
             renderer.processMarkup = processMarkup;
-            renderer.defaultColor = textColor;
+            renderer.defaultColor = isEnabled ? textColor : disabledTextColor;
             renderer.bottomColor = null;
             renderer.overrideMarkupColors = false;
             renderer.opacity = CalculateOpacity();

@@ -20,6 +20,11 @@ namespace ModsCommon.UI
         protected ByteUITextField BField { get; set; }
         protected ByteUITextField AField { get; set; }
 
+        private CustomUILabel RLabel { get; set; }
+        private CustomUILabel GLabel { get; set; }
+        private CustomUILabel BLabel { get; set; }
+        private CustomUILabel ALabel { get; set; }
+
         public bool WheelTip
         {
             set
@@ -45,10 +50,14 @@ namespace ModsCommon.UI
             ColorPicker.OnAfterPopupOpen += ColorPickerOpen;
             ColorPicker.OnSelectedColorChanged += PickerChanged;
 
-            RField = AddField(Content, "R", RGBChanged);
-            GField = AddField(Content, "G", RGBChanged);
-            BField = AddField(Content, "B", RGBChanged);
-            AField = AddField(Content, "A", AChanged);
+            RLabel = AddLabel(Content, "R");
+            RField = AddField(Content, RGBChanged);
+            GLabel = AddLabel(Content, "G");
+            GField = AddField(Content, RGBChanged);
+            BLabel = AddLabel(Content, "B");
+            BField = AddField(Content, RGBChanged);
+            ALabel = AddLabel(Content, "A");
+            AField = AddField(Content, AChanged);
         }
 
         private void ColorPickerOpen(ColorPickerPopup popup)
@@ -126,13 +135,16 @@ namespace ModsCommon.UI
             WheelTip = false;
             OnValueChanged = null;
         }
-        private ByteUITextField AddField(UIComponent parent, string name, Action<byte> onChanged)
+        private CustomUILabel AddLabel(UIComponent parent, string name)
         {
             var label = parent.AddUIComponent<CustomUILabel>();
             label.text = name;
             label.textScale = 0.7f;
             label.Padding = new RectOffset(0, 0, 2, 0);
-
+            return label;
+        }
+        private ByteUITextField AddField(UIComponent parent, Action<byte> onChanged)
+        {
             var field = parent.AddUIComponent<ByteUITextField>();
             field.SetDefaultStyle();
             field.MinValue = byte.MinValue;
@@ -152,10 +164,16 @@ namespace ModsCommon.UI
         public override void SetStyle(ControlStyle style)
         {
             ColorPicker.ColorPickerStyle = style.ColorPicker;
+
             RField.TextFieldStyle = style.TextField;
             GField.TextFieldStyle = style.TextField;
             BField.TextFieldStyle = style.TextField;
             AField.TextFieldStyle = style.TextField;
+
+            RLabel.LabelStyle = style.Label;
+            GLabel.LabelStyle = style.Label;
+            BLabel.LabelStyle = style.Label;
+            ALabel.LabelStyle = style.Label;
         }
     }
 }

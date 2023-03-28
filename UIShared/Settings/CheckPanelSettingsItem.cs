@@ -53,8 +53,7 @@ namespace ModsCommon.UI
                 {
                     for (int i = labels.Length; i < CheckBoxes.Count; i += 1)
                     {
-                        RemoveUIComponent(CheckBoxes[i]);
-                        Destroy(CheckBoxes[i]);
+                        ComponentPool.Free(CheckBoxes[i]);
                     }
                     CheckBoxes.RemoveRange(labels.Length, CheckBoxes.Count - labels.Length);
                 }

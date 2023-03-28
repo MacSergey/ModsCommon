@@ -80,25 +80,13 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\" />
     <Folder Include="$(MSBuildThisFileDirectory)Resources\CloseButton\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Resources\Field\legacy\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabled.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledLeft.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledMiddle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledRight.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocused.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedLeft.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedMiddle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedRight.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHovered.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredLeft.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredMiddle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredRight.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormal.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalLeft.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalMiddle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\legacy\FieldFocused.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\legacy\FieldHovered.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\legacy\FieldNormal.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\Tab.png" />
@@ -144,6 +132,10 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBorderSmall.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldBorderLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldBorderMiddle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldBorderRight.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\OpacitySliderMask.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Radio\RadioChecked.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Radio\RadioUnchecked.png" />

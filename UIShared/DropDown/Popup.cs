@@ -243,6 +243,7 @@ namespace ModsCommon.UI
             Values.Clear();
             Selector = null;
             Sorter = null;
+            selectedObject = default;
 
             startIndex = 0;
             entityHeight = DefaultEntityHeight;
@@ -448,6 +449,7 @@ namespace ModsCommon.UI
             base.DeInit();
             CanSubmit = false;
             Search.text = string.Empty;
+            CanSubmit = true;
             Search.Unfocus();
         }
 

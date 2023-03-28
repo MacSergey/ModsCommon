@@ -31,19 +31,26 @@ namespace ModsCommon.UI
 
         public HeaderMoveablePanel() : base()
         {
-            AutoLayout = AutoLayout.Disabled;
+            PauseLayout(() =>
+            {
+                AutoLayout = AutoLayout.Horizontal;
+                AutoLayoutStart = LayoutStart.MiddleLeft;
 
+                PlaceItems();
+            });
+        }
+        protected virtual void PlaceItems()
+        {
             Caption = AddUIComponent<CustomUILabel>();
-            Caption.zOrder = 0;
             Caption.AutoSize = AutoSize.Height;
             Caption.Padding.top = 5;
             Caption.HorizontalAlignment = UIHorizontalAlignment.Center;
             Caption.VerticalAlignment = UIVerticalAlignment.Middle;
-            Caption.eventSizeChanged += (_, _) => CaptionSizeChanged();
 
             Content = AddUIComponent<TypeContent>();
-            Content.AutoChildrenVertically = AutoLayoutChildren.None;
+            Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
             Content.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+            Content.Padding.right = 5;
             Content.PauseLayout(FillContent);
         }
         protected abstract void FillContent();
@@ -51,7 +58,6 @@ namespace ModsCommon.UI
         {
             size = new Vector2(parent.width, height ?? 42);
             Refresh();
-            CaptionSizeChanged();
         }
         public override void Start()
         {
@@ -71,22 +77,15 @@ namespace ModsCommon.UI
                     size = new Vector2(200f, 25f);
             }
         }
-
-        private void CaptionSizeChanged() => Caption.relativePosition = new Vector2(10, (height - Caption.height) / 2);
-
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            UpdateLayout();
+
+            Caption.width = width - Content.width;
+            Content.relativePosition = new Vector2(Caption.width - 5f + 20f, 0f);
         }
 
         public virtual void Refresh() => Content.Refresh();
-        public virtual void UpdateLayout()
-        {
-            Caption.width = width - Content.width - 20f;
-            Content.height = height;
-            Content.relativePosition = new Vector2(Caption.width - 5f + 20f, 0f);
-        }
 
         protected override void OnMouseDown(UIMouseEventParameter p)
         {

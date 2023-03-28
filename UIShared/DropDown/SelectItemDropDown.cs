@@ -14,7 +14,7 @@ namespace ModsCommon.UI
         protected override IEnumerable<ObjectType> Objects => ObjectList;
         protected List<ObjectType> ObjectList { get; } = new List<ObjectType>();
 
-        private int selectedIndex;
+        private int selectedIndex = -1;
         public ObjectType SelectedObject
         {
             get => selectedIndex >= 0 ? ObjectList[selectedIndex] : default;
@@ -58,6 +58,17 @@ namespace ModsCommon.UI
         {
             base.OnSizeChanged();
             Entity.size = size;
+        }
+
+        public override DropDownStyle DropDownStyle 
+        { 
+            get => base.DropDownStyle;
+            set
+            {
+                Entity.TextColors = value.TextColors;
+                Entity.SelTextColors = value.SelTextColors;
+                base.DropDownStyle = value;
+            }
         }
     }
 }
