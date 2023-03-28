@@ -8,7 +8,6 @@ namespace ModsCommon.UI
     public abstract class FieldPropertyPanel<ValueType, FieldType> : EditorPropertyPanel, IReusable
         where FieldType : UITextField<ValueType>
     {
-        bool IReusable.InCache { get; set; }
         protected FieldType Field { get; set; }
 
         public event Action<ValueType> OnValueChanged;
@@ -39,7 +38,7 @@ namespace ModsCommon.UI
             set => Field.Format = value;
         }
 
-        public FieldPropertyPanel()
+        protected override void FillContent()
         {
             Field = Content.AddUIComponent<FieldType>();
             Field.SetDefaultStyle();
@@ -60,6 +59,11 @@ namespace ModsCommon.UI
             Format = null;
             SubmitOnFocusLost = true;
         }
+        public override void SetStyle(ControlStyle style)
+        {
+            Field.TextFieldStyle = style.TextField;
+        }
+
         public void Edit() => Field.Focus();
         public override string ToString() => $"{base.ToString()}: {Value}";
 
@@ -288,7 +292,7 @@ namespace ModsCommon.UI
             }
         }
 
-        public ComparableFieldRangePropertyPanel()
+        protected override void FillContent()
         {
             FieldA = Content.AddUIComponent<FieldType>();
             FieldA.SetDefaultStyle();
@@ -357,6 +361,11 @@ namespace ModsCommon.UI
                 FieldB.CheckMin = FieldB.CheckMin;
             }
         }
+        public override void SetStyle(ControlStyle style)
+        {
+            FieldA.TextFieldStyle = style.TextField;
+            FieldB.TextFieldStyle = style.TextField;
+        }
 
         public override string ToString() => $"{base.ToString()}: from {ValueA} to {ValueB}";
     }
@@ -368,21 +377,21 @@ namespace ModsCommon.UI
         where FieldType : ComparableUITextField<ValueType>
         where ValueType : IComparable<ValueType>
     {
-        protected MultyAtlasUIButton Invert { get; }
+        protected CustomUIButton Invert { get; }
 
         public override float FieldWidth
         {
-            get => base.FieldWidth + Content.autoLayoutPadding.horizontal + Invert.width;
-            set => base.FieldWidth = value - Content.autoLayoutPadding.horizontal - Invert.width;
+            get => base.FieldWidth + Content.Padding.horizontal + Invert.width;
+            set => base.FieldWidth = value - Content.Padding.horizontal - Invert.width;
         }
 
         public InvertedFieldPropertyPanel()
         {
-            Invert = Content.AddUIComponent<MultyAtlasUIButton>();
+            Invert = Content.AddUIComponent<CustomUIButton>();
             Invert.SetDefaultStyle();
             Invert.width = 20;
-            Invert.atlasForeground = CommonTextures.Atlas;
-            Invert.normalFgSprite = CommonTextures.PlusMinusButton;
+            Invert.FgAtlas = CommonTextures.Atlas;
+            Invert.AllFgSprites = CommonTextures.PlusMinusButton;
             Invert.eventClick += InvertClick;
         }
 
@@ -407,6 +416,15 @@ namespace ModsCommon.UI
         {
             if (Invert != null)
                 Invert.height = Content.height - ItemsPadding * 2;
+        }
+
+        public override void SetStyle(ControlStyle style)
+        {
+            base.SetStyle(style);
+
+            Invert.ButtonStyle = style.Button;
+            Invert.FgAtlas = CommonTextures.Atlas;
+            Invert.AllFgSprites = CommonTextures.PlusMinusButton;
         }
     }
     public class FloatInvertedPropertyPanel : InvertedFieldPropertyPanel<float, FloatUITextField>

@@ -12,14 +12,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)BaseProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoolProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ButtonPanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ColorProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OldColorProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FieldProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GroupPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ListProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ColorProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SelectProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SliderProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TextProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LabelProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariationProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VectorProperty.cs" />
   </ItemGroup>

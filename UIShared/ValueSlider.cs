@@ -19,7 +19,7 @@ namespace ModsCommon.UI
         private new TypeValue maxValue;
         public TypeValue Value
         {
-            get => GetValue(m_RawValue);
+            get => GetValue(rawValue);
             set => ValueChanged(value, false);
         }
         public TypeValue MinValue
@@ -44,14 +44,14 @@ namespace ModsCommon.UI
         }
         public TypeValue Step
         {
-            get => GetValue(stepSize);
+            get => GetValue(StepSize);
             set => GetRawValue(value);
         }
 
         public UIValueSlider()
         {
-            thumbObject = AddUIComponent<UISprite>();
-            thumbObject.size = new Vector2(10f, 10f);
+            //thumbObject = AddUIComponent<UISprite>();
+            //thumbObject.size = new Vector2(10f, 10f);
             SetDefaultStyle();
         }
 
@@ -71,7 +71,7 @@ namespace ModsCommon.UI
             {
                 InProcess = true;
 
-                base.value = GetRawValue(value);
+                base.Value = GetRawValue(value);
                 if (callEvent)
                     OnChanged?.Invoke(value);
 
@@ -83,7 +83,7 @@ namespace ModsCommon.UI
         {
             base.OnValueChanged();
 
-            var newValue = GetValue(m_RawValue);
+            var newValue = GetValue(rawValue);
             ValueChanged(newValue);
         }
 
@@ -92,9 +92,9 @@ namespace ModsCommon.UI
 
         public void SetDefaultStyle()
         {
-            base.minValue = 0;
-            base.maxValue = 1;
-            base.stepSize = 0.001f;
+            base.MinValue = 0;
+            base.MaxValue = 1;
+            base.StepSize = 0.001f;
         }
     }
     public abstract class ComparableUIValueSlider<TypeValue> : UIValueSlider<TypeValue>
@@ -133,7 +133,7 @@ namespace ModsCommon.UI
 
     public class FloatUISlider : ComparableUIValueSlider<float>
     {
-        protected override float GetValue(float rawValue, float min, float max) => Mathf.Lerp(min, max, value);
+        protected override float GetValue(float rawValue, float min, float max) => Mathf.Lerp(min, max, Value);
         protected override float GetRawValue(float value, float min, float max) => (value - min) / (max - min);
     }
 }

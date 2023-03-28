@@ -13,35 +13,37 @@ namespace ModsCommon.UI
 
         protected TypeContent Content { get; set; }
 
-        public BaseHeaderPanel()
+        public BaseHeaderPanel() : base()
         {
-            AddContent();
+            PauseLayout(() =>
+            {
+                AutoLayoutStart = LayoutStart.MiddleLeft;
+
+                Content = AddUIComponent<TypeContent>();
+                Content.PauseLayout(FillContent);
+
+                Fill();
+            });
         }
+        protected virtual void Fill() { }
+        protected abstract void FillContent();
+
         protected override void Init(float? height)
         {
             base.Init(height);
             Refresh();
         }
-        private void AddContent()
-        {
-            Content = AddUIComponent<TypeContent>();
-            Content.relativePosition = new Vector2(0, 0);
-        }
 
-        public virtual void Refresh()
-        {
-            Content.Refresh();
-        }
+        public virtual void Refresh() => Content.Refresh();
 
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            SetSize();
+            PauseLayout(SetSize);
         }
         protected virtual void SetSize()
         {
-            Content.size = new Vector2(width - ItemsPadding, height);
-            Content.relativePosition = new Vector2(ItemsPadding, 0f);
+            Content.size = new Vector2(width - Padding.horizontal, height);
         }
     }
     public abstract class BaseDeletableHeaderPanel<TypeContent> : BaseHeaderPanel<TypeContent>
@@ -49,18 +51,23 @@ namespace ModsCommon.UI
     {
         public event Action OnDelete;
 
-        protected CustomUIButton DeleteButton { get; set; }
+        protected CustomUIButton DeleteButton { get; private set; }
 
-        public BaseDeletableHeaderPanel() : base()
+        protected override void Fill()
         {
-            AddDeleteButton();
-        }
+            base.Fill();
 
+            DeleteButton = AddUIComponent<CustomUIButton>();
+            DeleteButton.Atlas = CommonTextures.Atlas;
+            DeleteButton.BgSprites = new SpriteSet(CommonTextures.CloseButtonNormal, CommonTextures.CloseButtonHovered, CommonTextures.CloseButtonPressed, CommonTextures.CloseButtonNormal, string.Empty);
+            DeleteButton.size = new Vector2(20, 20);
+            DeleteButton.eventClick += DeleteClick;
+        }
         public virtual void Init(float? height = null, bool isDeletable = true)
         {
             base.Init(height);
             DeleteButton.isVisible = isDeletable;
-            SetSize();
+            PauseLayout(SetSize);
         }
         public override void DeInit()
         {
@@ -69,22 +76,12 @@ namespace ModsCommon.UI
         }
         protected override void SetSize()
         {
-            Content.size = new Vector2((DeleteButton.isVisible ? width - DeleteButton.width - 10 : width) - ItemsPadding, height);
-            Content.relativePosition = new Vector2(ItemsPadding, 0f);
-            DeleteButton.relativePosition = new Vector2(width - DeleteButton.width - 5, (height - DeleteButton.height) / 2);
+            if (DeleteButton.isVisible)
+                Content.size = new Vector2(width - Content.relativePosition.x - AutoLayoutSpace - DeleteButton.width - PaddingRight, height);
+            else
+                base.SetSize();
         }
 
-        private void AddDeleteButton()
-        {
-            DeleteButton = AddUIComponent<CustomUIButton>();
-            DeleteButton.zOrder = 0;
-            DeleteButton.atlas = CommonTextures.Atlas;
-            DeleteButton.normalBgSprite = CommonTextures.CloseButtonNormal;
-            DeleteButton.hoveredBgSprite = CommonTextures.CloseButtonHovered;
-            DeleteButton.pressedBgSprite = CommonTextures.CloseButtonPressed;
-            DeleteButton.size = new Vector2(20, 20);
-            DeleteButton.eventClick += DeleteClick;
-        }
         private void DeleteClick(UIComponent component, UIMouseEventParameter eventParam) => OnDelete?.Invoke();
     }
 }

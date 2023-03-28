@@ -37,19 +37,26 @@ namespace ModsCommon.UI
         private List<IHeaderButtonInfo> AdditionalInfos { get; set; }
         private bool ShowAdditional => AdditionalInfos.Count > 0;
 
-        private AdditionalHeaderButton Additional { get; }
+        private AdditionalHeaderButton Additional { get; set; }
 
         public BaseHeaderContent()
         {
-            autoLayoutDirection = LayoutDirection.Horizontal;
-            autoLayoutPadding = new RectOffset(0, 0, 0, 0);
+            PauseLayout(() =>
+            {
+                autoLayout = AutoLayout.Horizontal;
+                padding = new RectOffset(0, 0, 5, 5);
+                autoChildrenVertically = AutoLayoutChildren.Fit;
+                autoLayoutStart = LayoutStart.MiddleLeft;
 
-            Additional = AddUIComponent<AdditionalHeaderButton>();
-            Additional.tooltip = CommonLocalize.Panel_Additional;
-            Additional.Init(AdditionalButtonAtlas, AdditionalButtonSprite, MainButtonSize, MainIconSize);
-            Additional.PopupOpenedEvent += OnPopupOpened;
-            Additional.PopupCloseEvent += OnPopupClose;
-            SetButtonColors(Additional);
+                Additional = AddUIComponent<AdditionalHeaderButton>();
+                Additional.tooltip = CommonLocalize.Panel_Additional;
+                Additional.SetIcon(AdditionalButtonAtlas, AdditionalButtonSprite);
+                Additional.SetSize(MainButtonSize, MainIconSize);
+
+                Additional.OnPopupOpening += PopupOpening;
+                Additional.OnBeforePopupClose += BeforePopupClose;
+                SetButtonColors(Additional);
+            });
 
             Refresh();
         }
@@ -60,21 +67,20 @@ namespace ModsCommon.UI
             if (refresh)
                 Refresh();
         }
-        private void OnPopupOpened(AdditionalHeaderButton.AdditionalPopup popup)
+        private void PopupOpening(AdditionalHeaderButton.AdditionalPopup popup)
         {
             foreach (var info in AdditionalInfos)
             {
                 info.AddButton(popup.Content, true, AdditionalButtonSize, AdditionalIconSize);
-                info.Button.autoSize = true;
-                info.Button.autoSize = false;
+                info.Button.PerformAutoWidth();
                 info.ClickedEvent += PopupClicked;
                 SetAdditionalButtonColors(info.Button);
             }
 
             var maxwidth = AdditionalInfos.Max(i => i.Button.width);
-            popup.Width = maxwidth;
+            popup.PopupWidth = maxwidth;
         }
-        private void OnPopupClose(AdditionalHeaderButton.AdditionalPopup popup)
+        private void BeforePopupClose(AdditionalHeaderButton.AdditionalPopup popup)
         {
             foreach (var info in AdditionalInfos)
             {
@@ -84,27 +90,7 @@ namespace ModsCommon.UI
         }
         private void PopupClicked(UIComponent component, UIMouseEventParameter eventParam) => Additional.ClosePopup();
 
-        public virtual void Refresh()
-        {
-            PlaceButtons();
-
-            autoLayout = true;
-            autoLayout = false;
-            FitChildrenHorizontally();
-
-            SetSize();
-        }
-
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
-            SetSize();
-        }
-        protected virtual void SetSize()
-        {
-            foreach (var item in components)
-                item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
-        }
+        public virtual void Refresh() => PauseLayout(PlaceButtons);
 
         private void PlaceButtons()
         {
@@ -123,35 +109,23 @@ namespace ModsCommon.UI
             Additional.isVisible = ShowAdditional;
             Additional.zOrder = int.MaxValue;
         }
-        private void SetButtonColors(HeaderButton button)
+        private void SetButtonColors(IHeaderButton button)
         {
-            button.hoveredBgColor = ButtonHoveredColor;
-            button.pressedBgColor = ButtonPressedColor;
-            button.focusedBgColor = ButtonPressedColor;
-
-            button.normalFgColor = IconNormalColor;
-            button.hoveredFgColor = IconHoverColor;
-            button.pressedFgColor = IconPressedColor;
-            button.disabledFgColor = IconDisabledColor;
+            button.BgColors = new ColorSet(Color.white, ButtonHoveredColor, ButtonPressedColor, ButtonPressedColor, Color.white);
+            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor);
         }
-        private void SetAdditionalButtonColors(HeaderButton button)
+        private void SetAdditionalButtonColors(IHeaderButton button)
         {
-            button.hoveredBgColor = AdditionalButtonHoveredColor;
-            button.pressedBgColor = AdditionalButtonPressedColor;
-            button.focusedBgColor = AdditionalButtonPressedColor;
-
-            button.normalFgColor = IconNormalColor;
-            button.hoveredFgColor = IconHoverColor;
-            button.pressedFgColor = IconPressedColor;
-            button.disabledFgColor = IconDisabledColor;
+            button.BgColors = new ColorSet(Color.white, AdditionalButtonHoveredColor, AdditionalButtonPressedColor, AdditionalButtonPressedColor, Color.white);
+            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor);
         }
     }
     public class HeaderContent : BaseHeaderContent
     {
         protected override Color32 ButtonHoveredColor => new Color32(32, 32, 32, 255);
         protected override Color32 ButtonPressedColor => Color.black;
-        protected override Color32 AdditionalButtonHoveredColor => new Color32(32, 32, 32, 255);
-        protected override Color32 AdditionalButtonPressedColor => Color.black;
+        protected override Color32 AdditionalButtonHoveredColor => new Color32(112, 112, 112, 255);
+        protected override Color32 AdditionalButtonPressedColor => new Color32(112, 112, 112, 255);
 
         protected override Color32 IconNormalColor => Color.white;
         protected override Color32 IconHoverColor => Color.white;
@@ -164,7 +138,7 @@ namespace ModsCommon.UI
         protected override Color32 ButtonHoveredColor => new Color32(112, 112, 112, 255);
         protected override Color32 ButtonPressedColor => new Color32(144, 144, 144, 255);
         protected override Color32 AdditionalButtonHoveredColor => new Color32(112, 112, 112, 255);
-        protected override Color32 AdditionalButtonPressedColor => new Color32(144, 144, 144, 255);
+        protected override Color32 AdditionalButtonPressedColor => new Color32(112, 112, 112, 255);
 
         protected override Color32 IconNormalColor => Color.white;
         protected override Color32 IconHoverColor => Color.white;

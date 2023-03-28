@@ -5,18 +5,31 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class HeaderButton : MultyAtlasUIButton, IReusable
+    public interface IHeaderButton
+    {
+        AutoSize AutoSize { get; set; }
+        float height { get; set; }
+        float width { get; set; }
+
+
+        void SetIcon(UITextureAtlas atlas, string sprite);
+        void SetSize(int buttonSize, int iconSize);
+        void PerformAutoWidth();
+        ColorSet BgColors {set;}
+        ColorSet FgColors { set; }
+    }
+    public class HeaderButton : CustomUIButton, IHeaderButton, IReusable
     {
         bool IReusable.InCache { get; set; }
 
         public HeaderButton()
         {
-            atlasBackground = CommonTextures.Atlas;
-            hoveredBgSprite = pressedBgSprite = focusedBgSprite = CommonTextures.HeaderHover;
+            BgAtlas = CommonTextures.Atlas;
+            BgSprites = new SpriteSet(string.Empty, CommonTextures.HeaderHover, CommonTextures.HeaderHover, CommonTextures.HeaderHover, string.Empty);
             clipChildren = true;
             textScale = 0.8f;
-            textHorizontalAlignment = UIHorizontalAlignment.Left;
-            foregroundSpriteMode = UIForegroundSpriteMode.Fill;
+            TextHorizontalAlignment = UIHorizontalAlignment.Left;
+            ForegroundSpriteMode = UIForegroundSpriteMode.Fill;
         }
 
         public void Init(UITextureAtlas atlas, string sprite, int size, int iconSize)
@@ -28,21 +41,19 @@ namespace ModsCommon.UI
         {
             size = new Vector2(buttonSize, buttonSize);
             minimumSize = size;
-            textPadding = new RectOffset(iconSize + 5, 5, 5, 0);
+            TextPadding = new RectOffset(iconSize + 5, 5, 5, 0);
         }
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            atlasForeground = atlas ?? TextureHelper.InGameAtlas;
-            normalFgSprite = sprite;
-            hoveredFgSprite = sprite;
-            pressedFgSprite = sprite;
+            FgAtlas = atlas ?? TextureHelper.InGameAtlas;
+            FgSprites = sprite;
         }
 
         public override void Update()
         {
             base.Update();
-            if (state == ButtonState.Focused)
-                state = ButtonState.Normal;
+            if (State == UIButton.ButtonState.Focused)
+                State = UIButton.ButtonState.Normal;
         }
 
         public virtual void DeInit()
@@ -67,7 +78,7 @@ namespace ModsCommon.UI
     {
         public event MouseEventHandler ClickedEvent;
 
-        public HeaderButton Button { get; }
+        public IHeaderButton Button { get; }
 
         public void AddButton(UIComponent parent, bool showText, int size, int iconSize);
         public void RemoveButton();
@@ -75,7 +86,7 @@ namespace ModsCommon.UI
         public bool Visible { get; set; }
     }
     public class HeaderButtonInfo<TypeButton> : IHeaderButtonInfo
-        where TypeButton : HeaderButton
+        where TypeButton : CustomUIButton, IHeaderButton
     {
         public event MouseEventHandler ClickedEvent
         {
@@ -83,7 +94,7 @@ namespace ModsCommon.UI
             remove => Button.eventClicked -= value;
         }
 
-        HeaderButton IHeaderButtonInfo.Button => Button;
+        IHeaderButton IHeaderButtonInfo.Button => Button;
         public TypeButton Button { get; }
 
         public HeaderButtonState State { get; }
@@ -125,6 +136,7 @@ namespace ModsCommon.UI
 
             Button.text = showText ? GetText() : string.Empty;
             Button.tooltip = showText ? string.Empty : GetText();
+            Button.HorizontalAlignment = showText ? UIHorizontalAlignment.Left : UIHorizontalAlignment.Center;
             Button.SetSize(size, iconSize);
         }
         public void RemoveButton()

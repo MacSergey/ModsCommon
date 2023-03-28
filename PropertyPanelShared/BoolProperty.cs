@@ -4,39 +4,39 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    [Obsolete]
-    public class BoolPropertyPanel : EditorPropertyPanel
+    public class BoolPropertyPanel : EditorPropertyPanel, IReusable
     {
-        private UICheckBox CheckBox { get; set; }
+        private CustomUIToggle Toggle { get; set; }
         public event Action<bool> OnValueChanged;
 
-        public bool Value { get => CheckBox.isChecked; set => CheckBox.isChecked = value; }
+        public bool Value 
+        { 
+            get => Toggle.Value; 
+            set => Toggle.Value = value; 
+        }
 
         public BoolPropertyPanel()
         {
-            CheckBox = Content.AddUIComponent<UICheckBox>();
-            CheckBox.size = new Vector2(16, 16);
-            CheckBox.eventCheckChanged += CheckBox_eventCheckChanged;
 
-            AddUncheck();
-            AddCheck();
         }
-        private void AddUncheck()
+        protected override void FillContent()
         {
-            var uncheck = CheckBox.AddUIComponent<UISprite>();
-            uncheck.spriteName = "check-unchecked";
-            uncheck.size = new Vector2(16, 16);
-            uncheck.relativePosition = new Vector2(0, 0);
+            Toggle = Content.AddUIComponent<CustomUIToggle>();
+            Toggle.name = nameof(Toggle);
+            Toggle.DefaultStyle();
+            Toggle.OnValueChanged += ToggleStateChanged;
         }
-        private void AddCheck()
+        public override void DeInit()
         {
-            var check = CheckBox.AddUIComponent<UISprite>();
-            check.spriteName = "check-checked";
-            check.size = new Vector2(16, 16);
-            check.relativePosition = new Vector2(0, 0);
-            CheckBox.checkedBoxObject = check;
+            base.DeInit();
+            OnValueChanged = null;
         }
 
-        private void CheckBox_eventCheckChanged(UIComponent component, bool value) => OnValueChanged?.Invoke(value);
+        private void ToggleStateChanged(bool value) => OnValueChanged?.Invoke(value);
+
+        public override void SetStyle(ControlStyle style)
+        {
+            Toggle.ToggleStyle = style.Toggle;
+        }
     }
 }

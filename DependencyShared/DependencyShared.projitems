@@ -12,5 +12,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)DependenciesMessageBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependenciesWatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Watchers\Conflict\ConflictWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Watchers\Conflict\DisableWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Watchers\Conflict\UnsubscribeWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Watchers\Required\EnableWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Watchers\Required\RequiredWatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Watchers\Required\SubscribeWatcher.cs" />
   </ItemGroup>
 </Project>

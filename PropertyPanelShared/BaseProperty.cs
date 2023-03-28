@@ -7,51 +7,69 @@ namespace ModsCommon.UI
 {
     public abstract class EditorItem : CustomUIPanel
     {
-        public event Action<VisibleState> OnVisibleStateChanged;
-
-        protected virtual float DefaultHeight => 30;
-        protected virtual int ItemsPadding => 5;
+        protected virtual float DefaultHeight => 34;
+        protected static int ItemsPadding => 7;
 
         public virtual bool EnableControl { get; set; } = true;
 
-        private CustomUISprite Even { get; }
-        public virtual bool SupportEven => false;
-        public bool IsEven
+        public EditorItem() : base()
         {
-            get => SupportEven && Even.isVisible;
-            set
-            {
-                if (SupportEven)
-                    Even.isVisible = value;
-            }
+            autoLayout = AutoLayout.Horizontal;
         }
 
-        private bool _canCollapse = true;
+        public virtual void DeInit()
+        {
+            EnableControl = true;
+        }
+        public virtual void Init() => Init(null);
+        protected virtual void Init(float? height)
+        {
+            size = new Vector2(GetWidth(), height ?? DefaultHeight);
+        }
+        private float GetWidth()
+        {
+            if (parent is UIScrollablePanel scrollablePanel)
+                return scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
+            else if (parent is CustomUIPanel customPanel)
+                return customPanel.width - customPanel.Padding.horizontal;
+            else if (parent is UIPanel panel)
+                return panel.width - panel.autoLayoutPadding.horizontal;
+            else
+                return parent.width;
+        }
+
+        public override string ToString() => name;
+    }
+    public abstract class BaseEditorPanel : EditorItem
+    {
+        public event Action<VisibleState> OnVisibleStateChanged;
+
+        private bool canCollapse = true;
         public bool CanCollapse
         {
-            get => _canCollapse;
+            get => canCollapse;
             set
             {
-                if (value != _canCollapse)
+                if (value != canCollapse)
                 {
-                    _canCollapse = value;
-                    if (!_canCollapse)
+                    canCollapse = value;
+                    if (!canCollapse)
                         IsCollapsed = false;
                 }
             }
         }
 
-        private VisibleState _visibleState = VisibleState.Visible;
+        private VisibleState visibleState = VisibleState.Visible;
         private VisibleState VisibleState
         {
-            get => _visibleState;
+            get => visibleState;
             set
             {
-                if (value != _visibleState)
+                if (value != visibleState)
                 {
-                    _visibleState = value;
-                    isVisible = _visibleState == VisibleState.Visible;
-                    OnVisibleStateChanged?.Invoke(_visibleState);
+                    visibleState = value;
+                    isVisible = visibleState == VisibleState.Visible;
+                    OnVisibleStateChanged?.Invoke(visibleState);
                 }
             }
         }
@@ -77,60 +95,80 @@ namespace ModsCommon.UI
                     VisibleState &= ~VisibleState.Hidden;
             }
         }
-
-        public EditorItem()
+        private PropertyBorder borders = PropertyBorder.None;
+        public PropertyBorder Borders
         {
-            if (SupportEven)
+            get => borders;
+            set
             {
-                Even = AddUIComponent<CustomUISprite>();
-                Even.atlas = CommonTextures.Atlas;
-                Even.spriteName = CommonTextures.Empty;
-                Even.color = new Color32(0, 0, 0, 48);
-                IsEven = false;
+                if (value != borders)
+                {
+                    var padding = Padding;
+                    borders = value;
+                    Padding = padding;
+
+                    ForegroundSprite = borders switch
+                    {
+                        PropertyBorder.Top => CommonTextures.BorderTop,
+                        PropertyBorder.Bottom => CommonTextures.BorderBottom,
+                        PropertyBorder.Both => CommonTextures.BorderBoth,
+                        _ => string.Empty
+                    };
+                }
+            }
+        }
+        public new RectOffset Padding
+        {
+            get
+            {
+                var padding = base.Padding;
+                var top = Math.Max(padding.top - ((borders & PropertyBorder.Top) != 0 ? 2 : 0), 0);
+                var bottom = Math.Max(padding.bottom - ((borders & PropertyBorder.Bottom) != 0 ? 2 : 0), 0);
+                return new RectOffset(padding.left, padding.right, top, bottom);
+            }
+            set
+            {
+                var top = value.top + ((borders & PropertyBorder.Top) != 0 ? 2 : 0);
+                var bottom = value.bottom + ((borders & PropertyBorder.Bottom) != 0 ? 2 : 0);
+                var padding = new RectOffset(value.left, value.right, top, bottom);
+                base.Padding = padding;
             }
         }
 
-        public virtual void DeInit()
+        private bool isEven;
+        public bool IsEven
         {
+            get => isEven;
+            set
+            {
+                isEven = value;
+                BackgroundSprite = value ? CommonTextures.Empty : string.Empty;
+            }
+        }
+
+        public BaseEditorPanel() : base()
+        {
+            Padding = new RectOffset(10, 10, 7, 7);
+        }
+
+        public override void DeInit()
+        {
+            base.DeInit();
+
+            visibleState = VisibleState.Visible;
+            canCollapse = true;
             IsEven = false;
-            EnableControl = true;
-            _visibleState = VisibleState.Visible;
-            _canCollapse = true;
-        }
-        public virtual void Init() => Init(null);
-        protected virtual void Init(float? height)
-        {
-            size = new Vector2(GetWidth(), height ?? DefaultHeight);
-        }
-        private float GetWidth()
-        {
-            if (parent is UIScrollablePanel scrollablePanel)
-                return scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
-            else if (parent is UIPanel panel)
-                return panel.width - panel.autoLayoutPadding.horizontal;
-            else
-                return parent.width;
-        }
 
-        protected CustomUIButton AddButton(UIComponent parent)
-        {
-            var button = parent.AddUIComponent<CustomUIButton>();
-            button.SetDefaultStyle();
-            return button;
+            SetStyle(ComponentStyle.Default);
         }
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
-
-            if (Even != null)
-                Even.size = size;
-        }
-        public override string ToString() => name;
+        public abstract void SetStyle(ControlStyle style);
     }
-    public abstract class EditorPropertyPanel : EditorItem
+    public abstract class EditorPropertyPanel : BaseEditorPanel, IReusable
     {
+        bool IReusable.InCache { get; set; }
+
         private CustomUILabel LabelItem { get; set; }
-        protected ContentPanel Content { get; set; }
+        protected CustomUIPanel Content { get; set; }
 
         public string Label
         {
@@ -142,85 +180,70 @@ namespace ModsCommon.UI
             get => Content.isEnabled;
             set => Content.isEnabled = value;
         }
-        public override bool SupportEven => true;
 
-        public EditorPropertyPanel()
+        public EditorPropertyPanel() : base()
         {
-            LabelItem = AddUIComponent<CustomUILabel>();
-            LabelItem.textScale = 0.75f;
-            LabelItem.autoSize = false;
-            LabelItem.autoHeight = true;
-            LabelItem.wordWrap = true;
-            LabelItem.padding = new RectOffset(0, 0, 2, 0);
-            LabelItem.disabledTextColor = new Color32(160, 160, 160, 255);
-            LabelItem.name = nameof(LabelItem);
-            LabelItem.eventTextChanged += (_, _) => SetLabel();
+            PauseLayout(() =>
+            {
+                autoChildrenVertically = AutoLayoutChildren.Fit;
+                autoLayout = AutoLayout.Horizontal;
 
-            Content = AddUIComponent<ContentPanel>();
+                Atlas = CommonTextures.Atlas;
+                FgColors = new Color32(0, 0, 0, 96);
+                BgColors = new Color32(0, 0, 0, 48);
+                SpritePadding.left = 10;
+                SpritePadding.right = 10;
+                Borders = PropertyBorder.Top;
+                Padding = new RectOffset(15, 15, 0, 0);
+
+                LabelItem = AddUIComponent<CustomUILabel>();
+                LabelItem.name = "Label";
+                LabelItem.relativePosition = Vector3.zero;
+                LabelItem.textScale = 0.8f;
+                LabelItem.AutoSize = AutoSize.None;
+                LabelItem.WordWrap = true;
+                LabelItem.Padding = new RectOffset(0, 5, 5, 0);
+                LabelItem.disabledTextColor = new Color32(160, 160, 160, 255);
+                LabelItem.VerticalAlignment = UIVerticalAlignment.Middle;
+
+                Content = AddUIComponent<CustomUIPanel>();
+                Content.name = nameof(Content);
+                Content.PauseLayout(() =>
+                {
+                    Content.AutoLayout = AutoLayout.Horizontal;
+                    Content.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+                    Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                    Content.AutoLayoutSpace = 5;
+                    Content.AutoLayoutStart = LayoutStart.MiddleLeft;
+                    Content.Padding = new RectOffset(0, 0, 7, 7);
+                    Content.eventSizeChanged += (_,_) => SetLabel();
+
+                    FillContent();
+                });
+            });
         }
 
-        protected override void Init(float? height)
-        {
-            base.Init(height);
-            Refresh();
-        }
-        public override void DeInit()
-        {
-            base.DeInit();
-            Label = string.Empty;
-        }
+        protected abstract void FillContent();
+
+        public override void Init() { }
+        protected override void Init(float? height) { }
+
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            Refresh(false);
-        }
-        protected void Refresh(bool refreshContent = true)
-        {
-            if (refreshContent)
-                Content.Refresh();
-
-            Content.height = height;
-            Content.relativePosition = new Vector2(width - Content.width - ItemsPadding, 0f);
-
             SetLabel();
         }
+
         private void SetLabel()
         {
-            LabelItem.width = width - Content.width - ItemsPadding * 2;
-            LabelItem.MakePixelPerfect(false);
-            LabelItem.relativePosition = new Vector2(5, (height - LabelItem.height) / 2);
-        }
-        protected override void OnVisibilityChanged()
-        {
-            base.OnVisibilityChanged();
-
-            if (isVisible)
-                Refresh();
-        }
-
-        protected class ContentPanel : CustomUIPanel
-        {
-            public ContentPanel()
+            PauseLayout(() =>
             {
-                autoLayoutDirection = LayoutDirection.Horizontal;
-                autoFitChildrenHorizontally = true;
-                autoLayoutPadding = new RectOffset(5, 0, 0, 0);
-                name = nameof(Content);
-            }
+                var oldWidth = LabelItem.width;
+                LabelItem.size = new Vector2(width - Content.width - Padding.horizontal, Content.height);
+                LabelItem.MakePixelPerfect(false);
 
-            protected override void OnSizeChanged()
-            {
-                base.OnSizeChanged();
-                Refresh();
-            }
-            public void Refresh()
-            {
-                autoLayout = true;
-                autoLayout = false;
-
-                foreach (var item in components)
-                    item.relativePosition = new Vector2(item.relativePosition.x, (height - item.height) / 2);
-            }
+                Content.relativePosition += new Vector3(LabelItem.width - oldWidth, 0f, 0f);
+            }, false);
         }
     }
 
@@ -229,5 +252,12 @@ namespace ModsCommon.UI
         Visible = 0,
         Collapsed = 1,
         Hidden = 2,
+    }
+    public enum PropertyBorder
+    {
+        None = 0,
+        Top = 1,
+        Bottom = 2,
+        Both = Top | Bottom,
     }
 }

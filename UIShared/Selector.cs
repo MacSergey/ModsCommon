@@ -6,7 +6,7 @@ namespace ModsCommon.UI
 {
     public interface IUISelector<ValueType> : IAutoLayoutPanel, IReusable
     {
-        Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
+        Func<ValueType, ValueType, bool> IsEqualDelegate { set; }
 
         void AddItem(ValueType item, OptionData optionData);
         void Clear();
@@ -14,7 +14,7 @@ namespace ModsCommon.UI
     }
     public interface IUIOnceSelector<ValueType> : IUISelector<ValueType>
     {
-        event Action<ValueType> OnSelectObjectChanged;
+        event Action<ValueType> OnSelectObject;
 
         ValueType SelectedObject { get; set; }
         bool UseWheel { get; set; }
@@ -22,7 +22,7 @@ namespace ModsCommon.UI
     }
     public interface IUIMultySelector<ValueType> : IUISelector<ValueType>
     {
-        event Action<List<ValueType>> OnSelectObjectsChanged;
+        event Action<List<ValueType>> OnSelectedObjectsChanged;
 
         List<ValueType> SelectedObjects { get; set; }
     }

@@ -8,29 +8,16 @@ namespace ModsCommon.UI
     {
         private static int ButtonSize => 31;
         protected abstract Vector2 ButtonPosition { get; }
-        protected abstract UITextureAtlas Atlas { get; }
-        protected virtual string NormalBgSprite { get; }
-        protected virtual string HoveredBgSprite { get; }
-        protected virtual string PressedBgSprite { get; }
-        protected virtual string FocusedBgSprite { get; }
-        protected virtual string NormalFgSprite { get; }
-        protected virtual string HoveredFgSprite { get; }
-        protected virtual string PressedFgSprite { get; }
-        protected virtual string FocusedFgSprite { get; }
+        protected abstract UITextureAtlas DefaultAtlas { get; }
+        protected virtual SpriteSet DefaultBgSprite { get; }
+        protected virtual SpriteSet DefaultFgSprite { get; }
 
         public override void Start()
         {
-            atlas = Atlas;
+            Atlas = DefaultAtlas;
 
-            normalBgSprite = NormalBgSprite;
-            hoveredBgSprite = HoveredBgSprite;
-            pressedBgSprite = PressedBgSprite;
-            focusedBgSprite = FocusedBgSprite;
-
-            normalFgSprite = NormalFgSprite;
-            hoveredFgSprite = HoveredFgSprite;
-            pressedFgSprite = PressedFgSprite;
-            focusedFgSprite = FocusedFgSprite;
+            BgSprites = DefaultBgSprite;
+            FgSprites = DefaultFgSprite;
 
             relativePosition = ButtonPosition;
             size = new Vector2(ButtonSize, ButtonSize);
@@ -41,10 +28,10 @@ namespace ModsCommon.UI
 
             var enable = SingletonTool<TypeTool>.Instance?.enabled == true;
 
-            if (enable && (state == ButtonState.Normal || state == ButtonState.Hovered))
-                state = ButtonState.Focused;
-            else if (!enable && state == ButtonState.Focused)
-                state = ButtonState.Normal;
+            if (enable && (State == UIButton.ButtonState.Normal || State == UIButton.ButtonState.Hovered))
+                State = UIButton.ButtonState.Focused;
+            else if (!enable && State == UIButton.ButtonState.Focused)
+                State = UIButton.ButtonState.Normal;
         }
 
         protected override void OnClick(UIMouseEventParameter p)

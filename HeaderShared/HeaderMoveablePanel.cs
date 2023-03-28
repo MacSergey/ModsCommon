@@ -1,9 +1,10 @@
 ﻿using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class HeaderMoveablePanel<TypeContent> : BaseHeaderPanel<TypeContent>
+    public abstract class HeaderMoveablePanel<TypeContent> : CustomUIPanel
         where TypeContent : BaseHeaderContent
     {
         protected bool CanMove
@@ -17,7 +18,8 @@ namespace ModsCommon.UI
         }
         private bool Move { get; set; }
 
-        private CustomUILabel Caption { get; set; }
+        protected TypeContent Content { get; set; }
+        protected CustomUILabel Caption { get; private set; }
         public UIComponent Target { get; set; }
         private Vector3 LastPosition { get; set; }
 
@@ -27,14 +29,35 @@ namespace ModsCommon.UI
             set => Caption.text = value;
         }
 
-        public HeaderMoveablePanel()
+        public HeaderMoveablePanel() : base()
         {
-            CreateCaption();
+            PauseLayout(() =>
+            {
+                AutoLayout = AutoLayout.Horizontal;
+                AutoLayoutStart = LayoutStart.MiddleLeft;
+
+                PlaceItems();
+            });
         }
-        protected override void Init(float? height)
+        protected virtual void PlaceItems()
         {
-            base.Init(height);
-            CaptionSizeChanged();
+            Caption = AddUIComponent<CustomUILabel>();
+            Caption.AutoSize = AutoSize.Height;
+            Caption.Padding.top = 5;
+            Caption.HorizontalAlignment = UIHorizontalAlignment.Center;
+            Caption.VerticalAlignment = UIVerticalAlignment.Middle;
+
+            Content = AddUIComponent<TypeContent>();
+            Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
+            Content.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
+            Content.Padding.right = 5;
+            Content.PauseLayout(FillContent);
+        }
+        protected abstract void FillContent();
+        protected virtual void Init(float? height)
+        {
+            size = new Vector2(parent.width, height ?? 42);
+            Refresh();
         }
         public override void Start()
         {
@@ -54,33 +77,15 @@ namespace ModsCommon.UI
                     size = new Vector2(200f, 25f);
             }
         }
-
-        private void CreateCaption()
-        {
-            Caption = AddUIComponent<CustomUILabel>();
-            Caption.zOrder = 0;
-            Caption.autoSize = false;
-            Caption.autoHeight = true;
-            Caption.textAlignment = UIHorizontalAlignment.Center;
-            Caption.verticalAlignment = UIVerticalAlignment.Middle;
-            Caption.eventSizeChanged += (_, _) => CaptionSizeChanged();
-        }
-
-        private void CaptionSizeChanged() => Caption.relativePosition = new Vector2(10, (height - Caption.height) / 2);
-
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-            Refresh();
-        }
-        public override void Refresh()
-        {
-            Content.height = height;
-            base.Refresh();
 
-            Caption.width = width - Content.width - 20;
-            Content.relativePosition = new Vector2(Caption.width - 5 + 20, (height - Content.height) / 2);
+            Caption.width = width - Content.width;
+            Content.relativePosition = new Vector2(Caption.width - 5f + 20f, 0f);
         }
+
+        public virtual void Refresh() => Content.Refresh();
 
         protected override void OnMouseDown(UIMouseEventParameter p)
         {
@@ -130,7 +135,6 @@ namespace ModsCommon.UI
             }
             base.OnMouseMove(p);
         }
-
         protected override void OnMouseUp(UIMouseEventParameter p)
         {
             base.OnMouseUp(p);

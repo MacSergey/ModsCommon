@@ -1,6 +1,7 @@
 ﻿using ColossalFramework;
 using System;
 using UnityEngine;
+using ModsCommon.Settings;
 
 namespace ModsCommon.Utilities
 {

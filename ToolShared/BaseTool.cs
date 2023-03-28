@@ -2,6 +2,7 @@
 using ColossalFramework.Math;
 using ColossalFramework.UI;
 using ICities;
+using ModsCommon.UI;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
@@ -90,6 +91,27 @@ namespace ModsCommon
         public Vector3 CameraDirection { get; private set; }
         public bool IsModal { get; private set; }
 
+        private UILabel infoPanel;
+        protected UILabel InfoPanel
+        {
+            get
+            {
+                if (infoPanel == null)
+                {
+                    var baseInfo = UIView.Find<UILabel>("CursorInfo");
+                    infoPanel = Instantiate(baseInfo);
+                    baseInfo.GetUIView().AttachUIComponent(infoPanel.gameObject);
+                    infoPanel.name = $"{GetType().Name} Info Panel";
+                    infoPanel.atlas = CommonTextures.Atlas;
+                    infoPanel.backgroundSprite = CommonTextures.PanelBig;
+                    infoPanel.color = ComponentStyle.PanelColor;
+                    infoPanel.isVisible = false;
+                }
+                return infoPanel;
+            }
+        }
+
+
         #endregion
 
         #region BASIC
@@ -132,6 +154,10 @@ namespace ModsCommon
         protected override void OnDisable()
         {
             ModInstance.Logger.Debug($"Disable tool");
+
+            if (infoPanel != null && infoPanel.isVisible)
+                infoPanel.isVisible = false;
+
             Reset(null);
             OnStateChanged?.Invoke(false);
         }
@@ -315,26 +341,27 @@ namespace ModsCommon
             if (!UIView.HasModalInput() && ShowToolTip && mode.GetToolInfo() is string info && !string.IsNullOrEmpty(info))
                 ShowToolInfo(info);
             else
-                cursorInfoLabel.isVisible = false;
+                InfoPanel.isVisible = false;
         }
         private void ShowToolInfo(string text)
         {
-            if (cursorInfoLabel == null)
+            var infoPanel = InfoPanel;
+            if (infoPanel == null)
                 return;
 
-            cursorInfoLabel.BringToFront();
-            cursorInfoLabel.isVisible = true;
-            cursorInfoLabel.text = text ?? string.Empty;
+            infoPanel.BringToFront();
+            infoPanel.isVisible = true;
+            infoPanel.text = text ?? string.Empty;
 
-            UIView uIView = cursorInfoLabel.GetUIView();
+            UIView uIView = infoPanel.GetUIView();
 
             var relativePosition = MousePosition + new Vector3(25, 25);
 
             var screenSize = fullscreenContainer?.size ?? uIView.GetScreenResolution();
-            relativePosition.x = MathPos(relativePosition.x, cursorInfoLabel.width, screenSize.x);
-            relativePosition.y = MathPos(relativePosition.y, cursorInfoLabel.height, screenSize.y);
+            relativePosition.x = MathPos(relativePosition.x, infoPanel.width, screenSize.x);
+            relativePosition.y = MathPos(relativePosition.y, infoPanel.height, screenSize.y);
 
-            cursorInfoLabel.relativePosition = relativePosition;
+            infoPanel.relativePosition = relativePosition;
 
             static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);
         }

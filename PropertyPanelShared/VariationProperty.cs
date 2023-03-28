@@ -14,22 +14,19 @@ namespace ModsCommon.UI
             set => Selector.SelectedObject = value;
         }
 
-        public VariationProperty()
+        protected override void FillContent()
         {
             Selector = Content.AddUIComponent<SegmentedType>();
-            Selector.SetDefaultStyle();
             Selector.name = nameof(Selector);
+            Selector.SetDefaultStyle();
         }
-
         public override void Init()
         {
             Selector.AutoButtonSize = false;
             Selector.ButtonWidth = 30f;
             Selector.SetDefaultStyle();
-            Selector.StopLayout();
-            AddSelectorItems();
-            Selector.StartLayout();
-            Selector.OnSelectObjectChanged += SelectorChanged;
+            Selector.PauseLayout(AddSelectorItems);
+            Selector.OnSelectObject += SelectorChanged;
 
             base.Init();
         }
@@ -49,12 +46,11 @@ namespace ModsCommon.UI
             SelectorChangedImpl(selctedItem);
         }
         protected abstract void SelectorChangedImpl(ItemType selctedItem);
+        protected abstract void Refresh();
 
-        protected void Refresh()
+        public override void SetStyle(ControlStyle style)
         {
-            RefreshImpl();
-            Content.Refresh();
+            Selector.SetStyle(style.Segmented);
         }
-        protected abstract void RefreshImpl();
     }
 }

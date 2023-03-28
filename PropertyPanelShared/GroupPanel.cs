@@ -5,24 +5,24 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class PropertyGroupPanel : UIAutoLayoutPanel, IReusable
+    public class PropertyGroupPanel : CustomUIPanel, IReusable
     {
         protected static Color32 NormalColor { get; } = new Color32(82, 101, 117, 255);
 
         bool IReusable.InCache { get; set; }
-        protected virtual Color32 Color => NormalColor;
-        protected virtual string BackgroundSprite => "ButtonWhite";
-        protected virtual UITextureAtlas Atlas => TextureHelper.InGameAtlas;
+        protected virtual Color32 DefaultColor => NormalColor;
+        protected virtual string DefaultBackgroundSprite => CommonTextures.PanelBig;
+        protected virtual UITextureAtlas DefaultAtlas => CommonTextures.Atlas;
 
         public PropertyGroupPanel()
         {
-            atlas = Atlas;
-            backgroundSprite = BackgroundSprite;
-            color = Color;
+            Atlas = DefaultAtlas;
+            BackgroundSprite = DefaultBackgroundSprite;
+            BgColors = DefaultColor;
 
-            autoLayoutDirection = LayoutDirection.Vertical;
-            autoLayoutPadding = new RectOffset(0, 0, 0, 0);
-            autoFitChildrenVertically = true;
+            autoLayout = AutoLayout.Vertical;
+            padding = new RectOffset(0, 0, 0, 0);
+            autoChildrenVertically = AutoLayoutChildren.Fit;
         }
 
         public virtual void Init(float? width = null)
@@ -31,6 +31,8 @@ namespace ModsCommon.UI
                 this.width = width.Value;
             else if (parent is UIScrollablePanel scrollablePanel)
                 this.width = scrollablePanel.width - scrollablePanel.autoLayoutPadding.horizontal - scrollablePanel.scrollPadding.horizontal;
+            else if (parent is CustomUIPanel customPanel)
+                this.width = customPanel.ItemSize.x;
             else if (parent is UIPanel panel)
                 this.width = panel.width - panel.autoLayoutPadding.horizontal;
             else
@@ -39,22 +41,22 @@ namespace ModsCommon.UI
 
         public virtual void DeInit()
         {
-            StopLayout();
-
-            var components = this.components.ToArray();
-            foreach (var component in components)
-                ComponentPool.Free(component);
-            isVisible = true;
-
-            StartLayout(false);
+            PauseLayout(() =>
+            {
+                var components = this.components.ToArray();
+                foreach (var component in components)
+                    ComponentPool.Free(component);
+                isVisible = true;
+            }, false);
         }
 
         protected override void OnSizeChanged()
         {
-            StopLayout();
-            foreach (var item in components)
-                item.width = width - autoLayoutPadding.horizontal;
-            StartLayout();
+            PauseLayout(() =>
+            {
+                foreach (var item in components)
+                    item.width = width - Padding.horizontal;
+            });
 
             base.OnSizeChanged();
         }
@@ -62,44 +64,45 @@ namespace ModsCommon.UI
         {
             base.OnComponentAdded(child);
 
-            if (child is EditorItem item && item.SupportEven)
+            if (child is EditorPropertyPanel property)
             {
-                item.eventVisibilityChanged += ItemVisibilityChanged;
-                SetEven();
+                property.eventVisibilityChanged += ItemVisibilityChanged;
+                if (!IsLayoutSuspended)
+                    SetBorder();
             }
         }
         protected override void OnComponentRemoved(UIComponent child)
         {
             base.OnComponentRemoved(child);
 
-            if (child is EditorItem item && item.SupportEven)
+            if (child is EditorPropertyPanel property)
             {
-                item.eventVisibilityChanged -= ItemVisibilityChanged;
-                SetEven();
+                property.eventVisibilityChanged -= ItemVisibilityChanged;
+                if (!IsLayoutSuspended)
+                    SetBorder();
             }
         }
 
-        private void ItemVisibilityChanged(UIComponent component, bool value) => SetEven();
-
-        public void SetEven()
+        private void ItemVisibilityChanged(UIComponent component, bool value)
         {
-            if (!autoLayout)
-                return;
+            if (!IsLayoutSuspended)
+                SetBorder();
+        }
 
-            var supportEven = components.OfType<EditorItem>().Where(c => c.SupportEven && c.isVisible).ToArray();
-            var even = supportEven.Length > 1;
-
-            foreach (var item in supportEven)
+        protected virtual void SetBorder()
+        {
+            var items = components.Where(p => p.isVisible).ToArray();
+            for (int i = 0; i < items.Length; i += 1)
             {
-                item.IsEven = even;
-                even = !even;
+                if (items[i] is EditorPropertyPanel property)
+                    property.Borders = i == 0 ? PropertyBorder.None : PropertyBorder.Top;
             }
         }
 
-        public override void StartLayout(bool layoutNow = true)
+        public override void StartLayout(bool layoutNow = true, bool force = false)
         {
-            base.StartLayout(layoutNow);
-            SetEven();
+            SetBorder();
+            base.StartLayout(layoutNow, force);
         }
     }
 }

@@ -11,14 +11,13 @@ namespace ModsCommon.UI
     {
         public event Action<bool> OnDropDownStateChange;
 
-        bool IReusable.InCache { get; set; }
         public UISelector Selector { get; protected set; }
 
         protected virtual float DropDownWidth => 230;
         protected virtual bool AllowNull => true;
         public string NullText { get; set; } = string.Empty;
 
-        public ListPropertyPanel()
+        protected override void FillContent()
         {
             AddSelector();
             Selector.IsEqualDelegate = IsEqual;
@@ -28,23 +27,19 @@ namespace ModsCommon.UI
             Selector = Content.AddUIComponent<UISelector>();
 
             Selector.SetDefaultStyle(new Vector2(DropDownWidth, 20));
-            Selector.eventSizeChanged += SelectorSizeChanged;
             if (Selector is UIDropDown dropDown)
             {
                 dropDown.eventDropdownOpen += DropDownOpen;
                 dropDown.eventDropdownClose += DropDownClose;
             }
         }
-        private void SelectorSizeChanged(UIComponent component, Vector2 value) => Refresh();
 
         private void DropDownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
-            dropdown.triggerButton.isInteractive = false;
             OnDropDownStateChange?.Invoke(true);
         }
         private void DropDownClose(UIDropDown dropdown, UIListBox popup, ref bool overridden)
         {
-            dropdown.triggerButton.isInteractive = true;
             OnDropDownStateChange?.Invoke(false);
         }
 
@@ -93,7 +88,7 @@ namespace ModsCommon.UI
         protected override void AddSelector()
         {
             base.AddSelector();
-            Selector.OnSelectObjectChanged += SelectorValueChanged;
+            Selector.OnSelectObject += SelectorValueChanged;
         }
         protected virtual void SelectorValueChanged(Type value) => OnSelectObjectChanged?.Invoke(value);
 
@@ -120,7 +115,7 @@ namespace ModsCommon.UI
         protected override void AddSelector()
         {
             base.AddSelector();
-            Selector.OnSelectObjectsChanged += SelectorValueChanged;
+            Selector.OnSelectedObjectsChanged += SelectorValueChanged;
         }
         protected virtual void SelectorValueChanged(List<Type> value) => OnSelectObjectsChanged?.Invoke(value);
 
@@ -130,27 +125,5 @@ namespace ModsCommon.UI
             base.DeInit();
         }
         public override string ToString() => $"{base.ToString()}: {string.Join(",", SelectedObjects.Select(i => i.ToString()).ToArray())}";
-    }
-
-    public class StringListPropertyPanel : ListOncePropertyPanel<string, StringDropDown>
-    {
-        protected override bool AllowNull => true;
-        protected override bool IsEqual(string first, string second) => first == second;
-
-        public override void Init() => Init(new string[0], new string[0]);
-        public void Init(string[] values, string[] labels = null)
-        {
-            base.Init(null);
-
-            Selector.StopLayout();
-            if (labels == null)
-                labels = values;
-            var count = Math.Min(values.Length, labels.Length);
-            for (int i = 0; i < count; i += 1)
-            {
-                Selector.AddItem(values[i], new OptionData(labels[i]));
-            }
-            Selector.StartLayout();
-        }
     }
 }

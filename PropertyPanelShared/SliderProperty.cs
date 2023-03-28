@@ -59,7 +59,7 @@ namespace ModsCommon.UI
             set => Field.Format = value;
         }
 
-        public SliderPropertyPanel()
+        protected override void FillContent()
         {
             Slider = Content.AddUIComponent<SliderType>();
             Slider.SetDefaultStyle();
@@ -97,6 +97,10 @@ namespace ModsCommon.UI
         private void SliderChanged(ValueType value) => ValueChanged(value);
         private void FieldChanged(ValueType value) => ValueChanged(value);
 
+        public override void SetStyle(ControlStyle style)
+        {
+            Field.TextFieldStyle = style.TextField;
+        }
 
 
         public override string ToString() => $"{base.ToString()}: {Value}";

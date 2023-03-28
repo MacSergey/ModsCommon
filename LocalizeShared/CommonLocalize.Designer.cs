@@ -529,5 +529,65 @@ namespace ModsCommon
 		/// Don't show again
 		/// </summary>
 		public static string Mod_VersionWarning_DontShow => LocaleManager.GetString("Mod_VersionWarning_DontShow", Culture);
+
+		/// <summary>
+		/// Disabled
+		/// </summary>
+		public static string Dependency_Disabled => LocaleManager.GetString("Dependency_Disabled", Culture);
+
+		/// <summary>
+		/// Enabled
+		/// </summary>
+		public static string Dependency_Enabled => LocaleManager.GetString("Dependency_Enabled", Culture);
+
+		/// <summary>
+		/// Installed
+		/// </summary>
+		public static string Dependency_Installed => LocaleManager.GetString("Dependency_Installed", Culture);
+
+		/// <summary>
+		/// Removed
+		/// </summary>
+		public static string Dependency_Removed => LocaleManager.GetString("Dependency_Removed", Culture);
+
+		/// <summary>
+		/// Subscribed
+		/// </summary>
+		public static string Dependency_Subscribed => LocaleManager.GetString("Dependency_Subscribed", Culture);
+
+		/// <summary>
+		/// Unsubscribed
+		/// </summary>
+		public static string Dependency_Unsubscribed => LocaleManager.GetString("Dependency_Unsubscribed", Culture);
+
+		/// <summary>
+		/// Backspace
+		/// </summary>
+		public static string Key_Backspace => LocaleManager.GetString("Key_Backspace", Culture);
+
+		/// <summary>
+		/// Esc
+		/// </summary>
+		public static string Key_Esc => LocaleManager.GetString("Key_Esc", Culture);
+
+		/// <summary>
+		/// Press {0} to discard changes
+		/// </summary>
+		public static string Settings_DiscardShortcut => LocaleManager.GetString("Settings_DiscardShortcut", Culture);
+
+		/// <summary>
+		/// Press {0} to reset binding
+		/// </summary>
+		public static string Settings_ResetShortcut => LocaleManager.GetString("Settings_ResetShortcut", Culture);
+
+		/// <summary>
+		/// Space
+		/// </summary>
+		public static string Key_Space => LocaleManager.GetString("Key_Space", Culture);
+
+		/// <summary>
+		/// List is empty
+		/// </summary>
+		public static string Popup_Empty => LocaleManager.GetString("Popup_Empty", Culture);
 	}
 }

@@ -35,7 +35,7 @@ namespace ModsCommon.UI
         }
 
         public static ComponentType Get<ComponentType>(UIComponent parent, string name = null, int zOrder = -1)
-            where ComponentType : UIComponent, IReusable
+            where ComponentType : UIComponent
         {
             ComponentType component;
 
@@ -48,7 +48,8 @@ namespace ModsCommon.UI
             else
                 component = parent.AddUIComponent<ComponentType>();
 
-            component.InCache = false;
+            if (component is IReusable reusable)
+                reusable.InCache = false;
 
             if (name != null)
                 component.cachedName = name;
@@ -135,7 +136,7 @@ namespace ModsCommon.UI
             {
                 component.parent?.RemoveUIComponent(component);
                 UnityEngine.Object.Destroy(component.gameObject);
-                UnityEngine.Object.Destroy(component);
+                //UnityEngine.Object.Destroy(component);
             }
         }
     }

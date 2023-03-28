@@ -15,6 +15,11 @@ namespace ModsCommon
         public static string Ctrl => CommonLocalize.Key_Control;
         public static string Alt => CommonLocalize.Key_Alt;
         public static string Shift => CommonLocalize.Key_Shift;
+        public static string Esc => CommonLocalize.Key_Esc;
+        public static string Enter => CommonLocalize.Key_Enter;
+        public static string Space => CommonLocalize.Key_Space;
+        public static string Backspace => CommonLocalize.Key_Backspace;
+
         public static string CtrlAlt => $"{Ctrl}{Separator}{Alt}";
         public static string CtrlShift => $"{Ctrl}{Separator}{Shift}";
         public static string AltShift => $"{Alt}{Separator}{Shift}";

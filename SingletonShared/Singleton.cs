@@ -1,4 +1,5 @@
 ﻿using ICities;
+using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,12 +19,14 @@ namespace ModsCommon
         public string NameRaw { get; }
         public ILogger Logger { get; }
         public Version Version { get; }
+        public bool IsBeta { get; }
         public string VersionString { get; }
         public List<ModVersion> Versions { get; }
         public ModStatus Status { get; }
         public CultureInfo Culture { get; }
 #if DEBUG
         public bool NeedMonoDevelopDebug { get; }
+        public DependenciesWatcher DependencyWatcher { get; }
 #else
         public bool NeedMonoDevelop { get; }
 #endif
@@ -36,6 +39,9 @@ namespace ModsCommon
 
         public string GetLocalizedString(string key, CultureInfo culture = null);
         public IEnumerable<string> GetSupportLocales();
+
+        public void ShowGameOutOfDate();
+        public void ShowModOutOfDate();
     }
     public abstract class SingletonMod<T> : SingletonItem<T>
         where T : ICustomMod

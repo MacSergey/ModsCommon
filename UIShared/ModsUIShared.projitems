@@ -9,22 +9,48 @@
     <Import_RootNamespace>ModsUIShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BlurEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ColorPicker\ColorPickerButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ColorPicker\ColorPickerPopup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\AutoLayoutPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUICheckBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUILabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIScrollablePanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIScrollbar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUISlider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\BaseDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\ObjectDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIListbox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUITextField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\SelectItemDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\SimpleDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\BorderSettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\ControlSettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsItemSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\CheckPanelSettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\KeymappingItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\LanguageItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsContentItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsItemGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsLabelItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\TextFieldItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\ToggleItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Toggle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\CommonTextures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ComponentPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomElements.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DonatePanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DropDown.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Keymapping.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\MultyAtlasUIButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Popup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\DefaultDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUIButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DropDown\Popup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Render.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Segmented.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Selector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SizeChanger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Style.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ComponentStyle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TabPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\UIExtension.cs" />
@@ -54,26 +80,13 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\" />
     <Folder Include="$(MSBuildThisFileDirectory)Resources\CloseButton\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Resources\Field\legacy\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabled.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledLeft.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledMiddle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldDisabledRight.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocused.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedLeft.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedMiddle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldFocusedRight.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHovered.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredLeft.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredMiddle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldHoveredRight.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormal.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalLeft.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalMiddle.png" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldNormalRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\legacy\FieldFocused.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\legacy\FieldHovered.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\legacy\FieldNormal.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\Tab.png" />
@@ -82,5 +95,74 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\TabHover.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\TabNormal.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Tabs\TabPressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\cs-CZ.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\da-DK.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\de-DE.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\en-GB.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\en-US.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\es-ES.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\fi-FI.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\fr-FR.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\hu-HU.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\id-ID.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\it-IT.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\ja-JP.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\ko-KR.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\ms-MY.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\nl-NL.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\pl-PL.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\pt-BR.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\pt-PT.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\ro-RO.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\ru-RU.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\tr-TR.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\zh-CN.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\zh-TW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\PanelSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\PanelBig.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBackground.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBorderSmall.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldBorderLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldBorderMiddle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldBorderRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\OpacitySliderMask.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Radio\RadioChecked.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Radio\RadioUnchecked.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderLarge.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\PanelLarge.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\ShadowHorizontal.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Success.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorDown.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Vector\VectorUp.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Circle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\ShadowVertical.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBackgroundSmall.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowDown.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Arrows\ArrowUp.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\EmptyWithoutBorder.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBig.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBoth.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderSmall.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderBottom.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldLeft.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldMiddle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldRight.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldSingle.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderTop.png" />
   </ItemGroup>
 </Project>

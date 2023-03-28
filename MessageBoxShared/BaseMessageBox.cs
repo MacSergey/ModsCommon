@@ -10,9 +10,10 @@ namespace ModsCommon.UI
 {
     public static class MessageBox
     {
-        public static T Show<T>() where T : MessageBoxBase
+        public static T Show<T>() where T : UIComponent
         {
             var uiObject = new GameObject();
+            uiObject.name = nameof(MessageBox);
             uiObject.transform.parent = UIView.GetAView().transform;
             var messageBox = uiObject.AddComponent<T>();
 
@@ -33,7 +34,7 @@ namespace ModsCommon.UI
 
             return messageBox;
         }
-        public static void Hide(MessageBoxBase messageBox)
+        public static void Hide(UIComponent messageBox)
         {
             if (messageBox == null || UIView.GetModalComponent() != messageBox)
                 return;
@@ -65,7 +66,7 @@ namespace ModsCommon.UI
         public static int DefaultHeight => 200;
         public static int ButtonHeight => 35;
         protected static int ButtonsSpace => 25;
-        public static int Padding => 16;
+        public static int DefaultPadding => 16;
         public Vector2 MaxContentSize
         {
             get
@@ -79,34 +80,18 @@ namespace ModsCommon.UI
 
         private CustomUIDragHandle Header { get; set; }
         private CustomUILabel Caption { get; set; }
-        protected AutoSizeAdvancedScrollablePanel Panel { get; set; }
+        protected CustomUIScrollablePanel Content { get; set; }
         private CustomUIPanel ButtonPanel { get; set; }
         private IEnumerable<CustomUIButton> Buttons => ButtonPanel.components.OfType<CustomUIButton>();
 
-        private List<uint> ButtonsRatio { get; } = new List<uint>();
+        private List<int> ButtonsRatio { get; } = new List<int>();
         public string CaptionText { set => Caption.text = value; }
 
-        private int _defaultButton = 0;
+        private int defaultButton = 0;
         public int DefaultButton
         {
-            get => _defaultButton;
-            set
-            {
-                if (value != _defaultButton)
-                {
-                    var buttons = Buttons.ToArray();
-                    if (value >= 0 && value < buttons.Length)
-                    {
-                        if (buttons[_defaultButton].state == UIButton.ButtonState.Focused)
-                            buttons[_defaultButton].state = UIButton.ButtonState.Normal;
-
-                        _defaultButton = value;
-
-                        if (buttons[_defaultButton].state == UIButton.ButtonState.Normal)
-                            buttons[_defaultButton].state = UIButton.ButtonState.Focused;
-                    }
-                }
-            }
+            get => defaultButton;
+            set => defaultButton = Mathf.Clamp(value, 0, Buttons.Count() - 1);
         }
 
         #region CONSTRUCTOR
@@ -117,58 +102,88 @@ namespace ModsCommon.UI
             canFocus = true;
             isInteractive = true;
             size = new Vector2(DefaultWidth, DefaultHeight);
-            color = new Color32(58, 88, 104, 255);
-            backgroundSprite = "MenuPanel";
+            Atlas = CommonTextures.Atlas;
+            BackgroundSprite = CommonTextures.PanelBig;
+            BgColors = ComponentStyle.DarkPrimaryColor15;
             anchor = UIAnchorStyle.Left | UIAnchorStyle.Top | UIAnchorStyle.Proportional;
 
             AddHeader();
             AddContent();
             AddButtonPanel();
 
-            SetSize();
+            autoLayoutSpace = 10;
+            autoChildrenVertically = AutoLayoutChildren.Fit;
+            autoChildrenHorizontally = AutoLayoutChildren.Fill;
+            AutoLayout = AutoLayout.Vertical;
+
             CenterToParent();
         }
         private void AddHeader()
         {
             Header = AddUIComponent<CustomUIDragHandle>();
-            Header.size = new Vector2(DefaultWidth, 42);
+            Header.name = nameof(Header);
             Header.relativePosition = new Vector2(0, 0);
-            Header.eventSizeChanged += (component, size) =>
-            {
-                Caption.size = size;
-                Caption.CenterToParent();
-            };
+
+            var background = Header.AddUIComponent<CustomUISlicedSprite>();
+            background.atlas = CommonTextures.Atlas;
+            background.spriteName = CommonTextures.PanelBig;
+            background.color = ComponentStyle.HeaderColor;
 
             Caption = Header.AddUIComponent<CustomUILabel>();
-            Caption.textAlignment = UIHorizontalAlignment.Center;
+            Caption.name = nameof(Caption);
+            Caption.AutoSize = AutoSize.None;
+            Caption.Bold = true;
+            Caption.HorizontalAlignment = UIHorizontalAlignment.Center;
+            Caption.VerticalAlignment = UIVerticalAlignment.Middle;
             Caption.textScale = 1.3f;
-            Caption.anchor = UIAnchorStyle.Top;
-
-            Caption.eventTextChanged += (component, text) => Caption.CenterToParent();
+            Caption.size = Header.size;
 
             var cancel = Header.AddUIComponent<CustomUIButton>();
-            cancel.atlas = CommonTextures.Atlas;
-            cancel.normalBgSprite = CommonTextures.CloseButtonNormal;
-            cancel.hoveredBgSprite = CommonTextures.CloseButtonHovered;
-            cancel.pressedBgSprite = CommonTextures.CloseButtonPressed;
+            cancel.Atlas = CommonTextures.Atlas;
+            cancel.BgSprites = new SpriteSet(CommonTextures.CloseButtonNormal, CommonTextures.CloseButtonHovered, CommonTextures.CloseButtonPressed, CommonTextures.CloseButtonNormal, string.Empty);
             cancel.size = new Vector2(24, 24);
             cancel.relativePosition = new Vector2(540, 9);
             cancel.eventClick += CloseClick;
+
+            Header.eventSizeChanged += (component, size) =>
+            {
+                Caption.size = size;
+                background.size = size;
+            };
+            Header.size = new Vector2(DefaultWidth, 42);
         }
         private void AddContent()
         {
-            Panel = AddUIComponent<AutoSizeAdvancedScrollablePanel>();
-            Panel.MaxSize = MaxContentSize;
-            Panel.size = new Vector2(DefaultWidth, 0f);
-            Panel.relativePosition = new Vector2(0, Header.height + Padding);
-            Panel.Content.autoLayoutPadding = new RectOffset(Padding, Padding, ContentSpacing, 0);
-            Panel.Content.autoReset = true;
-            Panel.eventSizeChanged += ContentSizeChanged;
+            Content = AddUIComponent<CustomUIScrollablePanel>();
+            Content.name = nameof(Content);
+            Content.PauseLayout(() =>
+            {
+                Content.maximumSize = MaxContentSize;
+                Content.size = new Vector2(DefaultWidth, 0f);
+                Content.relativePosition = new Vector2(0, Header.height + DefaultPadding);
+                Content.Padding = new RectOffset(DefaultPadding, DefaultPadding, 0, 0);
+                Content.AutoLayoutSpace = ContentSpacing;
+                Content.AutoLayout = AutoLayout.Vertical;
+                Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
+                Content.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
+                Content.ScrollOrientation = UIOrientation.Vertical;
+                Content.AutoReset = true;
+
+                Content.Scrollbar.DefaultStyle();
+                Content.ScrollbarSize = 12f;
+            });
         }
         private void AddButtonPanel()
         {
             ButtonPanel = AddUIComponent<CustomUIPanel>();
-            ButtonPanel.size = new Vector2(DefaultWidth, ButtonHeight + 10);
+            ButtonPanel.name = nameof(ButtonPanel);
+            ButtonPanel.AutoLayoutSpace = ButtonsSpace;
+            ButtonPanel.Padding = new RectOffset(DefaultPadding, DefaultPadding, 10, 10);
+            ButtonPanel.AutoLayout = AutoLayout.Horizontal;
+            ButtonPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
+            ButtonPanel.eventSizeChanged += (_, _) => ArrangeButtons();
+
+            ButtonPanel.Atlas = CommonTextures.Atlas;
         }
 
         #endregion
@@ -191,14 +206,8 @@ namespace ModsCommon.UI
         {
             base.OnResolutionChanged(previousResolution, currentResolution);
 
-            Panel.MaxSize = MaxContentSize;
-            Panel.size = Panel.size;
-        }
-        private void ContentSizeChanged(UIComponent component, Vector2 value) => SetSize();
-        private void SetSize()
-        {
-            height = Mathf.Floor(Header.height + Padding + Panel.height + ButtonPanel.height + Padding);
-            ButtonPanel.relativePosition = new Vector2(0, Header.height + Padding + Panel.height + Padding);
+            Content.maximumSize = MaxContentSize;
+            Content.size = Content.size;
         }
 
         #endregion
@@ -208,27 +217,35 @@ namespace ModsCommon.UI
         public override void Update()
         {
             base.Update();
-            if (Buttons.Skip(DefaultButton).FirstOrDefault() is CustomUIButton button && button.state == UIButton.ButtonState.Normal)
-                button.state = UIButton.ButtonState.Focused;
+
+            var buttons = Buttons.ToArray();
+
+            for (var i = 0; i < buttons.Length; i += 1)
+            {
+                buttons[i].IsSelected = (i == defaultButton);
+
+                if (buttons[i].State == UIButton.ButtonState.Focused)
+                    buttons[i].State = UIButton.ButtonState.Normal;
+            }
         }
 
         protected CustomUIButton AddButton(Action action, uint ratio = 1)
         {
             var button = ButtonPanel.AddUIComponent<CustomUIButton>();
-            button.CustomStyle();
+            button.ButtonMessageBoxStyle();
             button.eventClick += (UIComponent component, UIMouseEventParameter eventParam) => action?.Invoke();
 
-            ButtonsRatio.Add(Math.Max(ratio, 1));
-            ChangeButtons();
+            ButtonsRatio.Add(Math.Max((int)ratio, 1));
+            ArrangeButtons();
 
             return button;
         }
         public void SetButtonsRatio(params uint[] ratio)
         {
             for (var i = 0; i < ButtonsRatio.Count; i += 1)
-                ButtonsRatio[i] = i < ratio.Length ? Math.Max(ratio[i], 1) : 1;
+                ButtonsRatio[i] = i < ratio.Length ? Math.Max((int)ratio[i], 1) : 1;
 
-            ChangeButtons();
+            ArrangeButtons();
         }
         public void SetAutoButtonRatio()
         {
@@ -248,20 +265,17 @@ namespace ModsCommon.UI
             SetButtonsRatio(widths.Select(i => (uint)i).ToArray());
         }
 
-        public void ChangeButtons()
+        public void ArrangeButtons()
         {
-            var sum = 0u;
-            var before = ButtonsRatio.Select(i => (sum += i) - i).ToArray();
+            ButtonPanel.PauseLayout(() =>
+            {
+                var sum = ButtonsRatio.Sum();
+                var buttons = Buttons.ToArray();
+                var space = ButtonPanel.width - ButtonPanel.Padding.horizontal - ButtonPanel.AutoLayoutSpace * (buttons.Length - 1);
 
-            var buttons = Buttons.ToArray();
-            for (var i = 0; i < buttons.Length; i += 1)
-                ChangeButton(buttons[i], i + 1, buttons.Length, (float)before[i] / sum, (float)ButtonsRatio[i] / sum);
-        }
-        private void ChangeButton(CustomUIButton button, int i, int from, float? positionRatio = null, float? widthRatio = null)
-        {
-            var width = this.width - (ButtonsSpace * 2 + ButtonsSpace / 2 * (from - 1));
-            button.size = new Vector2(width * (widthRatio ?? 1f / from), ButtonHeight);
-            button.relativePosition = new Vector2(ButtonsSpace * (0.5f + i / 2f) + width * (positionRatio ?? 1f / from * (i - 1)), 0);
+                for (var i = 0; i < buttons.Length; i += 1)
+                    buttons[i].size = new Vector2(space / sum * ButtonsRatio[i], ButtonHeight);
+            });
         }
 
         #endregion
@@ -278,7 +292,7 @@ namespace ModsCommon.UI
                 else if (p.keycode == KeyCode.Return)
                 {
                     p.Use();
-                    if (Buttons.Skip(DefaultButton).FirstOrDefault() is CustomUIButton button)
+                    if (Buttons.Skip(defaultButton).FirstOrDefault() is CustomUIButton button)
                         button.SimulateClick();
                 }
                 else if (p.keycode == KeyCode.RightArrow)
@@ -306,7 +320,23 @@ namespace ModsCommon.UI
         }
 
 
-        public void StopLayout() => Panel.StopLayout();
-        public void StartLayout(bool layoutNow = true) => Panel.StartLayout(layoutNow);
+        public new bool IsLayoutSuspended => Content.IsLayoutSuspended;
+        public new Vector2 ItemSize => Content.ItemSize;
+        public new RectOffset LayoutPadding => Content.LayoutPadding;
+
+        public override void StopLayout()
+        {
+            base.StopLayout();
+            Content.StopLayout();
+        }
+        public override void StartLayout(bool layoutNow = true, bool force = false)
+        {
+            Content.StartLayout(layoutNow, force);
+            base.StartLayout(layoutNow, force);
+        }
+        public override void PauseLayout(Action action, bool layoutNow = true, bool force = false)
+        {
+            base.PauseLayout(() => Content.PauseLayout(action, layoutNow, force), layoutNow, force);
+        }
     }
 }

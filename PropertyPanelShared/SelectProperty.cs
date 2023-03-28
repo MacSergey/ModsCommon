@@ -24,19 +24,16 @@ namespace ModsCommon.UI
             set => Selector.Value = value;
         }
 
-        public SelectPropertyPanel()
-        {
-            AddSelector();
-        }
-        private void AddSelector()
+        protected override void FillContent()
         {
             Selector = Content.AddUIComponent<PanelType>();
+            Selector.name = nameof(Selector);
             Selector.width = Width;
             Selector.OnValueChanged += ValueChanged;
 
-            Selector.Button.eventClick += ButtonClick;
-            Selector.Button.eventMouseEnter += ButtonMouseEnter;
-            Selector.Button.eventMouseLeave += ButtonMouseLeave;
+            Selector.eventClick += ButtonClick;
+            Selector.eventMouseEnter += ButtonMouseEnter;
+            Selector.eventMouseLeave += ButtonMouseLeave;
         }
 
         public override void DeInit()
@@ -50,37 +47,34 @@ namespace ModsCommon.UI
         }
         public bool Selected
         {
-            get => Selector.Selected;
-            set => Selector.Selected = value;
+            get => Selector.IsSelected;
+            set => Selector.IsSelected = value;
         }
-        public new void Focus() => Selector.Focus();
 
         protected void ValueChanged(Type value) => OnValueChanged?.Invoke(value);
-        protected virtual void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => OnSelect?.Invoke(component.parent as PanelType);
-        protected virtual void ButtonMouseEnter(UIComponent component, UIMouseEventParameter eventParam) => OnEnter?.Invoke(component.parent as PanelType);
-        protected virtual void ButtonMouseLeave(UIComponent component, UIMouseEventParameter eventParam) => OnLeave?.Invoke(component.parent as PanelType);
+        protected virtual void ButtonClick(UIComponent component, UIMouseEventParameter eventParam) => OnSelect?.Invoke(Selector);
+        protected virtual void ButtonMouseEnter(UIComponent component, UIMouseEventParameter eventParam) => OnEnter?.Invoke(Selector);
+        protected virtual void ButtonMouseLeave(UIComponent component, UIMouseEventParameter eventParam) => OnLeave?.Invoke(Selector);
     }
 
     public abstract class ResetableSelectPropertyPanel<Type, PanelType> : SelectPropertyPanel<Type, PanelType>
         where PanelType : SelectListPropertyButton<Type>
     {
         public event Action<PanelType> OnReset;
+
+        protected CustomUIButton ResetButton { get; }
         protected abstract string ResetToolTip { get; }
 
         public ResetableSelectPropertyPanel()
         {
-            AddReset();
-        }
-        private void AddReset()
-        {
-            var button = AddButton(Content);
-
-            button.size = new Vector2(20f, 20f);
-            button.text = "×";
-            button.tooltip = ResetToolTip;
-            button.textScale = 1.3f;
-            button.textPadding = new RectOffset(0, 0, 0, 0);
-            button.eventClick += ResetClick;
+            ResetButton = Content.AddUIComponent<CustomUIButton>();
+            ResetButton.SetDefaultStyle();
+            ResetButton.size = new Vector2(20f, 20f);
+            ResetButton.text = "×";
+            ResetButton.tooltip = ResetToolTip;
+            ResetButton.textScale = 1.3f;
+            ResetButton.TextPadding = new RectOffset(0, 0, 0, 0);
+            ResetButton.eventClick += ResetClick;
         }
 
         public override void DeInit()
@@ -99,7 +93,6 @@ namespace ModsCommon.UI
     public abstract class SelectPropertyButton<Type> : CustomUIButton
     {
         public override bool containsFocus => false;
-        public CustomUIButton Button { get; }
         protected abstract string NotSet { get; }
 
 
@@ -109,57 +102,39 @@ namespace ModsCommon.UI
         public SelectPropertyButton()
         {
             text = NotSet;
-            atlas = CommonTextures.Atlas;
-            normalBgSprite = CommonTextures.FieldNormal;
-            hoveredBgSprite = CommonTextures.FieldHovered;
-            disabledBgSprite = CommonTextures.FieldDisabled;
-            focusedBgSprite = CommonTextures.FieldFocused;
-            isInteractive = false;
+
+            BgAtlas = CommonTextures.Atlas;
+            bgSprites = CommonTextures.FieldSingle;
+            selBgSprites = CommonTextures.FieldSingle;
+            bgColors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldNormalColor, ComponentStyle.FieldDisabledColor);
+            selBgColors = new ColorSet(ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledFocusedColor);
+
+            FgAtlas = CommonTextures.Atlas;
+            fgSprites = CommonTextures.ArrowDown;
+            fgColors = Color.black;
+
+            ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            ScaleFactor = 0.7f;
+            HorizontalAlignment = UIHorizontalAlignment.Right;
+            VerticalAlignment = UIVerticalAlignment.Middle;
+            SpritePadding = new RectOffset(0, 5, 0, 0);
+
             enabled = true;
-            autoSize = false;
-            textHorizontalAlignment = UIHorizontalAlignment.Left;
-            textVerticalAlignment = UIVerticalAlignment.Middle;
+            AutoSize = AutoSize.None;
+            TextHorizontalAlignment = UIHorizontalAlignment.Left;
+            TextVerticalAlignment = UIVerticalAlignment.Middle;
             height = 20;
             textScale = 0.6f;
-            textPadding = new RectOffset(8, 0, 4, 0);
-
-            Button = AddUIComponent<CustomUIButton>();
-            Button.atlas = TextureHelper.InGameAtlas;
-            Button.text = string.Empty;
-            Button.size = size;
-            Button.relativePosition = new Vector3(0f, 0f);
-            Button.textVerticalAlignment = UIVerticalAlignment.Middle;
-            Button.textHorizontalAlignment = UIHorizontalAlignment.Left;
-            Button.normalFgSprite = "IconDownArrow";
-            Button.hoveredFgSprite = "IconDownArrowHovered";
-            Button.pressedFgSprite = "IconDownArrowPressed";
-            Button.focusedFgSprite = "IconDownArrow";
-            Button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
-            Button.horizontalAlignment = UIHorizontalAlignment.Right;
-            Button.verticalAlignment = UIVerticalAlignment.Middle;
-            Button.textScale = 0.8f;
-            Button.eventIsEnabledChanged += ButtonIsEnabledChanged;
+            TextPadding = new RectOffset(8, 0, 4, 0);
         }
-
-        protected override void OnSizeChanged()
-        {
-            base.OnSizeChanged();
-            if (Button != null)
-                Button.size = size;
-        }
-        private void ButtonIsEnabledChanged(UIComponent component, bool value) => Button.normalFgSprite = value ? "IconDownArrow" : "Empty";
 
         protected void ValueChanged()
         {
             OnValueChanged?.Invoke(Value);
             text = Value?.ToString() ?? NotSet;
         }
-        public new void Focus() => Button.Focus();
-        public bool Selected
-        {
-            get => state == ButtonState.Focused;
-            set => state = value ? ButtonState.Focused : ButtonState.Normal;
-        }
+
+        public DropDownStyle SelectorStyle { set => ButtonStyle = value; }
     }
     public abstract class SelectListPropertyButton<Type> : SelectPropertyButton<Type>
     {
@@ -193,13 +168,13 @@ namespace ModsCommon.UI
     }
     public abstract class SelectItemPropertyButton<Type> : SelectPropertyButton<Type>
     {
-        private Type _value;
+        private Type value;
         public override Type Value
         {
-            get => _value;
+            get => value;
             set
             {
-                _value = value;
+                this.value = value;
                 ValueChanged();
             }
         }

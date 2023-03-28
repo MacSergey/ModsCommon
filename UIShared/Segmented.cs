@@ -19,14 +19,43 @@ namespace ModsCommon.UI
             this.atlas = atlas;
             this.sprite = sprite;
         }
+
+        public static explicit operator OptionData(string label) => new OptionData(label);
+        public static implicit operator string(OptionData data) => data.label;
     }
-    public abstract class UISegmented<ValueType> : UIAutoLayoutPanel, IReusable
+    public class CustomUISegmentedButton : CustomUIButton
+    {
+        public SegmentedButtonType Type { get; set; }
+        public ButtonStyle SegmentedStyle
+        {
+            set
+            {
+                bgColors = value.BgColors;
+                selBgColors = value.SelBgColors;
+
+                fgColors = value.FgColors;
+                selFgColors = value.SelFgColors;
+
+                textColors = value.TextColors;
+                selTextColors = value.SelTextColors;
+
+                OnColorChanged();
+            }
+        }
+    }
+    public enum SegmentedButtonType
+    {
+        Single,
+        Left,
+        Middle,
+        Right,
+    }
+    public abstract class UISegmented<ValueType> : CustomUIPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
-        protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
-        protected Dictionary<CustomUIButton, bool> Clickable { get; } = new Dictionary<CustomUIButton, bool>();
+        protected List<CustomUISegmentedButton> Buttons { get; } = new List<CustomUISegmentedButton>();
         protected virtual int TextPadding => AutoButtonSize ? 8 : (int)Mathf.Clamp((buttonWidth - 20f) / 2f, 0, 8);
 
         private bool autoButtonSize = true;
@@ -72,9 +101,9 @@ namespace ModsCommon.UI
 
         public UISegmented()
         {
-            autoLayoutDirection = LayoutDirection.Horizontal;
-            autoFitChildrenHorizontally = true;
-            autoFitChildrenVertically = true;
+            autoLayout = AutoLayout.Horizontal;
+            autoChildrenHorizontally = AutoLayoutChildren.Fit;
+            autoChildrenVertically = AutoLayoutChildren.Fit;
         }
 
         public void AddItem(ValueType item, OptionData optionData) => AddItem(item, optionData, true, null);
@@ -82,16 +111,17 @@ namespace ModsCommon.UI
         {
             Objects.Add(item);
 
-            var button = AddUIComponent<MultyAtlasUIButton>();
-            button.atlas = CommonTextures.Atlas;
-            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+            var button = AddUIComponent<CustomUISegmentedButton>();
+            button.name = optionData.label ?? item.ToString();
+            button.Atlas = CommonTextures.Atlas;
+            button.TextHorizontalAlignment = UIHorizontalAlignment.Center;
 
             if (optionData.atlas != null && !string.IsNullOrEmpty(optionData.sprite))
             {
-                button.atlasForeground = optionData.atlas;
-                button.normalFgSprite = optionData.sprite;
+                button.FgAtlas = optionData.atlas;
+                button.AllFgSprites = optionData.sprite;
                 button.tooltip = optionData.label ?? item.ToString();
-                button.foregroundSpriteMode = UIForegroundSpriteMode.Scale;
+                button.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
             }
             else
                 button.text = optionData.label ?? item.ToString();
@@ -99,75 +129,110 @@ namespace ModsCommon.UI
             UpdateButton(button, width);
             if (clickable)
                 button.eventClick += ButtonClick;
+            else
+                button.isEnabled = false;
 
-            var last = Buttons.LastOrDefault();
             Buttons.Add(button);
-            Clickable.Add(button, clickable);
+            SetType(button);
+            SetStyle(button);
 
-            SetSprite(button, false);
-            if (last != null)
-                SetSprite(last, IsSelect(Buttons.Count - 2));
-
+            if (Buttons.Count >= 2)
+            {
+                SetType(Buttons[Buttons.Count - 2]);
+                SetStyle(Buttons[Buttons.Count - 2]);
+            }
         }
         private void SetButtonsWidth()
         {
-            StopLayout();
-
-            foreach (var button in Buttons)
-                UpdateButton(button);
-
-            StartLayout();
+            PauseLayout(() =>
+            {
+                foreach (var button in Buttons)
+                    UpdateButton(button);
+            });
         }
-        private void UpdateButton(CustomUIButton button = null, float? width = null)
+        private void UpdateButton(CustomUISegmentedButton button = null, float? width = null)
         {
-            button.textPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
+            button.TextPadding = new RectOffset(TextPadding, TextPadding, 4, 0);
             button.textScale = TextScale;
 
             if (AutoButtonSize)
             {
-                button.autoSize = true;
-                button.autoSize = false;
+                button.height = 20f;
+                button.PerformAutoWidth();
             }
             else if (width.HasValue)
-                button.width = width.Value;
+                button.size = new Vector2(width.Value, 20f);
             else
-                button.width = ButtonWidth;
-
-            button.height = 20;
+                button.size = new Vector2(ButtonWidth, 20f);
         }
-        protected void SetSprite(CustomUIButton button, bool isSelect)
+        private void SetType(CustomUISegmentedButton button)
         {
             var index = Buttons.IndexOf(button);
-            var suffix = Suffix(index);
 
-            if (isSelect)
+            if (index == 0)
             {
-                button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldFocused}{suffix}";
-                button.disabledColor = new Color32(192, 192, 192, 255);
-            }
-            else if (!Clickable[button])
-            {
-                button.normalBgSprite = button.hoveredBgSprite = button.pressedBgSprite = button.disabledBgSprite = $"{CommonTextures.FieldDisabled}{suffix}";
-                button.disabledColor = Color.white;
+                if (Buttons.Count == 1)
+                    button.Type = SegmentedButtonType.Single;
+                else
+                    button.Type = SegmentedButtonType.Left;
             }
             else
             {
-                button.normalBgSprite = $"{CommonTextures.FieldNormal}{suffix}";
-                button.hoveredBgSprite = button.pressedBgSprite = $"{CommonTextures.FieldHovered}{suffix}";
-                button.disabledBgSprite = $"{CommonTextures.FieldDisabled}{suffix}";
-                button.disabledColor = Color.white;
+                if (index == Buttons.Count - 1)
+                    button.Type = SegmentedButtonType.Right;
+                else
+                    button.Type = SegmentedButtonType.Middle;
             }
         }
-        private string Suffix(int index)
+        protected void SetStyle(CustomUISegmentedButton button)
         {
-            if (index == 0)
-                return Buttons.Count == 1 ? string.Empty : "Left";
+            if (Style == null)
+            {
+                switch (button.Type)
+                {
+                    case SegmentedButtonType.Single:
+                        button.AllBgSprites = CommonTextures.FieldSingle;
+                        break;
+                    case SegmentedButtonType.Left:
+                        button.AllBgSprites = CommonTextures.FieldLeft;
+                        break;
+                    case SegmentedButtonType.Middle:
+                        button.AllBgSprites = CommonTextures.FieldMiddle;
+                        break;
+                    case SegmentedButtonType.Right:
+                        button.AllBgSprites = CommonTextures.FieldRight;
+                        break;
+                }
+            }
             else
-                return index == Buttons.Count - 1 ? "Right" : "Middle";
+            {
+                var fgAtlas = button.FgAtlas;
+                var fgSprites = button.FgSprites;
+                var selFgSprites = button.SelFgSprites;
+
+                switch (button.Type)
+                {
+                    case SegmentedButtonType.Single:
+                        button.ButtonStyle = Style.Single;
+                        break;
+                    case SegmentedButtonType.Left:
+                        button.ButtonStyle = Style.Left;
+                        break;
+                    case SegmentedButtonType.Middle:
+                        button.ButtonStyle = Style.Middle;
+                        break;
+                    case SegmentedButtonType.Right:
+                        button.ButtonStyle = Style.Right;
+                        break;
+                }
+
+                button.FgAtlas = fgAtlas;
+                button.FgSprites = fgSprites;
+                button.SelFgSprites = selFgSprites;
+            }
         }
 
         protected abstract void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null);
-        protected abstract bool IsSelect(int index);
 
         public virtual void DeInit()
         {
@@ -181,23 +246,34 @@ namespace ModsCommon.UI
         {
             Objects.Clear();
 
-            foreach (var button in Buttons)
-                ComponentPool.Free(button);
+            PauseLayout(() =>
+            {
+                foreach (var button in Buttons)
+                    ComponentPool.Free(button);
+            });
 
             Buttons.Clear();
-            Clickable.Clear();
         }
 
         public void SetDefaultStyle(Vector2? size = null) { }
+
+        private SegmentedStyle Style { get; set; } = ComponentStyle.Default.Segmented;
+        public void SetStyle(SegmentedStyle style)
+        {
+            Style = style;
+
+            foreach (var button in Buttons)
+                SetStyle(button);
+        }
     }
 
     public abstract class UIOnceSegmented<ValueType> : UISegmented<ValueType>, IUIOnceSelector<ValueType>, IValueChanger<ValueType>
     {
-        public event Action<ValueType> OnSelectObjectChanged;
+        public event Action<ValueType> OnSelectObject;
         event Action<ValueType> IValueChanger<ValueType>.OnValueChanged
         {
-            add => OnSelectObjectChanged += value;
-            remove => OnSelectObjectChanged -= value;
+            add => OnSelectObject += value;
+            remove => OnSelectObject -= value;
         }
 
         private int SelectedIndex { get; set; } = -1;
@@ -225,21 +301,21 @@ namespace ModsCommon.UI
                 return;
 
             if (SelectedIndex != -1)
-                SetSprite(Buttons[SelectedIndex], false);
+                Buttons[SelectedIndex].IsSelected = false;
 
             SelectedIndex = index;
 
             if (SelectedIndex != -1)
             {
-                SetSprite(Buttons[SelectedIndex], true);
+                Buttons[SelectedIndex].IsSelected = true;
                 if (callEvent)
-                    OnSelectObjectChanged?.Invoke(SelectedObject);
+                    OnSelectObject?.Invoke(SelectedObject);
             }
         }
         public override void DeInit()
         {
             base.DeInit();
-            OnSelectObjectChanged = null;
+            OnSelectObject = null;
             UseWheel = false;
         }
         public override void Clear()
@@ -248,7 +324,6 @@ namespace ModsCommon.UI
             base.Clear();
         }
         protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null) => SetSelected(Buttons.FindIndex(b => b == component));
-        protected override bool IsSelect(int index) => SelectedIndex == index;
     }
     public class BoolSegmented : UIOnceSegmented<bool>
     {
@@ -267,11 +342,11 @@ namespace ModsCommon.UI
 
     public abstract class UIMultySegmented<ValueType> : UISegmented<ValueType>, IUIMultySelector<ValueType>, IValueChanger<List<ValueType>>
     {
-        public event Action<List<ValueType>> OnSelectObjectsChanged;
+        public event Action<List<ValueType>> OnSelectedObjectsChanged;
         event Action<List<ValueType>> IValueChanger<List<ValueType>>.OnValueChanged
         {
-            add => OnSelectObjectsChanged += value;
-            remove => OnSelectObjectsChanged -= value;
+            add => OnSelectedObjectsChanged += value;
+            remove => OnSelectedObjectsChanged -= value;
         }
 
         private HashSet<int> SelectedIndices { get; set; } = new HashSet<int>();
@@ -303,25 +378,25 @@ namespace ModsCommon.UI
             foreach (var index in SelectedIndices)
             {
                 if (!indices.Contains(index))
-                    SetSprite(Buttons[index], false);
+                    Buttons[index].IsSelected = false;
             }
 
             foreach (var index in indices)
             {
                 if (!SelectedIndices.Contains(index))
-                    SetSprite(Buttons[index], true);
+                    Buttons[index].IsSelected = true;
             }
 
             SelectedIndices = new HashSet<int>(indices);
 
             if (callEvent)
-                OnSelectObjectsChanged?.Invoke(SelectedObjects);
+                OnSelectedObjectsChanged?.Invoke(SelectedObjects);
         }
 
         public override void DeInit()
         {
             base.DeInit();
-            OnSelectObjectsChanged = null;
+            OnSelectedObjectsChanged = null;
         }
         public override void Clear()
         {
@@ -340,6 +415,5 @@ namespace ModsCommon.UI
 
             SetSelected(indices);
         }
-        protected override bool IsSelect(int index) => SelectedIndices.Contains(index);
     }
 }

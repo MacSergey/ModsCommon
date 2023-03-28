@@ -5,36 +5,62 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
+    public enum MessageType
+    {
+        None,
+        Regular,
+        Warning
+    }
+
     public abstract class SimpleMessageBox : MessageBoxBase
     {
         protected CustomUILabel Message { get; set; }
 
         public string MessageText { set => Message.text = value; }
         public float MessageScale { set => Message.textScale = value; }
-        public UIHorizontalAlignment TextAlignment { set => Message.textAlignment = value; }
+        public UIHorizontalAlignment TextAlignment { set => Message.HorizontalAlignment = value; }
+
+        private MessageType type;
+        public MessageType Type
+        {
+            get => type;
+            set
+            {
+                if(value != type)
+                {
+                    type = value;
+
+                    Message.BackgroundSprite = value == MessageType.None ? string.Empty : CommonTextures.PanelBig;
+                    Message.color = value switch
+                    {
+                        MessageType.Regular => ComponentStyle.DarkPrimaryColor15,
+                        MessageType.Warning => ComponentStyle.WarningColor,
+                        _ => ComponentStyle.DarkPrimaryColor0,
+                    };
+                }
+            }
+        }
 
         public SimpleMessageBox()
         {
-            Panel.StopLayout();
+            PauseLayout(() =>
+            {
+                Content.AutoLayoutSpace = 15;
 
-            Message = AddLabel();
-            Message.minimumSize = new Vector2(0, 79);
+                Message = Content.AddUIComponent<CustomUILabel>();
+                Message.name = nameof(Message);
+                Message.Bold = true;
+                Message.HorizontalAlignment = UIHorizontalAlignment.Center;
+                Message.VerticalAlignment = UIVerticalAlignment.Middle;
+                Message.textScale = 1.1f;
+                Message.WordWrap = true;
+                Message.AutoSize = AutoSize.Height;
+                Message.Padding = new RectOffset(10, 10, 10, 10);
+                Message.Atlas = CommonTextures.Atlas;
+                Message.minimumSize = new Vector2(0, 79);
 
-            Panel.StartLayout();
-        }
-
-        protected CustomUILabel AddLabel()
-        {
-            var label = Panel.Content.AddUIComponent<CustomUILabel>();
-
-            label.textAlignment = UIHorizontalAlignment.Center;
-            label.verticalAlignment = UIVerticalAlignment.Middle;
-            label.textScale = 1.1f;
-            label.wordWrap = true;
-            label.autoHeight = true;
-            label.width = DefaultWidth - 2 * Padding;
-
-            return label;
+                Type = MessageType.Warning;
+            });
         }
     }
 

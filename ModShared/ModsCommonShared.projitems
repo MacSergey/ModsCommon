@@ -11,12 +11,13 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BaseMod.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BasePatcherMod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Helper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ResourceUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Manager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\ClassesExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\EnumExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Extensions\VersionExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Settings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\Settings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Shortcut.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Transpiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Utilites.cs" />
