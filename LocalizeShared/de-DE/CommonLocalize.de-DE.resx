@@ -483,4 +483,7 @@ helfen oder die Mod in deine Sprache übersetzen</value>
   <data name="Key_Space" xml:space="preserve">
     <value>Leertaste</value>
   </data>
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>Liste ist leer</value>
+  </data>
 </root>

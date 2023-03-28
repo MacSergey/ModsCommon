@@ -449,15 +449,40 @@ of de mod in jouw taal vertalen</value>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>Niet meer weergeven</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>Uitgeschakeld</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>Ingeschakeld</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>Geïnstalleerd</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>Verwijderd</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>Geabonneerd</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>Uitgeschreven</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>Druk op {0} om de wijzigingen te annuleren</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>Druk op {0} om de sneltoets te resetten</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Spatiebalk</value>
+  </data>
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>Lijst is leeg</value>
+  </data>
 </root>

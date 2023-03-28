@@ -481,4 +481,7 @@ selezionare il passaggio successivo</value>
   <data name="Key_Space" xml:space="preserve">
     <value>Spazio</value>
   </data>
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>L'elenco è vuoto</value>
+  </data>
 </root>

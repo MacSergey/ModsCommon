@@ -481,4 +481,7 @@ Shift x10，Ctrl x0.1</value>
   <data name="Key_Space" xml:space="preserve">
     <value>空格键</value>
   </data>
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>列表是空的</value>
+  </data>
 </root>

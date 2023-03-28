@@ -482,4 +482,7 @@ o traducir el mod a tu idioma</value>
   <data name="Key_Space" xml:space="preserve">
     <value>Espacio</value>
   </data>
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>La lista está vacía</value>
+  </data>
 </root>
