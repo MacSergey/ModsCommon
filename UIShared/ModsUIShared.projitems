@@ -80,7 +80,6 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Resources\ColorPicker\" />
     <Folder Include="$(MSBuildThisFileDirectory)Resources\CloseButton\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +144,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\OpacitySlider\OpacitySliderMask.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Radio\RadioChecked.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Radio\RadioUnchecked.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Panels\BorderLarge.png" />

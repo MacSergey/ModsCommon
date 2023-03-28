@@ -69,6 +69,7 @@ namespace ModsCommon.Utilities
 
         public static string OpacitySliderBoard { get; } = nameof(OpacitySliderBoard);
         public static string OpacitySliderColor { get; } = nameof(OpacitySliderColor);
+        public static string OpacitySliderMask { get; } = nameof(OpacitySliderMask);
 
         public static string ColorPickerNormal { get; } = nameof(ColorPickerNormal);
         public static string ColorPickerHovered { get; } = nameof(ColorPickerHovered);
@@ -188,6 +189,7 @@ namespace ModsCommon.Utilities
             //OpacitySlider
             spriteParams[OpacitySliderBoard] = new RectOffset();
             spriteParams[OpacitySliderColor] = new RectOffset();
+            spriteParams[OpacitySliderMask] = new RectOffset(6, 6, 6, 6);
 
             //Header
             spriteParams[HeaderAdditionalButton] = new RectOffset();

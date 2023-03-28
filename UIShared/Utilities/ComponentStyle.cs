@@ -591,6 +591,7 @@ namespace ModsCommon.UI
         public ButtonStyle Button { get; set; }
         public DropDownStyle DropDown { get; set; }
         public ToggleStyle Toggle { get; set; }
+        public ColorPickerStyle ColorPicker { get; set; }
     }
     public class ItemStyle
     {
@@ -730,6 +731,10 @@ namespace ModsCommon.UI
         }
     }
     public class CheckBoxStyle : ItemStyle
+    {
+
+    }
+    public class ColorPickerStyle : ItemStyle
     {
 
     }

@@ -15,6 +15,7 @@ namespace ModsCommon.UI
         }
 
         public event Action<float> OnSliderValueChanged;
+        public event Action<Vector2> OnThumbPositionChanged;
 
 
         protected UIOrientation orientation;
@@ -59,8 +60,8 @@ namespace ModsCommon.UI
                     minValue = value;
                     if (rawValue < value)
                         Value = value;
-
-                    Invalidate();
+                    else
+                        Value = Value;
                 }
             }
         }
@@ -77,8 +78,8 @@ namespace ModsCommon.UI
                     maxValue = value;
                     if (rawValue > value)
                         Value = value;
-
-                    Invalidate();
+                    else
+                        Value = Value;
                 }
             }
         }
@@ -95,7 +96,6 @@ namespace ModsCommon.UI
                 {
                     stepSize = value;
                     Value = rawValue.Quantize(value);
-                    Invalidate();
                 }
             }
         }
@@ -126,7 +126,22 @@ namespace ModsCommon.UI
                 if (Vector2.Distance(value, thumbOffset) > float.Epsilon)
                 {
                     thumbOffset = value;
-                    Invalidate();
+                    UpdateThumb(Value);
+                }
+            }
+        }
+
+
+        protected RectOffset thumbPadding;
+        public RectOffset ThumbPadding
+        {
+            get => thumbPadding ??= new RectOffset();
+            set
+            {
+                if (!Equals(value, thumbPadding))
+                {
+                    thumbPadding = value;
+                    UpdateThumb(rawValue);
                 }
             }
         }
@@ -141,36 +156,25 @@ namespace ModsCommon.UI
                 if (value != thumbSize)
                 {
                     thumbSize = value;
-                    Invalidate();
+                    UpdateThumb(Value);
                 }
             }
         }
 
 
+        private Vector2 thumbPosition;
         public Vector2 ThumbPosition
         {
-            get
+            get => thumbPosition;
+            set
             {
-                var position = ThumbOffset;
-
-                switch (Orientation)
+                if (value != thumbPosition)
                 {
-                    case UIOrientation.Horizontal:
-                        position.x -= thumbSize.x * 0.5f;
-                        position.y -= (height - thumbSize.y) * 0.5f;
-                        position.x += width / (MaxValue - MinValue) * (Value - MinValue);
-                        break;
-                    case UIOrientation.Vertical:
-                        position.y += thumbSize.y * 0.5f;
-                        position.x += (width - thumbSize.x) * 0.5f;
-                        position.y -= height - height / (MaxValue - MinValue) * (Value - MinValue);
-                        break;
+                    thumbPosition = value;
+                    OnThumbPositionChanged?.Invoke(value);
                 }
-
-                return position;
             }
         }
-
 
         public override bool canFocus => (isEnabled && isVisible) || base.canFocus;
 
@@ -432,9 +436,37 @@ namespace ModsCommon.UI
 
         #region HANDLERS
 
+        private void UpdateThumb(float value)
+        {
+            var position = ThumbOffset;
+
+            switch (Orientation)
+            {
+                case UIOrientation.Horizontal:
+                    {
+                        var width = this.width - ThumbPadding.horizontal;
+                        position.x -= thumbSize.x * 0.5f;
+                        position.y += (height - thumbSize.y) * 0.5f;
+                        position.x += ThumbPadding.left + width / (MaxValue - MinValue) * (value - MinValue);
+                        break;
+                    }
+                case UIOrientation.Vertical:
+                    {
+                        var height = this.height - ThumbPadding.vertical;
+                        position.y -= thumbSize.y * 0.5f;
+                        position.x += (width - thumbSize.x) * 0.5f;
+                        position.y += height + ThumbPadding.top - height / (MaxValue - MinValue) * (value - MinValue);
+                        break;
+                    }
+            }
+
+            ThumbPosition = position;
+
+            Invalidate();
+        }
         protected virtual void OnValueChanged()
         {
-            Invalidate();
+            UpdateThumb(Value);
             OnSliderValueChanged?.Invoke(Value);
         }
 
@@ -514,25 +546,34 @@ namespace ModsCommon.UI
         {
             Invalidate();
         }
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+            UpdateThumb(Value);
+        }
 
         private float GetValueFromMouseEvent(UIMouseEventParameter p)
         {
             var hitPoint = (p.ray.origin - transform.position) / PixelsToUnits();
 
             float position;
+            float length;
             switch (orientation)
             {
                 case UIOrientation.Horizontal:
-                    position = Mathf.Clamp(hitPoint.x, 0f, width) / width;
+                    position = Mathf.Clamp(hitPoint.x, 0f, width) - ThumbPadding.horizontal;
+                    length = width - ThumbPadding.horizontal;
                     break;
                 case UIOrientation.Vertical:
-                    position = 1f - Mathf.Clamp(-hitPoint.y, 0f, height) / height;
+                    position = height - Mathf.Clamp(-hitPoint.y, 0f, height) - ThumbPadding.vertical;
+                    length = height - ThumbPadding.vertical;
                     break;
                 default:
                     position = 0.5f;
+                    length = 1f;
                     break;
             }
-            return Mathf.Lerp(minValue, maxValue, position);
+            return Mathf.Lerp(minValue, maxValue, position / length);
         }
 
         #endregion
@@ -636,23 +677,7 @@ namespace ModsCommon.UI
             if (RenderThumbSprite is UITextureAtlas.SpriteInfo foregroundSprite)
             {
                 var renderSize = ThumbSize;
-                var renderOffset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset) + (Vector3)ThumbPosition;
-                //var renderOffset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
-                //switch (Orientation)
-                //{
-                //    case UIOrientation.Horizontal:
-                //        renderOffset.x -= thumbSize.x * 0.5f;
-                //        renderOffset.y -= (height - thumbSize.y) * 0.5f;
-                //        renderOffset.x += width / (MaxValue - MinValue) * (Value - MinValue);
-                //        break;
-                //    case UIOrientation.Vertical:
-                //        renderOffset.y += thumbSize.y * 0.5f;
-                //        renderOffset.x += (width - thumbSize.x) * 0.5f;
-                //        renderOffset.y -= height - height / (MaxValue - MinValue) * (Value - MinValue);
-                //        break;
-                //}
-                //renderOffset += (Vector3)thumbOffset;
-
+                var renderOffset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset) + (Vector3)ThumbPosition.Scale(1f, -1f);
                 var renderOptions = new RenderOptions()
                 {
                     atlas = ThumbAtlas,

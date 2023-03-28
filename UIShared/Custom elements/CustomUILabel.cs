@@ -115,12 +115,9 @@ namespace ModsCommon.UI
             get => bold;
             set
             {
-                if (value != bold)
-                {
-                    bold = value;
-                    font = value ? ComponentStyle.SemiBoldFont : ComponentStyle.RegularFont;
-                    Invalidate();
-                }
+                bold = value;
+                font = value ? ComponentStyle.SemiBoldFont : ComponentStyle.RegularFont;
+                Invalidate();
             }
         }
 
