@@ -541,11 +541,17 @@ namespace ModsCommon.UI
                 FgSprites = PanelSmall,
             },
             Label = new LabelStyle()
-            { 
+            {
                 NormalTextColor = Color.white,
                 DisabledTextColor = Color.white,
             },
-
+            PropertyPanel = new PropertyPanelStyle()
+            {
+                BgAtlas = Atlas,
+                BgSprites = PanelLarge,
+                BgColors = new Color32(82, 101, 117, 255),
+                MaskSprite = OpacitySliderMask,
+            }
         };
 
         public static ControlStyle MessageBox { get; } = new ControlStyle()
@@ -625,6 +631,8 @@ namespace ModsCommon.UI
                 BgColors = new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15),
                 FgColors = SettingsColor15,
 
+                AllTextColors = Color.white,
+
 
                 PopupAtlas = Atlas,
                 PopupSprite = FieldSingle,
@@ -651,6 +659,7 @@ namespace ModsCommon.UI
         public ToggleStyle Toggle { get; set; }
         public ColorPickerStyle ColorPicker { get; set; }
         public LabelStyle Label { get; set; }
+        public PropertyPanelStyle PropertyPanel { get; set; }
     }
     public class ItemStyle
     {
@@ -824,6 +833,15 @@ namespace ModsCommon.UI
         public Color32 NormalTextColor { get; set; }
         public Color32 DisabledTextColor { get; set; }
     }
+    public class PropertyPanelStyle : ItemStyle
+    {
+        public UITextureAtlas BgAtlas { get; set; }
+        public SpriteSet BgSprites { get; set; }
+        public ColorSet BgColors { get; set; }
+        public string MaskSprite { get; set; }
+    }
+
+
     public struct SpriteSet
     {
         public string normal;

@@ -128,7 +128,7 @@ namespace ModsCommon.UI
                 ShortcutTitle.BackgroundSprite = CommonTextures.PanelBig;
                 ShortcutTitle.color = ComponentStyle.SettingsColor50;
                 ShortcutTitle.Padding = new RectOffset(30, 30, 0, 5);
-                ShortcutTitle.autoSize = true;
+                ShortcutTitle.AutoSize = AutoSize.All;
                 ShortcutTitle.textScale = 3f;
 
                 var pressAnyKey = AddUIComponent<CustomUILabel>();
