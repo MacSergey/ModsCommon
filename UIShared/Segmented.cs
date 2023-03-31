@@ -121,7 +121,7 @@ namespace ModsCommon.UI
                 button.FgAtlas = optionData.atlas;
                 button.AllFgSprites = optionData.sprite;
                 button.tooltip = optionData.label ?? item.ToString();
-                button.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+                button.ForegroundSpriteMode = SpriteMode.Scale;
             }
             else
                 button.text = optionData.label ?? item.ToString();

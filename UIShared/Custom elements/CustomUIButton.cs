@@ -342,8 +342,8 @@ namespace ModsCommon.UI
         }
 
 
-        protected UIForegroundSpriteMode foregroundSpriteMode;
-        public UIForegroundSpriteMode ForegroundSpriteMode
+        protected SpriteMode foregroundSpriteMode = SpriteMode.Stretch;
+        public SpriteMode ForegroundSpriteMode
         {
             get => foregroundSpriteMode;
             set
@@ -356,6 +356,7 @@ namespace ModsCommon.UI
             }
         }
 
+
         protected float scaleFactor = 1f;
         public float ScaleFactor
         {
@@ -365,6 +366,21 @@ namespace ModsCommon.UI
                 if (!Mathf.Approximately(value, scaleFactor))
                 {
                     scaleFactor = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        private RectOffset backgroundPadding;
+        public RectOffset BackgroundPadding
+        {
+            get => backgroundPadding ??= new RectOffset();
+            set
+            {
+                if (!Equals(value, backgroundPadding))
+                {
+                    backgroundPadding = value;
                     Invalidate();
                 }
             }
@@ -384,6 +400,22 @@ namespace ModsCommon.UI
                 }
             }
         }
+
+
+        protected Vector2 spriteSize;
+        public Vector2 SpriteSize
+        {
+            get => spriteSize;
+            set
+            {
+                if (value != spriteSize)
+                {
+                    spriteSize = value;
+                    Invalidate();
+                }
+            }
+        }
+
 
         public override bool canFocus => isEnabled && isVisible ? true : base.canFocus;
 
@@ -1547,7 +1579,6 @@ namespace ModsCommon.UI
                 };
             }
         }
-
         protected virtual UITextureAtlas.SpriteInfo RenderForegroundSprite
         {
             get
@@ -1571,15 +1602,18 @@ namespace ModsCommon.UI
         {
             if (RenderBackgroundSprite is UITextureAtlas.SpriteInfo backgroundSprite)
             {
+                var backgroundRenderSize = GetBackgroundRenderSize(backgroundSprite);
+                var backgroundRenderOffset = GetBackfroundRenderOffset(backgroundRenderSize);
+
                 var renderOptions = new RenderOptions()
                 {
                     atlas = BgAtlas,
                     color = RenderBackgroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
-                    offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
+                    offset = backgroundRenderOffset,
                     pixelsToUnits = PixelsToUnits(),
-                    size = size,
+                    size = backgroundRenderSize,
                     spriteInfo = backgroundSprite,
                 };
 
@@ -1589,6 +1623,23 @@ namespace ModsCommon.UI
                     Render.RenderSprite(BgRenderData, renderOptions);
             }
         }
+        protected virtual Vector2 GetBackgroundRenderSize(UITextureAtlas.SpriteInfo spriteInfo)
+        {
+            if (spriteInfo == null)
+                return Vector2.zero;
+
+            return new Vector2(width - BackgroundPadding.horizontal, height - BackgroundPadding.vertical);
+        }
+        protected virtual Vector2 GetBackfroundRenderOffset(Vector2 renderSize)
+        {
+            Vector2 result = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
+
+            result.x += BackgroundPadding.left;
+            result.y -= BackgroundPadding.top;
+
+            return result;
+        }
+
         protected void RenderForeground()
         {
             if (RenderForegroundSprite is UITextureAtlas.SpriteInfo foregroundSprite)
@@ -1619,24 +1670,21 @@ namespace ModsCommon.UI
             if (spriteInfo == null)
                 return Vector2.zero;
 
-            if (ForegroundSpriteMode == UIForegroundSpriteMode.Stretch)
+            switch (ForegroundSpriteMode)
             {
-                return new Vector2(width - SpritePadding.horizontal, height - SpritePadding.vertical) * scaleFactor;
-            }
-            else if (ForegroundSpriteMode == UIForegroundSpriteMode.Fill)
-            {
-                return spriteInfo.pixelSize;
-            }
-            else if (ForegroundSpriteMode == UIForegroundSpriteMode.Scale)
-            {
-                var widthRatio = Mathf.Max(width - SpritePadding.horizontal, 0f) / spriteInfo.width;
-                var heightRatio = Mathf.Max(height - SpritePadding.vertical, 0f) / spriteInfo.height;
-                var ratio = Mathf.Min(widthRatio, heightRatio);
-                return new Vector2(ratio * spriteInfo.width, ratio * spriteInfo.height) * scaleFactor;
-            }
-            else
-            {
-                return Vector2.zero;
+                case SpriteMode.Stretch:
+                    return new Vector2(width - SpritePadding.horizontal, height - SpritePadding.vertical) * scaleFactor;
+                case SpriteMode.Fill:
+                    return spriteInfo.pixelSize;
+                case SpriteMode.Scale:
+                    var widthRatio = Mathf.Max(width - SpritePadding.horizontal, 0f) / spriteInfo.width;
+                    var heightRatio = Mathf.Max(height - SpritePadding.vertical, 0f) / spriteInfo.height;
+                    var ratio = Mathf.Min(widthRatio, heightRatio);
+                    return new Vector2(ratio * spriteInfo.width, ratio * spriteInfo.height) * scaleFactor;
+                case SpriteMode.FixedSize:
+                    return SpriteSize;
+                default:
+                    return Vector2.zero;
             }
         }
         protected Vector2 GetForegroundRenderOffset(Vector2 renderSize)

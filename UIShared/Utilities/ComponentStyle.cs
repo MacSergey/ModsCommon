@@ -151,7 +151,7 @@ namespace ModsCommon.UI
         {
             dropDown.DropDownStyle = Default.DropDown;
 
-            dropDown.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.ForegroundSpriteMode = SpriteMode.Scale;
             dropDown.ScaleFactor = 0.7f;
             dropDown.HorizontalAlignment = UIHorizontalAlignment.Right;
             dropDown.VerticalAlignment = UIVerticalAlignment.Middle;
@@ -182,7 +182,7 @@ namespace ModsCommon.UI
         {
             dropDown.DropDownStyle = MessageBox.DropDown;
 
-            dropDown.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.ForegroundSpriteMode = SpriteMode.Scale;
             dropDown.ScaleFactor = 0.7f;
             dropDown.SpritePadding.right = 5;
 
@@ -215,7 +215,7 @@ namespace ModsCommon.UI
         {
             dropDown.DropDownStyle = Settings.DropDown;
 
-            dropDown.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            dropDown.ForegroundSpriteMode = SpriteMode.Scale;
             dropDown.ScaleFactor = 0.7f;
             dropDown.SpritePadding.right = 5;
 

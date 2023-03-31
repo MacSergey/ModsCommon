@@ -163,7 +163,7 @@ namespace ModsCommon.UI
                         Button.Atlas = CommonTextures.Atlas;
                         Button.BgSprites = CommonTextures.Circle;
                         Button.BgColors = new ColorSet(ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor35, ComponentStyle.DarkPrimaryColor40, ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor30);
-                        Button.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+                        Button.ForegroundSpriteMode = SpriteMode.Scale;
                         Button.ScaleFactor = 0.6f;
                         Button.AutoSize = AutoSize.None;
                         Button.height = 40f;
