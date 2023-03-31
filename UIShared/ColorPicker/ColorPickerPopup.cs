@@ -36,6 +36,32 @@ namespace ModsCommon.UI
 
         private RectOffset HSBPadding { get; } = new RectOffset(6, 6, 6, 6);
 
+        public virtual ColorPickerStyle ColorPickerStyle
+        {
+            set
+            {
+                RField.BgColors = value.TextField.BgColors;
+                RField.textColor = value.TextField.TextColors.normal;
+                RField.selectionBackgroundColor = value.TextField.SelectionColor;
+
+                GField.BgColors = value.TextField.BgColors;
+                GField.textColor = value.TextField.TextColors.normal;
+                GField.selectionBackgroundColor = value.TextField.SelectionColor;
+
+                BField.BgColors = value.TextField.BgColors;
+                BField.textColor = value.TextField.TextColors.normal;
+                BField.selectionBackgroundColor = value.TextField.SelectionColor;
+
+                AField.BgColors = value.TextField.BgColors;
+                AField.textColor = value.TextField.TextColors.normal;
+                AField.selectionBackgroundColor = value.TextField.SelectionColor;
+
+                HEXField.BgColors = value.TextField.BgColors;
+                HEXField.textColor = value.TextField.TextColors.normal;
+                HEXField.selectionBackgroundColor = value.TextField.SelectionColor;
+            }
+        }
+
 
         public Color32 SelectedColor
         {
@@ -94,6 +120,7 @@ namespace ModsCommon.UI
                 HSBField.material = new Material(Shader.Find("UI/ColorPicker HSB"));
                 HSBField.texture = BlankTexture;
                 HSBField.size = new Vector2(200f, 200f);
+                HSBField.canFocus = true;
                 HSBField.eventMouseDown += IndicatorDown;
                 HSBField.eventMouseMove += IndicatorMove;
 
@@ -238,8 +265,8 @@ namespace ModsCommon.UI
                 field = panel.AddUIComponent<FieldType>();
                 field.SetDefaultStyle();
                 field.OnValueChanged += onChanged;
-                field.eventGotFocus += FieldGotFocus;
-                field.eventLostFocus += FieldLostFocus;
+                //field.eventGotFocus += FieldGotFocus;
+                //field.eventLostFocus += FieldLostFocus;
 
                 var label = panel.AddUIComponent<CustomUILabel>();
                 label.text = name;

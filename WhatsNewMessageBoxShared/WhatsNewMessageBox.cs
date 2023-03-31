@@ -134,7 +134,7 @@ namespace ModsCommon.UI
                         Title = versionPanel.AddUIComponent<CustomUILabel>();
                         Title.name = "Title";
                         Title.Bold = true;
-                        Title.autoSize = false;
+                        Title.AutoSize = AutoSize.None;
                         Title.width = 100f;
                         Title.height = 30f;
                         Title.textScale = 1.4f;
@@ -144,7 +144,7 @@ namespace ModsCommon.UI
 
                         SubTitle = versionPanel.AddUIComponent<CustomUILabel>();
                         SubTitle.name = "SubTitle";
-                        SubTitle.autoSize = false;
+                        SubTitle.AutoSize = AutoSize.None;
                         SubTitle.width = 100f;
                         SubTitle.height = 20f;
                         SubTitle.textScale = 0.7f;
@@ -163,7 +163,7 @@ namespace ModsCommon.UI
                         Button.Atlas = CommonTextures.Atlas;
                         Button.BgSprites = CommonTextures.Circle;
                         Button.BgColors = new ColorSet(ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor35, ComponentStyle.DarkPrimaryColor40, ComponentStyle.DarkPrimaryColor30, ComponentStyle.DarkPrimaryColor30);
-                        Button.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+                        Button.ForegroundSpriteMode = SpriteMode.Scale;
                         Button.ScaleFactor = 0.6f;
                         Button.AutoSize = AutoSize.None;
                         Button.height = 40f;
@@ -254,7 +254,7 @@ namespace ModsCommon.UI
                     Tag = AddUIComponent<CustomUILabel>();
                     Tag.name = nameof(Tag);
                     Tag.Bold = true;
-                    Tag.autoSize = false;
+                    Tag.AutoSize = AutoSize.None;
                     Tag.height = 20f;
                     Tag.width = 100f;
                     Tag.Atlas = CommonTextures.Atlas;

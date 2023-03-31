@@ -4,14 +4,6 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    [Flags]
-    public enum AutoSize
-    {
-        None,
-        Width = 1,
-        Height = 2,
-        All = Width | Height,
-    }
     public class CustomUILabel : UITextComponent
     {
         private Vector3 positionBefore;
@@ -132,6 +124,8 @@ namespace ModsCommon.UI
         }
 
         private AutoSize _autoSize = AutoSize.All;
+
+        [Obsolete]
         public override bool autoSize
         {
             get => AutoSize == AutoSize.All;

@@ -236,6 +236,21 @@ namespace ModsCommon.UI
         }
 
 
+        private RectOffset backgroundPadding;
+        public RectOffset BackgroundPadding
+        {
+            get => backgroundPadding ??= new RectOffset();
+            set
+            {
+                if (!Equals(value, backgroundPadding))
+                {
+                    backgroundPadding = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
         private RectOffset spritePadding;
         public RectOffset SpritePadding
         {
@@ -862,15 +877,18 @@ namespace ModsCommon.UI
         {
             if (AtlasBackground[BackgroundSprite] is UITextureAtlas.SpriteInfo backgroundSprite)
             {
+                var backgroundRenderSize = GetBackgroundRenderSize(backgroundSprite);
+                var backgroundRenderOffset = GetBackfroundRenderOffset(backgroundRenderSize);
+
                 var renderOptions = new RenderOptions()
                 {
                     atlas = AtlasBackground,
                     color = isEnabled ? (m_IsMouseHovering ? HoveredBgColor : NormalBgColor) : DisabledBgColor,
                     fillAmount = 1f,
                     flip = spriteFlip,
-                    offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
+                    offset = backgroundRenderOffset,
                     pixelsToUnits = PixelsToUnits(),
-                    size = size,
+                    size = backgroundRenderSize,
                     spriteInfo = backgroundSprite,
                 };
 
@@ -880,6 +898,23 @@ namespace ModsCommon.UI
                     Render.RenderSprite(BgRenderData, renderOptions);
             }
         }
+        protected virtual Vector2 GetBackgroundRenderSize(UITextureAtlas.SpriteInfo spriteInfo)
+        {
+            if (spriteInfo == null)
+                return Vector2.zero;
+
+            return new Vector2(width - BackgroundPadding.horizontal, height - BackgroundPadding.vertical);
+        }
+        protected virtual Vector2 GetBackfroundRenderOffset(Vector2 renderSize)
+        {
+            Vector2 result = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
+
+            result.x += BackgroundPadding.left;
+            result.y -= BackgroundPadding.top;
+
+            return result;
+        }
+
         protected virtual void RenderForeground()
         {
             if (AtlasForeground[ForegroundSprite] is UITextureAtlas.SpriteInfo foregroundSprite)

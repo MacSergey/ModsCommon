@@ -7,19 +7,22 @@ namespace ModsCommon.UI
 {
     public class PropertyGroupPanel : CustomUIPanel, IReusable
     {
-        protected static Color32 NormalColor { get; } = new Color32(82, 101, 117, 255);
-
         bool IReusable.InCache { get; set; }
-        protected virtual Color32 DefaultColor => NormalColor;
-        protected virtual string DefaultBackgroundSprite => CommonTextures.PanelBig;
-        protected virtual UITextureAtlas DefaultAtlas => CommonTextures.Atlas;
+
+        public virtual PropertyPanelStyle PanelStyle
+        {
+            set
+            {
+                atlas = value.BgAtlas;
+                backgroundSprite = value.BgSprites.normal;
+                bgColors = value.BgColors;
+
+                Invalidate();
+            }
+        }
 
         public PropertyGroupPanel()
         {
-            Atlas = DefaultAtlas;
-            BackgroundSprite = DefaultBackgroundSprite;
-            BgColors = DefaultColor;
-
             autoLayout = AutoLayout.Vertical;
             padding = new RectOffset(0, 0, 0, 0);
             autoChildrenVertically = AutoLayoutChildren.Fit;
@@ -48,6 +51,8 @@ namespace ModsCommon.UI
                     ComponentPool.Free(component);
                 isVisible = true;
             }, false);
+
+            PanelStyle = ComponentStyle.Default.PropertyPanel;
         }
 
         protected override void OnSizeChanged()
@@ -104,5 +109,7 @@ namespace ModsCommon.UI
             SetBorder();
             base.StartLayout(layoutNow, force);
         }
+
+
     }
 }

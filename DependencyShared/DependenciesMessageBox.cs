@@ -145,7 +145,7 @@ namespace ModsCommon.Utilities
                 Resolved.Atlas = CommonTextures.Atlas;
                 Resolved.BgSprites = CommonTextures.PanelBig;
                 Resolved.BgColors = ComponentStyle.WellColor;
-                Resolved.ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+                Resolved.ForegroundSpriteMode = SpriteMode.Scale;
                 Resolved.FgSprites = CommonTextures.Success;
                 Resolved.FgColors = ComponentStyle.DarkPrimaryColor100;
                 Resolved.AutoSize = AutoSize.None;

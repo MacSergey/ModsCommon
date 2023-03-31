@@ -113,7 +113,7 @@ namespace ModsCommon.UI
             fgSprites = CommonTextures.ArrowDown;
             fgColors = Color.black;
 
-            ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            ForegroundSpriteMode = SpriteMode.Scale;
             ScaleFactor = 0.7f;
             HorizontalAlignment = UIHorizontalAlignment.Right;
             VerticalAlignment = UIVerticalAlignment.Middle;

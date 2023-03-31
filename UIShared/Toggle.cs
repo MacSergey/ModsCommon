@@ -56,7 +56,7 @@ namespace ModsCommon.UI
         public CustomUIToggle()
         {
             canFocus = false;
-            ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+            ForegroundSpriteMode = SpriteMode.Scale;
         }
 
         private void SetState()

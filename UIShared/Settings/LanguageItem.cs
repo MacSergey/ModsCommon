@@ -65,7 +65,7 @@ namespace ModsCommon.UI
             public LanguageEntity()
             {
                 Atlas = CommonTextures.Atlas;
-                ForegroundSpriteMode = UIForegroundSpriteMode.Scale;
+                ForegroundSpriteMode = SpriteMode.Scale;
 
                 HorizontalAlignment = UIHorizontalAlignment.Left;
                 VerticalAlignment = UIVerticalAlignment.Middle;

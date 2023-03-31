@@ -31,7 +31,12 @@ namespace ModsCommon.Utilities
         public static bool IsVisible<T>(this T value) where T : Enum => value.GetAttr<NotVisibleAttribute, T>() == null;
         public static bool IsItem<T>(this T value) where T : Enum => value.GetAttr<NotItemAttribute, T>() == null;
         public static int Order<T>(this T value) where T : Enum => value.GetAttr<OrderAttribute, T>()?.Order ?? int.MaxValue;
-        public static string Sprite<T>(this T value) where T : Enum => value.GetAttr<SpriteAttribute, T>()?.Sprite ?? string.Empty;
+        public static string Sprite<T>(this T value, string tag = null) where T : Enum
+        {
+            var attr = typeof(T).GetField(value.ToString()).GetCustomAttributes(typeof(SpriteAttribute), false).FirstOrDefault(a => (a as SpriteAttribute).Tag == tag) as SpriteAttribute;
+            var sprite = attr?.Sprite ?? string.Empty;
+            return sprite;
+        }
 
         public static int ToInt<T>(this T value) where T : Enum => (int)(object)value;
         public static T ToEnum<T>(this int value) where T : Enum => (T)(object)value;
@@ -53,8 +58,15 @@ namespace ModsCommon.Utilities
         public static bool CheckFlags(this NetSegment.Flags value, NetSegment.Flags required, NetSegment.Flags forbidden = 0) => (value & (required | forbidden)) == required;
     }
 
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class NotVisibleAttribute : Attribute { }
+
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class NotItemAttribute : Attribute { }
+
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class OrderAttribute : Attribute
     {
         public int Order { get; }
@@ -63,12 +75,18 @@ namespace ModsCommon.Utilities
             Order = order;
         }
     }
+
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class SpriteAttribute : Attribute
     {
-        public string Sprite { get; }
-        public SpriteAttribute(string sprite)
+        public string Name { get; }
+        public string Tag { get; }
+        public string Sprite => $"{Name}{Tag}";
+        public SpriteAttribute(string name, string tag = null)
         {
-            Sprite = sprite;
+            Name = name;
+            Tag = tag;
         }
     }
 }

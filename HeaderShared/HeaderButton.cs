@@ -29,7 +29,7 @@ namespace ModsCommon.UI
             clipChildren = true;
             textScale = 0.8f;
             TextHorizontalAlignment = UIHorizontalAlignment.Left;
-            ForegroundSpriteMode = UIForegroundSpriteMode.Fill;
+            ForegroundSpriteMode = SpriteMode.Fill;
         }
 
         public void Init(UITextureAtlas atlas, string sprite, int size, int iconSize)
