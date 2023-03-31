@@ -343,7 +343,7 @@ namespace ModsCommon.UI
             if (uIFontRenderer is UIDynamicFont.DynamicFontRenderer dynamicFontRenderer)
             {
                 dynamicFontRenderer.spriteAtlas = AtlasIcons;
-                dynamicFontRenderer.spriteBuffer = TextRenderData;
+                dynamicFontRenderer.spriteBuffer = IconsRenderData;
             }
             uIFontRenderer.Render(text, TextRenderData);
         }

@@ -3,7 +3,6 @@ using System;
 using ColossalFramework.UI;
 using UnityEngine;
 using ColossalFramework;
-using IMT.Utilities;
 
 namespace ModsCommon.UI
 {
