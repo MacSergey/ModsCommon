@@ -226,7 +226,7 @@ namespace ModsCommon.Settings
 
                     var version = versionData.AddUIComponent<CustomUILabel>();
                     version.Bold = true;
-                    version.text = SingletonMod<TypeMod>.Instance.Version.ToString();
+                    version.text = SingletonMod<TypeMod>.Instance.Version.GetString();
                     version.Atlas = CommonTextures.Atlas;
                     version.BackgroundSprite = CommonTextures.FieldLeft;
                     version.color = ComponentStyle.SettingsColor25;
