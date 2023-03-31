@@ -24,6 +24,7 @@ namespace ModsCommon.UI
                     Popup.SelectedColor = value;
             }
         }
+        private ColorPickerStyle Style { get; set; }
 
         public ColorPickerButton() : base()
         {
@@ -34,6 +35,7 @@ namespace ModsCommon.UI
             base.AfterPopupOpen();
             Popup.SelectedColor = SelectedColor;
             Popup.OnSelectedColorChanged += PickerChanged;
+            Popup.ColorPickerStyle = Style;
         }
         private void PickerChanged(Color32 color)
         {
@@ -44,6 +46,8 @@ namespace ModsCommon.UI
         {
             set
             {
+                Style = value;
+
                 BgAtlas = value.BgAtlas;
                 FgAtlas = value.FgAtlas;
 

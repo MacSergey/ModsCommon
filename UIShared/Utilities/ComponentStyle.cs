@@ -826,7 +826,8 @@ namespace ModsCommon.UI
     }
     public class ColorPickerStyle : InteractiveStyle
     {
-
+        public TextFieldStyle TextField { get; set; }
+        public ButtonStyle Button { get; set; }
     }
     public class LabelStyle : ItemStyle
     {
