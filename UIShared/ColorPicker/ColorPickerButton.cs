@@ -24,6 +24,12 @@ namespace ModsCommon.UI
                     Popup.SelectedColor = value;
             }
         }
+
+        public override bool AutoClose 
+        { 
+            get => base.AutoClose && (Popup == null || Popup.AutoClose); 
+            set => base.AutoClose = value; 
+        }
         private ColorPickerStyle Style { get; set; }
 
         public ColorPickerButton() : base()

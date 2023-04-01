@@ -17,6 +17,7 @@ namespace ModsCommon.UI
 
         protected virtual float DefaultEntityHeight => 20f;
 
+        public bool AutoClose { get; protected set; } = true;
         private CustomUIScrollbar ScrollBar { get; set; }
         private CustomUILabel EmptyLabel { get; set; }
         private CustomUIPanel Content { get; set; }
@@ -249,6 +250,7 @@ namespace ModsCommon.UI
             entityHeight = DefaultEntityHeight;
             maxVisibleItems = 0;
             autoWidth = false;
+            AutoClose = true;
         }
         protected bool Equal(ObjectType value1, ObjectType value2)
         {
@@ -399,6 +401,7 @@ namespace ModsCommon.UI
         where ObjectType : class
     {
         private bool CanSubmit { get; set; } = true;
+        private bool FocusSearch { get; set; } = true;
         protected CustomUITextField Search { get; private set; }
         private CustomUIButton ResetButton { get; set; }
 
@@ -420,8 +423,8 @@ namespace ModsCommon.UI
             Search.padding = new RectOffset(20, 30, 6, 0);
             Search.horizontalAlignment = UIHorizontalAlignment.Left;
             Search.eventTextChanged += SearchTextChanged;
-            Search.eventGotFocus += SearchGotFocus;
-            Search.eventLostFocus += SearchLostFocus;
+            Search.eventGotFocus += ItemGotFocus;
+            Search.eventLostFocus += ItemLostFocus;
             SetItemMargin(Search, new RectOffset(5, 5, 5, 5));
 
             var loop = Search.AddUIComponent<UISprite>();
@@ -438,6 +441,8 @@ namespace ModsCommon.UI
             ResetButton.HoveredBgColor = new Color32(127, 127, 127, 255);
             ResetButton.isVisible = false;
             ResetButton.eventClick += ResetClick;
+            ResetButton.eventGotFocus += ItemGotFocus;
+            ResetButton.eventLostFocus += ItemLostFocus;
 
             Search.eventSizeChanged += SearchSizeChanged;
 
@@ -451,6 +456,7 @@ namespace ModsCommon.UI
             Search.text = string.Empty;
             CanSubmit = true;
             Search.Unfocus();
+            FocusSearch = true;
         }
 
         protected string SearchText => Search.text.ToUpper();
@@ -473,35 +479,34 @@ namespace ModsCommon.UI
         private void ResetClick(UIComponent component, UIMouseEventParameter eventParam)
         {
             Search.text = string.Empty;
-            Focus();
         }
         private void SearchSizeChanged(UIComponent component, Vector2 value)
         {
             ResetButton.relativePosition = new Vector2(Search.width - 15f, 5f);
         }
-        private void SearchGotFocus(UIComponent component, UIFocusEventParameter p)
+
+        private void ItemGotFocus(UIComponent component, UIFocusEventParameter p)
         {
-            isInteractive = false;
+            AutoClose = false;
         }
-        private void SearchLostFocus(UIComponent component, UIFocusEventParameter p)
+        private void ItemLostFocus(UIComponent component, UIFocusEventParameter p)
         {
-            isInteractive = true;
-            if (p.gotFocus == null)
+            if (p.gotFocus == null || !p.gotFocus.transform.IsChildOf(transform))
                 Focus();
         }
-        protected override void OnEnterFocus(UIFocusEventParameter p)
+        protected override void OnGotFocus(UIFocusEventParameter p)
         {
-            if (isInteractive && p.gotFocus == this)
+            if (FocusSearch)
+            {
                 Search.Focus();
+                FocusSearch = false;
+            }
             else
-                base.OnEnterFocus(p);
-        }
-        protected override void OnLeaveFocus(UIFocusEventParameter p)
-        {
-            if (isInteractive && p.gotFocus == null && p.lostFocus != null && p.lostFocus != this && p.lostFocus.transform.IsChildOf(transform))
-                Focus();
-            else
-                base.OnLeaveFocus(p);
+            {
+                base.OnGotFocus(p);
+                if(p.gotFocus == this)
+                    AutoClose = true;
+            }
         }
 
         protected override Vector2 ScrollPosition => base.ScrollPosition + new Vector2(0f, 30f);

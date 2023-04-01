@@ -22,6 +22,7 @@ namespace ModsCommon.UI
 
         ObjectType SelectedObject { get; set; }
         Func<ObjectType, ObjectType, bool> IsEqualDelegate { set; }
+        bool AutoClose { get; }
 
         Vector2 MaximumSize { get; set; }
         float EntityHeight { get; set; }
@@ -63,6 +64,11 @@ namespace ModsCommon.UI
 
         #region POPUP
 
+        public override bool AutoClose 
+        { 
+            get => base.AutoClose && (Popup == null || Popup.AutoClose); 
+            set => base.AutoClose = value; 
+        }
         protected abstract IEnumerable<ObjectType> Objects { get; }
         protected abstract Func<ObjectType, bool> Selector { get; }
         protected abstract Func<ObjectType, ObjectType, int> Sorter { get; }

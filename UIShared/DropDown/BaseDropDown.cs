@@ -17,7 +17,7 @@ namespace ModsCommon.UI
         public event Action OnAfterPopupClose;
 
         public PopupType Popup { get; private set; }
-        public bool AutoClose { get; set; } = true;
+        public virtual bool AutoClose { get; set; } = true;
 
         public override void Update()
         {

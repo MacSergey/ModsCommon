@@ -18,6 +18,7 @@ namespace ModsCommon.UI
         private static Texture2D BlankTexture { get; } = TextureHelper.CreateTexture(16, 16, Color.white);
 
         private bool InProcess { get; set; } = false;
+        public bool AutoClose { get; protected set; } = true;
         private CustomUITextureSprite HSBField { get; set; }
         private CustomUITextureSprite HueField { get; set; }
         private CustomUISlider HueSlider { get; set; }
@@ -89,6 +90,8 @@ namespace ModsCommon.UI
 
         public ColorPickerPopup()
         {
+            builtinKeyNavigation = true;
+
             PauseLayout(() =>
             {
                 AutoLayout = AutoLayout.Vertical;
@@ -173,6 +176,7 @@ namespace ModsCommon.UI
                 HueIndicator.FgSprites = CommonTextures.Circle;
                 HueIndicator.size = new Vector2(16f, 16f);
                 HueIndicator.SpritePadding = new RectOffset(2, 2, 2, 2);
+                HueIndicator.relativePosition = HueSlider.ThumbPosition;
 
 
                 var opacityField = pickerPanel.AddUIComponent<CustomUISprite>();
@@ -211,6 +215,7 @@ namespace ModsCommon.UI
                 OpacityIndicator.FgSprites = CommonTextures.Circle;
                 OpacityIndicator.size = new Vector2(16f, 16f);
                 OpacityIndicator.SpritePadding = new RectOffset(2, 2, 2, 2);
+                OpacityIndicator.relativePosition = OpacitySlider.ThumbPosition;
             });
 
             var valuePanel = AddUIComponent<CustomUIPanel>();
@@ -265,8 +270,8 @@ namespace ModsCommon.UI
                 field = panel.AddUIComponent<FieldType>();
                 field.SetDefaultStyle();
                 field.OnValueChanged += onChanged;
-                //field.eventGotFocus += FieldGotFocus;
-                //field.eventLostFocus += FieldLostFocus;
+                field.eventGotFocus += FieldGotFocus;
+                field.eventLostFocus += FieldLostFocus;
 
                 var label = panel.AddUIComponent<CustomUILabel>();
                 label.text = name;
@@ -280,11 +285,11 @@ namespace ModsCommon.UI
         }
         private void FieldGotFocus(UIComponent component, UIFocusEventParameter eventParam)
         {
-            isInteractive = false;
+            AutoClose = false;
         }
         private void FieldLostFocus(UIComponent component, UIFocusEventParameter eventParam)
         {
-            isInteractive = true;
+            AutoClose = true; 
             Focus();
         }
         private void SetField(ByteUITextField field)
@@ -325,6 +330,7 @@ namespace ModsCommon.UI
         {
             OnSelectedColorChanged = null;
             SelectedColor = Color.white;
+            AutoClose = true;
         }
 
         #region HANDLERS
