@@ -50,7 +50,7 @@ namespace ModsCommon.UI
 
         public override void SetStyle(ControlStyle style)
         {
-            Selector.SetStyle(style.Segmented);
+            Selector.SegmentedStyle = style.Segmented;
         }
     }
 }

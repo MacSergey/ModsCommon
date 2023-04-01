@@ -105,7 +105,7 @@ namespace ModsCommon.UI
         }
         public override void SetStyle(ControlStyle style)
         {
-            Selector.SetStyle(style.Segmented);
+            Selector.SegmentedStyle = style.Segmented;
         }
 
         public class BoolSegmented : UIOnceSegmented<bool> { }
@@ -128,7 +128,7 @@ namespace ModsCommon.UI
         }
         public override void SetStyle(ControlStyle style)
         {
-            Selector.SetStyle(style.Segmented);
+            Selector.SegmentedStyle = style.Segmented;
         }
 
         public class IntSegmented : UIOnceSegmented<int> { }
