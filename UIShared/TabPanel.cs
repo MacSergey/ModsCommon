@@ -46,6 +46,7 @@ namespace ModsCommon.UI
                 if (value != selectedTab)
                 {
                     selectedTab = value;
+                    SetTabs();
                     SelectedTabChanged?.Invoke(selectedTab);
                 }
             }
@@ -218,7 +219,10 @@ namespace ModsCommon.UI
         public override void Update()
         {
             base.Update();
-
+            SetTabs();
+        }
+        private void SetTabs()
+        {
             for (var i = 0; i < Tabs.Count; i += 1)
             {
                 if (Tabs[i].State == UIButton.ButtonState.Focused)
