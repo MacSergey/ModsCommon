@@ -84,5 +84,31 @@ namespace ModsCommon.Utilities
         public static string AddErrorColor(this Shortcut shortcut) => AddErrorColor(shortcut.ToString());
         public static string AddActionColor(this Shortcut shortcut) => AddActionColor(shortcut.ToString());
         public static string AddWarningColor(this Shortcut shortcut) => AddWarningColor(shortcut.ToString());
+
+        public static float GetContrast(this Color a, Color b)
+        {
+            var la = GetLuminance(a);
+            var lb = GetLuminance(b);
+            var contrast = (la + 0.05f) / (lb + 0.05f);
+            return contrast;
+        }
+        public static float GetContrast(this Color32 a, Color32 b)
+        {
+            var la = GetLuminance(a);
+            var lb = GetLuminance(b);
+            var contrast = (la + 0.05f) / (lb + 0.05f);
+            return contrast;
+        }
+        private static float GetLuminance(Color c)
+        {
+            return 0.2126f * GetComponent(c.r) + 0.7152f * GetComponent(c.g) + 0.0722f * GetComponent(c.b);
+        }
+        private static float GetComponent(float value)
+        {
+            if (value <= 0.03928)
+                return value / 12.92f;
+            else
+                return Mathf.Pow((value + 0.055f) / 1.055f, 2.4f);
+        }
     }
 }

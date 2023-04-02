@@ -27,6 +27,26 @@ namespace ModsCommon.UI
             get => Button.height;
             set => Button.height = value;
         }
+        public bool WordWrap
+        {
+            get => Button.WordWrap;
+            set => Button.WordWrap = value;
+        }
+        public UIHorizontalAlignment TextAlignment
+        {
+            get => Button.TextHorizontalAlignment;
+            set => Button.TextHorizontalAlignment = value;
+        }
+        public RectOffset TextPadding
+        {
+            get => Button.TextPadding;
+            set => Button.TextPadding = value;
+        }
+        public AutoSize AutoSize
+        {
+            get => Button.AutoSize;
+            set => Button.AutoSize = value;
+        }
 
         public event Action OnButtonClick;
 
@@ -186,6 +206,11 @@ namespace ModsCommon.UI
         {
             get => Button.TextHorizontalAlignment;
             set => Button.TextHorizontalAlignment = value;
+        }
+        public RectOffset TextPadding
+        {
+            get => Button.TextPadding;
+            set => Button.TextPadding = value;
         }
         public AutoSize AutoSize
         {
