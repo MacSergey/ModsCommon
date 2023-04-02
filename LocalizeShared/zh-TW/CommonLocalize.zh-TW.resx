@@ -460,20 +460,28 @@ Shift X10, Ctrl X0.1</value>
   <data name="Dependency_Removed" xml:space="preserve">
     <value>已移除</value>
   </data>
-  
-  
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>已訂閱</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>已取消訂閱</value>
+  </data>
   <data name="Key_Backspace" xml:space="preserve">
     <value>Backspace</value>
   </data>
   <data name="Key_Esc" xml:space="preserve">
     <value>Esc</value>
   </data>
-  
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>按 {0} 捨棄變更</value>
+  </data>
   <data name="Settings_ResetShortcut" xml:space="preserve">
     <value>按 {0} 重設綁定</value>
   </data>
   <data name="Key_Space" xml:space="preserve">
     <value>空白鍵</value>
   </data>
-  
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>清單是空的</value>
+  </data>
 </root>
