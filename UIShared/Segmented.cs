@@ -107,7 +107,7 @@ namespace ModsCommon.UI
         }
 
         public void AddItem(ValueType item, OptionData optionData) => AddItem(item, optionData, true, null);
-        public void AddItem(ValueType item, OptionData optionData, bool clickable = true, float? width = null)
+        public void AddItem(ValueType item, OptionData optionData, bool? clickable = true, float? width = null)
         {
             Objects.Add(item);
 
@@ -127,10 +127,15 @@ namespace ModsCommon.UI
                 button.text = optionData.label ?? item.ToString();
 
             UpdateButton(button, width);
-            if (clickable)
+            if (clickable == true)
                 button.eventClick += ButtonClick;
-            else
+            else if (clickable == false)
                 button.isEnabled = false;
+            else
+            {
+                button.CanHover = false;
+                button.CanPress = false;
+            }
 
             Buttons.Add(button);
             SetType(button);

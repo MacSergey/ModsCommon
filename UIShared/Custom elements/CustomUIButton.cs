@@ -25,7 +25,7 @@ namespace ModsCommon.UI
         }
         protected override void OnLeaveFocus(UIFocusEventParameter p)
         {
-            State = containsMouse ? UIButton.ButtonState.Hovered : UIButton.ButtonState.Normal;
+            State = containsMouse && CanHover ? UIButton.ButtonState.Hovered : UIButton.ButtonState.Normal;
             base.OnLeaveFocus(p);
         }
         protected override void OnKeyPress(UIKeyEventParameter p)
@@ -39,14 +39,14 @@ namespace ModsCommon.UI
         {
             if ((p.buttons & ButtonsMask) != 0)
             {
-                State = UIButton.ButtonState.Pressed;
+                State = CanPress ? UIButton.ButtonState.Pressed : UIButton.ButtonState.Normal;
                 base.OnMouseDown(p);
             }
         }
         protected override void OnMouseUp(UIMouseEventParameter p)
         {
             if (m_IsMouseHovering)
-                State = UIButton.ButtonState.Hovered;
+                State = CanHover ? UIButton.ButtonState.Hovered : UIButton.ButtonState.Normal;
             else if (hasFocus)
                 State = UIButton.ButtonState.Focused;
             else
@@ -56,7 +56,7 @@ namespace ModsCommon.UI
         }
         protected override void OnMouseEnter(UIMouseEventParameter p)
         {
-            State = UIButton.ButtonState.Hovered;
+            State = CanHover ? UIButton.ButtonState.Hovered : UIButton.ButtonState.Normal;
 
             base.OnMouseEnter(p);
             Invalidate();
@@ -120,6 +120,36 @@ namespace ModsCommon.UI
                 }
             }
 #pragma warning restore CS0612
+        }
+
+
+        protected bool canHover = true;
+        public bool CanHover
+        {
+            get => canHover;
+            set
+            {
+                if (value != canHover)
+                {
+                    canHover = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected bool canPress = true;
+        public bool CanPress
+        {
+            get => canPress;
+            set
+            {
+                if (value != canPress)
+                {
+                    canPress = value;
+                    Invalidate();
+                }
+            }
         }
 
 

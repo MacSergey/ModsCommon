@@ -132,6 +132,20 @@ namespace ModsCommon.UI
             set => tooltip = value ? CommonLocalize.FieldPanel_ScrollWheel : string.Empty;
         }
         public bool CanWheel { get; set; }
+        private WheelMode Mode
+        {
+            get
+            {
+                if (Utility.ShiftIsPressed)
+                    return WheelMode.High;
+                else if (Utility.CtrlIsPressed)
+                    return WheelMode.Low;
+                else if (Utility.AltIsPressed)
+                    return WheelMode.VeryLow;
+                else
+                    return WheelMode.Normal;
+            }
+        }
 
         protected override void ValueChanged(ValueType value, bool callEvent = true)
         {
@@ -165,11 +179,10 @@ namespace ModsCommon.UI
 
             if (UseWheel && (CanWheel || Time.realtimeSinceStartup - m_HoveringStartTime >= UIHelper.PropertyScrollTimeout))
             {
-                var mode = Utility.ShiftIsPressed ? WheelMode.High : Utility.CtrlIsPressed ? WheelMode.Low : WheelMode.Normal;
                 if (p.wheelDelta < 0)
-                    ValueChanged(Decrement(Limited && CyclicalValue && Value.CompareTo(MinValue) == 0 ? MaxValue : Value, WheelStep, mode));
+                    ValueChanged(Decrement(Limited && CyclicalValue && Value.CompareTo(MinValue) == 0 ? MaxValue : Value, WheelStep, Mode));
                 else
-                    ValueChanged(Increment(Limited && CyclicalValue && Value.CompareTo(MaxValue) == 0 ? MinValue : Value, WheelStep, mode));
+                    ValueChanged(Increment(Limited && CyclicalValue && Value.CompareTo(MaxValue) == 0 ? MinValue : Value, WheelStep, Mode));
 
                 p.Use();
             }
@@ -203,9 +216,10 @@ namespace ModsCommon.UI
 
         protected enum WheelMode
         {
+            High,
             Normal,
             Low,
-            High
+            VeryLow,
         }
     }
     public class FloatUITextField : ComparableUITextField<float>
@@ -240,8 +254,9 @@ namespace ModsCommon.UI
 
         private float GetStep(float step, WheelMode mode) => mode switch
         {
-            WheelMode.Low => step / 10,
             WheelMode.High => step * 10,
+            WheelMode.Low => step / 10,
+            WheelMode.VeryLow => step / 100,
             _ => step,
         };
 
@@ -258,8 +273,9 @@ namespace ModsCommon.UI
         protected override int Increment(int value, int step, WheelMode mode) => value == int.MaxValue ? value : value + GetStep(step, mode);
         private int GetStep(int step, WheelMode mode) => mode switch
         {
-            WheelMode.Low => Math.Max(step / 10, 1),
             WheelMode.High => step * 10,
+            WheelMode.Low => Math.Max(step / 10, 1),
+            WheelMode.VeryLow => Math.Max(step / 100, 1),
             _ => step,
         };
     }
@@ -278,8 +294,9 @@ namespace ModsCommon.UI
 
         private byte GetStep(byte step, WheelMode mode) => mode switch
         {
-            WheelMode.Low => (byte)Math.Max(step / 10, 1),
             WheelMode.High => (byte)Math.Min(step * 10, byte.MaxValue),
+            WheelMode.Low => (byte)Math.Max(step / 10, 1),
+            WheelMode.VeryLow => (byte)Math.Max(step / 100, 1),
             _ => step,
         };
     }
