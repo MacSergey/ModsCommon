@@ -428,7 +428,7 @@ namespace ModsCommon.Utilities
     {
         protected override Vector3 Position => Id.GetSegment().m_middlePosition;
         protected override float HalfWidth => Id.GetSegment().Info.m_halfWidth;
-        public float Length => new BezierTrajectory(DataArray[0].Position, DataArray[0].Direction, DataArray[1].Position, DataArray[1].Direction).Length;
+        public float Length => new BezierTrajectory(DataArray[0].Position, DataArray[0].Direction, DataArray[1].Position, DataArray[1].Direction, BezierTrajectory.Data.Default).Length;
         public SegmentSelection(ushort id) : base(id) { }
 
         protected override IEnumerable<Data> Calculate()
