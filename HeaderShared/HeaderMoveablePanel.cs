@@ -52,6 +52,7 @@ namespace ModsCommon.UI
             Content.AutoChildrenHorizontally = AutoLayoutChildren.Fit;
             Content.Padding.right = 5;
             Content.PauseLayout(FillContent);
+            Content.eventSizeChanged += ContentSizeChanged;
         }
         protected abstract void FillContent();
         protected virtual void Init(float? height)
@@ -80,10 +81,10 @@ namespace ModsCommon.UI
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
-
-            Caption.width = width - Content.width;
-            Content.relativePosition = new Vector2(Caption.width - 5f + 20f, 0f);
+            SetCaption();
         }
+        private void ContentSizeChanged(UIComponent component, Vector2 value) => SetCaption();
+        private void SetCaption() => Caption.width = width - Content.width;
 
         public virtual void Refresh() => Content.Refresh();
 
