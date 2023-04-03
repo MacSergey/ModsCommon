@@ -160,7 +160,7 @@ namespace ModsCommon.Utilities
             else
             {
                 hasValue = true;
-                StructProperty.FromXml(config);
+                StructProperty.FromXml(config, defaultValue ?? default);
             }
         }
 
