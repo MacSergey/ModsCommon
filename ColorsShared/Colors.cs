@@ -63,6 +63,8 @@ namespace ModsCommon.Utilities
         public static Color32 SetHue(this Color32 color, byte hue) => new Color32(SetHue(color.r, hue), SetHue(color.g, hue), SetHue(color.b, hue), color.a);
         private static byte SetHue(byte value, byte hue) => (byte)(byte.MaxValue - ((byte.MaxValue - value) / 255f * hue));
         public static Color32 SetAlpha(this Color32 color, byte alpha) => new Color32(color.r, color.g, color.b, alpha);
+        public static Color32 SetOpacity(this Color32 color, int opacity) => new Color32(color.r, color.g, color.b, (byte)Mathf.RoundToInt(opacity * 2.55f));
+        public static Color SetOpacity(this Color color, int opacity) => new Color(color.r, color.g, color.b, opacity * 0.01f);
 
         public static Color32 GetStyleIconColor(this Color32 color)
         {

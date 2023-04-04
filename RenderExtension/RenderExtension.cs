@@ -138,7 +138,7 @@ namespace ModsCommon.Utilities
             do
             {
                 position.RenderCircle(data);
-                data.Width = Mathf.Max(data.Width.Value - 0.43f, to);
+                data.Width = Mathf.Max(data.Width.Value - 0.4f, to);
             }
             while (data.Width > to);
         }
