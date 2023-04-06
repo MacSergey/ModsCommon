@@ -148,6 +148,10 @@ namespace ModsCommon.UI
 
         public BaseEditorPanel() : base()
         {
+            Atlas = CommonTextures.Atlas;
+            FgColors = new Color32(0, 0, 0, 96);
+            BgColors = new Color32(0, 0, 0, 48);
+
             Padding = new RectOffset(10, 10, 7, 7);
         }
 
@@ -188,9 +192,6 @@ namespace ModsCommon.UI
                 autoChildrenVertically = AutoLayoutChildren.Fit;
                 autoLayout = AutoLayout.Horizontal;
 
-                Atlas = CommonTextures.Atlas;
-                FgColors = new Color32(0, 0, 0, 96);
-                BgColors = new Color32(0, 0, 0, 48);
                 SpritePadding.left = 10;
                 SpritePadding.right = 10;
                 Borders = PropertyBorder.Top;

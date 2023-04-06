@@ -107,7 +107,7 @@ namespace ModsCommon.UI
         }
 
         public void AddItem(ValueType item, OptionData optionData) => AddItem(item, optionData, true, null);
-        public void AddItem(ValueType item, OptionData optionData, bool clickable = true, float? width = null)
+        public void AddItem(ValueType item, OptionData optionData, bool? clickable = true, float? width = null)
         {
             Objects.Add(item);
 
@@ -127,10 +127,15 @@ namespace ModsCommon.UI
                 button.text = optionData.label ?? item.ToString();
 
             UpdateButton(button, width);
-            if (clickable)
+            if (clickable == true)
                 button.eventClick += ButtonClick;
-            else
+            else if (clickable == false)
                 button.isEnabled = false;
+            else
+            {
+                button.CanHover = false;
+                button.CanPress = false;
+            }
 
             Buttons.Add(button);
             SetType(button);
@@ -186,7 +191,7 @@ namespace ModsCommon.UI
         }
         protected void SetStyle(CustomUISegmentedButton button)
         {
-            if (Style == null)
+            if (SegmentedStyle == null)
             {
                 switch (button.Type)
                 {
@@ -213,16 +218,16 @@ namespace ModsCommon.UI
                 switch (button.Type)
                 {
                     case SegmentedButtonType.Single:
-                        button.ButtonStyle = Style.Single;
+                        button.ButtonStyle = SegmentedStyle.Single;
                         break;
                     case SegmentedButtonType.Left:
-                        button.ButtonStyle = Style.Left;
+                        button.ButtonStyle = SegmentedStyle.Left;
                         break;
                     case SegmentedButtonType.Middle:
-                        button.ButtonStyle = Style.Middle;
+                        button.ButtonStyle = SegmentedStyle.Middle;
                         break;
                     case SegmentedButtonType.Right:
-                        button.ButtonStyle = Style.Right;
+                        button.ButtonStyle = SegmentedStyle.Right;
                         break;
                 }
 
@@ -241,6 +246,7 @@ namespace ModsCommon.UI
             autoButtonSize = true;
             buttonWidth = 50f;
             textScale = 0.8f;
+            style = null;
         }
         public virtual void Clear()
         {
@@ -257,13 +263,17 @@ namespace ModsCommon.UI
 
         public void SetDefaultStyle(Vector2? size = null) { }
 
-        private SegmentedStyle Style { get; set; } = ComponentStyle.Default.Segmented;
-        public void SetStyle(SegmentedStyle style)
-        {
-            Style = style;
 
-            foreach (var button in Buttons)
-                SetStyle(button);
+        private SegmentedStyle style;
+        public SegmentedStyle SegmentedStyle
+        {
+            private get => style ?? ComponentStyle.Default.Segmented;
+            set
+            {
+                style = value;
+                foreach (var button in Buttons)
+                    SetStyle(button);
+            }
         }
     }
 

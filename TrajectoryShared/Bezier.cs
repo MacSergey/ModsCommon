@@ -54,50 +54,19 @@ namespace ModsCommon.Utilities
             StartT = startT;
             EndT = endT;
         }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, bool normalize, bool smoothStart, bool smoothEnd)
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, Data data)
         {
-            var startStraightT = smoothStart ? curveT : straightT;
-            var endStraightT = smoothEnd ? curveT : straightT;
-            var startCurveT = curveT;
-            var endCurveT = curveT;
-            if (normalize)
+            if (data.normalize)
             {
                 startDir = startDir.normalized;
                 endDir = endDir.normalized;
             }
-            var bezier = GetBezier(startPos, startDir, endPos, endDir, startStraightT, endStraightT, startCurveT, endCurveT, out var startT, out var endT);
+            var bezier = GetBezier(startPos, startDir, endPos, endDir, data, out var startT, out var endT);
             this = new BezierTrajectory(bezier, startT, endT);
         }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, bool smoothStart, bool smoothEnd)
+        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Data data)
         {
-            var startStraightT = smoothStart ? curveT : straightT;
-            var endStraightT = smoothEnd ? curveT : straightT;
-            var bezier = GetBezier(startPos, startDir, endPos, startStraightT, endStraightT, curveT, curveT, out var startT, out var endT);
-            this = new BezierTrajectory(bezier, startT, endT);
-        }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, float? startT = curveT, float? endT = curveT, bool normalize = true)
-        {
-            if (normalize)
-            {
-                startDir = startDir.normalized;
-                endDir = endDir.normalized;
-            }
-            var bezier = GetBezier(startPos, startDir, endPos, endDir, startT ?? straightT, endT ?? straightT, startT ?? curveT, endT ?? curveT, out var startResultT, out var endResultT);
-            this = new BezierTrajectory(bezier, startResultT, endResultT);
-        }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, float? startStraightT, float? endStraightT, float? startCurveT, float? endCurveT, bool normalize = true)
-        {
-            if (normalize)
-            {
-                startDir = startDir.normalized;
-                endDir = endDir.normalized;
-            }
-            var bezier = GetBezier(startPos, startDir, endPos, endDir, startStraightT ?? straightT, endStraightT ?? straightT, startCurveT ?? curveT, endCurveT ?? curveT, out var startT, out var endT);
-            this = new BezierTrajectory(bezier, startT, endT);
-        }
-        public BezierTrajectory(Vector3 startPos, Vector3 startDir, Vector3 endPos, float? startStraightT = straightT, float? endStraightT = straightT, float? startCurveT = curveT, float? endCurveT = curveT)
-        {
-            var bezier = GetBezier(startPos, startDir, endPos, startStraightT ?? straightT, endStraightT ?? straightT, startCurveT ?? curveT, endCurveT ?? curveT, out var startT, out var endT);
+            var bezier = GetBezier(startPos, startDir, endPos, data, out var startT, out var endT);
             this = new BezierTrajectory(bezier, startT, endT);
         }
 
@@ -107,15 +76,15 @@ namespace ModsCommon.Utilities
         }
         public BezierTrajectory(ITrajectory trajectory)
         {
-            this = new BezierTrajectory(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection, true, true, true);
+            this = new BezierTrajectory(trajectory.StartPosition, trajectory.StartDirection, trajectory.EndPosition, trajectory.EndDirection, new Data(true, true, true));
         }
         public BezierTrajectory(ref NetSegment segment)
         {
-            this = new BezierTrajectory(segment.m_startNode.GetNode().m_position, segment.m_startDirection, segment.m_endNode.GetNode().m_position, segment.m_endDirection, true, true, true);
+            this = new BezierTrajectory(segment.m_startNode.GetNode().m_position, segment.m_startDirection, segment.m_endNode.GetNode().m_position, segment.m_endDirection, new Data(true, true, true));
         }
         public BezierTrajectory(ushort segmentId) : this(ref segmentId.GetSegment()) { }
 
-        public static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, float startStraightT, float endStraightT, float startCurveT, float endCurveT, out float startT, out float endT)
+        public static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, Data data, out float startT, out float endT)
         {
             var bezier = new Bezier3()
             {
@@ -123,10 +92,10 @@ namespace ModsCommon.Utilities
                 d = endPos,
             };
 
-            GetMiddlePoints(bezier.a, startDir, bezier.d, endDir, startStraightT, endStraightT, startCurveT, endCurveT, out bezier.b, out bezier.c, out startT, out endT);
+            GetMiddlePoints(bezier.a, startDir, bezier.d, endDir, data, out bezier.b, out bezier.c, out startT, out endT);
             return bezier;
         }
-        public static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, float startStraightT, float endStraightT, float startCurveT, float endCurveT, out float startT, out float endT)
+        public static Bezier3 GetBezier(Vector3 startPos, Vector3 startDir, Vector3 endPos, Data data, out float startT, out float endT)
         {
             var startAngle = startDir.AbsoluteAngle();
             var dir = endPos - startPos;
@@ -140,39 +109,34 @@ namespace ModsCommon.Utilities
             };
 
             if (Vector3.Dot(startDir, dir) < 0)
-                GetMiddlePoints(bezier.a, dir, bezier.d, -dir, startStraightT, endStraightT, startCurveT, endCurveT, out bezier.b, out bezier.c, out startT, out endT);
+                GetMiddlePoints(bezier.a, dir, bezier.d, -dir, data, out bezier.b, out bezier.c, out startT, out endT);
             else
-                GetMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), startStraightT, endStraightT, startCurveT, endCurveT, out bezier.b, out bezier.c, out startT, out endT);
+                GetMiddlePoints(bezier.a, startDir, bezier.d, endAngle.Direction(), data, out bezier.b, out bezier.c, out startT, out endT);
 
             return bezier;
         }
-        public static void GetMiddlePoints(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, float startStraightT, float endStraightT, float startCurveT, float endCurveT, out Vector3 middlePos1, out Vector3 middlePos2, out float startT, out float endT)
+        public static void GetMiddlePoints(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, Data data, out Vector3 middlePos1, out Vector3 middlePos2, out float startT, out float endT)
         {
-            GetMiddleDistance(startPos, startDir, endPos, endDir, startStraightT, endStraightT, startCurveT, endCurveT, out var startDis, out var endDis, out startT, out endT);
+            GetMiddleDistance(startPos, startDir, endPos, endDir, data, out var startDis, out var endDis, out startT, out endT);
             middlePos1 = startPos + startDir * startDis;
             middlePos2 = endPos + endDir * endDis;
         }
-        public static void GetMiddleDistance(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, float startStraightT, float endStraightT, float startCurveT, float endCurveT, out float startDis, out float endDis, out float startT, out float endT)
+        public static void GetMiddleDistance(Vector3 startPos, Vector3 startDir, Vector3 endPos, Vector3 endDir, Data data, out float startDis, out float endDis, out float startT, out float endT)
         {
-            if (NetSegment.IsStraight(startPos, startDir, endPos, endDir, out var distance))
+            if (NetSegment.IsStraight(startPos, startDir, endPos, endDir, out var distance) || data.forceStraight)
             {
-                startT = startStraightT;
-                endT = endStraightT;
+                startT = data.startStraightT;
+                endT = data.endStraightT;
                 startDis = distance * startT;
                 endDis = distance * endT;
             }
             else
             {
-                startT = startCurveT;
-                endT = endCurveT;
+                startT = data.startCurveT;
+                endT = data.endCurveT;
                 var dot = startDir.x * endDir.x + startDir.z * endDir.z;
                 if (dot >= -0.999f && Line2.Intersect(XZ(startPos), XZ(startPos + startDir), XZ(endPos), XZ(endPos + endDir), out var u, out var v))
                 {
-                    //if (smooth)
-                    //{
-                    //    u = Mathf.Abs(u);
-                    //    v = Mathf.Abs(v);
-                    //}
                     u = Mathf.Clamp(u, distance * 0.1f, distance);
                     v = Mathf.Clamp(v, distance * 0.1f, distance);
                     distance = u + v;
@@ -207,7 +171,7 @@ namespace ModsCommon.Utilities
         {
             var startNormal = StartDirection.MakeFlatNormalized().Turn90(true);
             var endNormal = EndDirection.MakeFlatNormalized().Turn90(false);
-            return new BezierTrajectory(StartPosition + startNormal * start, StartDirection, EndPosition + endNormal * end, EndDirection, StartT, EndT);
+            return new BezierTrajectory(StartPosition + startNormal * start, StartDirection, EndPosition + endNormal * end, EndDirection, new Data(StartT, EndT));
         }
         ITrajectory ITrajectory.Shift(float start, float end) => Shift(start, end);
 
@@ -250,5 +214,53 @@ namespace ModsCommon.Utilities
         public static bool operator !=(BezierTrajectory first, BezierTrajectory second) => !first.Equals(second);
 
         public override int GetHashCode() => Trajectory.GetHashCode();
+
+        public struct Data
+        {
+            public static Data Default => new Data(null, null, true, false);
+
+            public float startStraightT;
+            public float endStraightT;
+
+            public float startCurveT;
+            public float endCurveT;
+
+            public bool normalize;
+            public bool forceStraight;
+
+            public Data(bool normalize, bool smoothStart, bool smoothEnd, bool forceStraight = false)
+            {
+                this.startStraightT = smoothStart ? curveT : straightT;
+                this.endStraightT = smoothEnd ? curveT : straightT;
+
+                this.startCurveT = curveT;
+                this.endCurveT = curveT;
+
+                this.normalize = normalize;
+                this.forceStraight = forceStraight;
+            }
+            public Data(float? startT = curveT, float? endT = curveT, bool normalize = true, bool forceStraight = false)
+            {
+                this.startStraightT = startT ?? straightT;
+                this.endStraightT = endT ?? straightT;
+
+                this.startCurveT = startT ?? curveT;
+                this.endCurveT = endT ?? curveT;
+
+                this.normalize = normalize;
+                this.forceStraight = forceStraight;
+            }
+            public Data(float? startStraightT, float? endStraightT, float? startCurveT, float? endCurveT, bool normalize = true, bool forceStraight = false)
+            {
+                this.startStraightT = startStraightT ?? straightT;
+                this.endStraightT = endStraightT ?? straightT;
+
+                this.startCurveT = startCurveT ?? curveT;
+                this.endCurveT = endCurveT ?? curveT;
+
+                this.normalize = normalize;
+                this.forceStraight = forceStraight;
+            }
+        }
     }
 }

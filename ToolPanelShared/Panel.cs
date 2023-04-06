@@ -87,11 +87,6 @@ namespace ModsCommon.UI
 
         public ToolPanel()
         {
-            AddContent();
-            AddHeader();
-        }
-        private void AddContent()
-        {
             Content = ComponentPool.Get<PropertyGroupPanel>(this);
             Content.PauseLayout(() =>
             {
@@ -101,9 +96,7 @@ namespace ModsCommon.UI
                 Content.AutoChildrenVertically = AutoLayoutChildren.Fit;
                 Content.eventSizeChanged += (UIComponent component, Vector2 value) => size = value;
             });
-        }
-        private void AddHeader()
-        {
+
             Header = ComponentPool.Get<TypeHeader>(Content);
             Header.Target = this;
             Header.Init();

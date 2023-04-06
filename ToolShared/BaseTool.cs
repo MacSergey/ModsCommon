@@ -91,23 +91,52 @@ namespace ModsCommon
         public Vector3 CameraDirection { get; private set; }
         public bool IsModal { get; private set; }
 
-        private UILabel infoPanel;
-        protected UILabel InfoPanel
+        private CustomUILabel infoPanel;
+        protected CustomUILabel InfoPanel
         {
             get
             {
                 if (infoPanel == null)
                 {
-                    var baseInfo = UIView.Find<UILabel>("CursorInfo");
-                    infoPanel = Instantiate(baseInfo);
-                    baseInfo.GetUIView().AttachUIComponent(infoPanel.gameObject);
+                    infoPanel = (CustomUILabel)UIView.GetAView().AddUIComponent(typeof(CustomUILabel));
                     infoPanel.name = $"{GetType().Name} Info Panel";
-                    infoPanel.atlas = CommonTextures.Atlas;
-                    infoPanel.backgroundSprite = CommonTextures.PanelBig;
-                    infoPanel.color = ComponentStyle.PanelColor;
+                    infoPanel.Atlas = CommonTextures.Atlas;
+                    infoPanel.BackgroundSprite = CommonTextures.PanelLarge;
+                    infoPanel.BgColor = ComponentStyle.PanelColor;
+                    InfoPanel.processMarkup = true;
+                    infoPanel.VerticalAlignment = UIVerticalAlignment.Middle;
+                    infoPanel.HorizontalAlignment = UIHorizontalAlignment.Center;
+                    infoPanel.Padding = new RectOffset(15, 15, 10, 5);
+                    infoPanel.textScale = 0.8f;
+                    infoPanel.isInteractive = false;
                     infoPanel.isVisible = false;
                 }
                 return infoPanel;
+            }
+        }
+
+        private CustomUILabel extraInfoPanel;
+        protected CustomUILabel ExtraInfoPanel
+        {
+            get
+            {
+                if (extraInfoPanel == null)
+                {
+                    extraInfoPanel = (CustomUILabel)UIView.GetAView().AddUIComponent(typeof(CustomUILabel));
+                    extraInfoPanel.name = $"{GetType().Name} Extra Info Panel";
+                    extraInfoPanel.Atlas = CommonTextures.Atlas;
+                    extraInfoPanel.BackgroundSprite = CommonTextures.PanelLarge;
+                    var color = ComponentStyle.PanelColor;
+                    color.a = 192;
+                    extraInfoPanel.BgColor = color;
+                    extraInfoPanel.Padding = new RectOffset(10, 10, 10, 10);
+                    extraInfoPanel.processMarkup = true;
+                    extraInfoPanel.VerticalAlignment = UIVerticalAlignment.Middle;
+                    extraInfoPanel.HorizontalAlignment = UIHorizontalAlignment.Center;
+                    extraInfoPanel.isInteractive = false;
+                    extraInfoPanel.isVisible = false;
+                }
+                return extraInfoPanel;
             }
         }
 
@@ -370,23 +399,23 @@ namespace ModsCommon
             if (!UIView.HasModalInput() && mode.GetExtraInfo(out var text, out var color, out float size, out var position, out var direction))
                 ShowExtraInfo(text, color, size, position, direction);
             else
-                extraInfoLabel.isVisible = false;
+                ExtraInfoPanel.isVisible = false;
         }
         public void ShowExtraInfo(string text, Color color, float size, Vector3 worldPos, Vector3 direction)
         {
-            extraInfoLabel.isVisible = true;
-            extraInfoLabel.text = text ?? string.Empty;
-            extraInfoLabel.textColor = color;
-            extraInfoLabel.textScale = size;
+            ExtraInfoPanel.isVisible = true;
+            ExtraInfoPanel.text = text ?? string.Empty;
+            ExtraInfoPanel.textColor = color;
+            ExtraInfoPanel.textScale = size;
 
-            var uIView = extraInfoLabel.GetUIView();
+            var uIView = ExtraInfoPanel.GetUIView();
             var startScreenPosition = Camera.main.WorldToScreenPoint(worldPos);
             var endScreenPosition = Camera.main.WorldToScreenPoint(worldPos + direction);
             var screenDir = ((Vector2)(endScreenPosition - startScreenPosition)).normalized;
             screenDir.y *= -1;
-            var relativePosition = uIView.ScreenPointToGUI(startScreenPosition / uIView.inputScale) - extraInfoLabel.size * 0.5f + screenDir * (extraInfoLabel.size.magnitude * 0.5f);
+            var relativePosition = uIView.ScreenPointToGUI(startScreenPosition / uIView.inputScale) - ExtraInfoPanel.size * 0.5f + screenDir * (ExtraInfoPanel.size.magnitude * 0.5f);
 
-            extraInfoLabel.relativePosition = relativePosition;
+            ExtraInfoPanel.relativePosition = relativePosition;
         }
 
         #endregion

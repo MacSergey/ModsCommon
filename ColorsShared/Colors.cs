@@ -63,6 +63,8 @@ namespace ModsCommon.Utilities
         public static Color32 SetHue(this Color32 color, byte hue) => new Color32(SetHue(color.r, hue), SetHue(color.g, hue), SetHue(color.b, hue), color.a);
         private static byte SetHue(byte value, byte hue) => (byte)(byte.MaxValue - ((byte.MaxValue - value) / 255f * hue));
         public static Color32 SetAlpha(this Color32 color, byte alpha) => new Color32(color.r, color.g, color.b, alpha);
+        public static Color32 SetOpacity(this Color32 color, int opacity) => new Color32(color.r, color.g, color.b, (byte)Mathf.RoundToInt(opacity * 2.55f));
+        public static Color SetOpacity(this Color color, int opacity) => new Color(color.r, color.g, color.b, opacity * 0.01f);
 
         public static Color32 GetStyleIconColor(this Color32 color)
         {
@@ -84,5 +86,31 @@ namespace ModsCommon.Utilities
         public static string AddErrorColor(this Shortcut shortcut) => AddErrorColor(shortcut.ToString());
         public static string AddActionColor(this Shortcut shortcut) => AddActionColor(shortcut.ToString());
         public static string AddWarningColor(this Shortcut shortcut) => AddWarningColor(shortcut.ToString());
+
+        public static float GetContrast(this Color a, Color b)
+        {
+            var la = GetLuminance(a);
+            var lb = GetLuminance(b);
+            var contrast = (la + 0.05f) / (lb + 0.05f);
+            return contrast;
+        }
+        public static float GetContrast(this Color32 a, Color32 b)
+        {
+            var la = GetLuminance(a);
+            var lb = GetLuminance(b);
+            var contrast = (la + 0.05f) / (lb + 0.05f);
+            return contrast;
+        }
+        private static float GetLuminance(Color c)
+        {
+            return 0.2126f * GetComponent(c.r) + 0.7152f * GetComponent(c.g) + 0.0722f * GetComponent(c.b);
+        }
+        private static float GetComponent(float value)
+        {
+            if (value <= 0.03928)
+                return value / 12.92f;
+            else
+                return Mathf.Pow((value + 0.055f) / 1.055f, 2.4f);
+        }
     }
 }
