@@ -447,16 +447,40 @@ lub przetłumaczyć modyfikację na swój język</value>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>Nie pokazuj ponownie</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>Wyłączone</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>Włączone</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>Zainstalowane</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>Usunięte</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>Zasubskrybowane</value>
+  </data>
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>Niesubskrybowany</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>Naciśnij {0}, aby odrzucić zmiany</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>Naciśnij {0}, aby zresetować przypisanie</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Spacja</value>
+  </data>
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>Lista jest pusta</value>
+  </data>
 </root>
