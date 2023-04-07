@@ -8,18 +8,65 @@ namespace ModsCommon.Utilities
     public static class EnumExtension
     {
         public static AttrType GetAttr<AttrType, T>(this T value)
-            where T : Enum where AttrType : Attribute
+            where T : Enum
+            where AttrType : Attribute
         {
-            return typeof(T).GetField(value.ToString()).GetCustomAttributes(typeof(AttrType), false).OfType<AttrType>().FirstOrDefault();
+            return typeof(T).GetField(value.ToString()).GetCustomAttributes(false).OfType<AttrType>().FirstOrDefault();
         }
         private static Func<T, bool> GetVisibleSelector<T>() where T : Enum => (value) => value.IsVisible();
+
         public static IEnumerable<T> GetEnumValues<T>(Func<T, bool> selector = null)
             where T : Enum
         {
-            return Enum.GetValues(typeof(T)).OfType<T>().Where(selector ?? GetVisibleSelector<T>()).OrderBy(v => v.Order());
+            return Enum.GetValues(typeof(T)).OfType<T>().Where(selector ?? GetVisibleSelector<T>());
         }
-        public static IEnumerable<T> GetEnumValues<T>(this T value) where T : Enum => GetEnumValues<T>().Where(v => (value.ToInt() & v.ToInt()) != 0);
-        public static T GetEnum<T>(this List<T> values) where T : Enum => values.Aggregate(0, (r, v) => r | v.ToInt()).ToEnum<T>();
+        public static IEnumerable<T> Order<T>(this IEnumerable<T> values, bool direct = true)
+            where T : Enum
+        {
+            if (direct)
+                return values.OrderBy(v => v.Order());
+            else
+                return values.OrderByDescending(v => v.Order());
+        }
+
+        public static IEnumerable<T> GetEnumValues<T>(this T value, Func<T, bool> selector = null)
+            where T : Enum
+        {
+            var underlyingType = Enum.GetUnderlyingType(typeof(T));
+
+            if (underlyingType == typeof(int))
+            {
+                var intValue = value.ToInt();
+                return GetEnumValues<T>(selector).Where(v => (intValue & v.ToInt()) != 0);
+            }
+            else if (underlyingType == typeof(long))
+            {
+                var longValue = value.ToLong();
+                return GetEnumValues<T>(selector).Where(v => (longValue & v.ToLong()) != 0);
+            }
+            else if (underlyingType == typeof(ulong))
+            {
+                var ulongValue = value.ToULong();
+                return GetEnumValues<T>(selector).Where(v => (ulongValue & v.ToULong()) != 0);
+            }
+            else
+                return Enumerable.Empty<T>();
+        }
+
+        public static T GetEnum<T>(this IEnumerable<T> values)
+            where T : Enum
+        {
+            var underlyingType = Enum.GetUnderlyingType(typeof(T));
+
+            if (underlyingType == typeof(int))
+                return values.Aggregate(0, (r, v) => r | v.ToInt()).ToEnum<T>();
+            else if (underlyingType == typeof(long))
+                return values.Aggregate(0L, (r, v) => r | v.ToLong()).ToEnum<T>();
+            else if (underlyingType == typeof(ulong))
+                return values.Aggregate(0UL, (r, v) => r | v.ToULong()).ToEnum<T>();
+            else
+                return default;
+        }
         public static string Description<T, TypeMod>(this T value)
             where T : Enum
             where TypeMod : ICustomMod
@@ -31,7 +78,8 @@ namespace ModsCommon.Utilities
         public static bool IsVisible<T>(this T value) where T : Enum => value.GetAttr<NotVisibleAttribute, T>() == null;
         public static bool IsItem<T>(this T value) where T : Enum => value.GetAttr<NotItemAttribute, T>() == null;
         public static int Order<T>(this T value) where T : Enum => value.GetAttr<OrderAttribute, T>()?.Order ?? int.MaxValue;
-        public static string Sprite<T>(this T value, string tag = null) where T : Enum
+        public static string Sprite<T>(this T value, string tag = null)
+            where T : Enum
         {
             var attr = typeof(T).GetField(value.ToString()).GetCustomAttributes(typeof(SpriteAttribute), false).FirstOrDefault(a => (a as SpriteAttribute).Tag == tag) as SpriteAttribute;
             var sprite = attr?.Sprite ?? string.Empty;
@@ -50,7 +98,7 @@ namespace ModsCommon.Utilities
         public static bool IsSet<T>(this T flags, T flag) where T : Enum => (flags.ToInt() & flag.ToInt()) == flag.ToInt();
 
         public static bool CheckFlags<T>(this T value, T required, T forbidden)
-            where T : Enum, IConvertible
+            where T : Enum
         {
             return (value.ToInt() & (required.ToInt() | forbidden.ToInt())) == required.ToInt();
         }
