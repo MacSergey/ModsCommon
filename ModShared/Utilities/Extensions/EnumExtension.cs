@@ -13,12 +13,10 @@ namespace ModsCommon.Utilities
         {
             return typeof(T).GetField(value.ToString()).GetCustomAttributes(false).OfType<AttrType>().FirstOrDefault();
         }
-        private static Func<T, bool> GetVisibleSelector<T>() where T : Enum => (value) => value.IsVisible();
-
-        public static IEnumerable<T> GetEnumValues<T>(Func<T, bool> selector = null)
+        public static IEnumerable<T> GetEnumValues<T>()
             where T : Enum
         {
-            return Enum.GetValues(typeof(T)).OfType<T>().Where(selector ?? GetVisibleSelector<T>());
+            return Enum.GetValues(typeof(T)).OfType<T>();
         }
         public static IEnumerable<T> Order<T>(this IEnumerable<T> values, bool direct = true)
             where T : Enum
@@ -28,8 +26,18 @@ namespace ModsCommon.Utilities
             else
                 return values.OrderByDescending(v => v.Order());
         }
+        public static IEnumerable<T> IsItem<T>(this IEnumerable<T> values)
+            where T : Enum
+        {
+            return values.Where(v => v.IsItem());
+        }
+        public static IEnumerable<T> IsVisible<T>(this IEnumerable<T> values)
+            where T : Enum
+        {
+            return values.Where(v => v.IsVisible());
+        }
 
-        public static IEnumerable<T> GetEnumValues<T>(this T value, Func<T, bool> selector = null)
+        public static IEnumerable<T> GetEnumValues<T>(this T value)
             where T : Enum
         {
             var underlyingType = Enum.GetUnderlyingType(typeof(T));
@@ -37,17 +45,29 @@ namespace ModsCommon.Utilities
             if (underlyingType == typeof(int))
             {
                 var intValue = value.ToInt();
-                return GetEnumValues<T>(selector).Where(v => (intValue & v.ToInt()) != 0);
+                return GetEnumValues<T>().Where(v =>
+                {
+                    var intV = v.ToInt();
+                    return intV != 0 && intV != int.MaxValue && (intValue & intV) != 0;
+                });
             }
             else if (underlyingType == typeof(long))
             {
                 var longValue = value.ToLong();
-                return GetEnumValues<T>(selector).Where(v => (longValue & v.ToLong()) != 0);
+                return GetEnumValues<T>().Where(v =>
+                {
+                    var longV = v.ToLong();
+                    return longV != 0 && longV != long.MaxValue && (longValue & longV) != 0;
+                });
             }
             else if (underlyingType == typeof(ulong))
             {
                 var ulongValue = value.ToULong();
-                return GetEnumValues<T>(selector).Where(v => (ulongValue & v.ToULong()) != 0);
+                return GetEnumValues<T>().Where(v =>
+                {
+                    var ulongV = v.ToULong();
+                    return ulongV != 0 && ulongV != ulong.MaxValue && (ulongValue & ulongV) != 0;
+                });
             }
             else
                 return Enumerable.Empty<T>();
