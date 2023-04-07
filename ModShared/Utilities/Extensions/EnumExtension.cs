@@ -114,6 +114,12 @@ namespace ModsCommon.Utilities
         public static T ToEnum<T>(this ulong value) where T : Enum => (T)(object)value;
 
         public static ToT ToEnum<ToT, FromT>(this FromT item) where ToT : Enum where FromT : Enum => (ToT)(object)item;
+        public static IEnumerable<ToT> ToEnum<ToT, FromT>(this IEnumerable<FromT> values)
+            where ToT : Enum 
+            where FromT : Enum
+        {
+            return values.Select(v => v.ToEnum<ToT, FromT>());
+        }
 
         public static bool IsSet<T>(this T flags, T flag) where T : Enum => (flags.ToInt() & flag.ToInt()) == flag.ToInt();
 
