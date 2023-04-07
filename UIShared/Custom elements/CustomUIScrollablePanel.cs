@@ -466,7 +466,9 @@ namespace ModsCommon.UI
             {
                 StopLayout();
 
+                FillChildren(AutoChildrenHorizontally == AutoLayoutChildren.Fill && ScrollOrientation == UIOrientation.Vertical, AutoChildrenVertically == AutoLayoutChildren.Fill && ScrollOrientation == UIOrientation.Horizontal);
                 FitChildren(AutoChildrenHorizontally == AutoLayoutChildren.Fit && ScrollOrientation == UIOrientation.Horizontal, AutoChildrenVertically == AutoLayoutChildren.Fit && ScrollOrientation == UIOrientation.Vertical);
+                FillChildren(AutoChildrenHorizontally == AutoLayoutChildren.Fill && ScrollOrientation == UIOrientation.Vertical, AutoChildrenVertically == AutoLayoutChildren.Fill && ScrollOrientation == UIOrientation.Horizontal);
 
                 var offset = Vector2.zero;
                 var padding = Padding;
@@ -530,8 +532,6 @@ namespace ModsCommon.UI
                     switch (AutoLayout)
                     {
                         case AutoLayout.Horizontal:
-                            if (AutoChildrenVertically == AutoLayoutChildren.Fill && scrollOrientation == UIOrientation.Horizontal)
-                                childSize.y = height - padding.vertical - scrollbarSize;
 
                             switch (AutoLayoutStart & LayoutStart.Horizontal)
                             {
@@ -561,8 +561,6 @@ namespace ModsCommon.UI
                             break;
 
                         case AutoLayout.Vertical:
-                            if (AutoChildrenHorizontally == AutoLayoutChildren.Fill && scrollOrientation == UIOrientation.Vertical)
-                                childSize.x = width - padding.horizontal - scrollbarSize;
 
                             switch (AutoLayoutStart & LayoutStart.Vertical)
                             {
@@ -593,7 +591,6 @@ namespace ModsCommon.UI
                     }
 
                     child.relativePosition = childPos;
-                    child.size = childSize;
                 }
             }
             catch (Exception e)
@@ -605,9 +602,41 @@ namespace ModsCommon.UI
                 StartLayout(false);
             }
         }
+        protected virtual void FillChildren(bool horizontally, bool vertically)
+        {
+            if (!horizontally && !vertically)
+                return;
 
+            if (horizontally)
+            {
+                var itemWidth = width - Padding.horizontal - (AutoChildrenVertically == AutoLayoutChildren.Fit ? 0 : ScrollbarSize);
+                for (int i = 0; i < childCount; i += 1)
+                {
+                    var child = m_ChildComponents[i];
+                    if (child.isVisibleSelf && !ignoreList.Contains(child))
+                        child.width = itemWidth;
+                }
+            }
+
+            if(vertically)
+            {
+                var itemHeight = height - Padding.vertical - (AutoChildrenVertically == AutoLayoutChildren.Fit ? 0 : ScrollbarSize);
+                for (int i = 0; i < childCount; i += 1)
+                {
+                    var child = m_ChildComponents[i];
+                    if (child.isVisibleSelf && !ignoreList.Contains(child))
+                        child.height = itemHeight;
+                }
+            }
+
+            UpdateScrollbarValues();
+            UpdateScrollbarSizeAndPosition();
+        }
         protected virtual void FitChildren(bool horizontally, bool vertically)
         {
+            if (!horizontally && !vertically)
+                return;
+
             var newSize = size;
 
             if (horizontally)
