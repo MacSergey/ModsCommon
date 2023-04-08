@@ -262,22 +262,22 @@ namespace ModsCommon.Utilities
         }
         private static void DrawCircle(RenderManager.CameraInfo cameraInfo, Color color, Vector3 center, float size, float minY, float maxY, bool renderLimits, bool alphaBlend)
         {
-            float num = Vector2.Distance(cameraInfo.m_position, center) * 0.001f + 1f;
-            Vector4 value = new Vector4(center.x, center.z, size * -0.5f, size * 0.5f);
-            Vector4 value2 = renderLimits ? new Vector4(minY, -100000f, 100000f, maxY) : new Vector4(-100000f, minY, maxY, 100000f);
-            Vector3 vector = center - new Vector3(size * 0.5f, 0f, size * 0.5f);
-            Vector3 vector2 = center + new Vector3(size * 0.5f, 0f, size * 0.5f);
-            vector.y = Mathf.Min(vector.y, minY);
-            vector2.y = Mathf.Max(vector2.y, maxY);
-            Bounds bounds = default(Bounds);
-            Vector3 vector3 = new Vector3(num, num, num);
-            bounds.SetMinMax(vector - vector3, vector2 + vector3);
+            float distance = Vector2.Distance(cameraInfo.m_position, center) * 0.001f + 1f;
+            var centerPos = new Vector4(center.x, center.z, size * -0.5f, size * 0.5f);
+            var limits = renderLimits ? new Vector4(minY, -100000f, 100000f, maxY) : new Vector4(-100000f, minY, maxY, 100000f);
+            var min = center - new Vector3(size * 0.5f, 0f, size * 0.5f);
+            var max = center + new Vector3(size * 0.5f, 0f, size * 0.5f);
+            min.y = Mathf.Min(min.y, minY);
+            max.y = Mathf.Max(max.y, maxY);
+            var vector = new Vector3(distance, distance, distance);
+            var bounds = default(Bounds);
+            bounds.SetMinMax(min - vector, max + vector);
             if (bounds.Intersects(cameraInfo.m_bounds))
             {
                 Material material = alphaBlend ? BlendShapeMaterial : ShapeMaterial;
                 material.color = color.linear;
-                material.SetVector(ID_CenterPos, value);
-                material.SetVector(ID_LimitsY, value2);
+                material.SetVector(ID_CenterPos, centerPos);
+                material.SetVector(ID_LimitsY, limits);
                 DrawEffect(cameraInfo, material, 1, bounds);
             }
         }

@@ -35,11 +35,22 @@ namespace ModsCommon.UI
 
             Control.ButtonSettingsStyle();
             Control.size = new Vector2(278f, 31f);
-
-            Control.eventKeyDown += OnBindingKeyDown;
-            Control.eventMouseDown += OnBindingMouseDown;
+            Control.eventMouseDown += StartBinding;
         }
+        private void StartBinding(UIComponent comp, UIMouseEventParameter p)
+        {
+            if (!InProgress)
+            {
+                Control.text = CommonLocalize.Settings_PressAnyKey;
 
+                p.Use();
+                Warning = MessageBox.Show<WarningLabel>();
+                Warning.Shortcut = Shortcut;
+                Warning.Focus();
+                Warning.eventKeyDown += OnBindingKeyDown;
+                Warning.eventMouseDown += OnBindingMouseDown;
+            }
+        }
         private void OnBindingKeyDown(UIComponent comp, UIKeyEventParameter p)
         {
             if (Shortcut is Shortcut shortcut && !IsModifierKey(p.keycode))
@@ -65,17 +76,7 @@ namespace ModsCommon.UI
         }
         private void OnBindingMouseDown(UIComponent comp, UIMouseEventParameter p)
         {
-            if (!InProgress)
-            {
-                Control.ButtonsMask = UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle | UIMouseButton.Special0 | UIMouseButton.Special1 | UIMouseButton.Special2 | UIMouseButton.Special3;
-                Control.text = CommonLocalize.Settings_PressAnyKey;
-
-                p.Use();
-                Warning = MessageBox.Show<WarningLabel>();
-                Warning.Shortcut = Shortcut;
-                Warning.Focus();
-            }
-            else if (!IsUnbindableMouseButton(p.buttons))
+            if (!IsUnbindableMouseButton(p.buttons))
             {
                 p.Use();
                 MessageBox.Hide(Warning);
@@ -87,7 +88,6 @@ namespace ModsCommon.UI
                     Shortcut.InputKey.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utility.CtrlIsPressed, Utility.ShiftIsPressed, Utility.AltIsPressed);
 
                 Control.text = Shortcut.InputKey.GetLocale();
-                Control.ButtonsMask = UIMouseButton.Left;
 
                 BindingChanged?.Invoke(Shortcut);
             }
@@ -106,7 +106,7 @@ namespace ModsCommon.UI
         };
 
         private bool IsModifierKey(KeyCode code) => code == KeyCode.LeftControl || code == KeyCode.RightControl || code == KeyCode.LeftShift || code == KeyCode.RightShift || code == KeyCode.LeftAlt || code == KeyCode.RightAlt;
-        private bool IsUnbindableMouseButton(UIMouseButton code) => code == UIMouseButton.Left || code == UIMouseButton.Right;
+        private bool IsUnbindableMouseButton(UIMouseButton code) => (code & (UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle)) != 0;
 
         private class WarningLabel : CustomUIPanel
         {

@@ -112,12 +112,12 @@ namespace ModsCommon.UI
         private void SetButtonColors(IHeaderButton button)
         {
             button.BgColors = new ColorSet(Color.white, ButtonHoveredColor, ButtonPressedColor, ButtonPressedColor, Color.white);
-            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor);
+            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconNormalColor, IconDisabledColor);
         }
         private void SetAdditionalButtonColors(IHeaderButton button)
         {
             button.BgColors = new ColorSet(Color.white, AdditionalButtonHoveredColor, AdditionalButtonPressedColor, AdditionalButtonPressedColor, Color.white);
-            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconDisabledColor, IconNormalColor);
+            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconNormalColor, IconDisabledColor);
         }
     }
     public class HeaderContent : BaseHeaderContent

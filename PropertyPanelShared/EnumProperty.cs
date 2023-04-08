@@ -18,7 +18,7 @@ namespace ModsCommon.UI
             base.Init(null);
             FillItems(selector);
         }
-        protected virtual IEnumerable<EnumType> GetValues() => EnumExtension.GetEnumValues<EnumType>();
+        protected virtual IEnumerable<EnumType> GetValues() => EnumExtension.GetEnumValues<EnumType>().IsVisible();
         protected virtual void FillItems(Func<EnumType, bool> selector)
         {
             Selector.PauseLayout(() =>
@@ -59,7 +59,7 @@ namespace ModsCommon.UI
         {
             Selector.PauseLayout(() =>
             {
-                foreach (var value in EnumExtension.GetEnumValues<EnumType>())
+                foreach (var value in EnumExtension.GetEnumValues<EnumType>().IsVisible())
                 {
                     if (selector?.Invoke(value) != false)
                         Selector.AddItem(value, new OptionData(GetDescription(value)));
