@@ -58,6 +58,7 @@ namespace ModsCommon.UI
             base.Fill();
 
             DeleteButton = AddUIComponent<CustomUIButton>();
+            DeleteButton.name = nameof(DeleteButton);
             DeleteButton.Atlas = CommonTextures.Atlas;
             DeleteButton.BgSprites = new SpriteSet(CommonTextures.CloseButtonNormal, CommonTextures.CloseButtonHovered, CommonTextures.CloseButtonPressed, CommonTextures.CloseButtonNormal, string.Empty);
             DeleteButton.size = new Vector2(20, 20);

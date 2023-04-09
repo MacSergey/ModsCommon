@@ -106,7 +106,7 @@ namespace ModsCommon.UI
         #endregion
 
         [Obsolete]
-        protected UIButton.ButtonState state;
+        protected UIButton.ButtonState state = UIButton.ButtonState.Normal;
         public UIButton.ButtonState State
         {
 #pragma warning disable CS0612

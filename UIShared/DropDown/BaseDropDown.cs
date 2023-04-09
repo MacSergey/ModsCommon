@@ -18,6 +18,7 @@ namespace ModsCommon.UI
 
         public PopupType Popup { get; private set; }
         public virtual bool AutoClose { get; set; } = true;
+        private Vector3 StartPosition { get; set; }
 
         public override void Update()
         {
@@ -40,6 +41,7 @@ namespace ModsCommon.UI
             if (AutoClose)
                 isInteractive = false;
 
+            StartPosition = absolutePosition;
             BeforePopupOpen();
             OnBeforePopupOpen?.Invoke();
 
@@ -95,6 +97,7 @@ namespace ModsCommon.UI
 
                 ComponentPool.Free(Popup);
                 Popup = null;
+                StartPosition = Vector3.zero;
 
                 AfterPopupClose();
                 OnAfterPopupClose?.Invoke();
@@ -121,6 +124,12 @@ namespace ModsCommon.UI
             }
 
             if (Input.GetMouseButtonDown(0) && !Popup.Raycast(GetCamera().ScreenPointToRay(Input.mousePosition)))
+            {
+                ClosePopup();
+                return;
+            }
+
+            if(absolutePosition != StartPosition)
             {
                 ClosePopup();
                 return;

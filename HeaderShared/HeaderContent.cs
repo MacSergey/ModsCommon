@@ -49,6 +49,7 @@ namespace ModsCommon.UI
                 autoLayoutStart = LayoutStart.MiddleLeft;
 
                 Additional = AddUIComponent<AdditionalHeaderButton>();
+                Additional.name = nameof(Additional);
                 Additional.tooltip = CommonLocalize.Panel_Additional;
                 Additional.SetIcon(AdditionalButtonAtlas, AdditionalButtonSprite);
                 Additional.SetSize(MainButtonSize, MainIconSize);

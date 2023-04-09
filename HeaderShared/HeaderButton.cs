@@ -108,20 +108,21 @@ namespace ModsCommon.UI
             get => Button.isEnabled;
             set => Button.isEnabled = value;
         }
-        private HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, Action onClick)
+        private HeaderButtonInfo(string name, HeaderButtonState state, UITextureAtlas atlas, string sprite, Action onClick)
         {
             State = state;
             OnClick = onClick;
 
             Button = new GameObject(typeof(TypeButton).Name).AddComponent<TypeButton>();
+            Button.name = name;
             Button.SetIcon(atlas, sprite);
             Button.eventClicked += ButtonClicked;
         }
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null) : this(state, atlas, sprite, onClick) 
+        public HeaderButtonInfo(string name, HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null) : this(name, state, atlas, sprite, onClick) 
         {
             Text = text;
         }
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(state, atlas, sprite, shortcut.Press)
+        public HeaderButtonInfo(string name, HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(name, state, atlas, sprite, shortcut.Press)
         {
             Text = text;
             Shortcut = shortcut;
