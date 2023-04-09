@@ -12,6 +12,7 @@ namespace ModsCommon.UI
         protected override float DefaultHeight => BaseHeaderContent.DefaultSize + 10;
 
         protected TypeContent Content { get; set; }
+        public HeaderStyle ContentStyle { set => Content.HeaderStyle = value; }
 
         public BaseHeaderPanel() : base()
         {

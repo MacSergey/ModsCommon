@@ -551,6 +551,13 @@ namespace ModsCommon.UI
                 BgSprites = PanelLarge,
                 BgColors = new Color32(82, 101, 117, 255),
                 MaskSprite = OpacitySliderMask,
+            },
+            HeaderContent = new HeaderStyle()
+            {
+                MainBgColors = new ColorSet(default, DarkPrimaryColor45, DarkPrimaryColor55, default, default),
+                MainFgColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, DarkPrimaryColor55),
+                AdditionalBgColors = new ColorSet(default, DarkPrimaryColor45, DarkPrimaryColor45, default, default),
+                AdditionalFgColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, DarkPrimaryColor55),
             }
         };
 
@@ -660,11 +667,9 @@ namespace ModsCommon.UI
         public ColorPickerStyle ColorPicker { get; set; }
         public LabelStyle Label { get; set; }
         public PropertyPanelStyle PropertyPanel { get; set; }
+        public HeaderStyle HeaderContent { get; set; }
     }
-    public class ItemStyle
-    {
-
-    }
+    public class ItemStyle { }
     public class InteractiveStyle : ItemStyle
     {
         public UITextureAtlas BgAtlas { get; set; }
@@ -840,6 +845,13 @@ namespace ModsCommon.UI
         public SpriteSet BgSprites { get; set; }
         public ColorSet BgColors { get; set; }
         public string MaskSprite { get; set; }
+    }
+    public class HeaderStyle : ItemStyle
+    {
+        public ColorSet MainBgColors { get; set; }
+        public ColorSet MainFgColors { get; set; }
+        public ColorSet AdditionalBgColors { get; set; }
+        public ColorSet AdditionalFgColors { get; set; }
     }
 
 

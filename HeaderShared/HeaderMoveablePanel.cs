@@ -1,5 +1,4 @@
 ﻿using ColossalFramework.UI;
-using ModsCommon.Utilities;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -28,6 +27,7 @@ namespace ModsCommon.UI
             get => Caption.text;
             set => Caption.text = value;
         }
+        public HeaderStyle ContentStyle { set => Content.HeaderStyle = value; }
 
         public HeaderMoveablePanel() : base()
         {
