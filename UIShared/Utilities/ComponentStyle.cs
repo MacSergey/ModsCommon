@@ -257,16 +257,14 @@ namespace ModsCommon.UI
         {
             textField.TextFieldStyle = Default.TextField;
 
-            textField.allowFloats = true;
             textField.isInteractive = true;
-            textField.readOnly = false;
             textField.builtinKeyNavigation = true;
-            textField.cursorWidth = 1;
-            textField.cursorBlinkTime = 0.45f;
-            textField.selectOnFocus = true;
+            textField.CursorWidth = 1;
+            textField.CursorBlinkTime = 0.45f;
+            textField.SelectOnFocus = true;
 
             textField.verticalAlignment = UIVerticalAlignment.Middle;
-            textField.padding = new RectOffset(0, 0, 6, 0);
+            textField.Padding = new RectOffset(0, 0, 6, 0);
         }
         public static void SettingsStyle(this CustomUITextField textField)
         {

@@ -155,6 +155,7 @@ namespace ModsCommon.Settings
             TabStrip.AddTab(label, 1.25f);
 
             var tabPanel = MainPanel.AddUIComponent<CustomUIScrollablePanel>();
+            tabPanel.name = name;
             tabPanel.ScrollOrientation = UIOrientation.Vertical;
             tabPanel.AutoLayout = AutoLayout.Vertical;
             tabPanel.AutoLayoutSpace = 25;

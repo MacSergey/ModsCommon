@@ -233,6 +233,7 @@ namespace ModsCommon.UI
         public class UpdateMessage : CustomUIPanel, IReusable
         {
             bool IReusable.InCache { get; set; }
+            Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
             private CustomUILabel Tag { get; set; }
             private CustomUILabel Text { get; set; }

@@ -12,7 +12,8 @@ namespace ModsCommon.UI
     public delegate void EntityStyleDelegate<ObjectType, EntityType>(EntityType entity, ref bool overridden)
         where EntityType : CustomUIButton, IPopupEntity<ObjectType>;
 
-    public interface IPopup<ObjectType, EntityType>
+    public interface IPopup { }
+    public interface IPopup<ObjectType, EntityType> : IPopup
         where EntityType : CustomUIButton, IPopupEntity<ObjectType>
     {
         event Action<ObjectType> OnSelect;

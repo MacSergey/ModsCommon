@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class PopupPanel : CustomUIPanel
+    public abstract class PopupPanel : CustomUIPanel, IPopup
     {
         protected virtual Color32 Background => Color.black;
         public CustomUIScrollablePanel Content { get; private set; }

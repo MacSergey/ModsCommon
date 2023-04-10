@@ -53,6 +53,7 @@ namespace ModsCommon.UI
     public abstract class UISegmented<ValueType> : CustomUIPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
         protected List<CustomUISegmentedButton> Buttons { get; } = new List<CustomUISegmentedButton>();

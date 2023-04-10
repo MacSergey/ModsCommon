@@ -12,6 +12,8 @@ namespace ModsCommon.UI
         public event Action<Color32> OnValueChanged;
 
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         private bool InProcess { get; set; } = false;
 
         protected ColorPickerType ColorPicker { get; set; }
@@ -138,6 +140,7 @@ namespace ModsCommon.UI
         private CustomUILabel AddLabel(UIComponent parent, string name)
         {
             var label = parent.AddUIComponent<CustomUILabel>();
+            label.name = name;
             label.text = name;
             label.textScale = 0.7f;
             label.Padding = new RectOffset(0, 0, 2, 0);

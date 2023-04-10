@@ -24,8 +24,8 @@ namespace ModsCommon.UI
         }
         public bool SubmitOnFocusLost
         {
-            get => Field.submitOnFocusLost;
-            set => Field.submitOnFocusLost = value;
+            get => Field.SubmitOnFocusLost;
+            set => Field.SubmitOnFocusLost = value;
         }
 
         public ValueType Value
@@ -131,8 +131,8 @@ namespace ModsCommon.UI
     {
         public bool Multyline
         {
-            get => Field.multiline;
-            set => Field.multiline = value;
+            get => Field.Multiline;
+            set => Field.Multiline = value;
         }
         public float TextScale
         {
@@ -164,6 +164,8 @@ namespace ModsCommon.UI
         where ValueType : IComparable<ValueType>
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         protected FieldType FieldA { get; set; }
         protected FieldType FieldB { get; set; }
 
@@ -180,11 +182,11 @@ namespace ModsCommon.UI
         }
         public bool SubmitOnFocusLost
         {
-            get => FieldA.submitOnFocusLost && FieldB.submitOnFocusLost;
+            get => FieldA.SubmitOnFocusLost && FieldB.SubmitOnFocusLost;
             set
             {
-                FieldA.submitOnFocusLost = value;
-                FieldB.submitOnFocusLost = value;
+                FieldA.SubmitOnFocusLost = value;
+                FieldB.SubmitOnFocusLost = value;
             }
         }
 

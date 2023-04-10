@@ -10,6 +10,8 @@ namespace ModsCommon.UI
         where PopupType : SimplePopup<ValueType, EntityType>
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
 
         public new event Action<ValueType> OnSelectObject;
 

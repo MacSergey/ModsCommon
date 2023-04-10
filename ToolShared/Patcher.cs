@@ -67,5 +67,16 @@ namespace ModsCommon
         public static string CanalsOptionPanel => nameof(CanalsOptionPanel);
         public static string QuaysOptionPanel => nameof(QuaysOptionPanel);
         public static string FloodWallsOptionPanel => nameof(FloodWallsOptionPanel);
+
+        public static bool UIViewHasInputFocusPrefix(UIComponent ___m_ActiveComponent, ref bool __result)
+        {
+            if (___m_ActiveComponent != null && ___m_ActiveComponent.isInteractive && ___m_ActiveComponent is CustomUITextField)
+            {
+                __result = true;
+                return false;
+            }
+            else
+                return true;
+        }
     }
 }

@@ -36,8 +36,8 @@ namespace ModsCommon.UI
             }
             public bool SubmitOnFocusLost
             {
-                get => Property.Fields[Index].submitOnFocusLost;
-                set => Property.Fields[Index].submitOnFocusLost = value;
+                get => Property.Fields[Index].SubmitOnFocusLost;
+                set => Property.Fields[Index].SubmitOnFocusLost = value;
             }
             public float MinValue
             {
@@ -89,6 +89,8 @@ namespace ModsCommon.UI
         public event Action<TypeVector> OnValueChanged;
 
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         public abstract uint Dimension { get; }
 
         public Field this[int index]
@@ -158,11 +160,11 @@ namespace ModsCommon.UI
         }
         public bool SubmitOnFocusLost
         {
-            get => Fields.All(f => f.submitOnFocusLost);
+            get => Fields.All(f => f.SubmitOnFocusLost);
             set
             {
                 for (var i = 0; i < Dimension; i += 1)
-                    Fields[i].submitOnFocusLost = value;
+                    Fields[i].SubmitOnFocusLost = value;
             }
         }
 

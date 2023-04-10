@@ -8,6 +8,7 @@ namespace ModsCommon.UI
     public class PropertyGroupPanel : CustomUIPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
         public virtual PropertyPanelStyle PanelStyle
         {

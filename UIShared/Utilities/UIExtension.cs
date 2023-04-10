@@ -24,6 +24,18 @@ namespace ModsCommon.UI
         public static bool StartBottom(this LayoutStart layout) => layout == LayoutStart.BottomLeft || layout == LayoutStart.BottomRight;
         public static bool StartRight(this LayoutStart layout) => layout == LayoutStart.TopRight || layout == LayoutStart.BottomRight;
         public static bool StartLeft(this LayoutStart layout) => layout == LayoutStart.TopLeft || layout == LayoutStart.BottomLeft;
+
+        public static UIComponent GetRoot(this UIComponent component)
+        {
+            while (component.parent != null)
+            {
+                component = component.parent;
+                if (component is IPopup)
+                    break;
+            }
+
+            return component;
+        }
     }
 
     [Flags]

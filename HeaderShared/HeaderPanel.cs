@@ -9,6 +9,8 @@ namespace ModsCommon.UI
         where TypeContent : BaseHeaderContent
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         protected override float DefaultHeight => BaseHeaderContent.DefaultSize + 10;
 
         protected TypeContent Content { get; set; }

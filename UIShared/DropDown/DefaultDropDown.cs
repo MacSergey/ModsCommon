@@ -11,6 +11,8 @@ namespace ModsCommon.UI
         public event Action<ValueType> OnSelectedObjectChanged;
 
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         private List<ValueType> Objects { get; } = new List<ValueType>();
         public ValueType SelectedObject

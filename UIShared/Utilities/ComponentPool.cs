@@ -12,6 +12,7 @@ namespace ModsCommon.UI
     {
         void DeInit();
         bool InCache { get; set; }
+        Transform CachedTransform { get; set; }
     }
     public static class ComponentPool
     {
@@ -43,13 +44,25 @@ namespace ModsCommon.UI
             if (queue.Count != 0)
             {
                 component = queue.Dequeue() as ComponentType;
-                parent.AttachUIComponent(component.gameObject);
+                if (parent != null)
+                    parent.AttachUIComponent(component.gameObject);
+                else
+                    UIView.GetAView().AttachUIComponent(component.gameObject);
             }
             else
-                component = parent.AddUIComponent<ComponentType>();
+            {
+                if(parent != null)
+                    component = parent.AddUIComponent<ComponentType>();
+                else
+                    component = UIView.GetAView().AddUIComponent(typeof(ComponentType)) as ComponentType;
+            }
+
 
             if (component is IReusable reusable)
+            {
                 reusable.InCache = false;
+                reusable.CachedTransform = null;
+            }
 
             if (name != null)
                 component.cachedName = name;
@@ -80,6 +93,7 @@ namespace ModsCommon.UI
                     component.isEnabled = true;
 
                     reusable.DeInit();
+                    reusable.CachedTransform = null;
 
                     var type = component.GetType();
                     if (!EventFields.TryGetValue(type, out var eventFields))

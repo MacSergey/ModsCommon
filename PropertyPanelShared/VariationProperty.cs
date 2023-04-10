@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using UnityEngine;
 
 namespace ModsCommon.UI
 {
@@ -6,6 +7,7 @@ namespace ModsCommon.UI
         where SegmentedType : UIOnceSegmented<ItemType>
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
         private SegmentedType Selector { get; set; }
         protected ItemType SelectedObject

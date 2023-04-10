@@ -102,6 +102,17 @@ namespace ModsCommon.UI
             base.OnLostFocus(p);
             Invalidate();
         }
+        protected override void OnVisibilityChanged()
+        {
+            if(hasFocus && !isVisible)
+            {
+                if (this.GetRoot() is UIComponent root)
+                    root.Focus();
+                else
+                    Unfocus();
+            }
+            base.OnVisibilityChanged();
+        }
 
         #endregion
 

@@ -15,6 +15,8 @@ namespace ModsCommon.UI
         public event Action<PanelType> OnLeave;
 
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         public PanelType Selector { get; private set; }
         protected abstract float Width { get; }
 

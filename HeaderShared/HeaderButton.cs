@@ -21,6 +21,7 @@ namespace ModsCommon.UI
     public class HeaderButton : CustomUIButton, IHeaderButton, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
         public HeaderButton()
         {

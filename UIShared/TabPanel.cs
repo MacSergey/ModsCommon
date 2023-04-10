@@ -235,6 +235,7 @@ namespace ModsCommon.UI
         protected TabType AddTabImpl(string name, float textScale = 0.85f)
         {
             var tabButton = AddUIComponent<TabType>();
+            tabButton.name = name;
             tabButton.text = name;
             tabButton.TextPadding = new RectOffset(5, 5, 2, 2);
             tabButton.textScale = textScale;

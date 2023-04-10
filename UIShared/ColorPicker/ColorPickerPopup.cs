@@ -9,9 +9,11 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class ColorPickerPopup : CustomUIPanel, IReusable
+    public class ColorPickerPopup : CustomUIPanel, IReusable, IPopup
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
 
         public event Action<Color32> OnSelectedColorChanged;
 
@@ -43,23 +45,23 @@ namespace ModsCommon.UI
             {
                 RField.BgColors = value.TextField.BgColors;
                 RField.textColor = value.TextField.TextColors.normal;
-                RField.selectionBackgroundColor = value.TextField.SelectionColor;
+                RField.SelBgColor = value.TextField.SelectionColor;
 
                 GField.BgColors = value.TextField.BgColors;
                 GField.textColor = value.TextField.TextColors.normal;
-                GField.selectionBackgroundColor = value.TextField.SelectionColor;
+                GField.SelBgColor = value.TextField.SelectionColor;
 
                 BField.BgColors = value.TextField.BgColors;
                 BField.textColor = value.TextField.TextColors.normal;
-                BField.selectionBackgroundColor = value.TextField.SelectionColor;
+                BField.SelBgColor = value.TextField.SelectionColor;
 
                 AField.BgColors = value.TextField.BgColors;
                 AField.textColor = value.TextField.TextColors.normal;
-                AField.selectionBackgroundColor = value.TextField.SelectionColor;
+                AField.SelBgColor = value.TextField.SelectionColor;
 
                 HEXField.BgColors = value.TextField.BgColors;
                 HEXField.textColor = value.TextField.TextColors.normal;
-                HEXField.selectionBackgroundColor = value.TextField.SelectionColor;
+                HEXField.SelBgColor = value.TextField.SelectionColor;
             }
         }
 
@@ -270,8 +272,7 @@ namespace ModsCommon.UI
                 field = panel.AddUIComponent<FieldType>();
                 field.SetDefaultStyle();
                 field.OnValueChanged += onChanged;
-                field.eventGotFocus += FieldGotFocus;
-                field.eventLostFocus += FieldLostFocus;
+                field.ActionOnUnfocus = CustomUITextField.OnUnfocus.FocusRoot;
 
                 var label = panel.AddUIComponent<CustomUILabel>();
                 label.text = name;
@@ -282,15 +283,6 @@ namespace ModsCommon.UI
             });
 
             return field;
-        }
-        private void FieldGotFocus(UIComponent component, UIFocusEventParameter eventParam)
-        {
-            AutoClose = false;
-        }
-        private void FieldLostFocus(UIComponent component, UIFocusEventParameter eventParam)
-        {
-            AutoClose = true; 
-            Focus();
         }
         private void SetField(ByteUITextField field)
         {

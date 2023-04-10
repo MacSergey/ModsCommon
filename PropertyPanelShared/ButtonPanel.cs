@@ -9,6 +9,8 @@ namespace ModsCommon.UI
     public class ButtonPanel : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         protected CustomUIButton Button { get; set; }
         protected float DefaultHeight => 20f;
 
@@ -90,6 +92,8 @@ namespace ModsCommon.UI
         public event Action<int> OnButtonClick;
 
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
         public int Count => Buttons.Count;
         protected float DefaultHeight => 20f;
@@ -185,6 +189,8 @@ namespace ModsCommon.UI
     public class ButtonPropertyPanel : EditorPropertyPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         CustomUIButton Button { get; set; }
 
         public string ButtonText
