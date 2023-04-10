@@ -19,7 +19,6 @@ namespace ModsCommon.UI
         public PopupType Popup { get; private set; }
         public virtual bool AutoClose { get; set; } = true;
         private Vector3 StartPosition { get; set; }
-        //public bool AddToView { get; set; }
 
         public override void Update()
         {
