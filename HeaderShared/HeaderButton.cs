@@ -17,6 +17,7 @@ namespace ModsCommon.UI
         void PerformAutoWidth();
         ColorSet BgColors {set;}
         ColorSet FgColors { set; }
+        ColorSet IconColors { set; }
     }
     public class HeaderButton : CustomUIButton, IHeaderButton, IReusable
     {
@@ -30,7 +31,7 @@ namespace ModsCommon.UI
             clipChildren = true;
             textScale = 0.8f;
             TextHorizontalAlignment = UIHorizontalAlignment.Left;
-            ForegroundSpriteMode = SpriteMode.Fill;
+            IconMode = SpriteMode.Fill;
         }
 
         public void Init(UITextureAtlas atlas, string sprite, int size, int iconSize)
@@ -46,8 +47,8 @@ namespace ModsCommon.UI
         }
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            FgAtlas = atlas ?? TextureHelper.InGameAtlas;
-            FgSprites = sprite;
+            IconAtlas = atlas ?? TextureHelper.InGameAtlas;
+            IconSprites = sprite;
         }
 
         public override void Update()

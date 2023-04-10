@@ -425,6 +425,7 @@ namespace ModsCommon.UI
             Search.Padding = new RectOffset(20, 30, 6, 0);
             Search.horizontalAlignment = UIHorizontalAlignment.Left;
             Search.OnTextChanged += SearchTextChanged;
+            Search.OnTextCancelled += SearchTextChanged;
             Search.ActionOnUnfocus = CustomUITextField.OnUnfocus.FocusRoot;
             SetItemMargin(Search, new RectOffset(5, 5, 5, 5));
 
@@ -437,7 +438,7 @@ namespace ModsCommon.UI
             ResetButton = Search.AddUIComponent<CustomUIButton>();
             ResetButton.name = nameof(ResetButton);
             ResetButton.Atlas = TextureHelper.InGameAtlas;
-            ResetButton.FgSprites = "ContentManagerSearchReset";
+            ResetButton.IconSprites = "ContentManagerSearchReset";
             ResetButton.size = new Vector2(10f, 10f);
             ResetButton.HoveredBgColor = new Color32(127, 127, 127, 255);
             ResetButton.isVisible = false;
@@ -477,7 +478,10 @@ namespace ModsCommon.UI
 
         private void ResetClick(UIComponent component, UIMouseEventParameter eventParam)
         {
-            Search.text = string.Empty;
+            if (Search.text == string.Empty)
+                SearchTextChanged(string.Empty);
+            else
+                Search.text = string.Empty;
         }
         private void SearchSizeChanged(UIComponent component, Vector2 value)
         {

@@ -65,10 +65,10 @@ namespace ModsCommon.UI
 
         #region POPUP
 
-        public override bool AutoClose 
-        { 
-            get => base.AutoClose && (Popup == null || Popup.AutoClose); 
-            set => base.AutoClose = value; 
+        public override bool AutoClose
+        {
+            get => base.AutoClose && (Popup == null || Popup.AutoClose);
+            set => base.AutoClose = value;
         }
         protected abstract IEnumerable<ObjectType> Objects { get; }
         protected abstract Func<ObjectType, bool> Selector { get; }
@@ -121,12 +121,15 @@ namespace ModsCommon.UI
 
                 bgAtlas = value.BgAtlas;
                 fgAtlas = value.FgAtlas;
+                IconAtlas = value.IconAtlas;
 
                 bgSprites = value.BgSprites;
                 fgSprites = value.FgSprites;
+                IconSprites = value.IconSprites;
 
                 bgColors = value.BgColors;
                 fgColors = value.FgColors;
+                IconColors = value.IconColors;
 
                 textColors = value.TextColors;
 

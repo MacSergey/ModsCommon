@@ -34,7 +34,7 @@ namespace ModsCommon.UI
 
         public ColorPickerButton() : base()
         {
-            SpritePadding = new RectOffset(2, 2, 2, 2);
+            ForegroundPadding = new RectOffset(2, 2, 2, 2);
         }
         protected override void AfterPopupOpen()
         {

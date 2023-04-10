@@ -84,7 +84,7 @@ namespace ModsCommon.UI
 
         public override void SetStyle(ControlStyle style)
         {
-            Button.ButtonStyle = style.Button;
+            Button.ButtonStyle = style.LargeButton;
         }
     }
     public class ButtonsPanel : BaseEditorPanel, IReusable
@@ -176,10 +176,10 @@ namespace ModsCommon.UI
             });
         }
 
-        private ButtonStyle Style { get; set; } = ComponentStyle.Default.Button;
+        private ButtonStyle Style { get; set; } = ComponentStyle.Default.LargeButton;
         public override void SetStyle(ControlStyle style)
         {
-            Style = style.Button;
+            Style = style.LargeButton;
 
             foreach (var button in Buttons)
                 button.ButtonStyle = Style;
@@ -272,7 +272,7 @@ namespace ModsCommon.UI
 
         public override void SetStyle(ControlStyle style)
         {
-            Button.ButtonStyle = style.Button;
+            Button.ButtonStyle = style.LargeButton;
         }
     }
 }

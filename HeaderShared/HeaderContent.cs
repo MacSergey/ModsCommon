@@ -42,11 +42,11 @@ namespace ModsCommon.UI
                     foreach (var info in MainInfos)
                     {
                         info.Button.BgColors = value.MainBgColors;
-                        info.Button.FgColors = value.MainFgColors;
+                        info.Button.IconColors = value.MainIconColors;
                     }
 
                     Additional.BgColors = value.MainBgColors;
-                    Additional.FgColors = value.MainFgColors;
+                    Additional.IconColors = value.MainIconColors;
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace ModsCommon.UI
                 Additional.OnPopupOpening += PopupOpening;
                 Additional.OnBeforePopupClose += BeforePopupClose;
                 Additional.BgColors = HeaderStyle.MainBgColors;
-                Additional.FgColors = HeaderStyle.MainFgColors;
+                Additional.IconColors = HeaderStyle.MainIconColors;
             });
 
             Refresh();
@@ -89,7 +89,7 @@ namespace ModsCommon.UI
                 info.Button.PerformAutoWidth();
                 info.ClickedEvent += PopupClicked;
                 info.Button.BgColors = HeaderStyle.AdditionalBgColors;
-                info.Button.FgColors = HeaderStyle.AdditionalFgColors;
+                info.Button.IconColors = HeaderStyle.AdditionalIconColors;
             }
 
             var maxwidth = AdditionalInfos.Max(i => i.Button.width);
@@ -119,7 +119,7 @@ namespace ModsCommon.UI
             {
                 info.AddButton(this, false, MainButtonSize, MainIconSize);
                 info.Button.BgColors = HeaderStyle.MainBgColors;
-                info.Button.FgColors = HeaderStyle.MainFgColors;
+                info.Button.IconColors = HeaderStyle.MainIconColors;
             }
 
             Additional.isVisible = ShowAdditional;

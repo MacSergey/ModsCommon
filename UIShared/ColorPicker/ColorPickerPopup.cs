@@ -143,7 +143,7 @@ namespace ModsCommon.UI
                 HSBIndicator.BgSprites = CommonTextures.Circle;
                 HSBIndicator.FgSprites = CommonTextures.Circle;
                 HSBIndicator.size = new Vector2(16f, 16f);
-                HSBIndicator.SpritePadding = new RectOffset(2, 2, 2, 2);
+                HSBIndicator.ForegroundPadding = new RectOffset(2, 2, 2, 2);
 
                 HueField = pickerPanel.AddUIComponent<CustomUITextureSprite>();
                 HueField.name = nameof(HueField);
@@ -177,7 +177,7 @@ namespace ModsCommon.UI
                 HueIndicator.BgSprites = CommonTextures.Circle;
                 HueIndicator.FgSprites = CommonTextures.Circle;
                 HueIndicator.size = new Vector2(16f, 16f);
-                HueIndicator.SpritePadding = new RectOffset(2, 2, 2, 2);
+                HueIndicator.ForegroundPadding = new RectOffset(2, 2, 2, 2);
                 HueIndicator.relativePosition = HueSlider.ThumbPosition;
 
 
@@ -216,7 +216,7 @@ namespace ModsCommon.UI
                 OpacityIndicator.BgSprites = CommonTextures.Circle;
                 OpacityIndicator.FgSprites = CommonTextures.Circle;
                 OpacityIndicator.size = new Vector2(16f, 16f);
-                OpacityIndicator.SpritePadding = new RectOffset(2, 2, 2, 2);
+                OpacityIndicator.ForegroundPadding = new RectOffset(2, 2, 2, 2);
                 OpacityIndicator.relativePosition = OpacitySlider.ThumbPosition;
             });
 
@@ -478,9 +478,22 @@ namespace ModsCommon.UI
         private void SetIndicators(Color color)
         {
             color.a = 255;
+
+
             HSBIndicator.FgColors = color;
             HueIndicator.FgColors = HueColor;
             OpacityIndicator.FgColors = color;
+
+            if(Color.white.GetContrast(color) >= 4.5)
+            {
+                HSBIndicator.BgColors = Color.white;
+                OpacityIndicator.BgColors = Color.white;
+            }
+            else
+            {
+                HSBIndicator.BgColors = Color.black;
+                OpacityIndicator.BgColors = Color.black;
+            }
         }
         private void SetRGBValue(Color32 color)
         {

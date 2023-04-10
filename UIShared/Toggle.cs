@@ -56,7 +56,7 @@ namespace ModsCommon.UI
         public CustomUIToggle()
         {
             canFocus = false;
-            ForegroundSpriteMode = SpriteMode.Scale;
+            IconMode = SpriteMode.Scale;
         }
 
         private void SetState()
@@ -68,8 +68,8 @@ namespace ModsCommon.UI
         private void SetCircle()
         {
             var padding = Mathf.RoundToInt(height * (1f - CircleScale) * 0.5f);
-            SpritePadding = new RectOffset(padding, padding, 0, 0);
-            ScaleFactor = 1f - SpritePadding.horizontal / height;
+            IconPadding = new RectOffset(padding, padding, 0, 0);
+            ScaleFactor = 1f - IconPadding.horizontal / height;
         }
 
         protected override void OnClick(UIMouseEventParameter p)
@@ -114,17 +114,17 @@ namespace ModsCommon.UI
                 };
             }
         }
-        protected override Color32 RenderForegroundColor
+        protected override Color32 RenderIconColor
         {
             get
             {
                 return State switch
                 {
-                    UIButton.ButtonState.Focused => Value ? SelFocusedFgColor : FocusedFgColor,
-                    UIButton.ButtonState.Hovered => Value ? SelHoveredFgColor : HoveredFgColor,
-                    UIButton.ButtonState.Pressed => Value ? SelPressedFgColor : PressedFgColor,
-                    UIButton.ButtonState.Disabled => Value ? SelDisabledFgColor : DisabledFgColor,
-                    _ => Value ? SelNormalFgColor : NormalFgColor,
+                    UIButton.ButtonState.Focused => Value ? SelFocusedIconColor : FocusedIconColor,
+                    UIButton.ButtonState.Hovered => Value ? SelHoveredIconColor : HoveredIconColor,
+                    UIButton.ButtonState.Pressed => Value ? SelPressedIconColor : PressedIconColor,
+                    UIButton.ButtonState.Disabled => Value ? SelDisabledIconColor : DisabledIconColor,
+                    _ => Value ? SelNormalIconColor : NormalIconColor,
                 };
             }
         }
@@ -149,24 +149,24 @@ namespace ModsCommon.UI
             }
         }
 
-        protected override UITextureAtlas.SpriteInfo RenderForegroundSprite
+        protected override UITextureAtlas.SpriteInfo RenderIconSprite
         {
             get
             {
-                if (FgAtlas is not UITextureAtlas atlas)
+                if (IconAtlas is not UITextureAtlas atlas)
                     return null;
 
                 var spriteInfo = State switch
                 {
-                    UIButton.ButtonState.Normal => atlas[Value ? SelNormalFgSprite : NormalFgSprite],
-                    UIButton.ButtonState.Focused => atlas[Value ? SelFocusedFgSprite : FocusedFgSprite],
-                    UIButton.ButtonState.Hovered => atlas[Value ? SelHoveredFgSprite : HoveredFgSprite],
-                    UIButton.ButtonState.Pressed => atlas[Value ? SelPressedFgSprite : PressedFgSprite],
-                    UIButton.ButtonState.Disabled => atlas[Value ? SelDisabledFgSprite : DisabledFgSprite],
+                    UIButton.ButtonState.Normal => atlas[Value ? SelNormalIconSprite : NormalIconSprite],
+                    UIButton.ButtonState.Focused => atlas[Value ? SelFocusedIconSprite : FocusedIconSprite],
+                    UIButton.ButtonState.Hovered => atlas[Value ? SelHoveredIconSprite : HoveredIconSprite],
+                    UIButton.ButtonState.Pressed => atlas[Value ? SelPressedIconSprite : PressedIconSprite],
+                    UIButton.ButtonState.Disabled => atlas[Value ? SelDisabledIconSprite : DisabledIconSprite],
                     _ => null,
                 };
 
-                return spriteInfo ?? atlas[NormalFgSprite];
+                return spriteInfo ?? atlas[NormalIconSprite];
             }
         }
     }

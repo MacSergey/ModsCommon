@@ -270,10 +270,6 @@ namespace ModsCommon.UI
         {
             if (builtinKeyNavigation)
             {
-                //base.OnKeyDown(p);
-                //if (p.used)
-                //    return;
-
                 switch (p.keycode)
                 {
                     case KeyCode.A:
@@ -945,7 +941,7 @@ namespace ModsCommon.UI
             stringBuilder.Append(m_Text);
             foreach (char c in clipData)
             {
-                if (c >= ' ')
+                if (c >= ' ' || (Multiline && c == '\n'))
                     stringBuilder.Insert(cursorIndex++, c);
             }
 
@@ -1183,7 +1179,7 @@ namespace ModsCommon.UI
 
         private int GetLineByVerticalPosition(float position)
         {
-            var line = lineScrollIndex + Mathf.FloorToInt((position - Padding.top) / font.lineHeight) + scrollIndex;
+            var line = lineScrollIndex + Mathf.FloorToInt((position - Padding.top) / (font.lineHeight * textScale)) + scrollIndex;
             return Mathf.Clamp(line, 0, lines.Count - 1);
         }
 
@@ -1632,14 +1628,6 @@ namespace ModsCommon.UI
             else
                 BgRenderData.Clear();
 
-            if (FgRenderData == null)
-            {
-                FgRenderData = UIRenderData.Obtain();
-                m_RenderData.Add(FgRenderData);
-            }
-            else
-                FgRenderData.Clear();
-
             if (SelRenderData == null)
             {
                 SelRenderData = UIRenderData.Obtain();
@@ -1656,15 +1644,16 @@ namespace ModsCommon.UI
             else
                 TextRenderData.Clear();
 
-            if (BgAtlas is UITextureAtlas bgAtlas && FgAtlas is UITextureAtlas fgAtlas)
+            if (FgRenderData == null)
             {
-                BgRenderData.material = bgAtlas.material;
-                FgRenderData.material = fgAtlas.material;
-                SelRenderData.material = bgAtlas.material;
-
-                RenderBackground();
-                RenderForeground();
+                FgRenderData = UIRenderData.Obtain();
+                m_RenderData.Add(FgRenderData);
             }
+            else
+                FgRenderData.Clear();
+
+
+            RenderBackground();
 
             if (atlas != null && font != null && font.isValid)
             {
@@ -1675,87 +1664,80 @@ namespace ModsCommon.UI
                 RenderText();
                 RenderCursor();
             }
+
+            RenderForeground();
         }
 
         protected override void RenderBackground()
         {
-            if (BgAtlas is UITextureAtlas atlas)
+            if (BgAtlas is UITextureAtlas bgAtlas && RenderBackgroundSprite is UITextureAtlas.SpriteInfo backgroundSprite)
             {
-                var backgroundSprite = GetBackgroundSprite();
-                if (backgroundSprite != null)
-                {
-                    var renderOptions = new RenderOptions()
-                    {
-                        atlas = atlas,
-                        color = ApplyOpacity(GetActiveColor()),
-                        fillAmount = 1f,
-                        flip = UISpriteFlip.None,
-                        offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
-                        pixelsToUnits = PixelsToUnits(),
-                        size = size,
-                        spriteInfo = backgroundSprite,
-                    };
+                BgRenderData.material = bgAtlas.material;
 
-                    if (backgroundSprite.isSliced)
-                        Render.RenderSlicedSprite(BgRenderData, renderOptions);
-                    else
-                        Render.RenderSprite(BgRenderData, renderOptions);
-                }
+                var renderOptions = new RenderOptions()
+                {
+                    atlas = atlas,
+                    color = RenderBackgroundColor,
+                    fillAmount = 1f,
+                    flip = UISpriteFlip.None,
+                    offset = pivot.TransformToUpperLeft(size, arbitraryPivotOffset),
+                    pixelsToUnits = PixelsToUnits(),
+                    size = size,
+                    spriteInfo = backgroundSprite,
+                };
+
+                if (backgroundSprite.isSliced)
+                    Render.RenderSlicedSprite(BgRenderData, renderOptions);
+                else
+                    Render.RenderSprite(BgRenderData, renderOptions);
             }
         }
-        protected override UITextureAtlas.SpriteInfo GetBackgroundSprite()
+        protected virtual UITextureAtlas.SpriteInfo RenderBackgroundSprite
         {
-            if (BgAtlas is UITextureAtlas atlas)
+            get
+            {
+                if (BgAtlas is UITextureAtlas atlas)
+                {
+                    if (!isEnabled)
+                        return atlas[DisabledBgSprite];
+                    else if (hasFocus)
+                        return atlas[FocusedBgSprite] ?? atlas[NormalBgSprite];
+                    else if (m_IsMouseHovering)
+                        return atlas[HoveredBgSprite] ?? atlas[NormalBgSprite];
+                    else
+                        return atlas[NormalBgSprite];
+                }
+
+                return null;
+            }
+        }
+        protected virtual Color32 RenderBackgroundColor
+        {
+            get
             {
                 if (!isEnabled)
-                    return atlas[DisabledBgSprite];
-                else if (hasFocus)
-                    return atlas[FocusedBgSprite] ?? atlas[NormalBgSprite];
-                else if (m_IsMouseHovering)
-                    return atlas[HoveredBgSprite] ?? atlas[NormalBgSprite];
-                else
-                    return atlas[NormalBgSprite];
-            }
-
-            return null;
-        }
-        protected override Color32 GetActiveColor()
-        {
-            if (!isEnabled)
-            {
-                if (!string.IsNullOrEmpty(DisabledBgSprite) && atlas != null && atlas[DisabledBgSprite] != null)
                     return DisabledBgColor;
-                else
-                    return NormalBgColor;
-            }
-            else if (hasFocus)
-            {
-                if (!string.IsNullOrEmpty(FocusedBgSprite) && atlas != null && atlas[FocusedBgSprite] != null)
+                else if (hasFocus)
                     return FocusedBgColor;
-                else
-                    return NormalBgColor;
-            }
-            else if (m_IsMouseHovering)
-            {
-                if (!string.IsNullOrEmpty(HoveredBgSprite) && atlas != null && atlas[HoveredBgSprite] != null)
+                else if (m_IsMouseHovering)
                     return HoveredBgColor;
                 else
                     return NormalBgColor;
             }
-            else
-                return NormalBgColor;
         }
 
         protected override void RenderForeground()
         {
-            if (RenderForegroundSprite is UITextureAtlas.SpriteInfo foregroundSprite)
+            if (FgAtlas is UITextureAtlas fgAtlas && RenderForegroundSprite is UITextureAtlas.SpriteInfo foregroundSprite)
             {
+                FgRenderData.material = fgAtlas.material;
+
                 var foregroundRenderSize = GetForegroundRenderSize(foregroundSprite);
                 var foregroundRenderOffset = GetForegroundRenderOffset(foregroundRenderSize);
 
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = FgAtlas,
+                    atlas = fgAtlas,
                     color = RenderForegroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
@@ -1776,20 +1758,22 @@ namespace ModsCommon.UI
         {
             get
             {
-                if (FgAtlas is not UITextureAtlas atlas)
-                    return null;
+                if (FgAtlas is UITextureAtlas atlas)
+                {
+                    if (!isEnabled)
+                        return atlas[DisabledFgSprite];
+                    else if (hasFocus)
+                        return atlas[FocusedFgSprite];
+                    else if (m_IsMouseHovering)
+                        return atlas[HoveredFgSprite];
+                    else
+                        return atlas[NormalFgSprite];
+                }
 
-                if (!isEnabled)
-                    return atlas[DisabledFgSprite];
-                else if (hasFocus)
-                    return atlas[FocusedFgSprite];
-                else if (m_IsMouseHovering)
-                    return atlas[HoveredFgSprite];
-                else
-                    return atlas[NormalFgSprite];
+                return null;
             }
         }
-        private Color32 RenderForegroundColor
+        protected virtual Color32 RenderForegroundColor
         {
             get
             {
@@ -1806,7 +1790,7 @@ namespace ModsCommon.UI
 
         private void CalculateText()
         {
-            var lineHeight = font.lineHeight;
+            var lineHeight = font.lineHeight * textScale;
             var ratio = PixelsToUnits();
             var maxSize = new Vector2(size.x - Padding.horizontal, size.y - Padding.vertical);
             var maxUnitSize = maxSize * ratio;
@@ -1816,13 +1800,12 @@ namespace ModsCommon.UI
             var text = m_Text + CompositionString;
 
             var defaultColor = isEnabled ? textColor : disabledTextColor;
-            var scaleMultiplier = GetTextScaleMultiplier();
             using (UIFontRenderer renderer = font.ObtainRenderer())
             {
                 renderer.wordWrap = false;
                 renderer.maxSize = maxSize;
                 renderer.pixelRatio = PixelsToUnits();
-                renderer.textScale = textScale * scaleMultiplier;
+                renderer.textScale = textScale * GetTextScaleMultiplier();
                 renderer.characterSpacing = characterSpacing;
                 renderer.vectorOffset = offset;
                 renderer.multiLine = false;
@@ -1917,7 +1900,7 @@ namespace ModsCommon.UI
                 renderer.processMarkup = processMarkup;
                 renderer.colorizeSprites = colorizeSprites;
                 renderer.defaultColor = isEnabled ? textColor : disabledTextColor;
-                renderer.bottomColor = (useGradient ? new Color32?(bottomColor) : null);
+                renderer.bottomColor = useGradient ? new Color32?(bottomColor) : null;
                 renderer.overrideMarkupColors = false;
                 renderer.opacity = CalculateOpacity();
                 renderer.outline = useOutline;
@@ -1929,9 +1912,9 @@ namespace ModsCommon.UI
 
                 if (Multiline)
                 {
-                    var visibleText = text.Substring(lines[i], LineLenght(i));
-                    renderer.vectorOffset = offset + new Vector3(CalculateLineLeftOffset(i), lineScrollIndex - i) * font.lineHeight * ratio;
-                    renderer.Render(visibleText, TextRenderData);
+                    var lineText = text.Substring(lines[i], LineLenght(i));
+                    renderer.vectorOffset = offset + new Vector3(CalculateLineLeftOffset(i), (lineScrollIndex - i) * font.lineHeight * textScale * ratio);
+                    renderer.Render(lineText, TextRenderData);
                 }
                 else
                 {
@@ -1944,22 +1927,24 @@ namespace ModsCommon.UI
 
         private void RenderSelection()
         {
-            if (selectionEnd != selectionStart && !string.IsNullOrEmpty(SelSprite) && atlas != null)
+            if (selectionEnd != selectionStart && !string.IsNullOrEmpty(SelSprite) && BgAtlas is UITextureAtlas bgAtlas && bgAtlas[SelSprite] is UITextureAtlas.SpriteInfo sprite)
             {
-                var lineHeight = font.lineHeight;
+                SelRenderData.material = bgAtlas.material;
+
+                var lineHeight = font.lineHeight * textScale;
                 var ratio = PixelsToUnits();
                 var maxSize = (pivot.TransformToUpperLeft(size, arbitraryPivotOffset) + new Vector3(Padding.left, -Padding.top)) * ratio;
                 var maxUnitSize = new Vector3(size.x - Padding.horizontal, size.y - Padding.vertical) * ratio;
                 var startLine = Mathf.Max(GetLineByIndex(selectionStart), lineScrollIndex);
                 int b = Mathf.Min(Mathf.FloorToInt((size.y - Padding.vertical) / lineHeight) + lineScrollIndex, lines.Count - 1);
                 var endLine = Mathf.Min(GetLineByIndex(selectionEnd), b);
-                for (int i = startLine; i <= endLine; i++)
+                for (int i = startLine; i <= endLine; i += 1)
                 {
                     var offset = CalculateLineLeftOffset(i);
                     var begin = lines[i] + scrollIndex;
                     var left = (selectionStart >= lines[i]) ? (maxSize.x + offset + TextWidth(begin, selectionStart)) : (maxSize.x + offset);
                     var top = maxSize.y - (i - lineScrollIndex) * lineHeight * ratio;
-                    var bottom = Mathf.Max(maxSize.y - maxUnitSize.y, top - lineHeight * ratio);
+                    var bottom = Mathf.Max(maxSize.y - maxUnitSize.y, top - font.size * textScale * ratio);
                     var right = (selectionEnd <= lines[i] + LineLenght(i)) ? Mathf.Min(maxSize.x + offset + TextWidth(begin, SelectionEnd), maxSize.x + maxUnitSize.x) : (maxSize.x + offset + TextWidth(begin, lines[i] + LineLenght(i)));
 
 
@@ -1976,10 +1961,9 @@ namespace ModsCommon.UI
                     SelRenderData.colors.Add(color);
                     SelRenderData.colors.Add(color);
 
-                    var spriteInfo = atlas[SelSprite];
-                    var region = spriteInfo.region;
-                    var xRatio = region.width / spriteInfo.pixelSize.x;
-                    var yRatio = region.height / spriteInfo.pixelSize.y;
+                    var region = sprite.region;
+                    var xRatio = region.width / sprite.pixelSize.x;
+                    var yRatio = region.height / sprite.pixelSize.y;
                     SelRenderData.uvs.Add(new Vector2(region.x + xRatio, region.yMax - yRatio));
                     SelRenderData.uvs.Add(new Vector2(region.xMax - xRatio, region.yMax - yRatio));
                     SelRenderData.uvs.Add(new Vector2(region.xMax - xRatio, region.y + yRatio));
@@ -1992,19 +1976,18 @@ namespace ModsCommon.UI
         {
             if (cursorShown && selectionEnd == selectionStart && !string.IsNullOrEmpty(SelSprite) && atlas != null)
             {
-                var lineHeight = font.lineHeight;
                 var ratio = PixelsToUnits();
                 var maxSize = m_Pivot.TransformToUpperLeft(size, arbitraryPivotOffset) * ratio;
                 var lineByIndex = GetLineByIndex(cursorIndex, cursor: true);
-                float num2 = -Padding.top * ratio - (lineByIndex - lineScrollIndex) * lineHeight * ratio;
-                float num3 = (CalculateLineLeftOffset(lineByIndex) + TextWidth(lines[lineByIndex] + scrollIndex, cursorIndex) + Padding.left * ratio).Quantize(ratio);
-                float num4 = ratio * GetUIView().ratio * CursorWidth;
-                float num5 = Multiline ? Mathf.Min(lineHeight * ratio, (size.y - Padding.vertical) * ratio) : ((size.y - Padding.vertical) * ratio);
+                var topOffset = -Padding.top * ratio - (lineByIndex - lineScrollIndex) * font.lineHeight * textScale * ratio;
+                var leftOffset = (CalculateLineLeftOffset(lineByIndex) + TextWidth(lines[lineByIndex] + scrollIndex, cursorIndex) + Padding.left * ratio).Quantize(ratio);
+                var width = ratio * GetUIView().ratio * CursorWidth;
+                var height = Mathf.Min(font.size * textScale * ratio, (size.y - Padding.vertical) * ratio);
 
-                var topLeft = new Vector3(num3, num2) + maxSize;
-                var topRight = new Vector3(num3 + num4, num2) + maxSize;
-                var bottomLeft = new Vector3(num3, num2 - num5) + maxSize;
-                var bottomRight = new Vector3(num3 + num4, num2 - num5) + maxSize;
+                var topLeft = new Vector3(leftOffset, topOffset) + maxSize;
+                var topRight = new Vector3(leftOffset + width, topOffset) + maxSize;
+                var bottomLeft = new Vector3(leftOffset, topOffset - height) + maxSize;
+                var bottomRight = new Vector3(leftOffset + width, topOffset - height) + maxSize;
 
                 AddTriangles(SelRenderData.triangles, SelRenderData.vertices.Count);
                 SelRenderData.vertices.Add(topLeft);

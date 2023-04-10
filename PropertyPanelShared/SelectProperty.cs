@@ -111,15 +111,15 @@ namespace ModsCommon.UI
             bgColors = new ColorSet(ComponentStyle.FieldNormalColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldHoveredColor, ComponentStyle.FieldNormalColor, ComponentStyle.FieldDisabledColor);
             selBgColors = new ColorSet(ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldFocusedColor, ComponentStyle.FieldDisabledFocusedColor);
 
-            FgAtlas = CommonTextures.Atlas;
-            fgSprites = CommonTextures.ArrowDown;
-            fgColors = Color.black;
+            iconAtlas = CommonTextures.Atlas;
+            iconSprites = CommonTextures.ArrowDown;
+            iconColors = Color.black;
 
-            ForegroundSpriteMode = SpriteMode.Scale;
+            IconMode = SpriteMode.Scale;
             ScaleFactor = 0.7f;
             HorizontalAlignment = UIHorizontalAlignment.Right;
             VerticalAlignment = UIVerticalAlignment.Middle;
-            SpritePadding = new RectOffset(0, 5, 0, 0);
+            IconPadding = new RectOffset(0, 5, 0, 0);
 
             enabled = true;
             AutoSize = AutoSize.None;

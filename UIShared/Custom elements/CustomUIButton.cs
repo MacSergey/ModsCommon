@@ -104,7 +104,7 @@ namespace ModsCommon.UI
         }
         protected override void OnVisibilityChanged()
         {
-            if(hasFocus && !isVisible)
+            if (hasFocus && !isVisible)
             {
                 if (this.GetRoot() is UIComponent root)
                     root.Focus();
@@ -338,6 +338,21 @@ namespace ModsCommon.UI
         }
 
 
+        protected UITextureAtlas bgAtlas;
+        public UITextureAtlas BgAtlas
+        {
+            get => bgAtlas ?? Atlas;
+            set
+            {
+                if (!Equals(value, bgAtlas))
+                {
+                    bgAtlas = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
         protected UITextureAtlas fgAtlas;
         public UITextureAtlas FgAtlas
         {
@@ -353,15 +368,15 @@ namespace ModsCommon.UI
         }
 
 
-        protected UITextureAtlas bgAtlas;
-        public UITextureAtlas BgAtlas
+        protected UITextureAtlas iconAtlas;
+        public UITextureAtlas IconAtlas
         {
-            get => bgAtlas ?? Atlas;
+            get => iconAtlas ?? Atlas;
             set
             {
-                if (!Equals(value, bgAtlas))
+                if (!Equals(value, iconAtlas))
                 {
-                    bgAtlas = value;
+                    iconAtlas = value;
                     Invalidate();
                 }
             }
@@ -383,15 +398,15 @@ namespace ModsCommon.UI
         }
 
 
-        protected SpriteMode foregroundSpriteMode = SpriteMode.Stretch;
-        public SpriteMode ForegroundSpriteMode
+        protected SpriteMode iconMode = SpriteMode.Stretch;
+        public SpriteMode IconMode
         {
-            get => foregroundSpriteMode;
+            get => iconMode;
             set
             {
-                if (value != foregroundSpriteMode)
+                if (value != iconMode)
                 {
-                    foregroundSpriteMode = value;
+                    iconMode = value;
                     Invalidate();
                 }
             }
@@ -428,30 +443,45 @@ namespace ModsCommon.UI
         }
 
 
-        protected RectOffset spritePadding;
-        public RectOffset SpritePadding
+        protected RectOffset foregroundPadding;
+        public RectOffset ForegroundPadding
         {
-            get => spritePadding ??= new RectOffset();
+            get => foregroundPadding ??= new RectOffset();
             set
             {
-                if (!Equals(value, spritePadding))
+                if (!Equals(value, foregroundPadding))
                 {
-                    spritePadding = value;
+                    foregroundPadding = value;
                     Invalidate();
                 }
             }
         }
 
 
-        protected Vector2 spriteSize;
-        public Vector2 SpriteSize
+        protected RectOffset iconPadding;
+        public RectOffset IconPadding
         {
-            get => spriteSize;
+            get => iconPadding ??= new RectOffset();
             set
             {
-                if (value != spriteSize)
+                if (!Equals(value, iconPadding))
                 {
-                    spriteSize = value;
+                    iconPadding = value;
+                    Invalidate();
+                }
+            }
+        }
+
+
+        protected Vector2 iconSize;
+        public Vector2 IconSize
+        {
+            get => iconSize;
+            set
+            {
+                if (value != iconSize)
+                {
+                    iconSize = value;
                     Invalidate();
                 }
             }
@@ -528,6 +558,15 @@ namespace ModsCommon.UI
                 Invalidate();
             }
         }
+        public SpriteSet AllIconSprites
+        {
+            set
+            {
+                iconSprites = value;
+                selIconSprites = value;
+                Invalidate();
+            }
+        }
         public ColorSet AllBgColors
         {
             set
@@ -543,6 +582,15 @@ namespace ModsCommon.UI
             {
                 fgColors = value;
                 selFgColors = value;
+                Invalidate();
+            }
+        }
+        public ColorSet AllIconColors
+        {
+            set
+            {
+                iconColors = value;
+                selIconColors = value;
                 Invalidate();
             }
         }
@@ -707,6 +755,83 @@ namespace ModsCommon.UI
 
         #endregion
 
+        #region ICON SPRITE
+
+        protected SpriteSet iconSprites;
+        public SpriteSet IconSprites
+        {
+            get => iconSprites;
+            set
+            {
+                iconSprites = value;
+                Invalidate();
+            }
+        }
+
+        public string NormalIconSprite
+        {
+            get => iconSprites.normal;
+            set
+            {
+                if (value != iconSprites.normal)
+                {
+                    iconSprites.normal = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string HoveredIconSprite
+        {
+            get => iconSprites.hovered;
+            set
+            {
+                if (value != iconSprites.hovered)
+                {
+                    iconSprites.hovered = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string PressedIconSprite
+        {
+            get => iconSprites.pressed;
+            set
+            {
+                if (value != iconSprites.pressed)
+                {
+                    iconSprites.pressed = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string FocusedIconSprite
+        {
+            get => iconSprites.focused;
+            set
+            {
+                if (value != iconSprites.focused)
+                {
+                    iconSprites.focused = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string DisabledIconSprite
+        {
+            get => iconSprites.disabled;
+            set
+            {
+                if (value != iconSprites.disabled)
+                {
+                    iconSprites.disabled = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        #endregion
+
+
         #region SELECTED BACKGROUND SPRITE
 
         protected SpriteSet selBgSprites;
@@ -722,7 +847,7 @@ namespace ModsCommon.UI
 
         public string SelNormalBgSprite
         {
-            get => string.IsNullOrEmpty(selBgSprites.normal) ? FocusedBgSprite : selBgSprites.normal;
+            get => selBgSprites.normal;
             set
             {
                 if (value != selBgSprites.normal)
@@ -734,7 +859,7 @@ namespace ModsCommon.UI
         }
         public string SelHoveredBgSprite
         {
-            get => string.IsNullOrEmpty(selBgSprites.hovered) ? HoveredBgSprite : selBgSprites.hovered;
+            get => selBgSprites.hovered;
             set
             {
                 if (value != selBgSprites.hovered)
@@ -746,7 +871,7 @@ namespace ModsCommon.UI
         }
         public string SelPressedBgSprite
         {
-            get => string.IsNullOrEmpty(selBgSprites.pressed) ? PressedBgSprite : selBgSprites.pressed;
+            get => selBgSprites.pressed;
             set
             {
                 if (value != selBgSprites.pressed)
@@ -758,7 +883,7 @@ namespace ModsCommon.UI
         }
         public string SelFocusedBgSprite
         {
-            get => string.IsNullOrEmpty(selBgSprites.focused) ? FocusedBgSprite : selBgSprites.focused;
+            get => selBgSprites.focused;
             set
             {
                 if (value != selBgSprites.focused)
@@ -770,7 +895,7 @@ namespace ModsCommon.UI
         }
         public string SelDisabledBgSprite
         {
-            get => string.IsNullOrEmpty(selBgSprites.disabled) ? DisabledBgSprite : selBgSprites.disabled;
+            get => selBgSprites.disabled;
             set
             {
                 if (value != selBgSprites.disabled)
@@ -798,7 +923,7 @@ namespace ModsCommon.UI
 
         public string SelNormalFgSprite
         {
-            get => string.IsNullOrEmpty(selFgSprites.normal) ? FocusedFgSprite : selFgSprites.normal;
+            get => selFgSprites.normal;
             set
             {
                 if (value != selFgSprites.normal)
@@ -810,7 +935,7 @@ namespace ModsCommon.UI
         }
         public string SelHoveredFgSprite
         {
-            get => string.IsNullOrEmpty(selFgSprites.hovered) ? HoveredFgSprite : selFgSprites.hovered;
+            get => selFgSprites.hovered;
             set
             {
                 if (value != selFgSprites.hovered)
@@ -822,7 +947,7 @@ namespace ModsCommon.UI
         }
         public string SelPressedFgSprite
         {
-            get => string.IsNullOrEmpty(selFgSprites.pressed) ? PressedFgSprite : selFgSprites.pressed;
+            get => selFgSprites.pressed;
             set
             {
                 if (value != selFgSprites.pressed)
@@ -834,7 +959,7 @@ namespace ModsCommon.UI
         }
         public string SelFocusedFgSprite
         {
-            get => string.IsNullOrEmpty(selFgSprites.focused) ? FocusedFgSprite : selFgSprites.focused;
+            get => selFgSprites.focused;
             set
             {
                 if (value != selFgSprites.focused)
@@ -846,7 +971,7 @@ namespace ModsCommon.UI
         }
         public string SelDisabledFgSprite
         {
-            get => string.IsNullOrEmpty(selFgSprites.disabled) ? DisabledFgSprite : selFgSprites.disabled;
+            get => selFgSprites.disabled;
             set
             {
                 if (value != selFgSprites.disabled)
@@ -858,6 +983,83 @@ namespace ModsCommon.UI
         }
 
         #endregion
+
+        #region SELECTED ICON SPRITE
+
+        protected SpriteSet selIconSprites;
+        public SpriteSet SelIconSprites
+        {
+            get => selIconSprites;
+            set
+            {
+                selIconSprites = value;
+                Invalidate();
+            }
+        }
+
+        public string SelNormalIconSprite
+        {
+            get => selIconSprites.normal;
+            set
+            {
+                if (value != selIconSprites.normal)
+                {
+                    selIconSprites.normal = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelHoveredIconSprite
+        {
+            get => selIconSprites.hovered;
+            set
+            {
+                if (value != selIconSprites.hovered)
+                {
+                    selIconSprites.hovered = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelPressedIconSprite
+        {
+            get => selIconSprites.pressed;
+            set
+            {
+                if (value != selIconSprites.pressed)
+                {
+                    selIconSprites.pressed = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelFocusedIconSprite
+        {
+            get => selIconSprites.focused;
+            set
+            {
+                if (value != selIconSprites.focused)
+                {
+                    selIconSprites.focused = value;
+                    Invalidate();
+                }
+            }
+        }
+        public string SelDisabledIconSprite
+        {
+            get => selIconSprites.disabled;
+            set
+            {
+                if (value != selIconSprites.disabled)
+                {
+                    selIconSprites.disabled = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        #endregion
+
 
         #region BACKGROUND COLOR
 
@@ -1011,6 +1213,82 @@ namespace ModsCommon.UI
 
         #endregion
 
+        #region ICON COLOR
+
+        protected ColorSet iconColors = new ColorSet(Color.white);
+        public ColorSet IconColors
+        {
+            get => iconColors;
+            set
+            {
+                iconColors = value;
+                OnColorChanged();
+            }
+        }
+
+        public Color32 NormalIconColor
+        {
+            get => iconColors.normal;
+            set
+            {
+                if (!iconColors.normal.Equals(value))
+                {
+                    iconColors.normal = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 FocusedIconColor
+        {
+            get => iconColors.focused;
+            set
+            {
+                if (!iconColors.focused.Equals(value))
+                {
+                    iconColors.focused = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 HoveredIconColor
+        {
+            get => iconColors.hovered;
+            set
+            {
+                if (!iconColors.hovered.Equals(value))
+                {
+                    iconColors.hovered = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 PressedIconColor
+        {
+            get => iconColors.pressed;
+            set
+            {
+                if (!iconColors.pressed.Equals(value))
+                {
+                    iconColors.pressed = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 DisabledIconColor
+        {
+            get => iconColors.disabled;
+            set
+            {
+                if (!iconColors.disabled.Equals(value))
+                {
+                    iconColors.disabled = value;
+                    OnColorChanged();
+                }
+            }
+        }
+
+        #endregion
+
         #region TEXT COLOR
 
         protected ColorSet textColors = new ColorSet(Color.white);
@@ -1086,6 +1364,7 @@ namespace ModsCommon.UI
         }
 
         #endregion
+
 
         #region SELECTED BACKGROUND COLOR
 
@@ -1239,6 +1518,82 @@ namespace ModsCommon.UI
 
         #endregion
 
+        #region SELECTED ICON COLOR
+
+        protected ColorSet selIconColors = new ColorSet(Color.white);
+        public ColorSet SelIconColors
+        {
+            get => selIconColors;
+            set
+            {
+                selIconColors = value;
+                OnColorChanged();
+            }
+        }
+
+        public Color32 SelNormalIconColor
+        {
+            get => string.IsNullOrEmpty(selIconSprites.normal) ? NormalIconColor : selIconColors.normal;
+            set
+            {
+                if (!selIconColors.normal.Equals(value))
+                {
+                    selIconColors.normal = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelHoveredIconColor
+        {
+            get => string.IsNullOrEmpty(selIconSprites.hovered) ? FocusedIconColor : selIconColors.hovered;
+            set
+            {
+                if (!selIconColors.hovered.Equals(value))
+                {
+                    selIconColors.hovered = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelPressedIconColor
+        {
+            get => string.IsNullOrEmpty(selIconSprites.pressed) ? PressedIconColor : selIconColors.pressed;
+            set
+            {
+                if (!selIconColors.pressed.Equals(value))
+                {
+                    selIconColors.pressed = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelFocusedIconColor
+        {
+            get => string.IsNullOrEmpty(selIconSprites.focused) ? FocusedIconColor : selIconColors.focused;
+            set
+            {
+                if (!selIconColors.focused.Equals(value))
+                {
+                    selIconColors.focused = value;
+                    OnColorChanged();
+                }
+            }
+        }
+        public Color32 SelDisabledIconColor
+        {
+            get => string.IsNullOrEmpty(selIconSprites.disabled) ? DisabledIconColor : selIconColors.disabled;
+            set
+            {
+                if (!selIconColors.disabled.Equals(value))
+                {
+                    selIconColors.disabled = value;
+                    OnColorChanged();
+                }
+            }
+        }
+
+        #endregion
+
         #region SELECTED TEXT COLOR
 
         protected ColorSet selTextColors = new ColorSet(Color.white);
@@ -1321,6 +1676,7 @@ namespace ModsCommon.UI
             {
                 bgAtlas = value.BgAtlas;
                 fgAtlas = value.FgAtlas;
+                iconAtlas = value.IconAtlas;
 
                 bgSprites = value.BgSprites;
                 selBgSprites = value.SelBgSprites;
@@ -1328,11 +1684,17 @@ namespace ModsCommon.UI
                 fgSprites = value.FgSprites;
                 selFgSprites = value.SelFgSprites;
 
+                iconSprites = value.IconSprites;
+                selIconSprites = value.SelIconSprites;
+
                 bgColors = value.BgColors;
                 selBgColors = value.SelBgColors;
 
                 fgColors = value.FgColors;
                 selFgColors = value.SelFgColors;
+
+                iconColors = value.IconColors;
+                selIconColors = value.SelIconColors;
 
                 textColors = value.TextColors;
                 selTextColors = value.SelTextColors;
@@ -1434,12 +1796,14 @@ namespace ModsCommon.UI
 
         protected UIRenderData BgRenderData { get; set; }
         protected UIRenderData FgRenderData { get; set; }
+        protected UIRenderData IconRenderData { get; set; }
         protected UIRenderData TextRenderData { get; set; }
 
         public override void OnDisable()
         {
             BgRenderData = null;
             FgRenderData = null;
+            IconRenderData = null;
             TextRenderData = null;
             base.OnDisable();
         }
@@ -1461,6 +1825,14 @@ namespace ModsCommon.UI
             else
                 FgRenderData.Clear();
 
+            if (IconRenderData == null)
+            {
+                IconRenderData = UIRenderData.Obtain();
+                m_RenderData.Add(IconRenderData);
+            }
+            else
+                IconRenderData.Clear();
+
             if (TextRenderData == null)
             {
                 TextRenderData = UIRenderData.Obtain();
@@ -1469,29 +1841,45 @@ namespace ModsCommon.UI
             else
                 TextRenderData.Clear();
 
-            if (BgAtlas is UITextureAtlas bgAtlas && FgAtlas is UITextureAtlas fgAtlas)
-            {
-                BgRenderData.material = bgAtlas.material;
-                FgRenderData.material = fgAtlas.material;
-                TextRenderData.material = bgAtlas.material;
+            RenderBackground();
+            RenderForeground();
+            RenderIcon();
+            RenderText();
+        }
 
-                RenderBackground();
-                RenderForeground();
-                RenderText();
+        protected virtual Color32 RenderTextColor
+        {
+            get
+            {
+                if (!isEnabled)
+                    return IsSelected ? SelDisabledTextColor : DisabledTextColor;
+                else
+                {
+                    return State switch
+                    {
+                        UIButton.ButtonState.Normal => IsSelected ? SelNormalTextColor : NormalTextColor,
+                        UIButton.ButtonState.Hovered => IsSelected ? SelHoveredTextColor : HoveredTextColor,
+                        UIButton.ButtonState.Pressed => IsSelected ? SelPressedTextColor : PressedTextColor,
+                        UIButton.ButtonState.Focused => IsSelected ? SelFocusedTextColor : FocusedTextColor,
+                        UIButton.ButtonState.Disabled => IsSelected ? SelDisabledTextColor : DisabledTextColor,
+                        _ => Color.white,
+                    };
+                }
             }
         }
         private void RenderText()
         {
-            if (font == null || !font.isValid || string.IsNullOrEmpty(text))
-                return;
-
-            using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
-            if (uIFontRenderer is UIDynamicFont.DynamicFontRenderer dynamicFontRenderer)
+            if (font != null && font.isValid && !string.IsNullOrEmpty(text) && IconAtlas is UITextureAtlas iconAtlas)
             {
-                dynamicFontRenderer.spriteAtlas = BgAtlas;
-                dynamicFontRenderer.spriteBuffer = BgRenderData;
+                TextRenderData.material = iconAtlas.material;
+                using UIFontRenderer uIFontRenderer = ObtainTextRenderer();
+                if (uIFontRenderer is UIDynamicFont.DynamicFontRenderer dynamicFontRenderer)
+                {
+                    dynamicFontRenderer.spriteAtlas = iconAtlas;
+                    dynamicFontRenderer.spriteBuffer = IconRenderData;
+                }
+                uIFontRenderer.Render(text, TextRenderData);
             }
-            uIFontRenderer.Render(text, TextRenderData);
         }
         private UIFontRenderer ObtainTextRenderer()
         {
@@ -1531,56 +1919,6 @@ namespace ModsCommon.UI
 
             return renderer;
         }
-
-        protected virtual Color32 RenderTextColor
-        {
-            get
-            {
-                if (!isEnabled)
-                    return IsSelected ? SelDisabledTextColor : DisabledTextColor;
-                else
-                {
-                    return State switch
-                    {
-                        UIButton.ButtonState.Normal => IsSelected ? SelNormalTextColor : NormalTextColor,
-                        UIButton.ButtonState.Hovered => IsSelected ? SelHoveredTextColor : HoveredTextColor,
-                        UIButton.ButtonState.Pressed => IsSelected ? SelPressedTextColor : PressedTextColor,
-                        UIButton.ButtonState.Focused => IsSelected ? SelFocusedTextColor : FocusedTextColor,
-                        UIButton.ButtonState.Disabled => IsSelected ? SelDisabledTextColor : DisabledTextColor,
-                        _ => Color.white,
-                    };
-                }
-            }
-        }
-        protected virtual Color32 RenderBackgroundColor
-        {
-            get
-            {
-                return State switch
-                {
-                    UIButton.ButtonState.Focused => IsSelected ? SelFocusedBgColor : FocusedBgColor,
-                    UIButton.ButtonState.Hovered => IsSelected ? SelHoveredBgColor : HoveredBgColor,
-                    UIButton.ButtonState.Pressed => IsSelected ? SelPressedBgColor : PressedBgColor,
-                    UIButton.ButtonState.Disabled => IsSelected ? SelDisabledBgColor : DisabledBgColor,
-                    _ => IsSelected ? SelNormalBgColor : NormalBgColor,
-                };
-            }
-        }
-        protected virtual Color32 RenderForegroundColor
-        {
-            get
-            {
-                return State switch
-                {
-                    UIButton.ButtonState.Focused => IsSelected ? SelFocusedFgColor : FocusedFgColor,
-                    UIButton.ButtonState.Hovered => IsSelected ? SelHoveredFgColor : HoveredFgColor,
-                    UIButton.ButtonState.Pressed => IsSelected ? SelPressedFgColor : PressedFgColor,
-                    UIButton.ButtonState.Disabled => IsSelected ? SelDisabledFgColor : DisabledFgColor,
-                    _ => IsSelected ? SelNormalFgColor : NormalFgColor,
-                };
-            }
-        }
-
         private Vector3 GetVertAlignOffset(UIFontRenderer fontRenderer)
         {
             var num = PixelsToUnits();
@@ -1620,35 +1958,32 @@ namespace ModsCommon.UI
                 };
             }
         }
-        protected virtual UITextureAtlas.SpriteInfo RenderForegroundSprite
+        protected virtual Color32 RenderBackgroundColor
         {
             get
             {
-                if (FgAtlas is not UITextureAtlas atlas)
-                    return null;
-
                 return State switch
                 {
-                    UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalFgSprite : NormalFgSprite],
-                    UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedFgSprite : FocusedFgSprite],
-                    UIButton.ButtonState.Hovered => atlas[IsSelected ? SelHoveredFgSprite : HoveredFgSprite],
-                    UIButton.ButtonState.Pressed => atlas[IsSelected ? SelPressedFgSprite : PressedFgSprite],
-                    UIButton.ButtonState.Disabled => atlas[IsSelected ? SelDisabledFgSprite : DisabledFgSprite],
-                    _ => null,
+                    UIButton.ButtonState.Focused => IsSelected ? SelFocusedBgColor : FocusedBgColor,
+                    UIButton.ButtonState.Hovered => IsSelected ? SelHoveredBgColor : HoveredBgColor,
+                    UIButton.ButtonState.Pressed => IsSelected ? SelPressedBgColor : PressedBgColor,
+                    UIButton.ButtonState.Disabled => IsSelected ? SelDisabledBgColor : DisabledBgColor,
+                    _ => IsSelected ? SelNormalBgColor : NormalBgColor,
                 };
             }
         }
-
         protected void RenderBackground()
         {
-            if (RenderBackgroundSprite is UITextureAtlas.SpriteInfo backgroundSprite)
+            if (BgAtlas is UITextureAtlas bgAtlas && RenderBackgroundSprite is UITextureAtlas.SpriteInfo backgroundSprite)
             {
+                BgRenderData.material = bgAtlas.material;
+
                 var backgroundRenderSize = GetBackgroundRenderSize(backgroundSprite);
                 var backgroundRenderOffset = GetBackfroundRenderOffset(backgroundRenderSize);
 
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = BgAtlas,
+                    atlas = bgAtlas,
                     color = RenderBackgroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
@@ -1668,8 +2003,8 @@ namespace ModsCommon.UI
         {
             if (spriteInfo == null)
                 return Vector2.zero;
-
-            return new Vector2(width - BackgroundPadding.horizontal, height - BackgroundPadding.vertical);
+            else
+                return new Vector2(width - BackgroundPadding.horizontal, height - BackgroundPadding.vertical);
         }
         protected virtual Vector2 GetBackfroundRenderOffset(Vector2 renderSize)
         {
@@ -1681,16 +2016,51 @@ namespace ModsCommon.UI
             return result;
         }
 
+
+        protected virtual UITextureAtlas.SpriteInfo RenderForegroundSprite
+        {
+            get
+            {
+                if (FgAtlas is not UITextureAtlas atlas)
+                    return null;
+
+                return State switch
+                {
+                    UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalFgSprite : NormalFgSprite],
+                    UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedFgSprite : FocusedFgSprite],
+                    UIButton.ButtonState.Hovered => atlas[IsSelected ? SelHoveredFgSprite : HoveredFgSprite],
+                    UIButton.ButtonState.Pressed => atlas[IsSelected ? SelPressedFgSprite : PressedFgSprite],
+                    UIButton.ButtonState.Disabled => atlas[IsSelected ? SelDisabledFgSprite : DisabledFgSprite],
+                    _ => null,
+                };
+            }
+        }
+        protected virtual Color32 RenderForegroundColor
+        {
+            get
+            {
+                return State switch
+                {
+                    UIButton.ButtonState.Focused => IsSelected ? SelFocusedFgColor : FocusedFgColor,
+                    UIButton.ButtonState.Hovered => IsSelected ? SelHoveredFgColor : HoveredFgColor,
+                    UIButton.ButtonState.Pressed => IsSelected ? SelPressedFgColor : PressedFgColor,
+                    UIButton.ButtonState.Disabled => IsSelected ? SelDisabledFgColor : DisabledFgColor,
+                    _ => IsSelected ? SelNormalFgColor : NormalFgColor,
+                };
+            }
+        }
         protected void RenderForeground()
         {
-            if (RenderForegroundSprite is UITextureAtlas.SpriteInfo foregroundSprite)
+            if (FgAtlas is UITextureAtlas fgAtlas && RenderForegroundSprite is UITextureAtlas.SpriteInfo foregroundSprite)
             {
+                FgRenderData.material = fgAtlas.material;
+
                 var foregroundRenderSize = GetForegroundRenderSize(foregroundSprite);
                 var foregroundRenderOffset = GetForegroundRenderOffset(foregroundRenderSize);
 
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = FgAtlas,
+                    atlas = fgAtlas,
                     color = RenderForegroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
@@ -1710,55 +2080,174 @@ namespace ModsCommon.UI
         {
             if (spriteInfo == null)
                 return Vector2.zero;
-
-            switch (ForegroundSpriteMode)
-            {
-                case SpriteMode.Stretch:
-                    return new Vector2(width - SpritePadding.horizontal, height - SpritePadding.vertical) * scaleFactor;
-                case SpriteMode.Fill:
-                    return spriteInfo.pixelSize;
-                case SpriteMode.Scale:
-                    var widthRatio = Mathf.Max(width - SpritePadding.horizontal, 0f) / spriteInfo.width;
-                    var heightRatio = Mathf.Max(height - SpritePadding.vertical, 0f) / spriteInfo.height;
-                    var ratio = Mathf.Min(widthRatio, heightRatio);
-                    return new Vector2(ratio * spriteInfo.width, ratio * spriteInfo.height) * scaleFactor;
-                case SpriteMode.FixedSize:
-                    return SpriteSize;
-                default:
-                    return Vector2.zero;
-            }
+            else
+                return new Vector2(width - ForegroundPadding.horizontal, height - ForegroundPadding.vertical);
+            //switch (IconMode)
+            //{
+            //    case SpriteMode.Stretch:
+            //        return new Vector2(width - ForegroundPadding.horizontal, height - ForegroundPadding.vertical) * scaleFactor;
+            //    case SpriteMode.Fill:
+            //        return spriteInfo.pixelSize;
+            //    case SpriteMode.Scale:
+            //        var widthRatio = Mathf.Max(width - ForegroundPadding.horizontal, 0f) / spriteInfo.width;
+            //        var heightRatio = Mathf.Max(height - ForegroundPadding.vertical, 0f) / spriteInfo.height;
+            //        var ratio = Mathf.Min(widthRatio, heightRatio);
+            //        return new Vector2(ratio * spriteInfo.width, ratio * spriteInfo.height) * scaleFactor;
+            //    case SpriteMode.FixedSize:
+            //        return IconSize;
+            //    default:
+            //        return Vector2.zero;
+            //}
         }
         protected Vector2 GetForegroundRenderOffset(Vector2 renderSize)
         {
             Vector2 result = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
             if (HorizontalAlignment == UIHorizontalAlignment.Left)
             {
-                result.x += SpritePadding.left;
+                result.x += ForegroundPadding.left;
             }
             else if (HorizontalAlignment == UIHorizontalAlignment.Center)
             {
                 result.x += (width - renderSize.x) * 0.5f;
-                result.x += SpritePadding.left - SpritePadding.right;
+                result.x += ForegroundPadding.left - ForegroundPadding.right;
             }
             else if (HorizontalAlignment == UIHorizontalAlignment.Right)
             {
                 result.x += width - renderSize.x;
-                result.x -= SpritePadding.right;
+                result.x -= ForegroundPadding.right;
             }
 
             if (VerticalAlignment == UIVerticalAlignment.Bottom)
             {
                 result.y -= height - renderSize.y;
-                result.y += SpritePadding.bottom;
+                result.y += ForegroundPadding.bottom;
             }
             else if (VerticalAlignment == UIVerticalAlignment.Middle)
             {
                 result.y -= (height - renderSize.y) * 0.5f;
-                result.y -= SpritePadding.top - SpritePadding.bottom;
+                result.y -= ForegroundPadding.top - ForegroundPadding.bottom;
             }
             else if (VerticalAlignment == UIVerticalAlignment.Top)
             {
-                result.y -= SpritePadding.top;
+                result.y -= ForegroundPadding.top;
+            }
+
+            return result;
+        }
+
+
+        protected virtual UITextureAtlas.SpriteInfo RenderIconSprite
+        {
+            get
+            {
+                if (IconAtlas is not UITextureAtlas atlas)
+                    return null;
+
+                return State switch
+                {
+                    UIButton.ButtonState.Normal => atlas[IsSelected ? SelNormalIconSprite : NormalIconSprite],
+                    UIButton.ButtonState.Focused => atlas[IsSelected ? SelFocusedIconSprite : FocusedIconSprite],
+                    UIButton.ButtonState.Hovered => atlas[IsSelected ? SelHoveredIconSprite : HoveredIconSprite],
+                    UIButton.ButtonState.Pressed => atlas[IsSelected ? SelPressedIconSprite : PressedIconSprite],
+                    UIButton.ButtonState.Disabled => atlas[IsSelected ? SelDisabledIconSprite : DisabledIconSprite],
+                    _ => null,
+                };
+            }
+        }
+        protected virtual Color32 RenderIconColor
+        {
+            get
+            {
+                return State switch
+                {
+                    UIButton.ButtonState.Focused => IsSelected ? SelFocusedIconColor : FocusedIconColor,
+                    UIButton.ButtonState.Hovered => IsSelected ? SelHoveredIconColor : HoveredIconColor,
+                    UIButton.ButtonState.Pressed => IsSelected ? SelPressedIconColor : PressedIconColor,
+                    UIButton.ButtonState.Disabled => IsSelected ? SelDisabledIconColor : DisabledIconColor,
+                    _ => IsSelected ? SelNormalIconColor : NormalIconColor,
+                };
+            }
+        }
+        protected void RenderIcon()
+        {
+            if (IconAtlas is UITextureAtlas iconAtlas && RenderIconSprite is UITextureAtlas.SpriteInfo iconSprite)
+            {
+                IconRenderData.material = iconAtlas.material;
+
+                var iconRenderSize = GetIconRenderSize(iconSprite);
+                var iconRenderOffset = GetIconRenderOffset(iconRenderSize);
+
+                var renderOptions = new RenderOptions()
+                {
+                    atlas = iconAtlas,
+                    color = RenderIconColor,
+                    fillAmount = 1f,
+                    flip = UISpriteFlip.None,
+                    offset = iconRenderOffset,
+                    pixelsToUnits = PixelsToUnits(),
+                    size = iconRenderSize,
+                    spriteInfo = iconSprite,
+                };
+
+                if (iconSprite.isSliced)
+                    Render.RenderSlicedSprite(IconRenderData, renderOptions);
+                else
+                    Render.RenderSprite(IconRenderData, renderOptions);
+            }
+        }
+        protected Vector2 GetIconRenderSize(UITextureAtlas.SpriteInfo spriteInfo)
+        {
+            if (spriteInfo == null)
+                return Vector2.zero;
+
+            switch (IconMode)
+            {
+                case SpriteMode.Stretch:
+                    return new Vector2(width - IconPadding.horizontal, height - IconPadding.vertical) * scaleFactor;
+                case SpriteMode.Fill:
+                    return spriteInfo.pixelSize;
+                case SpriteMode.Scale:
+                    var widthRatio = Mathf.Max(width - IconPadding.horizontal, 0f) / spriteInfo.width;
+                    var heightRatio = Mathf.Max(height - IconPadding.vertical, 0f) / spriteInfo.height;
+                    var ratio = Mathf.Min(widthRatio, heightRatio);
+                    return new Vector2(ratio * spriteInfo.width, ratio * spriteInfo.height) * scaleFactor;
+                case SpriteMode.FixedSize:
+                    return IconSize;
+                default:
+                    return Vector2.zero;
+            }
+        }
+        protected Vector2 GetIconRenderOffset(Vector2 renderSize)
+        {
+            Vector2 result = pivot.TransformToUpperLeft(size, arbitraryPivotOffset);
+            if (HorizontalAlignment == UIHorizontalAlignment.Left)
+            {
+                result.x += IconPadding.left;
+            }
+            else if (HorizontalAlignment == UIHorizontalAlignment.Center)
+            {
+                result.x += (width - renderSize.x) * 0.5f;
+                result.x += IconPadding.left - IconPadding.right;
+            }
+            else if (HorizontalAlignment == UIHorizontalAlignment.Right)
+            {
+                result.x += width - renderSize.x;
+                result.x -= IconPadding.right;
+            }
+
+            if (VerticalAlignment == UIVerticalAlignment.Bottom)
+            {
+                result.y -= height - renderSize.y;
+                result.y += IconPadding.bottom;
+            }
+            else if (VerticalAlignment == UIVerticalAlignment.Middle)
+            {
+                result.y -= (height - renderSize.y) * 0.5f;
+                result.y -= IconPadding.top - IconPadding.bottom;
+            }
+            else if (VerticalAlignment == UIVerticalAlignment.Top)
+            {
+                result.y -= IconPadding.top;
             }
 
             return result;

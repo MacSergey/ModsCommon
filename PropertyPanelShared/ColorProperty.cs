@@ -158,8 +158,6 @@ namespace ModsCommon.UI
             field.WheelStep = 10;
             field.width = 30;
             field.OnValueChanged += onChanged;
-            //field.eventGotFocus += FieldGotFocus;
-            //field.eventLostFocus += FieldLostFocus;
 
             return field;
         }

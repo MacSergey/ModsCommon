@@ -141,7 +141,6 @@ namespace ModsCommon.UI
             if (p.keycode == KeyCode.Escape)
             {
                 Focus();
-                //ClosePopup();
                 p.Use();
             }
         }
