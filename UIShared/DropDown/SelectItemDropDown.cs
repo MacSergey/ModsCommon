@@ -51,6 +51,7 @@ namespace ModsCommon.UI
         {
             ObjectList.Clear();
             selectedIndex = -1;
+            Entity.SetObject(-1, default, false);
         }
 
         protected override void InitPopup()

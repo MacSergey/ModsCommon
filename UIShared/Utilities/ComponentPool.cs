@@ -92,9 +92,6 @@ namespace ModsCommon.UI
                     component.isVisible = true;
                     component.isEnabled = true;
 
-                    reusable.DeInit();
-                    reusable.CachedTransform = null;
-
                     var type = component.GetType();
                     if (!EventFields.TryGetValue(type, out var eventFields))
                     {
@@ -103,6 +100,9 @@ namespace ModsCommon.UI
                     }
                     foreach (var field in eventFields)
                         field.SetValue(component, null);
+
+                    reusable.DeInit();
+                    reusable.CachedTransform = null;
 
                     var queue = GetQueue(type);
                     queue.Enqueue(component);
