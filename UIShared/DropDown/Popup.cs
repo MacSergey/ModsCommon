@@ -413,8 +413,8 @@ namespace ModsCommon.UI
             Search.name = nameof(Search);
             Search.BgAtlas = CommonTextures.Atlas;
             Search.BgSprites = CommonTextures.PanelSmall;
-            Search.atlas = TextureHelper.InGameAtlas;
-            Search.SelSprite = "EmptySprite";
+            Search.SelAtlas = CommonTextures.Atlas;
+            Search.SelSprite = CommonTextures.Empty;
             Search.BgColors = new Color32(10, 10, 10, 255);
             Search.height = 20f;
             Search.builtinKeyNavigation = true;

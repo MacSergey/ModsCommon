@@ -419,6 +419,7 @@ namespace ModsCommon.UI
 
                 TextColors = DarkPrimaryColor100,
 
+                SelAtlas = Atlas,
                 SelectionSprite = Empty,
                 SelectionColor = DarkPrimaryColor0,
             },
@@ -614,6 +615,7 @@ namespace ModsCommon.UI
 
                 TextColors = DarkPrimaryColor100,
 
+                SelAtlas = Atlas,
                 SelectionSprite = Empty,
                 SelectionColor = DarkPrimaryColor0,
             },
@@ -765,6 +767,7 @@ namespace ModsCommon.UI
     }
     public class TextFieldStyle : InteractiveStyle
     {
+        public UITextureAtlas SelAtlas { get; set; }
         public string SelectionSprite { get; set; }
         public Color32 SelectionColor { get; set; }
     }

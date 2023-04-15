@@ -15,14 +15,23 @@ namespace ModsCommon.UI
         protected List<ObjectType> ObjectList { get; } = new List<ObjectType>();
 
         private int selectedIndex = -1;
-        public ObjectType SelectedObject
+        public int SelectedIndex
         {
-            get => selectedIndex >= 0 ? ObjectList[selectedIndex] : default;
+            get => selectedIndex;
             set
             {
-                selectedIndex = ObjectList.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || (o != null && o.Equals(value)));
-                Entity.SetObject(-1, SelectedObject, false);
+                if(value != selectedIndex)
+                {
+                    selectedIndex = (value >= 0 && value < ObjectList.Count) ? value : -1;
+                    Entity.SetObject(-1, SelectedObject, false);
+                    SelectObjectEvent(SelectedObject);
+                }
             }
+        }
+        public ObjectType SelectedObject
+        {
+            get => SelectedIndex >= 0 && SelectedIndex < ObjectList.Count ? ObjectList[SelectedIndex] : default;
+            set => SelectedIndex = ObjectList.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || (o != null && o.Equals(value)));
         }
         public SelectItemDropDown()
         {
@@ -49,11 +58,7 @@ namespace ModsCommon.UI
             base.InitPopup();
             Popup.SelectedObject = SelectedObject;
         }
-        protected override void SelectObject(ObjectType value)
-        {
-            SelectedObject = value;
-            base.SelectObject(value);
-        }
+        protected override void SelectObject(ObjectType value) => SelectedObject = value;
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();

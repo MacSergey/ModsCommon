@@ -1216,6 +1216,20 @@ namespace ModsCommon.UI
             }
         }
 
+        UITextureAtlas selAtlas;
+        public UITextureAtlas SelAtlas
+        {
+            get => selAtlas ?? atlas;
+            set
+            {
+                if (!Equals(value, selAtlas))
+                {
+                    selAtlas = value;
+                    Invalidate();
+                }
+            }
+        }
+
 
         [Obsolete]
         public new Color32 color
@@ -1592,7 +1606,7 @@ namespace ModsCommon.UI
                 m_TextColor = value.TextColors.normal;
                 m_DisabledTextColor = value.TextColors.disabled;
 
-                m_Atlas = value.BgAtlas;
+                selAtlas = value.SelAtlas;
                 selSprite = value.SelectionSprite;
                 selBgColor = value.SelectionColor;
 
@@ -1676,7 +1690,7 @@ namespace ModsCommon.UI
 
                 var renderOptions = new RenderOptions()
                 {
-                    atlas = atlas,
+                    atlas = bgAtlas,
                     color = RenderBackgroundColor,
                     fillAmount = 1f,
                     flip = UISpriteFlip.None,
@@ -1927,9 +1941,9 @@ namespace ModsCommon.UI
 
         private void RenderSelection()
         {
-            if (selectionEnd != selectionStart && !string.IsNullOrEmpty(SelSprite) && BgAtlas is UITextureAtlas bgAtlas && bgAtlas[SelSprite] is UITextureAtlas.SpriteInfo sprite)
+            if (selectionEnd != selectionStart && !string.IsNullOrEmpty(SelSprite) && SelAtlas is UITextureAtlas cursorAtlas && cursorAtlas[SelSprite] is UITextureAtlas.SpriteInfo sprite)
             {
-                SelRenderData.material = bgAtlas.material;
+                SelRenderData.material = cursorAtlas.material;
 
                 var lineHeight = font.lineHeight * textScale;
                 var ratio = PixelsToUnits();
@@ -1955,7 +1969,7 @@ namespace ModsCommon.UI
                     SelRenderData.vertices.Add(new Vector3(right, bottom));
                     SelRenderData.vertices.Add(new Vector3(left, bottom));
 
-                    var color = ApplyOpacity(SelBgColor);
+                    var color = SelBgColor;
                     SelRenderData.colors.Add(color);
                     SelRenderData.colors.Add(color);
                     SelRenderData.colors.Add(color);
@@ -1974,8 +1988,10 @@ namespace ModsCommon.UI
 
         private void RenderCursor()
         {
-            if (cursorShown && selectionEnd == selectionStart && !string.IsNullOrEmpty(SelSprite) && atlas != null)
+            if (cursorShown && selectionEnd == selectionStart && !string.IsNullOrEmpty(SelSprite) && SelAtlas is UITextureAtlas cursorAtlas && cursorAtlas[SelSprite] is UITextureAtlas.SpriteInfo sprite)
             {
+                SelRenderData.material = cursorAtlas.material;
+
                 var ratio = PixelsToUnits();
                 var maxSize = m_Pivot.TransformToUpperLeft(size, arbitraryPivotOffset) * ratio;
                 var lineByIndex = GetLineByIndex(cursorIndex, cursor: true);
@@ -1995,14 +2011,13 @@ namespace ModsCommon.UI
                 SelRenderData.vertices.Add(bottomRight);
                 SelRenderData.vertices.Add(bottomLeft);
 
-                var color = ApplyOpacity(textColor);
+                var color = textColor;
                 SelRenderData.colors.Add(color);
                 SelRenderData.colors.Add(color);
                 SelRenderData.colors.Add(color);
                 SelRenderData.colors.Add(color);
 
-                var spriteInfo = atlas[SelSprite];
-                Rect region = spriteInfo.region;
+                Rect region = sprite.region;
                 SelRenderData.uvs.Add(new Vector2(region.x, region.yMax));
                 SelRenderData.uvs.Add(new Vector2(region.xMax, region.yMax));
                 SelRenderData.uvs.Add(new Vector2(region.xMax, region.y));

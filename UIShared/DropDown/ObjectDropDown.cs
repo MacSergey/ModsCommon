@@ -61,7 +61,8 @@ namespace ModsCommon.UI
 
         #endregion
 
-        protected virtual void SelectObject(ObjectType value) => OnSelectObject?.Invoke(value);
+        protected virtual void SelectObject(ObjectType value) => SelectObjectEvent(value);
+        protected virtual void SelectObjectEvent(ObjectType value) => OnSelectObject?.Invoke(value);
 
         #region POPUP
 
