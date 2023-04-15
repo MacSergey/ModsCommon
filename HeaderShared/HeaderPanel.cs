@@ -9,9 +9,12 @@ namespace ModsCommon.UI
         where TypeContent : BaseHeaderContent
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         protected override float DefaultHeight => BaseHeaderContent.DefaultSize + 10;
 
         protected TypeContent Content { get; set; }
+        public HeaderStyle ContentStyle { set => Content.HeaderStyle = value; }
 
         public BaseHeaderPanel() : base()
         {
@@ -58,6 +61,7 @@ namespace ModsCommon.UI
             base.Fill();
 
             DeleteButton = AddUIComponent<CustomUIButton>();
+            DeleteButton.name = nameof(DeleteButton);
             DeleteButton.Atlas = CommonTextures.Atlas;
             DeleteButton.BgSprites = new SpriteSet(CommonTextures.CloseButtonNormal, CommonTextures.CloseButtonHovered, CommonTextures.CloseButtonPressed, CommonTextures.CloseButtonNormal, string.Empty);
             DeleteButton.size = new Vector2(20, 20);

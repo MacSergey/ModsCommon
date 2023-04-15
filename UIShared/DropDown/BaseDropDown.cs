@@ -18,6 +18,7 @@ namespace ModsCommon.UI
 
         public PopupType Popup { get; private set; }
         public virtual bool AutoClose { get; set; } = true;
+        private Vector3 StartPosition { get; set; }
 
         public override void Update()
         {
@@ -40,10 +41,11 @@ namespace ModsCommon.UI
             if (AutoClose)
                 isInteractive = false;
 
+            StartPosition = absolutePosition;
             BeforePopupOpen();
             OnBeforePopupOpen?.Invoke();
 
-            var root = GetRootContainer();
+            var root = this.GetRoot();
             if (root is IAutoLayoutPanel layoutPanel)
             {
                 layoutPanel.PauseLayout(() =>
@@ -62,7 +64,6 @@ namespace ModsCommon.UI
             OnPopupOpening?.Invoke(Popup);
 
             SetPopupPosition();
-            Popup.parent.eventPositionChanged += SetPopupPosition;
             Popup.Focus();
 
             AfterPopupOpen();
@@ -95,6 +96,7 @@ namespace ModsCommon.UI
 
                 ComponentPool.Free(Popup);
                 Popup = null;
+                StartPosition = Vector3.zero;
 
                 AfterPopupClose();
                 OnAfterPopupClose?.Invoke();
@@ -125,6 +127,12 @@ namespace ModsCommon.UI
                 ClosePopup();
                 return;
             }
+
+            if (absolutePosition != StartPosition)
+            {
+                ClosePopup();
+                return;
+            }
         }
 
         protected virtual void OnPopupLeaveFocus(UIComponent component, UIFocusEventParameter eventParam) => CheckPopup();
@@ -132,7 +140,7 @@ namespace ModsCommon.UI
         {
             if (p.keycode == KeyCode.Escape)
             {
-                ClosePopup();
+                Focus();
                 p.Use();
             }
         }
@@ -148,7 +156,7 @@ namespace ModsCommon.UI
                 position.x = MathPos(position.x, Popup.width, screen.x);
                 position.y = MathPos(position.y, Popup.height, screen.y);
 
-                Popup.relativePosition = position - Popup.parent.absolutePosition;
+                Popup.absolutePosition = position;
             }
 
             static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);

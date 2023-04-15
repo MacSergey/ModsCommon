@@ -53,6 +53,7 @@ namespace ModsCommon.UI
     public abstract class UISegmented<ValueType> : CustomUIPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
         protected List<ValueType> Objects { get; } = new List<ValueType>();
         protected List<CustomUISegmentedButton> Buttons { get; } = new List<CustomUISegmentedButton>();
@@ -118,10 +119,10 @@ namespace ModsCommon.UI
 
             if (optionData.atlas != null && !string.IsNullOrEmpty(optionData.sprite))
             {
-                button.FgAtlas = optionData.atlas;
-                button.AllFgSprites = optionData.sprite;
+                button.IconAtlas = optionData.atlas;
+                button.AllIconSprites = optionData.sprite;
                 button.tooltip = optionData.label ?? item.ToString();
-                button.ForegroundSpriteMode = SpriteMode.Scale;
+                button.IconMode = SpriteMode.Scale;
             }
             else
                 button.text = optionData.label ?? item.ToString();
@@ -211,9 +212,9 @@ namespace ModsCommon.UI
             }
             else
             {
-                var fgAtlas = button.FgAtlas;
-                var fgSprites = button.FgSprites;
-                var selFgSprites = button.SelFgSprites;
+                var iconAtlas = button.IconAtlas;
+                var iconSprites = button.IconSprites;
+                var selIconSprites = button.SelIconSprites;
 
                 switch (button.Type)
                 {
@@ -231,9 +232,9 @@ namespace ModsCommon.UI
                         break;
                 }
 
-                button.FgAtlas = fgAtlas;
-                button.FgSprites = fgSprites;
-                button.SelFgSprites = selFgSprites;
+                button.IconAtlas = iconAtlas;
+                button.IconSprites = iconSprites;
+                button.SelIconSprites = selIconSprites;
             }
         }
 

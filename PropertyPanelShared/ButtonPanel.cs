@@ -9,6 +9,8 @@ namespace ModsCommon.UI
     public class ButtonPanel : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         protected CustomUIButton Button { get; set; }
         protected float DefaultHeight => 20f;
 
@@ -82,7 +84,7 @@ namespace ModsCommon.UI
 
         public override void SetStyle(ControlStyle style)
         {
-            Button.ButtonStyle = style.Button;
+            Button.ButtonStyle = style.LargeButton;
         }
     }
     public class ButtonsPanel : BaseEditorPanel, IReusable
@@ -90,6 +92,8 @@ namespace ModsCommon.UI
         public event Action<int> OnButtonClick;
 
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         protected List<CustomUIButton> Buttons { get; } = new List<CustomUIButton>();
         public int Count => Buttons.Count;
         protected float DefaultHeight => 20f;
@@ -172,10 +176,10 @@ namespace ModsCommon.UI
             });
         }
 
-        private ButtonStyle Style { get; set; } = ComponentStyle.Default.Button;
+        private ButtonStyle Style { get; set; } = ComponentStyle.Default.LargeButton;
         public override void SetStyle(ControlStyle style)
         {
-            Style = style.Button;
+            Style = style.LargeButton;
 
             foreach (var button in Buttons)
                 button.ButtonStyle = Style;
@@ -185,6 +189,8 @@ namespace ModsCommon.UI
     public class ButtonPropertyPanel : EditorPropertyPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         CustomUIButton Button { get; set; }
 
         public string ButtonText
@@ -266,7 +272,7 @@ namespace ModsCommon.UI
 
         public override void SetStyle(ControlStyle style)
         {
-            Button.ButtonStyle = style.Button;
+            Button.ButtonStyle = style.LargeButton;
         }
     }
 }

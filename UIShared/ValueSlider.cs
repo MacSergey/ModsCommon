@@ -12,6 +12,8 @@ namespace ModsCommon.UI
         public event Action<TypeValue> OnChanged;
 
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         private bool InProcess { get; set; } = false;
 
 

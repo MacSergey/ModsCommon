@@ -22,6 +22,8 @@ namespace ModsCommon.UI
         private TypeValue value;
         private string format;
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         private bool InProcess { get; set; } = false;
         public TypeValue Value
         {
@@ -76,15 +78,15 @@ namespace ModsCommon.UI
             RefreshText();
             base.OnGotFocus(p);
         }
-        protected override void OnCancel()
+        protected override void OnCancel(OnUnfocus onUnfocus)
         {
-            base.OnCancel();
+            base.OnCancel(onUnfocus);
             RefreshText();
         }
-        protected override void OnSubmit()
+        protected override void OnSubmit(OnUnfocus onUnfocus)
         {
             var force = hasFocus;
-            base.OnSubmit();
+            base.OnSubmit(onUnfocus);
 
             if (!force && text == GetString(Value))
             {
@@ -111,7 +113,6 @@ namespace ModsCommon.UI
         public void SetDefaultStyle()
         {
             this.DefaultStyle();
-            allowFloats = true;
             textScale = DefaultTextScale;
         }
     }

@@ -6,7 +6,16 @@ using ColossalFramework;
 
 namespace ModsCommon.UI
 {
-    public class KeymappingSettingsItem : ControlSettingsItem<CustomUIButton>
+    public class KeymappingUIButton : CustomUIButton
+    {
+        public Action StartBinding;
+        protected override void OnMouseDown(UIMouseEventParameter p)
+        {
+            base.OnMouseDown(p);
+            StartBinding?.Invoke();
+        }
+    }
+    public class KeymappingSettingsItem : ControlSettingsItem<KeymappingUIButton>
     {
         public event Action<Shortcut> BindingChanged;
 
@@ -35,38 +44,34 @@ namespace ModsCommon.UI
 
             Control.ButtonSettingsStyle();
             Control.size = new Vector2(278f, 31f);
-            Control.eventMouseDown += StartBinding;
+            Control.StartBinding += OnStartBinding;
         }
-        private void StartBinding(UIComponent comp, UIMouseEventParameter p)
+        private void OnStartBinding()
         {
             if (!InProgress)
             {
                 Control.text = CommonLocalize.Settings_PressAnyKey;
 
-                p.Use();
                 Warning = MessageBox.Show<WarningLabel>();
                 Warning.Shortcut = Shortcut;
-                Warning.Focus();
-                Warning.eventKeyDown += OnBindingKeyDown;
-                Warning.eventMouseDown += OnBindingMouseDown;
+                Warning.OnBinding += OnBinding;
             }
         }
-        private void OnBindingKeyDown(UIComponent comp, UIKeyEventParameter p)
+        private void OnBinding(KeyCode key, bool ctrl, bool shift, bool alt)
         {
-            if (Shortcut is Shortcut shortcut && !IsModifierKey(p.keycode))
+            if (Shortcut is Shortcut shortcut)
             {
-                p.Use();
                 MessageBox.Hide(Warning);
                 Warning = null;
 
-                if (p.keycode == KeyCode.Backspace)
+                if (key == KeyCode.Backspace)
                     shortcut.InputKey.value = SavedInputKey.Empty;
-                else if (p.keycode != KeyCode.Escape)
+                else if (key != KeyCode.Escape)
                 {
                     if (shortcut.IgnoreModifiers)
-                        shortcut.InputKey.value = SavedInputKey.Encode(p.keycode, false, false, false);
+                        shortcut.InputKey.value = SavedInputKey.Encode(key, false, false, false);
                     else
-                        shortcut.InputKey.value = SavedInputKey.Encode(p.keycode, p.control, p.shift, p.alt);
+                        shortcut.InputKey.value = SavedInputKey.Encode(key, ctrl, shift, alt);
                 }
 
                 Control.text = shortcut.InputKey.GetLocale();
@@ -74,42 +79,11 @@ namespace ModsCommon.UI
                 BindingChanged?.Invoke(Shortcut);
             }
         }
-        private void OnBindingMouseDown(UIComponent comp, UIMouseEventParameter p)
-        {
-            if (!IsUnbindableMouseButton(p.buttons))
-            {
-                p.Use();
-                MessageBox.Hide(Warning);
-                Warning = null;
-
-                if (Shortcut.IgnoreModifiers)
-                    Shortcut.InputKey.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), false, false, false);
-                else
-                    Shortcut.InputKey.value = SavedInputKey.Encode(ButtonToKeycode(p.buttons), Utility.CtrlIsPressed, Utility.ShiftIsPressed, Utility.AltIsPressed);
-
-                Control.text = Shortcut.InputKey.GetLocale();
-
-                BindingChanged?.Invoke(Shortcut);
-            }
-        }
-
-        private KeyCode ButtonToKeycode(UIMouseButton button) => button switch
-        {
-            UIMouseButton.Left => KeyCode.Mouse0,
-            UIMouseButton.Right => KeyCode.Mouse1,
-            UIMouseButton.Middle => KeyCode.Mouse2,
-            UIMouseButton.Special0 => KeyCode.Mouse3,
-            UIMouseButton.Special1 => KeyCode.Mouse4,
-            UIMouseButton.Special2 => KeyCode.Mouse5,
-            UIMouseButton.Special3 => KeyCode.Mouse6,
-            _ => KeyCode.None,
-        };
-
-        private bool IsModifierKey(KeyCode code) => code == KeyCode.LeftControl || code == KeyCode.RightControl || code == KeyCode.LeftShift || code == KeyCode.RightShift || code == KeyCode.LeftAlt || code == KeyCode.RightAlt;
-        private bool IsUnbindableMouseButton(UIMouseButton code) => (code & (UIMouseButton.Left | UIMouseButton.Right | UIMouseButton.Middle)) != 0;
 
         private class WarningLabel : CustomUIPanel
         {
+            public event Action<KeyCode, bool, bool, bool> OnBinding;
+
             private CustomUILabel ShortcutTitle { get; set; }
             public Shortcut Shortcut
             {
@@ -122,6 +96,8 @@ namespace ModsCommon.UI
 
             public WarningLabel()
             {
+                canFocus = true;
+
                 ShortcutTitle = AddUIComponent<CustomUILabel>();
                 ShortcutTitle.Atlas = CommonTextures.Atlas;
                 ShortcutTitle.BackgroundSprite = CommonTextures.PanelBig;
@@ -159,6 +135,35 @@ namespace ModsCommon.UI
 
                 var res = GetUIView().GetScreenResolution();
                 relativePosition = new Vector3((res.x - width) * 0.5f, (res.y - height) * 0.5f);
+            }
+
+            public override void Update()
+            {
+                base.Update();
+
+                if (OnBinding != null)
+                {
+                    var e = Event.current;
+
+                    if (Input.GetMouseButtonDown(3))
+                        OnBinding(KeyCode.Mouse3, e.control, e.shift, e.alt);
+                    else if (Input.GetMouseButtonDown(4))
+                        OnBinding(KeyCode.Mouse4, e.control, e.shift, e.alt);
+                    else if (Input.GetMouseButtonDown(5))
+                        OnBinding(KeyCode.Mouse5, e.control, e.shift, e.alt);
+                    else if (Input.GetMouseButtonDown(6))
+                        OnBinding(KeyCode.Mouse6, e.control, e.shift, e.alt);
+                }
+            }
+            private void OnGUI()
+            {
+                var e = Event.current;
+
+                if (e.type == EventType.KeyDown && OnBinding != null)
+                {
+                    if (e.keyCode != KeyCode.LeftControl && e.keyCode != KeyCode.RightControl && e.keyCode != KeyCode.LeftShift && e.keyCode != KeyCode.RightShift && e.keyCode != KeyCode.LeftAlt && e.keyCode != KeyCode.RightAlt)
+                        OnBinding(e.keyCode, e.control, e.shift, e.alt);
+                }
             }
         }
     }

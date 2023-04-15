@@ -65,7 +65,7 @@ namespace ModsCommon.UI
             public LanguageEntity()
             {
                 Atlas = CommonTextures.Atlas;
-                ForegroundSpriteMode = SpriteMode.Scale;
+                IconMode = SpriteMode.Scale;
 
                 HorizontalAlignment = UIHorizontalAlignment.Left;
                 VerticalAlignment = UIVerticalAlignment.Middle;
@@ -80,20 +80,20 @@ namespace ModsCommon.UI
                 base.SetObject(index, language, selected);
 
                 text = language.label;
-                FgSprites = language.sprite;
+                IconSprites = language.sprite;
             }
             public override void DeInit()
             {
                 base.DeInit();
 
                 text = string.Empty;
-                FgSprites = string.Empty;
+                IconSprites = string.Empty;
             }
 
             protected override void OnSizeChanged()
             {
                 TextPadding = new RectOffset(Mathf.CeilToInt(height) + 4, 8, 3, 0);
-                SpritePadding = new RectOffset(5, 0, 0, 0);
+                IconPadding = new RectOffset(5, 0, 0, 0);
                 ScaleFactor = 24f / height;
             }
         }

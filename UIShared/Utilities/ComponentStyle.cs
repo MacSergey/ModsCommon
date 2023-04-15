@@ -151,11 +151,11 @@ namespace ModsCommon.UI
         {
             dropDown.DropDownStyle = Default.DropDown;
 
-            dropDown.ForegroundSpriteMode = SpriteMode.Scale;
+            dropDown.IconMode = SpriteMode.Scale;
             dropDown.ScaleFactor = 0.7f;
             dropDown.HorizontalAlignment = UIHorizontalAlignment.Right;
             dropDown.VerticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.SpritePadding = new RectOffset(0, 5, 0, 0);
+            dropDown.IconPadding = new RectOffset(0, 5, 0, 0);
 
             dropDown.Entity.Padding = new RectOffset(0, 40, 0, 0);
 
@@ -182,9 +182,9 @@ namespace ModsCommon.UI
         {
             dropDown.DropDownStyle = MessageBox.DropDown;
 
-            dropDown.ForegroundSpriteMode = SpriteMode.Scale;
+            dropDown.IconMode = SpriteMode.Scale;
             dropDown.ScaleFactor = 0.7f;
-            dropDown.SpritePadding.right = 5;
+            dropDown.IconPadding.right = 5;
 
             dropDown.TextVerticalAlignment = UIVerticalAlignment.Middle;
             dropDown.TextHorizontalAlignment = UIHorizontalAlignment.Left;
@@ -215,9 +215,9 @@ namespace ModsCommon.UI
         {
             dropDown.DropDownStyle = Settings.DropDown;
 
-            dropDown.ForegroundSpriteMode = SpriteMode.Scale;
+            dropDown.IconMode = SpriteMode.Scale;
             dropDown.ScaleFactor = 0.7f;
-            dropDown.SpritePadding.right = 5;
+            dropDown.IconPadding.right = 5;
 
             dropDown.TextVerticalAlignment = UIVerticalAlignment.Middle;
             dropDown.TextHorizontalAlignment = UIHorizontalAlignment.Left;
@@ -257,16 +257,14 @@ namespace ModsCommon.UI
         {
             textField.TextFieldStyle = Default.TextField;
 
-            textField.allowFloats = true;
             textField.isInteractive = true;
-            textField.readOnly = false;
             textField.builtinKeyNavigation = true;
-            textField.cursorWidth = 1;
-            textField.cursorBlinkTime = 0.45f;
-            textField.selectOnFocus = true;
+            textField.CursorWidth = 1;
+            textField.CursorBlinkTime = 0.45f;
+            textField.SelectOnFocus = true;
 
             textField.verticalAlignment = UIVerticalAlignment.Middle;
-            textField.padding = new RectOffset(0, 0, 6, 0);
+            textField.Padding = new RectOffset(0, 0, 6, 0);
         }
         public static void SettingsStyle(this CustomUITextField textField)
         {
@@ -421,6 +419,7 @@ namespace ModsCommon.UI
 
                 TextColors = DarkPrimaryColor100,
 
+                SelAtlas = Atlas,
                 SelectionSprite = Empty,
                 SelectionColor = DarkPrimaryColor0,
             },
@@ -429,61 +428,72 @@ namespace ModsCommon.UI
                 Single = new ButtonStyle()
                 {
                     BgAtlas = Atlas,
-                    FgAtlas = Atlas,
+                    IconAtlas = Atlas,
 
                     AllBgSprites = FieldSingle,
                     BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
                     SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
 
-                    FgColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, Color.black),
-                    SelFgColors = new ColorSet(Color.white),
+                    IconColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, Color.black),
+                    SelIconColors = new ColorSet(Color.white),
 
                     AllTextColors = new ColorSet(DarkPrimaryColor100),
                 },
                 Left = new ButtonStyle()
                 {
                     BgAtlas = Atlas,
-                    FgAtlas = Atlas,
+                    IconAtlas = Atlas,
 
                     AllBgSprites = FieldLeft,
                     BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
                     SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
 
-                    AllFgColors = new ColorSet(DarkPrimaryColor100),
+                    AllIconColors = new ColorSet(DarkPrimaryColor100),
                     AllTextColors = new ColorSet(DarkPrimaryColor100),
                 },
                 Middle = new ButtonStyle()
                 {
                     BgAtlas = Atlas,
-                    FgAtlas = Atlas,
+                    IconAtlas = Atlas,
 
                     AllBgSprites = FieldMiddle,
                     BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
                     SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
 
-                    AllFgColors = new ColorSet(DarkPrimaryColor100),
+                    AllIconColors = new ColorSet(DarkPrimaryColor100),
                     AllTextColors = new ColorSet(DarkPrimaryColor100),
                 },
                 Right = new ButtonStyle()
                 {
                     BgAtlas = Atlas,
-                    FgAtlas = Atlas,
+                    IconAtlas = Atlas,
 
                     AllBgSprites = FieldRight,
                     BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldFocusedColor, FieldDisabledColor),
                     SelBgColors = new ColorSet(FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldFocusedColor, FieldDisabledFocusedColor),
 
-                    AllFgColors = new ColorSet(DarkPrimaryColor100),
+                    AllIconColors = new ColorSet(DarkPrimaryColor100),
                     AllTextColors = new ColorSet(DarkPrimaryColor100),
                 }
             },
-            Button = new ButtonStyle()
+            SmallButton = new ButtonStyle()
             {
                 BgColors = new ColorSet(ButtonNormal, ButtonHovered, ButtonPressed, ButtonNormal, ButtonFocused),
                 SelBgColors = new ColorSet(),
 
-                FgColors = new ColorSet(ButtonNormal),
-                SelFgColors = new ColorSet(),
+                IconColors = new ColorSet(ButtonNormal),
+                SelIconColors = new ColorSet(),
+
+                TextColors = new ColorSet(Color.black, Color.black, Color.white, Color.black, Color.white),
+                SelTextColors = new ColorSet(),
+            },
+            LargeButton = new ButtonStyle()
+            {
+                BgColors = new ColorSet(ButtonNormal, ButtonHovered, ButtonPressed, ButtonNormal, ButtonFocused),
+                SelBgColors = new ColorSet(),
+
+                IconColors = new ColorSet(ButtonNormal),
+                SelIconColors = new ColorSet(),
 
                 TextColors = new ColorSet(Color.black, Color.black, Color.white, Color.black, Color.white),
                 SelTextColors = new ColorSet(),
@@ -491,13 +501,13 @@ namespace ModsCommon.UI
             DropDown = new DropDownStyle()
             {
                 BgAtlas = Atlas,
-                FgAtlas = Atlas,
+                IconAtlas = Atlas,
 
                 BgSprites = FieldSingle,
-                FgSprites = ArrowDown,
+                IconSprites = ArrowDown,
 
                 BgColors = new ColorSet(FieldNormalColor, FieldHoveredColor, FieldHoveredColor, FieldNormalColor, FieldDisabledColor),
-                FgColors = Color.black,
+                IconColors = Color.black,
 
 
                 PopupAtlas = Atlas,
@@ -551,6 +561,13 @@ namespace ModsCommon.UI
                 BgSprites = PanelLarge,
                 BgColors = new Color32(82, 101, 117, 255),
                 MaskSprite = OpacitySliderMask,
+            },
+            HeaderContent = new HeaderStyle()
+            {
+                MainBgColors = new ColorSet(default, DarkPrimaryColor45, DarkPrimaryColor55, default, default),
+                MainIconColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, DarkPrimaryColor55),
+                AdditionalBgColors = new ColorSet(default, DarkPrimaryColor45, DarkPrimaryColor45, default, default),
+                AdditionalIconColors = new ColorSet(Color.white, Color.white, Color.white, Color.white, DarkPrimaryColor55),
             }
         };
 
@@ -559,13 +576,13 @@ namespace ModsCommon.UI
             DropDown = new DropDownStyle()
             {
                 BgAtlas = Atlas,
-                FgAtlas = Atlas,
+                IconAtlas = Atlas,
 
                 BgSprites = FieldSingle,
-                FgSprites = ArrowDown,
+                IconSprites = ArrowDown,
 
                 BgColors = new ColorSet(DarkPrimaryColor55, DarkPrimaryColor45, DarkPrimaryColor35, DarkPrimaryColor55, DarkPrimaryColor15),
-                FgColors = SettingsColor15,
+                IconColors = SettingsColor15,
 
 
                 PopupAtlas = Atlas,
@@ -598,6 +615,7 @@ namespace ModsCommon.UI
 
                 TextColors = DarkPrimaryColor100,
 
+                SelAtlas = Atlas,
                 SelectionSprite = Empty,
                 SelectionColor = DarkPrimaryColor0,
             },
@@ -623,13 +641,13 @@ namespace ModsCommon.UI
             DropDown = new DropDownStyle()
             {
                 BgAtlas = Atlas,
-                FgAtlas = Atlas,
+                IconAtlas = Atlas,
 
                 BgSprites = FieldSingle,
-                FgSprites = ArrowDown,
+                IconSprites = ArrowDown,
 
                 BgColors = new ColorSet(SettingsColor60, SettingsColor70, SettingsColor70, SettingsColor60, SettingsColor15),
-                FgColors = SettingsColor15,
+                IconColors = SettingsColor15,
 
                 AllTextColors = Color.white,
 
@@ -654,21 +672,21 @@ namespace ModsCommon.UI
     {
         public TextFieldStyle TextField { get; set; }
         public SegmentedStyle Segmented { get; set; }
-        public ButtonStyle Button { get; set; }
+        public ButtonStyle SmallButton { get; set; }
+        public ButtonStyle LargeButton { get; set; }
         public DropDownStyle DropDown { get; set; }
         public ToggleStyle Toggle { get; set; }
         public ColorPickerStyle ColorPicker { get; set; }
         public LabelStyle Label { get; set; }
         public PropertyPanelStyle PropertyPanel { get; set; }
+        public HeaderStyle HeaderContent { get; set; }
     }
-    public class ItemStyle
-    {
-
-    }
+    public class ItemStyle { }
     public class InteractiveStyle : ItemStyle
     {
         public UITextureAtlas BgAtlas { get; set; }
         public UITextureAtlas FgAtlas { get; set; }
+        public UITextureAtlas IconAtlas { get; set; }
 
         public SpriteSet BgSprites { get; set; }
         public SpriteSet SelBgSprites { get; set; }
@@ -689,6 +707,17 @@ namespace ModsCommon.UI
             {
                 FgSprites = value;
                 SelFgSprites = value;
+            }
+        }
+
+        public SpriteSet IconSprites { get; set; }
+        public SpriteSet SelIconSprites { get; set; }
+        public SpriteSet AllIconSprites
+        {
+            set
+            {
+                IconSprites = value;
+                SelIconSprites = value;
             }
         }
 
@@ -714,6 +743,17 @@ namespace ModsCommon.UI
             }
         }
 
+        public ColorSet IconColors { get; set; }
+        public ColorSet SelIconColors { get; set; }
+        public ColorSet AllIconColors
+        {
+            set
+            {
+                IconColors = value;
+                SelIconColors = value;
+            }
+        }
+
         public ColorSet TextColors { get; set; }
         public ColorSet SelTextColors { get; set; }
         public ColorSet AllTextColors
@@ -727,6 +767,7 @@ namespace ModsCommon.UI
     }
     public class TextFieldStyle : InteractiveStyle
     {
+        public UITextureAtlas SelAtlas { get; set; }
         public string SelectionSprite { get; set; }
         public Color32 SelectionColor { get; set; }
     }
@@ -761,8 +802,8 @@ namespace ModsCommon.UI
     {
         public UITextureAtlas MarkAtlas
         {
-            get => FgAtlas;
-            set => FgAtlas = value;
+            get => IconAtlas;
+            set => IconAtlas = value;
         }
 
         public SpriteSet OnBgSprites
@@ -776,15 +817,26 @@ namespace ModsCommon.UI
             set => BgSprites = value;
         }
 
-        public SpriteSet OnMarkSprites
+        public SpriteSet OnFgSprites
         {
             get => SelFgSprites;
             set => SelFgSprites = value;
         }
-        public SpriteSet OffMarkSprites
+        public SpriteSet OffFgSprites
         {
             get => FgSprites;
             set => FgSprites = value;
+        }
+
+        public SpriteSet OnMarkSprites
+        {
+            get => SelIconSprites;
+            set => SelIconSprites = value;
+        }
+        public SpriteSet OffMarkSprites
+        {
+            get => IconSprites;
+            set => IconSprites = value;
         }
 
         public ColorSet OnBgColors
@@ -798,15 +850,26 @@ namespace ModsCommon.UI
             set => BgColors = value;
         }
 
-        public ColorSet OnMarkColors
+        public ColorSet OnFgColors
         {
             get => SelFgColors;
             set => SelFgColors = value;
         }
-        public ColorSet OffMarkColors
+        public ColorSet OffFgColors
         {
             get => FgColors;
             set => FgColors = value;
+        }
+
+        public ColorSet OnMarkColors
+        {
+            get => SelIconColors;
+            set => SelIconColors = value;
+        }
+        public ColorSet OffMarkColors
+        {
+            get => IconColors;
+            set => IconColors = value;
         }
 
         public ColorSet OnTextColors
@@ -840,6 +903,13 @@ namespace ModsCommon.UI
         public SpriteSet BgSprites { get; set; }
         public ColorSet BgColors { get; set; }
         public string MaskSprite { get; set; }
+    }
+    public class HeaderStyle : ItemStyle
+    {
+        public ColorSet MainBgColors { get; set; }
+        public ColorSet MainIconColors { get; set; }
+        public ColorSet AdditionalBgColors { get; set; }
+        public ColorSet AdditionalIconColors { get; set; }
     }
 
 

@@ -12,6 +12,8 @@ namespace ModsCommon.UI
         where FieldType : UITextField<ValueType>
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         private bool InProcess { get; set; } = false;
 
         public event Action<ValueType> OnValueChanged;
@@ -34,8 +36,8 @@ namespace ModsCommon.UI
         }
         public bool SubmitOnFocusLost
         {
-            get => Field.submitOnFocusLost;
-            set => Field.submitOnFocusLost = value;
+            get => Field.SubmitOnFocusLost;
+            set => Field.SubmitOnFocusLost = value;
         }
         public virtual float SliderWidth
         {

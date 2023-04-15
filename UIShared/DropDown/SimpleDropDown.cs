@@ -1,6 +1,5 @@
 ﻿using ColossalFramework.UI;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -10,6 +9,8 @@ namespace ModsCommon.UI
         where PopupType : SimplePopup<ValueType, EntityType>
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
 
         public new event Action<ValueType> OnSelectObject;
 
@@ -22,6 +23,7 @@ namespace ModsCommon.UI
             set => base.SelectedObject = new DropDownItem<ValueType>(value, default);
         }
 
+        public bool CanWheel { get; private set; }
         public bool UseWheel { get; set; }
         public bool WheelTip
         {
@@ -54,11 +56,7 @@ namespace ModsCommon.UI
         public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, (OptionData)item.ToString()));
         public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, (OptionData)label));
         public virtual void AddItem(ValueType item, OptionData optionData) => AddItem(new DropDownItem<ValueType>(item, optionData));
-        protected override void SelectObject(DropDownItem<ValueType> item)
-        {
-            base.SelectObject(item);
-            OnSelectObject?.Invoke(item.value);
-        }
+        protected override void SelectObjectEvent(DropDownItem<ValueType> item) => OnSelectObject?.Invoke(item.value);
         protected override void SetPopupStyle()
         {
             Popup.PopupDefaultStyle();
@@ -95,6 +93,32 @@ namespace ModsCommon.UI
         public void StartLayout(bool layoutNow = true, bool force = false) { }
         public void PauseLayout(Action action, bool layoutNow = true, bool force = false) => action?.Invoke();
         public void Ignore(UIComponent item, bool ignore) { }
+
+        protected override void OnMouseMove(UIMouseEventParameter p)
+        {
+            base.OnMouseMove(p);
+            CanWheel = true;
+        }
+        protected override void OnMouseLeave(UIMouseEventParameter p)
+        {
+            base.OnMouseLeave(p);
+            CanWheel = false;
+        }
+        protected sealed override void OnMouseWheel(UIMouseEventParameter p)
+        {
+            m_TooltipShowing = true;
+            tooltipBox.Hide();
+
+            if (UseWheel && (CanWheel || Time.realtimeSinceStartup - m_HoveringStartTime >= UIHelper.PropertyScrollTimeout))
+            {
+                if (p.wheelDelta > 0)
+                    SelectedIndex = Math.Max(SelectedIndex - 1, 0);
+                else if (p.wheelDelta < 0)
+                    SelectedIndex = Math.Min(SelectedIndex + 1, ObjectList.Count - 1);
+
+                p.Use();
+            }
+        }
     }
     public abstract class SimpleEntity<ValueType> : PopupEntity<DropDownItem<ValueType>>
     {

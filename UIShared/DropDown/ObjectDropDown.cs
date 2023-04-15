@@ -12,7 +12,8 @@ namespace ModsCommon.UI
     public delegate void EntityStyleDelegate<ObjectType, EntityType>(EntityType entity, ref bool overridden)
         where EntityType : CustomUIButton, IPopupEntity<ObjectType>;
 
-    public interface IPopup<ObjectType, EntityType>
+    public interface IPopup { }
+    public interface IPopup<ObjectType, EntityType> : IPopup
         where EntityType : CustomUIButton, IPopupEntity<ObjectType>
     {
         event Action<ObjectType> OnSelect;
@@ -60,14 +61,15 @@ namespace ModsCommon.UI
 
         #endregion
 
-        protected virtual void SelectObject(ObjectType value) => OnSelectObject?.Invoke(value);
+        protected virtual void SelectObject(ObjectType value) => SelectObjectEvent(value);
+        protected virtual void SelectObjectEvent(ObjectType value) => OnSelectObject?.Invoke(value);
 
         #region POPUP
 
-        public override bool AutoClose 
-        { 
-            get => base.AutoClose && (Popup == null || Popup.AutoClose); 
-            set => base.AutoClose = value; 
+        public override bool AutoClose
+        {
+            get => base.AutoClose && (Popup == null || Popup.AutoClose);
+            set => base.AutoClose = value;
         }
         protected abstract IEnumerable<ObjectType> Objects { get; }
         protected abstract Func<ObjectType, bool> Selector { get; }
@@ -120,12 +122,15 @@ namespace ModsCommon.UI
 
                 bgAtlas = value.BgAtlas;
                 fgAtlas = value.FgAtlas;
+                IconAtlas = value.IconAtlas;
 
                 bgSprites = value.BgSprites;
                 fgSprites = value.FgSprites;
+                IconSprites = value.IconSprites;
 
                 bgColors = value.BgColors;
                 fgColors = value.FgColors;
+                IconColors = value.IconColors;
 
                 textColors = value.TextColors;
 

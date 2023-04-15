@@ -17,10 +17,12 @@ namespace ModsCommon.UI
         void PerformAutoWidth();
         ColorSet BgColors {set;}
         ColorSet FgColors { set; }
+        ColorSet IconColors { set; }
     }
     public class HeaderButton : CustomUIButton, IHeaderButton, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
         public HeaderButton()
         {
@@ -29,7 +31,7 @@ namespace ModsCommon.UI
             clipChildren = true;
             textScale = 0.8f;
             TextHorizontalAlignment = UIHorizontalAlignment.Left;
-            ForegroundSpriteMode = SpriteMode.Fill;
+            IconMode = SpriteMode.Fill;
         }
 
         public void Init(UITextureAtlas atlas, string sprite, int size, int iconSize)
@@ -45,8 +47,8 @@ namespace ModsCommon.UI
         }
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            FgAtlas = atlas ?? TextureHelper.InGameAtlas;
-            FgSprites = sprite;
+            IconAtlas = atlas ?? TextureHelper.InGameAtlas;
+            IconSprites = sprite;
         }
 
         public override void Update()
@@ -108,20 +110,21 @@ namespace ModsCommon.UI
             get => Button.isEnabled;
             set => Button.isEnabled = value;
         }
-        private HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, Action onClick)
+        private HeaderButtonInfo(string name, HeaderButtonState state, UITextureAtlas atlas, string sprite, Action onClick)
         {
             State = state;
             OnClick = onClick;
 
             Button = new GameObject(typeof(TypeButton).Name).AddComponent<TypeButton>();
+            Button.name = name;
             Button.SetIcon(atlas, sprite);
             Button.eventClicked += ButtonClicked;
         }
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null) : this(state, atlas, sprite, onClick) 
+        public HeaderButtonInfo(string name, HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Action onClick = null) : this(name, state, atlas, sprite, onClick) 
         {
             Text = text;
         }
-        public HeaderButtonInfo(HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(state, atlas, sprite, shortcut.Press)
+        public HeaderButtonInfo(string name, HeaderButtonState state, UITextureAtlas atlas, string sprite, string text, Shortcut shortcut) : this(name, state, atlas, sprite, shortcut.Press)
         {
             Text = text;
             Shortcut = shortcut;

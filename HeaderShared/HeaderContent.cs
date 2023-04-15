@@ -6,18 +6,8 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class BaseHeaderContent : CustomUIPanel
+    public class BaseHeaderContent : CustomUIPanel
     {
-        protected abstract Color32 ButtonHoveredColor { get; }
-        protected abstract Color32 ButtonPressedColor { get; }
-        protected abstract Color32 AdditionalButtonHoveredColor { get; }
-        protected abstract Color32 AdditionalButtonPressedColor { get; }
-
-        protected abstract Color32 IconNormalColor { get; }
-        protected abstract Color32 IconHoverColor { get; }
-        protected abstract Color32 IconPressedColor { get; }
-        protected abstract Color32 IconDisabledColor { get; }
-
         public static int DefaultSize => DefaultIconSize + 2 * DefaultIconPadding;
         public static int DefaultIconSize => 25;
         public static int DefaultIconPadding => 2;
@@ -39,6 +29,28 @@ namespace ModsCommon.UI
 
         private AdditionalHeaderButton Additional { get; set; }
 
+        private HeaderStyle headerStyle;
+        public HeaderStyle HeaderStyle
+        {
+            get => headerStyle ?? ComponentStyle.Default.HeaderContent;
+            set
+            {
+                if(value != headerStyle)
+                {
+                    headerStyle = value;
+
+                    foreach (var info in MainInfos)
+                    {
+                        info.Button.BgColors = value.MainBgColors;
+                        info.Button.IconColors = value.MainIconColors;
+                    }
+
+                    Additional.BgColors = value.MainBgColors;
+                    Additional.IconColors = value.MainIconColors;
+                }
+            }
+        }
+
         public BaseHeaderContent()
         {
             PauseLayout(() =>
@@ -49,13 +61,15 @@ namespace ModsCommon.UI
                 autoLayoutStart = LayoutStart.MiddleLeft;
 
                 Additional = AddUIComponent<AdditionalHeaderButton>();
+                Additional.name = nameof(Additional);
                 Additional.tooltip = CommonLocalize.Panel_Additional;
                 Additional.SetIcon(AdditionalButtonAtlas, AdditionalButtonSprite);
                 Additional.SetSize(MainButtonSize, MainIconSize);
 
                 Additional.OnPopupOpening += PopupOpening;
                 Additional.OnBeforePopupClose += BeforePopupClose;
-                SetButtonColors(Additional);
+                Additional.BgColors = HeaderStyle.MainBgColors;
+                Additional.IconColors = HeaderStyle.MainIconColors;
             });
 
             Refresh();
@@ -74,7 +88,8 @@ namespace ModsCommon.UI
                 info.AddButton(popup.Content, true, AdditionalButtonSize, AdditionalIconSize);
                 info.Button.PerformAutoWidth();
                 info.ClickedEvent += PopupClicked;
-                SetAdditionalButtonColors(info.Button);
+                info.Button.BgColors = HeaderStyle.AdditionalBgColors;
+                info.Button.IconColors = HeaderStyle.AdditionalIconColors;
             }
 
             var maxwidth = AdditionalInfos.Max(i => i.Button.width);
@@ -103,46 +118,12 @@ namespace ModsCommon.UI
             foreach (var info in MainInfos)
             {
                 info.AddButton(this, false, MainButtonSize, MainIconSize);
-                SetButtonColors(info.Button);
+                info.Button.BgColors = HeaderStyle.MainBgColors;
+                info.Button.IconColors = HeaderStyle.MainIconColors;
             }
 
             Additional.isVisible = ShowAdditional;
             Additional.zOrder = int.MaxValue;
-        }
-        private void SetButtonColors(IHeaderButton button)
-        {
-            button.BgColors = new ColorSet(Color.white, ButtonHoveredColor, ButtonPressedColor, ButtonPressedColor, Color.white);
-            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconNormalColor, IconDisabledColor);
-        }
-        private void SetAdditionalButtonColors(IHeaderButton button)
-        {
-            button.BgColors = new ColorSet(Color.white, AdditionalButtonHoveredColor, AdditionalButtonPressedColor, AdditionalButtonPressedColor, Color.white);
-            button.FgColors = new ColorSet(IconNormalColor, IconHoverColor, IconPressedColor, IconNormalColor, IconDisabledColor);
-        }
-    }
-    public class HeaderContent : BaseHeaderContent
-    {
-        protected override Color32 ButtonHoveredColor => new Color32(32, 32, 32, 255);
-        protected override Color32 ButtonPressedColor => Color.black;
-        protected override Color32 AdditionalButtonHoveredColor => new Color32(112, 112, 112, 255);
-        protected override Color32 AdditionalButtonPressedColor => new Color32(112, 112, 112, 255);
-
-        protected override Color32 IconNormalColor => Color.white;
-        protected override Color32 IconHoverColor => Color.white;
-        protected override Color32 IconPressedColor => new Color32(224, 224, 224, 255);
-        protected override Color32 IconDisabledColor => new Color32(144, 144, 144, 255);
-    }
-
-    public class PanelHeaderContent : BaseHeaderContent
-    {
-        protected override Color32 ButtonHoveredColor => new Color32(112, 112, 112, 255);
-        protected override Color32 ButtonPressedColor => new Color32(144, 144, 144, 255);
-        protected override Color32 AdditionalButtonHoveredColor => new Color32(112, 112, 112, 255);
-        protected override Color32 AdditionalButtonPressedColor => new Color32(112, 112, 112, 255);
-
-        protected override Color32 IconNormalColor => Color.white;
-        protected override Color32 IconHoverColor => Color.white;
-        protected override Color32 IconPressedColor => Color.white;
-        protected override Color32 IconDisabledColor => new Color32(144, 144, 144, 255);
+        }   
     }
 }

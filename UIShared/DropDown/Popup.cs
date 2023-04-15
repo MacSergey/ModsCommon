@@ -7,10 +7,12 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class ObjectPopup<ObjectType, EntityType> : CustomUIPanel, IPopup<ObjectType, EntityType>, IReusable
+    public abstract class ObjectPopup<ObjectType, EntityType> : CustomUIPanel, IPopup, IPopup<ObjectType, EntityType>, IReusable
         where EntityType : CustomUIButton, IPopupEntity<ObjectType>, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
 
         public event Action<ObjectType> OnSelect;
         public event EntityStyleDelegate<ObjectType, EntityType> OnSetEntityStyle;
@@ -411,20 +413,20 @@ namespace ModsCommon.UI
             Search.name = nameof(Search);
             Search.BgAtlas = CommonTextures.Atlas;
             Search.BgSprites = CommonTextures.PanelSmall;
-            Search.atlas = TextureHelper.InGameAtlas;
-            Search.selectionSprite = "EmptySprite";
+            Search.SelAtlas = CommonTextures.Atlas;
+            Search.SelSprite = CommonTextures.Empty;
             Search.BgColors = new Color32(10, 10, 10, 255);
             Search.height = 20f;
             Search.builtinKeyNavigation = true;
-            Search.cursorWidth = 1;
-            Search.cursorBlinkTime = 0.45f;
-            Search.selectOnFocus = true;
+            Search.CursorWidth = 1;
+            Search.CursorBlinkTime = 0.45f;
+            Search.SelectOnFocus = true;
             Search.textScale = 0.7f;
-            Search.padding = new RectOffset(20, 30, 6, 0);
+            Search.Padding = new RectOffset(20, 30, 6, 0);
             Search.horizontalAlignment = UIHorizontalAlignment.Left;
-            Search.eventTextChanged += SearchTextChanged;
-            Search.eventGotFocus += ItemGotFocus;
-            Search.eventLostFocus += ItemLostFocus;
+            Search.OnTextChanged += SearchTextChanged;
+            Search.OnTextCancelled += SearchTextChanged;
+            Search.ActionOnUnfocus = CustomUITextField.OnUnfocus.FocusRoot;
             SetItemMargin(Search, new RectOffset(5, 5, 5, 5));
 
             var loop = Search.AddUIComponent<UISprite>();
@@ -436,13 +438,11 @@ namespace ModsCommon.UI
             ResetButton = Search.AddUIComponent<CustomUIButton>();
             ResetButton.name = nameof(ResetButton);
             ResetButton.Atlas = TextureHelper.InGameAtlas;
-            ResetButton.FgSprites = "ContentManagerSearchReset";
+            ResetButton.IconSprites = "ContentManagerSearchReset";
             ResetButton.size = new Vector2(10f, 10f);
             ResetButton.HoveredBgColor = new Color32(127, 127, 127, 255);
             ResetButton.isVisible = false;
             ResetButton.eventClick += ResetClick;
-            ResetButton.eventGotFocus += ItemGotFocus;
-            ResetButton.eventLostFocus += ItemLostFocus;
 
             Search.eventSizeChanged += SearchSizeChanged;
 
@@ -468,7 +468,7 @@ namespace ModsCommon.UI
         }
         protected abstract string GetName(ObjectType value);
 
-        private void SearchTextChanged(UIComponent component, string value)
+        private void SearchTextChanged(string value)
         {
             if (CanSubmit)
                 RefreshValues();
@@ -478,34 +478,22 @@ namespace ModsCommon.UI
 
         private void ResetClick(UIComponent component, UIMouseEventParameter eventParam)
         {
-            Search.text = string.Empty;
+            if (Search.text == string.Empty)
+                SearchTextChanged(string.Empty);
+            else
+                Search.text = string.Empty;
         }
         private void SearchSizeChanged(UIComponent component, Vector2 value)
         {
             ResetButton.relativePosition = new Vector2(Search.width - 15f, 5f);
         }
 
-        private void ItemGotFocus(UIComponent component, UIFocusEventParameter p)
-        {
-            AutoClose = false;
-        }
-        private void ItemLostFocus(UIComponent component, UIFocusEventParameter p)
-        {
-            if (p.gotFocus == null || !p.gotFocus.transform.IsChildOf(transform))
-                Focus();
-        }
         protected override void OnGotFocus(UIFocusEventParameter p)
         {
             if (FocusSearch)
             {
                 Search.Focus();
                 FocusSearch = false;
-            }
-            else
-            {
-                base.OnGotFocus(p);
-                if(p.gotFocus == this)
-                    AutoClose = true;
             }
         }
 
@@ -517,6 +505,7 @@ namespace ModsCommon.UI
     {
         public event Action<int, ObjectType> OnSelected;
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
         public virtual ObjectType EditObject { get; protected set; }
         public int Index { get; set; }

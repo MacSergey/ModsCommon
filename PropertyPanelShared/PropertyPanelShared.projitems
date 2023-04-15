@@ -12,7 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)BaseProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoolProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ButtonPanel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OldColorProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FieldProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GroupPanel.cs" />

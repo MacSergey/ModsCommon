@@ -112,5 +112,16 @@ namespace ModsCommon.Utilities
             else
                 return Mathf.Pow((value + 0.055f) / 1.055f, 2.4f);
         }
+
+        public static Color32 Overlap(this Color32 a, Color32 b) => Overlap((Color)a, (Color)b);
+        public static Color Overlap(this Color a, Color b)
+        {
+            a.r = Mathf.Clamp01(a.r * a.a + b.r * b.a);
+            a.g = Mathf.Clamp01(a.g * a.a + b.g * b.a);
+            a.b = Mathf.Clamp01(a.b * a.a + b.b * b.a);
+            a.a = 1f;
+
+            return a;
+        }
     }
 }

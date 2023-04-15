@@ -17,7 +17,7 @@ namespace ModsCommon.UI
             clipChildren = true;
             textScale = 0.8f;
             TextHorizontalAlignment = UIHorizontalAlignment.Left;
-            ForegroundSpriteMode = SpriteMode.Fill;
+            IconMode = SpriteMode.Fill;
         }
 
         protected override void WhilePopupClosing()
@@ -28,8 +28,8 @@ namespace ModsCommon.UI
 
         public void SetIcon(UITextureAtlas atlas, string sprite)
         {
-            FgAtlas = atlas ?? TextureHelper.InGameAtlas;
-            FgSprites = sprite;
+            IconAtlas = atlas ?? TextureHelper.InGameAtlas;
+            IconSprites = sprite;
         }
 
         public void SetSize(int buttonSize, int iconSize)

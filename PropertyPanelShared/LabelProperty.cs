@@ -7,6 +7,8 @@ namespace ModsCommon.UI
     public class LabelProperty : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
         private CustomUILabel Label { get; set; }
         protected virtual Color32 DefaultColor { get; } = Color.white;
         protected virtual float DefaultTextScale { get; } = 0.7f;

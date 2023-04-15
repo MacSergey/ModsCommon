@@ -145,16 +145,16 @@ namespace ModsCommon.Utilities
                 Resolved.Atlas = CommonTextures.Atlas;
                 Resolved.BgSprites = CommonTextures.PanelBig;
                 Resolved.BgColors = ComponentStyle.WellColor;
-                Resolved.ForegroundSpriteMode = SpriteMode.Scale;
-                Resolved.FgSprites = CommonTextures.Success;
-                Resolved.FgColors = ComponentStyle.DarkPrimaryColor100;
+                Resolved.IconMode = SpriteMode.Scale;
+                Resolved.IconSprites = CommonTextures.Success;
+                Resolved.IconColors = ComponentStyle.DarkPrimaryColor100;
                 Resolved.AutoSize = AutoSize.None;
                 Resolved.size = new Vector2(150f, 30f);
                 Resolved.HorizontalAlignment = UIHorizontalAlignment.Left;
                 Resolved.TextHorizontalAlignment = UIHorizontalAlignment.Center;
                 Resolved.TextVerticalAlignment = UIVerticalAlignment.Middle;
                 Resolved.TextPadding = new RectOffset(20, 0, 3, 0);
-                Resolved.SpritePadding = new RectOffset(2, 0, 0, 0);
+                Resolved.IconPadding = new RectOffset(2, 0, 0, 0);
 
                 StateChanged();
             });

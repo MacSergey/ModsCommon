@@ -9,9 +9,11 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class ColorPickerPopup : CustomUIPanel, IReusable
+    public class ColorPickerPopup : CustomUIPanel, IReusable, IPopup
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
+
 
         public event Action<Color32> OnSelectedColorChanged;
 
@@ -43,23 +45,23 @@ namespace ModsCommon.UI
             {
                 RField.BgColors = value.TextField.BgColors;
                 RField.textColor = value.TextField.TextColors.normal;
-                RField.selectionBackgroundColor = value.TextField.SelectionColor;
+                RField.SelBgColor = value.TextField.SelectionColor;
 
                 GField.BgColors = value.TextField.BgColors;
                 GField.textColor = value.TextField.TextColors.normal;
-                GField.selectionBackgroundColor = value.TextField.SelectionColor;
+                GField.SelBgColor = value.TextField.SelectionColor;
 
                 BField.BgColors = value.TextField.BgColors;
                 BField.textColor = value.TextField.TextColors.normal;
-                BField.selectionBackgroundColor = value.TextField.SelectionColor;
+                BField.SelBgColor = value.TextField.SelectionColor;
 
                 AField.BgColors = value.TextField.BgColors;
                 AField.textColor = value.TextField.TextColors.normal;
-                AField.selectionBackgroundColor = value.TextField.SelectionColor;
+                AField.SelBgColor = value.TextField.SelectionColor;
 
                 HEXField.BgColors = value.TextField.BgColors;
                 HEXField.textColor = value.TextField.TextColors.normal;
-                HEXField.selectionBackgroundColor = value.TextField.SelectionColor;
+                HEXField.SelBgColor = value.TextField.SelectionColor;
             }
         }
 
@@ -141,7 +143,7 @@ namespace ModsCommon.UI
                 HSBIndicator.BgSprites = CommonTextures.Circle;
                 HSBIndicator.FgSprites = CommonTextures.Circle;
                 HSBIndicator.size = new Vector2(16f, 16f);
-                HSBIndicator.SpritePadding = new RectOffset(2, 2, 2, 2);
+                HSBIndicator.ForegroundPadding = new RectOffset(2, 2, 2, 2);
 
                 HueField = pickerPanel.AddUIComponent<CustomUITextureSprite>();
                 HueField.name = nameof(HueField);
@@ -175,7 +177,7 @@ namespace ModsCommon.UI
                 HueIndicator.BgSprites = CommonTextures.Circle;
                 HueIndicator.FgSprites = CommonTextures.Circle;
                 HueIndicator.size = new Vector2(16f, 16f);
-                HueIndicator.SpritePadding = new RectOffset(2, 2, 2, 2);
+                HueIndicator.ForegroundPadding = new RectOffset(2, 2, 2, 2);
                 HueIndicator.relativePosition = HueSlider.ThumbPosition;
 
 
@@ -214,7 +216,7 @@ namespace ModsCommon.UI
                 OpacityIndicator.BgSprites = CommonTextures.Circle;
                 OpacityIndicator.FgSprites = CommonTextures.Circle;
                 OpacityIndicator.size = new Vector2(16f, 16f);
-                OpacityIndicator.SpritePadding = new RectOffset(2, 2, 2, 2);
+                OpacityIndicator.ForegroundPadding = new RectOffset(2, 2, 2, 2);
                 OpacityIndicator.relativePosition = OpacitySlider.ThumbPosition;
             });
 
@@ -270,8 +272,7 @@ namespace ModsCommon.UI
                 field = panel.AddUIComponent<FieldType>();
                 field.SetDefaultStyle();
                 field.OnValueChanged += onChanged;
-                field.eventGotFocus += FieldGotFocus;
-                field.eventLostFocus += FieldLostFocus;
+                field.ActionOnUnfocus = CustomUITextField.OnUnfocus.FocusRoot;
 
                 var label = panel.AddUIComponent<CustomUILabel>();
                 label.text = name;
@@ -282,15 +283,6 @@ namespace ModsCommon.UI
             });
 
             return field;
-        }
-        private void FieldGotFocus(UIComponent component, UIFocusEventParameter eventParam)
-        {
-            AutoClose = false;
-        }
-        private void FieldLostFocus(UIComponent component, UIFocusEventParameter eventParam)
-        {
-            AutoClose = true; 
-            Focus();
         }
         private void SetField(ByteUITextField field)
         {
@@ -486,9 +478,22 @@ namespace ModsCommon.UI
         private void SetIndicators(Color color)
         {
             color.a = 255;
+
+
             HSBIndicator.FgColors = color;
             HueIndicator.FgColors = HueColor;
             OpacityIndicator.FgColors = color;
+
+            if(Color.white.GetContrast(color) >= 4.5)
+            {
+                HSBIndicator.BgColors = Color.white;
+                OpacityIndicator.BgColors = Color.white;
+            }
+            else
+            {
+                HSBIndicator.BgColors = Color.black;
+                OpacityIndicator.BgColors = Color.black;
+            }
         }
         private void SetRGBValue(Color32 color)
         {

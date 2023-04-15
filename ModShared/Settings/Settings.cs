@@ -131,6 +131,7 @@ namespace ModsCommon.Settings
             var size = new Vector2(MainPanel.width, MainPanel.height - (TabStrip.isVisible ? MainPanel.autoLayoutPadding.vertical + TabStrip.height : 0f));
             panel.minimumSize = size;
             panel.maximumSize = size;
+            panel.size = size;
         }
 
         private void CreateTabs()
@@ -154,10 +155,11 @@ namespace ModsCommon.Settings
             TabStrip.AddTab(label, 1.25f);
 
             var tabPanel = MainPanel.AddUIComponent<CustomUIScrollablePanel>();
+            tabPanel.name = name;
             tabPanel.ScrollOrientation = UIOrientation.Vertical;
             tabPanel.AutoLayout = AutoLayout.Vertical;
             tabPanel.AutoLayoutSpace = 25;
-            tabPanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
+            tabPanel.AutoChildrenVertically = AutoLayoutChildren.None;
             tabPanel.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
             tabPanel.Padding = new RectOffset(15, 15, 15, 15);
             SetTabSize(tabPanel);

@@ -170,6 +170,7 @@ namespace ModsCommon.UI
     public abstract class EditorPropertyPanel : BaseEditorPanel, IReusable
     {
         bool IReusable.InCache { get; set; }
+        Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
         private CustomUILabel LabelItem { get; set; }
         protected CustomUIPanel Content { get; set; }
