@@ -118,46 +118,46 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
-    <value>Обнаружены конфликтующие моды.</value>
+    <value>Виявлені несумісні моди.</value>
   </data>
   <data name="Dependency_Disable" xml:space="preserve">
-    <value>Отключить</value>
+    <value>Вимкнути</value>
   </data>
   <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>Отключить {0}</value>
+    <value>Вимкнути {0}</value>
   </data>
   <data name="Dependency_Enable" xml:space="preserve">
-    <value>Включить</value>
+    <value>Увімкнути</value>
   </data>
   <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>Включить {0}</value>
+    <value>Увімкнути {0}</value>
   </data>
   <data name="Dependency_Get" xml:space="preserve">
-    <value>Получить</value>
+    <value>Отримати</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>Обнаружены недостающие зависимости.</value>
+    <value>Знайдено відсутні залежності.</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
-    <value>Обнаружены недостающие зависимости и конфликтующие моды.</value>
+    <value>Виявлено відсутні залежності та конфліктуючі модифікації.</value>
   </data>
   <data name="Dependency_NeedFix" xml:space="preserve">
-    <value>Для продолжения использования {0} необходимо исправить эти проблемы, иначе мод будет отключен.</value>
+    <value>Аби продовжити використання {0} потрібно виправити ці проблеми, інакше мод буде вимкнено.</value>
   </data>
   <data name="Dependency_NoIssues" xml:space="preserve">
-    <value>Все проблемы исправлены, {0} может быть включен.</value>
+    <value>Всі проблеми виправлено, {0} можна увімкнути.</value>
   </data>
   <data name="Dependency_Remove" xml:space="preserve">
-    <value>Удалить</value>
+    <value>Видалити</value>
   </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>Подписаться</value>
+    <value>Підписатися</value>
   </data>
   <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>Отписаться</value>
+    <value>Відписатися</value>
   </data>
   <data name="FieldPanel_ScrollWheel" xml:space="preserve">
-    <value>Крутите колесико для изменения
+    <value>Прокрутіть колесико для зміни
 Shift X10, Ctrl X0.1</value>
   </data>
   <data name="Key_Alt" xml:space="preserve">
@@ -176,295 +176,294 @@ Shift X10, Ctrl X0.1</value>
     <value>Tab</value>
   </data>
   <data name="ListPanel_ScrollWheel" xml:space="preserve">
-    <value>Крутите колесико для изменения</value>
+    <value>Прокрутіть колесико для зміни</value>
   </data>
   <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Скасувати</value>
   </data>
   <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>Больше не показывать</value>
+    <value>Не показувати знову</value>
   </data>
   <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>Подробнее</value>
+    <value>Детальніше</value>
   </data>
   <data name="MessageBox_No" xml:space="preserve">
-    <value>Нет</value>
+    <value>Ні</value>
   </data>
   <data name="MessageBox_OK" xml:space="preserve">
-    <value>ОК</value>
+    <value>Ок</value>
   </data>
   <data name="MessageBox_Yes" xml:space="preserve">
-    <value>Да</value>
+    <value>Так</value>
   </data>
   <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>Я согласен</value>
+    <value>Я погоджуюся</value>
   </data>
   <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>Предупреждение о BETA версии</value>
+    <value>Попередження про версію BETA</value>
   </data>
   <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>Получить стабильную</value>
+    <value>Використовувати стабільну версію</value>
   </data>
   <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>Вы используете BETA версию {0}. Она предназначена для тестирования новых функций и может содержать ошибки. Если вы подписались по ошибке, то перейдите на стабильную версию.</value>
+    <value>Ви використовуєте BETA версію {0}. Вона створена для тестування нових можливостей і може містити помилки. Якщо ви підписані на неї помилково, то перейдіть до стабільної версії.</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>Это BETA версия, стабильная работа и отсутствие ошибок не гарантировано!</value>
+    <value>Це версія BETA, можуть виникнути помилки і стабільність не гарантована!</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
-    <value>Linux версия Cities Skylines не имеет всех необходимых библиотек для корректной работы мода. Вы должны установить пакет "Mono Develop" в вашу систему. Если все работает без вылетов, просто проигнорируйте это сообщение.</value>
+    <value>Linux-версія Cities Skylines не має всіх необхідних бібліотек для коректної роботи мода. Вам потрібно встановити пакет "Mono Develop" на вашу систему. Якщо все працює без перебоїв, просто проігноруйте це повідомлення.</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>Мод загрузился с ошибками.
-Не рекомендуется использовать мод в таком состояние, это может привести к непредсказуемым результатам.
-Перезагрузите игру.</value>
+    <value>Мод завантажено з помилками.
+Не рекомендується використовувати мод у такому стані, оскільки це може призвести до непередбачуваної роботи.
+Перезапустіть гру.</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>Язык игры</value>
+    <value>Мова гри</value>
   </data>
   <data name="Mod_Locale_cs-CZ" xml:space="preserve">
-    <value>Чешский</value>
+    <value>Чеська</value>
   </data>
   <data name="Mod_Locale_da-DK" xml:space="preserve">
-    <value>Датский</value>
+    <value>Датська</value>
   </data>
   <data name="Mod_Locale_de-DE" xml:space="preserve">
-    <value>Немецкий</value>
+    <value>Німецька</value>
   </data>
   <data name="Mod_Locale_en-US" xml:space="preserve">
-    <value>Английский США</value>
+    <value>Англійська (США)</value>
   </data>
   <data name="Mod_Locale_en-GB" xml:space="preserve">
-    <value>Английский Великобритания</value>
+    <value>Англійська (Велика Британія)</value>
   </data>
   <data name="Mod_Locale_es-ES" xml:space="preserve">
-    <value>Испанский</value>
+    <value>Іспанська</value>
   </data>
   <data name="Mod_Locale_fi-FI" xml:space="preserve">
-    <value>Финский</value>
+    <value>Фінська</value>
   </data>
   <data name="Mod_Locale_fr-FR" xml:space="preserve">
-    <value>Французский</value>
+    <value>Французька</value>
   </data>
   <data name="Mod_Locale_hu-HU" xml:space="preserve">
-    <value>Венгерский</value>
+    <value>Угорська</value>
   </data>
   <data name="Mod_Locale_id-ID" xml:space="preserve">
-    <value>Индонезийский</value>
+    <value>Індонезійська</value>
   </data>
   <data name="Mod_Locale_it-IT" xml:space="preserve">
-    <value>Итальянский</value>
+    <value>Італійська</value>
   </data>
   <data name="Mod_Locale_ja-JP" xml:space="preserve">
-    <value>Японский</value>
+    <value>Японська</value>
   </data>
   <data name="Mod_Locale_ko-KR" xml:space="preserve">
-    <value>Корейский</value>
+    <value>Корейська</value>
   </data>
   <data name="Mod_Locale_ms-MY" xml:space="preserve">
-    <value>Малайский</value>
+    <value>Малайзійська</value>
     <comment>Mod_Locale_ms
 </comment>
   </data>
   <data name="Mod_Locale_nl-NL" xml:space="preserve">
-    <value>Голландский</value>
+    <value>Голландська</value>
   </data>
   <data name="Mod_Locale_pl-PL" xml:space="preserve">
-    <value>Польский</value>
+    <value>Польська</value>
   </data>
   <data name="Mod_Locale_pt-PT" xml:space="preserve">
-    <value>Португальский</value>
+    <value>Португальська</value>
   </data>
   <data name="Mod_Locale_ro-RO" xml:space="preserve">
-    <value>Румынский</value>
+    <value>Румунська</value>
   </data>
   <data name="Mod_Locale_ru-RU" xml:space="preserve">
-    <value>Русский</value>
+    <value>Московська</value>
   </data>
   <data name="Mod_Locale_tr-TR" xml:space="preserve">
-    <value>Турецкий</value>
+    <value>Турецька</value>
   </data>
   <data name="Mod_Locale_zh-CN" xml:space="preserve">
-    <value>Китайский упрощенный</value>
+    <value>Китайська спрощена</value>
   </data>
   <data name="Mod_Locale_zh-TW" xml:space="preserve">
-    <value>Китайский традиционный</value>
+    <value>Китайська традиційна</value>
   </data>
   <data name="Mod_Status" xml:space="preserve">
-    <value>Состояние: {0}</value>
+    <value>Стан: {0}</value>
   </data>
   <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
-    <value>Устаревшая версия игры</value>
+    <value>Застаріла версія гри</value>
   </data>
   <data name="Mod_Status_LoadingError" xml:space="preserve">
-    <value>Ошибка загрузки</value>
+    <value>Помилка завантаження</value>
   </data>
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
-    <value>Устаревшая версия мода</value>
+    <value>Версія моду застаріла</value>
   </data>
   <data name="Mod_Status_OperateNormally" xml:space="preserve">
-    <value>Работает нормально</value>
+    <value>Працює в штатному режимі</value>
   </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
-    <value>Неизвестно</value>
+    <value>Невідомо</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
-    <value>Поддержка</value>
+    <value>Підтримка</value>
   </data>
   <data name="Mod_Version" xml:space="preserve">
-    <value>Версия: {0}</value>
+    <value>Версія {0}</value>
   </data>
   <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
-    <value>Устаревшая версия игры.
+    <value>Версія гри застаріла.
 
-Мод требует версию: {0}
-Текущая версия игры: {1}
+Мод потребує версії: {0}
+Поточна версія гри: {1}
 
-Обновите игру до последней версии, иначе корректная работа мода не гарантируется и может привести к непредсказуемым ошибкам.</value>
+Оновіть гру до останньої версії, в іншому випадку правильна робота моду не гарантується і може привести до непередбачуваних помилок.</value>
   </data>
   <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
-    <value>Устаревшая версия мода.
+    <value>Модифікація застаріла.
 
-Мод был создан для версии: {0}
-Текущая версия игры: {1}
+Мод був створений для версії: {0}
+Поточна версія гри: {1}
 
-Обновите мод до последней версии, иначе корректная работа мода не гарантируется и может привести к непредсказуемым ошибкам.</value>
+Оновіть мод до останньої версії, в іншому випадку правильна робота моду не гарантується і може привести до непередбачуваних помилок.</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>Что нового в {0}</value>
+    <value>Що нового в {0}</value>
   </data>
   
   <data name="Mod_WhatsNewVersion" xml:space="preserve">
-    <value>Версия {0}</value>
+    <value>Версія {0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>Дополнительно</value>
+    <value>Додатково</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Скасувати</value>
   </data>
   <data name="Settings_ChangeLog" xml:space="preserve">
-    <value>Список изменений</value>
+    <value>Журнал змін</value>
   </data>
   <data name="Settings_ForLinuxUsers" xml:space="preserve">
-    <value>Для пользователей Linux</value>
+    <value>Для користувачів Linux</value>
   </data>
   <data name="Settings_General" xml:space="preserve">
-    <value>Основные</value>
+    <value>Загальний</value>
   </data>
   <data name="Settings_GeneralTab" xml:space="preserve">
-    <value>Основные</value>
+    <value>Головна</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value>Язык</value>
+    <value>Мова</value>
   </data>
   <data name="Settings_Notifications" xml:space="preserve">
-    <value>Уведомления</value>
+    <value>Сповіщення</value>
   </data>
   <data name="Settings_PressAnyKey" xml:space="preserve">
-    <value>Нажмите любую клавишу</value>
+    <value>Натисніть будь-яку клавішу</value>
   </data>
   <data name="Settings_ShortcutActivateTool" xml:space="preserve">
-    <value>Активация инструмента</value>
+    <value>Активувати інструмент</value>
   </data>
   <data name="Settings_Shortcuts" xml:space="preserve">
-    <value>Горячие клавиши</value>
+    <value>Гарячі клавіші</value>
   </data>
   <data name="Settings_ShortcutSelectionStepOver" xml:space="preserve">
-    <value>Пропустить выделенное</value>
+    <value>Пропустити виділене</value>
   </data>
   <data name="Settings_ShowOnlyMajor" xml:space="preserve">
-    <value>Уведомления только о важных обновлениях</value>
+    <value>Сповіщення лише про важливі оновлення</value>
   </data>
   <data name="Settings_ShowTooltips" xml:space="preserve">
-    <value>Показывать подсказки</value>
+    <value>Показувати підказки</value>
   </data>
   <data name="Settings_ShowWhatsNew" xml:space="preserve">
-    <value>Показывать что нового</value>
+    <value>Показувати що нового</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>Решение вылетов на Linux</value>
+    <value>Вирішення вилетів на Linux</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
-    <value>Поддержка</value>
+    <value>Підтримка</value>
   </data>
   <data name="Settings_ToolButton" xml:space="preserve">
-    <value>Кнопка инструмента</value>
+    <value>Кнопка інструменту</value>
   </data>
   <data name="Settings_ToolButtonBoth" xml:space="preserve">
-    <value>Показывать в обоих местах</value>
+    <value>Показувати в обох місцях</value>
   </data>
   <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
-    <value>Показывать только в панели инструментов</value>
+    <value>Показувати лише в панелі інструментів</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
-    <value>Показывать только в UnifiedUI</value>
+    <value>Показати лише в UnifiedUI</value>
   </data>
   <data name="Settings_TranslationDescription" xml:space="preserve">
-    <value>Вы можете помочь улучшить перевод мода
-или перевести мод на свой язык</value>
+    <value>Ви можете допомогти поліпшити переклад моду
+або перекласти модифікацію на вашу мову</value>
   </data>
   <data name="Settings_TranslationImprove" xml:space="preserve">
-    <value>Улучшить перевод</value>
+    <value>Покращити переклад</value>
   </data>
   <data name="Settings_TranslationNew" xml:space="preserve">
-    <value>Добавить новый язык</value>
+    <value>Додати нову мову</value>
   </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
-    <value>Устранение неполадок</value>
+    <value>Усунення проблем</value>
   </data>
   <data name="Setting_Donate" xml:space="preserve">
-    <value>Если вам нравится {0}, вы можете поддержать автора</value>
+    <value>Якщо вам подобається {0}, ви можете підтримати автора</value>
   </data>
   <data name="Tool_InfoSelectionStepOver" xml:space="preserve">
-    <value>Нажмите {0}
-чтобы пропустить выделенное</value>
+    <value>Натисніть {0} щоб пропустити виділене</value>
   </data>
   <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>ИСПРАВЛЕНО</value>
+    <value>ВИПРАВЛЕНО</value>
   </data>
   <data name="WhatsNew_NEW" xml:space="preserve">
-    <value>НОВОЕ</value>
+    <value>НОВИЙ</value>
   </data>
   <data name="WhatsNew_REMOVED" xml:space="preserve">
-    <value>УДАЛЕНО</value>
+    <value>ВИДАЛЕНО</value>
   </data>
   <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>ВОЗВРАЩЕНО</value>
+    <value>ПОВЕРНЕНО</value>
   </data>
   <data name="WhatsNew_TRANSLATION" xml:space="preserve">
-    <value>ПЕРЕВОД</value>
+    <value>ПЕРЕКЛАД</value>
   </data>
   <data name="WhatsNew_UPDATED" xml:space="preserve">
-    <value>ОБНОВЛЕНО</value>
+    <value>ОНОВЛЕНО</value>
   </data>
   <data name="WhatsNew_WARNING" xml:space="preserve">
-    <value>ПРЕДУПРЕЖДЕНИЕ</value>
+    <value>УВАГА</value>
   </data>
   <data name="Mod_Locale_pt-BR" xml:space="preserve">
-    <value>Бразильский</value>
+    <value>Бразильська</value>
     <comment>Mod_Locale_pt-br</comment>
   </data>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
-    <value>Не показывать снова</value>
+    <value>Не показувати знову</value>
   </data>
   <data name="Dependency_Disabled" xml:space="preserve">
-    <value>Отключено</value>
+    <value>Вимкнено</value>
   </data>
   <data name="Dependency_Enabled" xml:space="preserve">
-    <value>Включено</value>
+    <value>Увімкнено</value>
   </data>
   <data name="Dependency_Installed" xml:space="preserve">
-    <value>Установлено</value>
+    <value>Встановлено</value>
   </data>
   <data name="Dependency_Removed" xml:space="preserve">
-    <value>Удалено</value>
+    <value>Видалено</value>
   </data>
   <data name="Dependency_Subscribed" xml:space="preserve">
-    <value>Подписано</value>
+    <value>Підписано</value>
   </data>
   <data name="Dependency_Unsubscribed" xml:space="preserve">
-    <value>Отписано</value>
+    <value>Відписано</value>
   </data>
   <data name="Key_Backspace" xml:space="preserve">
     <value>Backspace</value>
@@ -473,15 +472,15 @@ Shift X10, Ctrl X0.1</value>
     <value>Esc</value>
   </data>
   <data name="Settings_DiscardShortcut" xml:space="preserve">
-    <value>Нажмите {0} для отмены</value>
+    <value>Натисніть {0}, аби скасувати зміни</value>
   </data>
   <data name="Settings_ResetShortcut" xml:space="preserve">
-    <value>Нажмите {0} для сброса</value>
+    <value>Натисніть {0}, аби скинути прив'язку</value>
   </data>
   <data name="Key_Space" xml:space="preserve">
-    <value>Пробел</value>
+    <value>Space</value>
   </data>
   <data name="Popup_Empty" xml:space="preserve">
-    <value>Список пуст</value>
+    <value>Список порожній</value>
   </data>
 </root>
