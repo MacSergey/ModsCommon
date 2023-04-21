@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Dependency_Conflict" xml:space="preserve">
     <value>Виявлені несумісні моди.</value>
@@ -232,10 +232,10 @@ Shift X10, Ctrl X0.1</value>
     <value>Німецька</value>
   </data>
   <data name="Mod_Locale_en-US" xml:space="preserve">
-    <value>Англійська (США)</value>
+    <value>Англійська США</value>
   </data>
   <data name="Mod_Locale_en-GB" xml:space="preserve">
-    <value>Англійська (Велика Британія)</value>
+    <value>Англійська Велика Британія</value>
   </data>
   <data name="Mod_Locale_es-ES" xml:space="preserve">
     <value>Іспанська</value>
@@ -279,7 +279,7 @@ Shift X10, Ctrl X0.1</value>
     <value>Румунська</value>
   </data>
   <data name="Mod_Locale_ru-RU" xml:space="preserve">
-    <value>Московська</value>
+    <value>Російська</value>
   </data>
   <data name="Mod_Locale_tr-TR" xml:space="preserve">
     <value>Турецька</value>
@@ -483,4 +483,5 @@ Shift X10, Ctrl X0.1</value>
   <data name="Popup_Empty" xml:space="preserve">
     <value>Список порожній</value>
   </data>
+  
 </root>
