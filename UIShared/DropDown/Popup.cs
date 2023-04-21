@@ -143,7 +143,7 @@ namespace ModsCommon.UI
         private bool autoWidth;
         public bool AutoWidth
         {
-            get => autoWidth && VisibleCount == Values.Count;
+            get => autoWidth;
             set
             {
                 if (value != autoWidth)
@@ -293,7 +293,7 @@ namespace ModsCommon.UI
             if (IsLayoutSuspended)
                 return;
 
-            StopLayout();
+            PauseLayout(() => 
             {
                 Content.PauseLayout(RefreshEntities);
 
@@ -301,8 +301,7 @@ namespace ModsCommon.UI
                 ScrollBar.MaxValue = Values.Count - VisibleCount + 1;
                 ScrollBar.Value = StartIndex;
                 ScrollBar.isVisible = ShowScroll;
-            }
-            StartLayout();
+            });
         }
         protected virtual void RefreshEntities()
         {

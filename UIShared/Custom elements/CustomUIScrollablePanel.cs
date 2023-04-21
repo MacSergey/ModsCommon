@@ -609,7 +609,8 @@ namespace ModsCommon.UI
 
             if (horizontally)
             {
-                var itemWidth = width - Padding.horizontal - (AutoChildrenVertically == AutoLayoutChildren.Fit ? 0 : VisibleScrollbarSize);
+                //var itemWidth = width - Padding.horizontal - (AutoChildrenVertically == AutoLayoutChildren.Fit ? 0 : VisibleScrollbarSize);
+                var itemWidth = width - Padding.horizontal - VisibleScrollbarSize;
                 for (int i = 0; i < childCount; i += 1)
                 {
                     var child = m_ChildComponents[i];
@@ -620,7 +621,8 @@ namespace ModsCommon.UI
 
             if(vertically)
             {
-                var itemHeight = height - Padding.vertical - (AutoChildrenVertically == AutoLayoutChildren.Fit ? 0 : VisibleScrollbarSize);
+                //var itemHeight = height - Padding.vertical - (AutoChildrenVertically == AutoLayoutChildren.Fit ? 0 : VisibleScrollbarSize);
+                var itemHeight = height - Padding.vertical - VisibleScrollbarSize;
                 for (int i = 0; i < childCount; i += 1)
                 {
                     var child = m_ChildComponents[i];

@@ -203,6 +203,7 @@ namespace ModsCommon.Utilities
             spriteParams["ro-RO"] = new RectOffset();
             spriteParams["ru-RU"] = new RectOffset();
             spriteParams["tr-TR"] = new RectOffset();
+            spriteParams["uk-UA"] = new RectOffset();
             spriteParams["zh-CN"] = new RectOffset();
             spriteParams["zh-TW"] = new RectOffset();
 

@@ -32,6 +32,7 @@ namespace ModsCommon.UI
         protected override void SetPopupStyle() => Popup.PopupSettingsStyle<Language, LanguageEntity, LanguagePopup>(34f);
         protected override void InitPopup()
         {
+            Popup.MinimumSize = new Vector2(width, 0f);
             Popup.AutoWidth = true;
             base.InitPopup();
         }
@@ -80,14 +81,14 @@ namespace ModsCommon.UI
                 base.SetObject(index, language, selected);
 
                 text = language.label;
-                IconSprites = language.sprite;
+                AllIconSprites = language.sprite;
             }
             public override void DeInit()
             {
                 base.DeInit();
 
                 text = string.Empty;
-                IconSprites = string.Empty;
+                AllIconSprites = string.Empty;
             }
 
             protected override void OnSizeChanged()

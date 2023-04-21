@@ -456,7 +456,7 @@ namespace ModsCommon
 		public static string Settings_ToolButtonOnlyUUI => LocaleManager.GetString("Settings_ToolButtonOnlyUUI", Culture);
 
 		/// <summary>
-		/// You can help improve the mod translation
+		/// You can help to improve the mod translation
 		/// </summary>
 		public static string Settings_TranslationDescription => LocaleManager.GetString("Settings_TranslationDescription", Culture);
 
@@ -589,5 +589,10 @@ namespace ModsCommon
 		/// List is empty
 		/// </summary>
 		public static string Popup_Empty => LocaleManager.GetString("Popup_Empty", Culture);
+
+		/// <summary>
+		/// Ukranian
+		/// </summary>
+		public static string Mod_Locale_uk_UA => LocaleManager.GetString("Mod_Locale_uk-UA", Culture);
 	}
 }

@@ -92,6 +92,7 @@ namespace ModsCommon
                     "ro" => "ro-RO",
                     "ru" => "ru-RU",
                     "tr" => "tr-TR",
+                    "uk" => "uk-UA",
                     "zh" => "zh-CN",
                     _ => locale,
                 };

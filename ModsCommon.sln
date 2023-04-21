@@ -101,6 +101,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSIXLocalizeGenerator", "Lo
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.ms-MY", "LocalizeShared\ms-MY\LocalizeShared.ms-MY.shproj", "{CEAB465B-95B2-4C98-84CA-4F3801F945D3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.uk-UA", "LocalizeShared\uk-UA\LocalizeShared.uk-UA.shproj", "{F42A8D16-C123-4044-A926-1271531F5F9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,6 +181,7 @@ Global
 		{B21AB183-BAEF-4EAF-ACCB-83D6AE5F2CCB} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 		{8ABA0259-A18B-4F71-A67B-91D3728FC749} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 		{CEAB465B-95B2-4C98-84CA-4F3801F945D3} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
+		{F42A8D16-C123-4044-A926-1271531F5F9C} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CEA4CED6-9511-454F-8F3E-E3E48AB0A236}
@@ -223,6 +226,7 @@ Global
 		LocalizeShared\tr-TR\LocalizeShared.tr-TR.projitems*{e4d29a3d-f7c1-41ba-9b83-872271e6cf56}*SharedItemsImports = 13
 		ToolShared\ModsToolShared.projitems*{ea585899-16c8-4ff0-ae8d-078f15a7a126}*SharedItemsImports = 13
 		LocalizeShared\LocalizeShared.projitems*{f135cd5d-4cab-4347-bf44-1c6d0794a19d}*SharedItemsImports = 13
+		LocalizeShared\uk-UA\LocalizeShared.uk-UA.projitems*{f42a8d16-c123-4044-a926-1271531f5f9c}*SharedItemsImports = 13
 		XmlExtension\XmlExtension.projitems*{fada36db-c397-4128-9644-b477c4f50b26}*SharedItemsImports = 13
 		AutoLayoutPanelShared\AutoLayoutPanelShared.projitems*{fc5e6f74-8408-4fd8-a46a-a7f549e30454}*SharedItemsImports = 13
 		LocalizeShared\zh-TW\LocalizeShared.zh-TW.projitems*{fc982331-0698-47f0-bd83-c711bc8db98a}*SharedItemsImports = 13
