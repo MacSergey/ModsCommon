@@ -483,5 +483,7 @@ Shift X10, Ctrl X0.1</value>
   <data name="Popup_Empty" xml:space="preserve">
     <value>Список порожній</value>
   </data>
-  
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>Українська</value>
+  </data>
 </root>

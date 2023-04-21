@@ -136,7 +136,7 @@
     <value>获取</value>
   </data>
   <data name="Dependency_Missing" xml:space="preserve">
-    <value>检测到缺失依赖项。</value>
+    <value>检测到缺少了前置模组。</value>
   </data>
   <data name="Dependency_MissingAndConflict" xml:space="preserve">
     <value>检测到缺失依赖项和模组冲突.</value>
@@ -209,14 +209,14 @@ Shift x10，Ctrl x0.1</value>
     <value>你在使用 {0} BETA版。此版本为测试新功能用，且可能含有BUG。如果是不小心订阅到了此版本，请订阅回稳定版。</value>
   </data>
   <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>这是测试版，可能会出现功能性错误。无法保证稳定运行！</value>
+    <value>这是测试版模组，可能会出现错误。无法保证稳定性！</value>
   </data>
   <data name="Mod_LinuxWarning" xml:space="preserve">
     <value>Linux 版本的都市天际线缺少一些必要的库来使模组正常工作。 您需要将"Mono Develop"包安装到您的系统。如果全部工作正常没有崩溃，请忽略此消息。</value>
   </data>
   <data name="Mod_LoadedWithErrors" xml:space="preserve">
-    <value>模组加载出错。
-不建议此状况下继续使用本模组，否则可能工作异常。
+    <value>模组加载出现错误。
+这种情况下，不建议继续使用本模组，否则可能出现异常问题。
 请重启游戏。</value>
   </data>
   <data name="Mod_LocaleGame" xml:space="preserve">
@@ -297,7 +297,7 @@ Shift x10，Ctrl x0.1</value>
     <value>游戏版本已经过时</value>
   </data>
   <data name="Mod_Status_LoadingError" xml:space="preserve">
-    <value>载入错误</value>
+    <value>加载出错</value>
   </data>
   <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
     <value>模组版本已经过时</value>
@@ -306,7 +306,7 @@ Shift x10，Ctrl x0.1</value>
     <value>正常运行</value>
   </data>
   <data name="Mod_Status_Unknown" xml:space="preserve">
-    <value>未知的</value>
+    <value>未知状态</value>
   </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>支持服务</value>
@@ -338,7 +338,7 @@ Shift x10，Ctrl x0.1</value>
     <value>版本{0}</value>
   </data>
   <data name="Panel_Additional" xml:space="preserve">
-    <value>附加</value>
+    <value>高级选项</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
     <value>取消</value>
@@ -383,7 +383,7 @@ Shift x10，Ctrl x0.1</value>
     <value>显示更新提示框</value>
   </data>
   <data name="Settings_SolveCrashOnLinux" xml:space="preserve">
-    <value>解决Linux崩溃问题</value>
+    <value>解决 Linux 系统上的崩溃问题</value>
   </data>
   <data name="Settings_SupportTab" xml:space="preserve">
     <value>支持服务</value>
@@ -395,7 +395,7 @@ Shift x10，Ctrl x0.1</value>
     <value>两处同时显示</value>
   </data>
   <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
-    <value>只在工具栏中显示</value>
+    <value>仅在工具栏中显示</value>
   </data>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>仅在 UnifiedUI 中显示</value>
@@ -421,16 +421,16 @@ Shift x10，Ctrl x0.1</value>
 来选择其它被遮挡到的节点</value>
   </data>
   <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>修复:</value>
+    <value>修复</value>
   </data>
   <data name="WhatsNew_NEW" xml:space="preserve">
     <value>新增</value>
   </data>
   <data name="WhatsNew_REMOVED" xml:space="preserve">
-    <value>已删除</value>
+    <value>移除</value>
   </data>
   <data name="WhatsNew_REVERTED" xml:space="preserve">
-    <value>已撤销</value>
+    <value>恢复</value>
   </data>
   <data name="WhatsNew_TRANSLATION" xml:space="preserve">
     <value>翻译</value>
@@ -484,5 +484,7 @@ Shift x10，Ctrl x0.1</value>
   <data name="Popup_Empty" xml:space="preserve">
     <value>列表是空的</value>
   </data>
-  
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>乌克兰语</value>
+  </data>
 </root>

@@ -486,5 +486,7 @@ parmi les nœuds proches</value>
   <data name="Popup_Empty" xml:space="preserve">
     <value>La liste est vide</value>
   </data>
-  
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>Ukrainien</value>
+  </data>
 </root>

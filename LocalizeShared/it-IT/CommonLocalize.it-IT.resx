@@ -484,5 +484,7 @@ selezionare il passaggio successivo</value>
   <data name="Popup_Empty" xml:space="preserve">
     <value>L'elenco è vuoto</value>
   </data>
-  
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>Ucraino</value>
+  </data>
 </root>

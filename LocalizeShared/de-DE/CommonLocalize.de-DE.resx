@@ -486,5 +486,7 @@ helfen oder die Mod in deine Sprache übersetzen</value>
   <data name="Popup_Empty" xml:space="preserve">
     <value>Liste ist leer</value>
   </data>
-  
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>Ukrainisch</value>
+  </data>
 </root>

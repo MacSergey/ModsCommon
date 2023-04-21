@@ -487,5 +487,7 @@ MODを最新バージョンに更新してください！ 更新をしないとM
   <data name="Popup_Empty" xml:space="preserve">
     <value>リストは空です</value>
   </data>
-  
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>ウクライナ語</value>
+  </data>
 </root>
