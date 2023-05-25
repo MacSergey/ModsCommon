@@ -490,5 +490,7 @@ MODを最新バージョンに更新してください！ 更新をしないとM
   <data name="Mod_Locale_uk-UA" xml:space="preserve">
     <value>ウクライナ語</value>
   </data>
-  
+  <data name="Mod_Locale_th-TH" xml:space="preserve">
+    <value>タイ語</value>
+  </data>
 </root>

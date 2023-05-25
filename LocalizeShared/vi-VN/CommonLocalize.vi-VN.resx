@@ -117,88 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Dependency_Conflict" xml:space="preserve">
-    <value>พบม็อดมีความขัดแย้ง</value>
-  </data>
-  <data name="Dependency_Disable" xml:space="preserve">
-    <value>ปิดใช้งาน</value>
-  </data>
-  <data name="Dependency_DisableMod" xml:space="preserve">
-    <value>ปิดใช้งาน {0}</value>
-  </data>
-  <data name="Dependency_Enable" xml:space="preserve">
-    <value>เปิดใช้งาน</value>
-  </data>
-  <data name="Dependency_EnableMod" xml:space="preserve">
-    <value>เปิดใช้งาน {0}</value>
-  </data>
   
   
   
   
   
   
-  <data name="Dependency_Subscribe" xml:space="preserve">
-    <value>สมัครสมาชิก</value>
-  </data>
-  <data name="Dependency_Unsubscribe" xml:space="preserve">
-    <value>ยกเลิกการสมัครสมาขิก</value>
-  </data>
   
-  <data name="Key_Alt" xml:space="preserve">
-    <value>Alt</value>
-  </data>
-  <data name="Key_Control" xml:space="preserve">
-    <value>Ctrl</value>
-  </data>
-  <data name="Key_Enter" xml:space="preserve">
-    <value>Enter</value>
-  </data>
-  <data name="Key_Shift" xml:space="preserve">
-    <value>Shift</value>
-  </data>
-  <data name="Key_Tab" xml:space="preserve">
-    <value>Tab</value>
-  </data>
   
-  <data name="MessageBox_Cancel" xml:space="preserve">
-    <value>ยกเลิก</value>
-  </data>
-  <data name="MessageBox_DontShowAgain" xml:space="preserve">
-    <value>ไม่ต้องแสดงอีก</value>
-  </data>
-  <data name="MessageBox_MoreInfo" xml:space="preserve">
-    <value>ข้อมูลเพิ่มเติม</value>
-  </data>
-  <data name="MessageBox_No" xml:space="preserve">
-    <value>ไม่</value>
-  </data>
-  <data name="MessageBox_OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="MessageBox_Yes" xml:space="preserve">
-    <value>ใช่</value>
-  </data>
-  <data name="Mod_BetaWarningAgree" xml:space="preserve">
-    <value>ฉันยอมรับ</value>
-  </data>
-  <data name="Mod_BetaWarningCaption" xml:space="preserve">
-    <value>คำเตือน: เวอร์ชัน BETA </value>
-  </data>
-  <data name="Mod_BetaWarningGetStable" xml:space="preserve">
-    <value>รับเวอร์ชันที่เสถียร</value>
-  </data>
-  <data name="Mod_BetaWarningMessage" xml:space="preserve">
-    <value>คุณกำลังใช้งานเวอร์ชัน BETA ของ {0} ม็อดนี้มีไว้สำหรับทดสอบฟีเจอร์ใหม่และอาจพบว่ามีข้อผิดพลาด หากคุณไม่ได้ตั้งใจที่จะกดสมัครสมาชิก ให้เปลี่ยนไปใช้เวอร์ชั่นที่เสถียรกว่า</value>
-  </data>
-  <data name="Mod_DescriptionBeta" xml:space="preserve">
-    <value>ม็อดนี้เป็นเวอร์ชัน BETA อาจมีข้อผิดพลาดเกิดขึ้น และรับประกันไม่ได้ว่าการทำงานจะเสถียร</value>
-  </data>
   
   
-  <data name="Mod_LocaleGame" xml:space="preserve">
-    <value>ภาษาของเกม</value>
-  </data>
   
   
   
@@ -261,63 +189,51 @@
   
   
   
-  <data name="WhatsNew_FIXED" xml:space="preserve">
-    <value>แก้ไข</value>
-  </data>
-  <data name="WhatsNew_NEW" xml:space="preserve">
-    <value>ใหม่</value>
-  </data>
-  <data name="WhatsNew_REMOVED" xml:space="preserve">
-    <value>ลบออก</value>
-  </data>
   
-  <data name="WhatsNew_TRANSLATION" xml:space="preserve">
-    <value>แปลภาษา</value>
-  </data>
-  <data name="WhatsNew_UPDATED" xml:space="preserve">
-    <value>อัปเดต</value>
-  </data>
-  <data name="WhatsNew_WARNING" xml:space="preserve">
-    <value>คำเตือน</value>
-  </data>
   
-  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
-    <value>ไม่ต้องแสดงอีก</value>
-  </data>
-  <data name="Dependency_Disabled" xml:space="preserve">
-    <value>ปิดใช้งานแล้ว</value>
-  </data>
-  <data name="Dependency_Enabled" xml:space="preserve">
-    <value>เปิดใช้งานแล้ว</value>
-  </data>
-  <data name="Dependency_Installed" xml:space="preserve">
-    <value>ติดตั้งแล้ว</value>
-  </data>
-  <data name="Dependency_Removed" xml:space="preserve">
-    <value>ลบแล้ว</value>
-  </data>
-  <data name="Dependency_Subscribed" xml:space="preserve">
-    <value>สมัครสมาชิก</value>
-  </data>
-  <data name="Dependency_Unsubscribed" xml:space="preserve">
-    <value>ยกเลิกการสมัครสมาชิก</value>
-  </data>
-  <data name="Key_Backspace" xml:space="preserve">
-    <value>Backspace</value>
-  </data>
-  <data name="Key_Esc" xml:space="preserve">
-    <value>Esc</value>
-  </data>
   
   
-  <data name="Key_Space" xml:space="preserve">
-    <value>Space</value>
-  </data>
-  <data name="Popup_Empty" xml:space="preserve">
-    <value>รายการว่างเปล่า</value>
-  </data>
   
-  <data name="Mod_Locale_th-TH" xml:space="preserve">
-    <value>ภาษาไทย</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

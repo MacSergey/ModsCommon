@@ -489,5 +489,7 @@ helfen oder die Mod in deine Sprache übersetzen</value>
   <data name="Mod_Locale_uk-UA" xml:space="preserve">
     <value>Ukrainisch</value>
   </data>
-  
+  <data name="Mod_Locale_th-TH" xml:space="preserve">
+    <value>Thailändisch</value>
+  </data>
 </root>

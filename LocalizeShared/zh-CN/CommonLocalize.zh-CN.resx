@@ -487,5 +487,7 @@ Shift x10，Ctrl x0.1</value>
   <data name="Mod_Locale_uk-UA" xml:space="preserve">
     <value>乌克兰语</value>
   </data>
-  
+  <data name="Mod_Locale_th-TH" xml:space="preserve">
+    <value>泰语</value>
+  </data>
 </root>
