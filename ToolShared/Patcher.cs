@@ -54,12 +54,16 @@ namespace ModsCommon
             where TypeMod : ICustomMod
             where TypeButton : CustomUIButton
         {
-            if (__result == null || !allow.Any(i => i == templateName) || __result.component.Find<TypeButton>(typeof(TypeButton).Name) != null)
+            if (__result == null || !allow.Any(i => i == templateName))
                 return;
 
-            SingletonMod<TypeMod>.Logger.Debug($"Create button on {templateName}");
-            __result.component.AddUIComponent<TypeButton>();
-            SingletonMod<TypeMod>.Logger.Debug($"Button created");
+            if (__result.component.parent.Find<TypeButton>(typeof(TypeButton).Name) is not TypeButton button)
+            {
+                button = __result.component.parent.AddUIComponent<TypeButton>();
+                button.isVisible = false;
+            }
+
+            __result.component.eventVisibilityChanged += (_, visible) => button.isVisible = visible;
         }
         public static string RoadsOptionPanel => nameof(RoadsOptionPanel);
         public static string PathsOptionPanel => nameof(PathsOptionPanel);
