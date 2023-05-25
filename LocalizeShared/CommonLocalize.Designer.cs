@@ -591,8 +591,13 @@ namespace ModsCommon
 		public static string Popup_Empty => LocaleManager.GetString("Popup_Empty", Culture);
 
 		/// <summary>
-		/// Ukranian
+		/// Ukrainian
 		/// </summary>
 		public static string Mod_Locale_uk_UA => LocaleManager.GetString("Mod_Locale_uk-UA", Culture);
+
+		/// <summary>
+		/// Thai
+		/// </summary>
+		public static string Mod_Locale_th_TH => LocaleManager.GetString("Mod_Locale_th-TH", Culture);
 	}
 }

@@ -103,6 +103,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.ms-MY", "Loc
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.uk-UA", "LocalizeShared\uk-UA\LocalizeShared.uk-UA.shproj", "{F42A8D16-C123-4044-A926-1271531F5F9C}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.pt-BR", "LocalizeShared\pt-BR\LocalizeShared.pt-BR.shproj", "{31BDF9F3-9BD1-4137-9829-FFC9E40E9754}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.th-TH", "LocalizeShared\th-TH\LocalizeShared.th-TH.shproj", "{A164195F-58E7-4777-8175-686E601F02AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +186,8 @@ Global
 		{8ABA0259-A18B-4F71-A67B-91D3728FC749} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 		{CEAB465B-95B2-4C98-84CA-4F3801F945D3} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 		{F42A8D16-C123-4044-A926-1271531F5F9C} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
+		{31BDF9F3-9BD1-4137-9829-FFC9E40E9754} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
+		{A164195F-58E7-4777-8175-686E601F02AC} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CEA4CED6-9511-454F-8F3E-E3E48AB0A236}
@@ -199,6 +205,7 @@ Global
 		ModShared\ModsCommonShared.projitems*{24615a21-afa6-42c0-8b7a-4fb3329b056f}*SharedItemsImports = 13
 		DependencyShared\DependencyShared.projitems*{2873738f-aa2c-4c8a-be06-bc59acca56f0}*SharedItemsImports = 13
 		LocalizeShared\pl-PL\LocalizeShared.pl-PL.projitems*{2e10b867-4ad3-4b8c-8d0d-1ea122c0f9bd}*SharedItemsImports = 13
+		LocalizeShared\pt-BR\LocalizeShared.pt-BR.projitems*{31bdf9f3-9bd1-4137-9829-ffc9e40e9754}*SharedItemsImports = 13
 		LocalizeShared\de-DE\LocalizeShared.de-DE.projitems*{46431d69-3160-4004-8e93-7f98e4107ba6}*SharedItemsImports = 13
 		LocalizeShared\cs-CZ\LocalizeShared.cs-CZ.projitems*{6080059f-60ce-47d6-b8c9-11955afb9fde}*SharedItemsImports = 13
 		LocalizeShared\pt-PT\LocalizeShared.pt-PT.projitems*{63601bbf-995f-4843-b4e8-a388652bef2d}*SharedItemsImports = 13
@@ -209,6 +216,7 @@ Global
 		LocalizeShared\LocalizeManager\LocalizeManager.projitems*{8aba0259-a18b-4f71-a67b-91d3728fc749}*SharedItemsImports = 4
 		LocalizeShared\en-GB\LocalizeShared.en-GB.projitems*{92b146ad-f9d5-4c3b-8712-ebc5140a3f20}*SharedItemsImports = 13
 		LocalizeShared\da-DK\LocalizeShared.da-DK.projitems*{934265f0-623e-4667-9d8f-108162ea0422}*SharedItemsImports = 13
+		LocalizeShared\th-TH\LocalizeShared.th-TH.projitems*{a164195f-58e7-4777-8175-686e601f02ac}*SharedItemsImports = 13
 		LocalizeShared\hu-HU\LocalizeShared.hu-HU.projitems*{a1e3c011-4d61-49c6-84ce-1c6f74a96dd3}*SharedItemsImports = 13
 		SimpleMessageBoxShared\SimpleMessageBoxShared.projitems*{a3055caa-4807-4c49-973c-7b92610c25c8}*SharedItemsImports = 13
 		LocalizeShared\ro-RO\LocalizeShared.ro-RO.projitems*{a7f303af-c11e-4dd8-a195-6d0d459dee53}*SharedItemsImports = 13
