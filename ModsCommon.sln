@@ -69,8 +69,6 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.ru-RU", "Loc
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LocalizeShared.zh-CN", "LocalizeShared\zh-CN\LocalizeShared.zh-CN.shproj", "{6D76CE46-51A4-4596-8E5B-03261089BEDD}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AutoLayoutPanelShared", "AutoLayoutPanelShared\AutoLayoutPanelShared.shproj", "{FC5E6F74-8408-4FD8-A46A-A7F549E30454}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DependencyShared", "DependencyShared\DependencyShared.shproj", "{2873738F-AA2C-4C8A-BE06-BC59ACCA56F0}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SimpleMessageBoxShared", "SimpleMessageBoxShared\SimpleMessageBoxShared.shproj", "{A3055CAA-4807-4C49-973C-7B92610C25C8}"
@@ -169,7 +167,6 @@ Global
 		{63601BBF-995F-4843-B4E8-A388652BEF2D} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 		{1953B648-7E3A-45F1-924D-E490FE6236C7} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
 		{6D76CE46-51A4-4596-8E5B-03261089BEDD} = {DE5EB745-EBB1-4E31-811B-15BD87BA44A5}
-		{FC5E6F74-8408-4FD8-A46A-A7F549E30454} = {66143D83-D452-41E9-BC9C-B87C5538054D}
 		{2873738F-AA2C-4C8A-BE06-BC59ACCA56F0} = {00FDC882-0842-4093-8DD4-AA83BFACC266}
 		{A3055CAA-4807-4C49-973C-7B92610C25C8} = {66143D83-D452-41E9-BC9C-B87C5538054D}
 		{8431FA6D-34A1-4700-8D4F-09C9E65346E3} = {66143D83-D452-41E9-BC9C-B87C5538054D}
@@ -236,7 +233,6 @@ Global
 		LocalizeShared\LocalizeShared.projitems*{f135cd5d-4cab-4347-bf44-1c6d0794a19d}*SharedItemsImports = 13
 		LocalizeShared\uk-UA\LocalizeShared.uk-UA.projitems*{f42a8d16-c123-4044-a926-1271531f5f9c}*SharedItemsImports = 13
 		XmlExtension\XmlExtension.projitems*{fada36db-c397-4128-9644-b477c4f50b26}*SharedItemsImports = 13
-		AutoLayoutPanelShared\AutoLayoutPanelShared.projitems*{fc5e6f74-8408-4fd8-a46a-a7f549e30454}*SharedItemsImports = 13
 		LocalizeShared\zh-TW\LocalizeShared.zh-TW.projitems*{fc982331-0698-47f0-bd83-c711bc8db98a}*SharedItemsImports = 13
 		TrajectoryShared\TrajectoryShared.projitems*{ffba673c-7990-421a-8dd3-87149c1f751b}*SharedItemsImports = 13
 	EndGlobalSection
