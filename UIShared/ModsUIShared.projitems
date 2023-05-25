@@ -132,6 +132,7 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleCircle.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\th-TH.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Flags\uk-UA.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Toggle\ToggleBorderSmall.png" />
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\Field\FieldBorderLeft.png" />
