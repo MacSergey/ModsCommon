@@ -20,7 +20,7 @@ namespace ModsCommon
     where TypeMod : ICustomMod
     where TypeTool : ToolBase, ITool
     {
-        private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul) & new VersionSearcher(new Version(1, 3), (m, s) => m >= s);
+        private static PluginSearcher UUISearcher { get; } = PluginUtilities.GetSearcher("Unified UI", 2255219025ul, 2966990700ul) & new VersionSearcher(new Version(1, 3), (m, s) => m >= s);
         public static bool IsUUIEnabled => UUISearcher.GetPlugin()?.isEnabled == true;
 
         public bool UUIRegistered { get; private set; }
