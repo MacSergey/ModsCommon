@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace ModsCommon
 {
-    public interface ITool
+    public partial interface ITool
     {
         public event Action<bool> OnStateChanged;
         public bool enabled { get; }
@@ -20,6 +20,9 @@ namespace ModsCommon
         public Shortcut Activation { get; }
         public IEnumerable<Shortcut> Shortcuts { get; }
         public string ToolTip { get; }
+
+        public CustomUIButton ToolButton { get; }
+        public bool CanBeShownToolButton { get; }
 
         public Segment3 Ray { get; }
         public Ray MouseRay { get; }
@@ -73,6 +76,7 @@ namespace ModsCommon
         public abstract Shortcut Activation { get; }
         public virtual IEnumerable<Shortcut> Shortcuts { get { yield break; } }
         public string ToolTip => Activation.NotSet ? ModInstance.NameRaw : $"{ModInstance.NameRaw} ({Activation})";
+        public CustomUIButton ToolButton { get; private set; }
 
         private ToolBase PrevTool { get; set; }
 
@@ -240,6 +244,54 @@ namespace ModsCommon
             var prevMode = Mode;
             Mode = mode;
             Mode?.Activate(prevMode);
+        }
+
+        public void CreateButton<TypeButton>(string templateName, ref OptionPanelBase __result, params string[] allow)
+            where TypeButton : CustomUIButton
+        {
+            if (__result == null || !allow.Any(i => i == templateName))
+                return;
+
+            if (ToolButton == null)
+            {
+                ToolButton = __result.component.parent.AddUIComponent<TypeButton>();
+                ToolButton.isVisible = false;
+            }
+
+            __result.component.eventVisibilityChanged += (_, visible) => CanBeShownToolButton = visible;
+        }
+
+        private bool showToolButton = true;
+        private bool canBeShownToolButton;
+
+        private bool ShowToolButton
+        {
+            get => showToolButton;
+            set
+            {
+                if (value != showToolButton)
+                {
+                    showToolButton = value;
+                    SetToolButtonVisibility();
+                }
+            }
+        }
+        public bool CanBeShownToolButton
+        {
+            get => canBeShownToolButton;
+            private set
+            {
+                if (value != canBeShownToolButton)
+                {
+                    canBeShownToolButton = value;
+                    SetToolButtonVisibility();
+                }
+            }
+        }
+        private void SetToolButtonVisibility()
+        {
+            if (ToolButton != null)
+                ToolButton.isVisible = ShowToolButton && CanBeShownToolButton;
         }
 
         #endregion
