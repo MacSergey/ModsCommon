@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class NetToolButton<TypeTool> : CustomUIButton
+    public abstract class ToolButton<TypeTool> : CustomUIButton
         where TypeTool : ITool
     {
         private static int ButtonSize => 31;

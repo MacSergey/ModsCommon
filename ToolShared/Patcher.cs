@@ -50,21 +50,23 @@ namespace ModsCommon
             }
         }
 
-        public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeMod, TypeButton>(string templateName, ref OptionPanelBase __result, params string[] allow)
-            where TypeMod : ICustomMod
-            where TypeButton : CustomUIButton
-        {
-            if (__result == null || !allow.Any(i => i == templateName))
-                return;
+        //public static void GeneratedScrollPanelCreateOptionPanelPostfix<TypeMod, TypeTool, TypeButton>(string templateName, ref OptionPanelBase __result, params string[] allow)
+        //    where TypeMod : ICustomMod
+        //    where TypeTool : ToolBase, IUUITool
+        //    where TypeButton : CustomUIButton
+        //{
+        //    if (__result == null || !allow.Any(i => i == templateName))
+        //        return;
 
-            if (__result.component.parent.Find<TypeButton>(typeof(TypeButton).Name) is not TypeButton button)
-            {
-                button = __result.component.parent.AddUIComponent<TypeButton>();
-                button.isVisible = false;
-            }
+        //    if (SingletonTool<TypeTool>.Instance.ToolButton is not TypeButton button)
+        //    {
+        //        button = __result.component.parent.AddUIComponent<TypeButton>();
+        //        button.isVisible = false;
+        //        SingletonTool<TypeTool>.Instance.ToolButton = button;
+        //    }
 
-            __result.component.eventVisibilityChanged += (_, visible) => button.isVisible = visible;
-        }
+        //    __result.component.eventVisibilityChanged += (_, visible) => button.isVisible = visible;
+        //}
         public static string RoadsOptionPanel => nameof(RoadsOptionPanel);
         public static string PathsOptionPanel => nameof(PathsOptionPanel);
         public static string TracksOptionPanel => nameof(TracksOptionPanel);
