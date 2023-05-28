@@ -331,7 +331,7 @@ Shift x10，Ctrl x0.1</value>
 请更新模组到最新版本， 否则模组无法正常使用，并可能导致无法预测的错误。</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
-    <value>{0} 版本的新功能</value>
+    <value>{0} 更新日志</value>
   </data>
   
   <data name="Mod_WhatsNewVersion" xml:space="preserve">

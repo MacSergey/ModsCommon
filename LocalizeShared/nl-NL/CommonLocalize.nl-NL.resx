@@ -488,5 +488,7 @@ of de mod in jouw taal vertalen</value>
   <data name="Mod_Locale_uk-UA" xml:space="preserve">
     <value>Oekraïens</value>
   </data>
-  
+  <data name="Mod_Locale_th-TH" xml:space="preserve">
+    <value>Thai</value>
+  </data>
 </root>

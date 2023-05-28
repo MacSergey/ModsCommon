@@ -137,7 +137,9 @@
   
   
   
-  
+  <data name="Dependency_Remove" xml:space="preserve">
+    <value>ลบ</value>
+  </data>
   <data name="Dependency_Subscribe" xml:space="preserve">
     <value>สมัครสมาชิก</value>
   </data>
@@ -199,66 +201,162 @@
   <data name="Mod_LocaleGame" xml:space="preserve">
     <value>ภาษาของเกม</value>
   </data>
+  <data name="Mod_Locale_cs-CZ" xml:space="preserve">
+    <value>ภาษาเช็ก</value>
+  </data>
+  <data name="Mod_Locale_da-DK" xml:space="preserve">
+    <value>ภาษาเดนมาร์ก</value>
+  </data>
+  <data name="Mod_Locale_de-DE" xml:space="preserve">
+    <value>ภาษาเยอรมัน</value>
+  </data>
+  <data name="Mod_Locale_en-US" xml:space="preserve">
+    <value>ภาษาอังกฤษ (สหรัฐฯ)</value>
+  </data>
+  <data name="Mod_Locale_en-GB" xml:space="preserve">
+    <value>ภาษาอังกฤษ (สหราชอาณาจักร)</value>
+  </data>
+  <data name="Mod_Locale_es-ES" xml:space="preserve">
+    <value>ภาษาสเปน</value>
+  </data>
+  <data name="Mod_Locale_fi-FI" xml:space="preserve">
+    <value>ภาษาฟินแลนด์</value>
+  </data>
+  <data name="Mod_Locale_fr-FR" xml:space="preserve">
+    <value>ภาษาฝรั่งเศส</value>
+  </data>
+  <data name="Mod_Locale_hu-HU" xml:space="preserve">
+    <value>ภาษาฮังการี</value>
+  </data>
+  <data name="Mod_Locale_id-ID" xml:space="preserve">
+    <value>ภาษาอินโดนีเซีย</value>
+  </data>
+  <data name="Mod_Locale_it-IT" xml:space="preserve">
+    <value>ภาษาอิตาลี</value>
+  </data>
+  <data name="Mod_Locale_ja-JP" xml:space="preserve">
+    <value>ภาษาญี่ปุ่น</value>
+  </data>
+  <data name="Mod_Locale_ko-KR" xml:space="preserve">
+    <value>ภาษาเกาหลี</value>
+  </data>
+  <data name="Mod_Locale_ms-MY" xml:space="preserve">
+    <value>ภาษามลายู</value>
+    <comment>Mod_Locale_ms
+</comment>
+  </data>
+  <data name="Mod_Locale_nl-NL" xml:space="preserve">
+    <value>ภาษาดัตช์</value>
+  </data>
+  <data name="Mod_Locale_pl-PL" xml:space="preserve">
+    <value>ภาษาโปแลนด์</value>
+  </data>
+  <data name="Mod_Locale_pt-PT" xml:space="preserve">
+    <value>ภาษาโปรตุเกส</value>
+  </data>
+  <data name="Mod_Locale_ro-RO" xml:space="preserve">
+    <value>ภาษาโรมาเนีย</value>
+  </data>
+  <data name="Mod_Locale_ru-RU" xml:space="preserve">
+    <value>ภาษารัสเซีย</value>
+  </data>
+  <data name="Mod_Locale_tr-TR" xml:space="preserve">
+    <value>ภาษาตุรกี</value>
+  </data>
+  <data name="Mod_Locale_zh-CN" xml:space="preserve">
+    <value>ภาษาจีนตัวย่อ</value>
+  </data>
+  <data name="Mod_Locale_zh-TW" xml:space="preserve">
+    <value>ภาษาจีนตัวเต็ม</value>
+  </data>
+  <data name="Mod_Status" xml:space="preserve">
+    <value>สถานะ: {0}</value>
+  </data>
+  
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>เกิดข้อผิดพลาดในการโหลด</value>
+  </data>
+  
+  
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>ไม่ทราบ</value>
+  </data>
+  <data name="Mod_Support" xml:space="preserve">
+    <value>สนับสนุน</value>
+  </data>
+  <data name="Mod_Version" xml:space="preserve">
+    <value>เวอร์ชัน: {0}</value>
+  </data>
   
   
   
   
+  <data name="Mod_WhatsNewVersion" xml:space="preserve">
+    <value>เวอร์ชัน {0}</value>
+  </data>
+  
+  <data name="Settings_Cancel" xml:space="preserve">
+    <value>ยกเลิก</value>
+  </data>
+  <data name="Settings_ChangeLog" xml:space="preserve">
+    <value>บันทึกการเปลี่ยนแปลง</value>
+  </data>
+  
+  <data name="Settings_General" xml:space="preserve">
+    <value>ทั่วไป</value>
+  </data>
+  <data name="Settings_GeneralTab" xml:space="preserve">
+    <value>ทั่วไป</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>ภาษา</value>
+  </data>
+  <data name="Settings_Notifications" xml:space="preserve">
+    <value>การแจ้งเตือน</value>
+  </data>
+  <data name="Settings_PressAnyKey" xml:space="preserve">
+    <value>กดปุ่มใดก็ได้</value>
+  </data>
+  <data name="Settings_ShortcutActivateTool" xml:space="preserve">
+    <value>เปิดใช้งานเครื่องมือ</value>
+  </data>
+  <data name="Settings_Shortcuts" xml:space="preserve">
+    <value>คำสั่งลัด</value>
+  </data>
   
   
+  <data name="Settings_ShowTooltips" xml:space="preserve">
+    <value>แสดงคำแนะนำ</value>
+  </data>
+  <data name="Settings_ShowWhatsNew" xml:space="preserve">
+    <value>แสดง "มีอะไรใหม่"</value>
+  </data>
   
+  <data name="Settings_SupportTab" xml:space="preserve">
+    <value>สนับสนุน</value>
+  </data>
+  <data name="Settings_ToolButton" xml:space="preserve">
+    <value>ปุ่มเครื่องมือ</value>
+  </data>
+  <data name="Settings_ToolButtonBoth" xml:space="preserve">
+    <value>แสดงทั้งสองที่</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyToolbar" xml:space="preserve">
+    <value>แสดงเฉพาะแถบเครื่องมือ</value>
+  </data>
+  <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
+    <value>แสดงเฉพาะ UnifiedUI</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>ปรับการแปลให้ดีขึ้น</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>เพิ่มภาษาใหม่</value>
+  </data>
+  <data name="Settings_Troubleshooting" xml:space="preserve">
+    <value>แก้ปัญหาเบื้องต้น</value>
+  </data>
   
   
   <data name="WhatsNew_FIXED" xml:space="preserve">
@@ -280,7 +378,10 @@
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>คำเตือน</value>
   </data>
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>ภาษาบราซิล</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
   <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
     <value>ไม่ต้องแสดงอีก</value>
   </data>
@@ -308,15 +409,21 @@
   <data name="Key_Esc" xml:space="preserve">
     <value>Esc</value>
   </data>
-  
-  
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>กด {0} เพื่อละทิ้งการเปลี่ยนแปลง</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>กด {0} เพื่อรีเซ็ตกำหนดปุ่ม</value>
+  </data>
   <data name="Key_Space" xml:space="preserve">
     <value>Space</value>
   </data>
   <data name="Popup_Empty" xml:space="preserve">
     <value>รายการว่างเปล่า</value>
   </data>
-  
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>ภาษายูเครน</value>
+  </data>
   <data name="Mod_Locale_th-TH" xml:space="preserve">
     <value>ภาษาไทย</value>
   </data>

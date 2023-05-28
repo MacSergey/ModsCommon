@@ -486,5 +486,7 @@ Shift를 눌러 10배, Ctrl을 눌러 0.1배</value>
   <data name="Mod_Locale_uk-UA" xml:space="preserve">
     <value>우크라이나어</value>
   </data>
-  
+  <data name="Mod_Locale_th-TH" xml:space="preserve">
+    <value>태국어</value>
+  </data>
 </root>
