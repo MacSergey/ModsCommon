@@ -75,12 +75,12 @@ namespace ModsCommon
             try
             {
                 PatchResult = PatchProcess() ? PatchResult.Success : PatchResult.Failed;
-                Logger.Debug($"Patch {PatchResult}");
+                Logger.Debug($"Patching result: {PatchResult}");
             }
             catch (Exception error)
             {
                 PatchResult = PatchResult.Failed;
-                Logger.Error($"Patch {PatchResult}", error);
+                Logger.Error($"Patching result: {PatchResult}", error);
             }
         }
         private void Unpatch()
@@ -107,97 +107,121 @@ namespace ModsCommon
 
         protected abstract bool PatchProcess();
 
-        protected bool AddPrefix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Prefix, patchType, patchMethod, type, method, parameters);
-        protected bool AddPostfix(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Postfix, patchType, patchMethod, type, method, parameters);
-        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Transpiler, patchType, patchMethod, type, method, parameters);
+        protected bool AddPrefix(Type patchType, string patchName, Type originalType, string originalName, Type[] parameters = null) => AddMethodPatch(PatcherType.Prefix, patchType, patchName, originalType, originalName, parameters);
+        protected bool AddPostfix(Type patchType, string patchName, Type originalType, string originalName, Type[] parameters = null) => AddMethodPatch(PatcherType.Postfix, patchType, patchName, originalType, originalName, parameters);
+        protected bool AddTranspiler(Type patchType, string patchName, Type originalType, string originalName, Type[] parameters = null) => AddMethodPatch(PatcherType.Transpiler, patchType, patchName, originalType, originalName, parameters);
 
-        private bool AddMethodPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, string method, Type[] parameters = null)
+        private bool AddMethodPatch(PatcherType patcher, Type patchType, string patchName, Type originalType, string originalName, Type[] parameters = null)
         {
             void action()
             {
-                Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchMethod}] to [{type?.FullName}.{method}]");
+                Logger.Debug($"Start adding [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchName}] to [{originalType?.FullName}.{originalName}]");
 
-                if (AccessTools.Method(type, method, parameters) is not MethodInfo original)
+                if (AccessTools.Method(originalType, originalName, parameters) is not MethodInfo original)
                     throw new PatchExeption("Can't find original method");
-                if (AccessTools.Method(patchType, patchMethod) is not MethodInfo patch)
+                if (AccessTools.Method(patchType, patchName) is not MethodInfo patch)
                     throw new PatchExeption("Can't find patch method");
 
                 AddPatch(patcher, patch, original);
 
-                Logger.Debug("Success patched!");
+                Logger.Debug("Successfully patched!");
             }
 
             return AddPatchProcess(action);
         }
 
-        protected bool AddPrefix(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Prefix, patch, type, method, parameters);
-        protected bool AddPostfix(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Postfix, patch, type, method, parameters);
-        protected bool AddTranspiler(MethodInfo patch, Type type, string method, Type[] parameters = null) => AddMethodPatch(PatcherType.Transpiler, patch, type, method, parameters);
+        protected bool AddPrefix(Type patchType, string patchName, MethodInfo original) => AddMethodPatch(PatcherType.Prefix, patchType, patchName, original);
+        protected bool AddPostfix(Type patchType, string patchName, MethodInfo original) => AddMethodPatch(PatcherType.Postfix, patchType, patchName, original);
+        protected bool AddTranspiler(Type patchType, string patchName, MethodInfo original) => AddMethodPatch(PatcherType.Transpiler, patchType, patchName, original);
 
-        private bool AddMethodPatch(PatcherType patcher, MethodInfo patch, Type type, string method, Type[] parameters = null)
+        private bool AddMethodPatch(PatcherType patcher, Type patchType, string patchName, MethodInfo original)
         {
             void action()
             {
-                Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patch?.DeclaringType.FullName}.{patch?.Name}] to [{type?.FullName}.{method}]");
+                Logger.Debug($"Start adding [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchName}] to [{original?.DeclaringType.FullName}.{original?.Name}]");
 
-                if (AccessTools.Method(type, method, parameters) is not MethodInfo original)
+                if (original == null)
+                    throw new PatchExeption("Can't find original method");
+                if (AccessTools.Method(patchType, patchName) is not MethodInfo patch)
+                    throw new PatchExeption("Can't find patch method");
+
+                AddPatch(patcher, patch, original);
+
+                Logger.Debug("Successfully patched!");
+            }
+
+            return AddPatchProcess(action);
+        }
+
+
+        protected bool AddPrefix(MethodInfo patch, Type originalType, string originalName, Type[] parameters = null) => AddMethodPatch(PatcherType.Prefix, patch, originalType, originalName, parameters);
+        protected bool AddPostfix(MethodInfo patch, Type originalType, string originalName, Type[] parameters = null) => AddMethodPatch(PatcherType.Postfix, patch, originalType, originalName, parameters);
+        protected bool AddTranspiler(MethodInfo patch, Type originalType, string originalName, Type[] parameters = null) => AddMethodPatch(PatcherType.Transpiler, patch, originalType, originalName, parameters);
+
+        private bool AddMethodPatch(PatcherType patcher, MethodInfo patch, Type originalType, string originalName, Type[] parameters = null)
+        {
+            void action()
+            {
+                Logger.Debug($"Start adding [{patcher.ToString().ToUpper()}] [{patch?.DeclaringType.FullName}.{patch?.Name}] to [{originalType?.FullName}.{originalName}]");
+
+                if (AccessTools.Method(originalType, originalName, parameters) is not MethodInfo original)
                     throw new PatchExeption("Can't find original method");
                 if (patch == null)
                     throw new PatchExeption("Can't find patch method");
 
                 AddPatch(patcher, patch, original);
 
-                Logger.Debug("Success patched!");
+                Logger.Debug("Successfully patched!");
             }
 
             return AddPatchProcess(action);
         }
 
-        protected bool AddPrefix(Type patchType, string patchMethod, Type type, Type[] parameters = null) => AddConstructorPatch(PatcherType.Prefix, patchType, patchMethod, type, parameters);
-        protected bool AddPostfix(Type patchType, string patchMethod, Type type, Type[] parameters = null) => AddConstructorPatch(PatcherType.Postfix, patchType, patchMethod, type, parameters);
-        protected bool AddTranspiler(Type patchType, string patchMethod, Type type, Type[] parameters = null) => AddConstructorPatch(PatcherType.Transpiler, patchType, patchMethod, type, parameters);
+        protected bool AddPrefix(Type patchType, string patchName, Type originalType, Type[] parameters = null) => AddConstructorPatch(PatcherType.Prefix, patchType, patchName, originalType, parameters);
+        protected bool AddPostfix(Type patchType, string patchName, Type originalType, Type[] parameters = null) => AddConstructorPatch(PatcherType.Postfix, patchType, patchName, originalType, parameters);
+        protected bool AddTranspiler(Type patchType, string patchName, Type originalType, Type[] parameters = null) => AddConstructorPatch(PatcherType.Transpiler, patchType, patchName, originalType, parameters);
 
-        private bool AddConstructorPatch(PatcherType patcher, Type patchType, string patchMethod, Type type, Type[] parameters = null)
+        private bool AddConstructorPatch(PatcherType patcher, Type patchType, string patchName, Type originalType, Type[] parameters = null)
         {
             void action()
             {
-                Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchMethod}] to [{type?.FullName}..ctor]");
+                Logger.Debug($"Start adding [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchName}] to [{originalType?.FullName}..ctor]");
 
-                if (AccessTools.Constructor(type, parameters) is not ConstructorInfo original)
+                if (AccessTools.Constructor(originalType, parameters) is not ConstructorInfo original)
                     throw new PatchExeption("Can't find original constructor");
-                if (AccessTools.Method(patchType, patchMethod) is not MethodInfo patch)
+                if (AccessTools.Method(patchType, patchName) is not MethodInfo patch)
                     throw new PatchExeption("Can't find patch method");
 
                 AddPatch(patcher, patch, original);
 
-                Logger.Debug("Success patched!");
+                Logger.Debug("Successfully patched!");
             }
 
             return AddPatchProcess(action);
         }
 
 
-        protected bool AddPrefix(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPropertyPatch(PatcherType.Prefix, patchType, patchMethod, propertyType, type, property);
-        protected bool AddPostfix(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPropertyPatch(PatcherType.Postfix, patchType, patchMethod, propertyType, type, property);
-        protected bool AddTranspiler(Type patchType, string patchMethod, PropertyType propertyType, Type type, string property) => AddPropertyPatch(PatcherType.Transpiler, patchType, patchMethod, propertyType, type, property);
+        protected bool AddPrefix(Type patchType, string patchName, MethodType methodType, Type originalType, string propertyName) => AddPropertyPatch(PatcherType.Prefix, patchType, patchName, methodType, originalType, propertyName);
+        protected bool AddPostfix(Type patchType, string patchName, MethodType methodType, Type originalType, string propertyName) => AddPropertyPatch(PatcherType.Postfix, patchType, patchName, methodType, originalType, propertyName);
+        protected bool AddTranspiler(Type patchType, string patchName, MethodType methodType, Type originalType, string propertyName) => AddPropertyPatch(PatcherType.Transpiler, patchType, patchName, methodType, originalType, propertyName);
 
-        private bool AddPropertyPatch(PatcherType patcher, Type patchType, string patchMethod, PropertyType propertyType, Type type, string property)
+        private bool AddPropertyPatch(PatcherType patcher, Type patchType, string patchName, MethodType methodType, Type originalType, string propertyName)
         {
             void action()
             {
-                Logger.Debug($"Start add [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchMethod}] to [{type?.FullName}.{property}.{propertyType}]");
+                Logger.Debug($"Start adding [{patcher.ToString().ToUpper()}] [{patchType?.FullName}.{patchName}] to [{originalType?.FullName}.{propertyName}.{methodType}]");
 
                 MethodInfo original = null;
-                if (AccessTools.Property(type, property) is not PropertyInfo propertyInfo)
+                if (AccessTools.Property(originalType, propertyName) is not PropertyInfo propertyInfo)
                     throw new PatchExeption("Can't find original property");
-                else if (propertyType == PropertyType.Getter)
+                else if (methodType == MethodType.Getter)
                 {
                     if (!propertyInfo.CanRead)
                         throw new PatchExeption("Property does not have getter");
                     else
                         original = propertyInfo.GetGetMethod();
                 }
-                else if (propertyType == PropertyType.Setter)
+                else if (methodType == MethodType.Setter)
                 {
                     if (!propertyInfo.CanWrite)
                         throw new PatchExeption("Property does not have setter");
@@ -207,12 +231,12 @@ namespace ModsCommon
                 else
                     throw new PatchExeption("Unexpected state");
 
-                if (AccessTools.Method(patchType, patchMethod) is not MethodInfo patch)
+                if (AccessTools.Method(patchType, patchName) is not MethodInfo patch)
                     throw new PatchExeption("Can't find patch method");
 
                 AddPatch(patcher, patch, original);
 
-                Logger.Debug("Success patched!");
+                Logger.Debug("Successfully patched!");
             }
 
             return AddPatchProcess(action);
@@ -228,12 +252,15 @@ namespace ModsCommon
             }
             catch (PatchExeption error)
             {
-                Logger.Error($"Failed patch: {error.Message}");
+                Logger.Error($"Patch failed: {error.Message}");
                 return false;
             }
             catch (Exception error)
             {
-                Logger.Error($"Failed patch:", error);
+                if (error.InnerException is PatchExeption patchExeption)
+                    Logger.Error($"Patch failed: {patchExeption.Message}");
+                else
+                    Logger.Error($"Patch failed:", error);
                 return false;
             }
         }
@@ -261,7 +288,7 @@ namespace ModsCommon
             Transpiler
         }
 
-        protected enum PropertyType
+        protected enum MethodType
         {
             Getter,
             Setter,
