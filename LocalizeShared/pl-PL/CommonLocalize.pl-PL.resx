@@ -483,6 +483,10 @@ lub przetłumaczyć modyfikację na swój język</value>
   <data name="Popup_Empty" xml:space="preserve">
     <value>Lista jest pusta</value>
   </data>
-  
-  
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>Ukraiński</value>
+  </data>
+  <data name="Mod_Locale_th-TH" xml:space="preserve">
+    <value>Tajski</value>
+  </data>
 </root>
