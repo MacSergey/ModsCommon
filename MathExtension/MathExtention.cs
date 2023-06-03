@@ -40,7 +40,8 @@ namespace ModsCommon.Utilities
             return new Vector4(newX, vector.y, newZ, vector.w);
         }
 
-        public static float Length(this Bezier3 bezier, float minAngleDelta = 10, int depth = 5)
+        public static float Length(this Bezier3 bezier, float minAngleDelta = 10, int depth = 5) => GetLength(ref bezier, minAngleDelta, depth, true);
+        private static float GetLength(ref Bezier3 bezier, float minAngleDelta, int depth, bool initial)
         {
             var start = bezier.b - bezier.a;
             var end = bezier.c - bezier.d;
@@ -48,11 +49,11 @@ namespace ModsCommon.Utilities
                 return 0;
 
             var angle = Vector3.Angle(start, end);
-            if (depth > 0 && 180 - angle > minAngleDelta)
+            if (depth > 0 && (initial || 180 - angle > minAngleDelta))
             {
                 bezier.Divide(out Bezier3 first, out Bezier3 second);
-                var firstLength = first.Length(minAngleDelta, depth - 1);
-                var secondLength = second.Length(minAngleDelta, depth - 1);
+                var firstLength = GetLength(ref first, minAngleDelta, depth - 1, false);
+                var secondLength = GetLength(ref second, minAngleDelta, depth - 1, false);
                 return firstLength + secondLength;
             }
             else
@@ -61,6 +62,7 @@ namespace ModsCommon.Utilities
                 return length;
             }
         }
+
 
         public static float Travel(this Bezier3 bezier, float distance, int depth = 5)
         {
