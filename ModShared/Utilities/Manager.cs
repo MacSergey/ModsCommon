@@ -10,6 +10,7 @@
             get => _instance ??= new T();
             set => _instance = value;
         }
+        public static bool Exist => _instance != null;
         public static void Destroy() => Instance = null;
     }
 }
