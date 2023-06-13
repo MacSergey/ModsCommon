@@ -320,15 +320,15 @@ Shift x10，Ctrl x0.1</value>
 模组需要的游戏版本： {0}
 当前游戏的版本： {1}
 
-请更新游戏到最新版本， 否则模组无法正常使用，并可能导致无法预测的错误。</value>
+请将游戏更新到最新版本， 否则模组可能无法正常使用，并可能出现无法预测的错误。</value>
   </data>
   <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
     <value>模组版本已经过时。
 
-模组当前的版本： {0}
-游戏当前的版本： {1}
+模组适配的游戏版本： {0}
+当前游戏版本： {1}
 
-请更新模组到最新版本， 否则模组无法正常使用，并可能导致无法预测的错误。</value>
+请将本模组更新到最新版本， 否则模组可能无法正常使用，并可能出现无法预测的错误。</value>
   </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>{0} 更新日志</value>
