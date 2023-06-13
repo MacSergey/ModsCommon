@@ -148,8 +148,8 @@ namespace ModsCommon
         {
             try
             {
-                var gameVersion = CurrentGameVersion;
-                var requiredVersion = RequiredGameVersion;
+                var gameVersion = CurrentGameVersion.Build();
+                var requiredVersion = RequiredGameVersion.Build();
 
                 if (gameVersion != requiredVersion)
                 {
