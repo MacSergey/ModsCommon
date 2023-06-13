@@ -304,7 +304,7 @@ namespace ModsCommon.Settings
             else
             {
                 status &= ModStatus.WithErrors;
-                var errors = status.GetEnumValues().Select(s => s.Description<ModStatus, TypeMod>()).ToArray();
+                var errors = status.GetEnumValues().IsVisible().Select(s => s.Description<ModStatus, TypeMod>()).ToArray();
                 statusText = string.Join(" | ", errors).AddColor(ComponentStyle.ErrorFocusedColor);
             }
 
