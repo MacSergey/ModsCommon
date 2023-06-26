@@ -290,18 +290,46 @@ Shift X10, Ctrl X0.1</value>
   <data name="Mod_Locale_zh-TW" xml:space="preserve">
     <value>Ķīniešu tradicionāla</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Status" xml:space="preserve">
+    <value>Statuss: {0}</value>
+  </data>
+  <data name="Mod_Status_GameOutOfDate" xml:space="preserve">
+    <value>Spēles versija ir novecojusi</value>
+  </data>
+  <data name="Mod_Status_LoadingError" xml:space="preserve">
+    <value>Ielādējot radās kļūda</value>
+  </data>
+  <data name="Mod_Status_ModOutOfDate" xml:space="preserve">
+    <value>Modifikācija versija ir novecojusi</value>
+  </data>
+  <data name="Mod_Status_OperateNormally" xml:space="preserve">
+    <value>Darbojas normāli</value>
+  </data>
+  <data name="Mod_Status_Unknown" xml:space="preserve">
+    <value>Nezināms</value>
+  </data>
   <data name="Mod_Support" xml:space="preserve">
     <value>Atbalsts</value>
   </data>
-  
-  
-  
+  <data name="Mod_Version" xml:space="preserve">
+    <value>Versija: {0}</value>
+  </data>
+  <data name="Mod_VersionWarning_GameOutOfDate" xml:space="preserve">
+    <value>Spēles versija ir novecojusi.
+
+Modifikācijai nepieciešama versija: {0}
+Pašreizējā spēles versija: {1}
+
+Atjauniniet spēli uz jaunāko versiju, pretējā gadījumā pareiza moda darbība netiek garantēta un var izraisīt neparedzamas kļūdas.</value>
+  </data>
+  <data name="Mod_VersionWarning_ModOutOfDate" xml:space="preserve">
+    <value>Modifikācija versija ir novecojusi.
+
+Modifikācijai nepieciešama versija: {0}
+Pašreizējā spēles versija: {1}
+
+Atjauniniet modifikāciju uz jaunāko versiju, pretējā gadījumā pareiza moda darbība netiek garantēta un var izraisīt neparedzamas kļūdas.</value>
+  </data>
   <data name="Mod_WhatsNewCaption" xml:space="preserve">
     <value>Kas ir jauna šeit: {0}</value>
   </data>
@@ -372,9 +400,16 @@ Shift X10, Ctrl X0.1</value>
   <data name="Settings_ToolButtonOnlyUUI" xml:space="preserve">
     <value>Rādīt tikai UnifiedUI</value>
   </data>
-  
-  
-  
+  <data name="Settings_TranslationDescription" xml:space="preserve">
+    <value>Jūs varat palīdzēt uzlabot modu tulkošanu
+vai tulkojiet modi savā valodā</value>
+  </data>
+  <data name="Settings_TranslationImprove" xml:space="preserve">
+    <value>Uzlabot tulkojumu</value>
+  </data>
+  <data name="Settings_TranslationNew" xml:space="preserve">
+    <value>Pievienot jaunu valodu</value>
+  </data>
   <data name="Settings_Troubleshooting" xml:space="preserve">
     <value>Problēmu novēršana</value>
   </data>
@@ -406,13 +441,28 @@ lai izlaistu atlase</value>
   <data name="WhatsNew_WARNING" xml:space="preserve">
     <value>BRĪDINĀJUMS</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Mod_Locale_pt-BR" xml:space="preserve">
+    <value>Brazīliešu</value>
+    <comment>Mod_Locale_pt-br</comment>
+  </data>
+  <data name="Mod_VersionWarning_DontShow" xml:space="preserve">
+    <value>Nerādīt atkal</value>
+  </data>
+  <data name="Dependency_Disabled" xml:space="preserve">
+    <value>Izslēgts</value>
+  </data>
+  <data name="Dependency_Enabled" xml:space="preserve">
+    <value>Ieslēgts</value>
+  </data>
+  <data name="Dependency_Installed" xml:space="preserve">
+    <value>Instalēts</value>
+  </data>
+  <data name="Dependency_Removed" xml:space="preserve">
+    <value>Noņemts</value>
+  </data>
+  <data name="Dependency_Subscribed" xml:space="preserve">
+    <value>Abonēts</value>
+  </data>
   
   
   
