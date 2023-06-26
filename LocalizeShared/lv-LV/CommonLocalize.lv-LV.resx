@@ -463,13 +463,31 @@ lai izlaistu atlase</value>
   <data name="Dependency_Subscribed" xml:space="preserve">
     <value>Abonēts</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Dependency_Unsubscribed" xml:space="preserve">
+    <value>Anulēts abonements</value>
+  </data>
+  <data name="Key_Backspace" xml:space="preserve">
+    <value>Atkāpšanās taustiņš</value>
+  </data>
+  <data name="Key_Esc" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="Settings_DiscardShortcut" xml:space="preserve">
+    <value>Nospiediet {0}, lai atmestu izmaiņas</value>
+  </data>
+  <data name="Settings_ResetShortcut" xml:space="preserve">
+    <value>Nospiediet {0}, lai atiestatītu saistīšanu</value>
+  </data>
+  <data name="Key_Space" xml:space="preserve">
+    <value>Atstarpe</value>
+  </data>
+  <data name="Popup_Empty" xml:space="preserve">
+    <value>Saraksts ir tukšs</value>
+  </data>
+  <data name="Mod_Locale_uk-UA" xml:space="preserve">
+    <value>Ukraiņu</value>
+  </data>
+  <data name="Mod_Locale_th-TH" xml:space="preserve">
+    <value>Taju</value>
+  </data>
 </root>
