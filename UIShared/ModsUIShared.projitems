@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Custom elements\CustomUITextField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown\SelectItemDropDown.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DropDown\SimpleDropDown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RangeValueField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\BorderSettingsItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\ControlSettingsItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\Base\SettingsItemSection.cs" />

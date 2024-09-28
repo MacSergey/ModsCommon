@@ -6,16 +6,19 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class ListPropertyPanel<Type, UISelector> : EditorPropertyPanel, IReusable
-        where UISelector : UIComponent, IUISelector<Type>
+    public abstract class ListPropertyPanel<ValueType, SelectorType, RefType> : EditorPropertyPanel, IReusable
+        where SelectorType : UIComponent, ISelector<ValueType, RefType>
+        where RefType : ISelectorRef
     {
         public event Action<bool> OnDropDownStateChange;
 
-        public UISelector Selector { get; protected set; }
+        protected SelectorType Selector { get; private set; }
+        public RefType Ref => Selector.Ref;
 
         protected virtual float DropDownWidth => 230;
         protected virtual bool AllowNull => true;
         public string NullText { get; set; } = string.Empty;
+
 
         protected override void FillContent()
         {
@@ -24,7 +27,7 @@ namespace ModsCommon.UI
         }
         protected virtual void AddSelector()
         {
-            Selector = Content.AddUIComponent<UISelector>();
+            Selector = Content.AddUIComponent<SelectorType>();
 
             Selector.SetDefaultStyle(new Vector2(DropDownWidth, 20));
             if (Selector is UIDropDown dropDown)
@@ -32,6 +35,10 @@ namespace ModsCommon.UI
                 dropDown.eventDropdownOpen += DropDownOpen;
                 dropDown.eventDropdownClose += DropDownClose;
             }
+        }
+        protected virtual void ClearSelector()
+        {
+            Selector.Clear();
         }
 
         private void DropDownOpen(UIDropDown dropdown, UIListBox popup, ref bool overridden)
@@ -46,7 +53,7 @@ namespace ModsCommon.UI
         protected override void Init(float? height)
         {
             base.Init(height);
-            Selector.Clear();
+            ClearSelector();
 
             if (AllowNull)
                 Selector.AddItem(default, new OptionData(NullText ?? string.Empty));
@@ -55,22 +62,23 @@ namespace ModsCommon.UI
         {
             base.DeInit();
             OnDropDownStateChange = null;
-            Selector.Clear();
+            ClearSelector();
         }
-        public void Add(Type item) => Selector.AddItem(item, new OptionData());
-        public void AddRange(IEnumerable<Type> items)
+        public void Add(ValueType item) => Selector.AddItem(item, new OptionData());
+        public void AddRange(IEnumerable<ValueType> items)
         {
             foreach (var item in items)
                 Selector.AddItem(item, new OptionData());
         }
-        protected abstract bool IsEqual(Type first, Type second);
+        protected abstract bool IsEqual(ValueType first, ValueType second);
     }
-    public abstract class ListOncePropertyPanel<Type, UISelector> : ListPropertyPanel<Type, UISelector>, IReusable
-        where UISelector : UIComponent, IUIOnceSelector<Type>
+    public abstract class ListSinglePropertyPanel<ValueType, SelectorType, RefType> : ListPropertyPanel<ValueType, SelectorType, RefType>, IReusable
+        where SelectorType : UIComponent, ISingleSelector<ValueType, RefType>
+        where RefType : ISelectorRef
     {
-        public event Action<Type> OnSelectObjectChanged;
+        public event Action<ValueType> OnSelectObjectChanged;
 
-        public Type SelectedObject
+        public ValueType SelectedObject
         {
             get => Selector.SelectedObject;
             set => Selector.SelectedObject = value;
@@ -90,7 +98,7 @@ namespace ModsCommon.UI
             base.AddSelector();
             Selector.OnSelectObject += SelectorValueChanged;
         }
-        protected virtual void SelectorValueChanged(Type value) => OnSelectObjectChanged?.Invoke(value);
+        protected virtual void SelectorValueChanged(ValueType value) => OnSelectObjectChanged?.Invoke(value);
 
         public override void DeInit()
         {
@@ -101,12 +109,13 @@ namespace ModsCommon.UI
         }
         public override string ToString() => $"{base.ToString()}: {SelectedObject}";
     }
-    public abstract class ListMultyPropertyPanel<Type, UISelector> : ListPropertyPanel<Type, UISelector>, IReusable
-        where UISelector : UIComponent, IUIMultySelector<Type>
+    public abstract class ListMultiPropertyPanel<ValueType, SelectorType, RefType> : ListPropertyPanel<ValueType, SelectorType, RefType>, IReusable
+        where SelectorType : UIComponent, IMultiSelector<ValueType, RefType>
+        where RefType : ISelectorRef
     {
-        public event Action<List<Type>> OnSelectObjectsChanged;
+        public event Action<List<ValueType>> OnSelectObjectsChanged;
 
-        public List<Type> SelectedObjects
+        public List<ValueType> SelectedObjects
         {
             get => Selector.SelectedObjects;
             set => Selector.SelectedObjects = value;
@@ -117,7 +126,7 @@ namespace ModsCommon.UI
             base.AddSelector();
             Selector.OnSelectedObjectsChanged += SelectorValueChanged;
         }
-        protected virtual void SelectorValueChanged(List<Type> value) => OnSelectObjectsChanged?.Invoke(value);
+        protected virtual void SelectorValueChanged(List<ValueType> value) => OnSelectObjectsChanged?.Invoke(value);
 
         public override void DeInit()
         {

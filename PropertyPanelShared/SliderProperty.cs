@@ -7,9 +7,10 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class SliderPropertyPanel<ValueType, SliderType, FieldType> : EditorPropertyPanel, IReusable
+    public abstract class SliderPropertyPanel<ValueType, SliderType, FieldType, RefType> : EditorPropertyPanel, IReusable
         where SliderType : UIValueSlider<ValueType>
-        where FieldType : UITextField<ValueType>
+        where FieldType : UITextField<ValueType, RefType>
+        where RefType : IFieldRef, IComparableField<ValueType>
     {
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
@@ -18,10 +19,10 @@ namespace ModsCommon.UI
 
         public event Action<ValueType> OnValueChanged;
 
-        protected FieldType Field { get; set; }
-        protected SliderType Slider { get; set; }
-        protected CustomUILabel MinLabel { get; set; }
-        protected CustomUILabel MaxLabel { get; set; }
+        protected FieldType Field { get; private set; }
+        protected SliderType Slider { get; private set; }
+        protected CustomUILabel MinLabel { get; private set; }
+        protected CustomUILabel MaxLabel { get; private set; }
 
 
         public virtual float FieldWidth
@@ -107,13 +108,14 @@ namespace ModsCommon.UI
 
         public override string ToString() => $"{base.ToString()}: {Value}";
 
-        public static implicit operator ValueType(SliderPropertyPanel<ValueType, SliderType, FieldType> property) => property.Value;
+        public static implicit operator ValueType(SliderPropertyPanel<ValueType, SliderType, FieldType, RefType> property) => property.Value;
     }
 
-    public abstract class ComparableSliderPropertyPanel<ValueType, SliderType, FieldType> : SliderPropertyPanel<ValueType, SliderType, FieldType>
-        where SliderType : ComparableUIValueSlider<ValueType>
-        where FieldType : ComparableUITextField<ValueType>
+    public abstract class ComparableSliderPropertyPanel<ValueType, SliderType, FieldType, RefType> : SliderPropertyPanel<ValueType, SliderType, FieldType, RefType>
         where ValueType : struct, IComparable<ValueType>
+        where SliderType : ComparableUIValueSlider<ValueType>
+        where FieldType : ComparableUITextField<ValueType, RefType>
+        where RefType : IFieldRef, IComparableField<ValueType>
     {
         public ValueType MinValue
         {
@@ -170,5 +172,5 @@ namespace ModsCommon.UI
             Field.SetDefault();
         }
     }
-    public class FloatSliderPropertyPanel : ComparableSliderPropertyPanel<float, FloatUISlider, FloatUITextField> { }
+    public class FloatSliderPropertyPanel : ComparableSliderPropertyPanel<float, FloatUISlider, FloatUITextField, FloatUITextField.FloatFieldRef> { }
 }

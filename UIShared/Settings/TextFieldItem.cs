@@ -7,8 +7,9 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class FieldSettingsItem<ValueType, FieldType> : ControlSettingsItem<FieldType>
-        where FieldType : UITextField<ValueType>
+    public abstract class FieldSettingsItem<ValueType, FieldType, RefType> : ControlSettingsItem<FieldType>
+        where FieldType : UITextField<ValueType, RefType>
+        where RefType : IFieldRef, ITextField<ValueType>
     {
         protected override RectOffset ItemsPadding => new RectOffset(20, 20, 10, 10);
 
@@ -28,7 +29,7 @@ namespace ModsCommon.UI
         }
     }
 
-    public class FloatSettingsItem : FieldSettingsItem<float, FloatUITextField> { }
-    public class IntSettingsItem : FieldSettingsItem<int, IntUITextField> { }
-    public class StringSettingsItem : FieldSettingsItem<string, StringUITextField> { }
+    public class FloatSettingsItem : FieldSettingsItem<float, FloatUITextField, FloatUITextField.FloatFieldRef> { }
+    public class IntSettingsItem : FieldSettingsItem<int, IntUITextField, IntUITextField.IntFieldRef> { }
+    public class StringSettingsItem : FieldSettingsItem<string, StringUITextField, StringUITextField.StringFieldRef> { }
 }

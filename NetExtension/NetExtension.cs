@@ -10,12 +10,12 @@ namespace ModsCommon.Utilities
     {
         private static NetManager NetManager => Singleton<NetManager>.instance;
 
-        public static void UpdateOnceSegment(this NetManager instance, ushort segmentId)
+        public static void UpdateSingleSegment(this NetManager instance, ushort segmentId)
         {
             instance.m_updatedSegments[segmentId >> 6] |= (ulong)(1L << segmentId);
             instance.m_segmentsUpdated = true;
         }
-        public static void UpdateOnceNode(this NetManager instance, ushort nodeId)
+        public static void UpdateSingleNode(this NetManager instance, ushort nodeId)
         {
             instance.m_updatedNodes[nodeId >> 6] |= (ulong)(1L << nodeId);
             instance.m_nodesUpdated = true;

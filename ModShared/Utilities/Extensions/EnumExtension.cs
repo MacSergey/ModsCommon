@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColossalFramework.UI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -101,9 +102,21 @@ namespace ModsCommon.Utilities
         public static string Sprite<T>(this T value, string tag = null)
             where T : Enum
         {
-            var attr = typeof(T).GetField(value.ToString()).GetCustomAttributes(typeof(SpriteAttribute), false).FirstOrDefault(a => (a as SpriteAttribute).Tag == tag) as SpriteAttribute;
+            var attr = typeof(T).GetField(value.ToString())
+                .GetCustomAttributes(typeof(SpriteAttribute), false)
+                .OfType<SpriteAttribute>()
+                .FirstOrDefault(a => a.Tag == tag);
             var sprite = attr?.Sprite ?? string.Empty;
             return sprite;
+        }
+        public static UITextureAtlas Atlas<T>(this T value, string tag = null)
+            where T : Enum
+        {
+            var attr = typeof(T).GetField(value.ToString())
+                .GetCustomAttributes(typeof(SpriteAttribute), false)
+                .OfType<SpriteAttribute>()
+                .FirstOrDefault(a => a.Tag == tag);
+            return attr.Atlas;
         }
 
         public static int ToInt<T>(this T value) where T : Enum => (int)(object)value;
@@ -156,11 +169,56 @@ namespace ModsCommon.Utilities
     {
         public string Name { get; }
         public string Tag { get; }
+        public Type AtlasType { get; }
+        public string AtlasName { get; }
         public string Sprite => $"{Name}{Tag}";
+        public UITextureAtlas Atlas
+        {
+            get
+            {
+                if(AtlasType == null || string.IsNullOrEmpty(AtlasName))
+                    return null;
+
+                foreach (var property in AtlasType.GetProperties(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public))
+                {
+                    if (property.Name != AtlasName)
+                        continue;
+
+                    if (!property.CanRead || property.PropertyType != typeof(UITextureAtlas))
+                        continue;
+
+                    var method = property.GetGetMethod();
+                    var atlas = method.Invoke(null, new object[0]) as UITextureAtlas;
+                    return atlas;
+                }
+
+                foreach (var method in AtlasType.GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public))
+                {
+                    if (method.Name != AtlasName)
+                        continue;
+
+                    if (method.ReturnType != typeof(UITextureAtlas) || method.GetParameters().Length != 0)
+                        continue;
+
+                    var atlas = method.Invoke(null, new object[0]) as UITextureAtlas;
+                    return atlas;
+                }           
+
+                return null;
+            }
+        }
+        [Obsolete]
         public SpriteAttribute(string name, string tag = null)
         {
             Name = name;
             Tag = tag;
         }
+#pragma warning disable CS0612 // Тип или член устарел
+        public SpriteAttribute(Type atlasType, string atlasName, string name, string tag = null) : this(name, tag)
+        {
+            AtlasType = atlasType;
+            AtlasName = atlasName;
+        }
+#pragma warning restore CS0612 // Тип или член устарел
     }
 }

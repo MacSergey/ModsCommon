@@ -6,26 +6,37 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public interface IValueChanger<TypeValue> : IReusable
+    public interface IValueChanger<ValueType> : IReusable
     {
-        event Action<TypeValue> OnValueChanged;
-        TypeValue Value { get; set; }
+        event Action<ValueType> OnValueChanged;
+        ValueType Value { get; set; }
         string Format { set; }
     }
-    public abstract class UITextField<TypeValue> : CustomUITextField, IValueChanger<TypeValue>, IReusable
+    public interface IFieldRef { }
+    public interface ITextField<ValueType>
+    {
+        ValueType Value { get; set; }
+        //Color32 FieldTextColor { get; set; }
+        string Format { set; }
+        bool SubmitOnFocusLost { get; set; }
+    }
+    public abstract class UITextField<ValueType, RefType> : CustomUITextField, ITextField<ValueType>, IValueChanger<ValueType>, IReusable
+        where RefType : IFieldRef, ITextField<ValueType>
     {
         private static string DefaultFormat => "{0}";
         public static float DefaultTextScale => 0.7f;
 
-        public event Action<TypeValue> OnValueChanged;
+        public event Action<ValueType> OnValueChanged;
 
-        private TypeValue value;
+        private ValueType value;
         private string format;
+
+        public RefType Ref { get; }
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
         private bool InProcess { get; set; } = false;
-        public TypeValue Value
+        public ValueType Value
         {
             get => value;
             set => ValueChanged(value, false);
@@ -39,9 +50,16 @@ namespace ModsCommon.UI
                 RefreshText();
             }
         }
-        public void SimulateEnterValue(TypeValue value) => ValueChanged(value, true);
 
-        protected virtual void ValueChanged(TypeValue value, bool callEvent = true)
+        public UITextField()
+        {
+            Ref = CreateRef();
+        }
+        protected abstract RefType CreateRef();
+
+        public void SimulateEnterValue(ValueType value) => ValueChanged(value, true);
+
+        protected virtual void ValueChanged(ValueType value, bool callEvent = true)
         {
             if (!InProcess)
             {
@@ -70,8 +88,8 @@ namespace ModsCommon.UI
             value = default;
             format = null;
         }
-        protected string FormatString(TypeValue value) => string.Format(Format, GetString(value));
-        protected virtual string GetString(TypeValue value) => value?.ToString() ?? string.Empty;
+        protected string FormatString(ValueType value) => string.Format(Format, GetString(value));
+        protected virtual string GetString(ValueType value) => value?.ToString() ?? string.Empty;
 
         protected override void OnGotFocus(UIFocusEventParameter p)
         {
@@ -94,13 +112,13 @@ namespace ModsCommon.UI
                 return;
             }
 
-            var newValue = default(TypeValue);
+            var newValue = default(ValueType);
             try
             {
-                if (typeof(TypeValue) == typeof(string))
-                    newValue = (TypeValue)(object)text;
+                if (typeof(ValueType) == typeof(string))
+                    newValue = (ValueType)(object)text;
                 else if (!string.IsNullOrEmpty(text))
-                    newValue = (TypeValue)TypeDescriptor.GetConverter(typeof(TypeValue)).ConvertFromString(text);
+                    newValue = (ValueType)TypeDescriptor.GetConverter(typeof(ValueType)).ConvertFromString(text);
             }
             catch { }
 
@@ -108,7 +126,7 @@ namespace ModsCommon.UI
         }
 
         public override string ToString() => Value.ToString();
-        public static implicit operator TypeValue(UITextField<TypeValue> field) => field.Value;
+        public static implicit operator ValueType(UITextField<ValueType, RefType> field) => field.Value;
 
         public void SetDefaultStyle()
         {
@@ -116,8 +134,40 @@ namespace ModsCommon.UI
             textScale = DefaultTextScale;
         }
     }
-    public abstract class ComparableUITextField<ValueType> : UITextField<ValueType>
+    public class FieldRef<ValueType, FieldType> : IFieldRef, ITextField<ValueType>
+        where FieldType : ITextField<ValueType>
+    {
+        protected FieldType Field { get; }
+
+        public FieldRef(FieldType field)
+        {
+            Field = field;
+        }
+
+        //public Color32 FieldTextColor
+        //{
+        //    get => Field.textColor;
+        //    set => Field.textColor = value;
+        //}
+        public ValueType Value
+        {
+            get => Field.Value;
+            set => Field.Value = value;
+        }
+        public string Format
+        {
+            set => Field.Format = value;
+        }
+        public bool SubmitOnFocusLost
+        {
+            get => Field.SubmitOnFocusLost;
+            set => Field.SubmitOnFocusLost = value;
+        }
+    }
+
+    public abstract class ComparableUITextField<ValueType, RefType> : UITextField<ValueType, RefType>, IComparableField<ValueType> 
         where ValueType : IComparable<ValueType>
+        where RefType : IFieldRef, IComparableField<ValueType>
     {
         public ValueType MinValue { get; set; }
         public ValueType MaxValue { get; set; }
@@ -146,6 +196,11 @@ namespace ModsCommon.UI
                 else
                     return WheelMode.Normal;
             }
+        }
+
+        public ComparableUITextField()
+        {
+            SetDefault();
         }
 
         protected override void ValueChanged(ValueType value, bool callEvent = true)
@@ -199,8 +254,6 @@ namespace ModsCommon.UI
         protected abstract ValueType Increment(ValueType value, ValueType step, WheelMode mode);
         protected abstract ValueType Decrement(ValueType value, ValueType step, WheelMode mode);
 
-        public ComparableUITextField() => SetDefault();
-
         public override void SetDefault()
         {
             base.SetDefault();
@@ -222,8 +275,68 @@ namespace ModsCommon.UI
             Low,
             VeryLow,
         }
+
+        
     }
-    public class FloatUITextField : ComparableUITextField<float>
+    public interface IComparableField<ValueType> : ITextField<ValueType>
+    {
+        ValueType MinValue { get; set; }
+        ValueType MaxValue { get; set; }
+        bool CheckMin { get; set; }
+        bool CheckMax { get; set; }
+        bool CyclicalValue { get; set;}
+        bool UseWheel {  get; set; }
+        ValueType WheelStep { get; set; }
+        bool WheelTip { set; }
+    }
+    public class ComparableFieldRef<ValueType, FieldType> : FieldRef<ValueType, FieldType>, IComparableField<ValueType>
+        where FieldType : IComparableField<ValueType>
+    {
+        public ComparableFieldRef(FieldType field) : base(field) { }
+
+        public ValueType MinValue
+        {
+            get => Field.MinValue;
+            set => Field.MinValue = value;
+        }
+        public ValueType MaxValue
+        {
+            get => Field.MaxValue;
+            set => Field.MaxValue = value;
+        }
+        public bool CheckMin
+        {
+            get => Field.CheckMin;
+            set => Field.CheckMin = value;
+        }
+        public bool CheckMax
+        {
+            get => Field.CheckMax;
+            set => Field.CheckMax = value;
+        }
+        public bool CyclicalValue
+        {
+            get => Field.CyclicalValue;
+            set => Field.CyclicalValue = value;
+        }
+
+        public bool UseWheel
+        {
+            get => Field.UseWheel;
+            set => Field.UseWheel = value;
+        }
+        public ValueType WheelStep
+        {
+            get => Field.WheelStep;
+            set => Field.WheelStep = value;
+        }
+        public bool WheelTip
+        {
+            set => Field.WheelTip = value;
+        }
+    }
+
+    public class FloatUITextField : ComparableUITextField<float, FloatUITextField.FloatFieldRef>
     {
         static string DefaultNumberFormat => "0.###";
         private string _numberFormat;
@@ -242,6 +355,7 @@ namespace ModsCommon.UI
             get => base.text.Replace(',', '.');
             set => base.text = value;
         }
+        protected override FloatFieldRef CreateRef() => new(this);
         protected override float Decrement(float value, float step, WheelMode mode)
         {
             step = GetStep(step, mode);
@@ -267,9 +381,15 @@ namespace ModsCommon.UI
             _numberFormat = null;
         }
         protected override string GetString(float value) => value.ToString(NumberFormat);
+
+        public class FloatFieldRef : ComparableFieldRef<float, FloatUITextField> 
+        {
+            public FloatFieldRef(FloatUITextField field) : base(field) { }
+        }
     }
-    public class IntUITextField : ComparableUITextField<int>
+    public class IntUITextField : ComparableUITextField<int, IntUITextField.IntFieldRef>
     {
+        protected override IntFieldRef CreateRef() => new(this);
         protected override int Decrement(int value, int step, WheelMode mode) => value == int.MinValue ? value : value - GetStep(step, mode);
         protected override int Increment(int value, int step, WheelMode mode) => value == int.MaxValue ? value : value + GetStep(step, mode);
         private int GetStep(int step, WheelMode mode) => mode switch
@@ -279,9 +399,15 @@ namespace ModsCommon.UI
             WheelMode.VeryLow => Math.Max(step / 100, 1),
             _ => step,
         };
+
+        public class IntFieldRef : ComparableFieldRef<int, IntUITextField>
+        {
+            public IntFieldRef(IntUITextField field) : base(field) { }
+        }
     }
-    public class ByteUITextField : ComparableUITextField<byte>
+    public class ByteUITextField : ComparableUITextField<byte, ByteUITextField.ByteFieldRef>
     {
+        protected override ByteFieldRef CreateRef() => new(this);
         protected override byte Decrement(byte value, byte step, WheelMode mode)
         {
             step = GetStep(step, mode);
@@ -300,16 +426,40 @@ namespace ModsCommon.UI
             WheelMode.VeryLow => (byte)Math.Max(step / 100, 1),
             _ => step,
         };
+
+        public class ByteFieldRef : ComparableFieldRef<byte, ByteUITextField>
+        {
+            public ByteFieldRef(ByteUITextField field) : base(field) { }
+        }
     }
-    public class StringUITextField : UITextField<string> 
+    public class StringUITextField : UITextField<string, StringUITextField.StringFieldRef> 
     {
         public Func<string, string> CheckValue { private get; set; }
+
+        protected override StringFieldRef CreateRef() => new(this);
+
         protected override void ValueChanged(string value, bool callEvent = true)
         {
             if (CheckValue != null)
                 value = CheckValue(value);
 
             base.ValueChanged(value, callEvent);
+        }
+
+        public class StringFieldRef : FieldRef<string, StringUITextField>
+        {
+            public StringFieldRef(StringUITextField field) : base(field) { }
+
+            public bool Multiline
+            {
+                get => Field.Multiline;
+                set => Field.Multiline = value;
+            }
+            public float TextScale
+            {
+                get => Field.textScale;
+                set => Field.textScale = value;
+            }
         }
     }
 }

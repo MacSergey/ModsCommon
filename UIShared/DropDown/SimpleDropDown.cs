@@ -4,10 +4,20 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class SimpleDropDown<ValueType, EntityType, PopupType> : SelectItemDropDown<DropDownItem<ValueType>, EntityType, PopupType>, IUIOnceSelector<ValueType>
+    public interface IDropDownRef : ISelectorRef { }
+    public interface IDropDown<ValueType>
+    {
+        ValueType SelectedObject { get; set; }
+        bool UseWheel { get; set; }
+        bool WheelTip { set; }
+    }
+
+    public abstract class SimpleDropDown<ValueType, EntityType, PopupType, RefType> : SelectItemDropDown<DropDownItem<ValueType>, EntityType, PopupType>, ISingleSelector<ValueType, RefType>, IDropDown<ValueType>
         where EntityType : SimpleEntity<ValueType>
         where PopupType : SimplePopup<ValueType, EntityType>
+        where RefType : IDropDownRef
     {
+        public RefType Ref { get; }
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
@@ -43,15 +53,17 @@ namespace ModsCommon.UI
                 }
             }
         }
-        Func<ValueType, ValueType, bool> IUISelector<ValueType>.IsEqualDelegate
+        Func<ValueType, ValueType, bool> ISelector<ValueType, RefType>.IsEqualDelegate
         {
             set => IsEqualDelegate = (x, y) => value(x.value, y.value);
         }
 
         public SimpleDropDown() : base()
         {
+            Ref = CreateRef();
             Entity.textScale = EntityTextScale;
         }
+        protected abstract RefType CreateRef();
 
         public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, (OptionData)item.ToString()));
         public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, (OptionData)label));
@@ -87,7 +99,7 @@ namespace ModsCommon.UI
 
         public bool IsLayoutSuspended => false;
         public Vector2 ItemSize => size;
-        public RectOffset LayoutPadding => new RectOffset();
+        public RectOffset LayoutPadding => new();
 
         public void StopLayout() { }
         public void StartLayout(bool layoutNow = true, bool force = false) { }
@@ -120,6 +132,32 @@ namespace ModsCommon.UI
             }
         }
     }
+    public class SimpleDropDownRef<ValueType, DropDownType> : IDropDownRef, IDropDown<ValueType>
+        where DropDownType : IDropDown<ValueType>
+    {
+        protected DropDownType DropDown { get; }
+
+        public SimpleDropDownRef(DropDownType dropDown)
+        {
+            DropDown = dropDown;
+        }
+
+        public ValueType SelectedObject 
+        { 
+            get => DropDown.SelectedObject; 
+            set => DropDown.SelectedObject = value; 
+        }
+        public bool UseWheel 
+        { 
+            get => DropDown.UseWheel; 
+            set => DropDown.UseWheel = value; 
+        }
+        public bool WheelTip 
+        { 
+            set => DropDown.WheelTip = value; 
+        }
+    }
+
     public abstract class SimpleEntity<ValueType> : PopupEntity<DropDownItem<ValueType>>
     {
         public SimpleEntity()
@@ -175,9 +213,15 @@ namespace ModsCommon.UI
         public override int GetHashCode() => value.GetHashCode();
     }
 
-    public class StringDropDown : SimpleDropDown<string, StringDropDown.StringEntity, StringDropDown.StringPopup>
+    public class StringDropDown : SimpleDropDown<string, StringDropDown.StringEntity, StringDropDown.StringPopup, StringDropDown.StringDropDownRef>
     {
+        protected override StringDropDownRef CreateRef() => new(this);
+
         public class StringEntity : SimpleEntity<string> { }
         public class StringPopup : SimplePopup<string, StringEntity> { }
+        public class StringDropDownRef : SimpleDropDownRef<string, StringDropDown>
+        {
+            public StringDropDownRef(StringDropDown dropDown) : base(dropDown) { }
+        }
     }
 }

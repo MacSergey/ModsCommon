@@ -5,10 +5,12 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public abstract class FieldPropertyPanel<ValueType, FieldType> : EditorPropertyPanel, IReusable
-        where FieldType : UITextField<ValueType>
+    public abstract class FieldPropertyPanel<ValueType, FieldType, RefType> : EditorPropertyPanel, IReusable
+        where FieldType : UITextField<ValueType, RefType>
+        where RefType : IFieldRef, ITextField<ValueType>
     {
-        protected FieldType Field { get; set; }
+        protected FieldType Field { get; private set; }
+        public RefType FieldRef => Field.Ref;
 
         public event Action<ValueType> OnValueChanged;
 
@@ -21,21 +23,6 @@ namespace ModsCommon.UI
         {
             get => Field.textColor;
             set => Field.textColor = value;
-        }
-        public bool SubmitOnFocusLost
-        {
-            get => Field.SubmitOnFocusLost;
-            set => Field.SubmitOnFocusLost = value;
-        }
-
-        public ValueType Value
-        {
-            get => Field;
-            set => Field.Value = value;
-        }
-        public string Format
-        {
-            set => Field.Format = value;
         }
 
         protected override void FillContent()
@@ -56,8 +43,8 @@ namespace ModsCommon.UI
 
             OnValueChanged = null;
 
-            Format = null;
-            SubmitOnFocusLost = true;
+            Field.Format = null;
+            Field.SubmitOnFocusLost = true;
         }
         public override void SetStyle(ControlStyle style)
         {
@@ -65,55 +52,15 @@ namespace ModsCommon.UI
         }
 
         public void Edit() => Field.Focus();
-        public override string ToString() => $"{base.ToString()}: {Value}";
+        public override string ToString() => $"{base.ToString()}: {Field.Value}";
 
-        public static implicit operator ValueType(FieldPropertyPanel<ValueType, FieldType> property) => property.Value;
+        public static implicit operator ValueType(FieldPropertyPanel<ValueType, FieldType, RefType> property) => property.Field.Value;
     }
-    public abstract class ComparableFieldPropertyPanel<ValueType, FieldType> : FieldPropertyPanel<ValueType, FieldType>
-        where FieldType : ComparableUITextField<ValueType>
+    public abstract class ComparableFieldPropertyPanel<ValueType, FieldType, RefType> : FieldPropertyPanel<ValueType, FieldType, RefType>
+        where FieldType : ComparableUITextField<ValueType, RefType>
         where ValueType : IComparable<ValueType>
+        where RefType : IFieldRef, IComparableField<ValueType>
     {
-        public ValueType MinValue
-        {
-            get => Field.MinValue;
-            set => Field.MinValue = value;
-        }
-        public ValueType MaxValue
-        {
-            get => Field.MaxValue;
-            set => Field.MaxValue = value;
-        }
-        public bool CheckMin
-        {
-            get => Field.CheckMin;
-            set => Field.CheckMin = value;
-        }
-        public bool CheckMax
-        {
-            get => Field.CheckMax;
-            set => Field.CheckMax = value;
-        }
-        public bool CyclicalValue
-        {
-            get => Field.CyclicalValue;
-            set => Field.CyclicalValue = value;
-        }
-
-        public bool UseWheel
-        {
-            get => Field.UseWheel;
-            set => Field.UseWheel = value;
-        }
-        public ValueType WheelStep
-        {
-            get => Field.WheelStep;
-            set => Field.WheelStep = value;
-        }
-        public bool WheelTip
-        {
-            set => Field.WheelTip = value;
-        }
-
         public ComparableFieldPropertyPanel()
         {
             Field.SetDefault();
@@ -125,32 +72,23 @@ namespace ModsCommon.UI
             Field.SetDefault();
         }
     }
-    public class FloatPropertyPanel : ComparableFieldPropertyPanel<float, FloatUITextField> { }
-    public class IntPropertyPanel : ComparableFieldPropertyPanel<int, IntUITextField> { }
-    public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField>
+    public class FloatPropertyPanel : ComparableFieldPropertyPanel<float, FloatUITextField, FloatUITextField.FloatFieldRef> { }
+    public class IntPropertyPanel : ComparableFieldPropertyPanel<int, IntUITextField, IntUITextField.IntFieldRef> { }
+    public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField, StringUITextField.StringFieldRef>
     {
-        public bool Multyline
-        {
-            get => Field.Multiline;
-            set => Field.Multiline = value;
-        }
-        public float TextScale
-        {
-            get => Field.textScale;
-            set => Field.textScale = value;
-        }
+        public new StringUITextField.StringFieldRef FieldRef => Field.Ref;
         public override void DeInit()
         {
             base.DeInit();
 
-            Multyline = false;
-            TextScale = StringUITextField.DefaultTextScale;
+            Field.Multiline = false;
+            Field.textScale = StringUITextField.DefaultTextScale;
             Field.height = 20;
         }
 
         protected override void OnSizeChanged()
         {
-            if (Multyline)
+            if (Field.Multiline)
                 Field.height = height - ItemsPadding * 2f;
             else
                 Field.height = 20;
@@ -159,15 +97,16 @@ namespace ModsCommon.UI
         }
     }
 
-    public abstract class ComparableFieldRangePropertyPanel<ValueType, FieldType> : EditorPropertyPanel, IReusable
-        where FieldType : ComparableUITextField<ValueType>
+    public abstract class ComparableFieldRangePropertyPanel<ValueType, FieldType, RefType> : EditorPropertyPanel, IReusable
+        where FieldType : ComparableUITextField<ValueType, RefType>
         where ValueType : IComparable<ValueType>
+        where RefType : IFieldRef, IComparableField<ValueType>
     {
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
-        protected FieldType FieldA { get; set; }
-        protected FieldType FieldB { get; set; }
+        protected FieldType FieldA { get; private set; }
+        protected FieldType FieldB { get; private set; }
 
         public event Action<ValueType, ValueType> OnValueChanged;
 
@@ -372,12 +311,12 @@ namespace ModsCommon.UI
         public override string ToString() => $"{base.ToString()}: from {ValueA} to {ValueB}";
     }
 
-    public class FloatRangePropertyPanel : ComparableFieldRangePropertyPanel<float, FloatUITextField> { }
+    public class FloatRangePropertyPanel : ComparableFieldRangePropertyPanel<float, FloatUITextField, FloatUITextField.FloatFieldRef> { }
 
-
-    public abstract class InvertedFieldPropertyPanel<ValueType, FieldType> : ComparableFieldPropertyPanel<ValueType, FieldType>
-        where FieldType : ComparableUITextField<ValueType>
+    public abstract class InvertedFieldPropertyPanel<ValueType, FieldType, RefType> : ComparableFieldPropertyPanel<ValueType, FieldType, RefType>
+        where FieldType : ComparableUITextField<ValueType, RefType>
         where ValueType : IComparable<ValueType>
+        where RefType : IFieldRef, IComparableField<ValueType>
     {
         protected CustomUIButton Invert { get; }
 
@@ -429,7 +368,7 @@ namespace ModsCommon.UI
             Invert.AllIconSprites = CommonTextures.PlusMinusButton;
         }
     }
-    public class FloatInvertedPropertyPanel : InvertedFieldPropertyPanel<float, FloatUITextField>
+    public class FloatInvertedPropertyPanel : InvertedFieldPropertyPanel<float, FloatUITextField, FloatUITextField.FloatFieldRef>
     {
         protected override float InvertValue(float value) => -value;
     }

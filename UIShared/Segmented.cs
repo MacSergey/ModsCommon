@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using IMT.Utilities;
 using ModsCommon.Utilities;
 using System;
 using System.Collections.Generic;
@@ -50,8 +51,27 @@ namespace ModsCommon.UI
         Middle,
         Right,
     }
-    public abstract class UISegmented<ValueType> : CustomUIPanel, IReusable
+
+    public interface ISegmentedRef : ISelectorRef { }
+    public interface ISegmented<ValueType>
     {
+        bool AutoButtonSize { get; set; }
+        float ButtonWidth { get; set; }
+        float TextScale { get; set; }
+    }
+    public interface ISingleSegmented<ValueType> : ISegmented<ValueType>
+    {
+        ValueType SelectedObject { get; set; }
+    }
+    public interface IMultiSegmented<ValueType> : ISegmented<ValueType>
+    {
+        List<ValueType> SelectedObjects { get; set; }
+    }
+
+    public abstract class UISegmented<ValueType, RefType> : CustomUIPanel, ISegmented<ValueType>, IReusable
+        where RefType : ISegmentedRef, ISegmented<ValueType>
+    {
+        public RefType Ref { get; }
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
@@ -102,10 +122,13 @@ namespace ModsCommon.UI
 
         public UISegmented()
         {
+            Ref = CreateRef();
+
             autoLayout = AutoLayout.Horizontal;
             autoChildrenHorizontally = AutoLayoutChildren.Fit;
             autoChildrenVertically = AutoLayoutChildren.Fit;
         }
+        protected abstract RefType CreateRef();
 
         public void AddItem(ValueType item, OptionData optionData) => AddItem(item, optionData, true, null);
         public void AddItem(ValueType item, OptionData optionData, bool? clickable = true, float? width = null)
@@ -277,8 +300,35 @@ namespace ModsCommon.UI
             }
         }
     }
+    public class SegmentedRef<ValueType, SegmentedType> : ISegmentedRef, ISegmented<ValueType>
+        where SegmentedType : ISegmented<ValueType>
+    {
+        protected SegmentedType Segmented { get; }
 
-    public abstract class UIOnceSegmented<ValueType> : UISegmented<ValueType>, IUIOnceSelector<ValueType>, IValueChanger<ValueType>
+        public SegmentedRef(SegmentedType segmented)
+        {
+            Segmented = segmented;
+        }
+
+        public bool AutoButtonSize 
+        { 
+            get => Segmented.AutoButtonSize; 
+            set => Segmented.AutoButtonSize = value; 
+        }
+        public float ButtonWidth 
+        { 
+            get => Segmented.ButtonWidth; 
+            set => Segmented.ButtonWidth = value; 
+        }
+        public float TextScale 
+        { 
+            get => Segmented.TextScale; 
+            set => Segmented.TextScale = value; 
+        }
+    }
+
+    public abstract class UISingleSegmented<ValueType, RefType> : UISegmented<ValueType, RefType>, ISingleSegmented<ValueType>, ISingleSelector<ValueType, RefType>, IValueChanger<ValueType>
+        where RefType : ISegmentedRef, ISegmented<ValueType>
     {
         public event Action<ValueType> OnSelectObject;
         event Action<ValueType> IValueChanger<ValueType>.OnValueChanged
@@ -299,10 +349,7 @@ namespace ModsCommon.UI
             set => SelectedObject = value;
         }
         public bool UseWheel { get; set; }
-        public bool WheelTip
-        {
-            set { }
-        }
+        public bool WheelTip { set { } }
         string IValueChanger<ValueType>.Format { set { } }
 
 
@@ -326,7 +373,12 @@ namespace ModsCommon.UI
         public override void DeInit()
         {
             base.DeInit();
+
             OnSelectObject = null;
+            SetDefault();
+        }
+        public virtual void SetDefault()
+        {
             UseWheel = false;
         }
         public override void Clear()
@@ -336,22 +388,84 @@ namespace ModsCommon.UI
         }
         protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null) => SetSelected(Buttons.FindIndex(b => b == component));
     }
-    public class BoolSegmented : UIOnceSegmented<bool>
+    public class SingleSegmentedRef<ValueType, SegmentedType> : SegmentedRef<ValueType, SegmentedType>, ISingleSegmented<ValueType>
+        where SegmentedType : ISingleSegmented<ValueType>
+    {
+        public SingleSegmentedRef(SegmentedType segmented) : base(segmented) { }
+
+        public ValueType SelectedObject 
+        { 
+            get => Segmented.SelectedObject; 
+            set => Segmented.SelectedObject = value; 
+        }
+    }
+
+    public abstract class UISingleEnumSegmented<EnumType, RefType> : UISingleSegmented<EnumType, RefType>
+        where EnumType : Enum
+        where RefType : ISegmentedRef, ISegmented<EnumType>
+    {
+        protected UITextureAtlas enumAtlas;
+        public UITextureAtlas EnumAtlas
+        {
+            get => enumAtlas;
+            set
+            {
+                if (!Equals(value, enumAtlas))
+                {
+                    enumAtlas = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        public void Init(Func<EnumType, bool> selector = null)
+        {
+            PauseLayout(() =>
+            {
+                foreach (var value in EnumExtension.GetEnumValues<EnumType>().IsVisible())
+                {
+                    if (selector == null || selector(value))
+                    {
+                        var label = value.Description();
+                        var atlas = value.Atlas() ?? EnumAtlas;
+                        var sprite = value.Sprite();
+                        AddItem(value, new OptionData(label, atlas, sprite));
+                    }
+                }
+            });
+        }
+    }
+    public class BoolSegmented : UISingleSegmented<bool, BoolSegmented.BoolSegmentedRef>
     {
         public BoolSegmented()
         {
             IsEqualDelegate = (x, y) => x == y;
         }
+
+        protected override BoolSegmentedRef CreateRef() => new(this);
+
+        public class BoolSegmentedRef : SingleSegmentedRef<bool, BoolSegmented>
+        {
+            public BoolSegmentedRef(BoolSegmented segmented) : base(segmented) { }
+        }
     }
-    public class IntSegmented : UIOnceSegmented<int>
+    public class IntSegmented : UISingleSegmented<int, IntSegmented.IntSegmentedRef>
     {
         public IntSegmented()
         {
             IsEqualDelegate = (x, y) => x == y;
         }
+
+        protected override IntSegmentedRef CreateRef() => new(this);
+
+        public class IntSegmentedRef : SingleSegmentedRef<int, IntSegmented>
+        {
+            public IntSegmentedRef(IntSegmented segmented) : base(segmented) { }
+        }
     }
 
-    public abstract class UIMultySegmented<ValueType> : UISegmented<ValueType>, IUIMultySelector<ValueType>, IValueChanger<List<ValueType>>
+    public abstract class UIMultiSegmented<ValueType, RefType> : UISegmented<ValueType, RefType>, IMultiSegmented<ValueType>, IMultiSelector<ValueType, RefType>, IValueChanger<List<ValueType>>
+        where RefType : ISegmentedRef, ISegmented<ValueType>
     {
         public event Action<List<ValueType>> OnSelectedObjectsChanged;
         event Action<List<ValueType>> IValueChanger<List<ValueType>>.OnValueChanged
@@ -425,6 +539,41 @@ namespace ModsCommon.UI
                 indices.Add(index);
 
             SetSelected(indices);
+        }
+    }
+
+    public abstract class UIMultyEnumSegmented<EnumType, RefType> : UIMultiSegmented<EnumType, RefType>
+        where EnumType : Enum
+        where RefType : ISegmentedRef, ISegmented<EnumType>
+    {
+        protected UITextureAtlas enumAtlas;
+        public UITextureAtlas EnumAtlas
+        {
+            get => enumAtlas;
+            set
+            {
+                if (!Equals(value, enumAtlas))
+                {
+                    enumAtlas = value;
+                    Invalidate();
+                }
+            }
+        }
+
+        public void Init(Func<EnumType, bool> selector = null)
+        {
+            PauseLayout(() =>
+            {
+                foreach (var value in EnumExtension.GetEnumValues<EnumType>().IsVisible())
+                {
+                    if (selector?.Invoke(value) != false)
+                    {
+                        var atlas = value.Atlas() ?? EnumAtlas;
+                        var sprite = value.Sprite();
+                        AddItem(value, new OptionData(value.Description(), atlas, sprite));
+                    }
+                }
+            });
         }
     }
 }
