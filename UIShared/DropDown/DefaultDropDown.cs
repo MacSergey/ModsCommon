@@ -20,7 +20,7 @@ namespace ModsCommon.UI
             get => selectedIndex >= 0 ? Objects[selectedIndex] : default;
             set => selectedIndex = Objects.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || (o != null && o.Equals(value)));
         }
-        public bool CanWheel { get; set; }
+        public bool CanWheel { get; private set; }
         public bool UseWheel { get; set; }
         public bool WheelTip
         {

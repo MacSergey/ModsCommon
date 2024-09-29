@@ -13,7 +13,7 @@ namespace ModsCommon.UI
         public event Action<bool> OnDropDownStateChange;
 
         protected SelectorType Selector { get; private set; }
-        public RefType Ref => Selector.Ref;
+        public RefType SelectorRef => Selector.Ref;
 
         protected virtual float DropDownWidth => 230;
         protected virtual bool AllowNull => true;

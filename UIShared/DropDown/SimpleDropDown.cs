@@ -1,5 +1,9 @@
 ﻿using ColossalFramework.UI;
+using IMT.Utilities;
+using ModsCommon.Utilities;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -15,7 +19,7 @@ namespace ModsCommon.UI
     public abstract class SimpleDropDown<ValueType, EntityType, PopupType, RefType> : SelectItemDropDown<DropDownItem<ValueType>, EntityType, PopupType>, ISingleSelector<ValueType, RefType>, IDropDown<ValueType>
         where EntityType : SimpleEntity<ValueType>
         where PopupType : SimplePopup<ValueType, EntityType>
-        where RefType : IDropDownRef
+        where RefType : IDropDownRef, IDropDown<ValueType>
     {
         public RefType Ref { get; }
         bool IReusable.InCache { get; set; }
@@ -25,19 +29,12 @@ namespace ModsCommon.UI
         public new event Action<ValueType> OnSelectObject;
 
         protected override Func<DropDownItem<ValueType>, bool> Selector => null;
-        protected override Func<DropDownItem<ValueType>, DropDownItem<ValueType>, int> Sorter => null;
+        protected override IComparer<DropDownItem<ValueType>> Comparer => null;
 
         public new ValueType SelectedObject
         {
             get => base.SelectedObject.value;
             set => base.SelectedObject = new DropDownItem<ValueType>(value, default);
-        }
-
-        public bool CanWheel { get; private set; }
-        public bool UseWheel { get; set; }
-        public bool WheelTip
-        {
-            set => tooltip = value ? CommonLocalize.ListPanel_ScrollWheel : string.Empty;
         }
 
         private float entityTextScale = 0.7f;
@@ -84,11 +81,11 @@ namespace ModsCommon.UI
             Popup.EntityTextScale = EntityTextScale;
             base.InitPopup();
         }
-        public void DeInit()
+        public override void DeInit()
         {
+            base.DeInit();
+
             Clear();
-            UseWheel = false;
-            WheelTip = false;
             entityTextScale = 0.7f;
         }
 
@@ -105,32 +102,6 @@ namespace ModsCommon.UI
         public void StartLayout(bool layoutNow = true, bool force = false) { }
         public void PauseLayout(Action action, bool layoutNow = true, bool force = false) => action?.Invoke();
         public void Ignore(UIComponent item, bool ignore) { }
-
-        protected override void OnMouseMove(UIMouseEventParameter p)
-        {
-            base.OnMouseMove(p);
-            CanWheel = true;
-        }
-        protected override void OnMouseLeave(UIMouseEventParameter p)
-        {
-            base.OnMouseLeave(p);
-            CanWheel = false;
-        }
-        protected sealed override void OnMouseWheel(UIMouseEventParameter p)
-        {
-            m_TooltipShowing = true;
-            tooltipBox.Hide();
-
-            if (UseWheel && (CanWheel || Time.realtimeSinceStartup - m_HoveringStartTime >= UIHelper.PropertyScrollTimeout))
-            {
-                if (p.wheelDelta > 0)
-                    SelectedIndex = Math.Max(SelectedIndex - 1, 0);
-                else if (p.wheelDelta < 0)
-                    SelectedIndex = Math.Min(SelectedIndex + 1, ObjectList.Count - 1);
-
-                p.Use();
-            }
-        }
     }
     public class SimpleDropDownRef<ValueType, DropDownType> : IDropDownRef, IDropDown<ValueType>
         where DropDownType : IDropDown<ValueType>
@@ -190,7 +161,7 @@ namespace ModsCommon.UI
             EntityTextScale = 0.7f;
         }
     }
-    public readonly struct DropDownItem<ValueType>
+    public readonly struct DropDownItem<ValueType> : IComparable<DropDownItem<ValueType>>
     {
         public readonly ValueType value;
         public readonly OptionData optionData;
@@ -200,7 +171,10 @@ namespace ModsCommon.UI
             this.value = value;
             this.optionData = optionData;
         }
-
+        public int CompareTo(DropDownItem<ValueType> other)
+        {
+            return Comparer<ValueType>.Default.Compare(value, other.value);
+        }
         public override bool Equals(object obj)
         {
             if (obj is not DropDownItem<ValueType> item)
@@ -223,5 +197,29 @@ namespace ModsCommon.UI
         {
             public StringDropDownRef(StringDropDown dropDown) : base(dropDown) { }
         }
+    }
+    public abstract class EnumDropDown<EnumType, EntityType, PopupType, RefType> : SimpleDropDown<EnumType, EntityType, PopupType, RefType>, IEnumSelector<EnumType>
+        where EnumType : Enum
+        where EntityType : SimpleEntity<EnumType>
+        where PopupType : SimplePopup<EnumType, EntityType>
+        where RefType : IDropDownRef, IDropDown<EnumType>
+    {
+        public void Init(Func<EnumType, bool> selector = null)
+        {
+            PauseLayout(() =>
+            {
+                foreach (var value in GetValues())
+                {
+                    if (selector == null || selector(value))
+                    {
+                        var label = value.Description();
+                        var atlas = value.Atlas();
+                        var sprite = value.Sprite();
+                        AddItem(value, new OptionData(label, atlas, sprite));
+                    }
+                }
+            });
+        }
+        protected virtual IEnumerable<EnumType> GetValues() => EnumExtension.GetEnumValues<EnumType>().IsVisible();
     }
 }

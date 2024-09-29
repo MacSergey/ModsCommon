@@ -2,6 +2,7 @@
 using System;
 using ColossalFramework.UI;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace ModsCommon.UI
 {
@@ -18,7 +19,7 @@ namespace ModsCommon.UI
     public class LanguageDropDown : SelectItemDropDown<LanguageDropDown.Language, LanguageDropDown.LanguageEntity, LanguageDropDown.LanguagePopup>
     {
         protected override Func<Language, bool> Selector => null;
-        protected override Func<Language, Language, int> Sorter => null;
+        protected override IComparer<Language> Comparer => null;
 
         public new string SelectedObject
         {

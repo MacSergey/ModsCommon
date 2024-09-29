@@ -53,6 +53,10 @@ namespace ModsCommon.UI
     }
 
     public interface ISegmentedRef : ISelectorRef { }
+    public interface ISegmented
+    {
+        SegmentedStyle SegmentedStyle { get;set; }
+    }
     public interface ISegmented<ValueType>
     {
         bool AutoButtonSize { get; set; }
@@ -68,7 +72,7 @@ namespace ModsCommon.UI
         List<ValueType> SelectedObjects { get; set; }
     }
 
-    public abstract class UISegmented<ValueType, RefType> : CustomUIPanel, ISegmented<ValueType>, IReusable
+    public abstract class UISegmented<ValueType, RefType> : CustomUIPanel, ISegmented, ISegmented<ValueType>, IReusable
         where RefType : ISegmentedRef, ISegmented<ValueType>
     {
         public RefType Ref { get; }
@@ -291,7 +295,7 @@ namespace ModsCommon.UI
         private SegmentedStyle style;
         public SegmentedStyle SegmentedStyle
         {
-            private get => style ?? ComponentStyle.Default.Segmented;
+            get => style ?? ComponentStyle.Default.Segmented;
             set
             {
                 style = value;
@@ -400,40 +404,27 @@ namespace ModsCommon.UI
         }
     }
 
-    public abstract class UISingleEnumSegmented<EnumType, RefType> : UISingleSegmented<EnumType, RefType>
+    public abstract class UIEnumSegmented<EnumType, RefType> : UISingleSegmented<EnumType, RefType>, IEnumSelector<EnumType>
         where EnumType : Enum
         where RefType : ISegmentedRef, ISegmented<EnumType>
     {
-        protected UITextureAtlas enumAtlas;
-        public UITextureAtlas EnumAtlas
-        {
-            get => enumAtlas;
-            set
-            {
-                if (!Equals(value, enumAtlas))
-                {
-                    enumAtlas = value;
-                    Invalidate();
-                }
-            }
-        }
-
         public void Init(Func<EnumType, bool> selector = null)
         {
             PauseLayout(() =>
             {
-                foreach (var value in EnumExtension.GetEnumValues<EnumType>().IsVisible())
+                foreach (var value in GetValues())
                 {
                     if (selector == null || selector(value))
                     {
                         var label = value.Description();
-                        var atlas = value.Atlas() ?? EnumAtlas;
+                        var atlas = value.Atlas();
                         var sprite = value.Sprite();
                         AddItem(value, new OptionData(label, atlas, sprite));
                     }
                 }
             });
         }
+        protected virtual IEnumerable<EnumType> GetValues() => EnumExtension.GetEnumValues<EnumType>().IsVisible();
     }
     public class BoolSegmented : UISingleSegmented<bool, BoolSegmented.BoolSegmentedRef>
     {

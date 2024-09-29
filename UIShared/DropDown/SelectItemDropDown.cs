@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ModsCommon.UI
@@ -31,8 +32,31 @@ namespace ModsCommon.UI
         public ObjectType SelectedObject
         {
             get => SelectedIndex >= 0 && SelectedIndex < ObjectList.Count ? ObjectList[SelectedIndex] : default;
-            set => SelectedIndex = ObjectList.FindIndex(o => IsEqualDelegate?.Invoke(o, value) ?? ReferenceEquals(o, value) || (o != null && o.Equals(value)));
+            set => SelectedIndex = ObjectList.FindIndex(o => IsEqual(o, value));
         }
+
+        private IComparer<ObjectType> comparer;
+        public Func<ObjectType, bool> ItemSelector { get; set; }
+        public IComparer<ObjectType> ItemComparer 
+        {
+            get => comparer;
+            set
+            {
+                comparer = value;
+                if(comparer != null)
+                    ObjectList.Sort(comparer);
+            }
+        }
+        protected override Func<ObjectType, bool> Selector => ItemSelector;
+        protected override IComparer<ObjectType> Comparer => ItemComparer;
+
+        public bool CanWheel { get; private set; }
+        public bool UseWheel { get; set; }
+        public bool WheelTip
+        {
+            set => tooltip = value ? CommonLocalize.ListPanel_ScrollWheel : string.Empty;
+        }
+
         public SelectItemDropDown()
         {
             Entity = AddUIComponent<EntityType>();
@@ -45,7 +69,14 @@ namespace ModsCommon.UI
 
         public virtual void AddItem(ObjectType item)
         {
-            ObjectList.Add(item);
+            if(Comparer != null)
+            {
+                var index = ObjectList.BinarySearch(item, Comparer);
+                if(index < 0)
+                    ObjectList.Insert(~index, item);
+            }
+            else
+                ObjectList.Add(item);
         }
         public virtual void Clear()
         {
@@ -59,11 +90,61 @@ namespace ModsCommon.UI
             base.InitPopup();
             Popup.SelectedObject = SelectedObject;
         }
+        public virtual void DeInit()
+        {
+            UseWheel = false;
+            WheelTip = false;
+        }
+
         protected override void SelectObject(ObjectType value) => SelectedObject = value;
         protected override void OnSizeChanged()
         {
             base.OnSizeChanged();
             Entity.size = size;
+        }
+
+        protected override void OnMouseMove(UIMouseEventParameter p)
+        {
+            base.OnMouseMove(p);
+            CanWheel = true;
+        }
+        protected override void OnMouseLeave(UIMouseEventParameter p)
+        {
+            base.OnMouseLeave(p);
+            CanWheel = false;
+        }
+        protected sealed override void OnMouseWheel(UIMouseEventParameter p)
+        {
+            m_TooltipShowing = true;
+            tooltipBox.Hide();
+
+            if (UseWheel && (CanWheel || Time.realtimeSinceStartup - m_HoveringStartTime >= UIHelper.PropertyScrollTimeout))
+            {
+                if (p.wheelDelta > 0)
+                {
+                    for (var index = SelectedIndex - 1; index >= 0; index -= 1)
+                    {
+                        if (Selector == null || Selector(ObjectList[index]))
+                        {
+                            SelectedIndex = index;
+                            break;
+                        }
+                    }
+                }
+                else if (p.wheelDelta < 0)
+                {             
+                    for (var index = SelectedIndex + 1; index < ObjectList.Count; index += 1)
+                    {
+                        if (Selector == null || Selector(ObjectList[index]))
+                        {
+                            SelectedIndex = index;
+                            break;
+                        }                   
+                    }
+                }
+
+                p.Use();
+            }
         }
 
         public override DropDownStyle DropDownStyle 

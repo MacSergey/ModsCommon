@@ -4,7 +4,11 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class CustomUIButton : UITextComponent
+    public interface IButton
+    {
+        ButtonStyle ButtonStyle { get; set; }
+    }
+    public class CustomUIButton : UITextComponent, IButton
     {
         public event Action<UIButton.ButtonState> OnStateChanged;
 
@@ -1670,10 +1674,14 @@ namespace ModsCommon.UI
 
         #endregion
 
+        private ButtonStyle style;
         public ButtonStyle ButtonStyle
         {
+            get => style;
             set
             {
+                style = value;
+
                 bgAtlas = value.BgAtlas;
                 fgAtlas = value.FgAtlas;
                 iconAtlas = value.IconAtlas;

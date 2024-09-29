@@ -29,7 +29,7 @@ namespace ModsCommon.UI
         float EntityHeight { get; set; }
         RectOffset ItemsPadding { get; set; }
 
-        void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector, Func<ObjectType, ObjectType, int> sorter);
+        void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector, IComparer<ObjectType> comparer);
         public void PauseRefreshing(Action action);
     }
     public interface IPopupEntity<ObjectType>
@@ -58,6 +58,13 @@ namespace ModsCommon.UI
         public event EntityStyleDelegate<ObjectType, EntityType> OnSetEntityStyle;
 
         public Func<ObjectType, ObjectType, bool> IsEqualDelegate { get; set; }
+        protected bool IsEqual(ObjectType x, ObjectType y)
+        {
+            if (IsEqualDelegate != null)
+                return IsEqualDelegate(x, y);
+            else
+                return ReferenceEquals(x, y) || (x != null && x.Equals(y));
+        }
 
         #endregion
 
@@ -73,12 +80,12 @@ namespace ModsCommon.UI
         }
         protected abstract IEnumerable<ObjectType> Objects { get; }
         protected abstract Func<ObjectType, bool> Selector { get; }
-        protected abstract Func<ObjectType, ObjectType, int> Sorter { get; }
+        protected abstract IComparer<ObjectType> Comparer { get; }
 
         protected virtual void SetPopupStyle() { }
         protected virtual void SetEntityStyle(EntityType entity, ref bool overridden) => OnSetEntityStyle?.Invoke(entity, ref overridden);
 
-        protected virtual void InitPopup() => Popup.Init(Objects, Selector, Sorter);
+        protected virtual void InitPopup() => Popup.Init(Objects, Selector, Comparer);
 
         protected override void WhilePopupOpening()
         {
@@ -110,32 +117,6 @@ namespace ModsCommon.UI
         {
             SelectObject(value);
             ClosePopup();
-        }
-
-        private DropDownStyle style;
-        public virtual DropDownStyle DropDownStyle
-        {
-            get => style;
-            set
-            {
-                style = value;
-
-                bgAtlas = value.BgAtlas;
-                fgAtlas = value.FgAtlas;
-                IconAtlas = value.IconAtlas;
-
-                bgSprites = value.BgSprites;
-                fgSprites = value.FgSprites;
-                IconSprites = value.IconSprites;
-
-                bgColors = value.BgColors;
-                fgColors = value.FgColors;
-                IconColors = value.IconColors;
-
-                textColors = value.TextColors;
-
-                Invalidate();
-            }
         }
 
         #endregion

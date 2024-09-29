@@ -116,7 +116,7 @@ namespace ModsCommon.Utilities
                 .GetCustomAttributes(typeof(SpriteAttribute), false)
                 .OfType<SpriteAttribute>()
                 .FirstOrDefault(a => a.Tag == tag);
-            return attr.Atlas;
+            return attr?.Atlas;
         }
 
         public static int ToInt<T>(this T value) where T : Enum => (int)(object)value;
@@ -126,12 +126,17 @@ namespace ModsCommon.Utilities
         public static ulong ToULong<T>(this T value) where T : Enum => (ulong)(object)value;
         public static T ToEnum<T>(this ulong value) where T : Enum => (T)(object)value;
 
-        public static ToT ToEnum<ToT, FromT>(this FromT item) where ToT : Enum where FromT : Enum => (ToT)(object)item;
-        public static IEnumerable<ToT> ToEnum<ToT, FromT>(this IEnumerable<FromT> values)
-            where ToT : Enum 
-            where FromT : Enum
+        public static ToType ToEnum<ToType, FromType>(this FromType item) 
+            where ToType : Enum 
+            where FromType : Enum
         {
-            return values.Select(v => v.ToEnum<ToT, FromT>());
+            return (ToType)(object)item;
+        }
+        public static IEnumerable<ToType> ToEnum<ToType, FromType>(this IEnumerable<FromType> values)
+            where ToType : Enum 
+            where FromType : Enum
+        {
+            return values.Select(v => v.ToEnum<ToType, FromType>());
         }
 
         public static bool IsSet<T>(this T flags, T flag) where T : Enum => (flags.ToInt() & flag.ToInt()) == flag.ToInt();

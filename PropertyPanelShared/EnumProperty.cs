@@ -7,69 +7,58 @@ using System.Linq;
 
 namespace ModsCommon.UI
 {
+    public interface IEnumSelector<EnumType>
+    {
+        void Init(Func<EnumType, bool> selector = null);
+    }
 
     public abstract class EnumSinglePropertyPanel<EnumType, SelectorType, RefType> : ListSinglePropertyPanel<EnumType, SelectorType, RefType>
         where EnumType : Enum
-        where SelectorType : UIComponent, ISingleSelector<EnumType, RefType>
+        where SelectorType : UIComponent, IEnumSelector<EnumType>, ISingleSelector<EnumType, RefType>
         where RefType : ISelectorRef
     {
         protected override bool AllowNull => false;
 
         public override void Init() => Init(null);
-        public void Init(Func<EnumType, bool> selector)
+        public virtual void Init(Func<EnumType, bool> selector)
         {
             base.Init(null);
-            FillItems(selector);
+            InitSelector(selector);
         }
-        protected virtual IEnumerable<EnumType> GetValues() => EnumExtension.GetEnumValues<EnumType>().IsVisible();
-        protected virtual void FillItems(Func<EnumType, bool> selector)
+        protected virtual void InitSelector(Func<EnumType, bool> selector)
         {
-            Selector.PauseLayout(() =>
-            {
-                foreach (var value in GetValues())
-                {
-                    if (selector == null || selector(value))
-                    {
-                        var label = value.Description();
-                        var atlas = value.Atlas();
-                        var sprite = value.Sprite();
-                        Selector.AddItem(value, new OptionData(label, atlas, sprite));
-                    }
-                }
-            });
+            Selector.Init(selector);
         }
         public virtual void Clear()
         {
             Selector.PauseLayout(Selector.Clear);
         }
     }
-    public abstract class AutoEnumSinglePropertyPanel<EnumType, SegmentedType, RefType> : ListSinglePropertyPanel<EnumType, SegmentedType, RefType>
+    public abstract class EnumSingleSegmentedPropertyPanel<EnumType, SegmentedType, RefType> : EnumSinglePropertyPanel<EnumType, SegmentedType, RefType>
         where EnumType : Enum
-        where SegmentedType : UISingleEnumSegmented<EnumType, RefType>, ISingleSelector<EnumType, RefType>
+        where SegmentedType : UIComponent, ISegmented, IEnumSelector<EnumType>, ISingleSelector<EnumType, RefType>
         where RefType : ISegmentedRef, ISegmented<EnumType>
     {
-        protected override bool AllowNull => false;
-        public RefType SelectorRef => Selector.Ref;
-
-        protected override void AddSelector()
-        {
-            base.AddSelector();
-            Selector.Init();
-        }
-        protected override void ClearSelector()
-        {
-            //dont clear
-        }
-
         public override void SetStyle(ControlStyle style)
         {
             Selector.SegmentedStyle = style.Segmented;
         }
     }
+    public abstract class EnumSingleDropDownPropertyPanel<EnumType, DropDownType, RefType> : EnumSinglePropertyPanel<EnumType, DropDownType, RefType>
+        where EnumType : Enum
+        where DropDownType : UIComponent, IDropDown, IEnumSelector<EnumType>, ISingleSelector<EnumType, RefType>
+        where RefType : IDropDownRef, IDropDown<EnumType>
+    {
+        public override void SetStyle(ControlStyle style)
+        {
+            Selector.DropDownStyle = style.DropDown;
+        }
+    }
+
 
     public abstract class EnumMultiPropertyPanel<EnumType, SelectorType, RefType> : ListMultiPropertyPanel<EnumType, SelectorType, RefType>
         where EnumType : Enum
-        where SelectorType : UIComponent, IMultiSelector<EnumType, RefType>
+        where SelectorType : UIComponent, IEnumSelector<EnumType>, IMultiSelector<EnumType, RefType>
         where RefType : ISelectorRef
     {
         public event Action<EnumType> OnSelectObjectChanged;
@@ -85,23 +74,7 @@ namespace ModsCommon.UI
         public void Init(Func<EnumType, bool> selector)
         {
             base.Init(null);
-            FillItems(selector);
-        }
-        protected virtual void FillItems(Func<EnumType, bool> selector)
-        {
-            Selector.PauseLayout(() =>
-            {
-                foreach (var value in EnumExtension.GetEnumValues<EnumType>().IsVisible())
-                {
-                    if (selector == null || selector(value))
-                    {
-                        var label = value.Description();
-                        var atlas = value.Atlas();
-                        var sprite = value.Sprite();
-                        Selector.AddItem(value, new OptionData(label, atlas, sprite));
-                    }
-                }
-            });
+            Selector.Init(selector);
         }
         public virtual void Clear()
         {
@@ -112,29 +85,6 @@ namespace ModsCommon.UI
         {
             base.SelectorValueChanged(value);
             OnSelectObjectChanged?.Invoke(value.GetEnum());
-        }
-    }
-    public abstract class AutoEnumMultiPropertyPanel<EnumType, SegmentedType, RefType> : ListMultiPropertyPanel<EnumType, SegmentedType, RefType>
-        where EnumType : Enum
-        where SegmentedType : UIMultyEnumSegmented<EnumType, RefType>, IMultiSelector<EnumType, RefType>
-        where RefType : ISegmentedRef, ISegmented<EnumType>
-    {
-        protected override bool AllowNull => false;
-        public RefType SelectorRef => Selector.Ref;
-
-        protected override void AddSelector()
-        {
-            base.AddSelector();
-            Selector.Init();
-        }
-        protected override void ClearSelector()
-        {
-            //dont clear
-        }
-
-        public override void SetStyle(ControlStyle style)
-        {
-            Selector.SegmentedStyle = style.Segmented;
         }
     }
 

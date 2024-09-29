@@ -182,7 +182,7 @@ namespace ModsCommon.UI
         {
             set => tooltip = value ? CommonLocalize.FieldPanel_ScrollWheel : string.Empty;
         }
-        public bool CanWheel { get; set; }
+        public bool CanWheel { get; private set; }
         private WheelMode Mode
         {
             get

@@ -28,7 +28,7 @@ namespace ModsCommon.UI
 
         public Func<ObjectType, ObjectType, bool> IsEqualDelegate { protected get; set; }
         private Func<ObjectType, bool> Selector { get; set; } = null;
-        private Func<ObjectType, ObjectType, int> Sorter { get; set; } = null;
+        private IComparer<ObjectType> Comparer { get; set; } = null;
 
         private List<ObjectType> RawValues { get; set; } = new List<ObjectType>();
         private List<ObjectType> Values { get; set; } = new List<ObjectType>();
@@ -230,10 +230,10 @@ namespace ModsCommon.UI
             Content.AutoChildrenHorizontally = AutoLayoutChildren.Fill;
         }
 
-        public virtual void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector, Func<ObjectType, ObjectType, int> sorter)
+        public virtual void Init(IEnumerable<ObjectType> values, Func<ObjectType, bool> selector, IComparer<ObjectType> comparer)
         {
             Selector = selector;
-            Sorter = sorter;
+            Comparer = comparer;
             RawValues.Clear();
             RawValues.AddRange(values);
             RefreshValues();
@@ -245,7 +245,7 @@ namespace ModsCommon.UI
             RawValues.Clear();
             Values.Clear();
             Selector = null;
-            Sorter = null;
+            Comparer = null;
             selectedObject = default;
 
             startIndex = 0;
@@ -279,7 +279,7 @@ namespace ModsCommon.UI
         }
 
         protected virtual bool FilterObjects(ObjectType value) => Selector == null || Selector(value);
-        protected virtual int SortObjects(ObjectType objA, ObjectType objB) => Sorter != null ? Sorter(objA, objB) : -1;
+        protected virtual int SortObjects(ObjectType objA, ObjectType objB) => Comparer != null ? Comparer.Compare(objA, objB) : -1;
         protected virtual void RefreshValues()
         {
             Values.Clear();

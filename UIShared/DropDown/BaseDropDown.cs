@@ -5,7 +5,11 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public class BaseDropDown<PopupType> : CustomUIButton
+    public interface IDropDown
+    {
+        DropDownStyle DropDownStyle { get; set; }
+    }
+    public class BaseDropDown<PopupType> : CustomUIButton, IDropDown
         where PopupType : UIComponent
     {
         public event Action OnBeforePopupOpen;
@@ -160,6 +164,32 @@ namespace ModsCommon.UI
             }
 
             static float MathPos(float pos, float size, float screen) => pos + size > screen ? (screen - size < 0 ? 0 : screen - size) : Mathf.Max(pos, 0);
+        }
+
+        private DropDownStyle style;
+        public virtual DropDownStyle DropDownStyle
+        {
+            get => style;
+            set
+            {
+                style = value;
+
+                bgAtlas = value.BgAtlas;
+                fgAtlas = value.FgAtlas;
+                IconAtlas = value.IconAtlas;
+
+                bgSprites = value.BgSprites;
+                fgSprites = value.FgSprites;
+                IconSprites = value.IconSprites;
+
+                bgColors = value.BgColors;
+                fgColors = value.FgColors;
+                IconColors = value.IconColors;
+
+                textColors = value.TextColors;
+
+                Invalidate();
+            }
         }
     }
 }
