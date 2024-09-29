@@ -12,16 +12,14 @@ namespace ModsCommon.UI
         ValueType Value { get; set; }
         string Format { set; }
     }
-    public interface IFieldRef { }
-    public interface ITextField<ValueType>
+    public interface ITextField<ValueType> : ITextField
     {
         ValueType Value { get; set; }
         //Color32 FieldTextColor { get; set; }
         string Format { set; }
         bool SubmitOnFocusLost { get; set; }
     }
-    public abstract class UITextField<ValueType, RefType> : CustomUITextField, ITextField<ValueType>, IValueChanger<ValueType>, IReusable
-        where RefType : IFieldRef, ITextField<ValueType>
+    public abstract class UITextField<ValueType> : CustomUITextField, ITextField<ValueType>, IValueChanger<ValueType>, IReusable
     {
         private static string DefaultFormat => "{0}";
         public static float DefaultTextScale => 0.7f;
@@ -31,7 +29,6 @@ namespace ModsCommon.UI
         private ValueType value;
         private string format;
 
-        public RefType Ref { get; }
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
@@ -50,12 +47,6 @@ namespace ModsCommon.UI
                 RefreshText();
             }
         }
-
-        public UITextField()
-        {
-            Ref = CreateRef();
-        }
-        protected abstract RefType CreateRef();
 
         public void SimulateEnterValue(ValueType value) => ValueChanged(value, true);
 
@@ -126,7 +117,7 @@ namespace ModsCommon.UI
         }
 
         public override string ToString() => Value.ToString();
-        public static implicit operator ValueType(UITextField<ValueType, RefType> field) => field.Value;
+        public static implicit operator ValueType(UITextField<ValueType> field) => field.Value;
 
         public void SetDefaultStyle()
         {
@@ -134,40 +125,9 @@ namespace ModsCommon.UI
             textScale = DefaultTextScale;
         }
     }
-    public class FieldRef<ValueType, FieldType> : IFieldRef, ITextField<ValueType>
-        where FieldType : ITextField<ValueType>
-    {
-        protected FieldType Field { get; }
 
-        public FieldRef(FieldType field)
-        {
-            Field = field;
-        }
-
-        //public Color32 FieldTextColor
-        //{
-        //    get => Field.textColor;
-        //    set => Field.textColor = value;
-        //}
-        public ValueType Value
-        {
-            get => Field.Value;
-            set => Field.Value = value;
-        }
-        public string Format
-        {
-            set => Field.Format = value;
-        }
-        public bool SubmitOnFocusLost
-        {
-            get => Field.SubmitOnFocusLost;
-            set => Field.SubmitOnFocusLost = value;
-        }
-    }
-
-    public abstract class ComparableUITextField<ValueType, RefType> : UITextField<ValueType, RefType>, IComparableField<ValueType> 
+    public abstract class ComparableUITextField<ValueType> : UITextField<ValueType>, IComparableField<ValueType> 
         where ValueType : IComparable<ValueType>
-        where RefType : IFieldRef, IComparableField<ValueType>
     {
         public ValueType MinValue { get; set; }
         public ValueType MaxValue { get; set; }
@@ -289,54 +249,8 @@ namespace ModsCommon.UI
         ValueType WheelStep { get; set; }
         bool WheelTip { set; }
     }
-    public class ComparableFieldRef<ValueType, FieldType> : FieldRef<ValueType, FieldType>, IComparableField<ValueType>
-        where FieldType : IComparableField<ValueType>
-    {
-        public ComparableFieldRef(FieldType field) : base(field) { }
 
-        public ValueType MinValue
-        {
-            get => Field.MinValue;
-            set => Field.MinValue = value;
-        }
-        public ValueType MaxValue
-        {
-            get => Field.MaxValue;
-            set => Field.MaxValue = value;
-        }
-        public bool CheckMin
-        {
-            get => Field.CheckMin;
-            set => Field.CheckMin = value;
-        }
-        public bool CheckMax
-        {
-            get => Field.CheckMax;
-            set => Field.CheckMax = value;
-        }
-        public bool CyclicalValue
-        {
-            get => Field.CyclicalValue;
-            set => Field.CyclicalValue = value;
-        }
-
-        public bool UseWheel
-        {
-            get => Field.UseWheel;
-            set => Field.UseWheel = value;
-        }
-        public ValueType WheelStep
-        {
-            get => Field.WheelStep;
-            set => Field.WheelStep = value;
-        }
-        public bool WheelTip
-        {
-            set => Field.WheelTip = value;
-        }
-    }
-
-    public class FloatUITextField : ComparableUITextField<float, FloatUITextField.FloatFieldRef>
+    public class FloatUITextField : ComparableUITextField<float>
     {
         static string DefaultNumberFormat => "0.###";
         private string _numberFormat;
@@ -355,7 +269,6 @@ namespace ModsCommon.UI
             get => base.text.Replace(',', '.');
             set => base.text = value;
         }
-        protected override FloatFieldRef CreateRef() => new(this);
         protected override float Decrement(float value, float step, WheelMode mode)
         {
             step = GetStep(step, mode);
@@ -381,15 +294,9 @@ namespace ModsCommon.UI
             _numberFormat = null;
         }
         protected override string GetString(float value) => value.ToString(NumberFormat);
-
-        public class FloatFieldRef : ComparableFieldRef<float, FloatUITextField> 
-        {
-            public FloatFieldRef(FloatUITextField field) : base(field) { }
-        }
     }
-    public class IntUITextField : ComparableUITextField<int, IntUITextField.IntFieldRef>
+    public class IntUITextField : ComparableUITextField<int>
     {
-        protected override IntFieldRef CreateRef() => new(this);
         protected override int Decrement(int value, int step, WheelMode mode) => value == int.MinValue ? value : value - GetStep(step, mode);
         protected override int Increment(int value, int step, WheelMode mode) => value == int.MaxValue ? value : value + GetStep(step, mode);
         private int GetStep(int step, WheelMode mode) => mode switch
@@ -399,15 +306,9 @@ namespace ModsCommon.UI
             WheelMode.VeryLow => Math.Max(step / 100, 1),
             _ => step,
         };
-
-        public class IntFieldRef : ComparableFieldRef<int, IntUITextField>
-        {
-            public IntFieldRef(IntUITextField field) : base(field) { }
-        }
     }
-    public class ByteUITextField : ComparableUITextField<byte, ByteUITextField.ByteFieldRef>
+    public class ByteUITextField : ComparableUITextField<byte>
     {
-        protected override ByteFieldRef CreateRef() => new(this);
         protected override byte Decrement(byte value, byte step, WheelMode mode)
         {
             step = GetStep(step, mode);
@@ -426,17 +327,10 @@ namespace ModsCommon.UI
             WheelMode.VeryLow => (byte)Math.Max(step / 100, 1),
             _ => step,
         };
-
-        public class ByteFieldRef : ComparableFieldRef<byte, ByteUITextField>
-        {
-            public ByteFieldRef(ByteUITextField field) : base(field) { }
-        }
     }
-    public class StringUITextField : UITextField<string, StringUITextField.StringFieldRef> 
+    public class StringUITextField : UITextField<string> 
     {
         public Func<string, string> CheckValue { private get; set; }
-
-        protected override StringFieldRef CreateRef() => new(this);
 
         protected override void ValueChanged(string value, bool callEvent = true)
         {
@@ -444,22 +338,6 @@ namespace ModsCommon.UI
                 value = CheckValue(value);
 
             base.ValueChanged(value, callEvent);
-        }
-
-        public class StringFieldRef : FieldRef<string, StringUITextField>
-        {
-            public StringFieldRef(StringUITextField field) : base(field) { }
-
-            public bool Multiline
-            {
-                get => Field.Multiline;
-                set => Field.Multiline = value;
-            }
-            public float TextScale
-            {
-                get => Field.textScale;
-                set => Field.textScale = value;
-            }
         }
     }
 }

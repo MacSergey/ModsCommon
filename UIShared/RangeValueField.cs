@@ -9,9 +9,8 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public interface IValueFieldRange<ValueType, FieldRefType>
+    public interface IValueFieldRange<ValueType>
         where ValueType : IComparable<ValueType>
-        where FieldRefType : IFieldRef, IComparableField<ValueType>
     {
         RangeMode Mode { get; set; }
         bool AllowInvert { get; set; }
@@ -28,16 +27,12 @@ namespace ModsCommon.UI
         bool UseWheel { get; set; }
         ValueType WheelStep { set; }
         bool WheelTip { set; }
-        FieldRefType FieldARef { get; }
-        FieldRefType FieldBRef { get; }
     }
-    public abstract class ValueFieldRange<ValueType, FieldType, FieldRefType, RefType> : CustomUIPanel, IValueFieldRange<ValueType, FieldRefType>, IReusable
+    public abstract class ValueFieldRange<ValueType, FieldType, RefType> : CustomUIPanel, IValueFieldRange<ValueType>, IReusable
         where ValueType : IComparable<ValueType>
-        where FieldType : ComparableUITextField<ValueType, FieldRefType>
-        where FieldRefType : IFieldRef, IComparableField<ValueType>
-        where RefType : IFieldRef, IValueFieldRange<ValueType, FieldRefType>
+        where FieldType : ComparableUITextField<ValueType>
+        where RefType : IValueFieldRange<ValueType>
     {
-        public RefType Ref { get; }
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
@@ -45,9 +40,6 @@ namespace ModsCommon.UI
 
         protected FieldType FieldA { get; private set; }
         protected FieldType FieldB { get; private set; }
-
-        public FieldRefType FieldARef => FieldA.Ref;
-        public FieldRefType FieldBRef => FieldB.Ref;
 
         private const float defaultFieldWidth = 100f;
         private float fieldWidth = defaultFieldWidth;
@@ -220,8 +212,6 @@ namespace ModsCommon.UI
 
         public ValueFieldRange()
         {
-            Ref = CreateRef();
-
             autoLayout = AutoLayout.Horizontal;
             autoChildrenHorizontally = AutoLayoutChildren.Fit;
             autoChildrenVertically = AutoLayoutChildren.Fit;
@@ -241,8 +231,6 @@ namespace ModsCommon.UI
                 FieldB.OnValueChanged += ValueBChanged;
             });
         }
-
-        protected abstract RefType CreateRef();
 
         protected virtual void Refresh()
         {
@@ -368,116 +356,12 @@ namespace ModsCommon.UI
         }
     }
 
-    public abstract class ValueFieldRangeRef<ValueType, RangeType, FieldRefType> : IFieldRef, IValueFieldRange<ValueType, FieldRefType>
-        where ValueType : IComparable<ValueType>
-        where FieldRefType : IFieldRef, IComparableField<ValueType>
-        where RangeType : IValueFieldRange<ValueType, FieldRefType>
-    {
-        protected RangeType Range { get; }
-
-        public ValueFieldRangeRef(RangeType range)
-        {
-            Range = range;
-        }
-
-        public RangeMode Mode 
-        { 
-            get => Range.Mode; 
-            set => Range.Mode = value; 
-        }
-        public bool AllowInvert 
-        { 
-            get => Range.AllowInvert; 
-            set => Range.AllowInvert = value; 
-        }
-        public float FieldWidth
-        {
-            get => Range.FieldWidth;
-            set => Range.FieldWidth = value;
-        }
-        public bool SubmitOnFocusLost 
-        { 
-            get => Range.SubmitOnFocusLost; 
-            set => Range.SubmitOnFocusLost = value; 
-        }
-        public ValueType ValueA 
-        { 
-            get => Range.ValueA; 
-            set => Range.ValueA = value; 
-        }
-        public ValueType ValueB 
-        { 
-            get => Range.ValueB; 
-            set => Range.ValueB = value; 
-        }
-        public string Format 
-        { 
-            set => Range.Format = value; 
-        }
-        public ValueType MinValue 
-        { 
-            get => Range.MinValue; 
-            set => Range.MinValue = value; 
-        }
-        public ValueType MaxValue 
-        { 
-            get => Range.MaxValue; 
-            set => Range.MaxValue = value; 
-        }
-        public bool CheckMin 
-        { 
-            get => Range.CheckMin; 
-            set => Range.CheckMin = value; 
-        }
-        public bool CheckMax 
-        { 
-            get => Range.CheckMax; 
-            set => Range.CheckMax = value; 
-        }
-        public bool CyclicalValue 
-        { 
-            get => Range.CyclicalValue; 
-            set => Range.CyclicalValue = value; 
-        }
-        public bool UseWheel 
-        { 
-            get => Range.UseWheel; 
-            set => Range.UseWheel = value; 
-        }
-        public ValueType WheelStep 
-        { 
-            set => Range.WheelStep = value; 
-        }
-        public bool WheelTip 
-        { 
-            set => Range.WheelTip = value; 
-        }
-        public FieldRefType FieldARef => Range.FieldARef;
-        public FieldRefType FieldBRef => Range.FieldBRef;
-    }
-
     public enum RangeMode
     {
         Range,
         Single,
     }
 
-    public class IntRangeField : ValueFieldRange<int, IntUITextField, IntUITextField.IntFieldRef, IntRangeField.IntRangeFieldRef> 
-    {
-        protected override IntRangeFieldRef CreateRef() => new(this);
-
-        public class IntRangeFieldRef : ValueFieldRangeRef<int, IntRangeField, IntUITextField.IntFieldRef>
-        {
-            public IntRangeFieldRef(IntRangeField range) : base(range) { }
-        }
-    }
-    public class FloatRangeField : ValueFieldRange<float, FloatUITextField, FloatUITextField.FloatFieldRef, FloatRangeField.FloatRangeFieldRef> 
-    {
-        protected override FloatRangeFieldRef CreateRef() => new(this);
-
-        public class FloatRangeFieldRef : ValueFieldRangeRef<float, FloatRangeField, FloatUITextField.FloatFieldRef>
-        {
-            public FloatRangeFieldRef(FloatRangeField range) : base(range) { }
-        }
-    }
+    public class IntRangeField : ValueFieldRange<int, IntUITextField, IValueFieldRange<int>> { }
+    public class FloatRangeField : ValueFieldRange<float, FloatUITextField, IValueFieldRange<float>> { }
 }

@@ -9,8 +9,8 @@ namespace ModsCommon.UI
 {
     public abstract class SliderPropertyPanel<ValueType, SliderType, FieldType, RefType> : EditorPropertyPanel, IReusable
         where SliderType : UIValueSlider<ValueType>
-        where FieldType : UITextField<ValueType, RefType>
-        where RefType : IFieldRef, IComparableField<ValueType>
+        where FieldType : UITextField<ValueType>, RefType
+        where RefType : IComparableField<ValueType>
     {
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
@@ -114,8 +114,8 @@ namespace ModsCommon.UI
     public abstract class ComparableSliderPropertyPanel<ValueType, SliderType, FieldType, RefType> : SliderPropertyPanel<ValueType, SliderType, FieldType, RefType>
         where ValueType : struct, IComparable<ValueType>
         where SliderType : ComparableUIValueSlider<ValueType>
-        where FieldType : ComparableUITextField<ValueType, RefType>
-        where RefType : IFieldRef, IComparableField<ValueType>
+        where FieldType : ComparableUITextField<ValueType>, RefType
+        where RefType : IComparableField<ValueType>
     {
         public ValueType MinValue
         {
@@ -172,5 +172,5 @@ namespace ModsCommon.UI
             Field.SetDefault();
         }
     }
-    public class FloatSliderPropertyPanel : ComparableSliderPropertyPanel<float, FloatUISlider, FloatUITextField, FloatUITextField.FloatFieldRef> { }
+    public class FloatSliderPropertyPanel : ComparableSliderPropertyPanel<float, FloatUISlider, FloatUITextField, IComparableField<float>> { }
 }

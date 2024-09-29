@@ -228,23 +228,23 @@ namespace ModsCommon.UI
                 valuePanel.AutoChildrenVertically = AutoLayoutChildren.Fit;
                 valuePanel.AutoLayoutStart = LayoutStart.MiddleLeft;
 
-                RField = AddField<byte, ByteUITextField, ByteUITextField.ByteFieldRef>(valuePanel, "R", RGBChanged);
+                RField = AddField<byte, ByteUITextField, ITextField<byte>>(valuePanel, "R", RGBChanged);
                 RField.BgSprites = CommonTextures.FieldLeft;
                 SetField(RField);
 
-                GField = AddField<byte, ByteUITextField, ByteUITextField.ByteFieldRef>(valuePanel, "G", RGBChanged);
+                GField = AddField<byte, ByteUITextField, ITextField<byte>>(valuePanel, "G", RGBChanged);
                 GField.BgSprites = CommonTextures.FieldMiddle;
                 SetField(GField);
 
-                BField = AddField<byte, ByteUITextField, ByteUITextField.ByteFieldRef>(valuePanel, "B", RGBChanged);
+                BField = AddField<byte, ByteUITextField, ITextField<byte>>(valuePanel, "B", RGBChanged);
                 BField.BgSprites = CommonTextures.FieldMiddle;
                 SetField(BField);
 
-                AField = AddField<byte, ByteUITextField, ByteUITextField.ByteFieldRef>(valuePanel, "A", AChanged);
+                AField = AddField<byte, ByteUITextField, ITextField<byte>>(valuePanel, "A", AChanged);
                 AField.BgSprites = CommonTextures.FieldRight;
                 SetField(AField);
 
-                HEXField = AddField<string, StringUITextField, StringUITextField.StringFieldRef>(valuePanel, "HEX", HEXChanged);
+                HEXField = AddField<string, StringUITextField, ITextField<string>>(valuePanel, "HEX", HEXChanged);
                 HEXField.SetDefaultStyle();
                 HEXField.Format = "#{0}";
                 HEXField.horizontalAlignment = UIHorizontalAlignment.Center;
@@ -256,8 +256,8 @@ namespace ModsCommon.UI
             });
         }
         private FieldType AddField<ValueType, FieldType, RefType>(UIComponent parent, string name, Action<ValueType> onChanged)
-            where FieldType : UITextField<ValueType, RefType>
-            where RefType : IFieldRef, ITextField<ValueType>
+            where FieldType : UITextField<ValueType>, RefType
+            where RefType : ITextField<ValueType>
         {
             FieldType field = null;
 

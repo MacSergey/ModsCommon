@@ -4,19 +4,16 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public interface ISelectorRef { }
-    public interface ISelector<ValueType, RefType> : IAutoLayoutPanel, IReusable
-        where RefType : ISelectorRef
+    public interface ISelector { }
+    public interface ISelector<ValueType> : ISelector, IAutoLayoutPanel, IReusable
     {
-        RefType Ref { get; }
         Func<ValueType, ValueType, bool> IsEqualDelegate { set; }
 
         void AddItem(ValueType item, OptionData optionData);
         void Clear();
         void SetDefaultStyle(Vector2? size = null);
     }
-    public interface ISingleSelector<ValueType, RefType> : ISelector<ValueType, RefType>
-        where RefType : ISelectorRef
+    public interface ISingleSelector<ValueType> : ISelector<ValueType>
     {
         event Action<ValueType> OnSelectObject;
 
@@ -24,8 +21,7 @@ namespace ModsCommon.UI
         bool UseWheel { get; set; }
         bool WheelTip { set; }
     }
-    public interface IMultiSelector<ValueType, RefType> : ISelector<ValueType, RefType>
-        where RefType : ISelectorRef
+    public interface IMultiSelector<ValueType> : ISelector<ValueType>
     {
         event Action<List<ValueType>> OnSelectedObjectsChanged;
 

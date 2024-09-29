@@ -8,20 +8,18 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
-    public interface IDropDownRef : ISelectorRef { }
-    public interface IDropDown<ValueType>
+    public interface IDropDown<ValueType> : IDropDown, ISelector<ValueType>
     {
         ValueType SelectedObject { get; set; }
         bool UseWheel { get; set; }
         bool WheelTip { set; }
     }
+    public interface ISingleDropDown<ValueType> : IDropDown<ValueType>, ISingleSelector<ValueType> { }
 
-    public abstract class SimpleDropDown<ValueType, EntityType, PopupType, RefType> : SelectItemDropDown<DropDownItem<ValueType>, EntityType, PopupType>, ISingleSelector<ValueType, RefType>, IDropDown<ValueType>
+    public abstract class SimpleDropDown<ValueType, EntityType, PopupType> : SelectItemDropDown<DropDownItem<ValueType>, EntityType, PopupType>, ISingleSelector<ValueType>, IDropDown<ValueType>
         where EntityType : SimpleEntity<ValueType>
         where PopupType : SimplePopup<ValueType, EntityType>
-        where RefType : IDropDownRef, IDropDown<ValueType>
     {
-        public RefType Ref { get; }
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
 
@@ -50,17 +48,15 @@ namespace ModsCommon.UI
                 }
             }
         }
-        Func<ValueType, ValueType, bool> ISelector<ValueType, RefType>.IsEqualDelegate
+        Func<ValueType, ValueType, bool> ISelector<ValueType>.IsEqualDelegate
         {
             set => IsEqualDelegate = (x, y) => value(x.value, y.value);
         }
 
         public SimpleDropDown() : base()
         {
-            Ref = CreateRef();
             Entity.textScale = EntityTextScale;
         }
-        protected abstract RefType CreateRef();
 
         public virtual void AddItem(ValueType item) => AddItem(new DropDownItem<ValueType>(item, (OptionData)item.ToString()));
         public virtual void AddItem(ValueType item, string label) => AddItem(new DropDownItem<ValueType>(item, (OptionData)label));
@@ -102,31 +98,6 @@ namespace ModsCommon.UI
         public void StartLayout(bool layoutNow = true, bool force = false) { }
         public void PauseLayout(Action action, bool layoutNow = true, bool force = false) => action?.Invoke();
         public void Ignore(UIComponent item, bool ignore) { }
-    }
-    public class SimpleDropDownRef<ValueType, DropDownType> : IDropDownRef, IDropDown<ValueType>
-        where DropDownType : IDropDown<ValueType>
-    {
-        protected DropDownType DropDown { get; }
-
-        public SimpleDropDownRef(DropDownType dropDown)
-        {
-            DropDown = dropDown;
-        }
-
-        public ValueType SelectedObject 
-        { 
-            get => DropDown.SelectedObject; 
-            set => DropDown.SelectedObject = value; 
-        }
-        public bool UseWheel 
-        { 
-            get => DropDown.UseWheel; 
-            set => DropDown.UseWheel = value; 
-        }
-        public bool WheelTip 
-        { 
-            set => DropDown.WheelTip = value; 
-        }
     }
 
     public abstract class SimpleEntity<ValueType> : PopupEntity<DropDownItem<ValueType>>
@@ -187,22 +158,15 @@ namespace ModsCommon.UI
         public override int GetHashCode() => value.GetHashCode();
     }
 
-    public class StringDropDown : SimpleDropDown<string, StringDropDown.StringEntity, StringDropDown.StringPopup, StringDropDown.StringDropDownRef>
+    public class StringDropDown : SimpleDropDown<string, StringDropDown.StringEntity, StringDropDown.StringPopup>
     {
-        protected override StringDropDownRef CreateRef() => new(this);
-
         public class StringEntity : SimpleEntity<string> { }
         public class StringPopup : SimplePopup<string, StringEntity> { }
-        public class StringDropDownRef : SimpleDropDownRef<string, StringDropDown>
-        {
-            public StringDropDownRef(StringDropDown dropDown) : base(dropDown) { }
-        }
     }
-    public abstract class EnumDropDown<EnumType, EntityType, PopupType, RefType> : SimpleDropDown<EnumType, EntityType, PopupType, RefType>, IEnumSelector<EnumType>
+    public abstract class EnumDropDown<EnumType, EntityType, PopupType> : SimpleDropDown<EnumType, EntityType, PopupType>, ISingleDropDown<EnumType>, IEnumSelector<EnumType>
         where EnumType : Enum
         where EntityType : SimpleEntity<EnumType>
         where PopupType : SimplePopup<EnumType, EntityType>
-        where RefType : IDropDownRef, IDropDown<EnumType>
     {
         public void Init(Func<EnumType, bool> selector = null)
         {

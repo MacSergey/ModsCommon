@@ -1,6 +1,7 @@
 ﻿using ColossalFramework.UI;
 using IMT.Utilities;
 using ModsCommon.Utilities;
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,30 +53,21 @@ namespace ModsCommon.UI
         Right,
     }
 
-    public interface ISegmentedRef : ISelectorRef { }
-    public interface ISegmented
+    public interface ISegmented : ISelector
     {
         SegmentedStyle SegmentedStyle { get;set; }
     }
-    public interface ISegmented<ValueType>
+    public interface ISegmented<ValueType> : ISegmented
     {
         bool AutoButtonSize { get; set; }
         float ButtonWidth { get; set; }
         float TextScale { get; set; }
     }
-    public interface ISingleSegmented<ValueType> : ISegmented<ValueType>
-    {
-        ValueType SelectedObject { get; set; }
-    }
-    public interface IMultiSegmented<ValueType> : ISegmented<ValueType>
-    {
-        List<ValueType> SelectedObjects { get; set; }
-    }
+    public interface ISingleSegmented<ValueType> : ISegmented<ValueType>, ISingleSelector<ValueType> { }
+    public interface IMultiSegmented<ValueType> : ISegmented<ValueType>, IMultiSelector<ValueType> { }
 
-    public abstract class UISegmented<ValueType, RefType> : CustomUIPanel, ISegmented, ISegmented<ValueType>, IReusable
-        where RefType : ISegmentedRef, ISegmented<ValueType>
+    public abstract class UISegmented<ValueType> : CustomUIPanel, ISegmented<ValueType>, IReusable
     {
-        public RefType Ref { get; }
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
         public Func<ValueType, ValueType, bool> IsEqualDelegate { get; set; }
@@ -126,13 +118,10 @@ namespace ModsCommon.UI
 
         public UISegmented()
         {
-            Ref = CreateRef();
-
             autoLayout = AutoLayout.Horizontal;
             autoChildrenHorizontally = AutoLayoutChildren.Fit;
             autoChildrenVertically = AutoLayoutChildren.Fit;
         }
-        protected abstract RefType CreateRef();
 
         public void AddItem(ValueType item, OptionData optionData) => AddItem(item, optionData, true, null);
         public void AddItem(ValueType item, OptionData optionData, bool? clickable = true, float? width = null)
@@ -304,35 +293,8 @@ namespace ModsCommon.UI
             }
         }
     }
-    public class SegmentedRef<ValueType, SegmentedType> : ISegmentedRef, ISegmented<ValueType>
-        where SegmentedType : ISegmented<ValueType>
-    {
-        protected SegmentedType Segmented { get; }
 
-        public SegmentedRef(SegmentedType segmented)
-        {
-            Segmented = segmented;
-        }
-
-        public bool AutoButtonSize 
-        { 
-            get => Segmented.AutoButtonSize; 
-            set => Segmented.AutoButtonSize = value; 
-        }
-        public float ButtonWidth 
-        { 
-            get => Segmented.ButtonWidth; 
-            set => Segmented.ButtonWidth = value; 
-        }
-        public float TextScale 
-        { 
-            get => Segmented.TextScale; 
-            set => Segmented.TextScale = value; 
-        }
-    }
-
-    public abstract class UISingleSegmented<ValueType, RefType> : UISegmented<ValueType, RefType>, ISingleSegmented<ValueType>, ISingleSelector<ValueType, RefType>, IValueChanger<ValueType>
-        where RefType : ISegmentedRef, ISegmented<ValueType>
+    public abstract class UISingleSegmented<ValueType> : UISegmented<ValueType>, ISingleSegmented<ValueType>, IValueChanger<ValueType>
     {
         public event Action<ValueType> OnSelectObject;
         event Action<ValueType> IValueChanger<ValueType>.OnValueChanged
@@ -392,21 +354,9 @@ namespace ModsCommon.UI
         }
         protected override void ButtonClick(UIComponent component, UIMouseEventParameter eventParam = null) => SetSelected(Buttons.FindIndex(b => b == component));
     }
-    public class SingleSegmentedRef<ValueType, SegmentedType> : SegmentedRef<ValueType, SegmentedType>, ISingleSegmented<ValueType>
-        where SegmentedType : ISingleSegmented<ValueType>
-    {
-        public SingleSegmentedRef(SegmentedType segmented) : base(segmented) { }
 
-        public ValueType SelectedObject 
-        { 
-            get => Segmented.SelectedObject; 
-            set => Segmented.SelectedObject = value; 
-        }
-    }
-
-    public abstract class UIEnumSegmented<EnumType, RefType> : UISingleSegmented<EnumType, RefType>, IEnumSelector<EnumType>
+    public abstract class UIEnumSegmented<EnumType> : UISingleSegmented<EnumType>, IEnumSelector<EnumType>
         where EnumType : Enum
-        where RefType : ISegmentedRef, ISegmented<EnumType>
     {
         public void Init(Func<EnumType, bool> selector = null)
         {
@@ -426,37 +376,23 @@ namespace ModsCommon.UI
         }
         protected virtual IEnumerable<EnumType> GetValues() => EnumExtension.GetEnumValues<EnumType>().IsVisible();
     }
-    public class BoolSegmented : UISingleSegmented<bool, BoolSegmented.BoolSegmentedRef>
+    public class BoolSegmented : UISingleSegmented<bool>
     {
         public BoolSegmented()
         {
             IsEqualDelegate = (x, y) => x == y;
         }
-
-        protected override BoolSegmentedRef CreateRef() => new(this);
-
-        public class BoolSegmentedRef : SingleSegmentedRef<bool, BoolSegmented>
-        {
-            public BoolSegmentedRef(BoolSegmented segmented) : base(segmented) { }
-        }
     }
-    public class IntSegmented : UISingleSegmented<int, IntSegmented.IntSegmentedRef>
+    public class IntSegmented : UISingleSegmented<int>
     {
         public IntSegmented()
         {
             IsEqualDelegate = (x, y) => x == y;
         }
 
-        protected override IntSegmentedRef CreateRef() => new(this);
-
-        public class IntSegmentedRef : SingleSegmentedRef<int, IntSegmented>
-        {
-            public IntSegmentedRef(IntSegmented segmented) : base(segmented) { }
-        }
     }
 
-    public abstract class UIMultiSegmented<ValueType, RefType> : UISegmented<ValueType, RefType>, IMultiSegmented<ValueType>, IMultiSelector<ValueType, RefType>, IValueChanger<List<ValueType>>
-        where RefType : ISegmentedRef, ISegmented<ValueType>
+    public abstract class UIMultiSegmented<ValueType> : UISegmented<ValueType>, IMultiSegmented<ValueType>, IValueChanger<List<ValueType>>
     {
         public event Action<List<ValueType>> OnSelectedObjectsChanged;
         event Action<List<ValueType>> IValueChanger<List<ValueType>>.OnValueChanged
@@ -533,9 +469,8 @@ namespace ModsCommon.UI
         }
     }
 
-    public abstract class UIMultyEnumSegmented<EnumType, RefType> : UIMultiSegmented<EnumType, RefType>
+    public abstract class UIMultiEnumSegmented<EnumType> : UIMultiSegmented<EnumType>
         where EnumType : Enum
-        where RefType : ISegmentedRef, ISegmented<EnumType>
     {
         protected UITextureAtlas enumAtlas;
         public UITextureAtlas EnumAtlas

@@ -7,13 +7,13 @@ using UnityEngine;
 namespace ModsCommon.UI
 {
     public abstract class ListPropertyPanel<ValueType, SelectorType, RefType> : EditorPropertyPanel, IReusable
-        where SelectorType : UIComponent, ISelector<ValueType, RefType>
-        where RefType : ISelectorRef
+        where SelectorType : UIComponent, RefType
+        where RefType : ISelector<ValueType>
     {
         public event Action<bool> OnDropDownStateChange;
 
         protected SelectorType Selector { get; private set; }
-        public RefType SelectorRef => Selector.Ref;
+        public RefType SelectorRef => Selector;
 
         protected virtual float DropDownWidth => 230;
         protected virtual bool AllowNull => true;
@@ -73,8 +73,8 @@ namespace ModsCommon.UI
         protected abstract bool IsEqual(ValueType first, ValueType second);
     }
     public abstract class ListSinglePropertyPanel<ValueType, SelectorType, RefType> : ListPropertyPanel<ValueType, SelectorType, RefType>, IReusable
-        where SelectorType : UIComponent, ISingleSelector<ValueType, RefType>
-        where RefType : ISelectorRef
+        where SelectorType : UIComponent, RefType
+        where RefType : ISingleSelector<ValueType>
     {
         public event Action<ValueType> OnSelectObjectChanged;
 
@@ -110,8 +110,8 @@ namespace ModsCommon.UI
         public override string ToString() => $"{base.ToString()}: {SelectedObject}";
     }
     public abstract class ListMultiPropertyPanel<ValueType, SelectorType, RefType> : ListPropertyPanel<ValueType, SelectorType, RefType>, IReusable
-        where SelectorType : UIComponent, IMultiSelector<ValueType, RefType>
-        where RefType : ISelectorRef
+        where SelectorType : UIComponent, RefType
+        where RefType : IMultiSelector<ValueType>
     {
         public event Action<List<ValueType>> OnSelectObjectsChanged;
 

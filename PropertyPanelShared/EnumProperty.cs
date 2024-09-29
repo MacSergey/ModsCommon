@@ -14,8 +14,8 @@ namespace ModsCommon.UI
 
     public abstract class EnumSinglePropertyPanel<EnumType, SelectorType, RefType> : ListSinglePropertyPanel<EnumType, SelectorType, RefType>
         where EnumType : Enum
-        where SelectorType : UIComponent, IEnumSelector<EnumType>, ISingleSelector<EnumType, RefType>
-        where RefType : ISelectorRef
+        where SelectorType : UIComponent, RefType, IEnumSelector<EnumType>
+        where RefType : ISingleSelector<EnumType>
     {
         protected override bool AllowNull => false;
 
@@ -36,18 +36,19 @@ namespace ModsCommon.UI
     }
     public abstract class EnumSingleSegmentedPropertyPanel<EnumType, SegmentedType, RefType> : EnumSinglePropertyPanel<EnumType, SegmentedType, RefType>
         where EnumType : Enum
-        where SegmentedType : UIComponent, ISegmented, IEnumSelector<EnumType>, ISingleSelector<EnumType, RefType>
-        where RefType : ISegmentedRef, ISegmented<EnumType>
+        where SegmentedType : UIComponent, RefType, IEnumSelector<EnumType>
+        where RefType : ISingleSegmented<EnumType>
     {
         public override void SetStyle(ControlStyle style)
         {
             Selector.SegmentedStyle = style.Segmented;
         }
     }
+
     public abstract class EnumSingleDropDownPropertyPanel<EnumType, DropDownType, RefType> : EnumSinglePropertyPanel<EnumType, DropDownType, RefType>
         where EnumType : Enum
-        where DropDownType : UIComponent, IDropDown, IEnumSelector<EnumType>, ISingleSelector<EnumType, RefType>
-        where RefType : IDropDownRef, IDropDown<EnumType>
+        where DropDownType : UIComponent, RefType, IEnumSelector<EnumType>
+        where RefType : ISingleDropDown<EnumType>
     {
         public override void SetStyle(ControlStyle style)
         {
@@ -58,8 +59,8 @@ namespace ModsCommon.UI
 
     public abstract class EnumMultiPropertyPanel<EnumType, SelectorType, RefType> : ListMultiPropertyPanel<EnumType, SelectorType, RefType>
         where EnumType : Enum
-        where SelectorType : UIComponent, IEnumSelector<EnumType>, IMultiSelector<EnumType, RefType>
-        where RefType : ISelectorRef
+        where SelectorType : UIComponent, RefType
+        where RefType : IMultiSelector<EnumType>, IEnumSelector<EnumType>
     {
         public event Action<EnumType> OnSelectObjectChanged;
 
@@ -88,7 +89,7 @@ namespace ModsCommon.UI
         }
     }
 
-    public class BoolListPropertyPanel : ListSinglePropertyPanel<bool, BoolSegmented, BoolSegmented.BoolSegmentedRef>
+    public class BoolListPropertyPanel : ListSinglePropertyPanel<bool, BoolSegmented, ISingleSelector<bool>>
     {
         protected override bool AllowNull => false;
         protected override bool IsEqual(bool first, bool second) => first == second;
@@ -117,7 +118,7 @@ namespace ModsCommon.UI
             Selector.SegmentedStyle = style.Segmented;
         }
     }
-    public class IntListPropertyPanel : ListPropertyPanel<int, IntSegmented, IntSegmented.IntSegmentedRef>
+    public class IntListPropertyPanel : ListPropertyPanel<int, IntSegmented, ISingleSelector<int>>
     {
         protected override bool AllowNull => false;
         protected override bool IsEqual(int first, int second) => first == second;

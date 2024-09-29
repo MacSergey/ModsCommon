@@ -9,6 +9,10 @@ using UnityEngine;
 
 namespace ModsCommon.UI
 {
+    public interface ITextField
+    {
+
+    }
     public class CustomUITextField : UIInteractiveComponent
     {
         private struct UndoData
@@ -1590,10 +1594,14 @@ namespace ModsCommon.UI
             }
         }
 
+        TextFieldStyle style;
         public TextFieldStyle TextFieldStyle
         {
+            get => style;
             set
             {
+                style = value;
+
                 bgAtlas = value.BgAtlas;
                 fgAtlas = value.FgAtlas;
 

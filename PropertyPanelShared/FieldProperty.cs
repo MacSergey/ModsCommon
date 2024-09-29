@@ -6,11 +6,11 @@ using UnityEngine;
 namespace ModsCommon.UI
 {
     public abstract class FieldPropertyPanel<ValueType, FieldType, RefType> : EditorPropertyPanel, IReusable
-        where FieldType : UITextField<ValueType, RefType>
-        where RefType : IFieldRef, ITextField<ValueType>
+        where FieldType : UITextField<ValueType>, RefType
+        where RefType : ITextField<ValueType>
     {
         protected FieldType Field { get; private set; }
-        public RefType FieldRef => Field.Ref;
+        public RefType FieldRef => Field;
 
         public event Action<ValueType> OnValueChanged;
 
@@ -57,9 +57,9 @@ namespace ModsCommon.UI
         public static implicit operator ValueType(FieldPropertyPanel<ValueType, FieldType, RefType> property) => property.Field.Value;
     }
     public abstract class ComparableFieldPropertyPanel<ValueType, FieldType, RefType> : FieldPropertyPanel<ValueType, FieldType, RefType>
-        where FieldType : ComparableUITextField<ValueType, RefType>
-        where ValueType : IComparable<ValueType>
-        where RefType : IFieldRef, IComparableField<ValueType>
+                where ValueType : IComparable<ValueType>
+        where FieldType : ComparableUITextField<ValueType>, RefType
+        where RefType : IComparableField<ValueType>
     {
         public ComparableFieldPropertyPanel()
         {
@@ -72,11 +72,10 @@ namespace ModsCommon.UI
             Field.SetDefault();
         }
     }
-    public class FloatPropertyPanel : ComparableFieldPropertyPanel<float, FloatUITextField, FloatUITextField.FloatFieldRef> { }
-    public class IntPropertyPanel : ComparableFieldPropertyPanel<int, IntUITextField, IntUITextField.IntFieldRef> { }
-    public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField, StringUITextField.StringFieldRef>
+    public class FloatPropertyPanel : ComparableFieldPropertyPanel<float, FloatUITextField, IComparableField<float>> { }
+    public class IntPropertyPanel : ComparableFieldPropertyPanel<int, IntUITextField, IComparableField<int>> { }
+    public class StringPropertyPanel : FieldPropertyPanel<string, StringUITextField, ITextField<string>>
     {
-        public new StringUITextField.StringFieldRef FieldRef => Field.Ref;
         public override void DeInit()
         {
             base.DeInit();
@@ -98,9 +97,9 @@ namespace ModsCommon.UI
     }
 
     public abstract class ComparableFieldRangePropertyPanel<ValueType, FieldType, RefType> : EditorPropertyPanel, IReusable
-        where FieldType : ComparableUITextField<ValueType, RefType>
         where ValueType : IComparable<ValueType>
-        where RefType : IFieldRef, IComparableField<ValueType>
+        where FieldType : ComparableUITextField<ValueType>, RefType
+        where RefType : IComparableField<ValueType>
     {
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
@@ -311,12 +310,12 @@ namespace ModsCommon.UI
         public override string ToString() => $"{base.ToString()}: from {ValueA} to {ValueB}";
     }
 
-    public class FloatRangePropertyPanel : ComparableFieldRangePropertyPanel<float, FloatUITextField, FloatUITextField.FloatFieldRef> { }
+    public class FloatRangePropertyPanel : ComparableFieldRangePropertyPanel<float, FloatUITextField, IComparableField<float>> { }
 
     public abstract class InvertedFieldPropertyPanel<ValueType, FieldType, RefType> : ComparableFieldPropertyPanel<ValueType, FieldType, RefType>
-        where FieldType : ComparableUITextField<ValueType, RefType>
         where ValueType : IComparable<ValueType>
-        where RefType : IFieldRef, IComparableField<ValueType>
+        where FieldType : ComparableUITextField<ValueType>, RefType
+        where RefType : IComparableField<ValueType>
     {
         protected CustomUIButton Invert { get; }
 
@@ -368,7 +367,7 @@ namespace ModsCommon.UI
             Invert.AllIconSprites = CommonTextures.PlusMinusButton;
         }
     }
-    public class FloatInvertedPropertyPanel : InvertedFieldPropertyPanel<float, FloatUITextField, FloatUITextField.FloatFieldRef>
+    public class FloatInvertedPropertyPanel : InvertedFieldPropertyPanel<float, FloatUITextField, IComparableField<float>>
     {
         protected override float InvertValue(float value) => -value;
     }

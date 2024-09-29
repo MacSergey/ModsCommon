@@ -5,8 +5,8 @@ using UnityEngine;
 namespace ModsCommon.UI
 {
     public abstract class VariationProperty<ItemType, SegmentedType, RefType> : EditorPropertyPanel, IReusable
-        where SegmentedType : UISingleSegmented<ItemType, RefType>
-        where RefType : ISegmentedRef, ISegmented<ItemType>
+        where SegmentedType : UISingleSegmented<ItemType>, RefType
+        where RefType : ISingleSegmented<ItemType>
     {
         bool IReusable.InCache { get; set; }
         Transform IReusable.CachedTransform { get => m_CachedTransform; set => m_CachedTransform = value; }
@@ -14,7 +14,7 @@ namespace ModsCommon.UI
         public event Action<ItemType> OnSelectorChanged;
 
         protected SegmentedType Selector { get; private set; }
-        public RefType SelectorRef => Selector.Ref;
+        public RefType SelectorRef => Selector;
 
         protected ItemType SelectedObject
         {
