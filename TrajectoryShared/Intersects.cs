@@ -7,16 +7,32 @@ using static ColossalFramework.Math.VectorUtils;
 
 namespace ModsCommon.Utilities
 {
-    public readonly struct Intersection
+    public interface IIntersection
+    {
+        ITrajectory First { get; }
+        ITrajectory Second { get; }
+
+        float FirstT { get; }
+        float SecondT { get; }
+
+        bool IsIntersect { get; }
+        bool Inverted { get; }
+
+        public IIntersection GetReverse();
+
+        public int GetFirstIndex(out float t);
+        public int GetSecondIndex(out float t);
+    }
+    public readonly struct Intersection : IIntersection, IEquatable<Intersection>, IEquatable<IIntersection>
     {
         public static float DeltaAngle = 5f;
         public static float MaxLength = 1f;
         public static float MinLength = 0.5f;
-        public static ComponentComparer FirstComparer { get; } = new ComponentComparer(true, true);
-        public static ComponentComparer SecondComparer { get; } = new ComponentComparer(false, true);
+        public static Comparer FirstComparer { get; } = new Comparer(true, true);
+        public static Comparer SecondComparer { get; } = new Comparer(false, true);
 
-        public static ComponentComparer FirstApproxComparer { get; } = new ComponentComparer(true, false);
-        public static ComponentComparer SecondApproxComparer { get; } = new ComponentComparer(false, false);
+        public static Comparer FirstApproxComparer { get; } = new Comparer(true, false);
+        public static Comparer SecondApproxComparer { get; } = new Comparer(false, false);
 
         public static Intersection NotIntersect => new Intersection(false, default, default);
 
@@ -29,6 +45,15 @@ namespace ModsCommon.Utilities
         public readonly bool isIntersect;
         public readonly bool inverted;
 
+        public ITrajectory First => first;
+        public ITrajectory Second => second;
+
+        public float FirstT => firstT;
+        public float SecondT => secondT;
+
+        public bool IsIntersect => isIntersect;
+        public bool Inverted => inverted;
+
         private Intersection(bool isIntersect, float firstT, float secondT, ITrajectory first = default, ITrajectory second = default, bool inverted = false)
         {
             this.isIntersect = isIntersect;
@@ -38,17 +63,30 @@ namespace ModsCommon.Utilities
             this.second = second;
             this.inverted = inverted;
         }
-        public Intersection(float firstT, float secondT, ITrajectory first = default, ITrajectory second = default)
+        public Intersection(float firstT, float secondT, ITrajectory first = default, ITrajectory second = default, bool inverted = false)
         {
             this.isIntersect = true;
             this.firstT = firstT;
             this.secondT = secondT;
             this.first = first;
             this.second = second;
-            this.inverted = false;
+            this.inverted = inverted;
         }
 
         public Intersection GetReverse() => !isIntersect ? this : new Intersection(isIntersect, secondT, firstT, second, first, inverted: !inverted);
+        IIntersection IIntersection.GetReverse() => GetReverse();
+        public int GetFirstIndex(out float t)
+        {
+            var index = Mathf.FloorToInt(firstT);
+            t = firstT - index;
+            return index;
+        }
+        public int GetSecondIndex(out float t)
+        {
+            var index = Mathf.FloorToInt(secondT);
+            t = secondT - index;
+            return index;
+        }
 
         public static Intersection CalculateSingle(ITrajectory firstTrajectory, ITrajectory secondTrajectory)
         {
@@ -434,11 +472,13 @@ namespace ModsCommon.Utilities
 
         public static Side GetSide(float posX, float posZ, float dirX, float dirZ, float pointX, float pointZ)
         {
-            return dirX * (pointX - posX) + dirZ * (pointZ - posZ) >= 0 ? Side.Right : Side.Left;
+            var dot = dirX * (pointX - posX) + dirZ * (pointZ - posZ);
+            return dot >= 0 ? Side.Right : Side.Left;
         }
         public static Side GetSide(Vector3 direction, Vector3 toCheck)
         {
-            return direction.z * toCheck.x - direction.x * toCheck.z >= 0 ? Side.Right : Side.Left;
+            var dot = direction.z * toCheck.x - direction.x * toCheck.z;
+            return dot >= 0 ? Side.Right : Side.Left;
         }
 
         public override string ToString()
@@ -449,19 +489,32 @@ namespace ModsCommon.Utilities
                 return "Not intersect";
         }
 
-        public static bool operator ==(Intersection a, Intersection b) => a.firstT == b.firstT && a.secondT == b.secondT;
-        public static bool operator !=(Intersection a, Intersection b) => a.firstT != b.firstT || a.secondT != b.secondT;
+        public static bool operator ==(Intersection a, Intersection b) => a.Equals(b);
+        public static bool operator !=(Intersection a, Intersection b) => !a.Equals(b);
+
+        public bool Equals(Intersection other) => other.firstT == firstT && other.secondT == secondT;
+        public bool Equals(IIntersection other) => other.FirstT == firstT && other.SecondT == secondT;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Intersection intersection)
+                return Equals(intersection);
+            else if (obj is IIntersection iIntersection)
+                return Equals(iIntersection);
+
+            return false;
+        }
 
         public enum Side
         {
             Left,
             Right
         }
-        public class ComponentComparer : IComparer<Intersection>
+        public struct Comparer : IComparer<Intersection>
         {
             private readonly bool isFirst;
             private readonly bool strict;
-            public ComponentComparer(bool isFirst, bool strict)
+            public Comparer(bool isFirst, bool strict)
             {
                 this.isFirst = isFirst;
                 this.strict = strict;
@@ -509,33 +562,134 @@ namespace ModsCommon.Utilities
 #endif
         }
     }
+    public readonly struct IndexedIntersection : IIntersection, IEquatable<IndexedIntersection>, IEquatable<IIntersection>
+    {
+        public static Comparer FirstComparer { get; } = new Comparer(true);
+        public static Comparer SecondComparer { get; } = new Comparer(false);
+
+        public readonly ITrajectory first;
+        public readonly ITrajectory second;
+        public readonly bool isIntersect;
+        public readonly bool inverted;
+        public readonly float firstIndexedT;
+        public readonly float secondIndexedT;
+        public readonly int firstIndex;
+        public readonly int secondIndex;
+
+        public ITrajectory First => first;
+        public ITrajectory Second => second;
+
+        public float FirstT => firstIndexedT + firstIndex;
+        public float SecondT => secondIndexedT + secondIndex;
+
+        public bool IsIntersect => isIntersect;
+        public bool Inverted => inverted;
+
+        
+
+        public Intersection Intersection => new Intersection(FirstT, SecondT, inverted: inverted);
+
+        public IndexedIntersection(float firstT, int firstIndex, float secondT, int secondIndex, bool inverted = false)
+        {
+            isIntersect = true;
+            first = default;
+            second = default;
+            firstIndexedT = firstT;
+            secondIndexedT = secondT;
+            this.firstIndex = firstIndex;
+            this.secondIndex = secondIndex;
+            this.inverted = inverted;
+        }
+        public IndexedIntersection(float firstT, float secondT, bool inverted = false) : this(firstT, 0, secondT, 0, inverted) { }
+
+        public IndexedIntersection GetReverse() => new IndexedIntersection(secondIndexedT, secondIndex, firstIndexedT, firstIndex, !inverted);
+        IIntersection IIntersection.GetReverse() => GetReverse();
+
+        public int GetFirstIndex(out float t)
+        {
+            t = firstIndexedT;
+            return firstIndex;
+        }
+
+        public int GetSecondIndex(out float t)
+        {
+            t = secondIndexedT;
+            return secondIndex;
+        }
+
+        public static bool operator ==(IndexedIntersection a, IndexedIntersection b) => a.Equals(b);
+        public static bool operator !=(IndexedIntersection a, IndexedIntersection b) => !a.Equals(b);
+        public bool Equals(IndexedIntersection other) => other.firstIndex == firstIndex && other.secondIndex == secondIndex && other.firstIndexedT == firstIndexedT && other.secondIndexedT == secondIndexedT;
+        public bool Equals(IIntersection other) => other.FirstT == FirstT && other.SecondT == SecondT;
+        public override bool Equals(object obj)
+        {
+            if (obj is IndexedIntersection intersection)
+                return Equals(intersection);
+            else if (obj is IIntersection iIntersection)
+                return Equals(iIntersection);
+
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return $"({firstIndex}){firstIndexedT:.###} ÷ ({secondIndex}){secondIndexedT:.###}";
+        }
+
+        public static explicit operator IndexedIntersection(Intersection i) => new(i.firstT, 0, i.secondT, 0, i.isIntersect);
+
+        public struct Comparer : IComparer<IndexedIntersection>
+        {
+            private readonly bool isFirst;
+            public Comparer(bool isFirst)
+            {
+                this.isFirst = isFirst;
+            }
+            public int Compare(IndexedIntersection x, IndexedIntersection y)
+            {
+                if (isFirst)
+                {
+                    if(x.firstIndex != y.firstIndex)
+                        return x.firstIndex.CompareTo(y.firstIndex);
+                    else
+                        return x.firstIndexedT.CompareTo(y.firstIndexedT);
+                }
+                else
+                {
+                    if (x.secondIndex != y.secondIndex)
+                        return x.secondIndex.CompareTo(y.secondIndex);
+                    else
+                        return x.secondIndexedT.CompareTo(y.secondIndexedT);
+                }
+            }
+        }
+    }
     public struct IntersectionPair
     {
-        public Intersection from;
-        public Intersection to;
+        public readonly IIntersection from;
+        public readonly IIntersection to;
+        public readonly bool inverted;
 
-        public bool Inverted { get; private set; }
-        public IntersectionPair Reverse => new IntersectionPair(to, from) { Inverted = !Inverted };
-
-        public IntersectionPair(Intersection from, Intersection to)
+        public IntersectionPair(IIntersection from, IIntersection to, bool inverted = false)
         {
             this.from = from;
             this.to = to;
-            Inverted = false;
+            this.inverted = inverted;
         }
 
-        public bool Contain(Intersection intersection) => from == intersection || to == intersection;
+        public IntersectionPair GetReversed() => new IntersectionPair(to, from, !inverted);
+        public bool Contain(IIntersection intersection) => from.Equals(intersection) || to.Equals(intersection);
 
-        public Intersection GetOther(Intersection intersection)
+        public IIntersection GetOther(IIntersection intersection)
         {
-            if (intersection == from)
+            if (from.Equals(intersection))
                 return to;
-            else if (intersection == to)
+            else if (to.Equals(intersection))
                 return from;
             else
                 return Intersection.NotIntersect;
         }
 
-        public override string ToString() => $"{from.secondT:0.###} ÷ [{from.firstT:0.###} ÷ {to.firstT:0.###}] ÷ {to.secondT:0.###}";
+        public override string ToString() => $"{from.SecondT:0.###} ÷ [{from.FirstT:0.###} = {to.FirstT:0.###}] ÷ {to.SecondT:0.###}";
     }
 }
