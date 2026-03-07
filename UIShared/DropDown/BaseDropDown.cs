@@ -41,7 +41,6 @@ namespace ModsCommon.UI
             if (AutoClose)
                 isInteractive = false;
 
-            StartPosition = absolutePosition;
             BeforePopupOpen();
             OnBeforePopupOpen?.Invoke();
 
@@ -68,6 +67,8 @@ namespace ModsCommon.UI
 
             AfterPopupOpen();
             OnAfterPopupOpen?.Invoke(Popup);
+
+            StartPosition = absolutePosition;
         }
         protected virtual void SetPopupProperties()
         {
@@ -128,7 +129,8 @@ namespace ModsCommon.UI
                 return;
             }
 
-            if (absolutePosition != StartPosition)
+            var delta = StartPosition - absolutePosition;
+            if (delta.sqrMagnitude > 1f)
             {
                 ClosePopup();
                 return;
