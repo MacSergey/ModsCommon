@@ -485,7 +485,7 @@ namespace ModsCommon.UI
             HueIndicator.FgColors = HueColor;
             OpacityIndicator.FgColors = color;
 
-            if(Color.white.GetContrast(color) >= 4.5)
+            if(Color.white.GetContrast(color) >= CommonColors.DefaultContrast)
             {
                 HSBIndicator.BgColors = Color.white;
                 OpacityIndicator.BgColors = Color.white;

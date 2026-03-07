@@ -260,10 +260,12 @@ namespace ModsCommon.UI
                 FieldB.name = nameof(FieldB);
 
                 Invert = AddUIComponent<CustomUIButton>();
+                Invert.tooltip = IMT.Localize.Editor_InvertValue;
                 Invert.width = 20;
                 Invert.eventClick += InvertClick;
 
                 Mirror = AddUIComponent<CustomUIButton>();
+                Mirror.tooltip = IMT.Localize.Editor_MirrorValue;
                 Mirror.width = 20;
                 Mirror.eventClick += MirrorClick;
 

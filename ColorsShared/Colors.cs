@@ -6,6 +6,7 @@ namespace ModsCommon.Utilities
     public static class CommonColors
     {
         private const byte Alpha = 224;
+        public const float DefaultContrast = 4.5f;
         public static Color32 White { get; } = new Color32(255, 255, 255, 255);
         public static Color32 White192 { get; } = new Color32(255, 255, 255, 192);
         public static Color32 White128 { get; } = new Color32(255, 255, 255, 128);
