@@ -1,6 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
+using ModsCommon.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace ModsCommon.UI
         where ValueType : IComparable<ValueType>
     {
         RangeMode Mode { get; set; }
-        bool AllowInvert { get; set; }
+        bool AllowReverse { get; set; }
+        bool CanInvert { get; set; }
+        bool CanMirror { get; set; }
         float FieldWidth { get; set; }
         bool SubmitOnFocusLost { get; set; }
         ValueType ValueA { get; set; }
@@ -40,12 +43,17 @@ namespace ModsCommon.UI
 
         protected FieldType FieldA { get; private set; }
         protected FieldType FieldB { get; private set; }
+        protected CustomUIButton Invert { get; private set; }
+        protected CustomUIButton Mirror { get; private set; }
 
         private const float defaultFieldWidth = 100f;
         private float fieldWidth = defaultFieldWidth;
 
         private RangeMode mode;
-        private bool allowInvert;
+        private bool allowReverse;
+        private bool canInvert;
+        private bool canMirror;
+
         public RangeMode Mode
         {
             get => mode;
@@ -58,14 +66,38 @@ namespace ModsCommon.UI
                 }
             }
         }
-        public bool AllowInvert
+        public bool AllowReverse
         {
-            get => allowInvert;
+            get => allowReverse;
             set
             {
-                if (value != allowInvert)
+                if (value != allowReverse)
                 {
-                    allowInvert = value;
+                    allowReverse = value;
+                    Refresh();
+                }
+            }
+        }
+        public bool CanInvert
+        {
+            get => canInvert;
+            set
+            {
+                if (value != canInvert)
+                {
+                    canInvert = value;
+                    Refresh();
+                }
+            }
+        }
+        public bool CanMirror
+        {
+            get => canMirror;
+            set
+            {
+                if (value != canMirror)
+                {
+                    canMirror = value;
                     Refresh();
                 }
             }
@@ -227,6 +259,14 @@ namespace ModsCommon.UI
                 FieldB.SetDefaultStyle();
                 FieldB.name = nameof(FieldB);
 
+                Invert = AddUIComponent<CustomUIButton>();
+                Invert.width = 20;
+                Invert.eventClick += InvertClick;
+
+                Mirror = AddUIComponent<CustomUIButton>();
+                Mirror.width = 20;
+                Mirror.eventClick += MirrorClick;
+
                 FieldA.OnValueChanged += ValueAChanged;
                 FieldB.OnValueChanged += ValueBChanged;
             });
@@ -248,6 +288,9 @@ namespace ModsCommon.UI
                         FieldA.CyclicalValue = CyclicalValue;
                         FieldA.Value = FieldA.Value;
                         FieldB.Value = FieldA.Value;
+
+                        Invert.isVisible = CanInvert;
+                        Mirror.isVisible = false;
                     }
                     break;
                 case RangeMode.Range:
@@ -256,7 +299,7 @@ namespace ModsCommon.UI
                         FieldA.width = (FieldWidth - AutoLayoutSpace) * 0.5f;
                         FieldB.width = (FieldWidth - AutoLayoutSpace) * 0.5f;
 
-                        if (AllowInvert)
+                        if (AllowReverse)
                         {
                             FieldA.CheckMin = CheckMin;
                             FieldA.CheckMax = CheckMax;
@@ -288,6 +331,9 @@ namespace ModsCommon.UI
                             FieldA.CyclicalValue = false;
                             FieldA.Value = FieldA.Value;
                         }
+
+                        Invert.isVisible = CanInvert;
+                        Mirror.isVisible = CanMirror && AllowReverse;
                     }
                     break;
             }
@@ -302,7 +348,9 @@ namespace ModsCommon.UI
         public virtual void SetDefault()
         {
             mode = RangeMode.Range;
-            allowInvert = false;
+            allowReverse = false;
+            canInvert = false;
+            canMirror = false;
 
             fieldWidth = defaultFieldWidth;
             checkMin = false;
@@ -326,16 +374,16 @@ namespace ModsCommon.UI
         private void ValueAChanged(ValueType value)
         {
             if (Mode == RangeMode.Single)
-                ValueChanged(value, value);
-            else
-                ValueChanged(value, FieldB.Value);
+                FieldB.Value = value;
+
+            ValueChanged(FieldA.Value, FieldB.Value);
         }
         private void ValueBChanged(ValueType value)
         {
             if (Mode == RangeMode.Single)
-                ValueChanged(FieldA.Value, FieldA.Value);
-            else
-                ValueChanged(FieldA.Value, value);
+                FieldA.Value = value;
+
+            ValueChanged(FieldA.Value, FieldB.Value);
         }
 
         public void SetValues(ValueType valueA, ValueType valueB)
@@ -344,15 +392,66 @@ namespace ModsCommon.UI
             FieldB.Value = valueB;
         }
 
+        private void InvertClick(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            ValueA = InvertValue(ValueA);
+            ValueB = InvertValue(ValueB);
+
+            switch(Mode)
+            {
+                case RangeMode.Single:
+                    ValueChanged(ValueA, ValueA);
+                    break;
+                case RangeMode.Range:
+                    ValueChanged(ValueA, ValueB);
+                    break;
+            }
+        }
+
+        protected abstract ValueType InvertValue(ValueType value);
+
+        private void MirrorClick(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            if(Mode == RangeMode.Range)
+            {
+                SetValues(ValueB, ValueA);
+                ValueChanged(ValueA, ValueB);
+            }
+        }
+
+        protected override void OnSizeChanged()
+        {
+            base.OnSizeChanged();
+            SetSize();
+        }
+        protected virtual void SetSize()
+        {
+            if (Invert != null)
+                Invert.height = height;
+
+            if (Mirror != null)
+                Mirror.height = height;
+        }
+
         public void SetDefaultStyle()
         {
             FieldA.SetDefaultStyle();
             FieldB.SetDefaultStyle();
+            Invert.SetDefaultStyle();
+            Mirror.SetDefaultStyle();
         }
         public void SetStyle(ControlStyle style)
         {
             FieldA.TextFieldStyle = style.TextField;
             FieldB.TextFieldStyle = style.TextField;
+
+            Invert.ButtonStyle = style.SmallButton;
+            Invert.IconAtlas = CommonTextures.Atlas;
+            Invert.AllIconSprites = CommonTextures.PlusMinusButton;
+
+            Mirror.ButtonStyle = style.SmallButton;
+            Mirror.IconAtlas = CommonTextures.Atlas;
+            Mirror.AllIconSprites = CommonTextures.MirrorButton;
         }
     }
 
@@ -362,6 +461,12 @@ namespace ModsCommon.UI
         Single,
     }
 
-    public class IntRangeField : ValueFieldRange<int, IntUITextField, IValueFieldRange<int>> { }
-    public class FloatRangeField : ValueFieldRange<float, FloatUITextField, IValueFieldRange<float>> { }
+    public class IntRangeField : ValueFieldRange<int, IntUITextField, IValueFieldRange<int>> 
+    {
+        protected override int InvertValue(int value) => -value;
+    }
+    public class FloatRangeField : ValueFieldRange<float, FloatUITextField, IValueFieldRange<float>> 
+    {
+        protected override float InvertValue(float value) => -value;
+    }
 }

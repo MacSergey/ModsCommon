@@ -80,6 +80,7 @@ namespace ModsCommon.Utilities
         public static string HeaderAdditionalButton { get; } = nameof(HeaderAdditionalButton);
 
         public static string PlusMinusButton { get; } = nameof(PlusMinusButton);
+        public static string MirrorButton { get; } = nameof(MirrorButton);
 
         public static string VectorUp { get; } = nameof(VectorUp);
         public static string VectorDown { get; } = nameof(VectorDown);
@@ -181,6 +182,7 @@ namespace ModsCommon.Utilities
             spriteParams[Circle] = new RectOffset();
             spriteParams[Resize] = new RectOffset();
             spriteParams[PlusMinusButton] = new RectOffset();
+            spriteParams[MirrorButton] = new RectOffset();
 
             spriteParams["cs-CZ"] = new RectOffset();
             spriteParams["da-DK"] = new RectOffset();
