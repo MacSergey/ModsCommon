@@ -184,7 +184,12 @@ namespace ModsCommon.Utilities
             trajectory.d += Vector3.up * height;
             return new BezierTrajectory(trajectory, StartT, EndT);
         }
+        public BezierTrajectory Elevate(float start, float end)
+        {
+            return new BezierTrajectory(StartPosition + Vector3.up * start, StartDirection, EndPosition + Vector3.up * end, EndDirection, Data.Default);
+        }
         ITrajectory ITrajectory.Elevate(float height) => Elevate(height);
+        ITrajectory ITrajectory.Elevate(float start, float end) => Elevate(start, end);
 
         public Vector3 GetHitPosition(Segment3 ray, out float rayT, out float trajectoryT, out Vector3 position) => Trajectory.GetHitPosition(ray, out rayT, out trajectoryT, out position);
         public Vector3 GetClosestPosition(Vector3 hitPos, out float closestT)

@@ -30,6 +30,7 @@ namespace ModsCommon.Utilities
         ITrajectory Invert();
         ITrajectory Shift(float start, float end);
         ITrajectory Elevate(float height);
+        ITrajectory Elevate(float start, float end);
 
         public bool IsZero { get; }
 

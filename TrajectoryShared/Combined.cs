@@ -258,7 +258,22 @@ namespace ModsCommon.Utilities
         {
             return new CombinedTrajectory(Trajectories.Select(t => t.Elevate(height)));
         }
+
+        public CombinedTrajectory Elevate(float start, float end)
+        {
+            var trajectories = new List<ITrajectory>();
+            var parts = Parts;
+            for (var i = 0; i < parts.Length; i += 1)
+            {
+                var startI = Mathf.Lerp(start, end, parts[i]);
+                var endI = Mathf.Lerp(start, end, i + 1 < parts.Length ? parts[i + 1] : 1f);
+                trajectories.Add(Trajectories[i].Elevate(startI, endI));
+            }
+            return new CombinedTrajectory(trajectories);
+        }
+
         ITrajectory ITrajectory.Elevate(float height) => Elevate(height);
+        ITrajectory ITrajectory.Elevate(float start, float end) => Elevate(start, end);
 
         public Vector3 Position(float t)
         {
